@@ -26,6 +26,9 @@ dependencies:
   #SCROLL TO TOP
   scroll_to_index: ^1.0.2
 
+  #TOAST (new contact warning)
+  fluttertoast: ^3.1.0
+
   #ICONS
   cupertino_icons: ^0.1.2
   font_awesome_flutter: ^8.4.0

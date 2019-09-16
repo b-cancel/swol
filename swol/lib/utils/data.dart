@@ -4,82 +4,84 @@ import 'package:swol/workout.dart';
 List<Workout> _workouts;
 
 workoutsInit()async{
-  //TODO: read save workouts from file
-  await Future.delayed(Duration(seconds: 1), (){});
+  if(_workouts == null){
+    //TODO: read save workouts from file
+    await Future.delayed(Duration(seconds: 1), (){});
 
-  _workouts = new List<Workout>();
+    _workouts = new List<Workout>();
 
-  //test additions
-  addWorkout(Workout(
-    name: "Bench Press",
-    timeStamp: DateTime(
-      2018, 7, 6,
-    ),
-    url: "",
-    wait: Duration(seconds: 1, milliseconds: 500),
-    weight: 160,
-    reps: 5,
-  ));
-  /*
-  addWorkout(Workout(
-    name: "Some New Workout",
-    timeStamp: DateTime(
-      1899, 9, 6,
-    ),
-    url: "",
-    wait: Duration(seconds: 1, milliseconds: 750),
-  ));
-  */
-  addWorkout(Workout(
-    name: "Bicep Curls",
-    timeStamp: DateTime(
-      2018, 9, 6,
-    ),
-    url: "",
-    wait: Duration(seconds: 1, milliseconds: 750),
-    weight: 20,
-    reps: 15,
-  ));
-  addWorkout(Workout(
-    name: "Bicep Curls2",
-    timeStamp: DateTime(
-      2018, 9, 5,
-    ),
-    url: "",
-    wait: Duration(seconds: 1, milliseconds: 750),
-    weight: 20,
-    reps: 15,
-  ));
-  addWorkout(Workout(
-    name: "Bicep Curls3",
-    timeStamp: DateTime(
-      2018, 9, 13,
-    ),
-    url: "",
-    wait: Duration(seconds: 1, milliseconds: 750),
-    weight: 20,
-    reps: 15,
-  ));
-  addWorkout(Workout(
-    name: "Bicep Curls4",
-    timeStamp: DateTime(
-      2017, 9, 6,
-    ),
-    url: "",
-    wait: Duration(seconds: 1, milliseconds: 750),
-    weight: 20,
-    reps: 15,
-  ));
-  addWorkout(Workout(
-    name: "Jumping",
-    timeStamp: DateTime(
-      2018, 6, 6,
-    ),
-    url: "",
-    wait: Duration(seconds: 1, milliseconds: 250),
-    weight: 180,
-    reps: 25,
-  ));
+    //test additions
+    addWorkout(Workout(
+      name: "Bench Press",
+      timeStamp: DateTime(
+        2018, 7, 6,
+      ),
+      url: "",
+      wait: Duration(seconds: 1, milliseconds: 500),
+      weight: 160,
+      reps: 5,
+    ));
+    /*
+    addWorkout(Workout(
+      name: "Some New Workout",
+      timeStamp: DateTime(
+        1899, 9, 6,
+      ),
+      url: "",
+      wait: Duration(seconds: 1, milliseconds: 750),
+    ));
+    */
+    addWorkout(Workout(
+      name: "Bicep Curls",
+      timeStamp: DateTime(
+        2018, 9, 6,
+      ),
+      url: "",
+      wait: Duration(seconds: 1, milliseconds: 750),
+      weight: 20,
+      reps: 15,
+    ));
+    addWorkout(Workout(
+      name: "Bicep Curls2",
+      timeStamp: DateTime(
+        2018, 9, 5,
+      ),
+      url: "",
+      wait: Duration(seconds: 1, milliseconds: 750),
+      weight: 20,
+      reps: 15,
+    ));
+    addWorkout(Workout(
+      name: "Bicep Curls3",
+      timeStamp: DateTime(
+        2018, 9, 13,
+      ),
+      url: "",
+      wait: Duration(seconds: 1, milliseconds: 750),
+      weight: 20,
+      reps: 15,
+    ));
+    addWorkout(Workout(
+      name: "Bicep Curls4",
+      timeStamp: DateTime(
+        2017, 9, 6,
+      ),
+      url: "",
+      wait: Duration(seconds: 1, milliseconds: 750),
+      weight: 20,
+      reps: 15,
+    ));
+    addWorkout(Workout(
+      name: "Jumping",
+      timeStamp: DateTime(
+        2018, 6, 6,
+      ),
+      url: "",
+      wait: Duration(seconds: 1, milliseconds: 250),
+      weight: 180,
+      reps: 25,
+    ));
+  }
 }
 
 List<Workout> getWorkouts(){

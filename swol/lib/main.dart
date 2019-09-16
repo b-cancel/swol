@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
+import 'package:swol/addWorkout.dart';
 import 'package:swol/utils/data.dart';
 import 'package:swol/workout.dart';
-
-import 'package:random_string/random_string.dart';
-import 'dart:math' show Random;
+import 'package:async/async.dart';
 
 void main() => runApp(MyApp());
 
@@ -63,33 +62,15 @@ class ExcerciseSelect extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: (){
-          print("add workout");
-
-          addWorkout(Workout(
-            name: randomAlphaNumeric(10),
-            //we do this so that we still get the new keyword
-            //but the newer workouts still pop up on top
-            timeStamp: DateTime.now().subtract(Duration(days: 365 * 100)),
-          ));
-
-          //insert the item into the list
-          workoutsKey.currentState.insertItem(0);
-
-          /*
-          Scaffold.of(context).showSnackBar(
-            SnackBar(
-              behavior: SnackBarBehavior.floating,
-              content: Text(contactToName(deletedContact)),
-              action: SnackBarAction(
-                textColor: Colors.blue,
-                label: "Undo",
-                onPressed: ()async{
-                  
-                },
-              ),
-            ),
+          return showDialog<void>(
+            context: context,
+            barrierDismissible: true,
+            builder: (BuildContext context) {
+              return new AddWorkout(
+                workoutsKey: workoutsKey,
+              );
+            },
           );
-          */
         },
         icon: Icon(Icons.add),
         label: Text("Add New"),
@@ -110,7 +91,15 @@ class ExcerciseList extends StatefulWidget {
 }
 
 class _ExcerciseListState extends State<ExcerciseList> {
-  
+  final AsyncMemoizer _memoizer = AsyncMemoizer();
+  bool forceFetch = false;
+
+  //So Future Builder only runs once
+  fetchData() {
+    return this._memoizer.runOnce(() async {
+      return await workoutsInit();
+    });
+  }
 
   //allow us to animate the addition of new workouts
   buildWorkout(
@@ -172,7 +161,7 @@ class _ExcerciseListState extends State<ExcerciseList> {
   @override
   Widget build(BuildContext context) {
     return new FutureBuilder(
-      future: workoutsInit(),
+      future: fetchData(),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         if(snapshot.connectionState == ConnectionState.done){
           //grab data
