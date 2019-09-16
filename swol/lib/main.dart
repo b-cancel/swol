@@ -4,6 +4,9 @@ import 'package:scroll_to_index/scroll_to_index.dart';
 import 'package:swol/utils/data.dart';
 import 'package:swol/workout.dart';
 
+import 'package:random_string/random_string.dart';
+import 'dart:math' show Random;
+
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
@@ -26,6 +29,7 @@ class MyApp extends StatelessWidget {
 
 class ExcerciseSelect extends StatelessWidget {
   final AutoScrollController autoScrollController = new AutoScrollController();
+  final GlobalKey<AnimatedListState> workoutsKey = GlobalKey<AnimatedListState>();
 
   @override
   Widget build(BuildContext context) {
@@ -33,6 +37,13 @@ class ExcerciseSelect extends StatelessWidget {
     expandHeight = (expandHeight < 40) ? 40 : expandHeight; 
 
     return Scaffold(
+      //NOTE: this seems like it doesn't do anything but 
+      //it does remove a space that appears with animated list
+      //why? I have no idea...
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(0.0),
+        child: Container(),
+      ),
       body: CustomScrollView(
         controller: autoScrollController,
         slivers: [
@@ -45,12 +56,40 @@ class ExcerciseSelect extends StatelessWidget {
               title: Text("Workouts"),
             ),
           ),
-          ExcerciseList(),
+          ExcerciseList(
+            workoutsKey: workoutsKey,
+          ),
         ],
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: (){
+          print("add workout");
 
+          addWorkout(Workout(
+            name: randomAlphaNumeric(10),
+            //we do this so that we still get the new keyword
+            //but the newer workouts still pop up on top
+            timeStamp: DateTime.now().subtract(Duration(days: 365 * 100)),
+          ));
+
+          //insert the item into the list
+          workoutsKey.currentState.insertItem(0);
+
+          /*
+          Scaffold.of(context).showSnackBar(
+            SnackBar(
+              behavior: SnackBarBehavior.floating,
+              content: Text(contactToName(deletedContact)),
+              action: SnackBarAction(
+                textColor: Colors.blue,
+                label: "Undo",
+                onPressed: ()async{
+                  
+                },
+              ),
+            ),
+          );
+          */
         },
         icon: Icon(Icons.add),
         label: Text("Add New"),
@@ -60,11 +99,76 @@ class ExcerciseSelect extends StatelessWidget {
 }
 
 class ExcerciseList extends StatefulWidget {
+  ExcerciseList({
+    @required this.workoutsKey,
+  });
+
+  final GlobalKey<AnimatedListState> workoutsKey;
+
   @override
   _ExcerciseListState createState() => _ExcerciseListState();
 }
 
 class _ExcerciseListState extends State<ExcerciseList> {
+  
+
+  //allow us to animate the addition of new workouts
+  buildWorkout(
+    BuildContext context, 
+    int index, 
+    Animation<double> animation,
+  ){
+    //calculations
+    Workout workout = getWorkouts()[index];
+    Duration timeSince = DateTime.now().difference(workout.timeStamp);
+    bool never = (timeSince > Duration(days: 365 * 100));
+
+    //subtitle gen
+    Widget subtitle;
+    if(never){
+      subtitle = Container(
+        alignment: Alignment.topLeft,
+        child: Container(
+          padding: EdgeInsets.symmetric(
+            horizontal: 4,
+          ),
+          decoration: new BoxDecoration(
+            color: Theme.of(context).accentColor,
+            borderRadius: new BorderRadius.all(
+              Radius.circular(12.0),
+            ),
+          ),
+          child: Text(
+            "NEW",
+            style: TextStyle(
+              color: Theme.of(context).primaryColorDark,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+      );
+    }
+    else{
+      subtitle = Text(formatDuration(timeSince));
+    }
+
+    //build our widget given that search term
+    return SizeTransition(
+      sizeFactor: new Tween<double>(
+        begin: 0,
+        end: 1, 
+      ).animate(animation), 
+      child: ListTile(
+        onTap: (){
+          print("go to the details of this workout");
+        },
+        title: Text(workout.name),
+        subtitle: subtitle,
+        trailing: Icon(Icons.chevron_right),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return new FutureBuilder(
@@ -74,64 +178,33 @@ class _ExcerciseListState extends State<ExcerciseList> {
           //grab data
           List<Workout> workouts = getWorkouts();
 
-          //create list of items
-          List<Widget> inSliver = new List<Widget>();
-
-          //add spacer to not occlude lower items
-          inSliver.add(
-            Container(
-              height: 16 + 48.0 + 16,
-              width: MediaQuery.of(context).size.width,
-              alignment: Alignment.centerLeft,
-              padding: EdgeInsets.only(left: 16),
-              child: Text(
-                workouts.length.toString() + " Workouts",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
-                ),
-              ),
-            ),
-          );
-
-          //sort data
-          Map<Duration, Workout> timeSinceToWorkout = new Map<Duration, Workout>();
-          for(int i = 0; i < workouts.length; i++){
-            Workout workout = workouts[i];
-            timeSinceToWorkout[
-              DateTime.now().difference(workout.timeStamp)
-            ] = workout;
-          }
-          List<Duration> sortedTimeSinces = timeSinceToWorkout.keys.toList();
-          sortedTimeSinces.sort();
-          
-          for(int i = 0; i < sortedTimeSinces.length; i ++){
-            Duration key = sortedTimeSinces[i];
-            Workout workout = timeSinceToWorkout[key];
-            inSliver.add(
-              ListTile(
-                onTap: (){
-                  print("go to the details of this workout");
-                },
-                title: Text(workout.name),
-                subtitle: Text(
-                  timeSince(workout.timeStamp)
-                ),
-                trailing: Icon(Icons.chevron_right),
-              )
-            );
-          }
-
           //build
           return SliverList(
             delegate: new SliverChildListDelegate(
               [
                 //NOTE: we reverse the list so that we can show the oldest on top
-                ListView(
-                  reverse: true,
-                  physics: ClampingScrollPhysics(),
-                  shrinkWrap: true,
-                  children: inSliver,
+                AnimatedList(
+                  key: widget.workoutsKey,
+                  shrinkWrap: true, //REQUIRED: in order to properly work in a sliver
+                  physics: ClampingScrollPhysics(), //DITTO
+                  initialItemCount: getWorkouts().length,
+                  itemBuilder: (context, index, animation){
+                    return buildWorkout(context, index, animation);
+                  },
+                ),
+                //spacer for bottom of list
+                Container(
+                  height: 16 + 48.0 + 16,
+                  width: MediaQuery.of(context).size.width,
+                  alignment: Alignment.centerLeft,
+                  padding: EdgeInsets.only(left: 16),
+                  child: Text(
+                    workouts.length.toString() + " Workouts",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                    ),
+                  ),
                 ),
               ]
             ),
@@ -154,7 +227,7 @@ List<String> indexToChar = [
   "y","m","w","d","h","m","s","milli","micro"
 ];
 
-String timeSince(DateTime timestamp, {
+String formatDuration(Duration timeSince, {
   bool showYears: true, //365 days
   bool showMonths: true, //30 days
   bool showWeeks: true, //7 days
@@ -176,9 +249,6 @@ String timeSince(DateTime timestamp, {
   int seconds = 0;
   int milliseconds = 0;
   int microseconds = 0;
-
-  //calc
-  Duration timeSince = DateTime.now().difference(timestamp);
 
   //digest it given the variables
   if(showYears && timeSince.inDays > 0){
