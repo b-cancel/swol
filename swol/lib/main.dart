@@ -149,7 +149,7 @@ class _ExcerciseListState extends State<ExcerciseList> {
       ).animate(animation), 
       child: ListTile(
         onTap: (){
-          print("go to the details of this workout");
+          print("id: " + workout.functionID.toString());
         },
         title: Text(workout.name),
         subtitle: subtitle,

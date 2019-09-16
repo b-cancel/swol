@@ -13,8 +13,9 @@ class Workout{
 
   Workout({
     this.name,
-    //oConner
-    this.functionID: 5,
+    //oConner is right in the middle of them all
+    //excluding Almazan
+    this.functionID: 4,
     this.timeStamp,
     this.url: "",
     this.weight: 0,
