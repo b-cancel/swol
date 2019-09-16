@@ -20,6 +20,9 @@ dependencies:
   flutter:
     sdk: flutter
 
+  #SCROLL TO TOP
+  scroll_to_index: ^1.0.2
+
   #ICONS
   cupertino_icons: ^0.1.2
   font_awesome_flutter: ^8.4.0
