@@ -20,14 +20,34 @@ dependencies:
   flutter:
     sdk: flutter
 
-  # The following adds the Cupertino Icons font to your application.
-  # Use with the CupertinoIcons class for iOS style icons.
+  #ICONS
   cupertino_icons: ^0.1.2
+  font_awesome_flutter: ^8.4.0
+
+  #TRANSITIONS
+  page_transition: ^1.1.4
+
+flutter_native_splash:
+  image: assets/splash/splash.jpg
+  color: "000000"
+
+flutter_icons:
+  android: "launcher_icon" 
+  ios: true
+  #Required but not used if adaptive icons are supported
+  image_path: "assets/launcher/icon2.png"
+  adaptive_icon_foreground: "assets/launcher/icon2.png"
+  adaptive_icon_background: "#000000"
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
+  #SPLASH SCREEN
+  flutter_native_splash: ^0.1.7+2
+
+  #LAUNCHER
+  flutter_launcher_icons: ^0.7.2+1
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
