@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:swol/functions/helper.dart';
 import 'package:swol/utils/data.dart';
 import 'package:swol/workout.dart';
 
@@ -20,6 +21,9 @@ class _AddWorkoutState extends State<AddWorkout> {
   FocusNode nameFN = new FocusNode();
   ValueNotifier<bool> namePresent = new ValueNotifier(false);
   String errorText;
+
+  int dropdownIndex = defaultFunctionIndex;
+  String dropdownValue = functions[defaultFunctionIndex];
 
   @override
   void initState() {
@@ -50,6 +54,7 @@ class _AddWorkoutState extends State<AddWorkout> {
         title: Text('Add New Workout'),
         content: Column(
           mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             Flexible(
               child: TextField(
@@ -58,6 +63,7 @@ class _AddWorkoutState extends State<AddWorkout> {
                 keyboardType: TextInputType.text,
                 textInputAction: TextInputAction.done,
                 decoration: InputDecoration(
+                  labelText: "Workout Name",
                   errorText: errorText,
                   suffix: Transform.translate(
                     offset: Offset(0, 8),
@@ -83,6 +89,174 @@ class _AddWorkoutState extends State<AddWorkout> {
                   ),
                 ),
               ),
+            ),
+            Container(
+              padding: EdgeInsets.only(
+                top: 16,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text(
+                    "Initial Prediction Formula",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  IconButton(
+                    onPressed: (){
+                      showDialog<void>(
+                        context: context,
+                        barrierDismissible: true,
+                        builder: (BuildContext context) {
+                          return Theme(
+                            data: ThemeData.light(),
+                            child: SimpleDialog(
+                              title: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Padding(
+                                    padding: EdgeInsets.only(
+                                      right: 4,
+                                    ),
+                                    child: Icon(
+                                      Icons.info,
+                                      color: Colors.blue,
+                                    ),
+                                  ),
+                                  Expanded(
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: <Widget>[
+                                        Container(
+                                          alignment: Alignment.centerLeft,
+                                          child: Text("Prediction Formulas"),
+                                        ),
+                                        Container(
+                                          alignment: Alignment.centerLeft,
+                                          child: Text(
+                                            "Not sure? Keep the default\n",
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.normal,
+                                            ),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                  Transform.translate(
+                                    offset: Offset(0, -12),
+                                    child: IconButton(
+                                      onPressed: (){
+                                        Navigator.pop(context);
+                                      },
+                                      icon: Icon(Icons.close),
+                                    ),
+                                  )
+                                ],
+                              ),
+                              children: <Widget>[
+                                Container(
+                                  padding: EdgeInsets.only(
+                                    left: 32,
+                                    right: 32,
+                                    bottom: 16,
+                                  ),
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: <Widget>[
+                                      Container(
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(
+                                          "These formulas were originally used to calculate an individual's 1 rep max\n",
+                                        ),
+                                      ),
+                                      Container(
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(
+                                          "But you can also use them to determine what your next set should be",
+                                        ),
+                                      ),
+                                      new MyDivider(),
+                                      Container(
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(
+                                          "Assming that you have both\n",
+                                        ),
+                                      ),
+                                      Container(
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(
+                                          "1. Kept proper form",
+                                        ),
+                                      ),
+                                      Container(
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(
+                                          "2. And taken an appropiate break between sets",
+                                        ),
+                                      ),
+                                      new MyDivider(),
+                                      //
+                                      Container(
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(
+                                          "Which formula works best for you depends on"
+                                          + " how much your nervous system is limiting you" 
+                                          + " for a particular excercise",
+                                        ),
+                                      ),
+                                      new MyDivider(),
+                                      //
+                                      Container(
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(
+                                          "Exercises that use MORE muscle will put MORE strain on your nervous system\n",
+                                        ),
+                                      ),
+                                      Container(
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(
+                                          "Exercises that use LESS muscle will put LESS strain on your nervous system",
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      );
+                    },
+                    icon: Icon(Icons.info),
+                    color: Colors.blue,
+                  )
+                ],
+              ),
+            ),
+            DropdownButton<String>(
+              value: dropdownValue,
+              icon: Icon(Icons.arrow_drop_down),
+              iconSize: 24,
+              elevation: 16,
+              onChanged: (String newValue) {
+                setState(() {
+                  dropdownValue = newValue;
+                  dropdownIndex = functionToIndex[dropdownValue];
+                  print("index: " + dropdownIndex.toString());
+                });
+              },
+              items: functions.map<DropdownMenuItem<String>>((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value),
+                );
+              })
+              .toList(),
             ),
           ],
         ),
@@ -124,6 +298,25 @@ class _AddWorkoutState extends State<AddWorkout> {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class MyDivider extends StatelessWidget {
+  const MyDivider({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.only(
+        top: 16,
+        bottom: 8,
+      ),
+      child: Divider(
+        height: 0,
       ),
     );
   }

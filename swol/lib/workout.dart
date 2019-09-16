@@ -1,7 +1,5 @@
 import 'dart:convert';
 
-const int defaultYear = 1800;
-
 class Workout{
   String name;
   int functionID;
