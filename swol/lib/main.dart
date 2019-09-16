@@ -71,11 +71,43 @@ class _ExcerciseListState extends State<ExcerciseList> {
       future: workoutsInit(),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         if(snapshot.connectionState == ConnectionState.done){
+          //grab data
+          List<Workout> workouts = getWorkouts();
+
           //create list of items
           List<Widget> inSliver = new List<Widget>();
-          List<Workout> workouts = getWorkouts();
-          for(int i = 0; i < workouts.length; i ++){
+
+          //add spacer to not occlude lower items
+          inSliver.add(
+            Container(
+              height: 16 + 48.0 + 16,
+              width: MediaQuery.of(context).size.width,
+              alignment: Alignment.centerLeft,
+              padding: EdgeInsets.only(left: 16),
+              child: Text(
+                workouts.length.toString() + " Workouts",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                ),
+              ),
+            ),
+          );
+
+          //sort data
+          Map<Duration, Workout> timeSinceToWorkout = new Map<Duration, Workout>();
+          for(int i = 0; i < workouts.length; i++){
             Workout workout = workouts[i];
+            timeSinceToWorkout[
+              DateTime.now().difference(workout.timeStamp)
+            ] = workout;
+          }
+          List<Duration> sortedTimeSinces = timeSinceToWorkout.keys.toList();
+          sortedTimeSinces.sort();
+          
+          for(int i = 0; i < sortedTimeSinces.length; i ++){
+            Duration key = sortedTimeSinces[i];
+            Workout workout = timeSinceToWorkout[key];
             inSliver.add(
               ListTile(
                 onTap: (){
@@ -90,27 +122,18 @@ class _ExcerciseListState extends State<ExcerciseList> {
             );
           }
 
-          //add spacer to not occlude lower items
-          inSliver.add(
-            Container(
-              height: 16 + 48.0 + 16,
-              width: MediaQuery.of(context).size.width,
-              alignment: Alignment.centerLeft,
-              padding: EdgeInsets.only(left: 16),
-              child: Text(
-                inSliver.length.toString() + " Workouts",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
-                ),
-              ),
-            ),
-          );
-
           //build
           return SliverList(
             delegate: new SliverChildListDelegate(
-              inSliver,
+              [
+                //NOTE: we reverse the list so that we can show the oldest on top
+                ListView(
+                  reverse: true,
+                  physics: ClampingScrollPhysics(),
+                  shrinkWrap: true,
+                  children: inSliver,
+                ),
+              ]
             ),
           );
         }
@@ -137,10 +160,11 @@ String timeSince(DateTime timestamp, {
   bool showWeeks: true, //7 days
   bool showDays: true, //24 hrs
   bool showHours: true, //60 minutes
-  bool showMinutes: true, //60 seconds
+  bool showMinutes: false, //60 seconds
+  //TODO: left true for testing later
   bool showSeconds: true, //1000 milliseconds
-  bool showMilliseconds: true,
-  bool showMicroseconds: true,
+  bool showMilliseconds: false,
+  bool showMicroseconds: false,
 }){
   //setup vars
   int years = 0;
@@ -153,24 +177,22 @@ String timeSince(DateTime timestamp, {
   int milliseconds = 0;
   int microseconds = 0;
 
-  //get the time since
+  //calc
   Duration timeSince = DateTime.now().difference(timestamp);
-
-  print(timeSince.toString());
 
   //digest it given the variables
   if(showYears && timeSince.inDays > 0){
-    years = timeSince.inDays % 365;
+    years = timeSince.inDays ~/ 365;
     timeSince = timeSince - Duration(days: (365 * years));
   }
 
   if(showMonths && timeSince.inDays > 0){
-    months = timeSince.inDays % 30;
+    months = timeSince.inDays ~/ 30;
     timeSince = timeSince - Duration(days: (30 * months));
   }
 
   if(showWeeks && timeSince.inDays > 0){
-    weeks = timeSince.inDays % 7;
+    weeks = timeSince.inDays ~/ 7;
     timeSince = timeSince - Duration(days: (7 * weeks));
   }
 

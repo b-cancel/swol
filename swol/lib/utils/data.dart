@@ -11,19 +11,25 @@ workoutsInit()async{
   //test additions
   _workouts.add(Workout(
     name: "Bench Press",
-    timeStamp: DateTime.fromMillisecondsSinceEpoch(0),
+    timeStamp: DateTime(
+      2018, 7, 6,
+    ),
     url: "",
     wait: Duration(seconds: 1, milliseconds: 500),
   ));
   _workouts.add(Workout(
     name: "Bicep Curls",
-    timeStamp: DateTime.fromMillisecondsSinceEpoch(50987698900),
+    timeStamp: DateTime(
+      2018, 9, 6,
+    ),
     url: "",
     wait: Duration(seconds: 1, milliseconds: 750),
   ));
   _workouts.add(Workout(
     name: "Jumping",
-    timeStamp: DateTime.fromMillisecondsSinceEpoch(7000000),
+    timeStamp: DateTime(
+      2018, 6, 6,
+    ),
     url: "",
     wait: Duration(seconds: 1, milliseconds: 250),
   ));
