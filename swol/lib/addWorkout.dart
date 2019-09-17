@@ -31,6 +31,7 @@ class _AddWorkoutState extends State<AddWorkout> {
   bool autoUpdateEnabled = true;
   int minutes = 1;
   int seconds = 45;
+  TextEditingController setCtrl = new TextEditingController();
 
   @override
   void initState() {
@@ -62,7 +63,7 @@ class _AddWorkoutState extends State<AddWorkout> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add New Workout'),
+        title: Text('Add New Excercise'),
         actions: <Widget>[
           Padding(
             padding: const EdgeInsets.all(8.0),
@@ -72,6 +73,9 @@ class _AddWorkoutState extends State<AddWorkout> {
               : Colors.grey,
               onPressed: (){
                 if(namePresent.value){
+                  int setValue = (setCtrl.text == "" || setCtrl == null) ? 3 : int.parse(onlyNumbers(setCtrl.text));
+                  print("set val: " + setValue.toString());
+
                   //add workout to our list
                   addWorkout(Workout(
                     name: nameCtrl.text,
@@ -80,10 +84,13 @@ class _AddWorkoutState extends State<AddWorkout> {
                     //but the newer workouts still pop up on top
                     timeStamp: DateTime.now().subtract(Duration(days: 365 * 100)),
                     url: url.value,
+                    //NOTE: we dont add these because the whole point of the app is that you don't set these
+                    //Your bodies limits
+                    //and the equations set them
                     //weight
                     //reps
                     wait: Duration(minutes: minutes, seconds: seconds),
-                    //sets
+                    sets: setValue,
                     autoUpdatePrediction: autoUpdateEnabled,
                   ));
 
@@ -112,12 +119,23 @@ class _AddWorkoutState extends State<AddWorkout> {
         shrinkWrap: true,
         padding: EdgeInsets.only(
           bottom: 24,
+          top: 16
         ),
         children: <Widget>[
+          Container(
+            padding: EdgeInsets.only(
+              left: 24,
+            ),
+            child: Text(
+              "Excercise Name",
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
           Padding(
             padding: EdgeInsets.only(
               left: 24,
-              top: 24,
             ),
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -136,7 +154,7 @@ class _AddWorkoutState extends State<AddWorkout> {
                           keyboardType: TextInputType.text,
                           textInputAction: TextInputAction.done,
                           decoration: InputDecoration(
-                            labelText: "Workout Name",
+                            hintText: "Excercise Name",
                             errorText: errorText,
                             //spacer so X doesn't cover the text
                             suffix: Container(
@@ -645,6 +663,135 @@ class _AddWorkoutState extends State<AddWorkout> {
             //textScaleFactor: 2,
             itemExtent: 48,
           ).makePicker(),
+          //------------------------------------------------------------------
+          Container(
+            padding: EdgeInsets.only(
+              top: 8,
+              left: 24,
+              right: 12,
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.max,
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.only(
+                    right: 16,
+                  ),
+                  child: Container(
+                    width: 24,
+                    child: TextFormField(
+                      controller: setCtrl,
+                      maxLength: 2,
+                      textInputAction: TextInputAction.done,
+                      decoration: InputDecoration(
+                        hintText: "3"
+                      ),
+                      keyboardType: TextInputType.numberWithOptions(
+                        signed: false,
+                        decimal: true,
+                      ),
+                    ),
+                  ),
+                ),
+                Text(
+                  "Initial Set Target",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Expanded(
+                  child: Container(
+                    alignment: Alignment.centerRight,
+                    child: IconButton(
+                      onPressed: (){
+                        showDialog<void>(
+                          context: context,
+                          barrierDismissible: true,
+                          builder: (BuildContext context) {
+                            return MyInfoDialog(
+                              title: "Set Target",
+                              subtitle: "Not sure? Keep the default",
+                              child: Container(
+                                padding: EdgeInsets.only(
+                                  left: 32,
+                                  right: 32,
+                                  bottom: 16,
+                                ),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: <Widget>[
+                                    Container(
+                                      alignment: Alignment.centerLeft,
+                                      child: Text(
+                                        "When you workout, it can be easy to forget how many sets you have left",
+                                      ),
+                                    ),
+                                    Container(
+                                      alignment: Alignment.centerLeft,
+                                      child: Text(
+                                        "So we help you track them!",
+                                      ),
+                                    ),
+                                    new MyDivider(),
+                                    Container(
+                                      alignment: Alignment.centerLeft,
+                                      child: Text(
+                                        "If at any point you want to do more or less sets of a particular excercise",
+                                      ),
+                                    ),
+                                    Container(
+                                      alignment: Alignment.centerLeft,
+                                      child: Text(
+                                        "Just do so and we'll remember!",
+                                      ),
+                                    ),
+                                    new MyDivider(),
+                                    Container(
+                                      alignment: Alignment.centerLeft,
+                                      child: Text(
+                                        "Additonally, Keep in mind that in general\n",
+                                      ),
+                                    ),
+                                    Container(
+                                      alignment: Alignment.centerLeft,
+                                      child: Text(
+                                        "The MORE reps you are doing per set",
+                                      ),
+                                    ),
+                                    Container(
+                                      alignment: Alignment.centerLeft,
+                                      child: Text(
+                                        "the LESS sets you should be doing\n",
+                                      ),
+                                    ),
+                                    Container(
+                                      alignment: Alignment.centerLeft,
+                                      child: Text(
+                                        "The LESS reps you are doing per set",
+                                      ),
+                                    ),
+                                    Container(
+                                      alignment: Alignment.centerLeft,
+                                      child: Text(
+                                        "the MORE sets you should be doing",
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ); 
+                          },
+                        );
+                      },
+                      icon: Icon(Icons.info),
+                      color: Theme.of(context).accentColor,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );

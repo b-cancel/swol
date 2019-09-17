@@ -153,6 +153,7 @@ class _ExcerciseListState extends State<ExcerciseList> {
           print("auto: " + workout.autoUpdatePrediction.toString());
           print("url: " + workout.url.toString());
           print("wait: " + workout.wait.toString());
+          print("reps: " + workout.reps.toString());
         },
         title: Text(workout.name),
         subtitle: subtitle,
