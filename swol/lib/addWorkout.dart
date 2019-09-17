@@ -269,10 +269,33 @@ class _AddWorkoutState extends State<AddWorkout> {
                                               Container(
                                                 alignment: Alignment.centerLeft,
                                                 child: Text(
-                                                  "info content here",
+                                                  "As mentioned in the previous pop up,"
+                                                    + " which formula works best for you depends on"
+                                                    + " how much your nervous system is limiting you" 
+                                                    + " for a particular excercise",
                                                 ),
                                               ),
                                               new MyDivider(),
+                                              Container(
+                                                alignment: Alignment.centerLeft,
+                                                child: Text(
+                                                  "But the forumla that you decided to use initally might not be accurately predicting real world results",
+                                                ),
+                                              ),
+                                              new MyDivider(),
+                                              Container(
+                                                alignment: Alignment.centerLeft,
+                                                child: Text(
+                                                  "Which would mean that your nervous system is limiting you more or less than you initially expected",
+                                                ),
+                                              ),
+                                              new MyDivider(),
+                                              Container(
+                                                alignment: Alignment.centerLeft,
+                                                child: Text(
+                                                  "So by enabling this, you allow the us to switch to a formula that matches your results after each set",
+                                                ),
+                                              ),
                                             ],
                                           ),
                                         ),
@@ -309,6 +332,7 @@ class _AddWorkoutState extends State<AddWorkout> {
                 addWorkout(Workout(
                   name: nameCtrl.text,
                   functionID: dropdownIndex,
+                  autoUpdatePrediction: autoUpdateEnabled,
                   //we do this so that we still get the new keyword
                   //but the newer workouts still pop up on top
                   timeStamp: DateTime.now().subtract(Duration(days: 365 * 100)),

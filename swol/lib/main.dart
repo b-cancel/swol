@@ -150,6 +150,7 @@ class _ExcerciseListState extends State<ExcerciseList> {
       child: ListTile(
         onTap: (){
           print("id: " + workout.functionID.toString());
+          print("auto: " + workout.autoUpdatePrediction.toString());
         },
         title: Text(workout.name),
         subtitle: subtitle,
