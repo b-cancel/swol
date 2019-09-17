@@ -20,6 +20,7 @@ class _AddWorkoutState extends State<AddWorkout> {
   TextEditingController nameCtrl = new TextEditingController();
   FocusNode nameFN = new FocusNode();
   ValueNotifier<bool> namePresent = new ValueNotifier(false);
+  ValueNotifier<String> url = new ValueNotifier("");
   String errorText;
 
   int dropdownIndex = defaultFunctionIndex;
@@ -40,6 +41,11 @@ class _AddWorkoutState extends State<AddWorkout> {
 
     //update button given once name given
     namePresent.addListener((){
+      setState(() {});
+    });
+
+    //when url change we update
+    url.addListener((){
       setState(() {});
     });
 
@@ -221,6 +227,132 @@ class _AddWorkoutState extends State<AddWorkout> {
                       .toList(),
                     ),
                   ),
+                  Container(
+                    padding: EdgeInsets.only(
+                      top: 16,
+                    ),
+                    child: HeaderWithInfo(
+                      title: "Form Reference Link",
+                      popUp: MyInfoDialog(
+                        title: "form Reference Link",
+                        child: Container(
+                          padding: EdgeInsets.only(
+                            left: 32,
+                            right: 32,
+                            bottom: 16,
+                          ),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: <Widget>[
+                              Container(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  "Form is incredibly important!"
+                                ),
+                              ),
+                              new MyDivider(),
+                              Container(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  "Especially as you're approaching your 1 rep max, if you form isn't perfect you could get permanently injured!",
+                                ),
+                              ),
+                              new MyDivider(),
+                              Container(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  "So it's a good idea to keep a link to a video or picture of the proper form of each excercise, especially when you are starting",
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(
+                      right: 24,
+                    ),
+                    child: ClipRRect(
+                      borderRadius: new BorderRadius.all(
+                        Radius.circular(45.0),
+                      ),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.grey.withOpacity(0.25),
+                          borderRadius: new BorderRadius.all(
+                            Radius.circular(45.0),
+                          ),
+                        ),
+                        padding: EdgeInsets.all(0),
+                        child: IntrinsicHeight(
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: <Widget>[
+                              MaterialButton(
+                                color: Colors.blue,
+                                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                padding: EdgeInsets.all(0),
+                                onPressed: (){
+                                  Clipboard.getData('text/plain').then((clipboarContent) {
+                                    url.value = clipboarContent.text;
+                                  });
+                                },
+                                child: Text(
+                                  "Paste",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                child: MaterialButton(
+                                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                  padding: EdgeInsets.only(
+                                    left: 16,
+                                  ),
+                                  onPressed: (){
+                                    url.value = "";
+                                  },
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(
+                                      vertical: 8,
+                                    ),
+                                    alignment: Alignment.centerLeft,
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.max,
+                                      children: <Widget>[
+                                        Expanded(
+                                          child: Text(
+                                            (url.value == "") ? 'Tap to paste the link' : url.value,
+                                            style: TextStyle(
+                                              color: (url.value == "") ? Colors.grey : Colors.black,
+                                            ),
+                                            overflow: TextOverflow.clip,
+                                          ),
+                                        ),
+                                        Container(
+                                          padding: EdgeInsets.only(
+                                            right: 8,
+                                          ),
+                                          child: (url.value == "") 
+                                          ? Container()
+                                          : Icon(Icons.close),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
                   Transform.translate(
                     offset: Offset(-12, 0),
                     child: Container(
@@ -253,7 +385,7 @@ class _AddWorkoutState extends State<AddWorkout> {
                                     context: context,
                                     barrierDismissible: true,
                                     builder: (BuildContext context) {
-                                      return  MyInfoDialog(
+                                      return MyInfoDialog(
                                         title: "Auto Update",
                                         subtitle: "Not sure? Keep the default",
                                         child: Container(
@@ -332,10 +464,15 @@ class _AddWorkoutState extends State<AddWorkout> {
                 addWorkout(Workout(
                   name: nameCtrl.text,
                   functionID: dropdownIndex,
-                  autoUpdatePrediction: autoUpdateEnabled,
                   //we do this so that we still get the new keyword
                   //but the newer workouts still pop up on top
                   timeStamp: DateTime.now().subtract(Duration(days: 365 * 100)),
+                  url: url.value,
+                  //weight
+                  //reps
+                  //wait
+                  //sets
+                  autoUpdatePrediction: autoUpdateEnabled,
                 ));
 
                 //insert the item into the list
