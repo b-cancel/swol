@@ -1,8 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:swol/functions/helper.dart';
+import 'package:swol/helpers/addWorkout.dart';
 import 'package:swol/utils/data.dart';
 import 'package:swol/workout.dart';
+import 'package:flutter_picker/flutter_picker.dart';
 
 class AddWorkout extends StatefulWidget {
   const AddWorkout({
@@ -55,580 +59,525 @@ class _AddWorkoutState extends State<AddWorkout> {
 
   @override
   Widget build(BuildContext context) {
-    return Theme(
-      data: ThemeData.light(),
-      child: AlertDialog(
+    return Scaffold(
+      appBar: AppBar(
         title: Text('Add New Workout'),
-        contentPadding: EdgeInsets.only(
-          left: 24,
+        actions: <Widget>[
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: RaisedButton(
+              color: (namePresent.value) ? Colors.blue : Colors.grey,
+              onPressed: (){
+                if(namePresent.value){
+                  //add workout to our list
+                  addWorkout(Workout(
+                    name: nameCtrl.text,
+                    functionID: dropdownIndex,
+                    //we do this so that we still get the new keyword
+                    //but the newer workouts still pop up on top
+                    timeStamp: DateTime.now().subtract(Duration(days: 365 * 100)),
+                    url: url.value,
+                    //weight
+                    //reps
+                    //wait
+                    //sets
+                    autoUpdatePrediction: autoUpdateEnabled,
+                  ));
+
+                  //insert the item into the list
+                  widget.workoutsKey.currentState.insertItem(0);
+
+                  //exit pop up
+                  Navigator.pop(context);
+                }
+                else{
+                  errorText = "Name Is Required";
+                  setState(() {});
+                }
+              },
+              child: Text(
+                "Save",
+                style: TextStyle(
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+      body: ListView(
+        shrinkWrap: true,
+        padding: EdgeInsets.only(
           bottom: 24,
-          top: 24,
         ),
-        content: Container(
-          width: double.maxFinite,
-          child: ListView(
-            shrinkWrap: true,
-            children: <Widget>[
-              Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: <Widget>[
-                  Flexible(
-                    child: Stack(
-                      children: <Widget>[
-                        Container(
-                          padding: EdgeInsets.only(
-                            right: 24,
+        children: <Widget>[
+          Padding(
+            padding: EdgeInsets.only(
+              left: 24,
+              top: 24,
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                Flexible(
+                  child: Stack(
+                    children: <Widget>[
+                      Container(
+                        padding: EdgeInsets.only(
+                          right: 24,
+                        ),
+                        child: TextField(
+                          controller: nameCtrl,
+                          focusNode: nameFN,
+                          keyboardType: TextInputType.text,
+                          textInputAction: TextInputAction.done,
+                          decoration: InputDecoration(
+                            labelText: "Workout Name",
+                            errorText: errorText,
+                            //spacer so X doesn't cover the text
+                            suffix: Container(
+                              width: 36,
+                            )
                           ),
-                          child: TextField(
-                            controller: nameCtrl,
-                            focusNode: nameFN,
-                            keyboardType: TextInputType.text,
-                            textInputAction: TextInputAction.done,
-                            decoration: InputDecoration(
-                              labelText: "Workout Name",
-                              errorText: errorText,
-                              //spacer so X doesn't cover the text
-                              suffix: Container(
-                                width: 36,
-                              )
+                        ),
+                      ),
+                      Positioned(
+                        right: 0,
+                        top: 0,
+                        bottom: 0,
+                        child: Transform.translate(
+                          offset: Offset(-16, 8),
+                          child: Container(
+                            width: 42,
+                            alignment: Alignment.center,
+                            child: IconButton(
+                              onPressed: (){
+                                nameCtrl.text = "";
+                              },
+                              color: Colors.grey, //namePresent.value) ? Colors.grey : Colors.transparent,
+                              highlightColor: Colors.grey,
+                              icon: Icon(
+                                Icons.close,
+                                color: (namePresent.value) ? Colors.grey : Colors.transparent,
+                              ),
                             ),
                           ),
                         ),
-                        Positioned(
-                          right: 0,
-                          top: 0,
-                          bottom: 0,
-                          child: Transform.translate(
-                            offset: Offset(-16, 8),
-                            child: Container(
-                              width: 42,
-                              alignment: Alignment.center,
-                              child: IconButton(
-                                onPressed: (){
-                                  nameCtrl.text = "";
-                                },
-                                color: Colors.grey, //namePresent.value) ? Colors.grey : Colors.transparent,
-                                highlightColor: Colors.grey,
-                                icon: Icon(
-                                  Icons.close,
-                                  color: (namePresent.value) ? Colors.grey : Colors.transparent,
-                                ),
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  padding: EdgeInsets.only(
+                    top: 16,
+                  ),
+                  child: new HeaderWithInfo(
+                    title: "Initial Preduction Formula",
+                    popUp: MyInfoDialog(
+                      title: "Prediction Formulas",
+                      subtitle: "Not sure? Keep the default",
+                      child: Container(
+                        padding: EdgeInsets.only(
+                          left: 32,
+                          right: 32,
+                          bottom: 16,
+                        ),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: <Widget>[
+                            Container(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                "These formulas were originally used to calculate an individual's 1 rep max\n",
                               ),
+                            ),
+                            Container(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                "But you can also use them to determine what your next set should be",
+                              ),
+                            ),
+                            new MyDivider(),
+                            Container(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                "Assming that you have both\n",
+                              ),
+                            ),
+                            Container(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                "1. Kept proper form",
+                              ),
+                            ),
+                            Container(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                "2. And taken an appropiate break between sets",
+                              ),
+                            ),
+                            new MyDivider(),
+                            //
+                            Container(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                "Which formula works best for you depends on"
+                                + " how much your nervous system is limiting you" 
+                                + " for a particular excercise",
+                              ),
+                            ),
+                            new MyDivider(),
+                            //
+                            Container(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                "Exercises that use MORE muscle will put MORE strain on your nervous system\n",
+                              ),
+                            ),
+                            Container(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                "Exercises that use LESS muscle will put LESS strain on your nervous system",
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(
+                    right: 24,
+                  ),
+                  child: DropdownButton<String>(
+                    value: dropdownValue,
+                    icon: Icon(Icons.arrow_drop_down),
+                    isExpanded: true,
+                    iconSize: 24,
+                    elevation: 16,
+                    onChanged: (String newValue) {
+                      setState(() {
+                        dropdownValue = newValue;
+                        dropdownIndex = functionToIndex[dropdownValue];
+                        print("index: " + dropdownIndex.toString());
+                      });
+                    },
+                    items: functions.map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    })
+                    .toList(),
+                  ),
+                ),
+                Transform.translate(
+                  offset: Offset(-12, 0),
+                  child: Container(
+                    padding: EdgeInsets.only(
+                      top: 16,
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      children: <Widget>[
+                        Switch(
+                          value: autoUpdateEnabled,
+                          onChanged: (value) {
+                            setState(() {
+                              autoUpdateEnabled = value;
+                            });
+                          },
+                        ),
+                        Text(
+                          "Auto Update Prediction",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Expanded(
+                          child: Container(
+                            alignment: Alignment.centerRight,
+                            child: IconButton(
+                              onPressed: (){
+                                showDialog<void>(
+                                  context: context,
+                                  barrierDismissible: true,
+                                  builder: (BuildContext context) {
+                                    return MyInfoDialog(
+                                      title: "Auto Update",
+                                      subtitle: "Not sure? Keep the default",
+                                      child: Container(
+                                        padding: EdgeInsets.only(
+                                          left: 32,
+                                          right: 32,
+                                          bottom: 16,
+                                        ),
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          mainAxisAlignment: MainAxisAlignment.start,
+                                          children: <Widget>[
+                                            Container(
+                                              alignment: Alignment.centerLeft,
+                                              child: Text(
+                                                "As mentioned in the previous pop up,"
+                                                  + " which formula works best for you depends on"
+                                                  + " how much your nervous system is limiting you" 
+                                                  + " for a particular excercise",
+                                              ),
+                                            ),
+                                            new MyDivider(),
+                                            Container(
+                                              alignment: Alignment.centerLeft,
+                                              child: Text(
+                                                "But the forumla that you decided to use initally might not be accurately predicting real world results",
+                                              ),
+                                            ),
+                                            new MyDivider(),
+                                            Container(
+                                              alignment: Alignment.centerLeft,
+                                              child: Text(
+                                                "Which would mean that your nervous system is limiting you more or less than you initially expected",
+                                              ),
+                                            ),
+                                            new MyDivider(),
+                                            Container(
+                                              alignment: Alignment.centerLeft,
+                                              child: Text(
+                                                "So by enabling this, you allow the us to switch to a formula that matches your results after each set",
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ); 
+                                  },
+                                );
+                              },
+                              icon: Icon(Icons.info),
+                              color: Colors.blue,
                             ),
                           ),
                         ),
                       ],
                     ),
                   ),
-                  Container(
-                    padding: EdgeInsets.only(
-                      top: 16,
-                    ),
-                    child: new HeaderWithInfo(
-                      title: "Initial Preduction Formula",
-                      popUp: MyInfoDialog(
-                        title: "Prediction Formulas",
-                        subtitle: "Not sure? Keep the default",
-                        child: Container(
-                          padding: EdgeInsets.only(
-                            left: 32,
-                            right: 32,
-                            bottom: 16,
-                          ),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: <Widget>[
-                              Container(
-                                alignment: Alignment.centerLeft,
-                                child: Text(
-                                  "These formulas were originally used to calculate an individual's 1 rep max\n",
-                                ),
-                              ),
-                              Container(
-                                alignment: Alignment.centerLeft,
-                                child: Text(
-                                  "But you can also use them to determine what your next set should be",
-                                ),
-                              ),
-                              new MyDivider(),
-                              Container(
-                                alignment: Alignment.centerLeft,
-                                child: Text(
-                                  "Assming that you have both\n",
-                                ),
-                              ),
-                              Container(
-                                alignment: Alignment.centerLeft,
-                                child: Text(
-                                  "1. Kept proper form",
-                                ),
-                              ),
-                              Container(
-                                alignment: Alignment.centerLeft,
-                                child: Text(
-                                  "2. And taken an appropiate break between sets",
-                                ),
-                              ),
-                              new MyDivider(),
-                              //
-                              Container(
-                                alignment: Alignment.centerLeft,
-                                child: Text(
-                                  "Which formula works best for you depends on"
-                                  + " how much your nervous system is limiting you" 
-                                  + " for a particular excercise",
-                                ),
-                              ),
-                              new MyDivider(),
-                              //
-                              Container(
-                                alignment: Alignment.centerLeft,
-                                child: Text(
-                                  "Exercises that use MORE muscle will put MORE strain on your nervous system\n",
-                                ),
-                              ),
-                              Container(
-                                alignment: Alignment.centerLeft,
-                                child: Text(
-                                  "Exercises that use LESS muscle will put LESS strain on your nervous system",
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
+                ),
+                Container(
+                  padding: EdgeInsets.only(
+                    top: 16,
                   ),
-                  Padding(
-                    padding: EdgeInsets.only(
-                      right: 24,
-                    ),
-                    child: DropdownButton<String>(
-                      value: dropdownValue,
-                      icon: Icon(Icons.arrow_drop_down),
-                      isExpanded: true,
-                      iconSize: 24,
-                      elevation: 16,
-                      onChanged: (String newValue) {
-                        setState(() {
-                          dropdownValue = newValue;
-                          dropdownIndex = functionToIndex[dropdownValue];
-                          print("index: " + dropdownIndex.toString());
-                        });
-                      },
-                      items: functions.map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      })
-                      .toList(),
-                    ),
-                  ),
-                  Container(
-                    padding: EdgeInsets.only(
-                      top: 16,
-                    ),
-                    child: HeaderWithInfo(
-                      title: "Form Reference Link",
-                      popUp: MyInfoDialog(
-                        title: "form Reference Link",
-                        child: Container(
-                          padding: EdgeInsets.only(
-                            left: 32,
-                            right: 32,
-                            bottom: 16,
-                          ),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: <Widget>[
-                              Container(
-                                alignment: Alignment.centerLeft,
-                                child: Text(
-                                  "Form is incredibly important!"
-                                ),
-                              ),
-                              new MyDivider(),
-                              Container(
-                                alignment: Alignment.centerLeft,
-                                child: Text(
-                                  "Especially as you're approaching your 1 rep max, if you form isn't perfect you could get permanently injured!",
-                                ),
-                              ),
-                              new MyDivider(),
-                              Container(
-                                alignment: Alignment.centerLeft,
-                                child: Text(
-                                  "So it's a good idea to keep a link to a video or picture of the proper form of each excercise, especially when you are starting",
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(
-                      right: 24,
-                    ),
-                    child: ClipRRect(
-                      borderRadius: new BorderRadius.all(
-                        Radius.circular(45.0),
-                      ),
+                  child: HeaderWithInfo(
+                    title: "Form Reference Link",
+                    popUp: MyInfoDialog(
+                      title: "form Reference Link",
                       child: Container(
-                        decoration: BoxDecoration(
-                          color: Colors.grey.withOpacity(0.25),
-                          borderRadius: new BorderRadius.all(
-                            Radius.circular(45.0),
-                          ),
+                        padding: EdgeInsets.only(
+                          left: 32,
+                          right: 32,
+                          bottom: 16,
                         ),
-                        padding: EdgeInsets.all(0),
-                        child: IntrinsicHeight(
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: <Widget>[
-                              MaterialButton(
-                                color: Colors.blue,
-                                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                                padding: EdgeInsets.all(0),
-                                onPressed: (){
-                                  Clipboard.getData('text/plain').then((clipboarContent) {
-                                    url.value = clipboarContent.text;
-                                  });
-                                },
-                                child: Text(
-                                  "Paste",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: <Widget>[
+                            Container(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                "Form is incredibly important!"
                               ),
-                              Expanded(
-                                child: MaterialButton(
-                                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                                  padding: EdgeInsets.only(
-                                    left: 16,
-                                  ),
-                                  onPressed: (){
-                                    url.value = "";
-                                  },
-                                  child: Container(
-                                    padding: EdgeInsets.symmetric(
-                                      vertical: 8,
-                                    ),
-                                    alignment: Alignment.centerLeft,
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.max,
-                                      children: <Widget>[
-                                        Expanded(
-                                          child: Text(
-                                            (url.value == "") ? 'Tap to paste the link' : url.value,
-                                            style: TextStyle(
-                                              color: (url.value == "") ? Colors.grey : Colors.black,
-                                            ),
-                                            overflow: TextOverflow.clip,
-                                          ),
-                                        ),
-                                        Container(
-                                          padding: EdgeInsets.only(
-                                            right: 8,
-                                          ),
-                                          child: (url.value == "") 
-                                          ? Container()
-                                          : Icon(Icons.close),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
+                            ),
+                            new MyDivider(),
+                            Container(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                "Especially as you're approaching your 1 rep max, if you form isn't perfect you could get permanently injured!",
                               ),
-                            ],
-                          ),
+                            ),
+                            new MyDivider(),
+                            Container(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                "So it's a good idea to keep a link to a video or picture of the proper form of each excercise, especially when you are starting",
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
                   ),
-                  Transform.translate(
-                    offset: Offset(-12, 0),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(
+                    right: 24,
+                  ),
+                  child: ClipRRect(
+                    borderRadius: new BorderRadius.all(
+                      Radius.circular(45.0),
+                    ),
                     child: Container(
-                      padding: EdgeInsets.only(
-                        top: 16,
+                      decoration: BoxDecoration(
+                        color: Colors.grey.withOpacity(0.25),
+                        borderRadius: new BorderRadius.all(
+                          Radius.circular(45.0),
+                        ),
                       ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.max,
-                        children: <Widget>[
-                          Switch(
-                            value: autoUpdateEnabled,
-                            onChanged: (value) {
-                              setState(() {
-                                autoUpdateEnabled = value;
-                              });
-                            },
-                          ),
-                          Text(
-                            "Auto Update Prediction",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          Expanded(
-                            child: Container(
-                              alignment: Alignment.centerRight,
-                              child: IconButton(
-                                onPressed: (){
-                                  showDialog<void>(
-                                    context: context,
-                                    barrierDismissible: true,
-                                    builder: (BuildContext context) {
-                                      return MyInfoDialog(
-                                        title: "Auto Update",
-                                        subtitle: "Not sure? Keep the default",
-                                        child: Container(
-                                          padding: EdgeInsets.only(
-                                            left: 32,
-                                            right: 32,
-                                            bottom: 16,
-                                          ),
-                                          child: Column(
-                                            mainAxisSize: MainAxisSize.min,
-                                            mainAxisAlignment: MainAxisAlignment.start,
-                                            children: <Widget>[
-                                              Container(
-                                                alignment: Alignment.centerLeft,
-                                                child: Text(
-                                                  "As mentioned in the previous pop up,"
-                                                    + " which formula works best for you depends on"
-                                                    + " how much your nervous system is limiting you" 
-                                                    + " for a particular excercise",
-                                                ),
-                                              ),
-                                              new MyDivider(),
-                                              Container(
-                                                alignment: Alignment.centerLeft,
-                                                child: Text(
-                                                  "But the forumla that you decided to use initally might not be accurately predicting real world results",
-                                                ),
-                                              ),
-                                              new MyDivider(),
-                                              Container(
-                                                alignment: Alignment.centerLeft,
-                                                child: Text(
-                                                  "Which would mean that your nervous system is limiting you more or less than you initially expected",
-                                                ),
-                                              ),
-                                              new MyDivider(),
-                                              Container(
-                                                alignment: Alignment.centerLeft,
-                                                child: Text(
-                                                  "So by enabling this, you allow the us to switch to a formula that matches your results after each set",
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ); 
-                                    },
-                                  );
-                                },
-                                icon: Icon(Icons.info),
-                                color: Colors.blue,
+                      padding: EdgeInsets.all(0),
+                      child: IntrinsicHeight(
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: <Widget>[
+                            MaterialButton(
+                              color: Colors.blue,
+                              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                              padding: EdgeInsets.all(0),
+                              onPressed: (){
+                                Clipboard.getData('text/plain').then((clipboarContent) {
+                                  url.value = clipboarContent.text;
+                                });
+                              },
+                              child: Text(
+                                "Paste",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ),
-                          ),
-                        ],
+                            Expanded(
+                              child: MaterialButton(
+                                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                padding: EdgeInsets.only(
+                                  left: 16,
+                                ),
+                                onPressed: (){
+                                  url.value = "";
+                                },
+                                child: Container(
+                                  padding: EdgeInsets.symmetric(
+                                    vertical: 8,
+                                  ),
+                                  alignment: Alignment.centerLeft,
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.max,
+                                    children: <Widget>[
+                                      Expanded(
+                                        child: Text(
+                                          (url.value == "") ? 'Tap to paste the link' : url.value,
+                                          style: TextStyle(
+                                            color: (url.value == "") ? Colors.grey : Colors.black,
+                                          ),
+                                          overflow: TextOverflow.clip,
+                                        ),
+                                      ),
+                                      Container(
+                                        padding: EdgeInsets.only(
+                                          right: 8,
+                                        ),
+                                        child: (url.value == "") 
+                                        ? Container()
+                                        : Icon(Icons.close),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
-                ],
+                ),
+              ],
+            ),
+          ),
+          Picker(
+            hideHeader: true,
+            looping: false,
+            backgroundColor: Theme.of(context).canvasColor,
+            containerColor: Theme.of(context).canvasColor,
+            delimiter: [
+              PickerDelimiter(
+                child: Center(
+                  child: Container(
+                    height: 80,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Container(
+                          width: 16,
+                          height: 16,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Colors.white,
+                          ),
+                        ),
+                        Container(
+                          width: 16,
+                          height: 16,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
+                    )
+                  ),
+                ),
               ),
             ],
-          ),
-        ),
-        actions: <Widget>[
-          FlatButton(
-            child: Text('Close'),
-            onPressed: () {
-              Navigator.of(context).pop();
+            height: 150,
+            onSelect: (Picker picker, int index, List<int> ints){
+              //TODO: to string these 2 individually
+              print(picker.getSelectedValues());
             },
-          ),
-          RaisedButton(
-            color: (namePresent.value) ? Colors.blue : Colors.grey,
-            onPressed: (){
-              if(namePresent.value){
-                //add workout to our list
-                addWorkout(Workout(
-                  name: nameCtrl.text,
-                  functionID: dropdownIndex,
-                  //we do this so that we still get the new keyword
-                  //but the newer workouts still pop up on top
-                  timeStamp: DateTime.now().subtract(Duration(days: 365 * 100)),
-                  url: url.value,
-                  //weight
-                  //reps
-                  //wait
-                  //sets
-                  autoUpdatePrediction: autoUpdateEnabled,
-                ));
-
-                //insert the item into the list
-                widget.workoutsKey.currentState.insertItem(0);
-
-                //exit pop up
-                Navigator.pop(context);
-              }
-              else{
-                errorText = "Name Is Required";
-                setState(() {});
-              }
-            },
-            child: Text(
-              "Add",
-              style: TextStyle(
-                color: Colors.white,
-              ),
+            adapter: PickerDataAdapter<String>(
+              pickerdata: new JsonDecoder().convert(Times),
+              isArray: true,
             ),
-          ),
+            columnPadding: EdgeInsets.symmetric(
+              horizontal:24,
+            ),
+            //---still being messed
+            textStyle: TextStyle(
+              color: Theme.of(context).primaryTextTheme.title.color,
+              //: 36,
+            ),
+            selectedTextStyle: TextStyle(
+              color: Theme.of(context).primaryTextTheme.title.color,
+              //: 36,
+            ),
+            textScaleFactor: 2,
+            itemExtent: 24,
+            
+            
+        ).makePicker()
         ],
       ),
     );
   }
 }
 
-class HeaderWithInfo extends StatelessWidget {
-  const HeaderWithInfo({
-    Key key,
-    @required this.title,
-    @required this.popUp,
-  }) : super(key: key);
-
-  final String title;
-  final Widget popUp;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.only(
-        right: 12,
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          Text(
-            title,
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          IconButton(
-            onPressed: (){
-              showDialog<void>(
-                context: context,
-                barrierDismissible: true,
-                builder: (BuildContext context) {
-                  return popUp; 
-                },
-              );
-            },
-            icon: Icon(Icons.info),
-            color: Colors.blue,
-          )
-        ],
-      ),
-    );
-  }
-}
-
-class MyInfoDialog extends StatelessWidget {
-  const MyInfoDialog({
-    @required this.title,
-    this.subtitle: "",
-    @required this.child,
-    Key key,
-  }) : super(key: key);
-
-  final String title;
-  final String subtitle;
-  final Widget child;
-
-  @override
-  Widget build(BuildContext context) {
-    return Theme(
-      data: ThemeData.light(),
-      child: SimpleDialog(
-        title: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Padding(
-              padding: EdgeInsets.only(
-                right: 4,
-              ),
-              child: Icon(
-                Icons.info,
-                color: Colors.blue,
-              ),
-            ),
-            Expanded(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Container(
-                    alignment: Alignment.centerLeft,
-                    child: Text(title),
-                  ),
-                  (subtitle == "") ? Container()
-                  : Container(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      subtitle,
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Colors.black,
-                        fontWeight: FontWeight.normal,
-                      ),
-                    ),
-                  )
-                ],
-              ),
-            ),
-            Transform.translate(
-              offset: Offset(0, -12),
-              child: IconButton(
-                onPressed: (){
-                  Navigator.pop(context);
-                },
-                icon: Icon(Icons.close),
-              ),
-            )
-          ],
-        ),
-        children: <Widget>[
-          child,
-        ],
-      ),
-    );
-  }
-}
-
-class MyDivider extends StatelessWidget {
-  const MyDivider({
-    Key key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(
-        top: 16,
-        bottom: 8,
-      ),
-      child: Divider(
-        height: 0,
-      ),
-    );
-  }
-}
+const Times = '''
+[
+    [
+        1,
+        2,
+        3,
+        4,
+        5
+    ],
+    [
+      0, 5, 
+      10, 15,
+      20, 25,
+      30, 35,
+      40, 45,
+      50, 55
+    ]
+]
+''';

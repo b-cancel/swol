@@ -23,6 +23,9 @@ dependencies:
   #TESTING
   random_string: ^1.1.0
 
+  #picker
+  flutter_picker: ^1.0.15
+
   #SCROLL TO TOP
   scroll_to_index: ^1.0.2
 
