@@ -36,7 +36,7 @@ class HeaderWithInfo extends StatelessWidget {
               );
             },
             icon: Icon(Icons.info),
-            color: Colors.blue,
+            color: Theme.of(context).accentColor,
           )
         ],
       ),

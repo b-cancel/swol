@@ -26,10 +26,11 @@ class _AddWorkoutState extends State<AddWorkout> {
   ValueNotifier<bool> namePresent = new ValueNotifier(false);
   ValueNotifier<String> url = new ValueNotifier("");
   String errorText;
-
   int dropdownIndex = defaultFunctionIndex;
   String dropdownValue = functions[defaultFunctionIndex];
   bool autoUpdateEnabled = true;
+  int minutes = 1;
+  int seconds = 45;
 
   @override
   void initState() {
@@ -66,7 +67,9 @@ class _AddWorkoutState extends State<AddWorkout> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: RaisedButton(
-              color: (namePresent.value) ? Colors.blue : Colors.grey,
+              color: (namePresent.value) 
+              ? Theme.of(context).accentColor 
+              : Colors.grey,
               onPressed: (){
                 if(namePresent.value){
                   //add workout to our list
@@ -79,7 +82,7 @@ class _AddWorkoutState extends State<AddWorkout> {
                     url: url.value,
                     //weight
                     //reps
-                    //wait
+                    wait: Duration(minutes: minutes, seconds: seconds),
                     //sets
                     autoUpdatePrediction: autoUpdateEnabled,
                   ));
@@ -98,7 +101,7 @@ class _AddWorkoutState extends State<AddWorkout> {
               child: Text(
                 "Save",
                 style: TextStyle(
-                  color: Colors.white,
+                  color: Colors.black,
                 ),
               ),
             ),
@@ -155,7 +158,7 @@ class _AddWorkoutState extends State<AddWorkout> {
                               onPressed: (){
                                 nameCtrl.text = "";
                               },
-                              color: Colors.grey, //namePresent.value) ? Colors.grey : Colors.transparent,
+                              color: Colors.grey, 
                               highlightColor: Colors.grey,
                               icon: Icon(
                                 Icons.close,
@@ -357,7 +360,7 @@ class _AddWorkoutState extends State<AddWorkout> {
                                 );
                               },
                               icon: Icon(Icons.info),
-                              color: Colors.blue,
+                              color: Theme.of(context).accentColor,
                             ),
                           ),
                         ),
@@ -372,7 +375,7 @@ class _AddWorkoutState extends State<AddWorkout> {
                   child: HeaderWithInfo(
                     title: "Form Reference Link",
                     popUp: MyInfoDialog(
-                      title: "form Reference Link",
+                      title: "Form Reference Link",
                       child: Container(
                         padding: EdgeInsets.only(
                           left: 32,
@@ -430,7 +433,7 @@ class _AddWorkoutState extends State<AddWorkout> {
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: <Widget>[
                             MaterialButton(
-                              color: Colors.blue,
+                              color: Theme.of(context).accentColor,
                               materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                               padding: EdgeInsets.all(0),
                               onPressed: (){
@@ -441,7 +444,7 @@ class _AddWorkoutState extends State<AddWorkout> {
                               child: Text(
                                 "Paste",
                                 style: TextStyle(
-                                  color: Colors.white,
+                                  color: Colors.black,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
@@ -467,7 +470,7 @@ class _AddWorkoutState extends State<AddWorkout> {
                                         child: Text(
                                           (url.value == "") ? 'Tap to paste the link' : url.value,
                                           style: TextStyle(
-                                            color: (url.value == "") ? Colors.grey : Colors.black,
+                                            color: (url.value == "") ? Colors.grey : Colors.white,
                                           ),
                                           overflow: TextOverflow.clip,
                                         ),
@@ -490,6 +493,91 @@ class _AddWorkoutState extends State<AddWorkout> {
                       ),
                     ),
                   ),
+                ),
+              ],
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.only(
+              top: 16,
+              left: 24,
+            ),
+            child: HeaderWithInfo(
+              title: "Break Between Sets",
+              popUp: MyInfoDialog(
+                title: "Set Break",
+                subtitle: "Not sure? Keep the default",
+                child: Container(
+                  padding: EdgeInsets.only(
+                    left: 32,
+                    right: 32,
+                    bottom: 16,
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      Container(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          "You need to give your muscles time to recover!"
+                        ),
+                      ),
+                      MyDivider(),
+                      Container(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          "Exactly how much rest depends on two things\n",
+                        ),
+                      ),
+                      Container(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          "1. How you specifically want to improve",
+                        ),
+                      ),
+                      Container(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          "2. And how much muscle this particular excercise uses",
+                        ),
+                      ),
+                      MyDivider(),
+                      Container(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          "Exercises that use MORE muscle will put require LONGER breaks\n",
+                        ),
+                      ),
+                      Container(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          "Exercises that use LESS muscle will put require SHORTER breaks",
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.only(
+              left: 24,
+              right: 24
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.max,
+              children: <Widget>[
+                Expanded(
+                  child: Center(child: Text("Minutes")),
+                ),
+                Container(
+                  //spacing of columns + width of dots
+                  width: (24 * 2) + 16.0,
+                ),
+                Expanded(
+                  child: Center(child: Text("Seconds")),
                 ),
               ],
             ),
@@ -530,10 +618,14 @@ class _AddWorkoutState extends State<AddWorkout> {
                 ),
               ),
             ],
-            height: 150,
+            height: 100,
+            selecteds: [minutes,secondOptions.indexOf(seconds)],
             onSelect: (Picker picker, int index, List<int> ints){
               //TODO: to string these 2 individually
               print(picker.getSelectedValues());
+              List selections = picker.getSelectedValues();
+              minutes = int.parse(selections[0]);
+              seconds = int.parse(selections[1]);
             },
             adapter: PickerDataAdapter<String>(
               pickerdata: new JsonDecoder().convert(Times),
@@ -545,39 +637,31 @@ class _AddWorkoutState extends State<AddWorkout> {
             //---still being messed
             textStyle: TextStyle(
               color: Theme.of(context).primaryTextTheme.title.color,
-              //: 36,
             ),
             selectedTextStyle: TextStyle(
               color: Theme.of(context).primaryTextTheme.title.color,
-              //: 36,
+              fontSize: 48,
             ),
-            textScaleFactor: 2,
-            itemExtent: 24,
-            
-            
-        ).makePicker()
+            //textScaleFactor: 2,
+            itemExtent: 48,
+          ).makePicker(),
         ],
       ),
     );
   }
 }
 
+const List<int> secondOptions = [
+   0, 5, 10, 15, 20, 25,
+   30, 35, 40, 45, 50, 55
+];
+
 const Times = '''
 [
+    [0, 1, 2, 3, 4, 5],
     [
-        1,
-        2,
-        3,
-        4,
-        5
-    ],
-    [
-      0, 5, 
-      10, 15,
-      20, 25,
-      30, 35,
-      40, 45,
-      50, 55
+      0, 5, 10, 15, 20, 25,
+      30, 35, 40, 45, 50, 55
     ]
 ]
 ''';
