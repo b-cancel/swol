@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-
-import 'package:liquid_progress_indicator/liquid_progress_indicator.dart';
+import 'package:flutter_picker/flutter_picker.dart';
 import 'package:swol/helpers/break.dart';
+import 'package:swol/helpers/timePicker.dart';
 
 class Break extends StatefulWidget {
   Break({
@@ -15,11 +15,14 @@ class Break extends StatefulWidget {
 }
 
 class _BreakState extends State<Break> with SingleTickerProviderStateMixin {
+  //primary vars
   ValueNotifier<Duration> fullDuration;
   DateTime timerStart;
-  //we start fill because we are getting rid of lactate
-  ValueNotifier<double> indicatorFill = new ValueNotifier(1);
 
+  //before changing fullDuration we let the picker change this
+  ValueNotifier<Duration> possibleFullDuration = new ValueNotifier(Duration.zero);
+
+  //init
   @override
   void initState() {
     //record the time the timer started
@@ -30,35 +33,6 @@ class _BreakState extends State<Break> with SingleTickerProviderStateMixin {
 
     //super init
     super.initState();
-
-    //start the "timer"
-    reload();
-  }
-
-  //NOTE: we only really care about seconds / 1,000 milliseconds
-  //sadly when doing async processes you can't exactly guarantee
-  //thing will reload exactly every 1,000 milliseconds
-  //so for the sake of simplicity we update every 100 milliseconds
-  reload()async{
-    Future.delayed(Duration(milliseconds: 1),(){
-      //possible update second
-      double tempIndicatorFill;
-      Duration timeSince = DateTime.now().difference(timerStart);
-      if(timeSince.inSeconds == 0) tempIndicatorFill = 1;
-      else if(timeSince >= fullDuration.value) tempIndicatorFill = 0;
-      else{
-        tempIndicatorFill = 1 - (timeSince.inSeconds/ fullDuration.value.inSeconds);
-      }
-
-      //indeed update things
-      if(indicatorFill.value != tempIndicatorFill){
-        indicatorFill.value = tempIndicatorFill;
-        setState(() {});
-      }
-      
-      //continue doing so every so often
-      reload();
-    });
   }
 
   @override
@@ -82,7 +56,61 @@ class _BreakState extends State<Break> with SingleTickerProviderStateMixin {
                   width: 2,
                 ),
                 onPressed: (){
-                  print("hi");
+                  possibleFullDuration.value = fullDuration.value;
+
+                  showDialog<void>(
+                    context: context,
+                    barrierDismissible: true,
+                    builder: (BuildContext context) {
+                      return Theme(
+                        data: ThemeData.light(),
+                        child: AlertDialog(
+                          title: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(
+                                "Change Break Time",
+                              ),
+                              Text(
+                                "Don't Worry! The Timer Won't Reset",
+                                style: TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 12,
+                                ),
+                              )
+                            ],
+                          ),
+                          content: Container(
+                            child: TimePicker(
+                              duration: possibleFullDuration,
+                              darkTheme: false,
+                            ),
+                          ),
+                          actions: <Widget>[
+                            FlatButton(
+                              onPressed: (){
+                                Navigator.pop(context);
+                              },
+                              child: Text("Cancel"),
+                            ),
+                            RaisedButton(
+                              onPressed: (){
+                                fullDuration.value = possibleFullDuration.value;
+                                Navigator.pop(context);
+                              },
+                              child: Text(
+                                "Change",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                      ); 
+                    },
+                  );
                 },
                 child: Text("Change Break Time"),
               ),
@@ -94,18 +122,11 @@ class _BreakState extends State<Break> with SingleTickerProviderStateMixin {
                   width: size,
                   padding: EdgeInsets.all(24),
                   child: AnimLiquidIndicator(
-                    indicatorFill: indicatorFill,
+                    fullDuration: fullDuration,
+                    timerStart: timerStart,
+                    //size of entire bubble = size container - padding for each size
+                    centerSize: size - (24 * 2),
                   ),
-                  
-                  
-                  /*LiquidCircularProgressIndicator(
-                    value: indicatorFill,
-                    backgroundColor: Colors.white, // Defaults to the current Theme's backgroundColor.
-                    borderColor: Colors.transparent,
-                    borderWidth: 0,
-                    direction: Axis.vertical, // The direction the liquid moves (Axis.vertical = bottom to top, Axis.horizontal = left to right). Defaults to Axis.vertical.
-                  ),
-                  */
                 ),
               ),
             ),

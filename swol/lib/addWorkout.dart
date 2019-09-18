@@ -4,9 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:swol/functions/helper.dart';
 import 'package:swol/helpers/addWorkout.dart';
+import 'package:swol/helpers/timePicker.dart';
 import 'package:swol/utils/data.dart';
 import 'package:swol/workout.dart';
 import 'package:flutter_picker/flutter_picker.dart';
+import 'package:swol/helpers/timePicker.dart';
 
 class AddWorkout extends StatefulWidget {
   const AddWorkout({
@@ -29,8 +31,8 @@ class _AddWorkoutState extends State<AddWorkout> {
   int dropdownIndex = defaultFunctionIndex;
   String dropdownValue = functions[defaultFunctionIndex];
   bool autoUpdateEnabled = true;
-  int minutes = 1;
-  int seconds = 45;
+  ValueNotifier<Duration> breakTime = new ValueNotifier(Duration(minutes: 1, seconds: 45));
+  //TODO: sets are not updating as they should be FIX
   TextEditingController setCtrl = new TextEditingController();
 
   @override
@@ -89,7 +91,7 @@ class _AddWorkoutState extends State<AddWorkout> {
                     //and the equations set them
                     //weight
                     //reps
-                    wait: Duration(minutes: minutes, seconds: seconds),
+                    wait: breakTime.value,
                     sets: setValue,
                     autoUpdatePrediction: autoUpdateEnabled,
                   ));
@@ -600,69 +602,9 @@ class _AddWorkoutState extends State<AddWorkout> {
               ],
             ),
           ),
-          Picker(
-            hideHeader: true,
-            looping: false,
-            backgroundColor: Theme.of(context).canvasColor,
-            containerColor: Theme.of(context).canvasColor,
-            delimiter: [
-              PickerDelimiter(
-                child: Center(
-                  child: Container(
-                    height: 80,
-                    child: Column(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Container(
-                          width: 16,
-                          height: 16,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Colors.white,
-                          ),
-                        ),
-                        Container(
-                          width: 16,
-                          height: 16,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ],
-                    )
-                  ),
-                ),
-              ),
-            ],
-            height: 100,
-            selecteds: [minutes,secondOptions.indexOf(seconds)],
-            onSelect: (Picker picker, int index, List<int> ints){
-              //TODO: to string these 2 individually
-              print(picker.getSelectedValues());
-              List selections = picker.getSelectedValues();
-              minutes = int.parse(selections[0]);
-              seconds = int.parse(selections[1]);
-            },
-            adapter: PickerDataAdapter<String>(
-              pickerdata: new JsonDecoder().convert(Times),
-              isArray: true,
-            ),
-            columnPadding: EdgeInsets.symmetric(
-              horizontal:24,
-            ),
-            //---still being messed
-            textStyle: TextStyle(
-              color: Theme.of(context).primaryTextTheme.title.color,
-            ),
-            selectedTextStyle: TextStyle(
-              color: Theme.of(context).primaryTextTheme.title.color,
-              fontSize: 48,
-            ),
-            //textScaleFactor: 2,
-            itemExtent: 48,
-          ).makePicker(),
+          TimePicker(
+            duration: breakTime,
+          ),
           //------------------------------------------------------------------
           Container(
             padding: EdgeInsets.only(
@@ -797,18 +739,3 @@ class _AddWorkoutState extends State<AddWorkout> {
     );
   }
 }
-
-const List<int> secondOptions = [
-   0, 5, 10, 15, 20, 25,
-   30, 35, 40, 45, 50, 55
-];
-
-const Times = '''
-[
-    [0, 1, 2, 3, 4, 5],
-    [
-      0, 5, 10, 15, 20, 25,
-      30, 35, 40, 45, 50, 55
-    ]
-]
-''';

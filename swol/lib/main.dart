@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
 import 'package:swol/addWorkout.dart';
@@ -67,19 +68,22 @@ class ExcerciseSelect extends StatelessWidget {
           Positioned(
             left: 0,
             bottom: 0,
-            child: FloatingActionButton(
-              onPressed: (){
-                Navigator.push(
-                  context, 
-                  PageTransition(
-                    type: PageTransitionType.downToUp, 
-                    child: Break(
-                      startDuration: Duration(seconds: 15),
-                    )
-                  ),
-                );
-              },
-              child: Icon(Icons.timer),
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: FloatingActionButton(
+                onPressed: (){
+                  Navigator.push(
+                    context, 
+                    PageTransition(
+                      type: PageTransitionType.downToUp, 
+                      child: Break(
+                        startDuration: Duration(minutes: 5, seconds: 30),
+                      )
+                    ),
+                  );
+                },
+                child: Icon(Icons.timer),
+              ),
             ),
           )
         ],
@@ -115,7 +119,7 @@ class ExcerciseList extends StatefulWidget {
   _ExcerciseListState createState() => _ExcerciseListState();
 }
 
-class _ExcerciseListState extends State<ExcerciseList> {
+class _ExcerciseListState extends State<ExcerciseList> with SingleTickerProviderStateMixin {
   final AsyncMemoizer _memoizer = AsyncMemoizer();
   bool forceFetch = false;
 
@@ -232,7 +236,22 @@ class _ExcerciseListState extends State<ExcerciseList> {
           return SliverFillRemaining(
             hasScrollBody: false,
             child: Center(
-              child: CircularProgressIndicator(),
+              child: /*
+              HeartbeatProgressIndicator(
+              child: Icon(Icons.home),
+            ),
+            */
+              
+              
+              SpinKitPumpingHeart( 
+                color: Colors.red,
+                size: 100.0,
+                controller: AnimationController(
+                  vsync: this, 
+                  //80 bpm / 60 seconds = 1.3 beat per second
+                  duration: const Duration(milliseconds: 1333),
+                ),
+              ),
             ),
           );
         }

@@ -23,6 +23,9 @@ class Workout{
     this.wait: const Duration(minutes: 1, seconds: 45),
     this.sets: 0,
     this.autoUpdatePrediction: true,
+    //TODO: perhaps add a maybeSaveWeight, maybeSaveWeight 
+    //to indicate that we may save that weight if the we continue to the next set after the break
+    //TODO: add a timeStamp to indicate when our break started so we can keep track of multiple timers
   });
 
   Workout.fromJson(Map<String,dynamic> map){
