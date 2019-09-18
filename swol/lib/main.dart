@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
 import 'package:swol/addWorkout.dart';
+import 'package:swol/tabs/break.dart';
 import 'package:swol/utils/data.dart';
 import 'package:swol/workout.dart';
 import 'package:async/async.dart';
@@ -43,33 +45,56 @@ class ExcerciseSelect extends StatelessWidget {
         preferredSize: Size.fromHeight(0.0),
         child: Container(),
       ),
-      body: CustomScrollView(
-        controller: autoScrollController,
-        slivers: [
-          SliverAppBar(
-            backgroundColor: Theme.of(context).primaryColorDark,
-            expandedHeight: expandHeight,
-            pinned: true,
-            flexibleSpace: FlexibleSpaceBar(
-              centerTitle: true,
-              title: Text("Workouts"),
+      body: Stack(
+        children: <Widget>[
+          CustomScrollView(
+            controller: autoScrollController,
+            slivers: [
+              SliverAppBar(
+                backgroundColor: Theme.of(context).primaryColorDark,
+                expandedHeight: expandHeight,
+                pinned: true,
+                flexibleSpace: FlexibleSpaceBar(
+                  centerTitle: true,
+                  title: Text("Excercises"),
+                ),
+              ),
+              ExcerciseList(
+                workoutsKey: workoutsKey,
+              ),
+            ],
+          ),
+          Positioned(
+            left: 0,
+            bottom: 0,
+            child: FloatingActionButton(
+              onPressed: (){
+                Navigator.push(
+                  context, 
+                  PageTransition(
+                    type: PageTransitionType.downToUp, 
+                    child: Break(
+                      startDuration: Duration(seconds: 15),
+                    )
+                  ),
+                );
+              },
+              child: Icon(Icons.timer),
             ),
-          ),
-          ExcerciseList(
-            workoutsKey: workoutsKey,
-          ),
+          )
         ],
       ),
       floatingActionButton: FloatingActionButton.extended(
+        heroTag: 'addNew',
         onPressed: (){
-          return showDialog<void>(
-            context: context,
-            barrierDismissible: true,
-            builder: (BuildContext context) {
-              return new AddWorkout(
+          Navigator.push(
+            context, 
+            PageTransition(
+              type: PageTransitionType.rightToLeft, 
+              child: AddWorkout(
                 workoutsKey: workoutsKey,
-              );
-            },
+              ),
+            ),
           );
         },
         icon: Icon(Icons.add),

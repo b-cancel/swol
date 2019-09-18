@@ -20,6 +20,9 @@ dependencies:
   flutter:
     sdk: flutter
 
+  #Loading
+  liquid_progress_indicator: ^0.3.2
+
   #TESTING
   random_string: ^1.1.0
 
