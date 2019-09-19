@@ -43,12 +43,12 @@ the internal parameters are updated not on setting the duration but on starting 
 
 class AnimLiquidIndicator extends StatefulWidget {
   AnimLiquidIndicator({
-    @required this.fullDuration,
+    @required this.durationFull,
     @required this.timerStart,
     @required this.centerSize,
   });
 
-  final ValueNotifier<Duration> fullDuration;
+  final ValueNotifier<Duration> durationFull;
   final DateTime timerStart;
   final double centerSize;
 
@@ -57,12 +57,11 @@ class AnimLiquidIndicator extends StatefulWidget {
 }
 
 class _AnimLiquidIndicatorState extends State<AnimLiquidIndicator> with SingleTickerProviderStateMixin {
+  List<String> durationFullStrings;
+
   //controllers
   AnimationController countDownController;
   //AnimationController countUpController;
-
-  //keep track of both of these values so we can use them to update the animation if necesary
-  Duration timerDisplay;
 
   //init
   @override
@@ -73,7 +72,7 @@ class _AnimLiquidIndicatorState extends State<AnimLiquidIndicator> with SingleTi
     //create animation controller
     countDownController = AnimationController(
       vsync: this,
-      duration: widget.fullDuration.value,
+      duration: widget.durationFull.value,
     );
 
     /*
@@ -115,13 +114,19 @@ class _AnimLiquidIndicatorState extends State<AnimLiquidIndicator> with SingleTi
     //start the countdown
     countDownController.forward();
 
+    //init
+    durationFullStrings = durationToCustomDisplay(widget.durationFull.value);
+
     //react to update of full duration
-    widget.fullDuration.addListener((){
+    widget.durationFull.addListener((){
+      //update string
+      durationFullStrings = durationToCustomDisplay(widget.durationFull.value);
+
       //grab how much time has passed
       Duration durationSinceStart = DateTime.now().difference(widget.timerStart);
 
       //check how much time is left (may be negative)
-      Duration durationUntilEnd = widget.fullDuration.value - durationSinceStart;
+      Duration durationUntilEnd = widget.durationFull.value - durationSinceStart;
 
       //determine if we need to modify the animation or just leave it as is
       if(durationUntilEnd > Duration.zero){ //we still need to count down
@@ -131,10 +136,10 @@ class _AnimLiquidIndicatorState extends State<AnimLiquidIndicator> with SingleTi
         //we only have X ammount left 
         //but for the output 0->1 value to be correct
         //we need to instead shift the value
-        countDownController.duration = widget.fullDuration.value;
+        countDownController.duration = widget.durationFull.value;
 
         //update new value
-        double newValue = durationSinceStart.inMicroseconds / widget.fullDuration.value.inMicroseconds;
+        double newValue = durationSinceStart.inMicroseconds / widget.durationFull.value.inMicroseconds;
         countDownController.value = newValue;
         
         //start the animation mid way
@@ -163,31 +168,15 @@ class _AnimLiquidIndicatorState extends State<AnimLiquidIndicator> with SingleTi
   @override
   Widget build(BuildContext context) {
     //calc time left
-    Duration durationSinceStart = DateTime.now().difference(widget.timerStart);
-    timerDisplay = widget.fullDuration.value - durationSinceStart;
+    Duration durationPassed = DateTime.now().difference(widget.timerStart);
+    Duration durationLeft = widget.durationFull.value - durationPassed;
 
-    //vars to be set
-    String only1stDigit = "0";
-    String always2Digits = "00";
+    //calc strings
+    List<String> durationPassedStrings = durationToCustomDisplay(durationPassed);
+    List<String> durationLeftStrings = durationToCustomDisplay(durationLeft);
 
-    if(timerDisplay > Duration.zero){
-      //seperate minutes
-      int minutes = timerDisplay.inMinutes;
-      only1stDigit = minutes.toString();
-      if(only1stDigit.length > 1){
-        only1stDigit = only1stDigit.substring(0,1);
-      }
-
-      //remove minutes so only seconds left
-      timerDisplay = timerDisplay - Duration(minutes: minutes);
-
-      //seperate seconds
-      int seconds = timerDisplay.inSeconds;
-      always2Digits = seconds.toString();
-      if(always2Digits.length < 2){
-        always2Digits = "0" + always2Digits;
-      }
-    }
+    //calc size
+    double textContainerSize = widget.centerSize - (24 * 2);
 
     //build return timer
     return LiquidCircularProgressIndicator(
@@ -200,18 +189,83 @@ class _AnimLiquidIndicatorState extends State<AnimLiquidIndicator> with SingleTi
         width: widget.centerSize,
         height: widget.centerSize,
         padding: EdgeInsets.all(24),
-        child: FittedBox(
-          fit: BoxFit.contain,
-          child: Text(
-            only1stDigit + " : " + always2Digits,
-            style: TextStyle(
-              color: Theme.of(context).primaryColor,
-              fontWeight: FontWeight.bold,
+        child: Container(
+          child: FittedBox(
+            fit: BoxFit.contain,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Container(
+                  width: textContainerSize,
+                  child: FittedBox(
+                    fit: BoxFit.contain,
+                    child: Text(
+                      durationLeftStrings[0] + " : " + durationLeftStrings[1],
+                      style: TextStyle(
+                        color: Theme.of(context).primaryColor,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+                Container(
+                  width: textContainerSize,
+                  padding: EdgeInsets.symmetric(
+                    horizontal: (textContainerSize / 2) / 2,
+                  ),
+                  //NOTE: we want the text here to be HALF the size
+                  //of the text above it
+                  child: Container(
+                    child: FittedBox(
+                      fit: BoxFit.contain,
+                      child: DefaultTextStyle(
+                        style: TextStyle(
+                          color: Theme.of(context).primaryColor,
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            Text(durationFullStrings[0] + " : " + durationFullStrings[1]),
+                            Text(" | "),
+                            Text(durationPassedStrings[0] + " : " + durationPassedStrings[1]),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         ),
       ),
     );
+  }
+
+  List<String> durationToCustomDisplay(Duration duration){
+    String only1stDigit = "0";
+    String always2Digits = "00";
+
+    if(duration > Duration.zero){
+      //seperate minutes
+      int minutes = duration.inMinutes;
+      only1stDigit = minutes.toString();
+      if(only1stDigit.length > 1){
+        only1stDigit = only1stDigit.substring(0,1);
+      }
+
+      //remove minutes so only seconds left
+      duration = duration - Duration(minutes: minutes);
+
+      //seperate seconds
+      int seconds = duration.inSeconds;
+      always2Digits = seconds.toString();
+      if(always2Digits.length < 2){
+        always2Digits = "0" + always2Digits;
+      }
+    }
+
+    return [only1stDigit, always2Digits];
   }
 }
 

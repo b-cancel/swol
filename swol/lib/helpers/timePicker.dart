@@ -22,10 +22,18 @@ class TimePicker extends StatelessWidget {
   TimePicker({
     @required this.duration,
     this.darkTheme: true,
+    this.numberSize: 48,
+    this.height: 100,
+    this.colenSize: 16,
+    this.colenSpacing: 16,
   });
 
   final ValueNotifier<Duration> duration;
   final bool darkTheme;
+  final double numberSize;
+  final double height;
+  final double colenSize;
+  final double colenSpacing;
   
   @override
   Widget build(BuildContext context) {
@@ -49,22 +57,25 @@ class TimePicker extends StatelessWidget {
         PickerDelimiter(
           child: Center(
             child: Container(
-              height: 80,
+              padding: EdgeInsets.symmetric(
+                horizontal: colenSpacing,
+              ),
+              height: numberSize,
               child: Column(
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Container(
-                    width: 16,
-                    height: 16,
+                    width: colenSize,
+                    height: colenSize,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       color: delimeterColor,
                     ),
                   ),
                   Container(
-                    width: 16,
-                    height: 16,
+                    width: colenSize,
+                    height: colenSize,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       color: delimeterColor,
@@ -76,7 +87,7 @@ class TimePicker extends StatelessWidget {
           ),
         ),
       ],
-      height: 100,
+      height: height,
       selecteds: [minutes, secondOptions.indexOf(seconds)],
       onSelect: (Picker picker, int index, List<int> ints){
         List selections = picker.getSelectedValues();
@@ -91,19 +102,15 @@ class TimePicker extends StatelessWidget {
         pickerdata: new JsonDecoder().convert(Times),
         isArray: true,
       ),
-      columnPadding: EdgeInsets.symmetric(
-        horizontal:24,
-      ),
       //---still being messed
       textStyle: TextStyle(
         color: textColor,
       ),
       selectedTextStyle: TextStyle(
         color: textColor,
-        fontSize: 48,
+        fontSize: numberSize,
       ),
-      //textScaleFactor: 2,
-      itemExtent: 48,
+      itemExtent: numberSize,
     ).makePicker();
   }
 }

@@ -122,7 +122,7 @@ class _BreakState extends State<Break> with SingleTickerProviderStateMixin {
                   width: size,
                   padding: EdgeInsets.all(24),
                   child: AnimLiquidIndicator(
-                    fullDuration: fullDuration,
+                    durationFull: fullDuration,
                     timerStart: timerStart,
                     //size of entire bubble = size container - padding for each size
                     centerSize: size - (24 * 2),

@@ -182,7 +182,7 @@ class _ExcerciseListState extends State<ExcerciseList> with SingleTickerProvider
           print("auto: " + workout.autoUpdatePrediction.toString());
           print("url: " + workout.url.toString());
           print("wait: " + workout.wait.toString());
-          print("reps: " + workout.reps.toString());
+          print("sets: " + workout.sets.toString());
         },
         title: Text(workout.name),
         subtitle: subtitle,
