@@ -1,46 +1,72 @@
 import 'dart:convert';
 
-class Workout{
+class Excercise{
+  //basic
   String name;
-  int functionID;
-  DateTime timeStamp;
   String url;
-  int weight;
-  int reps;
-  Duration wait;
-  int sets;
+  String note;
+  //manual update
+  DateTime lastTimeStamp;
+  Duration lastBreak;
+  int lastWeight;
+  int lastReps;
+  //updates on its own or manually
+  int predictionID;
   bool autoUpdatePrediction;
+  int setTarget;
+  bool autoUpdateSetTarget;
+  //for during workout
+  DateTime timerStartTime;
+  int tempWeight;
+  int tempReps;
+  int tempSets;
 
-  Workout({
+  //build
+  Excercise({
+    //basic data
     this.name,
-    //oConner is right in the middle of them all
-    //excluding Almazan
-    this.functionID: 4,
-    this.timeStamp,
     this.url: "",
-    this.weight: 0,
-    this.reps: 0,
-    this.wait: const Duration(minutes: 1, seconds: 45),
-    this.sets: 0,
-    this.autoUpdatePrediction: true,
-    //TODO: perhaps add a maybeSaveWeight, maybeSaveWeight 
-    //to indicate that we may save that weight if the we continue to the next set after the break
-    //TODO: add a timeStamp to indicate when our break started so we can keep track of multiple timers
+    this.note: "",
+    //manual update
+    this.lastTimeStamp,
+    this.lastBreak: const Duration(minutes: 1, seconds: 45), //balance between INC mass and strength
+    this.lastWeight: 0,
+    this.lastReps: 0,
+    //updates on its own or manually
+    this.predictionID: 4, //for slightly above average joe
+    this.autoUpdatePrediction: true, //let us help
+    this.setTarget: 3, //good staart point
+    this.autoUpdateSetTarget : true, //let us help
+    //for during workout
+    this.timerStartTime,
+    this.tempWeight,
+    this.tempReps,
+    this.tempSets,
   });
 
-  Workout.fromJson(Map<String,dynamic> map){
+  Excercise.fromJson(Map<String,dynamic> map){
+    //basic data
     name = map["name"];
-    functionID = map["functionID"];
-    timeStamp = map["timeStamp"];
     url = map["url"];
-    weight = map["weight"];
-    reps = map["reps"];
-    wait = map["wait"];
-    sets = map["sets"];
+    note = map["note"];
+    //manual update
+    lastTimeStamp = map["lastTimeStamp"];
+    lastBreak = map["lastBreak"];
+    lastWeight = map["lastWeight"];
+    lastReps = map["lastReps"];
+    //updates on its own or manually
+    predictionID = map["predictionID"];
     autoUpdatePrediction = map["autoUpdatePrediction"];
+    setTarget = map["setTarget"];
+    autoUpdateSetTarget = map["autoUpdateSetTarget"];
+    //for during workout
+    timerStartTime = map["timerStartTime"];
+    tempWeight = map["tempWeight"];
+    tempReps = map["tempReps"];
+    tempSets = map["tempSets"];
   }
 
-  String toJson(Workout w){
+  String toJson(Excercise w){
     return json.encode(w);
   }
 }

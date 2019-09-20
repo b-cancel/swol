@@ -20,6 +20,9 @@ dependencies:
   flutter:
     sdk: flutter
 
+  #STICKY HEADERS 
+  flutter_sticky_header: ^0.4.0 
+
   #INDICATOR
   flutter_spinkit: ^4.0.0 #not used
   loading_indicator: ^1.1.0 #not used

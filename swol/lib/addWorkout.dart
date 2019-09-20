@@ -11,11 +11,8 @@ import 'package:swol/workout.dart';
 
 class AddWorkout extends StatefulWidget {
   const AddWorkout({
-    @required this.workoutsKey,
     Key key,
   }) : super(key: key);
-
-  final GlobalKey<AnimatedListState> workoutsKey;
 
   @override
   _AddWorkoutState createState() => _AddWorkoutState();
@@ -87,25 +84,22 @@ class _AddWorkoutState extends State<AddWorkout> {
               onPressed: (){
                 if(namePresent.value){
                   //add workout to our list
-                  addWorkout(Workout(
+                  addExcercise(Excercise(
                     name: nameCtrl.text,
-                    functionID: dropdownIndex,
+                    predictionID: dropdownIndex,
                     //we do this so that we still get the new keyword
                     //but the newer workouts still pop up on top
-                    timeStamp: DateTime.now().subtract(Duration(days: 365 * 100)),
+                    lastTimeStamp: DateTime.now().subtract(Duration(days: 365 * 100)),
                     url: url.value,
                     //NOTE: we dont add these because the whole point of the app is that you don't set these
                     //Your bodies limits
                     //and the equations set them
                     //weight
                     //reps
-                    wait: breakTime.value,
-                    sets: setTarget.value,
+                    lastBreak: breakTime.value,
+                    setTarget: setTarget.value,
                     autoUpdatePrediction: autoUpdateEnabled,
                   ));
-
-                  //insert the item into the list
-                  widget.workoutsKey.currentState.insertItem(0);
 
                   //exit pop up
                   Navigator.pop(context);
