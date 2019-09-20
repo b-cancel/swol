@@ -3,33 +3,75 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class PersistentHeaderDelegate extends SliverPersistentHeaderDelegate {
+  double semiClosedHeight;
   double closedHeight;
   double openHeight;
-  double fullWidth;
-  double factor;
+  int workoutCount;
 
   PersistentHeaderDelegate({
+    @required this.semiClosedHeight,
     @required this.closedHeight,
     @required this.openHeight,
+    this.workoutCount: 0,
   });
 
   @override
   Widget build(BuildContext context, double shrinkOffset, bool overlapsContent){
-    return Container(
-      height: openHeight,
-      color: Theme.of(context).primaryColorDark,
-      child: FractionallySizedBox(
-        widthFactor: 0.65,
-        child: FittedBox(
-          fit: BoxFit.contain,
-          child: Padding(
-            padding: EdgeInsets.symmetric(
-              vertical: 2,
-            ),
-            child: Text(
-              "Exercises",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
+    String subtitle = "";
+    if(workoutCount != null){
+      if(workoutCount == 0){
+        subtitle = "0";
+      }
+      else{
+        subtitle = workoutCount.toString();
+      }
+      subtitle = subtitle + " Workouts";
+    }
+
+    //-----Used to clip the Excercises Title
+    return Card(
+      clipBehavior: Clip.hardEdge,
+      margin: EdgeInsets.all(0),
+      //-----The Container that contracts and expands
+      child: Container(
+        height: openHeight,
+        color: Theme.of(context).primaryColorDark,
+        //-----What sets the max width of our text
+        child: FractionallySizedBox(
+          widthFactor: 0.65,
+          //-----What lets the text overflow
+          child: OverflowBox(
+            minHeight: semiClosedHeight,
+            //NOTE: if you set max height our text won't shrink
+            //-----What grows the text as large as possible given the space
+            child: FittedBox(
+              fit: BoxFit.contain,
+              //-----A Little PaddingSpecifically for when its close to closed
+              child: Container(
+                padding: EdgeInsets.symmetric(
+                  vertical: 2,
+                ),
+                //-----Our Text
+                child: RichText(
+                  textAlign: TextAlign.center,
+                  text: TextSpan(
+                    children: [
+                      TextSpan(
+                        text: "Exercises\n",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 48,
+                        ),
+                      ),
+                      TextSpan(
+                        text: subtitle,
+                        style: TextStyle(
+                          fontSize: 16,
+                        )
+                      ),
+                    ],
+                  ),
+                ),
               ),
             ),
           ),
@@ -168,6 +210,11 @@ List<String> indexToChar = [
   "y","m","w","d","h","m","s","milli","micro"
 ];
 
+List<String> indexToString = [
+  "year", "month", "week", "day", "hour", 
+  "minute", "second", "millisecond", "microsecond",
+];
+
 String formatDuration(Duration timeSince, {
   bool showYears: true, //365 days
   bool showMonths: true, //30 days
@@ -179,6 +226,8 @@ String formatDuration(Duration timeSince, {
   bool showSeconds: true, //1000 milliseconds
   bool showMilliseconds: false,
   bool showMicroseconds: false,
+  //long or short?
+  bool short: true,
 }){
   //setup vars
   int years = 0;
@@ -252,11 +301,30 @@ String formatDuration(Duration timeSince, {
   
   //loop through and generate
   for(int i = 0; i < times.length; i++){
-    if(times[i] != 0){
-      output += (times[i].toString() + indexToChar[i] + " ");
+    int value = times[i];
+    if(value != 0){
+      String description = (short) ? indexToChar[i] : indexToString[i];
+      if(short) description = indexToChar[i];
+      else{
+        description = indexToString[i];
+        description = (value > 1) ? description + "s" : description;
+        description = " " + description;
+      }
+
+      output += (times[i].toString() + description + " ");
     }
   }
 
   //ret
   return output;
 }
+
+Map<int,String> weekDayToString = {
+  1: "Monday",
+  2: "Tuesday",
+  3: "Wednesday",
+  4: "Thursday",
+  5: "Friday",
+  6: "Saturday",
+  7: "Sunday",
+};

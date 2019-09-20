@@ -103,15 +103,7 @@ class _ExcerciseSelectState extends State<ExcerciseSelect> with SingleTickerProv
   Widget build(BuildContext context) {
     //setup vars
     double expandHeight = MediaQuery.of(context).size.height / 3;
-    expandHeight = (expandHeight < 40) ? 40 : expandHeight; 
-    Widget persistentHeader = SliverPersistentHeader(
-      pinned: true,
-      floating: true,
-      delegate: PersistentHeaderDelegate(
-        openHeight: MediaQuery.of(context).size.height / 3,
-        closedHeight: 40,
-      ),
-    );
+    expandHeight = (expandHeight < 40) ? 40 : expandHeight;
 
     //build
     return Scaffold(
@@ -132,12 +124,11 @@ class _ExcerciseSelectState extends State<ExcerciseSelect> with SingleTickerProv
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if(snapshot.connectionState == ConnectionState.done){
             List<Widget> sliverList = new List<Widget>();
-            sliverList.add(persistentHeader);
+            List<List<Excercise>> listOfGroupOfExcercises = new List<List<Excercise>>();
 
             //try to see if we have workouts to add
             if(excercises.value.length > 0){
               //seperate excercise into their groups bassed on the max distance
-              List<List<Excercise>> listOfGroupOfExcercises = new List<List<Excercise>>();
               DateTime lastDateTime = DateTime(1500);
               for(int i = 0; i < excercises.value.length; i++){
                 //easy to access vars
@@ -159,41 +150,45 @@ class _ExcerciseSelectState extends State<ExcerciseSelect> with SingleTickerProv
                 lastDateTime = thisDateTime;
               }
 
-              //check
-              /*
-              for(int i = 0; i < listOfGroupOfExcercises.length; i++){
-                List<Excercise> excerciseGroup = listOfGroupOfExcercises[i];
-                print("group " + i.toString() + " has " + excerciseGroup.length.toString() + " excercises");
-                for(int j = 0; j < excerciseGroup.length; j++){
-                  Duration timeSince = DateTime.now().difference(excerciseGroup[j].lastTimeStamp);
-                  print(formatDuration(timeSince));
-                }
-              }
-              */
+              print("length 1: " + listOfGroupOfExcercises.length.toString());
 
+              //fill sliver list
               for(int i = 0; i < listOfGroupOfExcercises.length; i++){
                 //create header text
                 List<Excercise> thisGroup = listOfGroupOfExcercises[i];
                 DateTime oldestDT = thisGroup[0].lastTimeStamp;
                 Duration timeSince = DateTime.now().difference(oldestDT);
 
-                //highlight new workout section
-                bool newWorkout = (timeSince > Duration(days: 365 * 100));
+                //highlight first workout section
+                //NOTE: may be NEW, or IN PROGRESS, or simple NEXT
+                bool isFirstSection = (i == 0);
                 Color topColor;
-                String title;
                 Color textColor;
                 FontWeight fontWeight;
-                if(newWorkout){
+                if(isFirstSection){
                   topColor = Theme.of(context).accentColor;
-                  title = "New Workout";
                   textColor = Theme.of(context).primaryColor;
                   fontWeight = FontWeight.bold;
                 }
                 else{
                   topColor = Theme.of(context).primaryColor;
-                  title = ("Workout " + formatDuration(timeSince) + " ago");
                   textColor = Colors.white;
                   fontWeight = FontWeight.normal;
+                }
+
+                //change title if new or in progress
+                //TODO: handle in progress
+                String title = formatDuration(
+                  timeSince,
+                  showMinutes: false,
+                  showSeconds: false,
+                  showMilliseconds: false,
+                  showMicroseconds: false,
+                  short: false,
+                );
+                String subtitle = "on a " + weekDayToString[oldestDT.weekday];
+                if(timeSince > Duration(days: 365 * 100)){
+                  title = "New Workout";
                 }
 
                 //add this section to the list of slivers
@@ -202,21 +197,29 @@ class _ExcerciseSelectState extends State<ExcerciseSelect> with SingleTickerProv
                     header: Container(
                       color: topColor,
                       padding: new EdgeInsets.only(
-                        left: 24,
-                        right: 24,
+                        left: 16,
+                        right: 16,
                         top: 16,
                         bottom: 8,
                       ),
                       alignment: Alignment.bottomLeft,
-                      child: Container(
-                        alignment: Alignment.centerLeft,
-                        child: new Text(
-                          title,
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: textColor,
-                            fontWeight: fontWeight,
-                          ),
+                      child: DefaultTextStyle(
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: textColor,
+                          fontWeight: fontWeight,
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            new Text(
+                              title,
+                            ),
+                            new Text(
+                              subtitle,
+                            )
+                          ],
                         ),
                       ),
                     ),
@@ -276,7 +279,9 @@ class _ExcerciseSelectState extends State<ExcerciseSelect> with SingleTickerProv
                     alignment: Alignment.centerLeft,
                     padding: EdgeInsets.only(left: 16),
                     child: Text(
-                      excercises.value.length.toString() + " Workouts",
+                      "", //BLANK: the add new buttons fills the space now
+                      //listOfGroupOfExcercises.length.toString() + " Workouts",
+                      //excercises.value.length.toString() + " Excercises",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
@@ -309,16 +314,34 @@ class _ExcerciseSelectState extends State<ExcerciseSelect> with SingleTickerProv
               );
             }
 
+            print("length 2: " + listOfGroupOfExcercises.length.toString());
+
+            //add header
+            List<Widget> finalWidgetList = new List<Widget>();
+            finalWidgetList.add(
+              SliverPersistentHeader(
+                pinned: false,
+                floating: false,
+                delegate: PersistentHeaderDelegate(
+                  semiClosedHeight: 60,
+                  openHeight: MediaQuery.of(context).size.height / 3,
+                  closedHeight: 0,
+                  workoutCount: listOfGroupOfExcercises.length,
+                ),
+              ),
+            );
+
+            finalWidgetList.addAll(sliverList);
+
             //return
             return Stack(
               children: <Widget>[
                 CustomScrollView(
                   controller: autoScrollController,
-                  slivers: sliverList,
+                  slivers: finalWidgetList,
                 ),
                 //TODO: remove this once timer functionality is all handled
                 Positioned(
-                  left: 0,
                   right: 0,
                   bottom: 0,
                   child: Padding(
@@ -335,13 +358,13 @@ class _ExcerciseSelectState extends State<ExcerciseSelect> with SingleTickerProv
                           ),
                         );
                       },
-                      child: Icon(Icons.timer),
+                      child: Icon(Icons.search),
                     ),
                   ),
                 ),
                 //Add New Excercise Button
                 Positioned(
-                  right: 0,
+                  left: 0,
                   bottom: 0,
                   child: Padding(
                     padding: const EdgeInsets.all(16.0),
@@ -368,7 +391,15 @@ class _ExcerciseSelectState extends State<ExcerciseSelect> with SingleTickerProv
             return CustomScrollView(
               controller: autoScrollController,
               slivers: [
-                persistentHeader,
+                SliverPersistentHeader(
+                  pinned: false,
+                  floating: false,
+                  delegate: PersistentHeaderDelegate(
+                    semiClosedHeight: 40,
+                    openHeight: MediaQuery.of(context).size.height / 3,
+                    closedHeight: 0,
+                  ),
+                ),
                 SliverFillRemaining(
                   hasScrollBody: false,
                   child: Center(
