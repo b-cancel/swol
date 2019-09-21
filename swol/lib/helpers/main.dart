@@ -38,6 +38,7 @@ class PersistentHeaderDelegate extends SliverPersistentHeaderDelegate {
           //-----What lets the text overflow
           child: OverflowBox(
             minHeight: semiClosedHeight,
+            maxHeight: double.infinity,
             //NOTE: if you set max height our text won't shrink
             //-----What grows the text as large as possible given the space
             child: FittedBox(

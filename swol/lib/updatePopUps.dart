@@ -65,7 +65,7 @@ maybeAreYouSurePopUp(
     }
     else seconds = 0;
     seconds += (5 * modResult);
-    
+
     //create object
     Duration newTimerRuntime = Duration(
       minutes: minutes,
@@ -117,14 +117,17 @@ maybeAreYouSurePopUp(
             title: Text("Skip Recovery Period?"),
             content: Column(
               mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(
-                  "If you decided to shorten your recovery period\n"
-                  + "You can update your recovery period below"
+                  "If you want to shorten your recovery\n"
+                  + "You can update it below"
                 ),
                 Padding(
                   padding: EdgeInsets.only(
-                    bottom: 16,
+                    top: 8,
+                    bottom: 24,
                   ),
                   child: OutlineButton(
                     onPressed: (){
