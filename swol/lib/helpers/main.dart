@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:swol/utils/theme.dart';
 
 class PersistentHeaderDelegate extends SliverPersistentHeaderDelegate {
   double semiClosedHeight;
@@ -18,13 +19,8 @@ class PersistentHeaderDelegate extends SliverPersistentHeaderDelegate {
   @override
   Widget build(BuildContext context, double shrinkOffset, bool overlapsContent){
     String subtitle = "";
-    if(workoutCount != null){
-      if(workoutCount == 0){
-        subtitle = "0";
-      }
-      else{
-        subtitle = workoutCount.toString();
-      }
+    if(workoutCount != null && workoutCount > 0){
+      subtitle = workoutCount.toString();
       subtitle = subtitle + " Workouts";
     }
 
@@ -112,7 +108,7 @@ class SWOL extends StatelessWidget {
                 child: Text(
                   "S W O L",
                   style: TextStyle(
-                    color: Theme.of(context).accentColor,
+                    color: ourDark.accentColor,
                   ),
                 ),
               ),

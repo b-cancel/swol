@@ -1,30 +1,79 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:provider/provider.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
 import 'package:swol/addWorkout.dart';
 import 'package:swol/helpers/main.dart';
 import 'package:swol/tabs/break.dart';
 import 'package:swol/utils/data.dart';
+import 'package:swol/utils/theme.dart';
 import 'package:swol/workout.dart';
 import 'package:async/async.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
+  final AsyncMemoizer _memoizer = AsyncMemoizer();
+
+  fetchData() {
+    return this._memoizer.runOnce(() async {
+      return await SharedPreferences.getInstance();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     //its specifically designed for portrait mode
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
-    ]);
+    ]);    
 
     //build main
+    return  new FutureBuilder(
+      future: fetchData(),
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        if(snapshot.connectionState == ConnectionState.done){
+          //grab and process system prefs
+          SharedPreferences prefs = snapshot.data;
+          dynamic isDark = prefs.getBool("darkMode");
+          if(isDark == null){
+            prefs.setBool("darkMode", false);
+            isDark = false;
+          }
+
+          //return app
+          return ChangeNotifierProvider<ThemeChanger>(
+            builder: (_) => ThemeChanger(
+              (isDark) ? ourDark : ourLight,
+            ), 
+            child: StatelessLink(),
+          );
+        }
+        else{ //to load just show the logo a bit longer
+          return Container(
+            color: Colors.black,
+            child: Image.asset(
+              "assets/splash/splash.png",
+            ),
+          );
+        }
+      }
+    );
+  }
+}
+
+//-----Statless Link Required Between Entry Point And App
+class StatelessLink extends StatelessWidget{
+  @override
+  Widget build(BuildContext context) {
+    final theme = Provider.of<ThemeChanger>(context);
     return MaterialApp(
       title: 'SWOL',
-      theme: ThemeData.dark(),
+      theme: theme.getTheme(),
       home: ExcerciseSelect(),
     );
   }
@@ -36,7 +85,11 @@ class ExcerciseSelect extends StatefulWidget {
 }
 
 class _ExcerciseSelectState extends State<ExcerciseSelect> with SingleTickerProviderStateMixin{
-  Duration maxDistanceBetweenExcercises = Duration(hours: 1);
+  //NOTE: If you do one workout a day: 
+  //there should be absolutely no reason that your excercises are this spread out
+  //NOTE: If you do multiple workouts a day: 
+  //there should be absolutely no reason that you only work 1.5 hours between your two workouts
+  Duration maxDistanceBetweenExcercises = Duration(hours: 1, minutes: 30);
   final AutoScrollController autoScrollController = new AutoScrollController();
   final AsyncMemoizer _memoizer = AsyncMemoizer();
 
@@ -113,7 +166,7 @@ class _ExcerciseSelectState extends State<ExcerciseSelect> with SingleTickerProv
         actions: <Widget>[
           IconButton(
             onPressed: (){
-              //TODO: how long until a excercise is considered part of a different workout
+              showThemeSwitcher(context);
             },
             icon: Icon(Icons.settings),
           )
