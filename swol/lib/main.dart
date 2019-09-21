@@ -4,6 +4,8 @@ import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
 import 'package:swol/addWorkout.dart';
+import 'package:swol/functions/1RM&R=W.dart';
+import 'package:swol/functions/W&R=1RM.dart';
 import 'package:swol/helpers/main.dart';
 import 'package:swol/tabs/break.dart';
 import 'package:swol/updatePopUps.dart';
@@ -104,6 +106,7 @@ class _ExcerciseSelectState extends State<ExcerciseSelect> with SingleTickerProv
   buildExcerciseTile(
     BuildContext context, 
     Excercise newExcercise,
+    int index,
   ){
     //calculations
     Duration timeSince = DateTime.now().difference(newExcercise.lastTimeStamp);
@@ -141,7 +144,8 @@ class _ExcerciseSelectState extends State<ExcerciseSelect> with SingleTickerProv
     //build our widget given that search term
     return ListTile(
       onTap: (){
-        print("name: " +  newExcercise.name.toString());
+        print("name: " +  newExcercise.name.toString() + " => " + index.toString());
+        /*
         print("note: " + newExcercise.note.toString());
         print("url: " + newExcercise.url.toString());
         //-----
@@ -152,13 +156,118 @@ class _ExcerciseSelectState extends State<ExcerciseSelect> with SingleTickerProv
         print("auto: " + newExcercise.autoUpdatePrediction.toString());
         print("set target: " + newExcercise.setTarget.toString());
         print("auto: " + newExcercise.autoUpdateSetTarget.toString());
+        */
 
-        //TODO: remove tests
-        Duration timerRuntime = DateTime.now().difference(newExcercise.timerStartTime);
-        bool timerComplete = (timerRuntime > newExcercise.lastBreak);
-        maybeAreYouSure(){
-          
+        //test all cases
+        bool timerComplete;
+        bool functionsMatch;
+        bool setsMatch;
+        if(index == 0){
+          timerComplete = false;
+          functionsMatch = false;
+          setsMatch = false;
         }
+        else if(index == 1){
+          timerComplete = false;
+          functionsMatch = false;
+          setsMatch = true; //t
+        }
+        else if(index == 2){
+          timerComplete = false;
+          functionsMatch = true; //t
+          setsMatch = false;
+        }
+        else if(index == 3){
+          timerComplete = false; //f
+          functionsMatch = true;
+          setsMatch = true;
+        }
+        else if(index == 4){
+          timerComplete = true; //t
+          functionsMatch = false;
+          setsMatch = false;
+        }
+        else if(index == 5){
+          timerComplete = true;
+          functionsMatch = false; //f
+          setsMatch = true;
+        }
+        else if(index == 6){
+          timerComplete = true;
+          functionsMatch = true;
+          setsMatch = false; //f
+        }
+        else{
+          timerComplete = true;
+          functionsMatch = true;
+          setsMatch = true;
+        }
+
+        //create code given the condition
+        if(timerComplete){
+          //guarantee the timer show up as complete
+
+          //the timer started a minute ago
+          newExcercise.timerStartTime = DateTime.now().subtract(Duration(minutes: 1));
+          //it only needed to run for a second
+          newExcercise.lastBreak = Duration(seconds: 1);
+        }
+        else{
+          //guarantee the timer show up as NOT complete
+          //the timer started a minute ago
+          newExcercise.timerStartTime = DateTime.now().subtract(Duration(minutes:2, seconds: 7));
+          //it NEEDS to run for 1 hour
+          newExcercise.lastBreak = Duration(hours: 1);
+        }
+
+        //prep for functions match
+
+        //last data
+        newExcercise.lastWeight = 160;
+        newExcercise.lastReps = 8;
+
+        //assume they do the same quantity of reps as expected
+        newExcercise.tempReps = 8;
+
+        //expected 1 rep max
+        double expectedOneRepMax = To1RM.fromWeightAndReps(
+          newExcercise.lastWeight.toDouble(), 
+          newExcercise.lastReps.toDouble(), 
+          newExcercise.predictionID,
+        );
+
+        //calculated expectedWeight
+        double expectedWeight = ToWeight.fromRepAnd1Rm(
+          newExcercise.tempReps.toDouble(), 
+          expectedOneRepMax, 
+          newExcercise.predictionID,
+        );
+
+        //functions match
+        if(functionsMatch){
+          newExcercise.tempWeight = expectedWeight.toInt();
+        }
+        else{
+          //TODO: test both above and below (-+ 50)
+          newExcercise.tempWeight = expectedWeight.toInt() + 50;
+        }
+
+        //sets match
+        if(setsMatch){
+          newExcercise.tempSets = newExcercise.setTarget;
+        }
+        else{
+          //TODO: test both above and below (-+ 1)
+          newExcercise.tempSets = newExcercise.setTarget + 1;
+        }
+
+        //TODO: start with maybe are you sure
+        maybePopUpsBeforeNext(
+          context,
+          excercise: newExcercise,
+          //TODO: test both
+          nextAndDone: true,
+        );
       },
       title: Text(newExcercise.name),
       subtitle: subtitle,
@@ -324,7 +433,11 @@ class _ExcerciseSelectState extends State<ExcerciseSelect> with SingleTickerProv
                                 physics: ClampingScrollPhysics(),
                                 itemCount: thisGroup.length,
                                 itemBuilder: (context, index){
-                                  return buildExcerciseTile(context, thisGroup[index]);
+                                  return buildExcerciseTile(
+                                    context, 
+                                    thisGroup[index],
+                                    index,
+                                  );
                                 },
                               ),
                             ),

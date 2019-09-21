@@ -96,6 +96,20 @@ excercisesInit()async{
         9, 30
       ),
     ));
+    addExcercise(Excercise(
+      name: "Bop It",
+      lastTimeStamp: DateTime(
+        2019, 9, 17,
+        9, 35
+      ),
+    ));
+    addExcercise(Excercise(
+      name: "Twist It",
+      lastTimeStamp: DateTime(
+        2019, 9, 17,
+        9, 32
+      ),
+    ));
   }
 }
 

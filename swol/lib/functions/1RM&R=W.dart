@@ -1,7 +1,20 @@
 import 'dart:math' as math;
 //rep range: 1 - > 35
 
-class ToW{
+class ToWeight{
+  static double fromRepAnd1Rm(double reps, double max, int predictionID){
+    switch(predictionID){
+      case 0: return brzycki(reps, max); break;
+      case 1: return mcGlothinOrLanders(reps, max); break;
+      case 2: return almazan(reps, max); break;
+      case 3: return epleyOrBaechle(reps, max); break;
+      case 4: return oConner(reps, max); break;
+      case 5: return wathan(reps, max); break;
+      case 6: return mayhew(reps, max); break;
+      default: return lombardi(reps, max); break;
+    }
+  }
+
   //1 Brzycki Function
   //[m * (37- r)] / 36
   static double brzycki(double reps, double max){
