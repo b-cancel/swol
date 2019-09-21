@@ -19,11 +19,19 @@ class AddWorkout extends StatefulWidget {
 }
 
 class _AddWorkoutState extends State<AddWorkout> {
+  //name field
   TextEditingController nameCtrl = new TextEditingController();
   FocusNode nameFN = new FocusNode();
   ValueNotifier<bool> namePresent = new ValueNotifier(false);
+  String nameError;
+
+  //note field
+  TextEditingController noteCtrl = new TextEditingController();
+  FocusNode noteFN = new FocusNode();
+  ValueNotifier<bool> notePresent = new ValueNotifier(false);
+
+  //other
   ValueNotifier<String> url = new ValueNotifier("");
-  String errorText;
   int dropdownIndex = defaultFunctionIndex;
   String dropdownValue = functions[defaultFunctionIndex];
   bool autoUpdateEnabled = true;
@@ -44,6 +52,16 @@ class _AddWorkoutState extends State<AddWorkout> {
 
     //update button given once name given
     namePresent.addListener((){
+      setState(() {});
+    });
+
+    //update note present
+    noteCtrl.addListener((){
+      notePresent.value = (noteCtrl.text != "");
+    });
+
+    //update present
+    notePresent.addListener((){
       setState(() {});
     });
 
@@ -70,6 +88,9 @@ class _AddWorkoutState extends State<AddWorkout> {
     else if(breakTime.value <= Duration(minutes: 5)) bestFor += "Strength";
     else bestFor = "This Break Is Way Too Long";
 
+    //other
+    String nameHint = "Required*";
+
     //build
     return Scaffold(
       appBar: AppBar(
@@ -86,6 +107,7 @@ class _AddWorkoutState extends State<AddWorkout> {
                   //add workout to our list
                   addExcercise(Excercise(
                     name: nameCtrl.text,
+                    note: noteCtrl.text,
                     predictionID: dropdownIndex,
                     //we do this so that we still get the new keyword
                     //but the newer workouts still pop up on top
@@ -105,7 +127,7 @@ class _AddWorkoutState extends State<AddWorkout> {
                   Navigator.pop(context);
                 }
                 else{
-                  errorText = "Name Is Required";
+                  nameError = "Name Is Required";
                   setState(() {});
                 }
               },
@@ -142,62 +164,29 @@ class _AddWorkoutState extends State<AddWorkout> {
                     mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
-                      Container(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          "Excercise Name",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
+                      HeaderWithInfo(
+                        title: "Excercise Name",
+                        popUp: ExcerciseNamePopUp(),
                       ),
-                      Flexible(
-                        child: Stack(
-                          children: <Widget>[
-                            Container(
-                              padding: EdgeInsets.only(
-                                right: 24,
-                              ),
-                              child: TextField(
-                                controller: nameCtrl,
-                                focusNode: nameFN,
-                                keyboardType: TextInputType.text,
-                                textInputAction: TextInputAction.done,
-                                decoration: InputDecoration(
-                                  hintText: "Required*",
-                                  errorText: errorText,
-                                  //spacer so X doesn't cover the text
-                                  suffix: Container(
-                                    width: 36,
-                                  )
-                                ),
-                              ),
-                            ),
-                            Positioned(
-                              right: 0,
-                              top: 0,
-                              bottom: 0,
-                              child: Transform.translate(
-                                offset: Offset(-16, 8),
-                                child: Container(
-                                  width: 42,
-                                  alignment: Alignment.center,
-                                  child: IconButton(
-                                    onPressed: (){
-                                      nameCtrl.text = "";
-                                    },
-                                    color: Colors.grey, 
-                                    highlightColor: Colors.grey,
-                                    icon: Icon(
-                                      Icons.close,
-                                      color: (namePresent.value) ? Colors.grey : Colors.transparent,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
+                      new TextFieldWithClearButton(
+                        ctrl: nameCtrl, 
+                        focusnode: nameFN, 
+                        hint: nameHint, 
+                        error: nameError, 
+                        present: namePresent,
+                        maxLines: false,
+                      ),
+                      HeaderWithInfo(
+                        title: "Excercise Notes",
+                        popUp: ExcerciseNotePopUp(),
+                      ),
+                      new TextFieldWithClearButton(
+                        ctrl: noteCtrl, 
+                        focusnode: noteFN, 
+                        hint: "Details", 
+                        error: null, 
+                        present: notePresent,
+                        maxLines: true,
                       ),
                       Container(
                         child: HeaderWithInfo(
@@ -511,6 +500,72 @@ class _AddWorkoutState extends State<AddWorkout> {
                 ),
               ),
             ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class TextFieldWithClearButton extends StatelessWidget {
+  const TextFieldWithClearButton({
+    Key key,
+    @required this.ctrl,
+    @required this.focusnode,
+    @required this.hint,
+    @required this.error,
+    @required this.present,
+    @required this.maxLines,
+  }) : super(key: key);
+
+  final TextEditingController ctrl;
+  final FocusNode focusnode;
+  final String hint;
+  final String error;
+  final ValueNotifier<bool> present;
+  final bool maxLines;
+
+  @override
+  Widget build(BuildContext context) {
+    return Flexible(
+      child: Stack(
+        children: <Widget>[
+          TextField(
+            controller: ctrl,
+            focusNode: focusnode,
+            maxLines: (maxLines) ? null : 1,
+            minLines: (maxLines) ? 2 : 1,
+            keyboardType: TextInputType.text,
+            textInputAction: (maxLines) 
+            ? TextInputAction.newline
+            : TextInputAction.done,
+            decoration: InputDecoration(
+              hintText: hint,
+              errorText: error,
+              //spacer so X doesn't cover the text
+              suffix: Container(
+                width: 36,
+              )
+            ),
+          ),
+          Positioned(
+            right: 0,
+            top: 0,
+            bottom: 0,
+            child: Transform.translate(
+              offset: Offset(8, 0),
+              child: IconButton(
+                onPressed: (){
+                  ctrl.text = "";
+                },
+                color: Colors.grey, 
+                highlightColor: Colors.grey,
+                icon: Icon(
+                  Icons.close,
+                  color: (present.value) ? Colors.grey : Colors.transparent,
+                ),
+              ),
+            ),
           ),
         ],
       ),

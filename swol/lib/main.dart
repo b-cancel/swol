@@ -6,6 +6,7 @@ import 'package:scroll_to_index/scroll_to_index.dart';
 import 'package:swol/addWorkout.dart';
 import 'package:swol/helpers/main.dart';
 import 'package:swol/tabs/break.dart';
+import 'package:swol/updatePopUps.dart';
 import 'package:swol/utils/data.dart';
 import 'package:swol/utils/theme.dart';
 import 'package:swol/workout.dart';
@@ -102,10 +103,10 @@ class _ExcerciseSelectState extends State<ExcerciseSelect> with SingleTickerProv
   //allow us to animate the addition of new workouts
   buildExcerciseTile(
     BuildContext context, 
-    Excercise workout,
+    Excercise newExcercise,
   ){
     //calculations
-    Duration timeSince = DateTime.now().difference(workout.lastTimeStamp);
+    Duration timeSince = DateTime.now().difference(newExcercise.lastTimeStamp);
     bool never = (timeSince > Duration(days: 365 * 100));
 
     //subtitle gen
@@ -140,13 +141,26 @@ class _ExcerciseSelectState extends State<ExcerciseSelect> with SingleTickerProv
     //build our widget given that search term
     return ListTile(
       onTap: (){
-        print("id: " + workout.predictionID.toString());
-        print("auto: " + workout.autoUpdatePrediction.toString());
-        print("url: " + workout.url.toString());
-        print("wait: " + workout.lastBreak.toString());
-        print("sets: " + workout.setTarget.toString());
+        print("name: " +  newExcercise.name.toString());
+        print("note: " + newExcercise.note.toString());
+        print("url: " + newExcercise.url.toString());
+        //-----
+        print("wait: " + newExcercise.lastBreak.toString());
+        print("timestamp: " + newExcercise.lastTimeStamp.toString());
+        //-----
+        print("func id: " + newExcercise.predictionID.toString());
+        print("auto: " + newExcercise.autoUpdatePrediction.toString());
+        print("set target: " + newExcercise.setTarget.toString());
+        print("auto: " + newExcercise.autoUpdateSetTarget.toString());
+
+        //TODO: remove tests
+        Duration timerRuntime = DateTime.now().difference(newExcercise.timerStartTime);
+        bool timerComplete = (timerRuntime > newExcercise.lastBreak);
+        maybeAreYouSure(){
+          
+        }
       },
-      title: Text(workout.name),
+      title: Text(newExcercise.name),
       subtitle: subtitle,
       trailing: Icon(Icons.chevron_right),
     );

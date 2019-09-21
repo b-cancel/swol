@@ -16,34 +16,32 @@ class HeaderWithInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          Text(
-            title,
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-            ),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: <Widget>[
+        Text(
+          title,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
           ),
-          Transform.translate(
-            offset: Offset(12, 0),
-            child: IconButton(
-              onPressed: (){
-                showDialog<void>(
-                  context: context,
-                  barrierDismissible: true,
-                  builder: (BuildContext context) {
-                    return popUp; 
-                  },
-                );
-              },
-              icon: Icon(Icons.info),
-              color: Theme.of(context).accentColor,
-            ),
-          )
-        ],
-      ),
+        ),
+        Transform.translate(
+          offset: Offset(12, 0),
+          child: IconButton(
+            onPressed: (){
+              showDialog<void>(
+                context: context,
+                barrierDismissible: true,
+                builder: (BuildContext context) {
+                  return popUp; 
+                },
+              );
+            },
+            icon: Icon(Icons.info),
+            color: Theme.of(context).accentColor,
+          ),
+        )
+      ],
     );
   }
 }
@@ -133,6 +131,96 @@ class MyDivider extends StatelessWidget {
       ),
       child: Divider(
         height: 0,
+      ),
+    );
+  }
+}
+
+class ExcerciseNotePopUp extends StatelessWidget {
+  const ExcerciseNotePopUp({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return MyInfoDialog(
+      title: "Excercise Note",
+      subtitle: "Details",
+      child: Container(
+        padding: EdgeInsets.only(
+          left: 32,
+          right: 32,
+          bottom: 16,
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            Container(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                "Here you can write in details like: \n",
+              ),
+            ),
+            Container(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                "1. Preferred grip",
+              ),
+            ),
+            Container(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                "2. Modifications you made to form",
+              ),
+            ),
+            Container(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                "3. Etc...",
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class ExcerciseNamePopUp extends StatelessWidget {
+  const ExcerciseNamePopUp({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return MyInfoDialog(
+      title: "Excercise Name",
+      subtitle: "Unique Name",
+      child: Container(
+        padding: EdgeInsets.only(
+          left: 32,
+          right: 32,
+          bottom: 16,
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            Container(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                "Don't worry about adding too many details here\n",
+              ),
+            ),
+            Container(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                "Extra details should be placed in notes",
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
