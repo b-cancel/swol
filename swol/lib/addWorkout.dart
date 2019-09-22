@@ -9,6 +9,9 @@ import 'package:swol/helpers/timePicker.dart';
 import 'package:swol/utils/data.dart';
 import 'package:swol/workout.dart';
 
+//plugins
+import 'package:flutter_xlider/flutter_xlider.dart';
+
 //main widget
 class AddWorkout extends StatefulWidget {
   const AddWorkout({
@@ -103,6 +106,9 @@ class _AddWorkoutState extends State<AddWorkout> {
 
     //other
     String nameHint = "Required*";
+
+    //for slider hatch mark
+    double totalWidth = MediaQuery.of(context).size.width;
 
     //build
     return Scaffold(
@@ -372,6 +378,97 @@ class _AddWorkoutState extends State<AddWorkout> {
                         child: new HeaderWithInfo(
                           title: "Rep Target",
                           popUp: new RepTargetPopUp(),
+                        ),
+                      ),
+                      Container(
+                        //padding both sides, margin both sides
+                        width: totalWidth - (16.0 * 2) - (8 * 2),
+                        color: Colors.green,
+                        child: FlutterSlider(
+                          step: 1,
+                          jump: true,
+                          values: [8], //go starter
+                          min: 1,
+                          max: 35,
+                          handlerWidth: 35,
+                          handlerHeight: 35,
+                          touchSize: 50,
+                          handler: FlutterSliderHandler(
+                            decoration: BoxDecoration(),
+                            child: Material(
+                              type: MaterialType.canvas,
+                              color: Colors.orange,
+                              elevation: 3,
+                              child: Container(
+                                padding: EdgeInsets.all(5),
+                                child: Icon(
+                                  Icons.adjust, 
+                                  size: 25,
+                                ),
+                              ),
+                            ),
+                            foregroundDecoration: BoxDecoration()
+                          ),
+                          tooltip: FlutterSliderTooltip(
+                            alwaysShowTooltip: true,
+                            textStyle: TextStyle(fontSize: 17, color: Colors.white),
+                            boxStyle: FlutterSliderTooltipBox(
+                              decoration: BoxDecoration(
+                                color: Colors.redAccent.withOpacity(0.7)
+                              )
+                            ),
+                            rightSuffix: Text(" reps"),
+                          ),
+                          handlerAnimation: FlutterSliderHandlerAnimation(
+                            scale: 1.5,
+                          ),
+                          trackBar: FlutterSliderTrackBar(
+                            activeTrackBarHeight: 16,
+                            inactiveTrackBarHeight: 16,
+                            inactiveTrackBar: BoxDecoration(
+                              color: Theme.of(context).backgroundColor,
+                              border: Border.all(
+                                width: 2, 
+                                color: Colors.black,
+                              ),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            activeTrackBar: BoxDecoration(
+                              color: Theme.of(context).accentColor,
+                              border: Border.all(
+                                width: 2, 
+                                color: Colors.black,
+                              ),
+                              borderRadius: BorderRadius.circular(8),
+                            )
+                            //do nothings
+                            //inactiveDisabledTrackBarColor: Colors.red,
+                            //activeDisabledTrackBarColor: Colors.green,
+                          ),
+                          hatchMark: FlutterSliderHatchMark(
+                            density: 0.5, //show all 35 lines
+                            distanceFromTrackBar: 0,
+                            labels: [
+                              FlutterSliderHatchMarkLabel(
+                                percent: 0, 
+                                label: 'Start',
+                              ),
+                              FlutterSliderHatchMarkLabel(
+                                percent: 100, 
+                                label: 'Finish',
+                              ),
+                            ],
+                            labelTextStyle: TextStyle(
+                              color: Colors.white,
+                            )
+                          ),
+                          onDragging: (handlerIndex, lowerValue, upperValue) {
+                            /*
+                            _lowerValue = lowerValue;
+                            _upperValue = upperValue;
+                            */
+                            setState(() {});
+                          },
                         ),
                       ),
                       Padding(

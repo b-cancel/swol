@@ -235,7 +235,7 @@ class RepTargetPopUp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MyInfoDialog(
       title: "Rep Target",
-      subtitle: "How many times you lift the weight before a break",
+      subtitle: "Not sure? Keep the default",
       child: Container(
         padding: EdgeInsets.only(
           left: 32,
@@ -249,7 +249,7 @@ class RepTargetPopUp extends StatelessWidget {
             Container(
               alignment: Alignment.centerLeft,
               child: Text(
-                "something about how rep target change what you are focusing on",
+                "Different quantity of reps help you focus on different things",
               ),
             ),
           ],
@@ -509,7 +509,7 @@ class SetBreakPopUp extends StatelessWidget {
             Container(
               alignment: Alignment.centerLeft,
               child: Text(
-                "You need to give your muscles time to recover"
+                "You need to give your muscles time to recover!"
               ),
             ),
             MyDivider(),
