@@ -49,8 +49,8 @@ maybeAreYouSurePopUp(
   );
 
   //Are you sure
-  Duration timerRuntime = DateTime.now().difference(excercise.timerStartTime);
-  if(timerRuntime > excercise.lastBreak) next();
+  Duration timerRuntime = DateTime.now().difference(excercise.tempStartTime);
+  if(timerRuntime > excercise.recoveryPeriod) next();
   else{
     //round to nearest 5 seconds (to avoid problems later)
     int minutes = timerRuntime.inMinutes;
@@ -204,8 +204,8 @@ bool maybeUpdateSetTarget(
   Excercise excercise,
   Function afterDone,
 ){
-  int setTarget = excercise.setTarget;
-  int newSetTarget = excercise.tempSets;
+  int setTarget = excercise.lastSetTarget;
+  int newSetTarget = excercise.tempSetCount;
   if(setTarget == newSetTarget) return false;
   else{
     String content = "You were aiming for " + setTarget.toString() + " sets\n";

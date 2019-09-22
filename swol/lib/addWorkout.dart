@@ -9,6 +9,7 @@ import 'package:swol/helpers/timePicker.dart';
 import 'package:swol/utils/data.dart';
 import 'package:swol/workout.dart';
 
+//main widget
 class AddWorkout extends StatefulWidget {
   const AddWorkout({
     Key key,
@@ -23,20 +24,28 @@ class _AddWorkoutState extends State<AddWorkout> {
   TextEditingController nameCtrl = new TextEditingController();
   FocusNode nameFN = new FocusNode();
   ValueNotifier<bool> namePresent = new ValueNotifier(false);
-  String nameError;
+  String nameError; //required since the name is required
 
   //note field
   TextEditingController noteCtrl = new TextEditingController();
   FocusNode noteFN = new FocusNode();
   ValueNotifier<bool> notePresent = new ValueNotifier(false);
 
-  //other
+  //url field
   ValueNotifier<String> url = new ValueNotifier("");
-  int dropdownIndex = defaultFunctionIndex;
-  String dropdownValue = functions[defaultFunctionIndex];
-  bool autoUpdateEnabled = true;
-  ValueNotifier<Duration> breakTime = new ValueNotifier(Duration(minutes: 1, seconds: 30));
+
+  //function select
+  int functionIndex = defaultFunctionIndex;
+  String functionValue = functions[defaultFunctionIndex];
+
+  //recovery period select
+  ValueNotifier<Duration> recoveryPeriod = new ValueNotifier(Duration(minutes: 1, seconds: 30));
+
+  //set target select
   ValueNotifier<int> setTarget = new ValueNotifier(3);
+
+  //rep target select
+  ValueNotifier<int> repTarget = new ValueNotifier(10);
 
   @override
   void initState() {
@@ -71,7 +80,7 @@ class _AddWorkoutState extends State<AddWorkout> {
     });
 
     //update when break updates
-    breakTime.addListener((){
+    recoveryPeriod.addListener((){
       setState(() {});
     });
 
@@ -83,9 +92,9 @@ class _AddWorkoutState extends State<AddWorkout> {
   Widget build(BuildContext context) {
     //cal best for
     String bestFor = "Best For Increasing Muscle ";
-    if(breakTime.value <= Duration(seconds: 30)) bestFor += "Endurance";
-    else if(breakTime.value <= Duration(seconds: 90)) bestFor += "Mass";
-    else if(breakTime.value <= Duration(minutes: 5)) bestFor += "Strength";
+    if(recoveryPeriod.value <= Duration(seconds: 30)) bestFor += "Endurance";
+    else if(recoveryPeriod.value <= Duration(seconds: 90)) bestFor += "Mass";
+    else if(recoveryPeriod.value <= Duration(minutes: 5)) bestFor += "Strength";
     else bestFor = "This Break Is Way Too Long";
 
     //other
@@ -107,20 +116,18 @@ class _AddWorkoutState extends State<AddWorkout> {
                   //add workout to our list
                   addExcercise(Excercise(
                     name: nameCtrl.text,
-                    note: noteCtrl.text,
-                    predictionID: dropdownIndex,
-                    //we do this so that we still get the new keyword
-                    //but the newer workouts still pop up on top
-                    lastTimeStamp: DateTime.now().subtract(Duration(days: 365 * 100)),
                     url: url.value,
-                    //NOTE: we dont add these because the whole point of the app is that you don't set these
-                    //Your bodies limits
-                    //and the equations set them
-                    //weight
-                    //reps
-                    lastBreak: breakTime.value,
-                    setTarget: setTarget.value,
-                    autoUpdatePrediction: autoUpdateEnabled,
+                    note: noteCtrl.text,
+
+                    //we must work off of current so the list is build properly
+                    //the new excercises you added the longest time ago are on top
+                    lastTimeStamp: DateTime.now().subtract(Duration(days: 365 * 100)),
+                    lastSetTarget: setTarget.value,
+
+
+                    predictionID: functionIndex,
+                    recoveryPeriod: recoveryPeriod.value,
+                    repTarget: repTarget.value,
                   ));
 
                   //exit pop up
@@ -289,7 +296,7 @@ class _AddWorkoutState extends State<AddWorkout> {
                         ),
                       ),
                       TimePicker(
-                        duration: breakTime,
+                        duration: recoveryPeriod,
                       ),
                       DefaultTextStyle(
                         style: TextStyle(
@@ -425,16 +432,15 @@ class _AddWorkoutState extends State<AddWorkout> {
                         ),
                       ),
                       DropdownButton<String>(
-                        value: dropdownValue,
+                        value: functionValue,
                         icon: Icon(Icons.arrow_drop_down),
                         isExpanded: true,
                         iconSize: 24,
                         elevation: 16,
                         onChanged: (String newValue) {
                           setState(() {
-                            dropdownValue = newValue;
-                            dropdownIndex = functionToIndex[dropdownValue];
-                            print("index: " + dropdownIndex.toString());
+                            functionValue = newValue;
+                            functionIndex = functionToIndex[functionValue];
                           });
                         },
                         items: functions.map<DropdownMenuItem<String>>((String value) {
@@ -444,56 +450,6 @@ class _AddWorkoutState extends State<AddWorkout> {
                           );
                         })
                         .toList(),
-                      ),
-                      Transform.translate(
-                        //so the switch is where it should be
-                        offset: Offset(-12, 0),
-                        child: Container(
-                          padding: EdgeInsets.only(
-                            top: 16,
-                          ),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.max,
-                            children: <Widget>[
-                              Switch(
-                                value: autoUpdateEnabled,
-                                onChanged: (value) {
-                                  setState(() {
-                                    autoUpdateEnabled = value;
-                                  });
-                                },
-                              ),
-                              Text(
-                                "Auto Update Prediction",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              Expanded(
-                                child: Container(
-                                  alignment: Alignment.centerRight,
-                                  child: Transform.translate(
-                                    //so the info is where it should be
-                                    offset: Offset(24, 0),
-                                    child: IconButton(
-                                      onPressed: (){
-                                        showDialog<void>(
-                                          context: context,
-                                          barrierDismissible: true,
-                                          builder: (BuildContext context) {
-                                            return new AutoUpdatePopUp(); 
-                                          },
-                                        );
-                                      },
-                                      icon: Icon(Icons.info),
-                                      color: Theme.of(context).accentColor,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
                       ),
                     ],
                   ),

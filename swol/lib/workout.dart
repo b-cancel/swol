@@ -1,47 +1,64 @@
 import 'dart:convert';
 
+import 'package:flutter/widgets.dart';
+
 class Excercise{
+  static int nextID;
+
+  //NOTE: this is set after by the addExcercise function
+  int id;
+
   //basic
   String name;
   String url;
   String note;
-  //manual update
+
+  //per excercise sets per workout
   DateTime lastTimeStamp;
-  Duration lastBreak;
+  int lastSetTarget;
+
+  DateTime tempTimeStamp;
+  int tempSetCount;
+
+  //per set
   int lastWeight;
   int lastReps;
-  //updates on its own or manually
-  int predictionID;
-  bool autoUpdatePrediction;
-  int setTarget;
-  bool autoUpdateSetTarget;
-  //for during workout
-  DateTime timerStartTime;
+
+  DateTime tempStartTime;
   int tempWeight;
   int tempReps;
-  int tempSets;
+
+  //other
+  int predictionID;
+  Duration recoveryPeriod;
+  int repTarget;
 
   //build
   Excercise({
     //basic data
-    this.name,
+    @required this.name,
     this.url: "",
     this.note: "",
-    //manual update
-    this.lastTimeStamp,
-    this.lastBreak: const Duration(minutes: 1, seconds: 45), //balance between INC mass and strength
-    this.lastWeight: 0,
-    this.lastReps: 0,
-    //updates on its own or manually
-    this.predictionID: 4, //for slightly above average joe
-    this.autoUpdatePrediction: true, //let us help
-    this.setTarget: 3, //good staart point
-    this.autoUpdateSetTarget : true, //let us help
-    //for during workout
-    this.timerStartTime,
+
+    //per excercise sets per workout
+    @required this.lastTimeStamp, //default set by addWorkout
+    this.lastSetTarget, //default set by addWorkout
+
+    this.tempTimeStamp,
+    this.tempSetCount,
+
+    //per set
+    this.lastWeight,
+    this.lastReps,
+
+    this.tempStartTime,
     this.tempWeight,
     this.tempReps,
-    this.tempSets,
+
+    //other
+    this.predictionID, //Default set by addWorkout
+    this.recoveryPeriod, //Default set by addWokrout
+    this.repTarget, //Default set by addWokrout
   });
 
   Excercise.fromJson(Map<String,dynamic> map){
@@ -49,21 +66,26 @@ class Excercise{
     name = map["name"];
     url = map["url"];
     note = map["note"];
-    //manual update
+
+    //per excercise sets per workout
     lastTimeStamp = map["lastTimeStamp"];
-    lastBreak = map["lastBreak"];
+    lastSetTarget = map["lastSetTarget"];
+
+    tempTimeStamp = map["tempTimeStamp"];
+    tempSetCount = map["tempSetCount"];
+
+    //per set
     lastWeight = map["lastWeight"];
     lastReps = map["lastReps"];
-    //updates on its own or manually
-    predictionID = map["predictionID"];
-    autoUpdatePrediction = map["autoUpdatePrediction"];
-    setTarget = map["setTarget"];
-    autoUpdateSetTarget = map["autoUpdateSetTarget"];
-    //for during workout
-    timerStartTime = map["timerStartTime"];
+
+    tempStartTime = map["tempStarTime"];
     tempWeight = map["tempWeight"];
     tempReps = map["tempReps"];
-    tempSets = map["tempSets"];
+
+    //other
+    predictionID = map["predictionID"];
+    recoveryPeriod = map["recoveryPeriod"];
+    repTarget = map["repTarget"];
   }
 
   String toJson(Excercise w){

@@ -42,11 +42,23 @@ class MyApp extends StatelessWidget {
         if(snapshot.connectionState == ConnectionState.done){
           //grab and process system prefs
           SharedPreferences prefs = snapshot.data;
+
+          //handle theme stuff
           dynamic isDark = prefs.getBool("darkMode");
           if(isDark == null){
             prefs.setBool("darkMode", false);
             isDark = false;
           }
+
+          //handle workout stuff
+          dynamic nextID = prefs.getInt("nextID");
+          if(nextID == null){
+            prefs.setInt("nextID", 0);
+            nextID = 0;
+          }
+
+          //set nextID to its usable version
+          Excercise.nextID = nextID;
 
           //return app
           return ChangeNotifierProvider<ThemeChanger>(
@@ -208,16 +220,16 @@ class _ExcerciseSelectState extends State<ExcerciseSelect> with SingleTickerProv
           //guarantee the timer show up as complete
 
           //the timer started a minute ago
-          newExcercise.timerStartTime = DateTime.now().subtract(Duration(minutes: 1));
+          newExcercise.tempStartTime = DateTime.now().subtract(Duration(minutes: 1));
           //it only needed to run for a second
-          newExcercise.lastBreak = Duration(seconds: 1);
+          newExcercise.recoveryPeriod = Duration(seconds: 1);
         }
         else{
           //guarantee the timer show up as NOT complete
           //the timer started a minute ago
-          newExcercise.timerStartTime = DateTime.now().subtract(Duration(minutes:2, seconds: 7));
+          newExcercise.tempStartTime = DateTime.now().subtract(Duration(minutes:2, seconds: 7));
           //it NEEDS to run for 1 hour
-          newExcercise.lastBreak = Duration(hours: 1);
+          newExcercise.recoveryPeriod = Duration(hours: 1);
         }
 
         //prep for functions match
@@ -254,11 +266,11 @@ class _ExcerciseSelectState extends State<ExcerciseSelect> with SingleTickerProv
 
         //sets match
         if(setsMatch){
-          newExcercise.tempSets = newExcercise.setTarget;
+          newExcercise.tempSetCount = newExcercise.lastSetTarget;
         }
         else{
           //TODO: test both above and below (-+ 1)
-          newExcercise.tempSets = newExcercise.setTarget + 1;
+          newExcercise.tempSetCount = newExcercise.lastSetTarget + 1;
         }
 
         //TODO: start with maybe are you sure

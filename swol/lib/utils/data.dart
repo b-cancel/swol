@@ -118,6 +118,10 @@ excercisesInit()async{
 //2. retain map instead of build each time
 //3. etc...
 addExcercise(Excercise theWorkout){
+  //give it an ID
+  theWorkout.id = Excercise.nextID;
+  Excercise.nextID += 1;
+
   //add to workouts
   excercises.value.add(theWorkout);
 
