@@ -226,6 +226,39 @@ class ExcerciseNamePopUp extends StatelessWidget {
   }
 }
 
+class RepTargetPopUp extends StatelessWidget {
+  const RepTargetPopUp({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return MyInfoDialog(
+      title: "Rep Target",
+      subtitle: "How many times you lift the weight before a break",
+      child: Container(
+        padding: EdgeInsets.only(
+          left: 32,
+          right: 32,
+          bottom: 16,
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            Container(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                "something about how rep target change what you are focusing on",
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 class PredictionFormulasPopUp extends StatelessWidget {
   const PredictionFormulasPopUp({
     Key key,
@@ -295,6 +328,12 @@ class PredictionFormulasPopUp extends StatelessWidget {
             ),
             new MyDivider(),
             //
+            Container(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                "In general \n",
+              ),
+            ),
             Container(
               alignment: Alignment.centerLeft,
               child: Text(
@@ -413,20 +452,7 @@ class SetTargetPopUp extends StatelessWidget {
             Container(
               alignment: Alignment.centerLeft,
               child: Text(
-                "If at any point you want to do more or less sets of a particular excercise",
-              ),
-            ),
-            Container(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                "Just do so and we'll remember",
-              ),
-            ),
-            new MyDivider(),
-            Container(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                "Additonally, Keep in mind that in general\n",
+                "In general\n",
               ),
             ),
             Container(
@@ -509,6 +535,12 @@ class SetBreakPopUp extends StatelessWidget {
             Container(
               alignment: Alignment.centerLeft,
               child: Text(
+                "In general \n",
+              ),
+            ),
+            Container(
+              alignment: Alignment.centerLeft,
+              child: Text(
                 "Exercises that use MORE muscle will require LONGER breaks\n",
               ),
             ),
@@ -525,15 +557,16 @@ class SetBreakPopUp extends StatelessWidget {
   }
 }
 
-class FormReferencePopUp extends StatelessWidget {
-  const FormReferencePopUp({
+class ReferenceLinkPopUp extends StatelessWidget {
+  const ReferenceLinkPopUp({
     Key key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return MyInfoDialog(
-      title: "Form Reference Link",
+      title: "Reference Link",
+      subtitle: "Copy and paste from web browser",
       child: Container(
         padding: EdgeInsets.only(
           left: 32,
@@ -547,7 +580,7 @@ class FormReferencePopUp extends StatelessWidget {
             Container(
               alignment: Alignment.centerLeft,
               child: Text(
-                "Form is incredibly important"
+                "Form is incredibly important!"
               ),
             ),
             new MyDivider(),
@@ -577,8 +610,8 @@ const Sets = '''
 ]
 ''';
 
-class SetPicker extends StatelessWidget {
-  SetPicker({
+class HorizontalPicker extends StatelessWidget {
+  HorizontalPicker({
     @required this.setTarget,
     @required this.numberSize,
     @required this.height,

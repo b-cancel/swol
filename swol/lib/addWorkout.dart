@@ -97,6 +97,10 @@ class _AddWorkoutState extends State<AddWorkout> {
     else if(recoveryPeriod.value <= Duration(minutes: 5)) bestFor += "Strength";
     else bestFor = "This Break Is Way Too Long";
 
+    //add s? (such a minimal detail)
+    int mins = recoveryPeriod.value.inMinutes;
+    bool showS = (mins == 1) ? false : true;
+
     //other
     String nameHint = "Required*";
 
@@ -181,7 +185,7 @@ class _AddWorkoutState extends State<AddWorkout> {
                         hint: nameHint, 
                         error: nameError, 
                         present: namePresent,
-                        maxLines: false,
+                        otherFocusNode: noteFN,
                       ),
                       HeaderWithInfo(
                         title: "Excercise Notes",
@@ -193,12 +197,11 @@ class _AddWorkoutState extends State<AddWorkout> {
                         hint: "Details", 
                         error: null, 
                         present: notePresent,
-                        maxLines: true,
                       ),
                       Container(
                         child: HeaderWithInfo(
-                          title: "Form Reference Link",
-                          popUp: new FormReferencePopUp(),
+                          title: "Reference Link",
+                          popUp: new ReferenceLinkPopUp(),
                         ),
                       ),
                       ClipRRect(
@@ -312,7 +315,10 @@ class _AddWorkoutState extends State<AddWorkout> {
                                 ),
                                 child: FittedBox(
                                   fit: BoxFit.cover,
-                                  child: Text("MINUTES"),
+                                  child: Text(
+                                    "MINUTE"
+                                    + ((showS) ? "S" : ""),
+                                  ),
                                 ),
                               ),
                             ),
@@ -338,9 +344,36 @@ class _AddWorkoutState extends State<AddWorkout> {
                         padding: EdgeInsets.only(
                           top: 16,
                         ),
-                        child: Text(bestFor),
+                        child: Container(
+                          width: MediaQuery.of(context).size.width,
+                          child: FittedBox(
+                            fit: BoxFit.fitWidth,
+                            child: Text(bestFor),
+                          ),
+                        ),
                       ),
-                      //divide between two somewhat dense fields
+                    ],
+                  ),
+                ),
+              ),
+              Card(
+                margin: EdgeInsets.all(8),
+                child: Container(
+                  padding: EdgeInsets.only(
+                    top: 8,
+                    left: 16,
+                    right: 16,
+                    bottom: 16,
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Container(
+                        child: new HeaderWithInfo(
+                          title: "Rep Target",
+                          popUp: new RepTargetPopUp(),
+                        ),
+                      ),
                       Padding(
                         padding: EdgeInsets.only(
                           top: 16,
@@ -352,7 +385,32 @@ class _AddWorkoutState extends State<AddWorkout> {
                           width: MediaQuery.of(context).size.width,
                         ),
                       ),
-                      //NOTE: we know that this is naturally of height 48
+                      Container(
+                        child: new HeaderWithInfo(
+                          title: "Prediction Formula",
+                          popUp: new PredictionFormulasPopUp(),
+                        ),
+                      ),
+                      DropdownButton<String>(
+                        value: functionValue,
+                        icon: Icon(Icons.arrow_drop_down),
+                        isExpanded: true,
+                        iconSize: 24,
+                        elevation: 16,
+                        onChanged: (String newValue) {
+                          setState(() {
+                            functionValue = newValue;
+                            functionIndex = functionToIndex[functionValue];
+                          });
+                        },
+                        items: functions.map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        })
+                        .toList(),
+                      ),
                       Padding(
                         padding: EdgeInsets.only(
                           top: 16,
@@ -369,7 +427,7 @@ class _AddWorkoutState extends State<AddWorkout> {
                                   right: 16,
                                   left: 8,
                                 ),
-                                child: SetPicker(
+                                child: HorizontalPicker(
                                   setTarget: setTarget,
                                   height: 36,
                                   numberSize: 24,
@@ -379,7 +437,7 @@ class _AddWorkoutState extends State<AddWorkout> {
                             Transform.translate(
                               offset: Offset(-24, 0),
                               child: Text(
-                                "Initial Set Target",
+                                "Set Target",
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -413,48 +471,6 @@ class _AddWorkoutState extends State<AddWorkout> {
                   ),
                 ),
               ),
-              Card(
-                margin: EdgeInsets.all(8),
-                child: Container(
-                  padding: EdgeInsets.only(
-                    top: 8,
-                    left: 16,
-                    right: 16,
-                    bottom: 16,
-                  ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      Container(
-                        child: new HeaderWithInfo(
-                          title: "Initial Prediction Formula",
-                          popUp: new PredictionFormulasPopUp(),
-                        ),
-                      ),
-                      DropdownButton<String>(
-                        value: functionValue,
-                        icon: Icon(Icons.arrow_drop_down),
-                        isExpanded: true,
-                        iconSize: 24,
-                        elevation: 16,
-                        onChanged: (String newValue) {
-                          setState(() {
-                            functionValue = newValue;
-                            functionIndex = functionToIndex[functionValue];
-                          });
-                        },
-                        items: functions.map<DropdownMenuItem<String>>((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value),
-                          );
-                        })
-                        .toList(),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
             ],
           ),
         ],
@@ -471,7 +487,7 @@ class TextFieldWithClearButton extends StatelessWidget {
     @required this.hint,
     @required this.error,
     @required this.present,
-    @required this.maxLines,
+    this.otherFocusNode,
   }) : super(key: key);
 
   final TextEditingController ctrl;
@@ -479,7 +495,7 @@ class TextFieldWithClearButton extends StatelessWidget {
   final String hint;
   final String error;
   final ValueNotifier<bool> present;
-  final bool maxLines;
+  final FocusNode otherFocusNode;
 
   @override
   Widget build(BuildContext context) {
@@ -489,12 +505,12 @@ class TextFieldWithClearButton extends StatelessWidget {
           TextField(
             controller: ctrl,
             focusNode: focusnode,
-            maxLines: (maxLines) ? null : 1,
-            minLines: (maxLines) ? 2 : 1,
+            maxLines: (otherFocusNode == null) ? null : 1,
+            minLines: (otherFocusNode == null) ? 2 : 1,
             keyboardType: TextInputType.text,
-            textInputAction: (maxLines) 
+            textInputAction: (otherFocusNode == null) 
             ? TextInputAction.newline
-            : TextInputAction.done,
+            : TextInputAction.next,
             decoration: InputDecoration(
               hintText: hint,
               errorText: error,
@@ -503,6 +519,11 @@ class TextFieldWithClearButton extends StatelessWidget {
                 width: 36,
               )
             ),
+            onEditingComplete: (){
+              if(otherFocusNode != null){
+                FocusScope.of(context).requestFocus(otherFocusNode);
+              }
+            },
           ),
           Positioned(
             right: 0,
