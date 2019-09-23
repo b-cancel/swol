@@ -109,6 +109,7 @@ class _AddWorkoutState extends State<AddWorkout> {
 
     //for slider hatch mark
     double totalWidth = MediaQuery.of(context).size.width;
+    double sliderWidth = totalWidth - (16.0 * 2) - (8 * 2);
 
     //build
     return Scaffold(
@@ -364,208 +365,237 @@ class _AddWorkoutState extends State<AddWorkout> {
               ),
               Card(
                 margin: EdgeInsets.all(8),
-                child: Container(
-                  padding: EdgeInsets.only(
-                    top: 8,
-                    left: 16,
-                    right: 16,
-                    bottom: 16,
-                  ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      Container(
-                        child: new HeaderWithInfo(
-                          title: "Rep Target",
-                          popUp: new RepTargetPopUp(),
-                        ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Container(
+                      padding: EdgeInsets.only(
+                        top: 8,
+                        left: 16,
+                        right: 16,
                       ),
-                      Container(
-                        //padding both sides, margin both sides
-                        width: totalWidth - (16.0 * 2) - (8 * 2),
-                        color: Colors.green,
-                        child: FlutterSlider(
-                          step: 1,
-                          jump: true,
-                          values: [8], //go starter
-                          min: 1,
-                          max: 35,
-                          handlerWidth: 35,
-                          handlerHeight: 35,
-                          touchSize: 50,
-                          handler: FlutterSliderHandler(
-                            decoration: BoxDecoration(),
-                            child: Material(
-                              type: MaterialType.canvas,
-                              color: Colors.orange,
-                              elevation: 3,
-                              child: Container(
-                                padding: EdgeInsets.all(5),
-                                child: Icon(
-                                  Icons.adjust, 
-                                  size: 25,
+                      child: new HeaderWithInfo(
+                        title: "Rep Target",
+                        popUp: new RepTargetPopUp(),
+                      ),
+                    ),
+                    Stack(
+                      alignment: AlignmentDirectional.bottomCenter,
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.only(
+                            bottom: 14.75, //TODO: adjust for final product
+                            left: 16,
+                            right: 16,
+                          ),
+                          child: Row(
+                            children: <Widget>[
+                              Expanded(
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: Theme.of(context).accentColor,
+                                    border: Border.all(
+                                      width: 2, 
+                                      color: Colors.black,
+                                    ),
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  height: 16,
                                 ),
                               ),
-                            ),
-                            foregroundDecoration: BoxDecoration()
-                          ),
-                          tooltip: FlutterSliderTooltip(
-                            alwaysShowTooltip: true,
-                            textStyle: TextStyle(fontSize: 17, color: Colors.white),
-                            boxStyle: FlutterSliderTooltipBox(
-                              decoration: BoxDecoration(
-                                color: Colors.redAccent.withOpacity(0.7)
-                              )
-                            ),
-                            rightSuffix: Text(" reps"),
-                          ),
-                          handlerAnimation: FlutterSliderHandlerAnimation(
-                            scale: 1.5,
-                          ),
-                          trackBar: FlutterSliderTrackBar(
-                            activeTrackBarHeight: 16,
-                            inactiveTrackBarHeight: 16,
-                            inactiveTrackBar: BoxDecoration(
-                              color: Theme.of(context).backgroundColor,
-                              border: Border.all(
-                                width: 2, 
-                                color: Colors.black,
-                              ),
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            activeTrackBar: BoxDecoration(
-                              color: Theme.of(context).accentColor,
-                              border: Border.all(
-                                width: 2, 
-                                color: Colors.black,
-                              ),
-                              borderRadius: BorderRadius.circular(8),
-                            )
-                            //do nothings
-                            //inactiveDisabledTrackBarColor: Colors.red,
-                            //activeDisabledTrackBarColor: Colors.green,
-                          ),
-                          hatchMark: FlutterSliderHatchMark(
-                            density: 0.5, //show all 35 lines
-                            distanceFromTrackBar: 0,
-                            labels: [
-                              FlutterSliderHatchMarkLabel(
-                                percent: 0, 
-                                label: 'Start',
-                              ),
-                              FlutterSliderHatchMarkLabel(
-                                percent: 100, 
-                                label: 'Finish',
+                              Expanded(
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: Theme.of(context).backgroundColor,
+                                    border: Border.all(
+                                      width: 2, 
+                                      color: Colors.black,
+                                    ),
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  height: 16,
+                                ),
                               ),
                             ],
-                            labelTextStyle: TextStyle(
-                              color: Colors.white,
-                            )
                           ),
-                          onDragging: (handlerIndex, lowerValue, upperValue) {
-                            /*
-                            _lowerValue = lowerValue;
-                            _upperValue = upperValue;
-                            */
-                            setState(() {});
-                          },
                         ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(
-                          top: 16,
-                          bottom: 0,
-                        ),
-                        child: Container(
-                          color: Theme.of(context).dividerColor,
-                          height: 2,
-                          width: MediaQuery.of(context).size.width,
-                        ),
-                      ),
-                      Container(
-                        child: new HeaderWithInfo(
-                          title: "Prediction Formula",
-                          popUp: new PredictionFormulasPopUp(),
-                        ),
-                      ),
-                      DropdownButton<String>(
-                        value: functionValue,
-                        icon: Icon(Icons.arrow_drop_down),
-                        isExpanded: true,
-                        iconSize: 24,
-                        elevation: 16,
-                        onChanged: (String newValue) {
-                          setState(() {
-                            functionValue = newValue;
-                            functionIndex = functionToIndex[functionValue];
-                          });
-                        },
-                        items: functions.map<DropdownMenuItem<String>>((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value),
-                          );
-                        })
-                        .toList(),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(
-                          top: 16,
-                        ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          children: <Widget>[
-                            Transform.translate(
-                              offset: Offset(-16, 0),
-                              child: Container(
-                                height: 36,
-                                width: 48.0 + (16 * 2),
-                                padding: EdgeInsets.only(
-                                  right: 16,
-                                  left: 8,
-                                ),
-                                child: HorizontalPicker(
-                                  setTarget: setTarget,
-                                  height: 36,
-                                  numberSize: 24,
-                                ),
-                              ),
+                        Container(
+                          child: FlutterSlider(
+                            step: 1,
+                            jump: true,
+                            //TODO: set to our default value
+                            values: [8],
+                            min: 1,
+                            max: 35,
+                            handlerWidth: 35,
+                            handlerHeight: 35,
+                            touchSize: 35,
+                            handlerAnimation: FlutterSliderHandlerAnimation(
+                              scale: 1.25,
                             ),
-                            Transform.translate(
-                              offset: Offset(-24, 0),
-                              child: Text(
-                                "Set Target",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                            Expanded(
+                            handler: FlutterSliderHandler(
                               child: Container(
-                                alignment: Alignment.centerRight,
-                                child: Transform.translate(
-                                  offset: Offset(12, 0),
-                                  child: IconButton(
-                                    onPressed: (){
-                                      showDialog<void>(
-                                        context: context,
-                                        barrierDismissible: true,
-                                        builder: (BuildContext context) {
-                                          return new SetTargetPopUp(); 
-                                        },
-                                      );
-                                    },
-                                    icon: Icon(Icons.info),
-                                    color: Theme.of(context).accentColor,
+                                decoration: BoxDecoration(
+                                  color: Theme.of(context).primaryColorDark,
+                                  borderRadius: BorderRadius.circular(25),
+                                ),
+                                child: Center(
+                                  child: Icon(
+                                    Icons.repeat, 
+                                    size: 25,
                                   ),
                                 ),
                               ),
+                              foregroundDecoration: BoxDecoration()
                             ),
-                          ],
+                            tooltip: FlutterSliderTooltip(
+                              alwaysShowTooltip: true,
+                              textStyle: TextStyle(fontSize: 17, color: Colors.white),
+                              boxStyle: FlutterSliderTooltipBox(
+                                decoration: BoxDecoration(
+                                  color: Colors.redAccent.withOpacity(0.7)
+                                )
+                              ),
+                              rightSuffix: Text(" reps"),
+                            ),
+                            trackBar: FlutterSliderTrackBar(
+                              activeTrackBarHeight: 16,
+                              inactiveTrackBarHeight: 16,
+                              //NOTE: They need their own outline to cover up mid division of background
+                              inactiveTrackBar: BoxDecoration(
+                                color: Theme.of(context).backgroundColor,
+                                border: Border(
+                                  top: BorderSide(width: 2, color: Colors.black),
+                                  bottom: BorderSide(width: 2, color: Colors.black),
+                                ),
+                              ),
+                              activeTrackBar: BoxDecoration(
+                                color: Theme.of(context).accentColor,
+                                border: Border(
+                                  top: BorderSide(width: 2, color: Colors.black),
+                                  bottom: BorderSide(width: 2, color: Colors.black),
+                                ),
+                              ),
+                            ),
+                            //NOTE: hatch marks don't work unfortunately
+                            onDragging: (handlerIndex, lowerValue, upperValue) {
+                              /*
+                              _lowerValue = lowerValue;
+                              _upperValue = upperValue;
+                              */
+                              setState(() {});
+                            },
+                          ),
                         ),
+                      ],
+                    ),
+                    Container(
+                      padding: EdgeInsets.only(
+                        //Top 98 padding address above
+                        left: 16,
+                        right: 16,
+                        bottom: 16,
                       ),
-                    ],
-                  ),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          Padding(
+                            padding: EdgeInsets.only(
+                              top: 16,
+                              bottom: 0,
+                            ),
+                            child: Container(
+                              color: Theme.of(context).dividerColor,
+                              height: 2,
+                              width: MediaQuery.of(context).size.width,
+                            ),
+                          ),
+                          Container(
+                            child: new HeaderWithInfo(
+                              title: "Prediction Formula",
+                              popUp: new PredictionFormulasPopUp(),
+                            ),
+                          ),
+                          DropdownButton<String>(
+                            value: functionValue,
+                            icon: Icon(Icons.arrow_drop_down),
+                            isExpanded: true,
+                            iconSize: 24,
+                            elevation: 16,
+                            onChanged: (String newValue) {
+                              setState(() {
+                                functionValue = newValue;
+                                functionIndex = functionToIndex[functionValue];
+                              });
+                            },
+                            items: functions.map<DropdownMenuItem<String>>((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(value),
+                              );
+                            })
+                            .toList(),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(
+                              top: 16,
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.max,
+                              children: <Widget>[
+                                Transform.translate(
+                                  offset: Offset(-16, 0),
+                                  child: Container(
+                                    height: 36,
+                                    width: 48.0 + (16 * 2),
+                                    padding: EdgeInsets.only(
+                                      right: 16,
+                                      left: 8,
+                                    ),
+                                    child: HorizontalPicker(
+                                      setTarget: setTarget,
+                                      height: 36,
+                                      numberSize: 24,
+                                    ),
+                                  ),
+                                ),
+                                Transform.translate(
+                                  offset: Offset(-24, 0),
+                                  child: Text(
+                                    "Set Target",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Container(
+                                    alignment: Alignment.centerRight,
+                                    child: Transform.translate(
+                                      offset: Offset(12, 0),
+                                      child: IconButton(
+                                        onPressed: (){
+                                          showDialog<void>(
+                                            context: context,
+                                            barrierDismissible: true,
+                                            builder: (BuildContext context) {
+                                              return new SetTargetPopUp(); 
+                                            },
+                                          );
+                                        },
+                                        icon: Icon(Icons.info),
+                                        color: Theme.of(context).accentColor,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ],
