@@ -455,7 +455,7 @@ class AnimatedRecoveryTimeInfo extends StatelessWidget {
         children: <Widget>[
           Padding(
             padding: EdgeInsets.only(
-              top: 16.0,
+              top: 24.0,
             ),
             child: Row(
               mainAxisSize: MainAxisSize.min,
@@ -548,7 +548,7 @@ class AnimatedRecoveryTimeInfo extends StatelessWidget {
                 height: 16,
                 width: (sectionGrown == 2) ? grownWidth : 0,
                 child: (sectionGrown == 2) ? TickGenerator(
-                  tickTypes: [5, 6, 5, 6, 5, 6, 5],
+                  tickTypes: [5, 11, 11, 11],
                   startTick: 95,
                   selectedDuration: selectedDuration,
                 ) : Container(),
@@ -647,7 +647,7 @@ class AnimatedRecoveryTimeInfo extends StatelessWidget {
   }
 }
 
-class TickGenerator extends StatelessWidget {
+class TickGenerator extends StatefulWidget {
   TickGenerator({
     @required this.tickTypes,
     this.startTick,
@@ -659,53 +659,86 @@ class TickGenerator extends StatelessWidget {
   final ValueNotifier<Duration> selectedDuration;
 
   @override
+  _TickGeneratorState createState() => _TickGeneratorState();
+}
+
+class _TickGeneratorState extends State<TickGenerator> {
+  @override
+  void initState() {
+    widget.selectedDuration.addListener((){
+      setState(() {});
+    });
+
+    //super init
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     double tickWidth = 3;
-
-    Widget littleTick = Container(
-      width: 0,
-      child: OverflowBox(
-        minWidth: tickWidth,
-        maxWidth: tickWidth,
-        child: Container(
-          height: 8,
-          width: tickWidth,
-          color: Theme.of(context).backgroundColor,
-        ),
-      ),
-    );
-
-    Widget bigTick = Container(
-      width: 0,
-      child: OverflowBox(
-        minWidth: tickWidth,
-        maxWidth: tickWidth,
-        child: Container(
-          height: 16,
-          width: tickWidth,
-          color: Theme.of(context).backgroundColor,
-        ),
-      ),
-    );
 
     Widget spacer = Expanded(
       child: Container(),
     );
 
+    int tempVal = widget.startTick;
+    int selected = widget.selectedDuration.value.inSeconds;
+
     //generate ticks
     List<Widget> ticks = new List<Widget>();
-    for(int i = 0; i < tickTypes.length; i++){
-      int littleOnesBeforeBigOnes = tickTypes[i];
+    for(int i = 0; i < widget.tickTypes.length; i++){
+      int littleOnesBeforeBigOnes = widget.tickTypes[i];
       for(int tick = 0; tick < littleOnesBeforeBigOnes; tick++){
-        ticks.add(littleTick);
+        bool highlight = (tempVal == selected);
+
+        //add small tick
+        ticks.add(
+          Container(
+            width: 0,
+            child: OverflowBox(
+              minWidth: tickWidth,
+              maxWidth: tickWidth,
+              child: Container(
+                height: 8,
+                width: tickWidth,
+                color: (highlight) 
+                ? Theme.of(context).accentColor
+                : Theme.of(context).backgroundColor,
+              ),
+            ),
+          ),
+        );
         ticks.add(spacer);
+        
+        //add 5 units each time
+        tempVal += 5;
       }
 
       //see if we should add a big tick
-      if(i != (tickTypes.length - 1)){
-        print("big tick");
-        ticks.add(bigTick);
+      if(i != (widget.tickTypes.length - 1)){
+        bool highlight = (tempVal == selected);
+
+        //add big tick
+        ticks.add(
+          Container(
+            width: 0,
+            child: OverflowBox(
+              minWidth: tickWidth,
+              maxWidth: tickWidth,
+              child: Container(
+                height: 16,
+                width: tickWidth,
+                color: (highlight) 
+                ? Theme.of(context).accentColor
+                : Theme.of(context).backgroundColor,
+              ),
+            ),
+          ),
+        );
         ticks.add(spacer);
+
+        //add 5 units each time
+        tempVal += 5;
       }
     }
 
