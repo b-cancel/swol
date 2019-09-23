@@ -421,7 +421,7 @@ class MinsSecsBelowTimePicker extends StatelessWidget {
 }
 
 class AnimatedRecoveryTimeInfo extends StatelessWidget {
-  const AnimatedRecoveryTimeInfo({
+  AnimatedRecoveryTimeInfo({
     Key key,
     @required this.changeDuration,
     @required this.sectionGrown,
@@ -429,6 +429,7 @@ class AnimatedRecoveryTimeInfo extends StatelessWidget {
     @required this.regularWidth,
     @required this.textHeight,
     @required this.textMaxWidth,
+    @required this.selectedDuration,
   }) : super(key: key);
 
   final Duration changeDuration;
@@ -437,9 +438,18 @@ class AnimatedRecoveryTimeInfo extends StatelessWidget {
   final double regularWidth;
   final double textHeight;
   final double textMaxWidth;
+  final ValueNotifier<Duration> selectedDuration;
 
   @override
   Widget build(BuildContext context) {
+    double sub = -(textMaxWidth * 2);
+    double sizeWhenGrown = grownWidth + sub;
+    double sizeWhenShrunk = regularWidth + sub;
+    if(sizeWhenShrunk.isNegative){
+      sizeWhenShrunk = 0;
+    }
+
+    //build
     return Center(
       child: Stack(
         children: <Widget>[
@@ -511,87 +521,200 @@ class AnimatedRecoveryTimeInfo extends StatelessWidget {
               ],
             ),
           ),
+          Row(
+            children: <Widget>[
+              AnimatedContainer(
+                duration: changeDuration,
+                height: 16,
+                width: (sectionGrown == 0) ? grownWidth : 0,
+                child: (sectionGrown == 0) ? TickGenerator(
+                  tickTypes: [7],
+                  startTick: 0,
+                  selectedDuration: selectedDuration,
+                ) : Container(),
+              ),
+              AnimatedContainer(
+                duration: changeDuration,
+                height: 16,
+                width:  (sectionGrown == 1) ? grownWidth : 0,
+                child: (sectionGrown == 1) ? TickGenerator(
+                  tickTypes: [5,6],
+                  startTick: 35,
+                  selectedDuration: selectedDuration,
+                ) : Container(),
+              ),
+              AnimatedContainer(
+                duration: changeDuration,
+                height: 16,
+                width: (sectionGrown == 2) ? grownWidth : 0,
+                child: (sectionGrown == 2) ? TickGenerator(
+                  tickTypes: [5, 6, 5, 6, 5, 6, 5],
+                  startTick: 95,
+                  selectedDuration: selectedDuration,
+                ) : Container(),
+              ),
+            ],
+          ),
           DefaultTextStyle(
             style: TextStyle(
               fontWeight: FontWeight.bold,
             ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Container(
-                  height: textHeight,
-                  width: textMaxWidth,
-                  child: FittedBox(
-                    fit: BoxFit.fitHeight,
-                    child: Center(
-                      child: Text("0s\t\t"),
+            child: Padding(
+              padding: EdgeInsets.only(
+                top: 16,
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.max,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  AnimatedContainer(
+                    duration: changeDuration,
+                    height: textHeight,                 
+                    width: (sectionGrown == 0) ? textMaxWidth : 0,
+                    alignment: Alignment.centerLeft,
+                    child: FittedBox(
+                      fit: BoxFit.fitHeight,
+                      child: Text(
+                        "0s",
+                      ),
                     ),
                   ),
-                ),
-                AnimatedContainer(
-                  duration: changeDuration,
-                  constraints: BoxConstraints(
-                    maxWidth: ((sectionGrown == 0) ? grownWidth : regularWidth)
-                    //remove the left number fully from here
-                    - textMaxWidth
-                    //and the right number half from here
-                    - (textMaxWidth / 2),
-                  ),
-                ),
-                Container(
-                  height: textHeight,
-                  width: textMaxWidth,
-                  child: FittedBox(
-                    fit: BoxFit.fitHeight,
-                    child: Center(
-                      child: Text("30s"),
+                  AnimatedContainer(
+                    duration: changeDuration,
+                    constraints: BoxConstraints(
+                      maxWidth: (sectionGrown == 0) ? sizeWhenGrown : sizeWhenShrunk,
                     ),
                   ),
-                ),
-                AnimatedContainer(
-                  duration: changeDuration,
-                  constraints: BoxConstraints(
-                    maxWidth: ((sectionGrown == 1) ? grownWidth : regularWidth)
-                    //the left and right numbers removed half from here
-                    - textMaxWidth,
-                  ),
-                ),
-                Container(
-                  height: textHeight,
-                  width: textMaxWidth,
-                  child: FittedBox(
-                    fit: BoxFit.fitHeight,
-                    child: Center(
-                      child: Text("90s"),
+                  AnimatedContainer(
+                    duration: changeDuration,
+                    height: textHeight,
+                    width: (sectionGrown == 0 || sectionGrown == 1) ? textMaxWidth : 0,
+                    alignment: (sectionGrown == 0) ? Alignment.centerRight : Alignment.centerLeft,
+                    child: FittedBox(
+                      fit: BoxFit.fitHeight,
+                      child: Center(
+                        child: Text("3"
+                        + ((sectionGrown == 0) ? "0" : "5") 
+                        + "s"),
+                      ),
                     ),
                   ),
-                ),
-                AnimatedContainer(
-                  duration: changeDuration,
-                  constraints: BoxConstraints(
-                    maxWidth: ((sectionGrown == 2) ? grownWidth : regularWidth)
-                    //remove the right number fully from here
-                    - textMaxWidth
-                    //and the left number half from here
-                    - (textMaxWidth / 2),
-                  ),
-                ),
-                Container(                                  
-                  height: textHeight,
-                  width: textMaxWidth,
-                  child: FittedBox(
-                    fit: BoxFit.fitHeight,
-                    child: Center(
-                      child: Text("5m"),
+                  AnimatedContainer(
+                    duration: changeDuration,
+                    constraints: BoxConstraints(
+                      maxWidth: (sectionGrown == 1) ? sizeWhenGrown : sizeWhenShrunk,
                     ),
                   ),
-                ),
-              ],
+                  AnimatedContainer(
+                    duration: changeDuration,
+                    height: textHeight,
+                    width: (sectionGrown == 1 || sectionGrown == 2) ? textMaxWidth : 0,
+                    alignment: (sectionGrown == 1) ? Alignment.centerRight : Alignment.centerLeft,
+                    child: FittedBox(
+                      fit: BoxFit.fitHeight,
+                      child: Center(
+                        child: Text("9"
+                        + ((sectionGrown == 1) ? "0" : "5") 
+                        + "s"),
+                      ),
+                    ),
+                  ),
+                  AnimatedContainer(
+                    duration: changeDuration,
+                    constraints: BoxConstraints(
+                      maxWidth: (sectionGrown == 2) ? sizeWhenGrown : sizeWhenShrunk,
+                    ),
+                  ),
+                  AnimatedContainer(
+                    duration: changeDuration,                           
+                    height: textHeight,
+                    width: (sectionGrown == 2) ? textMaxWidth : 0,
+                    alignment: Alignment.centerRight,
+                    child: FittedBox(
+                      fit: BoxFit.fitHeight,
+                      child: Center(
+                        child: Text("4:55"),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
-          )
+          ),
         ],
       ),
+    );
+  }
+}
+
+class TickGenerator extends StatelessWidget {
+  TickGenerator({
+    @required this.tickTypes,
+    this.startTick,
+    this.selectedDuration,
+  });
+
+  final List<int> tickTypes;
+  final int startTick;
+  final ValueNotifier<Duration> selectedDuration;
+
+  @override
+  Widget build(BuildContext context) {
+    double tickWidth = 3;
+
+    Widget littleTick = Container(
+      width: 0,
+      child: OverflowBox(
+        minWidth: tickWidth,
+        maxWidth: tickWidth,
+        child: Container(
+          height: 8,
+          width: tickWidth,
+          color: Theme.of(context).backgroundColor,
+        ),
+      ),
+    );
+
+    Widget bigTick = Container(
+      width: 0,
+      child: OverflowBox(
+        minWidth: tickWidth,
+        maxWidth: tickWidth,
+        child: Container(
+          height: 16,
+          width: tickWidth,
+          color: Theme.of(context).backgroundColor,
+        ),
+      ),
+    );
+
+    Widget spacer = Expanded(
+      child: Container(),
+    );
+
+    //generate ticks
+    List<Widget> ticks = new List<Widget>();
+    for(int i = 0; i < tickTypes.length; i++){
+      int littleOnesBeforeBigOnes = tickTypes[i];
+      for(int tick = 0; tick < littleOnesBeforeBigOnes; tick++){
+        ticks.add(littleTick);
+        ticks.add(spacer);
+      }
+
+      //see if we should add a big tick
+      if(i != (tickTypes.length - 1)){
+        print("big tick");
+        ticks.add(bigTick);
+        ticks.add(spacer);
+      }
+    }
+
+    //remove trailing spacer
+    ticks.removeLast();
+
+    //build
+    return Row(
+      children: ticks,
     );
   }
 }

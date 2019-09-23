@@ -119,12 +119,12 @@ class _AddWorkoutState extends State<AddWorkout> {
     else sectionGrown = 3;
 
     //size of the middle text and such
-    double textMaxWidth = 24;
+    double textMaxWidth = 28;
     double textHeight = 16;
 
     //denom must match, and 2 items have regular width
-    double grownWidth = sliderWidth * (5 / 7);
-    double regularWidth = sliderWidth * (1 / 7);
+    //double grownWidth = sliderWidth * (5 / 7);
+    //double regularWidth = sliderWidth * (1 / 7);
 
     //build
     return Scaffold(
@@ -279,10 +279,11 @@ class _AddWorkoutState extends State<AddWorkout> {
                       new AnimatedRecoveryTimeInfo(
                         changeDuration: changeDuration, 
                         sectionGrown: sectionGrown, 
-                        grownWidth: grownWidth, 
-                        regularWidth: regularWidth, 
+                        grownWidth: sliderWidth, 
+                        regularWidth: 0, 
                         textHeight: textHeight, 
                         textMaxWidth: textMaxWidth,
+                        selectedDuration: recoveryPeriod,
                       ),
                     ],
                   ),
