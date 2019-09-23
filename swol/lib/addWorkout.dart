@@ -93,13 +93,6 @@ class _AddWorkoutState extends State<AddWorkout> {
 
   @override
   Widget build(BuildContext context) {
-    //cal best for
-    String bestFor = "Best For Increasing Muscle ";
-    if(recoveryPeriod.value <= Duration(seconds: 30)) bestFor += "Endurance";
-    else if(recoveryPeriod.value <= Duration(seconds: 90)) bestFor += "Mass";
-    else if(recoveryPeriod.value <= Duration(minutes: 5)) bestFor += "Strength";
-    else bestFor = "This Break Is Way Too Long";
-
     //add s? (such a minimal detail)
     int mins = recoveryPeriod.value.inMinutes;
     bool showS = (mins == 1) ? false : true;
@@ -110,6 +103,24 @@ class _AddWorkoutState extends State<AddWorkout> {
     //for slider hatch mark
     double totalWidth = MediaQuery.of(context).size.width;
     double sliderWidth = totalWidth - (16.0 * 2) - (8 * 2);
+
+    //how long it takes to shift focus to a different section
+    Duration changeDuration = Duration(milliseconds: 250);
+
+    //cal best for
+    int sectionGrown;
+    if(recoveryPeriod.value <= Duration(seconds: 30)) sectionGrown = 0;
+    else if(recoveryPeriod.value <= Duration(seconds: 90)) sectionGrown = 1;
+    else if(recoveryPeriod.value <= Duration(minutes: 5)) sectionGrown = 2;
+    else sectionGrown = 3;
+
+    //size of the middle text and such
+    double textMaxWidth = 24;
+    double textHeight = 16;
+
+    //denom must match, and 2 items have regular width
+    double grownWidth = sliderWidth * (5 / 7);
+    double regularWidth = sliderWidth * (1 / 7);
 
     //build
     return Scaffold(
@@ -347,16 +358,148 @@ class _AddWorkoutState extends State<AddWorkout> {
                           ],
                         ),
                       ),
+                      MyDivider(),
                       Container(
                         padding: EdgeInsets.only(
                           top: 16,
+                          bottom: 8,
                         ),
                         child: Container(
                           width: MediaQuery.of(context).size.width,
                           child: FittedBox(
                             fit: BoxFit.fitWidth,
-                            child: Text(bestFor),
+                            child: Text("Best For Increasing Muscle"),
                           ),
+                        ),
+                      ),
+                      Center(
+                        child: Stack(
+                          children: <Widget>[
+                            Padding(
+                              padding: EdgeInsets.only(
+                                top: 16.0,
+                              ),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  AnimatedContainer(
+                                    duration: changeDuration,
+                                    width: (sectionGrown == 0) ? grownWidth : regularWidth,
+                                    child: Container(
+                                      padding: EdgeInsets.symmetric(
+                                        horizontal: (sectionGrown == 0) ? 16 : 0,
+                                      ),
+                                      child: FittedBox(
+                                        fit: BoxFit.fitWidth,
+                                        child: Text("ENDURANCE"),
+                                      ),
+                                    ),
+                                  ),
+                                  AnimatedContainer(
+                                    duration: changeDuration,
+                                    width: (sectionGrown == 1) ? grownWidth : regularWidth,
+                                    child: Container(
+                                      padding: EdgeInsets.symmetric(
+                                        horizontal: (sectionGrown == 1) ? 16 : 0,
+                                      ),
+                                      child: FittedBox(
+                                        fit: BoxFit.fitWidth,
+                                        child: Text("\t\t\t\tMASS\t\t\t\t"),
+                                      ),
+                                    ),
+                                  ),
+                                  AnimatedContainer(
+                                    duration: changeDuration,
+                                    width: (sectionGrown == 2) ? grownWidth : regularWidth,
+                                    child: Container(
+                                      padding: EdgeInsets.symmetric(
+                                        horizontal: (sectionGrown == 2) ? 16 : 0,
+                                      ),
+                                      child: FittedBox(
+                                        fit: BoxFit.fitWidth,
+                                        child: Text("STRENGTH"),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Row(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Container(
+                                  height: textHeight,
+                                  width: textMaxWidth,
+                                  child: FittedBox(
+                                    fit: BoxFit.fitHeight,
+                                    child: Center(
+                                      child: Text("0s\t\t"),
+                                    ),
+                                  ),
+                                ),
+                                AnimatedContainer(
+                                  duration: changeDuration,
+                                  constraints: BoxConstraints(
+                                    maxWidth: ((sectionGrown == 0) ? grownWidth : regularWidth)
+                                    //remove the left number fully from here
+                                    - textMaxWidth
+                                    //and the right number half from here
+                                    - (textMaxWidth / 2),
+                                  ),
+                                ),
+                                Container(
+                                  height: textHeight,
+                                  width: textMaxWidth,
+                                  child: FittedBox(
+                                    fit: BoxFit.fitHeight,
+                                    child: Center(
+                                      child: Text("30s"),
+                                    ),
+                                  ),
+                                ),
+                                AnimatedContainer(
+                                  duration: changeDuration,
+                                  constraints: BoxConstraints(
+                                    maxWidth: ((sectionGrown == 1) ? grownWidth : regularWidth)
+                                    //the left and right numbers removed half from here
+                                    - textMaxWidth,
+                                  ),
+                                ),
+                                Container(
+                                  height: textHeight,
+                                  width: textMaxWidth,
+                                  child: FittedBox(
+                                    fit: BoxFit.fitHeight,
+                                    child: Center(
+                                      child: Text("90s"),
+                                    ),
+                                  ),
+                                ),
+                                AnimatedContainer(
+                                  duration: changeDuration,
+                                  constraints: BoxConstraints(
+                                    maxWidth: ((sectionGrown == 2) ? grownWidth : regularWidth)
+                                    //remove the right number fully from here
+                                    - textMaxWidth
+                                    //and the left number half from here
+                                    - (textMaxWidth / 2),
+                                  ),
+                                ),
+                                Container(                                  
+                                  height: textHeight,
+                                  width: textMaxWidth,
+                                  child: FittedBox(
+                                    fit: BoxFit.fitHeight,
+                                    child: Center(
+                                      child: Text("5m"),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            )
+                          ],
                         ),
                       ),
                     ],
