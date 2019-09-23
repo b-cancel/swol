@@ -1,4 +1,5 @@
-int defaultFunctionIndex = 4;
+//O'Conner
+int defaultFunctionIndex = 4; 
 
 List<String> functions = [
   "Brzycki", // 0

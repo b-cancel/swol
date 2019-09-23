@@ -220,7 +220,7 @@ class SetTargetPopUp extends StatelessWidget {
             Container(
               alignment: Alignment.centerLeft,
               child: Text(
-                "So we help you track them",
+                "So we help you track them!",
               ),
             ),
             new MyDivider(),

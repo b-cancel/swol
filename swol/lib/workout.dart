@@ -3,6 +3,12 @@ import 'dart:convert';
 import 'package:flutter/widgets.dart';
 
 class Excercise{
+  //constants
+  static const Duration defaultDuration = const Duration(minutes: 1, seconds: 30);
+  static const int defaultRepTarget = 8;
+  static const int defaultSetTarget = 3;
+
+  //static (used to assign ID)
   static int nextID;
 
   //NOTE: this is set after by the addExcercise function

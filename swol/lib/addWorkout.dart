@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:swol/functions/helper.dart';
 import 'package:swol/helpers/addWorkout.dart';
 import 'package:swol/helpers/addWorkoutInfo.dart';
+import 'package:swol/helpers/mySlider.dart';
 import 'package:swol/helpers/timePicker.dart';
 import 'package:swol/utils/data.dart';
 import 'package:swol/workout.dart';
@@ -39,13 +40,19 @@ class _AddWorkoutState extends State<AddWorkout> {
   String functionValue = functions[defaultFunctionIndex];
 
   //recovery period select
-  ValueNotifier<Duration> recoveryPeriod = new ValueNotifier(Duration(minutes: 1, seconds: 30));
+  ValueNotifier<Duration> recoveryPeriod = new ValueNotifier(
+    Excercise.defaultDuration,
+  );
 
   //set target select
-  ValueNotifier<int> setTarget = new ValueNotifier(3);
+  ValueNotifier<int> setTarget = new ValueNotifier(
+    Excercise.defaultSetTarget,
+  );
 
   //rep target select
-  ValueNotifier<int> repTarget = new ValueNotifier(10);
+  ValueNotifier<int> repTarget = new ValueNotifier(
+    Excercise.defaultRepTarget,
+  );
 
   @override
   void initState() {
@@ -260,7 +267,12 @@ class _AddWorkoutState extends State<AddWorkout> {
                           width: MediaQuery.of(context).size.width,
                           child: FittedBox(
                             fit: BoxFit.fitWidth,
-                            child: Text("Best For Increasing Muscle"),
+                            child: Text(
+                              "This recovery time is best for increasing muscle",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
                           ),
                         ),
                       ),
@@ -292,15 +304,67 @@ class _AddWorkoutState extends State<AddWorkout> {
                         popUp: new RepTargetPopUp(),
                       ),
                     ),
-                    new RepTargetSlider(
-                      repTarget: repTarget,
+                    new CustomSlider(
+                      value: repTarget,
+                      lastTick: 35,
+                    ),
+                    AnimatedBuilder(
+                      animation: repTarget,
+                      builder: (context, child){
+                        String warning = "";
+                        if(repTarget.value <= 5){
+                          warning = "At this target, your chances of injury are high,"
+                          + "\nmake sure your form is flawless at all times";
+                        }
+                        else if(repTarget.value >= 21){
+                          warning = "At this target, you can quickly damage your tendons,"
+                          + "\nmake sure your body is conditioned";
+                        }
+                        else if(repTarget.value >= 13){
+                          warning = "At this target, you can damage your tendons"
+                          + "\nmake sure your body is conditioned";
+                        }
+
+                        //output warning if necessary
+                        if(warning == "") return Container();
+                        else{
+                          return Container(
+                            padding: EdgeInsets.only(
+                              left: 24,
+                              right: 24,
+                              bottom: 16,
+                            ),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Padding(
+                                  padding: EdgeInsets.only(
+                                    right: 8,
+                                  ),
+                                  child: Icon(
+                                    Icons.warning,
+                                    color: Colors.red,
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Text(
+                                    warning,
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                          );
+                        }
+                      },
                     ),
                     Container(
                       padding: EdgeInsets.only(
                         //Top 16 padding address above
                         left: 16,
                         right: 16,
-                        bottom: 16,
                       ),
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
@@ -342,65 +406,56 @@ class _AddWorkoutState extends State<AddWorkout> {
                             })
                             .toList(),
                           ),
-                          Padding(
-                            padding: EdgeInsets.only(
-                              top: 16,
-                            ),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.max,
-                              children: <Widget>[
-                                Transform.translate(
-                                  offset: Offset(-16, 0),
-                                  child: Container(
-                                    height: 36,
-                                    width: 48.0 + (16 * 2),
-                                    padding: EdgeInsets.only(
-                                      right: 16,
-                                      left: 8,
-                                    ),
-                                    child: HorizontalPicker(
-                                      setTarget: setTarget,
-                                      height: 36,
-                                      numberSize: 24,
-                                    ),
-                                  ),
-                                ),
-                                Transform.translate(
-                                  offset: Offset(-24, 0),
-                                  child: Text(
-                                    "Set Target",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Container(
-                                    alignment: Alignment.centerRight,
-                                    child: Transform.translate(
-                                      offset: Offset(12, 0),
-                                      child: IconButton(
-                                        onPressed: (){
-                                          showDialog<void>(
-                                            context: context,
-                                            barrierDismissible: true,
-                                            builder: (BuildContext context) {
-                                              return new SetTargetPopUp(); 
-                                            },
-                                          );
-                                        },
-                                        icon: Icon(Icons.info),
-                                        color: Theme.of(context).accentColor,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
+                          Container(
+                            child: new HeaderWithInfo(
+                              title: "Set Target",
+                              popUp: new SetTargetPopUp(),
                             ),
                           ),
                         ],
                       ),
                     ),
+                    new CustomSlider(
+                      value: setTarget,
+                      lastTick: 9,
+                    ),
+                    AnimatedBuilder(
+                      animation: setTarget,
+                      builder: (context, child){
+                        if(setTarget.value <= 6) return Container();
+                        else{
+                          return Container(
+                            padding: EdgeInsets.only(
+                              left: 24,
+                              right: 24,
+                              bottom: 16,
+                            ),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: <Widget>[
+                                Padding(
+                                  padding: EdgeInsets.only(
+                                    right: 8,
+                                  ),
+                                  child: Icon(
+                                    Icons.warning,
+                                    color: Colors.yellow,
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Text(
+                                    "Consider increasing weight or reps instead",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                          );
+                        }
+                      },
+                    )
                   ],
                 ),
               ),

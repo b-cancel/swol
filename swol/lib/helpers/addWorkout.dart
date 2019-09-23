@@ -5,13 +5,8 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-//internal
-import 'package:swol/utils/vibrate.dart';
-
 //plugins
 import 'package:flutter_picker/flutter_picker.dart';
-import 'package:flutter_xlider/flutter_xlider.dart';
-import 'package:intl/intl.dart' as intl;
 
 class TextFieldWithClearButton extends StatelessWidget {
   const TextFieldWithClearButton({
@@ -463,9 +458,15 @@ class AnimatedRecoveryTimeInfo extends StatelessWidget {
                     padding: EdgeInsets.symmetric(
                       horizontal: (sectionGrown == 0) ? 16 : 0,
                     ),
-                    child: FittedBox(
-                      fit: BoxFit.fitWidth,
-                      child: Text("ENDURANCE"),
+                    child: Center(
+                      child: Text(
+                        "ENDURANCE",
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                        style: TextStyle(
+                          fontWeight: (sectionGrown == 0) ? FontWeight.bold : FontWeight.normal,
+                        ),
+                      ),
                     ),
                   ),
                 ),
@@ -476,9 +477,15 @@ class AnimatedRecoveryTimeInfo extends StatelessWidget {
                     padding: EdgeInsets.symmetric(
                       horizontal: (sectionGrown == 1) ? 16 : 0,
                     ),
-                    child: FittedBox(
-                      fit: BoxFit.fitWidth,
-                      child: Text("\t\t\t\tMASS\t\t\t\t"),
+                    child: Center(
+                      child: Text(
+                        "MASS",
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                        style: TextStyle(
+                          fontWeight: (sectionGrown == 1) ? FontWeight.bold : FontWeight.normal,
+                        ),
+                      ),
                     ),
                   ),
                 ),
@@ -489,320 +496,102 @@ class AnimatedRecoveryTimeInfo extends StatelessWidget {
                     padding: EdgeInsets.symmetric(
                       horizontal: (sectionGrown == 2) ? 16 : 0,
                     ),
-                    child: FittedBox(
-                      fit: BoxFit.fitWidth,
-                      child: Text("STRENGTH"),
+                    child: Center(
+                      child: Text(
+                        "STRENGTH",
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                        style: TextStyle(
+                          fontWeight: (sectionGrown == 2) ? FontWeight.bold : FontWeight.normal,
+                        ),
+                      ),
                     ),
                   ),
                 ),
               ],
             ),
           ),
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Container(
-                height: textHeight,
-                width: textMaxWidth,
-                child: FittedBox(
-                  fit: BoxFit.fitHeight,
-                  child: Center(
-                    child: Text("0s\t\t"),
+          DefaultTextStyle(
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Container(
+                  height: textHeight,
+                  width: textMaxWidth,
+                  child: FittedBox(
+                    fit: BoxFit.fitHeight,
+                    child: Center(
+                      child: Text("0s\t\t"),
+                    ),
                   ),
                 ),
-              ),
-              AnimatedContainer(
-                duration: changeDuration,
-                constraints: BoxConstraints(
-                  maxWidth: ((sectionGrown == 0) ? grownWidth : regularWidth)
-                  //remove the left number fully from here
-                  - textMaxWidth
-                  //and the right number half from here
-                  - (textMaxWidth / 2),
-                ),
-              ),
-              Container(
-                height: textHeight,
-                width: textMaxWidth,
-                child: FittedBox(
-                  fit: BoxFit.fitHeight,
-                  child: Center(
-                    child: Text("30s"),
+                AnimatedContainer(
+                  duration: changeDuration,
+                  constraints: BoxConstraints(
+                    maxWidth: ((sectionGrown == 0) ? grownWidth : regularWidth)
+                    //remove the left number fully from here
+                    - textMaxWidth
+                    //and the right number half from here
+                    - (textMaxWidth / 2),
                   ),
                 ),
-              ),
-              AnimatedContainer(
-                duration: changeDuration,
-                constraints: BoxConstraints(
-                  maxWidth: ((sectionGrown == 1) ? grownWidth : regularWidth)
-                  //the left and right numbers removed half from here
-                  - textMaxWidth,
-                ),
-              ),
-              Container(
-                height: textHeight,
-                width: textMaxWidth,
-                child: FittedBox(
-                  fit: BoxFit.fitHeight,
-                  child: Center(
-                    child: Text("90s"),
+                Container(
+                  height: textHeight,
+                  width: textMaxWidth,
+                  child: FittedBox(
+                    fit: BoxFit.fitHeight,
+                    child: Center(
+                      child: Text("30s"),
+                    ),
                   ),
                 ),
-              ),
-              AnimatedContainer(
-                duration: changeDuration,
-                constraints: BoxConstraints(
-                  maxWidth: ((sectionGrown == 2) ? grownWidth : regularWidth)
-                  //remove the right number fully from here
-                  - textMaxWidth
-                  //and the left number half from here
-                  - (textMaxWidth / 2),
-                ),
-              ),
-              Container(                                  
-                height: textHeight,
-                width: textMaxWidth,
-                child: FittedBox(
-                  fit: BoxFit.fitHeight,
-                  child: Center(
-                    child: Text("5m"),
+                AnimatedContainer(
+                  duration: changeDuration,
+                  constraints: BoxConstraints(
+                    maxWidth: ((sectionGrown == 1) ? grownWidth : regularWidth)
+                    //the left and right numbers removed half from here
+                    - textMaxWidth,
                   ),
                 ),
-              ),
-            ],
+                Container(
+                  height: textHeight,
+                  width: textMaxWidth,
+                  child: FittedBox(
+                    fit: BoxFit.fitHeight,
+                    child: Center(
+                      child: Text("90s"),
+                    ),
+                  ),
+                ),
+                AnimatedContainer(
+                  duration: changeDuration,
+                  constraints: BoxConstraints(
+                    maxWidth: ((sectionGrown == 2) ? grownWidth : regularWidth)
+                    //remove the right number fully from here
+                    - textMaxWidth
+                    //and the left number half from here
+                    - (textMaxWidth / 2),
+                  ),
+                ),
+                Container(                                  
+                  height: textHeight,
+                  width: textMaxWidth,
+                  child: FittedBox(
+                    fit: BoxFit.fitHeight,
+                    child: Center(
+                      child: Text("5m"),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           )
         ],
       ),
-    );
-  }
-}
-
-class RepTargetSlider extends StatelessWidget {
-  const RepTargetSlider({
-    @required this.repTarget,
-    Key key,
-  }) : super(key: key);
-
-  final ValueNotifier<int> repTarget;
-
-  @override
-  Widget build(BuildContext context) {
-    double tickWidth = 3;
-    double sidePadding = 34;
-
-    Widget littleTick = Container(
-      height: 8,
-      width: tickWidth,
-      color: Theme.of(context).backgroundColor,
-    );
-
-    Widget bigTick = Container(
-      height: 16,
-      width: tickWidth,
-      color: Theme.of(context).backgroundColor,
-    );
-
-    Widget spacer = Expanded(
-      child: Container(),
-    );
-
-    return Stack(
-      alignment: AlignmentDirectional.bottomCenter,
-      children: <Widget>[
-        Container(
-          padding: EdgeInsets.only(
-            bottom: 40,
-            left: sidePadding,
-            right: sidePadding,
-          ),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: <Widget>[
-              littleTick, 
-              spacer, 
-              littleTick, 
-              spacer,
-              littleTick,
-              spacer,
-              littleTick, 
-              spacer,
-              bigTick, //-----
-              spacer, 
-              littleTick, 
-              spacer, 
-              littleTick, 
-              spacer,
-              littleTick,
-              spacer,
-              littleTick,
-              spacer,
-              bigTick, //-----
-              spacer, 
-              littleTick, 
-              spacer, 
-              littleTick, 
-              spacer,
-              littleTick,
-              spacer,
-              littleTick,
-              spacer,
-              bigTick, //-----
-              spacer, 
-              littleTick, 
-              spacer, 
-              littleTick, 
-              spacer,
-              littleTick,
-              spacer,
-              littleTick,
-              spacer,
-              bigTick, //-----
-              spacer, 
-              littleTick, 
-              spacer, 
-              littleTick, 
-              spacer,
-              littleTick,
-              spacer,
-              littleTick,
-              spacer,
-              bigTick, //-----
-              spacer, 
-              littleTick, 
-              spacer, 
-              littleTick, 
-              spacer,
-              littleTick,
-              spacer,
-              littleTick, 
-              spacer,
-              bigTick, //-----
-              spacer, 
-              littleTick, 
-              spacer, 
-              littleTick, 
-              spacer,
-              littleTick,
-              spacer,
-              littleTick, 
-              spacer,
-              bigTick, //-----
-            ],
-          ),
-        ),
-        Padding(
-          padding: EdgeInsets.only(
-            bottom: 14.75, //TODO: adjust for final product
-            left: 16,
-            right: 16,
-          ),
-          child: Row(
-            children: <Widget>[
-              Expanded(
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).accentColor,
-                    border: Border.all(
-                      width: 2, 
-                      color: Colors.black,
-                    ),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  height: 16,
-                ),
-              ),
-              Expanded(
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).backgroundColor,
-                    border: Border.all(
-                      width: 2, 
-                      color: Colors.black,
-                    ),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  height: 16,
-                ),
-              ),
-            ],
-          ),
-        ),
-        Container(
-          child: FlutterSlider(
-            step: 1,
-            jump: true,
-            //TODO: set to our default value
-            values: [repTarget.value.toDouble()],
-            min: 1,
-            max: 35,
-            handlerWidth: 35,
-            handlerHeight: 35,
-            touchSize: 35,
-            handlerAnimation: FlutterSliderHandlerAnimation(
-              scale: 1.25,
-            ),
-            handler: FlutterSliderHandler(
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Theme.of(context).primaryColorDark,
-                  borderRadius: BorderRadius.circular(25),
-                ),
-                child: Center(
-                  child: Icon(
-                    Icons.repeat, 
-                    size: 25,
-                  ),
-                ),
-              ),
-              foregroundDecoration: BoxDecoration()
-            ),
-            tooltip: FlutterSliderTooltip(
-              alwaysShowTooltip: true,
-              textStyle: TextStyle(
-                fontSize: 16, 
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
-              boxStyle: FlutterSliderTooltipBox(
-                decoration: BoxDecoration(
-                  //color: Theme.of(context).backgroundColor,
-                )
-              ),
-              numberFormat: intl.NumberFormat(),
-            ),
-            trackBar: FlutterSliderTrackBar(
-              activeTrackBarHeight: 16,
-              inactiveTrackBarHeight: 16,
-              //NOTE: They need their own outline to cover up mid division of background
-              inactiveTrackBar: BoxDecoration(
-                color: Theme.of(context).backgroundColor,
-                border: Border(
-                  top: BorderSide(width: 2, color: Colors.black),
-                  bottom: BorderSide(width: 2, color: Colors.black),
-                ),
-              ),
-              activeTrackBar: BoxDecoration(
-                color: Theme.of(context).accentColor,
-                border: Border(
-                  top: BorderSide(width: 2, color: Colors.black),
-                  bottom: BorderSide(width: 2, color: Colors.black),
-                ),
-              ),
-            ),
-            //NOTE: hatch marks don't work unfortunately
-            onDragging: (handlerIndex, lowerValue, upperValue) {
-              double val = lowerValue;
-              if(val.toInt() != repTarget.value){
-                vibrate(
-                  duration: Duration(milliseconds: 150),
-                );
-                repTarget.value = val.toInt();
-              }
-            },
-          ),
-        ),
-      ],
     );
   }
 }

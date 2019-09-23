@@ -156,19 +156,16 @@ class _ExcerciseSelectState extends State<ExcerciseSelect> with SingleTickerProv
     //build our widget given that search term
     return ListTile(
       onTap: (){
-        print("name: " +  newExcercise.name.toString() + " => " + index.toString());
-        /*
-        print("note: " + newExcercise.note.toString());
-        print("url: " + newExcercise.url.toString());
-        //-----
-        print("wait: " + newExcercise.lastBreak.toString());
         print("timestamp: " + newExcercise.lastTimeStamp.toString());
         //-----
-        print("func id: " + newExcercise.predictionID.toString());
-        print("auto: " + newExcercise.autoUpdatePrediction.toString());
-        print("set target: " + newExcercise.setTarget.toString());
-        print("auto: " + newExcercise.autoUpdateSetTarget.toString());
-        */
+        print("name: " +  newExcercise.name.toString() + " => " + index.toString());
+        print("url: " + newExcercise.url.toString());
+        print("note: " + newExcercise.note.toString());
+        //-----
+        print("recovery: " + newExcercise.recoveryPeriod.toString());
+        print("rep target: " + newExcercise.repTarget.toString());
+        print("prediction ID: " + newExcercise.predictionID.toString());
+        print("set target: " + newExcercise.lastSetTarget.toString());
 
         //test all cases
         bool timerComplete;
