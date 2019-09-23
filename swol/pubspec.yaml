@@ -22,6 +22,7 @@ dependencies:
 
   #SLIDER
   flutter_xlider: ^2.5.2
+  intl: ^0.16.0
 
   #SETTINGS
   shared_preferences: ^0.5.3+4

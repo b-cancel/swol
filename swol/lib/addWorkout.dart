@@ -1,16 +1,13 @@
 //flutter
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 //internal
 import 'package:swol/functions/helper.dart';
 import 'package:swol/helpers/addWorkout.dart';
+import 'package:swol/helpers/addWorkoutInfo.dart';
 import 'package:swol/helpers/timePicker.dart';
 import 'package:swol/utils/data.dart';
 import 'package:swol/workout.dart';
-
-//plugins
-import 'package:flutter_xlider/flutter_xlider.dart';
 
 //main widget
 class AddWorkout extends StatefulWidget {
@@ -222,77 +219,8 @@ class _AddWorkoutState extends State<AddWorkout> {
                           popUp: new ReferenceLinkPopUp(),
                         ),
                       ),
-                      ClipRRect(
-                        borderRadius: new BorderRadius.all(
-                          Radius.circular(16.0),
-                        ),
-                        child: Container(
-                          color: Colors.grey.withOpacity(0.25),
-                          padding: EdgeInsets.all(0),
-                          child: IntrinsicHeight(
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              children: <Widget>[
-                                MaterialButton(
-                                  color: Theme.of(context).accentColor,
-                                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                                  padding: EdgeInsets.all(0),
-                                  onPressed: (){
-                                    Clipboard.getData('text/plain').then((clipboarContent) {
-                                      url.value = clipboarContent.text;
-                                    });
-                                  },
-                                  child: Text(
-                                    "Paste",
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                                Expanded(
-                                  child: MaterialButton(
-                                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                                    padding: EdgeInsets.only(
-                                      left: 16,
-                                    ),
-                                    onPressed: (){
-                                      url.value = "";
-                                    },
-                                    child: Container(
-                                      padding: EdgeInsets.symmetric(
-                                        vertical: 8,
-                                      ),
-                                      alignment: Alignment.centerLeft,
-                                      child: Row(
-                                        mainAxisSize: MainAxisSize.max,
-                                        children: <Widget>[
-                                          Expanded(
-                                            child: Text(
-                                              (url.value == "") ? 'Tap to paste the link' : url.value,
-                                              style: TextStyle(
-                                                color: (url.value == "") ? Colors.grey : Colors.white,
-                                              ),
-                                              overflow: TextOverflow.clip,
-                                            ),
-                                          ),
-                                          Container(
-                                            padding: EdgeInsets.only(
-                                              right: 8,
-                                            ),
-                                            child: (url.value == "") 
-                                            ? Container()
-                                            : Icon(Icons.close),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
+                      new ReferenceLinkBox(
+                        url: url,
                       ),
                     ],
                   ),
@@ -312,51 +240,15 @@ class _AddWorkoutState extends State<AddWorkout> {
                     children: <Widget>[
                       Container(
                         child: HeaderWithInfo(
-                          title: "Break Between Sets",
+                          title: "Recovery Time Between Sets",
                           popUp: new SetBreakPopUp(),
                         ),
                       ),
                       TimePicker(
                         duration: recoveryPeriod,
                       ),
-                      DefaultTextStyle(
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold
-                        ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          children: <Widget>[
-                            Expanded(
-                              child: Padding(
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: 24,
-                                ),
-                                child: FittedBox(
-                                  fit: BoxFit.cover,
-                                  child: Text(
-                                    "MINUTE"
-                                    + ((showS) ? "S" : ""),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Container(
-                              //spacing of columns + width of dots
-                              width: (16 * 2) + 16.0,
-                            ),
-                            Expanded(
-                              child: Padding(
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: 24,
-                                ),
-                                child: FittedBox(
-                                  fit: BoxFit.cover,
-                                  child: Text("SECONDS"),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
+                      new MinsSecsBelowTimePicker(
+                        showS: showS,
                       ),
                       MyDivider(),
                       Container(
@@ -372,135 +264,13 @@ class _AddWorkoutState extends State<AddWorkout> {
                           ),
                         ),
                       ),
-                      Center(
-                        child: Stack(
-                          children: <Widget>[
-                            Padding(
-                              padding: EdgeInsets.only(
-                                top: 16.0,
-                              ),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  AnimatedContainer(
-                                    duration: changeDuration,
-                                    width: (sectionGrown == 0) ? grownWidth : regularWidth,
-                                    child: Container(
-                                      padding: EdgeInsets.symmetric(
-                                        horizontal: (sectionGrown == 0) ? 16 : 0,
-                                      ),
-                                      child: FittedBox(
-                                        fit: BoxFit.fitWidth,
-                                        child: Text("ENDURANCE"),
-                                      ),
-                                    ),
-                                  ),
-                                  AnimatedContainer(
-                                    duration: changeDuration,
-                                    width: (sectionGrown == 1) ? grownWidth : regularWidth,
-                                    child: Container(
-                                      padding: EdgeInsets.symmetric(
-                                        horizontal: (sectionGrown == 1) ? 16 : 0,
-                                      ),
-                                      child: FittedBox(
-                                        fit: BoxFit.fitWidth,
-                                        child: Text("\t\t\t\tMASS\t\t\t\t"),
-                                      ),
-                                    ),
-                                  ),
-                                  AnimatedContainer(
-                                    duration: changeDuration,
-                                    width: (sectionGrown == 2) ? grownWidth : regularWidth,
-                                    child: Container(
-                                      padding: EdgeInsets.symmetric(
-                                        horizontal: (sectionGrown == 2) ? 16 : 0,
-                                      ),
-                                      child: FittedBox(
-                                        fit: BoxFit.fitWidth,
-                                        child: Text("STRENGTH"),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Row(
-                              mainAxisSize: MainAxisSize.min,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Container(
-                                  height: textHeight,
-                                  width: textMaxWidth,
-                                  child: FittedBox(
-                                    fit: BoxFit.fitHeight,
-                                    child: Center(
-                                      child: Text("0s\t\t"),
-                                    ),
-                                  ),
-                                ),
-                                AnimatedContainer(
-                                  duration: changeDuration,
-                                  constraints: BoxConstraints(
-                                    maxWidth: ((sectionGrown == 0) ? grownWidth : regularWidth)
-                                    //remove the left number fully from here
-                                    - textMaxWidth
-                                    //and the right number half from here
-                                    - (textMaxWidth / 2),
-                                  ),
-                                ),
-                                Container(
-                                  height: textHeight,
-                                  width: textMaxWidth,
-                                  child: FittedBox(
-                                    fit: BoxFit.fitHeight,
-                                    child: Center(
-                                      child: Text("30s"),
-                                    ),
-                                  ),
-                                ),
-                                AnimatedContainer(
-                                  duration: changeDuration,
-                                  constraints: BoxConstraints(
-                                    maxWidth: ((sectionGrown == 1) ? grownWidth : regularWidth)
-                                    //the left and right numbers removed half from here
-                                    - textMaxWidth,
-                                  ),
-                                ),
-                                Container(
-                                  height: textHeight,
-                                  width: textMaxWidth,
-                                  child: FittedBox(
-                                    fit: BoxFit.fitHeight,
-                                    child: Center(
-                                      child: Text("90s"),
-                                    ),
-                                  ),
-                                ),
-                                AnimatedContainer(
-                                  duration: changeDuration,
-                                  constraints: BoxConstraints(
-                                    maxWidth: ((sectionGrown == 2) ? grownWidth : regularWidth)
-                                    //remove the right number fully from here
-                                    - textMaxWidth
-                                    //and the left number half from here
-                                    - (textMaxWidth / 2),
-                                  ),
-                                ),
-                                Container(                                  
-                                  height: textHeight,
-                                  width: textMaxWidth,
-                                  child: FittedBox(
-                                    fit: BoxFit.fitHeight,
-                                    child: Center(
-                                      child: Text("5m"),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            )
-                          ],
-                        ),
+                      new AnimatedRecoveryTimeInfo(
+                        changeDuration: changeDuration, 
+                        sectionGrown: sectionGrown, 
+                        grownWidth: grownWidth, 
+                        regularWidth: regularWidth, 
+                        textHeight: textHeight, 
+                        textMaxWidth: textMaxWidth,
                       ),
                     ],
                   ),
@@ -522,119 +292,12 @@ class _AddWorkoutState extends State<AddWorkout> {
                         popUp: new RepTargetPopUp(),
                       ),
                     ),
-                    Stack(
-                      alignment: AlignmentDirectional.bottomCenter,
-                      children: <Widget>[
-                        Padding(
-                          padding: EdgeInsets.only(
-                            bottom: 14.75, //TODO: adjust for final product
-                            left: 16,
-                            right: 16,
-                          ),
-                          child: Row(
-                            children: <Widget>[
-                              Expanded(
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    color: Theme.of(context).accentColor,
-                                    border: Border.all(
-                                      width: 2, 
-                                      color: Colors.black,
-                                    ),
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  height: 16,
-                                ),
-                              ),
-                              Expanded(
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    color: Theme.of(context).backgroundColor,
-                                    border: Border.all(
-                                      width: 2, 
-                                      color: Colors.black,
-                                    ),
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  height: 16,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          child: FlutterSlider(
-                            step: 1,
-                            jump: true,
-                            //TODO: set to our default value
-                            values: [8],
-                            min: 1,
-                            max: 35,
-                            handlerWidth: 35,
-                            handlerHeight: 35,
-                            touchSize: 35,
-                            handlerAnimation: FlutterSliderHandlerAnimation(
-                              scale: 1.25,
-                            ),
-                            handler: FlutterSliderHandler(
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: Theme.of(context).primaryColorDark,
-                                  borderRadius: BorderRadius.circular(25),
-                                ),
-                                child: Center(
-                                  child: Icon(
-                                    Icons.repeat, 
-                                    size: 25,
-                                  ),
-                                ),
-                              ),
-                              foregroundDecoration: BoxDecoration()
-                            ),
-                            tooltip: FlutterSliderTooltip(
-                              alwaysShowTooltip: true,
-                              textStyle: TextStyle(fontSize: 17, color: Colors.white),
-                              boxStyle: FlutterSliderTooltipBox(
-                                decoration: BoxDecoration(
-                                  color: Colors.redAccent.withOpacity(0.7)
-                                )
-                              ),
-                              rightSuffix: Text(" reps"),
-                            ),
-                            trackBar: FlutterSliderTrackBar(
-                              activeTrackBarHeight: 16,
-                              inactiveTrackBarHeight: 16,
-                              //NOTE: They need their own outline to cover up mid division of background
-                              inactiveTrackBar: BoxDecoration(
-                                color: Theme.of(context).backgroundColor,
-                                border: Border(
-                                  top: BorderSide(width: 2, color: Colors.black),
-                                  bottom: BorderSide(width: 2, color: Colors.black),
-                                ),
-                              ),
-                              activeTrackBar: BoxDecoration(
-                                color: Theme.of(context).accentColor,
-                                border: Border(
-                                  top: BorderSide(width: 2, color: Colors.black),
-                                  bottom: BorderSide(width: 2, color: Colors.black),
-                                ),
-                              ),
-                            ),
-                            //NOTE: hatch marks don't work unfortunately
-                            onDragging: (handlerIndex, lowerValue, upperValue) {
-                              /*
-                              _lowerValue = lowerValue;
-                              _upperValue = upperValue;
-                              */
-                              setState(() {});
-                            },
-                          ),
-                        ),
-                      ],
+                    new RepTargetSlider(
+                      repTarget: repTarget,
                     ),
                     Container(
                       padding: EdgeInsets.only(
-                        //Top 98 padding address above
+                        //Top 16 padding address above
                         left: 16,
                         right: 16,
                         bottom: 16,
@@ -742,77 +405,6 @@ class _AddWorkoutState extends State<AddWorkout> {
                 ),
               ),
             ],
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class TextFieldWithClearButton extends StatelessWidget {
-  const TextFieldWithClearButton({
-    Key key,
-    @required this.ctrl,
-    @required this.focusnode,
-    @required this.hint,
-    @required this.error,
-    @required this.present,
-    this.otherFocusNode,
-  }) : super(key: key);
-
-  final TextEditingController ctrl;
-  final FocusNode focusnode;
-  final String hint;
-  final String error;
-  final ValueNotifier<bool> present;
-  final FocusNode otherFocusNode;
-
-  @override
-  Widget build(BuildContext context) {
-    return Flexible(
-      child: Stack(
-        children: <Widget>[
-          TextField(
-            controller: ctrl,
-            focusNode: focusnode,
-            maxLines: (otherFocusNode == null) ? null : 1,
-            minLines: (otherFocusNode == null) ? 2 : 1,
-            keyboardType: TextInputType.text,
-            textInputAction: (otherFocusNode == null) 
-            ? TextInputAction.newline
-            : TextInputAction.next,
-            decoration: InputDecoration(
-              hintText: hint,
-              errorText: error,
-              //spacer so X doesn't cover the text
-              suffix: Container(
-                width: 36,
-              )
-            ),
-            onEditingComplete: (){
-              if(otherFocusNode != null){
-                FocusScope.of(context).requestFocus(otherFocusNode);
-              }
-            },
-          ),
-          Positioned(
-            right: 0,
-            top: 0,
-            bottom: 0,
-            child: Transform.translate(
-              offset: Offset(8, 0),
-              child: IconButton(
-                onPressed: (){
-                  ctrl.text = "";
-                },
-                color: Colors.grey, 
-                highlightColor: Colors.grey,
-                icon: Icon(
-                  Icons.close,
-                  color: (present.value) ? Colors.grey : Colors.transparent,
-                ),
-              ),
-            ),
           ),
         ],
       ),

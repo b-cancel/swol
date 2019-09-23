@@ -10,6 +10,13 @@ _vibrationCheck()async{
   }
 }
 
+vibrate({Duration duration: const Duration(milliseconds: 500)})async{
+  await _vibrationCheck();
+  if(hasVibration) Vibration.vibrate(
+    duration: duration.inMilliseconds,
+  );
+}
+
 startVibration()async{
   await _vibrationCheck();
   if(hasVibration){

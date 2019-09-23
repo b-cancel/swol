@@ -1,8 +1,88 @@
-import 'dart:convert';
+//dart
 import 'dart:math' as math;
 
+//flutter
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+
+//internal
+import 'package:swol/utils/vibrate.dart';
+
+//plugins
 import 'package:flutter_picker/flutter_picker.dart';
+import 'package:flutter_xlider/flutter_xlider.dart';
+import 'package:intl/intl.dart' as intl;
+
+class TextFieldWithClearButton extends StatelessWidget {
+  const TextFieldWithClearButton({
+    Key key,
+    @required this.ctrl,
+    @required this.focusnode,
+    @required this.hint,
+    @required this.error,
+    @required this.present,
+    this.otherFocusNode,
+  }) : super(key: key);
+
+  final TextEditingController ctrl;
+  final FocusNode focusnode;
+  final String hint;
+  final String error;
+  final ValueNotifier<bool> present;
+  final FocusNode otherFocusNode;
+
+  @override
+  Widget build(BuildContext context) {
+    return Flexible(
+      child: Stack(
+        children: <Widget>[
+          TextField(
+            controller: ctrl,
+            focusNode: focusnode,
+            maxLines: (otherFocusNode == null) ? null : 1,
+            minLines: (otherFocusNode == null) ? 2 : 1,
+            keyboardType: TextInputType.text,
+            textInputAction: (otherFocusNode == null) 
+            ? TextInputAction.newline
+            : TextInputAction.next,
+            decoration: InputDecoration(
+              hintText: hint,
+              errorText: error,
+              //spacer so X doesn't cover the text
+              suffix: Container(
+                width: 36,
+              )
+            ),
+            onEditingComplete: (){
+              if(otherFocusNode != null){
+                FocusScope.of(context).requestFocus(otherFocusNode);
+              }
+            },
+          ),
+          Positioned(
+            right: 0,
+            top: 0,
+            bottom: 0,
+            child: Transform.translate(
+              offset: Offset(8, 0),
+              child: IconButton(
+                onPressed: (){
+                  ctrl.text = "";
+                },
+                color: Colors.grey, 
+                highlightColor: Colors.grey,
+                icon: Icon(
+                  Icons.close,
+                  color: (present.value) ? Colors.grey : Colors.transparent,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
 
 class HeaderWithInfo extends StatelessWidget {
   const HeaderWithInfo({
@@ -136,474 +216,6 @@ class MyDivider extends StatelessWidget {
   }
 }
 
-class ExcerciseNotePopUp extends StatelessWidget {
-  const ExcerciseNotePopUp({
-    Key key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return MyInfoDialog(
-      title: "Excercise Note",
-      subtitle: "Details",
-      child: Container(
-        padding: EdgeInsets.only(
-          left: 32,
-          right: 32,
-          bottom: 16,
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            Container(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                "Here you can write in details like: \n",
-              ),
-            ),
-            Container(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                "1. Preferred grip",
-              ),
-            ),
-            Container(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                "2. Modifications you made to form",
-              ),
-            ),
-            Container(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                "3. Etc...",
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class ExcerciseNamePopUp extends StatelessWidget {
-  const ExcerciseNamePopUp({
-    Key key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return MyInfoDialog(
-      title: "Excercise Name",
-      subtitle: "Unique Name",
-      child: Container(
-        padding: EdgeInsets.only(
-          left: 32,
-          right: 32,
-          bottom: 16,
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            Container(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                "Don't worry about adding too many details here\n",
-              ),
-            ),
-            Container(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                "Extra details should be placed in notes",
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class RepTargetPopUp extends StatelessWidget {
-  const RepTargetPopUp({
-    Key key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return MyInfoDialog(
-      title: "Rep Target",
-      subtitle: "Not sure? Keep the default",
-      child: Container(
-        padding: EdgeInsets.only(
-          left: 32,
-          right: 32,
-          bottom: 16,
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            Container(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                "Different quantity of reps help you focus on different things",
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class PredictionFormulasPopUp extends StatelessWidget {
-  const PredictionFormulasPopUp({
-    Key key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return MyInfoDialog(
-      title: "Prediction Formulas",
-      subtitle: "Not sure? Keep the default",
-      child: Container(
-        padding: EdgeInsets.only(
-          left: 32,
-          right: 32,
-          bottom: 16,
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            Container(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                "Although these formulas were originally used to calculate an individual's 1 rep max\n",
-              ),
-            ),
-            Container(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                "You can also use them to determine what your next set should be\n",
-              ),
-            ),
-            Container(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                "In other words, they can give you a realistic goal to push towards",
-              ),
-            ),
-            new MyDivider(),
-            Container(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                "Assming that you have both\n",
-              ),
-            ),
-            Container(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                "1. Kept proper form",
-              ),
-            ),
-            Container(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                "2. And taken an appropiate break between sets",
-              ),
-            ),
-            new MyDivider(),
-            //
-            Container(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                "Which formula works best, depends on"
-                  + " how much your nervous system is limiting you" 
-                  + " in each individual excercise",
-              ),
-            ),
-            new MyDivider(),
-            //
-            Container(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                "In general \n",
-              ),
-            ),
-            Container(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                "Exercises that use MORE muscle will put MORE strain on your nervous system\n",
-              ),
-            ),
-            Container(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                "Exercises that use LESS muscle will put LESS strain on your nervous system",
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class AutoUpdatePopUp extends StatelessWidget {
-  const AutoUpdatePopUp({
-    Key key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return MyInfoDialog(
-      title: "Auto Update",
-      subtitle: "Not sure? Keep the default",
-      child: Container(
-        padding: EdgeInsets.only(
-          left: 32,
-          right: 32,
-          bottom: 16,
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            Container(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                "Which formula works best, depends on"
-                  + " how much your nervous system is limiting you" 
-                  + " in each individual excercise",
-              ),
-            ),
-            new MyDivider(),
-            Container(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                "But the forumla you chose initally, might not be predicting your results",
-              ),
-            ),
-            new MyDivider(),
-            Container(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                "Because your nervous system is limiting you more or less than expected",
-              ),
-            ),
-            new MyDivider(),
-            Container(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                "By enabling this, you allow the app to switch to a formula that matches your results after each set",
-              ),
-            ),
-            new MyDivider(),
-            Container(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                "So you can have a more realistic goal to push towards",
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class SetTargetPopUp extends StatelessWidget {
-  const SetTargetPopUp({
-    Key key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return MyInfoDialog(
-      title: "Set Target",
-      subtitle: "Not sure? Keep the default",
-      child: Container(
-        padding: EdgeInsets.only(
-          left: 32,
-          right: 32,
-          bottom: 16,
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            Container(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                "When you workout, it can be easy to forget how many sets you have left",
-              ),
-            ),
-            Container(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                "So we help you track them",
-              ),
-            ),
-            new MyDivider(),
-            Container(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                "In general\n",
-              ),
-            ),
-            Container(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                "The MORE reps you are doing per set",
-              ),
-            ),
-            Container(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                "the LESS sets you should be doing\n",
-              ),
-            ),
-            Container(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                "The LESS reps you are doing per set",
-              ),
-            ),
-            Container(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                "the MORE sets you should be doing",
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class SetBreakPopUp extends StatelessWidget {
-  const SetBreakPopUp({
-    Key key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return MyInfoDialog(
-      title: "Set Break",
-      subtitle: "Not sure? Keep the default",
-      child: Container(
-        padding: EdgeInsets.only(
-          left: 32,
-          right: 32,
-          bottom: 16,
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            Container(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                "You need to give your muscles time to recover!"
-              ),
-            ),
-            MyDivider(),
-            Container(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                "Exactly how much rest depends\n",
-              ),
-            ),
-            Container(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                "1. How you specifically want to improve",
-              ),
-            ),
-            Container(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                "2. And how much muscle this particular excercise uses",
-              ),
-            ),
-            MyDivider(),
-            Container(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                "In general \n",
-              ),
-            ),
-            Container(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                "Exercises that use MORE muscle will require LONGER breaks\n",
-              ),
-            ),
-            Container(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                "Exercises that use LESS muscle will require SHORTER breaks",
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class ReferenceLinkPopUp extends StatelessWidget {
-  const ReferenceLinkPopUp({
-    Key key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return MyInfoDialog(
-      title: "Reference Link",
-      subtitle: "Copy and paste from web browser",
-      child: Container(
-        padding: EdgeInsets.only(
-          left: 32,
-          right: 32,
-          bottom: 16,
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            Container(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                "Form is incredibly important!"
-              ),
-            ),
-            new MyDivider(),
-            Container(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                "Especially as you're approaching your 1 rep max, if your form isn't perfect, you could get permanently injured",
-              ),
-            ),
-            new MyDivider(),
-            Container(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                "So it's a good idea to keep a link to a video or picture of the proper form of each excercise",
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
 const Sets = '''
 [
     [1, 2, 3, 4, 5, 6, 7, 8, 9],
@@ -672,6 +284,525 @@ class HorizontalPicker extends StatelessWidget {
         ),
         itemExtent: numberSize,
       ).makePicker(),
+    );
+  }
+}
+
+class ReferenceLinkBox extends StatelessWidget {
+  const ReferenceLinkBox({
+    Key key,
+    @required this.url,
+  }) : super(key: key);
+
+  final ValueNotifier<String> url;
+
+  @override
+  Widget build(BuildContext context) {
+    return ClipRRect(
+      borderRadius: new BorderRadius.all(
+        Radius.circular(16.0),
+      ),
+      child: Container(
+        color: Colors.grey.withOpacity(0.25),
+        padding: EdgeInsets.all(0),
+        child: IntrinsicHeight(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              MaterialButton(
+                color: Theme.of(context).accentColor,
+                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                padding: EdgeInsets.all(0),
+                onPressed: (){
+                  Clipboard.getData('text/plain').then((clipboarContent) {
+                    url.value = clipboarContent.text;
+                  });
+                },
+                child: Text(
+                  "Paste",
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              Expanded(
+                child: MaterialButton(
+                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  padding: EdgeInsets.only(
+                    left: 16,
+                  ),
+                  onPressed: (){
+                    url.value = "";
+                  },
+                  child: Container(
+                    padding: EdgeInsets.symmetric(
+                      vertical: 8,
+                    ),
+                    alignment: Alignment.centerLeft,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      children: <Widget>[
+                        Expanded(
+                          child: Text(
+                            (url.value == "") ? 'Tap to paste the link' : url.value,
+                            style: TextStyle(
+                              color: (url.value == "") ? Colors.grey : Colors.white,
+                            ),
+                            overflow: TextOverflow.clip,
+                          ),
+                        ),
+                        Container(
+                          padding: EdgeInsets.only(
+                            right: 8,
+                          ),
+                          child: (url.value == "") 
+                          ? Container()
+                          : Icon(Icons.close),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class MinsSecsBelowTimePicker extends StatelessWidget {
+  const MinsSecsBelowTimePicker({
+    Key key,
+    @required this.showS,
+  }) : super(key: key);
+
+  final bool showS;
+
+  @override
+  Widget build(BuildContext context) {
+    return DefaultTextStyle(
+      style: TextStyle(
+        fontWeight: FontWeight.bold
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.max,
+        children: <Widget>[
+          Expanded(
+            child: Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: 24,
+              ),
+              child: FittedBox(
+                fit: BoxFit.cover,
+                child: Text(
+                  "MINUTE"
+                  + ((showS) ? "S" : ""),
+                ),
+              ),
+            ),
+          ),
+          Container(
+            //spacing of columns + width of dots
+            width: (16 * 2) + 16.0,
+          ),
+          Expanded(
+            child: Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: 24,
+              ),
+              child: FittedBox(
+                fit: BoxFit.cover,
+                child: Text("SECONDS"),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class AnimatedRecoveryTimeInfo extends StatelessWidget {
+  const AnimatedRecoveryTimeInfo({
+    Key key,
+    @required this.changeDuration,
+    @required this.sectionGrown,
+    @required this.grownWidth,
+    @required this.regularWidth,
+    @required this.textHeight,
+    @required this.textMaxWidth,
+  }) : super(key: key);
+
+  final Duration changeDuration;
+  final int sectionGrown;
+  final double grownWidth;
+  final double regularWidth;
+  final double textHeight;
+  final double textMaxWidth;
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Stack(
+        children: <Widget>[
+          Padding(
+            padding: EdgeInsets.only(
+              top: 16.0,
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                AnimatedContainer(
+                  duration: changeDuration,
+                  width: (sectionGrown == 0) ? grownWidth : regularWidth,
+                  child: Container(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: (sectionGrown == 0) ? 16 : 0,
+                    ),
+                    child: FittedBox(
+                      fit: BoxFit.fitWidth,
+                      child: Text("ENDURANCE"),
+                    ),
+                  ),
+                ),
+                AnimatedContainer(
+                  duration: changeDuration,
+                  width: (sectionGrown == 1) ? grownWidth : regularWidth,
+                  child: Container(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: (sectionGrown == 1) ? 16 : 0,
+                    ),
+                    child: FittedBox(
+                      fit: BoxFit.fitWidth,
+                      child: Text("\t\t\t\tMASS\t\t\t\t"),
+                    ),
+                  ),
+                ),
+                AnimatedContainer(
+                  duration: changeDuration,
+                  width: (sectionGrown == 2) ? grownWidth : regularWidth,
+                  child: Container(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: (sectionGrown == 2) ? 16 : 0,
+                    ),
+                    child: FittedBox(
+                      fit: BoxFit.fitWidth,
+                      child: Text("STRENGTH"),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Container(
+                height: textHeight,
+                width: textMaxWidth,
+                child: FittedBox(
+                  fit: BoxFit.fitHeight,
+                  child: Center(
+                    child: Text("0s\t\t"),
+                  ),
+                ),
+              ),
+              AnimatedContainer(
+                duration: changeDuration,
+                constraints: BoxConstraints(
+                  maxWidth: ((sectionGrown == 0) ? grownWidth : regularWidth)
+                  //remove the left number fully from here
+                  - textMaxWidth
+                  //and the right number half from here
+                  - (textMaxWidth / 2),
+                ),
+              ),
+              Container(
+                height: textHeight,
+                width: textMaxWidth,
+                child: FittedBox(
+                  fit: BoxFit.fitHeight,
+                  child: Center(
+                    child: Text("30s"),
+                  ),
+                ),
+              ),
+              AnimatedContainer(
+                duration: changeDuration,
+                constraints: BoxConstraints(
+                  maxWidth: ((sectionGrown == 1) ? grownWidth : regularWidth)
+                  //the left and right numbers removed half from here
+                  - textMaxWidth,
+                ),
+              ),
+              Container(
+                height: textHeight,
+                width: textMaxWidth,
+                child: FittedBox(
+                  fit: BoxFit.fitHeight,
+                  child: Center(
+                    child: Text("90s"),
+                  ),
+                ),
+              ),
+              AnimatedContainer(
+                duration: changeDuration,
+                constraints: BoxConstraints(
+                  maxWidth: ((sectionGrown == 2) ? grownWidth : regularWidth)
+                  //remove the right number fully from here
+                  - textMaxWidth
+                  //and the left number half from here
+                  - (textMaxWidth / 2),
+                ),
+              ),
+              Container(                                  
+                height: textHeight,
+                width: textMaxWidth,
+                child: FittedBox(
+                  fit: BoxFit.fitHeight,
+                  child: Center(
+                    child: Text("5m"),
+                  ),
+                ),
+              ),
+            ],
+          )
+        ],
+      ),
+    );
+  }
+}
+
+class RepTargetSlider extends StatelessWidget {
+  const RepTargetSlider({
+    @required this.repTarget,
+    Key key,
+  }) : super(key: key);
+
+  final ValueNotifier<int> repTarget;
+
+  @override
+  Widget build(BuildContext context) {
+    double tickWidth = 3;
+    double sidePadding = 34;
+
+    Widget littleTick = Container(
+      height: 8,
+      width: tickWidth,
+      color: Theme.of(context).backgroundColor,
+    );
+
+    Widget bigTick = Container(
+      height: 16,
+      width: tickWidth,
+      color: Theme.of(context).backgroundColor,
+    );
+
+    Widget spacer = Expanded(
+      child: Container(),
+    );
+
+    return Stack(
+      alignment: AlignmentDirectional.bottomCenter,
+      children: <Widget>[
+        Container(
+          padding: EdgeInsets.only(
+            bottom: 40,
+            left: sidePadding,
+            right: sidePadding,
+          ),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: <Widget>[
+              littleTick, 
+              spacer, 
+              littleTick, 
+              spacer,
+              littleTick,
+              spacer,
+              littleTick, 
+              spacer,
+              bigTick, //-----
+              spacer, 
+              littleTick, 
+              spacer, 
+              littleTick, 
+              spacer,
+              littleTick,
+              spacer,
+              littleTick,
+              spacer,
+              bigTick, //-----
+              spacer, 
+              littleTick, 
+              spacer, 
+              littleTick, 
+              spacer,
+              littleTick,
+              spacer,
+              littleTick,
+              spacer,
+              bigTick, //-----
+              spacer, 
+              littleTick, 
+              spacer, 
+              littleTick, 
+              spacer,
+              littleTick,
+              spacer,
+              littleTick,
+              spacer,
+              bigTick, //-----
+              spacer, 
+              littleTick, 
+              spacer, 
+              littleTick, 
+              spacer,
+              littleTick,
+              spacer,
+              littleTick,
+              spacer,
+              bigTick, //-----
+              spacer, 
+              littleTick, 
+              spacer, 
+              littleTick, 
+              spacer,
+              littleTick,
+              spacer,
+              littleTick, 
+              spacer,
+              bigTick, //-----
+              spacer, 
+              littleTick, 
+              spacer, 
+              littleTick, 
+              spacer,
+              littleTick,
+              spacer,
+              littleTick, 
+              spacer,
+              bigTick, //-----
+            ],
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.only(
+            bottom: 14.75, //TODO: adjust for final product
+            left: 16,
+            right: 16,
+          ),
+          child: Row(
+            children: <Widget>[
+              Expanded(
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).accentColor,
+                    border: Border.all(
+                      width: 2, 
+                      color: Colors.black,
+                    ),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  height: 16,
+                ),
+              ),
+              Expanded(
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).backgroundColor,
+                    border: Border.all(
+                      width: 2, 
+                      color: Colors.black,
+                    ),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  height: 16,
+                ),
+              ),
+            ],
+          ),
+        ),
+        Container(
+          child: FlutterSlider(
+            step: 1,
+            jump: true,
+            //TODO: set to our default value
+            values: [repTarget.value.toDouble()],
+            min: 1,
+            max: 35,
+            handlerWidth: 35,
+            handlerHeight: 35,
+            touchSize: 35,
+            handlerAnimation: FlutterSliderHandlerAnimation(
+              scale: 1.25,
+            ),
+            handler: FlutterSliderHandler(
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Theme.of(context).primaryColorDark,
+                  borderRadius: BorderRadius.circular(25),
+                ),
+                child: Center(
+                  child: Icon(
+                    Icons.repeat, 
+                    size: 25,
+                  ),
+                ),
+              ),
+              foregroundDecoration: BoxDecoration()
+            ),
+            tooltip: FlutterSliderTooltip(
+              alwaysShowTooltip: true,
+              textStyle: TextStyle(
+                fontSize: 16, 
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+              boxStyle: FlutterSliderTooltipBox(
+                decoration: BoxDecoration(
+                  //color: Theme.of(context).backgroundColor,
+                )
+              ),
+              numberFormat: intl.NumberFormat(),
+            ),
+            trackBar: FlutterSliderTrackBar(
+              activeTrackBarHeight: 16,
+              inactiveTrackBarHeight: 16,
+              //NOTE: They need their own outline to cover up mid division of background
+              inactiveTrackBar: BoxDecoration(
+                color: Theme.of(context).backgroundColor,
+                border: Border(
+                  top: BorderSide(width: 2, color: Colors.black),
+                  bottom: BorderSide(width: 2, color: Colors.black),
+                ),
+              ),
+              activeTrackBar: BoxDecoration(
+                color: Theme.of(context).accentColor,
+                border: Border(
+                  top: BorderSide(width: 2, color: Colors.black),
+                  bottom: BorderSide(width: 2, color: Colors.black),
+                ),
+              ),
+            ),
+            //NOTE: hatch marks don't work unfortunately
+            onDragging: (handlerIndex, lowerValue, upperValue) {
+              double val = lowerValue;
+              if(val.toInt() != repTarget.value){
+                vibrate(
+                  duration: Duration(milliseconds: 150),
+                );
+                repTarget.value = val.toInt();
+              }
+            },
+          ),
+        ),
+      ],
     );
   }
 }
