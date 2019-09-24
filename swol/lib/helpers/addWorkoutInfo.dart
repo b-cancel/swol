@@ -24,7 +24,21 @@ class RepTargetPopUp extends StatelessWidget {
             Container(
               alignment: Alignment.centerLeft,
               child: Text(
-                "Different quantity of reps help you focus on different things",
+                "Given your last weight and last reps we can calculate your 1 rep max",
+              ),
+            ),
+            MyDivider(),
+            Container(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                "But then its up to you to decide your rep target",
+              ),
+            ),
+            MyDivider(),
+            Container(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                "So we can calculate the weight you should be using for your next set",
               ),
             ),
           ],
