@@ -1,115 +1,46 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:swol/functions/helper.dart';
+import 'package:swol/utils/safeSave.dart';
 import 'package:swol/workout.dart';
+
+File _excerciseFile;
 
 //main struct we are maintaining
 ValueNotifier<List<Excercise>> excercises;
 
 excercisesInit()async{
-  if(excercises == null){
-    //TODO: read save workouts from file
-    await Future.delayed(Duration(seconds: 1), (){});
+  if(_excerciseFile == null){
+    //get what the file reference should be
+    _excerciseFile = await nameToFileReference("excercises");
 
+    //get access to the file
+    bool exists = await _excerciseFile.exists();
+
+    //read in file data
+    String fileData;
+    if(exists == false){
+      await _excerciseFile.create();
+      //NOTE: don't use safeSave here because 
+      //1. we need this to complete before continuing
+      //2. we know this file hasn't been written to before 
+      //  - since this is its init function
+      await _excerciseFile.writeAsString("[]");
+    }
+    //read in our data
+    fileData = await _excerciseFile.readAsString();
     excercises = ValueNotifier(new List<Excercise>());
 
-    //test additions
-    addExcercise(Excercise(
-      name: "Shoulder Press",
-      lastTimeStamp: DateTime(
-        2019, 9, 15,
-        20, 0
-      ),
-    ));
-    addExcercise(Excercise(
-      name: "Shoulder Press",
-      lastTimeStamp: DateTime(
-        2019, 9, 15,
-        20, 0
-      ),
-    ));
-    addExcercise(Excercise(
-      name: "Shoulder Press",
-      lastTimeStamp: DateTime(
-        2019, 9, 15,
-        20, 0
-      ),
-    ));
-    addExcercise(Excercise(
-      name: "Squats",
-      lastTimeStamp: DateTime(
-        2019, 9, 15,
-        18, 30
-      ),
-    ));
-    addExcercise(Excercise(
-      name: "Tricep Dips",
-      lastTimeStamp: DateTime(
-        2019, 9, 17,
-        11, 15
-      ),
-    ));
-    addExcercise(Excercise(
-      name: "Pull Ups",
-      lastTimeStamp: DateTime(
-        2019, 9, 17,
-        11
-      ),
-    ));
-    addExcercise(Excercise(
-      name: "Deadlift",
-      lastTimeStamp: DateTime(
-        2019, 9, 15,
-        17, 30
-      ),
-    ));
-    addExcercise(Excercise(
-      name: "Calf Raises",
-      lastTimeStamp: DateTime(
-        2019, 9, 17,
-        11, 30
-      ),
-    ));
-    addExcercise(Excercise(
-      name: "Bicep Curls",
-      lastTimeStamp: DateTime(
-        2019, 9, 17,
-        11, 20
-      ),
-    ));
-    addExcercise(Excercise(
-      name: "Ab Twists",
-      lastTimeStamp: DateTime(
-        2019, 9, 15,
-        20, 15
-      ),
-    ));
-    addExcercise(Excercise(
-      name: "Sit Ups",
-      lastTimeStamp: DateTime(
-        2019, 9, 17,
-        10, 
-      ),
-    ));
-    addExcercise(Excercise(
-      name: "Hammer Lifts",
-      lastTimeStamp: DateTime(
-        2019, 9, 17,
-        9, 30
-      ),
-    ));
-    addExcercise(Excercise(
-      name: "Bop It",
-      lastTimeStamp: DateTime(
-        2019, 9, 17,
-        9, 35
-      ),
-    ));
-    addExcercise(Excercise(
-      name: "Twist It",
-      lastTimeStamp: DateTime(
-        2019, 9, 17,
-        9, 32
-      ),
-    ));
+    //grab the contacts
+    //_excerciseFile = json.decode(fileData);
+    List<dynamic> map = json.decode(fileData);
+    
+    for(int i = 0; i < map.length; i++){
+      Excercise ex = Excercise.fromJson(map[i]);
+      excercises.value.add(ex);
+    }
   }
 }
 
@@ -141,4 +72,16 @@ addExcercise(Excercise theWorkout){
     Excercise workout = timeSinceToWorkout[key];
     excercises.value.add(workout);
   }
+
+  //update file
+  _updateFile();
+}
+
+//should never have to update from anywhere else
+_updateFile() async {
+  //save all this in the file
+  String newFileData = Excercise.excercisesToString(excercises.value);
+
+  //write the data
+  safeSave(_excerciseFile, newFileData);
 }

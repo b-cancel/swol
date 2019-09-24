@@ -36,12 +36,12 @@ class _AddWorkoutState extends State<AddWorkout> {
   ValueNotifier<String> url = new ValueNotifier("");
 
   //function select
-  int functionIndex = defaultFunctionIndex;
-  String functionValue = functions[defaultFunctionIndex];
+  int functionIndex = Excercise.defaultFunctionID;
+  String functionValue = functions[Excercise.defaultFunctionID];
 
   //recovery period select
   ValueNotifier<Duration> recoveryPeriod = new ValueNotifier(
-    Excercise.defaultDuration,
+    Excercise.defaultRecovery,
   );
 
   //set target select
