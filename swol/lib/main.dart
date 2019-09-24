@@ -16,6 +16,120 @@ import 'package:async/async.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+/*
+Pop up tested when tapping a form
+//test all cases
+bool timerComplete;
+bool functionsMatch;
+bool setsMatch;
+if(index == 0){
+  timerComplete = false;
+  functionsMatch = false;
+  setsMatch = false;
+}
+else if(index == 1){
+  timerComplete = false;
+  functionsMatch = false;
+  setsMatch = true; //t
+}
+else if(index == 2){
+  timerComplete = false;
+  functionsMatch = true; //t
+  setsMatch = false;
+}
+else if(index == 3){
+  timerComplete = false; //f
+  functionsMatch = true;
+  setsMatch = true;
+}
+else if(index == 4){
+  timerComplete = true; //t
+  functionsMatch = false;
+  setsMatch = false;
+}
+else if(index == 5){
+  timerComplete = true;
+  functionsMatch = false; //f
+  setsMatch = true;
+}
+else if(index == 6){
+  timerComplete = true;
+  functionsMatch = true;
+  setsMatch = false; //f
+}
+else{
+  timerComplete = true;
+  functionsMatch = true;
+  setsMatch = true;
+}
+
+//create code given the condition
+if(timerComplete){
+  //guarantee the timer show up as complete
+
+  //the timer started a minute ago
+  newExcercise.tempStartTime = DateTime.now().subtract(Duration(minutes: 1));
+  //it only needed to run for a second
+  newExcercise.recoveryPeriod = Duration(seconds: 1);
+}
+else{
+  //guarantee the timer show up as NOT complete
+  //the timer started a minute ago
+  newExcercise.tempStartTime = DateTime.now().subtract(Duration(minutes:2, seconds: 7));
+  //it NEEDS to run for 1 hour
+  newExcercise.recoveryPeriod = Duration(hours: 1);
+}
+
+//prep for functions match
+
+//last data
+newExcercise.lastWeight = 160;
+newExcercise.lastReps = 8;
+
+//assume they do the same quantity of reps as expected
+newExcercise.tempReps = 8;
+
+//expected 1 rep max
+double expectedOneRepMax = To1RM.fromWeightAndReps(
+  newExcercise.lastWeight.toDouble(), 
+  newExcercise.lastReps.toDouble(), 
+  newExcercise.predictionID,
+);
+
+//calculated expectedWeight
+double expectedWeight = ToWeight.fromRepAnd1Rm(
+  newExcercise.tempReps.toDouble(), 
+  expectedOneRepMax, 
+  newExcercise.predictionID,
+);
+
+//functions match
+if(functionsMatch){
+  newExcercise.tempWeight = expectedWeight.toInt();
+}
+else{
+  //TODO: test both above and below (-+ 50)
+  newExcercise.tempWeight = expectedWeight.toInt() + 50;
+}
+
+//sets match
+if(setsMatch){
+  newExcercise.tempSetCount = newExcercise.lastSetTarget;
+}
+else{
+  //TODO: test both above and below (-+ 1)
+  newExcercise.tempSetCount = newExcercise.lastSetTarget + 1;
+}
+
+//TODO: start with maybe are you sure
+maybePopUpsBeforeNext(
+  context,
+  excercise: newExcercise,
+  //TODO: test both
+  nextAndDone: true,
+);
+*/
+
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
@@ -166,117 +280,6 @@ class _ExcerciseSelectState extends State<ExcerciseSelect> with SingleTickerProv
         print("rep target: " + newExcercise.repTarget.toString());
         print("prediction ID: " + newExcercise.predictionID.toString());
         print("set target: " + newExcercise.lastSetTarget.toString());
-
-        //test all cases
-        bool timerComplete;
-        bool functionsMatch;
-        bool setsMatch;
-        if(index == 0){
-          timerComplete = false;
-          functionsMatch = false;
-          setsMatch = false;
-        }
-        else if(index == 1){
-          timerComplete = false;
-          functionsMatch = false;
-          setsMatch = true; //t
-        }
-        else if(index == 2){
-          timerComplete = false;
-          functionsMatch = true; //t
-          setsMatch = false;
-        }
-        else if(index == 3){
-          timerComplete = false; //f
-          functionsMatch = true;
-          setsMatch = true;
-        }
-        else if(index == 4){
-          timerComplete = true; //t
-          functionsMatch = false;
-          setsMatch = false;
-        }
-        else if(index == 5){
-          timerComplete = true;
-          functionsMatch = false; //f
-          setsMatch = true;
-        }
-        else if(index == 6){
-          timerComplete = true;
-          functionsMatch = true;
-          setsMatch = false; //f
-        }
-        else{
-          timerComplete = true;
-          functionsMatch = true;
-          setsMatch = true;
-        }
-
-        //create code given the condition
-        if(timerComplete){
-          //guarantee the timer show up as complete
-
-          //the timer started a minute ago
-          newExcercise.tempStartTime = DateTime.now().subtract(Duration(minutes: 1));
-          //it only needed to run for a second
-          newExcercise.recoveryPeriod = Duration(seconds: 1);
-        }
-        else{
-          //guarantee the timer show up as NOT complete
-          //the timer started a minute ago
-          newExcercise.tempStartTime = DateTime.now().subtract(Duration(minutes:2, seconds: 7));
-          //it NEEDS to run for 1 hour
-          newExcercise.recoveryPeriod = Duration(hours: 1);
-        }
-
-        //prep for functions match
-
-        //last data
-        newExcercise.lastWeight = 160;
-        newExcercise.lastReps = 8;
-
-        //assume they do the same quantity of reps as expected
-        newExcercise.tempReps = 8;
-
-        //expected 1 rep max
-        double expectedOneRepMax = To1RM.fromWeightAndReps(
-          newExcercise.lastWeight.toDouble(), 
-          newExcercise.lastReps.toDouble(), 
-          newExcercise.predictionID,
-        );
-
-        //calculated expectedWeight
-        double expectedWeight = ToWeight.fromRepAnd1Rm(
-          newExcercise.tempReps.toDouble(), 
-          expectedOneRepMax, 
-          newExcercise.predictionID,
-        );
-
-        //functions match
-        if(functionsMatch){
-          newExcercise.tempWeight = expectedWeight.toInt();
-        }
-        else{
-          //TODO: test both above and below (-+ 50)
-          newExcercise.tempWeight = expectedWeight.toInt() + 50;
-        }
-
-        //sets match
-        if(setsMatch){
-          newExcercise.tempSetCount = newExcercise.lastSetTarget;
-        }
-        else{
-          //TODO: test both above and below (-+ 1)
-          newExcercise.tempSetCount = newExcercise.lastSetTarget + 1;
-        }
-
-        //TODO: start with maybe are you sure
-        maybePopUpsBeforeNext(
-          context,
-          excercise: newExcercise,
-          //TODO: test both
-          nextAndDone: true,
-        );
       },
       title: Text(newExcercise.name),
       subtitle: subtitle,

@@ -54,7 +54,7 @@ class TimePicker extends StatelessWidget {
     //build
     return Picker(
       hideHeader: true,
-      looping: false, //not that many options
+      looping: true, //not that many options
       backgroundColor: Colors.transparent,
       containerColor: Colors.transparent,
       delimiter: [

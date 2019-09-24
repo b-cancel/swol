@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 
 //plugins
 import 'package:flutter_picker/flutter_picker.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class TextFieldWithClearButton extends StatelessWidget {
   const TextFieldWithClearButton({
@@ -247,7 +248,7 @@ class HorizontalPicker extends StatelessWidget {
       angle: - math.pi / 2,
       child: Picker(
         hideHeader: true,
-        looping: false, //not that many options
+        looping: false, //better for UI display
         backgroundColor: Colors.transparent,
         containerColor: Colors.transparent,
         height: height,
@@ -296,72 +297,71 @@ class ReferenceLinkBox extends StatelessWidget {
     return ClipRRect(
       borderRadius: new BorderRadius.all(
         Radius.circular(16.0),
-      ),
-      child: Container(
-        color: Colors.grey.withOpacity(0.25),
-        padding: EdgeInsets.all(0),
-        child: IntrinsicHeight(
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              MaterialButton(
-                color: Theme.of(context).accentColor,
-                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+      ), //instrinc height below
+      child: IntrinsicHeight(
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            FlatButton(
+              color: Theme.of(context).accentColor,
+              padding: EdgeInsets.all(0),
+              onPressed: (){
+                Clipboard.getData('text/plain').then((clipboarContent) {
+                  url.value = clipboarContent.text;
+                });
+              },
+              child: Text(
+                "Paste",
+                style: TextStyle(
+                  color: Theme.of(context).primaryColorDark,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            Expanded(
+              child: FlatButton(
+                color: Theme.of(context).backgroundColor,
                 padding: EdgeInsets.all(0),
-                onPressed: (){
-                  Clipboard.getData('text/plain').then((clipboarContent) {
-                    url.value = clipboarContent.text;
-                  });
+                onPressed: ()async{
+                  if (await canLaunch(url.value)) {
+                    await launch(url.value);
+                  } else {
+                    final snackBar = SnackBar(
+                      content: Text("Could Not Launch URL"),
+                    );
+
+                    // Find the Scaffold in the widget tree and use it to show a SnackBar.
+                    Scaffold.of(context).showSnackBar(snackBar);
+                  }
                 },
-                child: Text(
-                  "Paste",
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
+                child: Container(
+                  padding: EdgeInsets.all(8),
+                  child: Text(
+                    (url.value == "") ? 'Tap Paste to add the link' : url.value,
+                    style: TextStyle(
+                      color: (url.value == "") ? Colors.grey : Colors.white,
+                    ),
+                    overflow: TextOverflow.clip,
                   ),
                 ),
               ),
-              Expanded(
-                child: MaterialButton(
-                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                  padding: EdgeInsets.only(
-                    left: 16,
-                  ),
-                  onPressed: (){
-                    url.value = "";
-                  },
-                  child: Container(
-                    padding: EdgeInsets.symmetric(
-                      vertical: 8,
-                    ),
-                    alignment: Alignment.centerLeft,
-                    child: Row(
-                      mainAxisSize: MainAxisSize.max,
-                      children: <Widget>[
-                        Expanded(
-                          child: Text(
-                            (url.value == "") ? 'Tap to paste the link' : url.value,
-                            style: TextStyle(
-                              color: (url.value == "") ? Colors.grey : Colors.white,
-                            ),
-                            overflow: TextOverflow.clip,
-                          ),
-                        ),
-                        Container(
-                          padding: EdgeInsets.only(
-                            right: 8,
-                          ),
-                          child: (url.value == "") 
-                          ? Container()
-                          : Icon(Icons.close),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
+            ),
+            //show the clear button if needed
+            (url.value == "") ? Container()
+            : FlatButton(
+              padding: EdgeInsets.all(0),
+              color: Theme.of(context).scaffoldBackgroundColor,
+              onPressed: (){
+                url.value = "";
+              },
+              child: Container(
+                padding: EdgeInsets.all(0),
+                child: (url.value == "") 
+                ? Container()
+                : Icon(Icons.close),
+              )
+            )
+          ],
         ),
       ),
     );
