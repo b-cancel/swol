@@ -43,8 +43,13 @@ excercisesInit()async{
     //grab the contacts
     List<dynamic> map = json.decode(fileData);
     for(int i = 0; i < map.length; i++){
-      addExcercise(Excercise.fromJson(map[i]), updateFile: false);
+      addExcercise(
+        Excercise.fromJson(map[i]), 
+        updateOrder: false, //we update the order at the end
+        updateFile: false, //we got this data from the file
+      );
     }
+    _updateOrder();
   }
 }
 
@@ -52,7 +57,7 @@ excercisesInit()async{
 //1. heap
 //2. retain map instead of build each time
 //3. etc...
-addExcercise(Excercise theWorkout, {bool updateFile: true}){
+addExcercise(Excercise theWorkout, {bool updateOrder: true, bool updateFile: true}){
   //give it an ID (IF needed)
   if(theWorkout.id == null){
     theWorkout.id = Excercise.nextID;
@@ -62,7 +67,36 @@ addExcercise(Excercise theWorkout, {bool updateFile: true}){
 
   //add to workouts
   _excercises.value[theWorkout.id] = theWorkout;
+  if(updateOrder) _updateOrder();
 
+  //update file
+  _updateFile(updateFile);
+}
+
+deleteExcercise(int id, {bool updateFile: true}){
+  if(_excercises.value.containsKey(id)){
+    _excercises.value.remove(id);
+    excercisesOrder.value.remove(id);
+
+    //update file
+    _updateFile(updateFile);
+  }
+  else print("EXCERCISE DOESN'T EXIST");
+}
+
+updateExcercise(int id, {DateTime lastTimeStamp, bool updateFile: true}){
+  _excercises.value[id].lastTimeStamp = lastTimeStamp;
+
+  //if we updated the last time stamp then update sorting
+  if(lastTimeStamp != null){
+    _updateOrder();
+  }
+
+  //update file
+  _updateFile(updateFile);
+}
+
+_updateOrder(){
   //modify to then sort
   Map<DateTime, int> dateTimeToID = new Map<DateTime, int>();
   List<int> keys = _excercises.value.keys.toList();
@@ -90,20 +124,18 @@ addExcercise(Excercise theWorkout, {bool updateFile: true}){
     newOrder.add(thisID);
   }
 
-  //sent new to official
+  //official update
   excercisesOrder.value = newOrder;
-
-  //update file
-  if(updateFile){
-    _updateFile();
-  }
 }
 
 //should never have to update from anywhere else
-_updateFile() async {
-  //save all this in the file
-  String newFileData = Excercise.excercisesToString(_excercises.value.values.toList());
+_updateFile(bool updateFile) async {
+  if(updateFile){
+    //save all this in the file
+    String newFileData = Excercise.excercisesToString(_excercises.value.values.toList());
 
-  //write the data
-  safeSave(_excerciseFile, newFileData);
+    //write the data
+    safeSave(_excerciseFile, newFileData);
+  }
+  //ELSE we are probably just testing something
 }

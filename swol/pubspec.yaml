@@ -20,6 +20,9 @@ dependencies:
   flutter:
     sdk: flutter
 
+  #STRING PROCESS
+  diacritic: ^0.1.1
+  
   #PATH PROVIDER
   path_provider: ^1.3.0
   

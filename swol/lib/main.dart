@@ -8,9 +8,12 @@ import 'package:swol/excerciseTile.dart';
 import 'package:swol/functions/1RM&R=W.dart';
 import 'package:swol/functions/W&R=1RM.dart';
 import 'package:swol/helpers/main.dart';
+import 'package:swol/searchExcercise.dart';
 import 'package:swol/tabs/break.dart';
 import 'package:swol/updatePopUps.dart';
 import 'package:swol/utils/data.dart';
+import 'package:swol/utils/scrollToTap.dart';
+import 'package:swol/utils/searches.dart';
 import 'package:swol/utils/theme.dart';
 import 'package:swol/workout.dart';
 import 'package:async/async.dart';
@@ -220,6 +223,7 @@ class _ExcerciseSelectState extends State<ExcerciseSelect> with SingleTickerProv
 
   fetchData() {
     return this._memoizer.runOnce(() async {
+      await searchesInit();
       return await excercisesInit();
     });
   }
@@ -301,12 +305,26 @@ class ListOnDone extends StatefulWidget {
 
 class _ListOnDoneState extends State<ListOnDone> {
   final Duration maxDistanceBetweenExcercises = Duration(hours: 1, minutes: 30);
+  ValueNotifier<bool> onTop = new ValueNotifier(true);
 
   @override
   void initState() {
     //Updates every time we update[timestamp], add, or remove some excercise
     excercisesOrder.addListener((){
       setState(() {});
+    });
+
+    //scroll inits
+    //auto scroll controller
+    widget.autoScrollController.addListener((){
+      ScrollPosition position = widget.autoScrollController.position;
+      double currentOffset = widget.autoScrollController.offset;
+
+      //Determine whether we are on the top of the scroll area
+      if (currentOffset <= position.minScrollExtent) {
+        onTop.value = true;
+      }
+      else onTop.value = false;
     });
 
     //super init
@@ -330,9 +348,28 @@ class _ListOnDoneState extends State<ListOnDone> {
         DateTime thisDateTime = excercise.lastTimeStamp;
 
         //make sure that a group exists for this excercise
+        //here we are making a new section if needed
         if(thisDateTime.difference(lastDateTime) > maxDistanceBetweenExcercises){
-          //new group
-          listOfGroupOfExcercises.add(new List<Excercise>());
+          //do we really need the new section?
+          Duration timeSince = DateTime.now().difference(thisDateTime);
+          bool newWorkout = timeSince > Duration(days: 365 * 100);
+          bool newGroup;
+
+          //if we have a new workout then we only need a new group
+          //if the last item was also a new workout
+          if(newWorkout){
+            Duration prevTimeSince = DateTime.now().difference(lastDateTime);
+            bool prevNewWorkout = prevTimeSince > Duration(days: 365 * 100);
+            if(prevNewWorkout) newGroup = false;
+            else newGroup = true;
+          }
+          else newGroup = true;
+
+          //add a new group because its needed
+          //or because we have no other group
+          if(newGroup || listOfGroupOfExcercises.length == 0){
+            listOfGroupOfExcercises.add(new List<Excercise>());
+          }
         }
 
         //add this excercise to our 1. newly created group 2. OR old group
@@ -351,23 +388,6 @@ class _ListOnDoneState extends State<ListOnDone> {
         DateTime oldestDT = thisGroup[0].lastTimeStamp;
         Duration timeSince = DateTime.now().difference(oldestDT);
 
-        //highlight first workout section
-        //NOTE: may be NEW, or IN PROGRESS, or simple NEXT
-        bool isFirstSection = (i == 0);
-        Color topColor;
-        Color textColor;
-        FontWeight fontWeight;
-        if(isFirstSection){
-          topColor = Theme.of(context).accentColor;
-          textColor = Theme.of(context).primaryColor;
-          fontWeight = FontWeight.bold;
-        }
-        else{
-          topColor = Theme.of(context).primaryColor;
-          textColor = Colors.white;
-          fontWeight = FontWeight.normal;
-        }
-
         //change title if new or in progress
         //TODO: handle in progress
         String title = formatDuration(
@@ -379,9 +399,43 @@ class _ListOnDoneState extends State<ListOnDone> {
           short: false,
         );
         String subtitle = "on a " + weekDayToString[oldestDT.weekday];
+        bool isArchived = false;
         if(timeSince > Duration(days: 365 * 100)){
-          title = "New Workout";
-          subtitle = "";
+          title = "New Excercises";
+          subtitle = null;
+        }
+        else if(timeSince < Duration.zero){
+          isArchived = true;
+          title = "Archived Excercises";
+          subtitle = null;
+        }
+
+        //highlight first workout section
+        //NOTE: may be NEW, or IN PROGRESS, or simple NEXT
+        bool isFirstSection = (i == 0);
+        Color topColor;
+        Color textColor;
+        FontWeight fontWeight;
+        if(isFirstSection || isArchived){
+          topColor = Theme.of(context).accentColor;
+          textColor = Theme.of(context).primaryColor;
+          fontWeight = FontWeight.bold;
+        }
+        else{
+          topColor = Theme.of(context).primaryColor;
+          textColor = Colors.white;
+          fontWeight = FontWeight.normal;
+        }
+
+        //determine if archived are below
+        Color bottomColor = Theme.of(context).primaryColor;
+        if((i + 1) < listOfGroupOfExcercises.length){
+          //there is a section below our but is it archived
+          DateTime prevTS = listOfGroupOfExcercises[i+1][0].lastTimeStamp;
+          Duration timeSince = DateTime.now().difference(prevTS);
+          if(timeSince < Duration.zero){
+            bottomColor = Theme.of(context).accentColor;
+          }
         }
 
         //add this section to the list of slivers
@@ -409,7 +463,12 @@ class _ListOnDoneState extends State<ListOnDone> {
                     new Text(
                       title,
                     ),
-                    new Text(
+                    (subtitle == null)
+                    ? MyChip(
+                      chipString: (isArchived) ? "ARCHIVED" : "NEW", 
+                      inverse: true,
+                    )
+                    : Text(
                       subtitle,
                     )
                   ],
@@ -432,7 +491,7 @@ class _ListOnDoneState extends State<ListOnDone> {
                           ),
                           Expanded(
                             child: Container(
-                              color: Theme.of(context).primaryColor,
+                              color: bottomColor,
                               child: Container(),
                             ),
                           ),
@@ -469,6 +528,8 @@ class _ListOnDoneState extends State<ListOnDone> {
         SliverToBoxAdapter(
           child: Container(
             color: Theme.of(context).primaryColor,
+            //56 larger button height
+            //48 smaller button height
             height: 16 + 48.0 + 16,
             width: MediaQuery.of(context).size.width,
             alignment: Alignment.centerLeft,
@@ -533,27 +594,34 @@ class _ListOnDoneState extends State<ListOnDone> {
           controller: widget.autoScrollController,
           slivers: finalWidgetList,
         ),
-        //TODO: remove this once timer functionality is all handled
         Positioned(
           right: 0,
           bottom: 0,
           child: Padding(
             padding: const EdgeInsets.all(16.0),
-            child: FloatingActionButton(
+            child: FloatingActionButton.extended(
               onPressed: (){
                 Navigator.push(
                   context, 
                   PageTransition(
                     type: PageTransitionType.downToUp, 
-                    child: Break(
+                    child: SearchExcercise(),
+                    
+                    
+                    /*Break(
                       startDuration: Duration(minutes: 5, seconds: 30),
-                    )
+                    )*/
                   ),
                 );
               },
-              child: Icon(Icons.search),
+              icon: Icon(Icons.search),
+              label: Text("Search"),
             ),
           ),
+        ),
+        ScrollToTopButton(
+          onTop: onTop,
+          autoScrollController: widget.autoScrollController,
         ),
         //Add New Excercise Button
         Positioned(
