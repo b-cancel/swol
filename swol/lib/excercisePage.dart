@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:swol/utils/data.dart';
 
+//plugins mod
+import 'package:swol/pluginMod/verticalTabs.dart';
+
 class ExcercisePage extends StatelessWidget {
   ExcercisePage({
     @required this.excerciseID,
@@ -149,16 +152,11 @@ class ExcercisePage extends StatelessWidget {
           ),
         ],
       ),
-      body: FlatButton(
-        onPressed: (){
-          //updateExcercise(excerciseID, lastTimeStamp: DateTime.now());
-        },
-        child: Container(
-          child: Center(
-            child: Text("add tabs here"),
-          ),
-        ),
+      body: VerticalTabs(
+        excerciseID: excerciseID,
       ),
     );
   }
+
+  Tab emptyTab() => Tab(child: Text(''));
 }

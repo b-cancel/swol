@@ -5,10 +5,10 @@ import 'package:swol/helpers/timePicker.dart';
 
 class Break extends StatefulWidget {
   Break({
-    @required this.startDuration,
+    @required this.recoveryDuration,
   });
 
-  final Duration startDuration;
+  final ValueNotifier<Duration> recoveryDuration;
 
   @override
   _BreakState createState() => _BreakState();
@@ -16,7 +16,6 @@ class Break extends StatefulWidget {
 
 class _BreakState extends State<Break> with SingleTickerProviderStateMixin {
   //primary vars
-  ValueNotifier<Duration> fullDuration;
   DateTime timerStart;
 
   //before changing fullDuration we let the picker change this
@@ -25,11 +24,9 @@ class _BreakState extends State<Break> with SingleTickerProviderStateMixin {
   //init
   @override
   void initState() {
+    //TODO: use the timer start of the object
     //record the time the timer started
     timerStart = DateTime.now();
-
-    //set the duration
-    fullDuration = new ValueNotifier(widget.startDuration);
 
     //super init
     super.initState();
@@ -56,7 +53,7 @@ class _BreakState extends State<Break> with SingleTickerProviderStateMixin {
                   width: 2,
                 ),
                 onPressed: (){
-                  possibleFullDuration.value = fullDuration.value;
+                  possibleFullDuration.value = widget.recoveryDuration.value;
 
                   showDialog<void>(
                     context: context,
@@ -96,7 +93,7 @@ class _BreakState extends State<Break> with SingleTickerProviderStateMixin {
                             ),
                             RaisedButton(
                               onPressed: (){
-                                fullDuration.value = possibleFullDuration.value;
+                                widget.recoveryDuration.value = possibleFullDuration.value;
                                 Navigator.pop(context);
                               },
                               child: Text(
@@ -122,7 +119,7 @@ class _BreakState extends State<Break> with SingleTickerProviderStateMixin {
                   width: size,
                   padding: EdgeInsets.all(24),
                   child: AnimLiquidIndicator(
-                    durationFull: fullDuration,
+                    durationFull: widget.recoveryDuration,
                     timerStart: timerStart,
                     //size of entire bubble = size container - padding for each size
                     centerSize: size - (24 * 2),

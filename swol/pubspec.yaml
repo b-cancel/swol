@@ -20,6 +20,9 @@ dependencies:
   flutter:
     sdk: flutter
 
+  #VERTICAL TABS
+  #vertical_tabs: ^0.1.4 #using my version
+
   #STRING PROCESS
   diacritic: ^0.1.1
   

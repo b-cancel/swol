@@ -352,22 +352,34 @@ class _ListOnDoneState extends State<ListOnDone> {
         if(thisDateTime.difference(lastDateTime) > maxDistanceBetweenExcercises){
           //do we really need the new section?
           Duration timeSince = DateTime.now().difference(thisDateTime);
+          Duration prevTimeSince = DateTime.now().difference(lastDateTime);
+          bool newGroupRequired;
+
+          //check if it belongs to a special section
           bool newWorkout = timeSince > Duration(days: 365 * 100);
-          bool newGroup;
+          bool archivedWorkout = timeSince < Duration.zero;
+          
 
           //if we have a new workout then we only need a new group
           //if the last item was also a new workout
-          if(newWorkout){
-            Duration prevTimeSince = DateTime.now().difference(lastDateTime);
-            bool prevNewWorkout = prevTimeSince > Duration(days: 365 * 100);
-            if(prevNewWorkout) newGroup = false;
-            else newGroup = true;
+          if(newWorkout || archivedWorkout){
+            //NOTE: its never both
+            if(newWorkout){
+              bool prevNewWorkout = prevTimeSince > Duration(days: 365 * 100);
+              if(prevNewWorkout) newGroupRequired = false;
+              else newGroupRequired = true;
+            }
+            else{
+              bool prevArchivedWorkout = prevTimeSince < Duration.zero;
+              if(prevArchivedWorkout) newGroupRequired = false;
+              else newGroupRequired = true;
+            }
           }
-          else newGroup = true;
+          else newGroupRequired = true;
 
           //add a new group because its needed
           //or because we have no other group
-          if(newGroup || listOfGroupOfExcercises.length == 0){
+          if(newGroupRequired || listOfGroupOfExcercises.length == 0){
             listOfGroupOfExcercises.add(new List<Excercise>());
           }
         }
