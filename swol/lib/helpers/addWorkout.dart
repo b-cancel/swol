@@ -9,24 +9,67 @@ import 'package:flutter/services.dart';
 import 'package:flutter_picker/flutter_picker.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class TextFieldWithClearButton extends StatelessWidget {
+class TextFieldWithClearButton extends StatefulWidget {
   const TextFieldWithClearButton({
     Key key,
-    @required this.ctrl,
-    @required this.focusnode,
     @required this.hint,
     @required this.error,
-    @required this.present,
-    this.otherFocusNode,
+    this.autofocus: false,
+    this.focusNode, //If passed then use this
+    this.present, //If passed then use this
+    this.otherFocusNode, //If passed then shift over on next
   }) : super(key: key);
 
-  final TextEditingController ctrl;
-  final FocusNode focusnode;
   final String hint;
   final String error;
+  final bool autofocus;
+  final FocusNode focusNode;
   final ValueNotifier<bool> present;
   final FocusNode otherFocusNode;
 
+  @override
+  _TextFieldWithClearButtonState createState() => _TextFieldWithClearButtonState();
+}
+
+class _TextFieldWithClearButtonState extends State<TextFieldWithClearButton> {
+  TextEditingController ctrl = new TextEditingController();
+  FocusNode focusNode;
+  ValueNotifier<bool> present;
+
+  //init
+  @override
+  void initState() {
+    //handle focus passed or not
+    if(widget.focusNode == null){
+      focusNode = new FocusNode();
+    }
+    else focusNode = widget.focusNode;
+
+    //handle present passed or not
+    if(widget.present == null){
+      present = new ValueNotifier(false);
+    }
+    else present = widget.present;
+
+    //handle showing or hiding clear button
+    ctrl.addListener((){
+      present.value = (ctrl.text != "");
+      setState(() {});
+    });
+
+    //handle autofocus
+    //autofocus name
+    if(widget.autofocus){
+      WidgetsBinding.instance.addPostFrameCallback((_){
+        FocusScope.of(context).requestFocus(focusNode);
+      });
+    }
+
+    //super init
+    super.initState();
+  }
+
+  //build
   @override
   Widget build(BuildContext context) {
     return Flexible(
@@ -34,24 +77,24 @@ class TextFieldWithClearButton extends StatelessWidget {
         children: <Widget>[
           TextField(
             controller: ctrl,
-            focusNode: focusnode,
-            maxLines: (otherFocusNode == null) ? null : 1,
-            minLines: (otherFocusNode == null) ? 2 : 1,
+            focusNode: focusNode,
+            maxLines: (widget.otherFocusNode == null) ? null : 1,
+            minLines: (widget.otherFocusNode == null) ? 2 : 1,
             keyboardType: TextInputType.text,
-            textInputAction: (otherFocusNode == null) 
+            textInputAction: (widget.otherFocusNode == null) 
             ? TextInputAction.newline
             : TextInputAction.next,
             decoration: InputDecoration(
-              hintText: hint,
-              errorText: error,
+              hintText: widget.hint,
+              errorText: widget.error,
               //spacer so X doesn't cover the text
               suffix: Container(
                 width: 36,
               )
             ),
             onEditingComplete: (){
-              if(otherFocusNode != null){
-                FocusScope.of(context).requestFocus(otherFocusNode);
+              if(widget.otherFocusNode != null){
+                FocusScope.of(context).requestFocus(widget.otherFocusNode);
               }
             },
           ),

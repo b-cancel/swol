@@ -21,18 +21,11 @@ class AddWorkout extends StatefulWidget {
 }
 
 class _AddWorkoutState extends State<AddWorkout> {
-  //name field
-  TextEditingController nameCtrl = new TextEditingController();
-  FocusNode nameFN = new FocusNode();
+  //basics
   ValueNotifier<bool> namePresent = new ValueNotifier(false);
-  String nameError; //required since the name is required
-
-  //note field
-  TextEditingController noteCtrl = new TextEditingController();
-  FocusNode noteFN = new FocusNode();
-  ValueNotifier<bool> notePresent = new ValueNotifier(false);
-
-  //url field
+  ValueNotifier<bool> nameError = new ValueNotifier(false);
+  ValueNotifier<String> name = new ValueNotifier("");
+  ValueNotifier<String> note = new ValueNotifier("");
   ValueNotifier<String> url = new ValueNotifier("");
 
   //function select
@@ -56,38 +49,13 @@ class _AddWorkoutState extends State<AddWorkout> {
 
   @override
   void initState() {
-    //autofocus name
-    WidgetsBinding.instance.addPostFrameCallback((_){
-      FocusScope.of(context).requestFocus(nameFN);
-    });
-
-    //update name present
-    nameCtrl.addListener((){
-      namePresent.value = (nameCtrl.text != "");
+    //update when break updates
+    recoveryPeriod.addListener((){
+      setState(() {});
     });
 
     //update button given once name given
     namePresent.addListener((){
-      setState(() {});
-    });
-
-    //update note present
-    noteCtrl.addListener((){
-      notePresent.value = (noteCtrl.text != "");
-    });
-
-    //update present
-    notePresent.addListener((){
-      setState(() {});
-    });
-
-    //when url change we update
-    url.addListener((){
-      setState(() {});
-    });
-
-    //update when break updates
-    recoveryPeriod.addListener((){
       setState(() {});
     });
 
@@ -100,9 +68,6 @@ class _AddWorkoutState extends State<AddWorkout> {
     //add s? (such a minimal detail)
     int mins = recoveryPeriod.value.inMinutes;
     bool showS = (mins == 1) ? false : true;
-
-    //other
-    String nameHint = "Required*";
 
     //for slider hatch mark
     double totalWidth = MediaQuery.of(context).size.width;
@@ -141,9 +106,9 @@ class _AddWorkoutState extends State<AddWorkout> {
                 if(namePresent.value){
                   //add workout to our list
                   addExcercise(Excercise(
-                    name: nameCtrl.text,
+                    name: name.value,
                     url: url.value,
-                    note: noteCtrl.text,
+                    note: note.value,
 
                     //we must work off of current so the list is build properly
                     //the new excercises you added the longest time ago are on top
@@ -160,7 +125,7 @@ class _AddWorkoutState extends State<AddWorkout> {
                   Navigator.pop(context);
                 }
                 else{
-                  nameError = "Name Is Required";
+                  nameError.value = true;
                   setState(() {});
                 }
               },
@@ -193,43 +158,12 @@ class _AddWorkoutState extends State<AddWorkout> {
                     right: 16,
                     bottom: 16,
                   ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: <Widget>[
-                      HeaderWithInfo(
-                        title: "Excercise Name",
-                        popUp: ExcerciseNamePopUp(),
-                      ),
-                      new TextFieldWithClearButton(
-                        ctrl: nameCtrl, 
-                        focusnode: nameFN, 
-                        hint: nameHint, 
-                        error: nameError, 
-                        present: namePresent,
-                        otherFocusNode: noteFN,
-                      ),
-                      HeaderWithInfo(
-                        title: "Excercise Notes",
-                        popUp: ExcerciseNotePopUp(),
-                      ),
-                      new TextFieldWithClearButton(
-                        ctrl: noteCtrl, 
-                        focusnode: noteFN, 
-                        hint: "Details", 
-                        error: null, 
-                        present: notePresent,
-                      ),
-                      Container(
-                        child: HeaderWithInfo(
-                          title: "Reference Link",
-                          popUp: new ReferenceLinkPopUp(),
-                        ),
-                      ),
-                      new ReferenceLinkBox(
-                        url: url,
-                      ),
-                    ],
+                  child: new BasicEditor(
+                    namePresent: namePresent,
+                    nameError: nameError,
+                    name: name,
+                    note: note,
+                    url: url,
                   ),
                 ),
               ),
@@ -464,6 +398,84 @@ class _AddWorkoutState extends State<AddWorkout> {
           ),
         ],
       ),
+    );
+  }
+}
+
+class BasicEditor extends StatefulWidget {
+  const BasicEditor({
+    Key key,
+    @required this.namePresent,
+    @required this.nameError,
+    @required this.name,
+    @required this.note,
+    @required this.url,
+  }) : super(key: key);
+
+  final ValueNotifier<bool> namePresent;
+  final ValueNotifier<bool> nameError;
+  final ValueNotifier<String> name; 
+  final ValueNotifier<String> note; 
+  final ValueNotifier<String> url;
+
+  @override
+  _BasicEditorState createState() => _BasicEditorState();
+}
+
+class _BasicEditorState extends State<BasicEditor> {
+  FocusNode noteFocusNode = FocusNode();
+
+  @override
+  void initState() {
+    //when url change we update
+    widget.url.addListener((){
+      setState(() {});
+    });
+
+    //super init
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: <Widget>[
+        HeaderWithInfo(
+          title: "Excercise Name",
+          popUp: ExcerciseNamePopUp(),
+        ),
+        new TextFieldWithClearButton(
+          hint: "Required*", 
+          error: (widget.nameError.value) ? "Name Is Required" : null, 
+          //auto focus field
+          autofocus: true,
+          //we need to keep track above to determine whether we can active the button
+          present: widget.namePresent, 
+          //so next focuses on the note
+          otherFocusNode: noteFocusNode,
+        ),
+        HeaderWithInfo(
+          title: "Excercise Notes",
+          popUp: ExcerciseNotePopUp(),
+        ),
+        new TextFieldWithClearButton(
+          hint: "Details", 
+          error: null, 
+          //so we can link up both fields
+          focusNode: noteFocusNode,
+        ),
+        Container(
+          child: HeaderWithInfo(
+            title: "Reference Link",
+            popUp: new ReferenceLinkPopUp(),
+          ),
+        ),
+        new ReferenceLinkBox(
+          url: widget.url,
+        ),
+      ],
     );
   }
 }
