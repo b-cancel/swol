@@ -8,8 +8,15 @@ import 'package:swol/workout.dart';
 
 File _excerciseFile;
 
-//main struct we are maintaining
-ValueNotifier<List<Excercise>> excercises;
+//main struct we are maintaining (id -> excercise)
+//this is the best action to take since this is the type of update we will be doing the most of usually
+ValueNotifier<Map<int, Excercise>> _excercises;
+//TODO: should also update when any excercise changes their timeStamp
+ValueNotifier<List<int>> excercisesOrder;
+
+ValueNotifier<Map<int, Excercise>> getExcercises(){
+  return _excercises;
+}
 
 excercisesInit()async{
   if(_excerciseFile == null){
@@ -31,15 +38,12 @@ excercisesInit()async{
     }
     //read in our data
     fileData = await _excerciseFile.readAsString();
-    excercises = ValueNotifier(new List<Excercise>());
+    _excercises = ValueNotifier(new Map<int, Excercise>());
 
     //grab the contacts
-    //_excerciseFile = json.decode(fileData);
     List<dynamic> map = json.decode(fileData);
-    
     for(int i = 0; i < map.length; i++){
-      Excercise ex = Excercise.fromJson(map[i]);
-      excercises.value.add(ex);
+      addExcercise(Excercise.fromJson(map[i]), updateFile: false);
     }
   }
 }
@@ -48,39 +52,57 @@ excercisesInit()async{
 //1. heap
 //2. retain map instead of build each time
 //3. etc...
-addExcercise(Excercise theWorkout){
-  //give it an ID
-  theWorkout.id = Excercise.nextID;
-  Excercise.nextID += 1;
+addExcercise(Excercise theWorkout, {bool updateFile: true}){
+  //give it an ID (IF needed)
+  if(theWorkout.id == null){
+    theWorkout.id = Excercise.nextID;
+    print("new index: " + theWorkout.id.toString());
+    Excercise.nextID += 1;
+  }
 
   //add to workouts
-  excercises.value.add(theWorkout);
+  _excercises.value[theWorkout.id] = theWorkout;
+
+  //modify to then sort
+  Map<DateTime, int> dateTimeToID = new Map<DateTime, int>();
+  List<int> keys = _excercises.value.keys.toList();
+  for(int i = 0; i < keys.length; i++){
+    int keyIsID = keys[i];
+    Excercise workout = _excercises.value[keyIsID];
+    dateTimeToID[workout.lastTimeStamp] = keyIsID;
+  }
 
   //sort
-  Map<DateTime, Excercise> timeSinceToWorkout = new Map<DateTime, Excercise>();
-  for(int i = 0; i < excercises.value.length; i++){
-    Excercise workout = excercises.value[i];
-    timeSinceToWorkout[workout.lastTimeStamp] = workout;
-  }
-  List<DateTime> sortedTimeSinces = timeSinceToWorkout.keys.toList();
-  sortedTimeSinces.sort();
+  List<DateTime> dates = dateTimeToID.keys.toList();
+  dates.sort();
+  //NOTE: dates are now sorted
 
-  //apply sort
-  excercises.value.clear();
-  for(int i = 0; i < sortedTimeSinces.length; i++){
-    DateTime key = sortedTimeSinces[i];
-    Excercise workout = timeSinceToWorkout[key];
-    excercises.value.add(workout);
+  //initialize the structure we use if needed
+  if(excercisesOrder == null){
+    excercisesOrder = new ValueNotifier(new List<int>());
   }
+
+  //find the place the new id in its position
+  List<int> newOrder = new List<int>();
+  for(int i = 0; i < dates.length; i++){
+    DateTime thisDate = dates[i];
+    int thisID = dateTimeToID[thisDate];
+    newOrder.add(thisID);
+  }
+
+  //sent new to official
+  excercisesOrder.value = newOrder;
 
   //update file
-  _updateFile();
+  if(updateFile){
+    _updateFile();
+  }
 }
 
 //should never have to update from anywhere else
 _updateFile() async {
   //save all this in the file
-  String newFileData = Excercise.excercisesToString(excercises.value);
+  String newFileData = Excercise.excercisesToString(_excercises.value.values.toList());
 
   //write the data
   safeSave(_excerciseFile, newFileData);
