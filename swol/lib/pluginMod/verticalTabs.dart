@@ -4,6 +4,8 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:swol/tabs/break.dart';
+import 'package:swol/tabs/setRecord.dart';
+import 'package:swol/tabs/suggest.dart';
 import 'package:swol/utils/data.dart';
 
 /// A vertical tab widget for flutter
@@ -87,16 +89,14 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
       },
       controller: pageController,
       children: <Widget>[
-        Container(
-          color: Colors.red,
-          child: Container(),
+        Suggestion(
+
+        ),
+        SetRecord(
+
         ),
         Break(
           recoveryDuration: recoveryDuration,
-        ),
-        Container(
-          color: Colors.blue,
-          child: Container(),
         ),
       ],
     );

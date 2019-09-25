@@ -34,7 +34,7 @@ class ExcerciseTile extends StatelessWidget {
     if(listDisplay == false && subtitle == null){
       if(timeSince < Duration.zero){
         subtitle = MyChip(
-          chipString: "Archived",
+          chipString: "Hidden",
         );
       }
       else{

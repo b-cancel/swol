@@ -20,6 +20,9 @@ dependencies:
   flutter:
     sdk: flutter
 
+  #AUTO SIZE TEXT
+  auto_size_text: ^2.1.0
+
   #VERTICAL TABS
   #vertical_tabs: ^0.1.4 #using my version
 

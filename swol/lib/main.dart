@@ -357,12 +357,12 @@ class _ListOnDoneState extends State<ListOnDone> {
 
           //check if it belongs to a special section
           bool newWorkout = timeSince > Duration(days: 365 * 100);
-          bool archivedWorkout = timeSince < Duration.zero;
+          bool hiddenWorkout = timeSince < Duration.zero;
           
 
           //if we have a new workout then we only need a new group
           //if the last item was also a new workout
-          if(newWorkout || archivedWorkout){
+          if(newWorkout || hiddenWorkout){
             //NOTE: its never both
             if(newWorkout){
               bool prevNewWorkout = prevTimeSince > Duration(days: 365 * 100);
@@ -370,8 +370,8 @@ class _ListOnDoneState extends State<ListOnDone> {
               else newGroupRequired = true;
             }
             else{
-              bool prevArchivedWorkout = prevTimeSince < Duration.zero;
-              if(prevArchivedWorkout) newGroupRequired = false;
+              bool prevHiddenWorkout = prevTimeSince < Duration.zero;
+              if(prevHiddenWorkout) newGroupRequired = false;
               else newGroupRequired = true;
             }
           }
@@ -411,14 +411,14 @@ class _ListOnDoneState extends State<ListOnDone> {
           short: false,
         );
         String subtitle = "on a " + weekDayToString[oldestDT.weekday];
-        bool isArchived = false;
+        bool isHidden = false;
         if(timeSince > Duration(days: 365 * 100)){
           title = "New Excercises";
           subtitle = null;
         }
         else if(timeSince < Duration.zero){
-          isArchived = true;
-          title = "Archived Excercises";
+          isHidden = true;
+          title = "Hidden Excercises";
           subtitle = null;
         }
 
@@ -428,7 +428,7 @@ class _ListOnDoneState extends State<ListOnDone> {
         Color topColor;
         Color textColor;
         FontWeight fontWeight;
-        if(isFirstSection || isArchived){
+        if(isFirstSection || isHidden){
           topColor = Theme.of(context).accentColor;
           textColor = Theme.of(context).primaryColor;
           fontWeight = FontWeight.bold;
@@ -439,10 +439,10 @@ class _ListOnDoneState extends State<ListOnDone> {
           fontWeight = FontWeight.normal;
         }
 
-        //determine if archived are below
+        //determine if hidden are below
         Color bottomColor = Theme.of(context).primaryColor;
         if((i + 1) < listOfGroupOfExcercises.length){
-          //there is a section below our but is it archived
+          //there is a section below our but is it hidden
           DateTime prevTS = listOfGroupOfExcercises[i+1][0].lastTimeStamp;
           Duration timeSince = DateTime.now().difference(prevTS);
           if(timeSince < Duration.zero){
@@ -477,7 +477,7 @@ class _ListOnDoneState extends State<ListOnDone> {
                     ),
                     (subtitle == null)
                     ? MyChip(
-                      chipString: (isArchived) ? "ARCHIVED" : "NEW", 
+                      chipString: (isHidden) ? "HIDDEN" : "NEW", 
                       inverse: true,
                     )
                     : Text(
@@ -618,11 +618,6 @@ class _ListOnDoneState extends State<ListOnDone> {
                   PageTransition(
                     type: PageTransitionType.downToUp, 
                     child: SearchExcercise(),
-                    
-                    
-                    /*Break(
-                      startDuration: Duration(minutes: 5, seconds: 30),
-                    )*/
                   ),
                 );
               },

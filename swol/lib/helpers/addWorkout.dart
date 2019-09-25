@@ -345,21 +345,20 @@ class ReferenceLinkBox extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            FlatButton(
-              color: Theme.of(context).accentColor,
+            //show the clear button if needed
+            (url.value == "") ? Container()
+            : FlatButton(
               padding: EdgeInsets.all(0),
+              color: Theme.of(context).scaffoldBackgroundColor,
               onPressed: (){
-                Clipboard.getData('text/plain').then((clipboarContent) {
-                  url.value = clipboarContent.text;
-                });
+                url.value = "";
               },
-              child: Text(
-                "Paste",
-                style: TextStyle(
-                  color: Theme.of(context).primaryColorDark,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+              child: Container(
+                padding: EdgeInsets.all(0),
+                child: (url.value == "") 
+                ? Container()
+                : Icon(Icons.close),
+              )
             ),
             Expanded(
               child: FlatButton(
@@ -389,21 +388,32 @@ class ReferenceLinkBox extends StatelessWidget {
                 ),
               ),
             ),
-            //show the clear button if needed
-            (url.value == "") ? Container()
-            : FlatButton(
+            FlatButton(
+              color: Theme.of(context).accentColor,
               padding: EdgeInsets.all(0),
-              color: Theme.of(context).scaffoldBackgroundColor,
               onPressed: (){
-                url.value = "";
+                Clipboard.getData('text/plain').then((clipboardContent) {
+                  if(clipboardContent?.text != null){
+                    url.value = clipboardContent.text;
+                  }
+                  else{
+                    final snackBar = SnackBar(
+                      content: Text("Nothing In Clipboard"),
+                    );
+
+                    // Find the Scaffold in the widget tree and use it to show a SnackBar.
+                    Scaffold.of(context).showSnackBar(snackBar);
+                  }
+                });
               },
-              child: Container(
-                padding: EdgeInsets.all(0),
-                child: (url.value == "") 
-                ? Container()
-                : Icon(Icons.close),
-              )
-            )
+              child: Text(
+                "Paste",
+                style: TextStyle(
+                  color: Theme.of(context).primaryColorDark,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
           ],
         ),
       ),
