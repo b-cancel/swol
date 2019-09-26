@@ -88,6 +88,8 @@ updateExcercise(
   int id, {
     DateTime lastTimeStamp, 
     String url,
+    int predictionID,
+    int repTarget,
     bool updateFile: true,
 }){
   //update timestamp if desired
@@ -98,6 +100,14 @@ updateExcercise(
 
   if(url != null){
     _excercises.value[id].url = url;
+  }
+
+  if(predictionID != null){
+    _excercises.value[id].predictionID = predictionID;
+  }
+
+  if(repTarget != null){
+    _excercises.value[id].repTarget = repTarget;
   }
 
   //update file

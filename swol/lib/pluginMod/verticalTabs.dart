@@ -90,7 +90,7 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
       controller: pageController,
       children: <Widget>[
         Suggestion(
-
+          excerciseID: widget.excerciseID,
         ),
         SetRecord(
 

@@ -243,58 +243,7 @@ class _AddWorkoutState extends State<AddWorkout> {
                       value: repTarget,
                       lastTick: 35,
                     ),
-                    AnimatedBuilder(
-                      animation: repTarget,
-                      builder: (context, child){
-                        String warning = "";
-                        if(repTarget.value <= 5){
-                          warning = "At this target, your chances of injury are high,"
-                          + "\nmake sure your form is flawless at all times";
-                        }
-                        else if(repTarget.value >= 21){
-                          warning = "At this target, you can quickly damage your tendons,"
-                          + "\nmake sure your body is conditioned";
-                        }
-                        else if(repTarget.value >= 13){
-                          warning = "At this target, you can damage your tendons"
-                          + "\nmake sure your body is conditioned";
-                        }
-
-                        //output warning if necessary
-                        if(warning == "") return Container();
-                        else{
-                          return Container(
-                            padding: EdgeInsets.only(
-                              left: 24,
-                              right: 24,
-                              bottom: 16,
-                            ),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Padding(
-                                  padding: EdgeInsets.only(
-                                    right: 8,
-                                  ),
-                                  child: Icon(
-                                    Icons.warning,
-                                    color: Colors.red,
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Text(
-                                    warning,
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                )
-                              ],
-                            ),
-                          );
-                        }
-                      },
-                    ),
+                    new CustomSliderWarning(repTarget: repTarget),
                     Container(
                       padding: EdgeInsets.only(
                         //Top 16 padding address above
@@ -398,6 +347,71 @@ class _AddWorkoutState extends State<AddWorkout> {
           ),
         ],
       ),
+    );
+  }
+}
+
+class CustomSliderWarning extends StatelessWidget {
+  const CustomSliderWarning({
+    Key key,
+    @required this.repTarget,
+  }) : super(key: key);
+
+  final ValueNotifier<int> repTarget;
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: repTarget,
+      builder: (context, child){
+        String warning = "";
+        if(repTarget.value <= 5){
+          warning = "At this target, your chances of injury are high,"
+          + "\nmake sure your form is flawless at all times";
+        }
+        else if(repTarget.value >= 21){
+          warning = "At this target, you can quickly damage your tendons,"
+          + "\nmake sure your body is conditioned";
+        }
+        else if(repTarget.value >= 13){
+          warning = "At this target, you can damage your tendons"
+          + "\nmake sure your body is conditioned";
+        }
+
+        //output warning if necessary
+        if(warning == "") return Container();
+        else{
+          return Container(
+            padding: EdgeInsets.only(
+              left: 24,
+              right: 24,
+              bottom: 16,
+            ),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.only(
+                    right: 8,
+                  ),
+                  child: Icon(
+                    Icons.warning,
+                    color: Colors.red,
+                  ),
+                ),
+                Expanded(
+                  child: Text(
+                    warning,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                )
+              ],
+            ),
+          );
+        }
+      },
     );
   }
 }
