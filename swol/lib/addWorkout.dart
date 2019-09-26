@@ -410,6 +410,7 @@ class BasicEditor extends StatefulWidget {
     @required this.name,
     @required this.note,
     @required this.url,
+    this.editOneAtAtTime: false,
   }) : super(key: key);
 
   final ValueNotifier<bool> namePresent;
@@ -417,6 +418,7 @@ class BasicEditor extends StatefulWidget {
   final ValueNotifier<String> name; 
   final ValueNotifier<String> note; 
   final ValueNotifier<String> url;
+  final bool editOneAtAtTime;
 
   @override
   _BasicEditorState createState() => _BasicEditorState();
@@ -474,6 +476,7 @@ class _BasicEditorState extends State<BasicEditor> {
         ),
         new ReferenceLinkBox(
           url: widget.url,
+          editOneAtAtTime: widget.editOneAtAtTime,
         ),
       ],
     );

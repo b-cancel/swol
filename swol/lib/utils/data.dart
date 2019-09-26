@@ -84,12 +84,20 @@ deleteExcercise(int id, {bool updateFile: true}){
   else print("EXCERCISE DOESN'T EXIST");
 }
 
-updateExcercise(int id, {DateTime lastTimeStamp, bool updateFile: true}){
-  _excercises.value[id].lastTimeStamp = lastTimeStamp;
-
-  //if we updated the last time stamp then update sorting
+updateExcercise(
+  int id, {
+    DateTime lastTimeStamp, 
+    String url,
+    bool updateFile: true,
+}){
+  //update timestamp if desired
   if(lastTimeStamp != null){
+    _excercises.value[id].lastTimeStamp = lastTimeStamp;
     _updateOrder();
+  }
+
+  if(url != null){
+    _excercises.value[id].url = url;
   }
 
   //update file

@@ -14,12 +14,14 @@ class ExcerciseNotes extends StatefulWidget {
 }
 
 class _ExcerciseNotesState extends State<ExcerciseNotes> {
-  ValueNotifier<bool> editingName = new ValueNotifier(false);
+  //basics
+  ValueNotifier<bool> namePresent = new ValueNotifier(false);
+  ValueNotifier<bool> nameError = new ValueNotifier(false);
+  ValueNotifier<String> name = new ValueNotifier("");
+  ValueNotifier<String> note = new ValueNotifier("");
+  ValueNotifier<String> url = new ValueNotifier("");
 
-  ValueNotifier<bool> editingNote = new ValueNotifier(false);
-
-  ValueNotifier<bool> editingUrl = new ValueNotifier(false);
-
+  //pop ups for archiving or deleting
   areyouSurePopUp(BuildContext context, bool delete){
     Function tripplePop = (){
       //get rid of this pop up
@@ -79,7 +81,7 @@ class _ExcerciseNotesState extends State<ExcerciseNotes> {
               ),
             ),
             TextSpan(
-              text: " from your list of Excercises\n\n",
+              text: " from your list of excercises\n\n",
             ),
             TextSpan(
               text: "If you ",
@@ -94,19 +96,71 @@ class _ExcerciseNotesState extends State<ExcerciseNotes> {
               text: "but you do want to stop it from cycling back up the list, "
             ),
             TextSpan(
-              text: "then you should instead "
+              text: "then you should "
             ),
             TextSpan(
-              text: "Hide It",
+              text: "Hide",
               style: TextStyle(
                 fontWeight: FontWeight.bold
               ),
+            ),
+            TextSpan(
+              text: " it instead"
             ),
           ]
         ),
       );
     }
-    else message = Text("archive... really?");
+    else{
+       message = RichText(
+        text: TextSpan(
+          style: TextStyle(
+            color: Colors.black,
+          ),
+          children: [
+            TextSpan(
+              text: theName,
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+              )
+            ),
+            TextSpan(
+              text: " will be ",
+            ),
+            TextSpan(
+              text: "Hidden",
+              style: TextStyle(
+                fontWeight: FontWeight.bold
+              ),
+            ),
+            TextSpan(
+              text: " at the bottom of your list of excercises\n\n",
+            ),
+            TextSpan(
+              text: "If you ",
+            ),
+            TextSpan(
+              text: "want to delete your excercise,\n",
+              style: TextStyle(
+                fontWeight: FontWeight.bold
+              ),
+            ),
+            TextSpan(
+              text: "then you should "
+            ),
+            TextSpan(
+              text: "Delete",
+              style: TextStyle(
+                fontWeight: FontWeight.bold
+              ),
+            ),
+            TextSpan(
+              text: " it instead"
+            ),
+          ]
+        ),
+      );
+    }
 
     //show the dialog
     showDialog<void>(
@@ -116,7 +170,17 @@ class _ExcerciseNotesState extends State<ExcerciseNotes> {
         return Theme(
           data: ThemeData.light(),
           child: AlertDialog(
-            title: Text(actionString + " Excercise?"),
+            titlePadding: EdgeInsets.all(0),
+            title: Container(
+              padding: EdgeInsets.all(16),
+              color: buttonColor,
+              child: Text(
+                actionString + " Excercise?",
+                style: TextStyle(
+                  color: Colors.white,
+                ),
+              ),
+            ),
             contentPadding: EdgeInsets.all(0),
             content: Column(
               mainAxisSize: MainAxisSize.min,
@@ -144,6 +208,7 @@ class _ExcerciseNotesState extends State<ExcerciseNotes> {
               RaisedButton(
                 color: buttonColor,
                 onPressed: (){
+                  //TODO: perhaps make an edit here
                   actionFunction();
                   tripplePop();
                 },
@@ -163,12 +228,24 @@ class _ExcerciseNotesState extends State<ExcerciseNotes> {
 
   @override
   void initState() { 
+    //super init
     super.initState();
+
+    //set initial values of ValueNotifiers
+    name.value = getExcercises().value[widget.excerciseID].name;
+    note.value = getExcercises().value[widget.excerciseID].note;
+    url.value = getExcercises().value[widget.excerciseID].url;
+
+    //if values change properly update
+    url.addListener((){
+      updateExcercise(widget.excerciseID, url: url.value);
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).cardColor,
       appBar: AppBar(
         title: Text("Notes"),
         actions: [
@@ -216,75 +293,21 @@ class _ExcerciseNotesState extends State<ExcerciseNotes> {
       ),
       body: ListView(
         children: <Widget>[
-          MaybeEdit(
-            content: getExcercises().value[widget.excerciseID].name,
-            alt: "Add Name",
-          ),
-          MaybeEdit(
-            content: getExcercises().value[widget.excerciseID].note,
-            alt: "Add Note",
-          ),
-          MaybeEdit(
-            content: getExcercises().value[widget.excerciseID].url,
-            alt: "Add Url",
+          Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: 16,
+              vertical: 8,
+            ),
+            child: BasicEditor(
+              namePresent: namePresent,
+              nameError: nameError,
+              name: name,
+              note: note,
+              url: url,
+              editOneAtAtTime: true,
+            ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class MaybeEdit extends StatelessWidget {
-  MaybeEdit({
-    @required this.content,
-    @required this.alt,
-  });
-
-  final String content;
-  final String alt;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(
-        vertical: 4,
-      ),
-      child: ClipRRect(
-        borderRadius: new BorderRadius.all(
-          Radius.circular(16.0),
-        ), //instrinc height below
-        child: IntrinsicHeight(
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              FlatButton(
-                padding: EdgeInsets.all(0),
-                color: Theme.of(context).accentColor,
-                onPressed: (){
-
-                },
-                child: Icon(
-                  Icons.edit,
-                  color: Theme.of(context).primaryColorDark,
-                )
-              ),
-              Expanded(
-                child: Container(
-                  color: Theme.of(context).backgroundColor,
-                  padding: EdgeInsets.all(8),
-                  child: Text(
-                    (content != "") ? content : alt,
-                    style: TextStyle(
-                      color: (content == "") 
-                      ? Theme.of(context).scaffoldBackgroundColor
-                      : Colors.white,
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
       ),
     );
   }

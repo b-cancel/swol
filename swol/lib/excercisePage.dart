@@ -6,23 +6,36 @@ import 'package:swol/utils/data.dart';
 //plugins mod
 import 'package:swol/pluginMod/verticalTabs.dart';
 
-class ExcercisePage extends StatelessWidget {
+class ExcercisePage extends StatefulWidget {
   ExcercisePage({
     @required this.excerciseID,
   });
 
   final int excerciseID;
 
+  @override
+  _ExcercisePageState createState() => _ExcercisePageState();
+}
+
+class _ExcercisePageState extends State<ExcercisePage> {
   toNotes(BuildContext context){
     Navigator.push(
       context, 
       PageTransition(
         type: PageTransitionType.rightToLeft, 
         child: ExcerciseNotes(
-          excerciseID: excerciseID,
+          excerciseID: widget.excerciseID,
         ),
       ),
     );
+  }
+
+  String name;
+
+  @override
+  void initState() { 
+    super.initState();
+    name = getExcercises().value[widget.excerciseID].name;
   }
 
   @override
@@ -43,7 +56,7 @@ class ExcercisePage extends StatelessWidget {
                     width: MediaQuery.of(context).size.width,
                     alignment: Alignment.centerLeft,
                     child: Text(
-                      getExcercises().value[excerciseID].name,
+                      name,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                         fontSize: 18,
@@ -70,7 +83,7 @@ class ExcercisePage extends StatelessWidget {
         ],
       ),
       body: VerticalTabs(
-        excerciseID: excerciseID,
+        excerciseID: widget.excerciseID,
       ),
     );
   }
