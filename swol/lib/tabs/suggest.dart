@@ -1,3 +1,7 @@
+//dart
+import 'dart:math' as math;
+
+//flutter
 import 'package:flutter/material.dart';
 
 //plugins
@@ -137,6 +141,9 @@ class _SuggestionState extends State<Suggestion> {
       children: <Widget>[
         Expanded(
           child: Container(
+            padding: EdgeInsets.only(
+              top: 8,
+            ),
             child: SetDisplay(
               weight: "80",
               reps: "8",
@@ -145,64 +152,148 @@ class _SuggestionState extends State<Suggestion> {
           ),
         ),
         /*
-        Container(
-          child: new HeaderWithInfo(
-            title: "Prediction Formula",
-            popUp: new PredictionFormulasPopUp(),
-          ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: <Widget>[
+            new MyArrow(
+              color: (true) ? Colors.white : Theme.of(context).accentColor,
+            ),
+            new MyArrow(
+              color: (true) ? Colors.white : Theme.of(context).accentColor,
+            ),
+          ],
         ),
         */
-        Padding(
-          padding: EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text("Your next set using the"),
-              DropdownButton<String>(
-                value: functionValue,
-                icon: Icon(Icons.arrow_drop_down),
-                isExpanded: true,
-                iconSize: 24,
-                elevation: 16,
-                onChanged: (String newValue) {
-                  setState(() {
-                    functionValue = newValue;
-                    functionIndex.value = functionToIndex[functionValue];
-                  });
-                },
-                items: functions.map<DropdownMenuItem<String>>((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(value),
-                  );
-                })
-                .toList(),
+
+        
+        Stack(
+          children: <Widget>[
+            Positioned(
+              top: 32,
+              left: 0,
+              child: new MyArrow(
+                color: (true) ? Colors.white : Theme.of(context).accentColor,
               ),
-              Text("function and assuming your rep target is " + repTarget.value.toString()),
-            ],
-          ),
+            ),
+            Positioned(
+              top: 32,
+              right: 0,
+              child: new MyArrow(
+                color: (true) ? Colors.white : Theme.of(context).accentColor,
+              ),
+            ),
+            Positioned(
+              bottom: 32,
+              left: 0,
+              child: new MyArrow(
+                color: (false) ? Colors.white : Theme.of(context).accentColor,
+              ),
+            ),
+            Positioned(
+              bottom: 32,
+              right: 0,
+              child: new MyArrow(
+                color: (false) ? Colors.white : Theme.of(context).accentColor,
+              ),
+            ),
+            Row(
+              mainAxisSize: MainAxisSize.max,
+              children: <Widget>[
+                new MyArrow(
+                  color: Colors.transparent
+                ),
+                Expanded(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: Theme.of(context).cardColor,
+                        width: 2,
+                      )
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        /*
+                        Container(
+                          child: new HeaderWithInfo(
+                            title: "Prediction Formula",
+                            popUp: new PredictionFormulasPopUp(),
+                          ),
+                        ),
+                        */
+                        Padding(
+                          padding: EdgeInsets.all(16.0),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text("Your next set using the"),
+                              DropdownButton<String>(
+                                value: functionValue,
+                                icon: Icon(Icons.arrow_drop_down),
+                                isExpanded: true,
+                                iconSize: 24,
+                                elevation: 16,
+                                onChanged: (String newValue) {
+                                  setState(() {
+                                    functionValue = newValue;
+                                    functionIndex.value = functionToIndex[functionValue];
+                                  });
+                                },
+                                items: functions.map<DropdownMenuItem<String>>((String value) {
+                                  return DropdownMenuItem<String>(
+                                    value: value,
+                                    child: Text(value),
+                                  );
+                                })
+                                .toList(),
+                              ),
+                              Text("function and assuming your rep target is " + repTarget.value.toString()),
+                            ],
+                          ),
+                        ),
+                        /*
+                        Container(
+                          child: new HeaderWithInfo(
+                            title: "Set Target",
+                            popUp: new SetTargetPopUp(),
+                          ),
+                        ),
+                        */
+                        new CustomSlider(
+                          value: repTarget,
+                          lastTick: 35,
+                        ),
+                        new CustomSliderWarning(repTarget: repTarget),
+                      ],
+                    ),
+                  ),
+                ),
+                new MyArrow(
+                  color: Colors.transparent
+                ),
+              ],
+            ),
+          ],
         ),
         /*
-        Container(
-          child: new HeaderWithInfo(
-            title: "Set Target",
-            popUp: new SetTargetPopUp(),
-          ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: <Widget>[
+            new MyArrow(
+              color: (false) ? Colors.white : Theme.of(context).accentColor,
+            ),
+            new MyArrow(
+              color: (false) ? Colors.white : Theme.of(context).accentColor,
+            ),
+          ],
         ),
         */
-        new CustomSlider(
-          value: repTarget,
-          lastTick: 35,
-        ),
-        new CustomSliderWarning(repTarget: repTarget),
         Expanded(
-          child: Container(
-            child: SetDisplay(
-              weight: "160",
-              reps: "3",
-              isLast: false,
-            ),
+          child: SetDisplay(
+            weight: "160",
+            reps: "3",
+            isLast: false,
           ),
         ),
       ],
@@ -224,6 +315,7 @@ class _SuggestionState extends State<Suggestion> {
             bottom: 16.0,
             left: 16,
             right: 16,
+            top: 16,
           ),
           child: Row(
             mainAxisSize: MainAxisSize.max,
@@ -254,12 +346,6 @@ class _SuggestionState extends State<Suggestion> {
               ),
               Expanded(
                 child: Container(),
-              ),
-              FlatButton(
-                onPressed: (){
-                  Navigator.of(context).pop();
-                },
-                child: Text("Back"),
               ),
               RaisedButton(
                 color: Theme.of(context).accentColor,
@@ -300,6 +386,31 @@ class _SuggestionState extends State<Suggestion> {
   }
 }
 
+class MyArrow extends StatelessWidget {
+  const MyArrow({
+    this.color,
+    Key key,
+  }) : super(key: key);
+
+  final Color color;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(16),
+      child: Center(
+        child: Transform.rotate(
+          angle: 0, //math.pi / 2,
+          child: Icon(
+            Icons.arrow_downward,
+            color: color,
+          )
+        ),
+      ),
+    );
+  }
+}
+
 class SetDisplay extends StatelessWidget {
   SetDisplay({
     @required this.isLast,
@@ -313,8 +424,16 @@ class SetDisplay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Color theColor = (isLast) ? Colors.white : Theme.of(context).accentColor;
+
     return Container(
       padding: EdgeInsets.all(8),
+      decoration: BoxDecoration(
+        border: Border.all(
+          color: theColor,
+          width: 2,
+        ),
+      ),
       child: FittedBox(
         fit: BoxFit.contain,
         child: Center(
