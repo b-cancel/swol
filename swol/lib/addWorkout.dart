@@ -355,9 +355,20 @@ class CustomSliderWarning extends StatelessWidget {
   const CustomSliderWarning({
     Key key,
     @required this.repTarget,
+    this.alwaysHaveSpace: false,
   }) : super(key: key);
 
   final ValueNotifier<int> repTarget;
+  final alwaysHaveSpace;
+
+  final String lowEnd = "Your chances of injury are high"
+  + "\nMake sure your form is flawless at all times";
+
+  final String superHighEnd = "You may quickly overwork your tendons"
+  + "\nMake sure your body is very conditioned";
+
+  final String highEnd = "You may overwork your tendons"
+  + "\nMake sure your body is conditioned";
 
   @override
   Widget build(BuildContext context) {
@@ -366,48 +377,59 @@ class CustomSliderWarning extends StatelessWidget {
       builder: (context, child){
         String warning = "";
         if(repTarget.value <= 5){
-          warning = "At this target, your chances of injury are high,"
-          + "\nmake sure your form is flawless at all times";
+          warning = lowEnd;
         }
         else if(repTarget.value >= 21){
-          warning = "At this target, you can quickly damage your tendons,"
-          + "\nmake sure your body is conditioned";
+          warning = superHighEnd;
         }
         else if(repTarget.value >= 13){
-          warning = "At this target, you can damage your tendons"
-          + "\nmake sure your body is conditioned";
+          warning = highEnd;
         }
 
         //output warning if necessary
-        if(warning == "") return Container();
+        if(warning == "" && alwaysHaveSpace == false) return Container();
         else{
-          return Container(
-            padding: EdgeInsets.only(
-              left: 24,
-              right: 24,
-              bottom: 16,
-            ),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.only(
-                    right: 8,
-                  ),
-                  child: Icon(
-                    Icons.warning,
-                    color: Colors.red,
-                  ),
-                ),
-                Expanded(
-                  child: Text(
-                    warning,
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
+          return Opacity(
+            opacity: (warning == "") ? 0 : 1,
+            child: Container(
+              padding: EdgeInsets.only(
+                left: 24,
+                right: 24,
+                bottom: 16,
+              ),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.only(
+                      right: 8,
+                    ),
+                    child: Icon(
+                      Icons.warning,
+                      color: Colors.red,
                     ),
                   ),
-                )
-              ],
+                  Expanded(
+                    child: Stack(
+                      children: <Widget>[
+                        Text(
+                          (alwaysHaveSpace) ? superHighEnd : warning,
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.transparent,
+                          ),
+                        ),
+                        Text(
+                          (warning == "") ? superHighEnd : warning,
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                ],
+              ),
             ),
           );
         }
