@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:liquid_progress_indicator/liquid_progress_indicator.dart';
+import 'package:swol/helpers/timePicker.dart';
+import 'package:swol/tabs/break.dart';
 import 'package:swol/utils/vibrate.dart';
 import 'package:vibration/vibration.dart';
 
@@ -43,12 +45,14 @@ the internal parameters are updated not on setting the duration but on starting 
 
 class AnimLiquidIndicator extends StatefulWidget {
   AnimLiquidIndicator({
-    @required this.durationFull,
+    @required this.possibleFullDuration,
+    @required this.recoveryDuration,
     @required this.timerStart,
     @required this.centerSize,
   });
 
-  final ValueNotifier<Duration> durationFull;
+  final ValueNotifier<Duration> possibleFullDuration;
+  final ValueNotifier<Duration> recoveryDuration;
   final DateTime timerStart;
   final double centerSize;
 
@@ -72,7 +76,7 @@ class _AnimLiquidIndicatorState extends State<AnimLiquidIndicator> with SingleTi
     //create animation controller
     countDownController = AnimationController(
       vsync: this,
-      duration: widget.durationFull.value,
+      duration: widget.recoveryDuration.value,
     );
 
     /*
@@ -115,18 +119,18 @@ class _AnimLiquidIndicatorState extends State<AnimLiquidIndicator> with SingleTi
     countDownController.forward();
 
     //init
-    durationFullStrings = durationToCustomDisplay(widget.durationFull.value);
+    durationFullStrings = durationToCustomDisplay(widget.recoveryDuration.value);
 
     //react to update of full duration
-    widget.durationFull.addListener((){
+    widget.recoveryDuration.addListener((){
       //update string
-      durationFullStrings = durationToCustomDisplay(widget.durationFull.value);
+      durationFullStrings = durationToCustomDisplay(widget.recoveryDuration.value);
 
       //grab how much time has passed
       Duration durationSinceStart = DateTime.now().difference(widget.timerStart);
 
       //check how much time is left (may be negative)
-      Duration durationUntilEnd = widget.durationFull.value - durationSinceStart;
+      Duration durationUntilEnd = widget.recoveryDuration.value - durationSinceStart;
 
       //determine if we need to modify the animation or just leave it as is
       if(durationUntilEnd > Duration.zero){ //we still need to count down
@@ -136,10 +140,10 @@ class _AnimLiquidIndicatorState extends State<AnimLiquidIndicator> with SingleTi
         //we only have X ammount left 
         //but for the output 0->1 value to be correct
         //we need to instead shift the value
-        countDownController.duration = widget.durationFull.value;
+        countDownController.duration = widget.recoveryDuration.value;
 
         //update new value
-        double newValue = durationSinceStart.inMicroseconds / widget.durationFull.value.inMicroseconds;
+        double newValue = durationSinceStart.inMicroseconds / widget.recoveryDuration.value.inMicroseconds;
         countDownController.value = newValue;
         
         //start the animation mid way
@@ -169,7 +173,7 @@ class _AnimLiquidIndicatorState extends State<AnimLiquidIndicator> with SingleTi
   Widget build(BuildContext context) {
     //calc time left
     Duration durationPassed = DateTime.now().difference(widget.timerStart);
-    Duration durationLeft = widget.durationFull.value - durationPassed;
+    Duration durationLeft = widget.recoveryDuration.value - durationPassed;
 
     //calc strings
     List<String> durationPassedStrings = durationToCustomDisplay(durationPassed);
@@ -179,62 +183,95 @@ class _AnimLiquidIndicatorState extends State<AnimLiquidIndicator> with SingleTi
     double textContainerSize = widget.centerSize - (24 * 2);
 
     //build return timer
-    return LiquidCircularProgressIndicator(
-      value: 1 - countDownController.value,
-      backgroundColor: Colors.white, 
-      borderColor: Colors.transparent,
-      borderWidth: 0,
-      direction: Axis.vertical, 
-      center: Container(
-        width: widget.centerSize,
-        height: widget.centerSize,
-        padding: EdgeInsets.all(24),
-        child: Container(
-          child: FittedBox(
-            fit: BoxFit.contain,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Container(
-                  width: textContainerSize,
-                  child: FittedBox(
-                    fit: BoxFit.contain,
-                    child: Text(
-                      durationLeftStrings[0] + " : " + durationLeftStrings[1],
-                      style: TextStyle(
-                        color: Theme.of(context).primaryColor,
-                        fontWeight: FontWeight.bold,
+    return ClipOval(
+      child: InkWell(
+        onTap: (){
+          maybeChangeTime(
+            context: context,
+            recoveryDuration: widget.recoveryDuration,
+            possibleFullDuration: widget.possibleFullDuration,
+          );
+        },
+        child: LiquidCircularProgressIndicator(
+          value: 1 - countDownController.value,
+          backgroundColor: Colors.white, 
+          borderColor: Colors.transparent,
+          borderWidth: 0,
+          direction: Axis.vertical, 
+          center: Container(
+            width: widget.centerSize,
+            height: widget.centerSize,
+            padding: EdgeInsets.all(24),
+            child: Container(
+              child: FittedBox(
+                fit: BoxFit.contain,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    /*
+                    Container(
+                      width: textContainerSize,
+                      padding: EdgeInsets.symmetric(
+                        horizontal: (textContainerSize / 2) / 2.5,
                       ),
-                    ),
-                  ),
-                ),
-                Container(
-                  width: textContainerSize,
-                  padding: EdgeInsets.symmetric(
-                    horizontal: (textContainerSize / 2) / 2,
-                  ),
-                  //NOTE: we want the text here to be HALF the size
-                  //of the text above it
-                  child: Container(
-                    child: FittedBox(
-                      fit: BoxFit.contain,
-                      child: DefaultTextStyle(
-                        style: TextStyle(
-                          color: Theme.of(context).primaryColor,
+                      child: OutlineButton(
+                        borderSide: BorderSide(
+                          color: Theme.of(context).primaryColorDark,
+                          width: 2,
                         ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            Text(durationFullStrings[0] + " : " + durationFullStrings[1]),
-                            Text(" | "),
-                            Text(durationPassedStrings[0] + " : " + durationPassedStrings[1]),
-                          ],
+                        onPressed: (){
+                        },
+                        child: Text(
+                          "Change Recovery Time",
+                          style: TextStyle(
+                            color: Theme.of(context).primaryColorDark,
+                          ),
                         ),
                       ),
                     ),
-                  ),
+                    */
+                    Container(
+                      width: textContainerSize,
+                      child: FittedBox(
+                        fit: BoxFit.contain,
+                        child: Text(
+                          durationLeftStrings[0] + " : " + durationLeftStrings[1],
+                          style: TextStyle(
+                            color: Theme.of(context).primaryColor,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                    Container(
+                      width: textContainerSize,
+                      padding: EdgeInsets.symmetric(
+                        horizontal: (textContainerSize / 2) / 2,
+                      ),
+                      //NOTE: we want the text here to be HALF the size
+                      //of the text above it
+                      child: Container(
+                        child: FittedBox(
+                          fit: BoxFit.contain,
+                          child: DefaultTextStyle(
+                            style: TextStyle(
+                              color: Theme.of(context).primaryColor,
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: <Widget>[
+                                Text(durationFullStrings[0] + " : " + durationFullStrings[1]),
+                                Text(" | "),
+                                Text(durationPassedStrings[0] + " : " + durationPassedStrings[1]),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ],
+              ),
             ),
           ),
         ),
