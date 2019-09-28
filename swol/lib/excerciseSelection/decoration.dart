@@ -30,7 +30,7 @@ class SwolLogo extends StatelessWidget {
                 child: Text(
                   "S W O L",
                   style: TextStyle(
-                    color: ourDark.accentColor,
+                    color: MyTheme.dark.accentColor,
                   ),
                 ),
               ),

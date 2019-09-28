@@ -6,7 +6,7 @@ import 'dart:io';
 import 'package:swol/other/otherHelper.dart';
 import 'package:swol/utils/safeSave.dart';
 
-class RecentSearchesStorage{
+class SearchesData{
   //-------------------------MAIN VARS-------------------------
 
   static File _searchesFile;

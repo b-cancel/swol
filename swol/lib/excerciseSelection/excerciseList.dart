@@ -1,20 +1,28 @@
+//flutter
 import 'package:flutter/material.dart';
+
+//plugin
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
-
-//plugin
 import 'package:async/async.dart';
-import 'package:swol/excercise/excerciseStorage.dart';
-import 'package:swol/excercise/excerciseStructure.dart';
-import 'package:swol/excerciseAddition/addWorkout.dart';
-import 'package:swol/excerciseSearch/recentSearchesStorage.dart';
-import 'package:swol/excerciseSearch/searchExcercise.dart';
-import 'package:swol/excerciseSelection/decoration.dart';
-import 'package:swol/excerciseSelection/mainHelper.dart';
+
+//internal: basics
 import 'package:swol/other/theme.dart';
+import 'package:swol/excerciseSearch/recentSearchesData.dart';
+import 'package:swol/excercise/excerciseData.dart';
+import 'package:swol/excercise/excerciseStructure.dart';
+import 'package:swol/excerciseSelection/decoration.dart';
+import 'package:swol/excerciseSelection/persistentHeaderDelegate.dart';
+import 'package:swol/other/durationFormat.dart';
 import 'package:swol/sharedWidgets/excerciseTile.dart';
 import 'package:swol/sharedWidgets/scrollToTop.dart';
+
+//internal: links
+import 'package:swol/excerciseAddition/addExcercise.dart';
+import 'package:swol/excerciseSearch/searchExcercise.dart';
+
+
 
 class ExcerciseSelect extends StatefulWidget {
   @override
@@ -27,8 +35,8 @@ class _ExcerciseSelectState extends State<ExcerciseSelect> with SingleTickerProv
 
   fetchData() {
     return this._memoizer.runOnce(() async {
-      await RecentSearchesStorage.searchesInit();
-      return await ExcerciseStorage.excercisesInit();
+      await SearchesData.searchesInit();
+      return await ExcerciseData.excercisesInit();
     });
   }
 
@@ -114,7 +122,7 @@ class _ListOnDoneState extends State<ListOnDone> {
   @override
   void initState() {
     //Updates every time we update[timestamp], add, or remove some excercise
-    ExcerciseStorage.excercisesOrder.addListener((){
+    ExcerciseData.excercisesOrder.addListener((){
       setState(() {});
     });
 
@@ -141,14 +149,14 @@ class _ListOnDoneState extends State<ListOnDone> {
     List<List<AnExcercise>> listOfGroupOfExcercises = new List<List<AnExcercise>>();
 
     //try to see if we have workouts to add
-    if(ExcerciseStorage.getExcercises().value.length > 0){
+    if(ExcerciseData.getExcercises().value.length > 0){
       //seperate excercise into their groups bassed on the max distance
       DateTime lastDateTime = DateTime(1500);
-      for(int i = 0; i < ExcerciseStorage.excercisesOrder.value.length; i++){
-        int excerciseID = ExcerciseStorage.excercisesOrder.value[i];
+      for(int i = 0; i < ExcerciseData.excercisesOrder.value.length; i++){
+        int excerciseID = ExcerciseData.excercisesOrder.value[i];
 
         //easy to access vars
-        AnExcercise excercise = ExcerciseStorage.getExcercises().value[excerciseID];
+        AnExcercise excercise = ExcerciseData.getExcercises().value[excerciseID];
         DateTime thisDateTime = excercise.lastTimeStamp;
 
         //make sure that a group exists for this excercise
@@ -206,7 +214,7 @@ class _ListOnDoneState extends State<ListOnDone> {
 
         //change title if new or in progress
         //TODO: handle in progress
-        String title = formatDuration(
+        String title = DurationFormat.format(
           timeSince,
           showMinutes: false,
           showSeconds: false,
@@ -214,7 +222,7 @@ class _ListOnDoneState extends State<ListOnDone> {
           showMicroseconds: false,
           short: false,
         );
-        String subtitle = "on a " + weekDayToString[oldestDT.weekday];
+        String subtitle = "on a " + DurationFormat.weekDayToString[oldestDT.weekday];
         bool isHidden = false;
         if(timeSince > Duration(days: 365 * 100)){
           title = "New Excercises";

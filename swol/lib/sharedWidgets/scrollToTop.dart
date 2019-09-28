@@ -56,7 +56,7 @@ class _ScrollToTopButtonState extends State<ScrollToTopButton> {
             heroTag: 'toTop',
             backgroundColor: Theme.of(context).primaryColorDark.withOpacity(0.5),
             onPressed: (){
-              vibrate();
+              Vibrator.vibrate();
               //scrollToIndex -> too slow to find index
               //jumpTo -> happens instant but scrolling to top should have some animation
               //NOTE: I ended up going with jump since animate was not fully opening the prompt

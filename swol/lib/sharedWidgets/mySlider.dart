@@ -167,7 +167,7 @@ class CustomSlider extends StatelessWidget {
             onDragging: (handlerIndex, lowerValue, upperValue) {
               double val = lowerValue;
               if(val.toInt() != value.value){
-                vibrate(
+                Vibrator.vibrate(
                   duration: Duration(milliseconds: 150),
                 );
                 value.value = val.toInt();

@@ -4,13 +4,13 @@ import 'package:flutter/material.dart';
 //plugins
 import 'package:scroll_to_index/scroll_to_index.dart';
 import 'package:diacritic/diacritic.dart';
-import 'package:swol/excerciseTile.dart';
-import 'package:swol/utils/data.dart';
+import 'package:swol/excercise/excerciseData.dart';
+import 'package:swol/excercise/excerciseStructure.dart';
+import 'package:swol/excerciseSearch/searchesData.dart';
+import 'package:swol/sharedWidgets/excerciseTile.dart';
+import 'package:swol/sharedWidgets/scrollToTop.dart';
 
 //internal
-import 'package:swol/utils/searches.dart';
-import 'package:swol/utils/scrollToTap.dart';
-import 'package:swol/workout.dart';
 
 class SearchExcercise extends StatefulWidget {
   @override
@@ -62,14 +62,14 @@ class _SearchExcerciseState extends State<SearchExcercise> {
     //find matching results
     if(searchString.length > 0){
       //grab excercises
-      Map<int,Excercise> temp = getExcercises().value;
+      Map<int,AnExcercise> temp = ExcerciseData.getExcercises().value;
 
       //iterate through keys
       List<int> keys = temp.keys.toList();
       for(int key = 0; key < keys.length; key++){
         //grab basic data
         int keyIsID = keys[key];
-        Excercise thisExcercise = temp[keyIsID]; 
+        AnExcercise thisExcercise = temp[keyIsID]; 
         
         //extract thing we are searching for
         String excerciseName = removeDiacritics(thisExcercise.name).toLowerCase().trim(); 
@@ -99,10 +99,10 @@ class _SearchExcerciseState extends State<SearchExcercise> {
     String searchTerm;
     if(passedTerm != null) searchTerm = passedTerm;
     else{
-      if(getRecentSearches().length == 0){
+      if(SearchesData.getRecentSearches().length == 0){
         searchTerm = "";
       }
-      else searchTerm = getRecentSearches()[index];
+      else searchTerm = SearchesData.getRecentSearches()[index];
     }
 
     //build our widget given that search term
@@ -116,7 +116,7 @@ class _SearchExcerciseState extends State<SearchExcercise> {
         dense: true,
         onTap: (){
           search.text = searchTerm;
-          addToSearches(searchTerm);
+          SearchesData.addToSearches(searchTerm);
         },
         title: Text(
           searchTerm,
@@ -150,12 +150,12 @@ class _SearchExcerciseState extends State<SearchExcercise> {
                   );
 
                   //remove the contact
-                  removeFromSearchesAtIndex(index);
+                  SearchesData.removeFromSearchesAtIndex(index);
 
                   //NOTE: using a listener doesn't work for some reason
                   Future.delayed(removeDuration, (){
                     //cover edge case
-                    if(getRecentSearches().length == 0){
+                    if(SearchesData.getRecentSearches().length == 0){
                       setState(() {});
                     }
 
@@ -181,7 +181,7 @@ class _SearchExcerciseState extends State<SearchExcercise> {
   @override
   Widget build(BuildContext context){
     bool showRecentsSearches = (search.text == null || search.text == "");
-    bool noRecentSearches = (getRecentSearches().length == 0);
+    bool noRecentSearches = (SearchesData.getRecentSearches().length == 0);
     bool noRecentsToShow = (showRecentsSearches && noRecentSearches);
 
     //create the header IF needed
@@ -227,7 +227,7 @@ class _SearchExcerciseState extends State<SearchExcercise> {
               shrinkWrap: true,
               physics: ClampingScrollPhysics(),
               reverse: true,
-              initialItemCount: getRecentSearches().length,
+              initialItemCount: SearchesData.getRecentSearches().length,
               itemBuilder: (context, index, animation){
                 return buildSearch(context, index, animation);
               },
@@ -235,7 +235,7 @@ class _SearchExcerciseState extends State<SearchExcercise> {
             FlatButton(
               padding: EdgeInsets.all(0),
               onPressed: (){
-                removeAllSearches();
+                SearchesData.removeAllSearches();
                 setState(() {
                   
                 });
@@ -259,7 +259,7 @@ class _SearchExcerciseState extends State<SearchExcercise> {
           itemCount: queryResults.length,
           itemBuilder: (context, index){
             return ExcerciseTile(
-              excerciseID: getExcercises().value[queryResults[index]].id,
+              excerciseID: ExcerciseData.getExcercises().value[queryResults[index]].id,
               listDisplay: false,
             );
           },
@@ -328,7 +328,7 @@ class _SearchExcerciseState extends State<SearchExcercise> {
                           textInputAction: TextInputAction.search,
                           onSubmitted: (str){
                             if(search.text != null && search.text != ""){
-                              addToSearches(search.text);
+                              SearchesData.addToSearches(search.text);
                             }
                           },
                           controller: search,

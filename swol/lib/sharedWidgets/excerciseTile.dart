@@ -1,9 +1,16 @@
+//flutter
 import 'package:flutter/material.dart';
+
+//plugin
 import 'package:page_transition/page_transition.dart';
-import 'package:swol/excercisePage.dart';
-import 'package:swol/helpers/main.dart';
-import 'package:swol/utils/data.dart';
-import 'package:swol/workout.dart';
+
+//internal: basic
+import 'package:swol/excercise/excerciseData.dart';
+import 'package:swol/excercise/excerciseStructure.dart';
+import 'package:swol/other/durationFormat.dart';
+
+//internal: link
+import 'package:swol/excerciseAction/excercisePage.dart';
 
 class ExcerciseTile extends StatelessWidget {
   ExcerciseTile({
@@ -17,7 +24,7 @@ class ExcerciseTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Excercise thisExcercise = getExcercises().value[excerciseID];
+    AnExcercise thisExcercise = ExcerciseData.getExcercises().value[excerciseID];
 
     //calculations
     Duration timeSince = DateTime.now().difference(thisExcercise.lastTimeStamp);
@@ -27,7 +34,7 @@ class ExcerciseTile extends StatelessWidget {
     if(timeSince < Duration.zero) subtitle = null;
     else if(timeSince > Duration(days: 365 * 100)) subtitle = null;
     else{
-      subtitle = Text(formatDuration(timeSince));
+      subtitle = Text(DurationFormat.format(timeSince));
     }
 
     //if not display
