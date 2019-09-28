@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:swol/helpers/addWorkout.dart';
+import 'package:swol/sharedWidgets/informationDisplay.dart';
 
 class RepTargetPopUp extends StatelessWidget {
   const RepTargetPopUp({

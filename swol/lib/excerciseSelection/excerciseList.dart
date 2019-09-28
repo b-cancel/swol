@@ -9,7 +9,7 @@ import 'package:async/async.dart';
 
 //internal: basics
 import 'package:swol/other/theme.dart';
-import 'package:swol/excerciseSearch/recentSearchesData.dart';
+import 'package:swol/excerciseSearch/searchesData.dart';
 import 'package:swol/excercise/excerciseData.dart';
 import 'package:swol/excercise/excerciseStructure.dart';
 import 'package:swol/excerciseSelection/decoration.dart';

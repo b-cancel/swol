@@ -179,3 +179,90 @@ class CustomSlider extends StatelessWidget {
     );
   }
 }
+
+class CustomSliderWarning extends StatelessWidget {
+  const CustomSliderWarning({
+    Key key,
+    @required this.repTarget,
+    this.alwaysHaveSpace: false,
+  }) : super(key: key);
+
+  final ValueNotifier<int> repTarget;
+  final alwaysHaveSpace;
+
+  final String lowEnd = "Your chances of injury are high"
+  + "\nMake sure your form is flawless at all times";
+
+  final String superHighEnd = "You may quickly overwork your tendons"
+  + "\nMake sure your body is very conditioned";
+
+  final String highEnd = "You may overwork your tendons"
+  + "\nMake sure your body is conditioned";
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: repTarget,
+      builder: (context, child){
+        String warning = "";
+        if(repTarget.value <= 5){
+          warning = lowEnd;
+        }
+        else if(repTarget.value >= 21){
+          warning = superHighEnd;
+        }
+        else if(repTarget.value >= 13){
+          warning = highEnd;
+        }
+
+        //output warning if necessary
+        if(warning == "" && alwaysHaveSpace == false) return Container();
+        else{
+          return Opacity(
+            opacity: (warning == "") ? 0 : 1,
+            child: Container(
+              padding: EdgeInsets.only(
+                left: 24,
+                right: 24,
+                bottom: 16,
+              ),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.only(
+                      right: 8,
+                    ),
+                    child: Icon(
+                      Icons.warning,
+                      color: Colors.red,
+                    ),
+                  ),
+                  Expanded(
+                    child: Stack(
+                      children: <Widget>[
+                        Text(
+                          (alwaysHaveSpace) ? superHighEnd : warning,
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.transparent,
+                          ),
+                        ),
+                        Text(
+                          (warning == "") ? superHighEnd : warning,
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                ],
+              ),
+            ),
+          );
+        }
+      },
+    );
+  }
+}

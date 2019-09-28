@@ -2,13 +2,14 @@
 import 'package:flutter/material.dart';
 
 //internal
-import 'package:swol/functions/helper.dart';
-import 'package:swol/helpers/addWorkout.dart';
-import 'package:swol/helpers/addWorkoutInfo.dart';
-import 'package:swol/helpers/mySlider.dart';
-import 'package:swol/helpers/timePicker.dart';
-import 'package:swol/utils/data.dart';
-import 'package:swol/workout.dart';
+import 'package:swol/excercise/excerciseData.dart';
+import 'package:swol/excercise/excerciseStructure.dart';
+import 'package:swol/sharedWidgets/excerciseEdit.dart';
+import 'package:swol/sharedWidgets/informationDisplay.dart';
+import 'package:swol/sharedWidgets/mySlider.dart';
+import 'package:swol/sharedWidgets/timePicker.dart';
+import 'package:swol/excerciseAddition/informationPopUps.dart';
+import 'package:swol/other/functions/helper.dart';
 
 //main widget
 class AddExcercise extends StatefulWidget {
@@ -29,22 +30,22 @@ class _AddExcerciseState extends State<AddExcercise> {
   ValueNotifier<String> url = new ValueNotifier("");
 
   //function select
-  int functionIndex = Excercise.defaultFunctionID;
-  String functionValue = functions[Excercise.defaultFunctionID];
+  int functionIndex = AnExcercise.defaultFunctionID;
+  String functionValue = Functions.functions[AnExcercise.defaultFunctionID];
 
   //recovery period select
   ValueNotifier<Duration> recoveryPeriod = new ValueNotifier(
-    Excercise.defaultRecovery,
+    AnExcercise.defaultRecovery,
   );
 
   //set target select
   ValueNotifier<int> setTarget = new ValueNotifier(
-    Excercise.defaultSetTarget,
+    AnExcercise.defaultSetTarget,
   );
 
   //rep target select
   ValueNotifier<int> repTarget = new ValueNotifier(
-    Excercise.defaultRepTarget,
+    AnExcercise.defaultRepTarget,
   );
 
   @override
@@ -105,7 +106,7 @@ class _AddExcerciseState extends State<AddExcercise> {
               onPressed: (){
                 if(namePresent.value){
                   //add workout to our list
-                  addExcercise(Excercise(
+                  ExcerciseData.addExcercise(AnExcercise(
                     name: name.value,
                     url: url.value,
                     note: note.value,
@@ -182,7 +183,7 @@ class _AddExcerciseState extends State<AddExcercise> {
                       Container(
                         child: HeaderWithInfo(
                           title: "Recovery Time Between Sets",
-                          popUp: new SetBreakPopUp(),
+                          popUp: SetBreakPopUp(),
                         ),
                       ),
                       TimePicker(
@@ -239,11 +240,11 @@ class _AddExcerciseState extends State<AddExcercise> {
                         popUp: new RepTargetPopUp(),
                       ),
                     ),
-                    new CustomSlider(
+                    CustomSlider(
                       value: repTarget,
                       lastTick: 35,
                     ),
-                    new CustomSliderWarning(repTarget: repTarget),
+                    CustomSliderWarning(repTarget: repTarget),
                     Container(
                       padding: EdgeInsets.only(
                         //Top 16 padding address above
@@ -279,10 +280,10 @@ class _AddExcerciseState extends State<AddExcercise> {
                             onChanged: (String newValue) {
                               setState(() {
                                 functionValue = newValue;
-                                functionIndex = functionToIndex[functionValue];
+                                functionIndex = Functions.functionToIndex[functionValue];
                               });
                             },
-                            items: functions.map<DropdownMenuItem<String>>((String value) {
+                            items: Functions.functions.map<DropdownMenuItem<String>>((String value) {
                               return DropdownMenuItem<String>(
                                 value: value,
                                 child: Text(value),
@@ -347,174 +348,6 @@ class _AddExcerciseState extends State<AddExcercise> {
           ),
         ],
       ),
-    );
-  }
-}
-
-class CustomSliderWarning extends StatelessWidget {
-  const CustomSliderWarning({
-    Key key,
-    @required this.repTarget,
-    this.alwaysHaveSpace: false,
-  }) : super(key: key);
-
-  final ValueNotifier<int> repTarget;
-  final alwaysHaveSpace;
-
-  final String lowEnd = "Your chances of injury are high"
-  + "\nMake sure your form is flawless at all times";
-
-  final String superHighEnd = "You may quickly overwork your tendons"
-  + "\nMake sure your body is very conditioned";
-
-  final String highEnd = "You may overwork your tendons"
-  + "\nMake sure your body is conditioned";
-
-  @override
-  Widget build(BuildContext context) {
-    return AnimatedBuilder(
-      animation: repTarget,
-      builder: (context, child){
-        String warning = "";
-        if(repTarget.value <= 5){
-          warning = lowEnd;
-        }
-        else if(repTarget.value >= 21){
-          warning = superHighEnd;
-        }
-        else if(repTarget.value >= 13){
-          warning = highEnd;
-        }
-
-        //output warning if necessary
-        if(warning == "" && alwaysHaveSpace == false) return Container();
-        else{
-          return Opacity(
-            opacity: (warning == "") ? 0 : 1,
-            child: Container(
-              padding: EdgeInsets.only(
-                left: 24,
-                right: 24,
-                bottom: 16,
-              ),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.only(
-                      right: 8,
-                    ),
-                    child: Icon(
-                      Icons.warning,
-                      color: Colors.red,
-                    ),
-                  ),
-                  Expanded(
-                    child: Stack(
-                      children: <Widget>[
-                        Text(
-                          (alwaysHaveSpace) ? superHighEnd : warning,
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.transparent,
-                          ),
-                        ),
-                        Text(
-                          (warning == "") ? superHighEnd : warning,
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
-                    ),
-                  )
-                ],
-              ),
-            ),
-          );
-        }
-      },
-    );
-  }
-}
-
-class BasicEditor extends StatefulWidget {
-  const BasicEditor({
-    Key key,
-    @required this.namePresent,
-    @required this.nameError,
-    @required this.name,
-    @required this.note,
-    @required this.url,
-    this.editOneAtAtTime: false,
-  }) : super(key: key);
-
-  final ValueNotifier<bool> namePresent;
-  final ValueNotifier<bool> nameError;
-  final ValueNotifier<String> name; 
-  final ValueNotifier<String> note; 
-  final ValueNotifier<String> url;
-  final bool editOneAtAtTime;
-
-  @override
-  _BasicEditorState createState() => _BasicEditorState();
-}
-
-class _BasicEditorState extends State<BasicEditor> {
-  FocusNode noteFocusNode = FocusNode();
-
-  @override
-  void initState() {
-    //when url change we update
-    widget.url.addListener((){
-      setState(() {});
-    });
-
-    //super init
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: <Widget>[
-        HeaderWithInfo(
-          title: "Excercise Name",
-          popUp: ExcerciseNamePopUp(),
-        ),
-        new TextFieldWithClearButton(
-          hint: "Required*", 
-          error: (widget.nameError.value) ? "Name Is Required" : null, 
-          //auto focus field
-          autofocus: true,
-          //we need to keep track above to determine whether we can active the button
-          present: widget.namePresent, 
-          //so next focuses on the note
-          otherFocusNode: noteFocusNode,
-        ),
-        HeaderWithInfo(
-          title: "Excercise Notes",
-          popUp: ExcerciseNotePopUp(),
-        ),
-        new TextFieldWithClearButton(
-          hint: "Details", 
-          error: null, 
-          //so we can link up both fields
-          focusNode: noteFocusNode,
-        ),
-        Container(
-          child: HeaderWithInfo(
-            title: "Reference Link",
-            popUp: new ReferenceLinkPopUp(),
-          ),
-        ),
-        new ReferenceLinkBox(
-          url: widget.url,
-          editOneAtAtTime: widget.editOneAtAtTime,
-        ),
-      ],
     );
   }
 }
