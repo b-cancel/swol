@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class TextFieldWithClearButton extends StatefulWidget {
   const TextFieldWithClearButton({
     Key key,
+    @required this.valueToUpdate,
     @required this.hint,
     @required this.error,
     this.autofocus: false,
@@ -11,6 +12,7 @@ class TextFieldWithClearButton extends StatefulWidget {
     this.otherFocusNode, //If passed then shift over on next
   }) : super(key: key);
 
+  final ValueNotifier<String> valueToUpdate;
   final String hint;
   final String error;
   final bool autofocus;
@@ -45,6 +47,7 @@ class _TextFieldWithClearButtonState extends State<TextFieldWithClearButton> {
     //handle showing or hiding clear button
     ctrl.addListener((){
       present.value = (ctrl.text != "");
+      widget.valueToUpdate.value = ctrl.text;
       setState(() {});
     });
 

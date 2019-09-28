@@ -36,6 +36,8 @@ class _ExcerciseNotesState extends State<ExcerciseNotes> {
 
     //grab the name of the excercise
     String theName = ExcerciseData.getExcercises().value[widget.excerciseID].name;
+    theName = "\"" + theName + "\"";
+    
     String actionString = (delete) ? "Delete" : "Hide";
     Color buttonColor = (delete) ? Colors.red : Colors.blue;
     Function actionFunction;

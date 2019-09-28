@@ -54,6 +54,7 @@ class _BasicEditorState extends State<BasicEditor> {
           popUp: ExcerciseNamePopUp(),
         ),
         new TextFieldWithClearButton(
+          valueToUpdate: widget.name,
           hint: "Required*", 
           error: (widget.nameError.value) ? "Name Is Required" : null, 
           //auto focus field
@@ -68,6 +69,7 @@ class _BasicEditorState extends State<BasicEditor> {
           popUp: ExcerciseNotePopUp(),
         ),
         new TextFieldWithClearButton(
+          valueToUpdate: widget.note,
           hint: "Details", 
           error: null, 
           //so we can link up both fields

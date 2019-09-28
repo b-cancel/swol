@@ -107,6 +107,7 @@ class _AddExcerciseState extends State<AddExcercise> {
                 if(namePresent.value){
                   //add workout to our list
                   ExcerciseData.addExcercise(AnExcercise(
+                    //basic
                     name: name.value,
                     url: url.value,
                     note: note.value,
@@ -114,9 +115,9 @@ class _AddExcerciseState extends State<AddExcercise> {
                     //we must work off of current so the list is build properly
                     //the new excercises you added the longest time ago are on top
                     lastTimeStamp: DateTime.now().subtract(Duration(days: 365 * 100)),
+
+                    //other
                     lastSetTarget: setTarget.value,
-
-
                     predictionID: functionIndex,
                     recoveryPeriod: recoveryPeriod.value,
                     repTarget: repTarget.value,
