@@ -1,36 +1,38 @@
 import 'package:vibration/vibration.dart';
 
-bool hasCheckedForVibrator = false;
-bool hasVibration = false;
+class Vibrator{
+  static bool hasCheckedForVibrator = false;
+  static bool hasVibration = false;
 
-_vibrationCheck()async{
-  if(hasCheckedForVibrator == false){
-    hasCheckedForVibrator = true;
-    hasVibration = await Vibration.hasVibrator();
+  static _vibrationCheck()async{
+    if(hasCheckedForVibrator == false){
+      hasCheckedForVibrator = true;
+      hasVibration = await Vibration.hasVibrator();
+    }
   }
-}
 
-vibrate({Duration duration: const Duration(milliseconds: 500)})async{
-  await _vibrationCheck();
-  if(hasVibration) Vibration.vibrate(
-    duration: duration.inMilliseconds,
-  );
-}
-
-startVibration()async{
-  await _vibrationCheck();
-  if(hasVibration){
-    Vibration.vibrate(
-      pattern: [500],
-      intensities: [255],
-      repeat: 0,
+  static vibrate({Duration duration: const Duration(milliseconds: 500)})async{
+    await _vibrationCheck();
+    if(hasVibration) Vibration.vibrate(
+      duration: duration.inMilliseconds,
     );
   }
-}
 
-stopVibration()async{
-  await _vibrationCheck();
-  if(hasVibration){
-    Vibration.cancel();
+  static startVibration()async{
+    await _vibrationCheck();
+    if(hasVibration){
+      Vibration.vibrate(
+        pattern: [500],
+        intensities: [255],
+        repeat: 0,
+      );
+    }
+  }
+
+  static stopVibration()async{
+    await _vibrationCheck();
+    if(hasVibration){
+      Vibration.cancel();
+    }
   }
 }

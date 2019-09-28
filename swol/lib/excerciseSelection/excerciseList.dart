@@ -1,3 +1,21 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_sticky_header/flutter_sticky_header.dart';
+import 'package:page_transition/page_transition.dart';
+import 'package:scroll_to_index/scroll_to_index.dart';
+
+//plugin
+import 'package:async/async.dart';
+import 'package:swol/excercise/excerciseStorage.dart';
+import 'package:swol/excercise/excerciseStructure.dart';
+import 'package:swol/excerciseAddition/addWorkout.dart';
+import 'package:swol/excerciseSearch/recentSearchesStorage.dart';
+import 'package:swol/excerciseSearch/searchExcercise.dart';
+import 'package:swol/excerciseSelection/decoration.dart';
+import 'package:swol/excerciseSelection/mainHelper.dart';
+import 'package:swol/other/theme.dart';
+import 'package:swol/sharedWidgets/excerciseTile.dart';
+import 'package:swol/sharedWidgets/scrollToTop.dart';
+
 class ExcerciseSelect extends StatefulWidget {
   @override
   _ExcerciseSelectState createState() => _ExcerciseSelectState();
@@ -9,8 +27,8 @@ class _ExcerciseSelectState extends State<ExcerciseSelect> with SingleTickerProv
 
   fetchData() {
     return this._memoizer.runOnce(() async {
-      await searchesInit();
-      return await excercisesInit();
+      await RecentSearchesStorage.searchesInit();
+      return await ExcerciseStorage.excercisesInit();
     });
   }
 
@@ -24,7 +42,7 @@ class _ExcerciseSelectState extends State<ExcerciseSelect> with SingleTickerProv
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).primaryColorDark,
-        title: new SWOL(),
+        title: new SwolLogo(),
         actions: <Widget>[
           IconButton(
             onPressed: (){
@@ -96,7 +114,7 @@ class _ListOnDoneState extends State<ListOnDone> {
   @override
   void initState() {
     //Updates every time we update[timestamp], add, or remove some excercise
-    excercisesOrder.addListener((){
+    ExcerciseStorage.excercisesOrder.addListener((){
       setState(() {});
     });
 
@@ -120,17 +138,17 @@ class _ListOnDoneState extends State<ListOnDone> {
   @override
   Widget build(BuildContext context) {
     List<Widget> sliverList = new List<Widget>();
-    List<List<Excercise>> listOfGroupOfExcercises = new List<List<Excercise>>();
+    List<List<AnExcercise>> listOfGroupOfExcercises = new List<List<AnExcercise>>();
 
     //try to see if we have workouts to add
-    if(getExcercises().value.length > 0){
+    if(ExcerciseStorage.getExcercises().value.length > 0){
       //seperate excercise into their groups bassed on the max distance
       DateTime lastDateTime = DateTime(1500);
-      for(int i = 0; i < excercisesOrder.value.length; i++){
-        int excerciseID = excercisesOrder.value[i];
+      for(int i = 0; i < ExcerciseStorage.excercisesOrder.value.length; i++){
+        int excerciseID = ExcerciseStorage.excercisesOrder.value[i];
 
         //easy to access vars
-        Excercise excercise = getExcercises().value[excerciseID];
+        AnExcercise excercise = ExcerciseStorage.getExcercises().value[excerciseID];
         DateTime thisDateTime = excercise.lastTimeStamp;
 
         //make sure that a group exists for this excercise
@@ -166,7 +184,7 @@ class _ListOnDoneState extends State<ListOnDone> {
           //add a new group because its needed
           //or because we have no other group
           if(newGroupRequired || listOfGroupOfExcercises.length == 0){
-            listOfGroupOfExcercises.add(new List<Excercise>());
+            listOfGroupOfExcercises.add(new List<AnExcercise>());
           }
         }
 
@@ -182,7 +200,7 @@ class _ListOnDoneState extends State<ListOnDone> {
       //fill sliver list
       for(int i = 0; i < listOfGroupOfExcercises.length; i++){
         //create header text
-        List<Excercise> thisGroup = listOfGroupOfExcercises[i];
+        List<AnExcercise> thisGroup = listOfGroupOfExcercises[i];
         DateTime oldestDT = thisGroup[0].lastTimeStamp;
         Duration timeSince = DateTime.now().difference(oldestDT);
 
@@ -429,7 +447,7 @@ class _ListOnDoneState extends State<ListOnDone> {
                   context, 
                   PageTransition(
                     type: PageTransitionType.rightToLeft, 
-                    child: AddWorkout(),
+                    child: AddExcercise(),
                   ),
                 );
               },

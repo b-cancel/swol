@@ -1,0 +1,31 @@
+% of max 1 Rep Max
+1 ->
+25 ->
+50 ->
+75 ->
+100
+Function Links
+
+muscular tension 
+0%
+20%
+20%
+60%
+90%
+https://www.desmos.com/calculator/ajcgllfbbo
+
+muscular damage
+10%
+20%
+60%
+20%
+10%
+https://www.desmos.com/calculator/yf2tl8pq3b
+
+metabolic stress
+90%
+60%
+20%
+20%
+0%
+https://www.desmos.com/calculator/tkwifmbtpi

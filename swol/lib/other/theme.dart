@@ -2,15 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-//set changes on theme
-//Color.fromRGBO(255, 255, 255, 1); //O always set to 1
-//Color.fromARGB(255, 255, 255, 255); //A always set to 255
-//Color(0xAARRGGBB) //with a hex code //AA is always FF
-//setup for light theme
-ThemeData ourDark = ThemeData.dark();
-ThemeData ourLight = ThemeData.light();
+class MyTheme{
+  //set changes on theme
+  //Color.fromRGBO(255, 255, 255, 1); //O always set to 1
+  //Color.fromARGB(255, 255, 255, 255); //A always set to 255
+  //Color(0xAARRGGBB) //with a hex code //AA is always FF
+  //setup for light theme
+  static ThemeData dark = ThemeData.dark();
+  static ThemeData light = ThemeData.light();
+}
 
-//-----Theme Changer Code
 class ThemeChanger with ChangeNotifier {
   ThemeData _themeData;
 
@@ -45,7 +46,7 @@ void showThemeSwitcher(BuildContext context) {
             groupValue: Theme.of(context).brightness,
             onChanged: (Brightness value) {
               if(value == Brightness.light){
-                _themeChanger.setTheme(ourLight);
+                _themeChanger.setTheme(MyTheme.light);
               }
             },
             title: const Text('Light'),
@@ -55,7 +56,7 @@ void showThemeSwitcher(BuildContext context) {
             groupValue: Theme.of(context).brightness,
             onChanged: (Brightness value) {
               if(value == Brightness.dark){
-                _themeChanger.setTheme(ourDark);
+                _themeChanger.setTheme(MyTheme.dark);
               }
             },
             title: const Text('Dark'),

@@ -11,16 +11,16 @@ import 'package:swol/utils/data.dart';
 import 'package:swol/workout.dart';
 
 //main widget
-class AddWorkout extends StatefulWidget {
-  const AddWorkout({
+class AddExcercise extends StatefulWidget {
+  const AddExcercise({
     Key key,
   }) : super(key: key);
 
   @override
-  _AddWorkoutState createState() => _AddWorkoutState();
+  _AddExcerciseState createState() => _AddExcerciseState();
 }
 
-class _AddWorkoutState extends State<AddWorkout> {
+class _AddExcerciseState extends State<AddExcercise> {
   //basics
   ValueNotifier<bool> namePresent = new ValueNotifier(false);
   ValueNotifier<bool> nameError = new ValueNotifier(false);

@@ -1,14 +1,13 @@
 import 'dart:convert';
-
 import 'package:flutter/widgets.dart';
-import 'package:swol/functions/helper.dart';
+import 'package:swol/other/functions/helper.dart';
 
-class Excercise{
+class AnExcercise{
   //constants
   static const Duration defaultRecovery = const Duration(minutes: 1, seconds: 30);
   static const int defaultRepTarget = 8;
   static const int defaultSetTarget = 3;
-  static const int defaultFunctionID = defaultFunctionIndex;
+  static const int defaultFunctionID = Functions.defaultFunctionIndex;
 
   //static (used to assign ID)
   static int nextID;
@@ -42,7 +41,7 @@ class Excercise{
   int repTarget;
 
   //build
-  Excercise({
+  AnExcercise({
     //basic data
     @required this.name,
     this.url: "",
@@ -69,7 +68,7 @@ class Excercise{
     this.repTarget: defaultRepTarget, //Default set by addWokrout
   });
 
-  Excercise.fromJson(Map<String,dynamic> map){
+  AnExcercise.fromJson(Map<String,dynamic> map){
     //basic data
     name = map["name"];
     url = map["url"];
@@ -143,7 +142,7 @@ class Excercise{
     return d?.inSeconds.toString() ?? null;
   }
 
-  static String excercisesToString(List<Excercise> excercises){
+  static String excercisesToString(List<AnExcercise> excercises){
     String string = "[";
     for(int i = 0; i < excercises.length; i++){
       String str = json.encode(excercises[i].toJson());

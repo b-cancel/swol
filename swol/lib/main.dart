@@ -1,24 +1,16 @@
+//flutter
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:page_transition/page_transition.dart';
-import 'package:provider/provider.dart';
-import 'package:scroll_to_index/scroll_to_index.dart';
-import '../addWorkout.dart';
-import 'package:swol/excerciseTile.dart';
-import 'package:swol/functions/1RM&R=W.dart';
-import 'package:swol/functions/W&R=1RM.dart';
-import 'package:swol/helpers/main.dart';
-import 'package:swol/searchExcercise.dart';
-import 'package:swol/tabs/break.dart';
-import 'package:swol/updatePopUps.dart';
-import 'package:swol/utils/data.dart';
-import 'package:swol/utils/scrollToTap.dart';
-import 'package:swol/utils/searches.dart';
-import 'package:swol/utils/theme.dart';
-import 'package:swol/workout.dart';
-import 'package:async/async.dart';
-import 'package:flutter_sticky_header/flutter_sticky_header.dart';
+
+//plugins
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:provider/provider.dart';
+import 'package:async/async.dart';
+
+//internal
+import 'package:swol/excerciseSelection/excerciseList.dart';
+import 'package:swol/excercise/excerciseStructure.dart';
+import 'package:swol/other/theme.dart';
 
 void main() => runApp(MyApp());
 
@@ -62,12 +54,12 @@ class MyApp extends StatelessWidget {
           }
 
           //set nextID to its usable version
-          Excercise.nextID = nextID;
+          AnExcercise.nextID = nextID;
 
           //return app
           return ChangeNotifierProvider<ThemeChanger>(
             builder: (_) => ThemeChanger(
-              (isDark) ? ourDark : ourLight,
+              (isDark) ? MyTheme.dark : MyTheme.light,
             ), 
             child: StatelessLink(),
           );
