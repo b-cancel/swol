@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
-import 'package:swol/excerciseNotes.dart';
-import 'package:swol/utils/data.dart';
-
-//plugins mod
-import 'package:swol/pluginMod/verticalTabs.dart';
+import 'package:swol/excercise/excerciseData.dart';
+import 'package:swol/excerciseAction/excerciseNotes.dart';
+import 'package:swol/excerciseAction/tabs/verticalTabs.dart';
 
 class ExcercisePage extends StatefulWidget {
   ExcercisePage({
@@ -35,7 +33,7 @@ class _ExcercisePageState extends State<ExcercisePage> {
   @override
   void initState() { 
     super.initState();
-    name = getExcercises().value[widget.excerciseID].name;
+    name = ExcerciseData.getExcercises().value[widget.excerciseID].name;
   }
 
   @override

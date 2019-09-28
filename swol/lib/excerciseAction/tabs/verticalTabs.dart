@@ -1,12 +1,19 @@
 //MODIFICATION OF PLUGIN FOUND HERE
 //https://pub.dev/packages/vertical_tabs#-readme-tab-
 
+//dart
 import 'dart:math' as math;
+
+//flutter
 import 'package:flutter/material.dart';
-import 'package:swol/tabs/break.dart';
-import 'package:swol/tabs/setRecord.dart';
-import 'package:swol/tabs/suggest.dart';
-import 'package:swol/utils/data.dart';
+
+//internal: basic
+import 'package:swol/excercise/excerciseData.dart';
+
+//internal: tabs
+import 'package:swol/excerciseAction/tabs/record/setRecord.dart';
+import 'package:swol/excerciseAction/tabs/recovery/recovery.dart';
+import 'package:swol/excerciseAction/tabs/suggest/suggest.dart';
 
 /// A vertical tab widget for flutter
 class VerticalTabs extends StatefulWidget {
@@ -58,7 +65,7 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
     });
 
     //extract the duration from the index
-    recoveryDuration = new ValueNotifier(getExcercises().value[widget.excerciseID].recoveryPeriod);
+    recoveryDuration = new ValueNotifier(ExcerciseData.getExcercises().value[widget.excerciseID].recoveryPeriod);
     recoveryDuration.addListener((){
       print("update the duration on the actual object as well");
     });
@@ -95,7 +102,7 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
         SetRecord(
 
         ),
-        Break(
+        Recovery(
           recoveryDuration: recoveryDuration,
         ),
       ],

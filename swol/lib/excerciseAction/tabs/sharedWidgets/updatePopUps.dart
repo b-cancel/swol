@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import 'workout.dart';
+import 'package:swol/excercise/excerciseStructure.dart';
 
 //When pressing "next set" or "done with excercise"
 //-------------------------
@@ -25,7 +24,7 @@ import 'workout.dart';
 maybePopUpsBeforeNext(
   BuildContext context,
   {
-    @required Excercise excercise,
+    @required AnExcercise excercise,
     @required bool nextAndDone, 
 }){
   maybeAreYouSurePopUp(
@@ -39,7 +38,7 @@ maybePopUpsBeforeNext(
 maybeAreYouSurePopUp(
   BuildContext context,
   {
-    @required Excercise excercise,
+    @required AnExcercise excercise,
     @required bool nextAndDone, 
 }){
   Function next = maybeUpdateFunctionPopUp(
@@ -189,7 +188,7 @@ maybeAreYouSurePopUp(
 maybeUpdateFunctionPopUp(
   BuildContext context,
   {
-    @required Excercise excercise,
+    @required AnExcercise excercise,
     @required bool nextAndDone, 
 }){
   print("function pop up here B");
@@ -201,7 +200,7 @@ maybeUpdateFunctionPopUp(
 //update set count?
 bool maybeUpdateSetTarget(
   BuildContext context, 
-  Excercise excercise,
+  AnExcercise excercise,
   Function afterDone,
 ){
   int setTarget = excercise.lastSetTarget;

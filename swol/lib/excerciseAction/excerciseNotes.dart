@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:swol/addWorkout.dart';
-import 'package:swol/utils/data.dart';
+import 'package:swol/excercise/excerciseData.dart';
+import 'package:swol/sharedWidgets/excerciseEdit.dart';
 
 class ExcerciseNotes extends StatefulWidget {
   ExcerciseNotes({
@@ -35,18 +35,18 @@ class _ExcerciseNotesState extends State<ExcerciseNotes> {
     };
 
     //grab the name of the excercise
-    String theName = getExcercises().value[widget.excerciseID].name;
+    String theName = ExcerciseData.getExcercises().value[widget.excerciseID].name;
     String actionString = (delete) ? "Delete" : "Hide";
     Color buttonColor = (delete) ? Colors.red : Colors.blue;
     Function actionFunction;
     if(delete){
       actionFunction = (){
-        deleteExcercise(widget.excerciseID);
+        ExcerciseData.deleteExcercise(widget.excerciseID);
       };
     }
     else{
       actionFunction = (){
-        updateExcercise(
+        ExcerciseData.updateExcercise(
           widget.excerciseID, 
           //archive it or get it out of the way
           //but placing it 200 years in the future
@@ -232,13 +232,13 @@ class _ExcerciseNotesState extends State<ExcerciseNotes> {
     super.initState();
 
     //set initial values of ValueNotifiers
-    name.value = getExcercises().value[widget.excerciseID].name;
-    note.value = getExcercises().value[widget.excerciseID].note;
-    url.value = getExcercises().value[widget.excerciseID].url;
+    name.value = ExcerciseData.getExcercises().value[widget.excerciseID].name;
+    note.value = ExcerciseData.getExcercises().value[widget.excerciseID].note;
+    url.value = ExcerciseData.getExcercises().value[widget.excerciseID].url;
 
     //if values change properly update
     url.addListener((){
-      updateExcercise(widget.excerciseID, url: url.value);
+      ExcerciseData.updateExcercise(widget.excerciseID, url: url.value);
     });
   }
 

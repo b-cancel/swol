@@ -1,29 +1,12 @@
+//flutter
 import 'package:flutter/material.dart';
+
+//plugin
 import 'package:liquid_progress_indicator/liquid_progress_indicator.dart';
-import 'package:swol/helpers/timePicker.dart';
-import 'package:swol/tabs/break.dart';
+
+//internal
+import 'package:swol/excerciseAction/tabs/recovery/recovery.dart';
 import 'package:swol/utils/vibrate.dart';
-import 'package:vibration/vibration.dart';
-
-/*
-animationController.duration = Duration(milliseconds: _duration)
-share
-editflag
-answered Nov 8 '18 at 16:36
-
-Johnny Boy
-14099 bronze badges
-
-Just a comment for others that look this up: 
-if you want the duration change to be updated on the fly 
-(i.e., while the animation controller is running), 
-then it seems you have to activate the animation movement again. 
-In other words, in my case, after updating the Duration, 
-I had to add if (controller.isAnimating) controller.forward(); 
-in order for the speed on the animation to change based on the new duration. 
-A peek at the AnimationController code shows why: 
-the internal parameters are updated not on setting the duration but on starting the animation
-*/
 
 //you can use a tween to go between two durations
 
@@ -65,7 +48,6 @@ class _AnimLiquidIndicatorState extends State<AnimLiquidIndicator> with SingleTi
 
   //controllers
   AnimationController countDownController;
-  //AnimationController countUpController;
 
   //init
   @override
@@ -79,14 +61,6 @@ class _AnimLiquidIndicatorState extends State<AnimLiquidIndicator> with SingleTi
       duration: widget.recoveryDuration.value,
     );
 
-    /*
-    //create other animation controller
-    countUpController = AnimationController(
-      vsync: this,
-      duration: Duration(minutes: 10),
-    );
-    */
-
     //refresh UI at phone framerate
     countDownController.addListener((){
        setState(() {});
@@ -94,26 +68,14 @@ class _AnimLiquidIndicatorState extends State<AnimLiquidIndicator> with SingleTi
 
     countDownController.addStatusListener((status){
       if(status == AnimationStatus.completed){
-        startVibration();
+        Vibrator.startVibration();
       }
       else{
         //NOTE:not cover case for isDismissed 
         //but should never happen
-        stopVibration();
+        Vibrator.stopVibration();
       }
     });
-
-    /*
-    countDownController.addStatusListener((status){
-      if(status == AnimationStatus.completed){
-        countUpController.forward();
-      }
-      else{
-        countUpController.stop();
-        countUpController.reset();
-      }
-    });
-    */
 
     //start the countdown
     countDownController.forward();
@@ -164,7 +126,7 @@ class _AnimLiquidIndicatorState extends State<AnimLiquidIndicator> with SingleTi
 
   @override
   void dispose() {
-    stopVibration();
+    Vibrator.stopVibration();
     countDownController.dispose();
     super.dispose();
   }
@@ -208,28 +170,6 @@ class _AnimLiquidIndicatorState extends State<AnimLiquidIndicator> with SingleTi
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
-                    /*
-                    Container(
-                      width: textContainerSize,
-                      padding: EdgeInsets.symmetric(
-                        horizontal: (textContainerSize / 2) / 2.5,
-                      ),
-                      child: OutlineButton(
-                        borderSide: BorderSide(
-                          color: Theme.of(context).primaryColorDark,
-                          width: 2,
-                        ),
-                        onPressed: (){
-                        },
-                        child: Text(
-                          "Change Recovery Time",
-                          style: TextStyle(
-                            color: Theme.of(context).primaryColorDark,
-                          ),
-                        ),
-                      ),
-                    ),
-                    */
                     Container(
                       width: textContainerSize,
                       child: FittedBox(
@@ -305,9 +245,3 @@ class _AnimLiquidIndicatorState extends State<AnimLiquidIndicator> with SingleTi
     return [only1stDigit, always2Digits];
   }
 }
-
-/*
-  //possible update second
-      double tempIndicatorFill;
-      
-  */

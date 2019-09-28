@@ -1,23 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_picker/flutter_picker.dart';
 import 'package:page_transition/page_transition.dart';
-import 'package:swol/breath.dart';
-import 'package:swol/helpers/break.dart';
-import 'package:swol/helpers/timePicker.dart';
-import 'package:swol/tabs/suggest.dart';
+import 'package:swol/excerciseAction/tabs/recovery/liquidIndicator.dart';
+import 'package:swol/excerciseAction/tabs/recovery/breath.dart';
+import 'package:swol/excerciseAction/tabs/sharedWidgets/done.dart';
+import 'package:swol/sharedWidgets/timePicker.dart';
 
-class Break extends StatefulWidget {
-  Break({
+class Recovery extends StatefulWidget {
+  Recovery({
     @required this.recoveryDuration,
   });
 
   final ValueNotifier<Duration> recoveryDuration;
 
   @override
-  _BreakState createState() => _BreakState();
+  _RecoveryState createState() => _RecoveryState();
 }
 
-class _BreakState extends State<Break> with SingleTickerProviderStateMixin {
+class _RecoveryState extends State<Recovery> with SingleTickerProviderStateMixin {
   //primary vars
   DateTime timerStart;
 
