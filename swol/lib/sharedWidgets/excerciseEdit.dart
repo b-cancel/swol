@@ -54,6 +54,7 @@ class _BasicEditorState extends State<BasicEditor> {
           popUp: ExcerciseNamePopUp(),
         ),
         new TextFieldWithClearButton(
+          editOneAtAtTime: widget.editOneAtAtTime,
           valueToUpdate: widget.name,
           hint: "Required*", 
           error: (widget.nameError.value) ? "Name Is Required" : null, 
@@ -69,6 +70,7 @@ class _BasicEditorState extends State<BasicEditor> {
           popUp: ExcerciseNotePopUp(),
         ),
         new TextFieldWithClearButton(
+          editOneAtAtTime: widget.editOneAtAtTime,
           valueToUpdate: widget.note,
           hint: "Details", 
           error: null, 

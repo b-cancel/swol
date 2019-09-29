@@ -77,21 +77,71 @@ class _ReferenceLinkBoxState extends State<ReferenceLinkBox> {
       ),
     );
 
-    Widget clearButton = (widget.url.value == "") ? Container()
-    : FlatButton(
-      padding: EdgeInsets.all(0),
-      color: Theme.of(context).scaffoldBackgroundColor,
-      onPressed: (){
-        widget.url.value = "";
-        isEditing.value = false;
-      },
-      child: Container(
-        padding: EdgeInsets.all(0),
-        child: (widget.url.value == "") 
-        ? Container()
-        : Icon(Icons.close),
-      )
-    );
+    Widget confirmAndClearButton;
+    if(widget.url.value == ""){
+      confirmAndClearButton = Container();
+    }
+    else{
+      Widget clearButton = Expanded(
+        child: FlatButton(
+          padding: EdgeInsets.all(0),
+          color: Theme.of(context).scaffoldBackgroundColor,
+          onPressed: (){
+            widget.url.value = "";
+            isEditing.value = false;
+          },
+          child: Container(
+            padding: EdgeInsets.all(0),
+            child: (widget.url.value == "") 
+            ? Container()
+            : Icon(Icons.close),
+          )
+        ),
+      );
+
+      bool twoButtons = (widget.editOneAtAtTime);
+
+      //If we are doing the edit one at a time thing we also want to provide an aprove change button
+      Widget confirmButton = (twoButtons == false) ? Container()
+      : Expanded(
+        child: FlatButton(
+          padding: EdgeInsets.all(0),
+          color: Theme.of(context).scaffoldBackgroundColor,
+          onPressed: (){
+            isEditing.value = false;
+          },
+          child: Container(
+            padding: EdgeInsets.all(0),
+            child: (widget.url.value == "") 
+            ? Container()
+            : Icon(Icons.check),
+          )
+        ),
+      );
+
+      confirmAndClearButton = IntrinsicWidth(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisSize: MainAxisSize.max,
+          children: <Widget>[
+            confirmButton,
+            (twoButtons == false) ? Container() 
+            : Container(
+              color: Theme.of(context).scaffoldBackgroundColor,
+              padding: EdgeInsets.symmetric(
+                horizontal: 8,
+              ),
+              child: Container(
+                color: Theme.of(context).primaryColorDark,
+                height: 2,
+                child: Container(),
+              ),
+            ),
+            clearButton,
+          ],
+        ),
+      );
+    }
 
     //NOTE: only show the edit buttons sometimes
     bool showEditButtons;
@@ -110,7 +160,7 @@ class _ReferenceLinkBoxState extends State<ReferenceLinkBox> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             (widget.editOneAtAtTime && isEditing.value == false) ? editButton : Container(),
-            (showEditButtons) ? clearButton : Container(),
+            (showEditButtons) ? confirmAndClearButton : Container(),
             Expanded(
               child: FlatButton(
                 color: Theme.of(context).backgroundColor,

@@ -10,6 +10,7 @@ class TextFieldWithClearButton extends StatefulWidget {
     this.focusNode, //If passed then use this
     this.present, //If passed then use this
     this.otherFocusNode, //If passed then shift over on next
+    @required this.editOneAtAtTime,
   }) : super(key: key);
 
   final ValueNotifier<String> valueToUpdate;
@@ -19,6 +20,7 @@ class TextFieldWithClearButton extends StatefulWidget {
   final FocusNode focusNode;
   final ValueNotifier<bool> present;
   final FocusNode otherFocusNode;
+  final bool editOneAtAtTime;
 
   @override
   _TextFieldWithClearButtonState createState() => _TextFieldWithClearButtonState();
@@ -53,10 +55,12 @@ class _TextFieldWithClearButtonState extends State<TextFieldWithClearButton> {
 
     //handle autofocus
     //autofocus name
-    if(widget.autofocus){
-      WidgetsBinding.instance.addPostFrameCallback((_){
-        FocusScope.of(context).requestFocus(focusNode);
-      });
+    if(widget.editOneAtAtTime == false){
+      if(widget.autofocus){
+        WidgetsBinding.instance.addPostFrameCallback((_){
+          FocusScope.of(context).requestFocus(focusNode);
+        });
+      }
     }
 
     //super init
@@ -66,6 +70,15 @@ class _TextFieldWithClearButtonState extends State<TextFieldWithClearButton> {
   //build
   @override
   Widget build(BuildContext context) {
+    //determine text input action
+    TextInputAction textInputAction;
+    if(widget.editOneAtAtTime) textInputAction = TextInputAction.done;
+    else{
+      if(widget.otherFocusNode == null) textInputAction = TextInputAction.newline;
+      else textInputAction = TextInputAction.next;
+    }
+
+    //build
     return Flexible(
       child: Stack(
         children: <Widget>[
@@ -75,9 +88,7 @@ class _TextFieldWithClearButtonState extends State<TextFieldWithClearButton> {
             maxLines: (widget.otherFocusNode == null) ? null : 1,
             minLines: (widget.otherFocusNode == null) ? 2 : 1,
             keyboardType: TextInputType.text,
-            textInputAction: (widget.otherFocusNode == null) 
-            ? TextInputAction.newline
-            : TextInputAction.next,
+            textInputAction: textInputAction,
             decoration: InputDecoration(
               hintText: widget.hint,
               errorText: widget.error,
@@ -87,8 +98,10 @@ class _TextFieldWithClearButtonState extends State<TextFieldWithClearButton> {
               )
             ),
             onEditingComplete: (){
-              if(widget.otherFocusNode != null){
-                FocusScope.of(context).requestFocus(widget.otherFocusNode);
+              if(widget.editOneAtAtTime == false){
+                if(widget.otherFocusNode != null){
+                  FocusScope.of(context).requestFocus(widget.otherFocusNode);
+                }
               }
             },
           ),
