@@ -4,6 +4,7 @@ import 'dart:io';
 
 //flutter
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 //internal
 import 'package:swol/excercise/excerciseStructure.dart';
@@ -52,7 +53,7 @@ class ExcerciseData{
       //grab the contacts
       List<dynamic> map = json.decode(fileData);
       for(int i = 0; i < map.length; i++){
-        addExcercise(
+        await addExcercise(
           AnExcercise.fromJson(map[i]), 
           updateOrder: false, //we update the order at the end
           updateFile: false, //we got this data from the file
@@ -66,13 +67,21 @@ class ExcerciseData{
   //1. heap
   //2. retain map instead of build each time
   //3. etc...
-  static addExcercise(AnExcercise theWorkout, {bool updateOrder: true, bool updateFile: true}){
+  static addExcercise(AnExcercise theWorkout, {bool updateOrder: true, bool updateFile: true})async{
     //give it an ID (IF needed)
     if(theWorkout.id == null){
       theWorkout.id = AnExcercise.nextID;
       print("new index: " + theWorkout.id.toString());
       AnExcercise.nextID += 1;
+      print("next index: " + theWorkout.id.toString());
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setInt(
+        "nextID", 
+        AnExcercise.nextID,
+      );
+      print("next index confirmed: " + prefs.getInt('nextID').toString());
     }
+    else print("old index: " + theWorkout.id.toString());
 
     //add to workouts
     _excercises.value[theWorkout.id] = theWorkout;

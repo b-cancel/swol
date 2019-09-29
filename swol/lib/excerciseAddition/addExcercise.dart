@@ -103,10 +103,10 @@ class _AddExcerciseState extends State<AddExcercise> {
               color: (namePresent.value) 
               ? Theme.of(context).accentColor 
               : Colors.grey,
-              onPressed: (){
+              onPressed: ()async{
                 if(namePresent.value){
                   //add workout to our list
-                  ExcerciseData.addExcercise(AnExcercise(
+                  await ExcerciseData.addExcercise(AnExcercise(
                     //basic
                     name: name.value,
                     url: url.value,
