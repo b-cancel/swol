@@ -18,7 +18,8 @@ class PersistentHeaderDelegate extends SliverPersistentHeaderDelegate {
     String subtitle = "";
     if(workoutCount != null && workoutCount > 0){
       subtitle = workoutCount.toString();
-      subtitle = subtitle + " Workouts";
+      subtitle = subtitle + " Workout";
+      if(workoutCount > 1) subtitle += "s";
     }
 
     //-----Used to clip the Excercises Title

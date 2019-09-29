@@ -118,6 +118,8 @@ class ListOnDone extends StatefulWidget {
 }
 
 class _ListOnDoneState extends State<ListOnDone> {
+  bool newWorkoutSection = false;
+  bool hiddenWorkoutSection = false;
   final Duration maxDistanceBetweenExcercises = Duration(hours: 1, minutes: 30);
   ValueNotifier<bool> onTop = new ValueNotifier(true);
 
@@ -173,6 +175,14 @@ class _ListOnDoneState extends State<ListOnDone> {
           bool newWorkout = timeSince > Duration(days: 365 * 100);
           bool hiddenWorkout = timeSince < Duration.zero;
           
+          //update to show correct workout count
+          if(newWorkoutSection == false && newWorkout){
+            newWorkoutSection = true;
+          }
+
+          if(hiddenWorkoutSection == false && hiddenWorkout){
+            hiddenWorkoutSection = true;
+          }
 
           //if we have a new workout then we only need a new group
           //if the last item was also a new workout
@@ -406,7 +416,11 @@ class _ListOnDoneState extends State<ListOnDone> {
           semiClosedHeight: 60,
           openHeight: MediaQuery.of(context).size.height / 3,
           closedHeight: 0,
-          workoutCount: listOfGroupOfExcercises.length,
+          workoutCount: listOfGroupOfExcercises.length 
+          //exclude new workouts
+          - (newWorkoutSection ? 1 : 0) 
+          //exclude hidden workouts
+          - (hiddenWorkoutSection ? 1 : 0),
         ),
       ),
     );

@@ -28,16 +28,15 @@ class _ExcercisePageState extends State<ExcercisePage> {
     );
   }
 
-  String name;
-
   @override
   void initState() { 
     super.initState();
-    name = ExcerciseData.getExcercises().value[widget.excerciseID].name;
   }
 
   @override
   Widget build(BuildContext context) {
+    String name = ExcerciseData.getExcercises().value[widget.excerciseID].name;
+
     return Scaffold(
       appBar: AppBar(
         title: Column(
