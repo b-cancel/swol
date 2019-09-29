@@ -37,7 +37,7 @@ class _ExcerciseNotesState extends State<ExcerciseNotes> {
     //grab the name of the excercise
     String theName = ExcerciseData.getExcercises().value[widget.excerciseID].name;
     theName = "\"" + theName + "\"";
-    
+
     String actionString = (delete) ? "Delete" : "Hide";
     Color buttonColor = (delete) ? Colors.red : Colors.blue;
     Function actionFunction;
@@ -237,6 +237,15 @@ class _ExcerciseNotesState extends State<ExcerciseNotes> {
     name.value = ExcerciseData.getExcercises().value[widget.excerciseID].name;
     note.value = ExcerciseData.getExcercises().value[widget.excerciseID].note;
     url.value = ExcerciseData.getExcercises().value[widget.excerciseID].url;
+
+    name.addListener((){
+      //NOTE: name will only be set if its NOT EMTPY
+      ExcerciseData.updateExcercise(widget.excerciseID, name: name.value);
+    });
+
+    note.addListener((){
+      ExcerciseData.updateExcercise(widget.excerciseID, note: note.value);
+    });
 
     //if values change properly update
     url.addListener((){

@@ -101,6 +101,8 @@ class ExcerciseData{
   static updateExcercise(
     int id, {
       DateTime lastTimeStamp, 
+      String name,
+      String note,
       String url,
       int predictionID,
       int repTarget,
@@ -110,6 +112,15 @@ class ExcerciseData{
     if(lastTimeStamp != null){
       _excercises.value[id].lastTimeStamp = lastTimeStamp;
       _updateOrder();
+    }
+
+    if(name != null){
+      //TODO: causes everything that needs to reload... to reload
+      _excercises.value[id].name = name;
+    }
+
+    if(note != null){
+      _excercises.value[id].note = note;
     }
 
     if(url != null){

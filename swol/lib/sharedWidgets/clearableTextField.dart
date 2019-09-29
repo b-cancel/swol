@@ -29,6 +29,7 @@ class TextFieldWithClearButton extends StatefulWidget {
 }
 
 class _TextFieldWithClearButtonState extends State<TextFieldWithClearButton> {
+  ValueNotifier<String> tempValueToUpdate;
   TextEditingController ctrl = new TextEditingController();
   ValueNotifier<bool> isEditing;
   FocusNode focusNode;
@@ -49,11 +50,17 @@ class _TextFieldWithClearButtonState extends State<TextFieldWithClearButton> {
 
     //set the initial value of the fields
     ctrl.text = widget.valueToUpdate.value;
+    tempValueToUpdate = new ValueNotifier(ctrl.text);
 
     //handle showing or hiding clear button
     ctrl.addListener((){
       present.value = (ctrl.text != "");
-      widget.valueToUpdate.value = ctrl.text;
+      //update temp value
+      tempValueToUpdate.value = ctrl.text;
+      //if we are allowed to edit everything at once then automatically update the value
+      if(widget.editOneAtAtTime == false){
+        widget.valueToUpdate.value = tempValueToUpdate.value;
+      }
       setState(() {});
     });
 
@@ -80,8 +87,32 @@ class _TextFieldWithClearButtonState extends State<TextFieldWithClearButton> {
     isEditing.addListener((){
       if(isEditing.value == false){
         //we have just confirmed
+
         //release focus
         FocusScope.of(context).unfocus();
+
+        //make sure not empty and if emtpy correct
+        if(widget.otherFocusNode != null){ //name must be not empty
+          if(tempValueToUpdate.value == ""){
+            //auto undo (will also update tempValueToUpdate)
+            ctrl.text = widget.valueToUpdate.value;
+            
+            //let the user know their action is invalid
+            final snackBar = SnackBar(
+              backgroundColor: Theme.of(context).primaryColorDark,
+              content: Text(
+                'A Name Is Required',
+                style: TextStyle(
+                  color: Colors.white,
+                ),
+              ),
+            );
+            Scaffold.of(context).showSnackBar(snackBar);
+          }
+        }
+
+        //update actual value (will only trigger update if different)
+        widget.valueToUpdate.value = tempValueToUpdate.value;
       }
       setState(() {});
     });
@@ -133,7 +164,6 @@ class _TextFieldWithClearButtonState extends State<TextFieldWithClearButton> {
         padding: EdgeInsets.all(0),
         onPressed: (){
           isEditing.value = !isEditing.value;
-          //TODO: extra step when press confirm
         },
         child: Icon(
           (isEditing.value) ? Icons.check : Icons.edit,
@@ -150,7 +180,8 @@ class _TextFieldWithClearButtonState extends State<TextFieldWithClearButton> {
         color: Theme.of(context).accentColor,
         padding: EdgeInsets.all(0),
         onPressed: (){
-          //TODO: go back to previous version of thing
+          //go back to what you had previously
+          ctrl.text = widget.valueToUpdate.value;
         },
         child: Icon(
           Icons.undo,
