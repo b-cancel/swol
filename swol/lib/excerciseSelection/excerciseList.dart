@@ -22,14 +22,16 @@ import 'package:swol/sharedWidgets/scrollToTop.dart';
 import 'package:swol/excerciseAddition/addExcercise.dart';
 import 'package:swol/excerciseSearch/searchExcercise.dart';
 
-
-
 class ExcerciseSelect extends StatefulWidget {
   @override
   _ExcerciseSelectState createState() => _ExcerciseSelectState();
 }
 
-class _ExcerciseSelectState extends State<ExcerciseSelect> with SingleTickerProviderStateMixin{
+//NOTE: only stateful for SingleTickerProvider
+//using regular since FutureBuilder MAY cause the animation to trigger twice
+//although I'm preventing that by using the memoizer
+//flutter doesn't detect that and this silences the error
+class _ExcerciseSelectState extends State<ExcerciseSelect> with TickerProviderStateMixin{
   final AutoScrollController autoScrollController = new AutoScrollController();
   final AsyncMemoizer _memoizer = AsyncMemoizer();
 
