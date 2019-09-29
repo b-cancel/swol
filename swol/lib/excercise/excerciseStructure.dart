@@ -69,6 +69,8 @@ class AnExcercise{
   });
 
   AnExcercise.fromJson(Map<String,dynamic> map){
+    id = map["id"];
+
     //basic data
     name = map["name"];
     url = map["url"];
@@ -107,6 +109,8 @@ class AnExcercise{
 
   Map<String, dynamic> toJson(){
     return {
+      "id": id,
+
       //basic data
       "name": name,
       "url": url,

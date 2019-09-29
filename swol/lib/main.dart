@@ -53,6 +53,8 @@ class MyApp extends StatelessWidget {
             nextID = 0;
           }
 
+          print("saved next ID: " + nextID.toString());
+
           //set nextID to its usable version
           AnExcercise.nextID = nextID;
 

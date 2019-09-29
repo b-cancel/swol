@@ -71,17 +71,13 @@ class ExcerciseData{
     //give it an ID (IF needed)
     if(theWorkout.id == null){
       theWorkout.id = AnExcercise.nextID;
-      print("new index: " + theWorkout.id.toString());
       AnExcercise.nextID += 1;
-      print("next index: " + theWorkout.id.toString());
       SharedPreferences prefs = await SharedPreferences.getInstance();
       prefs.setInt(
         "nextID", 
         AnExcercise.nextID,
       );
-      print("next index confirmed: " + prefs.getInt('nextID').toString());
     }
-    else print("old index: " + theWorkout.id.toString());
 
     //add to workouts
     _excercises.value[theWorkout.id] = theWorkout;
