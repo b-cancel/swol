@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'buttonSpacer.dart';
+
 class TextFieldWithClearButton extends StatefulWidget {
   const TextFieldWithClearButton({
     Key key,
@@ -101,6 +103,78 @@ class _TextFieldWithClearButtonState extends State<TextFieldWithClearButton> {
       }
     }
 
+    //clearButton
+    Widget clearButton;
+    if(isEditing.value == false) clearButton = Container();
+    else{
+      if(present.value == false) clearButton = Container();
+      else{
+        clearButton = Transform.translate(
+          offset: Offset(8, 0),
+          child: IconButton(
+            onPressed: (){
+              ctrl.text = "";
+            },
+            color: Colors.grey, 
+            highlightColor: Colors.grey,
+            icon: Icon(
+              Icons.close,
+              color: Colors.grey,
+            ),
+          ),
+        );
+      }
+    }
+
+    //edit Toggle
+    Widget editToggle = Expanded(
+      child: FlatButton(
+        color: Theme.of(context).accentColor,
+        padding: EdgeInsets.all(0),
+        onPressed: (){
+          isEditing.value = !isEditing.value;
+          //TODO: extra step when press confirm
+        },
+        child: Icon(
+          (isEditing.value) ? Icons.check : Icons.edit,
+          color: Theme.of(context).primaryColorDark,
+        ),
+      ),
+    );
+
+    bool twoButtons = (widget.editOneAtAtTime && isEditing.value);
+
+    Widget undoButton = (twoButtons == false) ? Container()
+    : Expanded(
+      child: FlatButton(
+        color: Theme.of(context).accentColor,
+        padding: EdgeInsets.all(0),
+        onPressed: (){
+          //TODO: go back to previous version of thing
+        },
+        child: Icon(
+          Icons.undo,
+          color: Theme.of(context).primaryColorDark,
+        ),
+      ),
+    );
+
+    Widget allButtons = IntrinsicWidth(
+      child: Container(
+        color: Theme.of(context).accentColor,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisSize: MainAxisSize.max,
+          children: <Widget>[
+            undoButton,
+            (twoButtons == false) ? Container() 
+            : ButtonSpacer(),
+            editToggle,
+          ],
+        ),
+      ),
+    );
+
     //build
     return Flexible(
       child: IntrinsicHeight(
@@ -117,70 +191,52 @@ class _TextFieldWithClearButtonState extends State<TextFieldWithClearButton> {
                   topLeft:  const  Radius.circular(16.0),
                   bottomLeft: const  Radius.circular(16.0),
                 ),
-                child: FlatButton(
-                  color: Theme.of(context).accentColor,
-                  padding: EdgeInsets.all(0),
-                  onPressed: (){
-                    isEditing.value = !isEditing.value;
-                  },
-                  child: Icon(
-                    (isEditing.value) ? Icons.check : Icons.edit,
-                    color: Theme.of(context).primaryColorDark,
-                  ),
-                ),
+                child: allButtons,
               ),
             ),
             Flexible(
               child: Stack(
                 children: <Widget>[
-                  TextField(
-                    onTap: (){
-                      isEditing.value = true;
-                    },
-                    controller: ctrl,
-                    focusNode: focusNode,
-                    maxLines: (widget.otherFocusNode == null) ? null : 1,
-                    minLines: (widget.otherFocusNode == null) ? 2 : 1,
-                    keyboardType: TextInputType.text,
-                    textInputAction: textInputAction,
-                    decoration: InputDecoration(
-                      hintText: widget.hint,
-                      errorText: widget.error,
-                      //spacer so X doesn't cover the text
-                      suffix: Container(
-                        width: 36,
-                      )
-                    ),
-                    onEditingComplete: (){
-                      if(widget.editOneAtAtTime == false){
-                        if(widget.otherFocusNode != null){
-                          FocusScope.of(context).requestFocus(widget.otherFocusNode);
-                        }
-                        else FocusScope.of(context).unfocus();
-                      }
-                      else{
-                        isEditing.value = false; //unfocuses automatically
-                      }
-                    },
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      TextField(
+                        onTap: (){
+                          isEditing.value = true;
+                        },
+                        controller: ctrl,
+                        focusNode: focusNode,
+                        maxLines: (widget.otherFocusNode == null) ? null : 1,
+                        minLines: 1,
+                        keyboardType: TextInputType.text,
+                        textInputAction: textInputAction,
+                        decoration: InputDecoration(
+                          hintText: widget.hint,
+                          errorText: widget.error,
+                          //spacer so X doesn't cover the text
+                          suffix: Container(
+                            width: 36,
+                          )
+                        ),
+                        onEditingComplete: (){
+                          if(widget.editOneAtAtTime == false){
+                            if(widget.otherFocusNode != null){
+                              FocusScope.of(context).requestFocus(widget.otherFocusNode);
+                            }
+                            else FocusScope.of(context).unfocus();
+                          }
+                          else{
+                            isEditing.value = false; //unfocuses automatically
+                          }
+                        },
+                      ),
+                    ],
                   ),
                   Positioned(
                     right: 0,
                     top: 0,
                     bottom: 0,
-                    child: Transform.translate(
-                      offset: Offset(8, 0),
-                      child: IconButton(
-                        onPressed: (){
-                          ctrl.text = "";
-                        },
-                        color: Colors.grey, 
-                        highlightColor: Colors.grey,
-                        icon: Icon(
-                          Icons.close,
-                          color: (present.value) ? Colors.grey : Colors.transparent,
-                        ),
-                      ),
-                    ),
+                    child: clearButton,
                   ),
                 ],
               ),

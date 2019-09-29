@@ -5,6 +5,9 @@ import 'package:flutter/services.dart';
 //plugin
 import 'package:url_launcher/url_launcher.dart';
 
+//internal
+import 'package:swol/sharedWidgets/buttonSpacer.dart';
+
 class ReferenceLinkBox extends StatefulWidget {
   const ReferenceLinkBox({
     Key key,
@@ -120,25 +123,18 @@ class _ReferenceLinkBoxState extends State<ReferenceLinkBox> {
       );
 
       confirmAndClearButton = IntrinsicWidth(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisSize: MainAxisSize.max,
-          children: <Widget>[
-            confirmButton,
-            (twoButtons == false) ? Container() 
-            : Container(
-              color: Theme.of(context).scaffoldBackgroundColor,
-              padding: EdgeInsets.symmetric(
-                horizontal: 8,
-              ),
-              child: Container(
-                color: Theme.of(context).primaryColorDark,
-                height: 2,
-                child: Container(),
-              ),
-            ),
-            clearButton,
-          ],
+        child: Container(
+          color: Theme.of(context).scaffoldBackgroundColor,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisSize: MainAxisSize.max,
+            children: <Widget>[
+              confirmButton,
+              (twoButtons == false) ? Container() 
+              : ButtonSpacer(),
+              clearButton,
+            ],
+          ),
         ),
       );
     }
