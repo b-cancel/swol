@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 
 //plugin
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
 import 'package:async/async.dart';
+import 'package:swol/learn/learn.dart';
 
 //internal: basics
 import 'package:swol/other/theme.dart';
@@ -60,6 +62,20 @@ class _ExcerciseSelectState extends State<ExcerciseSelect> with TickerProviderSt
             },
             icon: Icon(Icons.settings),
           )
+          /*
+          IconButton(
+            onPressed: (){
+              Navigator.push(
+                context, 
+                PageTransition(
+                  type: PageTransitionType.upToDown, 
+                  child: LearnExcercise(),
+                ),
+              );
+            },
+            icon: Icon(FontAwesomeIcons.bookOpen),
+          ),
+          */
         ],
       ),
       body: new FutureBuilder(

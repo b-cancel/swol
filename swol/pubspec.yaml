@@ -20,6 +20,9 @@ dependencies:
   flutter:
     sdk: flutter
 
+  #STATUS AND NAVIGATION BAR
+  flutter_statusbarcolor: ^0.2.2
+
   #AUTO SIZE TEXT
   auto_size_text: ^2.1.0
 
