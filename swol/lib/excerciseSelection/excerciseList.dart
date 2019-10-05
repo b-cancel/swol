@@ -391,6 +391,8 @@ class _ExcerciseListState extends State<ExcerciseList> {
 
     finalWidgetList.addAll(sliverList);
 
+    bool transformed = false;
+
     //return
     return Stack(
       children: <Widget>[
@@ -428,20 +430,66 @@ class _ExcerciseListState extends State<ExcerciseList> {
           bottom: 0,
           child: Padding(
             padding: const EdgeInsets.all(16.0),
-            child: FloatingActionButton.extended(
-              heroTag: 'addNew',
-              onPressed: (){
-                Navigator.push(
-                  context, 
-                  PageTransition(
-                    type: PageTransitionType.rightToLeft, 
-                    child: AddExcercise(),
+            //NOTE: this must be seperate so the inkwell is visible
+            child: AnimatedContainer(
+              duration: Duration(milliseconds: 300), //default page transition
+              decoration: BoxDecoration(
+                color: transformed ? Colors.black : Theme.of(context).accentColor,
+                borderRadius: new BorderRadius.all(
+                  new Radius.circular(
+                    transformed ? 0 : (48 / 2),
                   ),
-                );
-              },
-              icon: Icon(Icons.add),
-              label: Text("Add New"),
-            ),
+                ),
+              ),
+              child: ClipRRect(
+                borderRadius: new BorderRadius.all(
+                  new Radius.circular(
+                    transformed ? 0 : (48 / 2),
+                  ),
+                ),
+                child: Material(
+                  color: Colors.transparent,
+                  child: InkWell(
+                    onTap: (){
+                      print("hi");
+                    },
+                    child: AnimatedContainer(
+                      duration: Duration(milliseconds: 300), //default page transition
+                      height: transformed ? MediaQuery.of(context).padding.top : 48,
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 16,
+                      ),
+                      child: Row(
+                        children: <Widget>[
+                          Padding(
+                            padding: EdgeInsets.only(
+                              right: 8,
+                            ),
+                            child: Icon(
+                              Icons.add,
+                              color: Theme.of(context).primaryColorDark,
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(
+                              right: 8,
+                            ),
+                            child: Text(
+                              "Add New",
+                              style: TextStyle(
+                                color: Theme.of(context).primaryColorDark,
+                                fontWeight: FontWeight.w500,
+                                letterSpacing: 1,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            )
           ),
         ),
       ],

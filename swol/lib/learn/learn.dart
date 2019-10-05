@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 
 //plugin
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:swol/excerciseSelection/excerciseList.dart';
 
 //build
 class LearnExcercise extends StatelessWidget {
