@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 //internal
 import 'package:swol/excercise/excerciseData.dart';
 import 'package:swol/excercise/excerciseStructure.dart';
+import 'package:swol/excerciseSelection/excerciseList.dart';
 import 'package:swol/sharedWidgets/excerciseEdit.dart';
 import 'package:swol/sharedWidgets/informationDisplay.dart';
 import 'package:swol/sharedWidgets/mySlider.dart';
@@ -94,53 +95,102 @@ class _AddExcerciseState extends State<AddExcercise> {
 
     //build
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Add New Excercise'),
-        actions: <Widget>[
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: RaisedButton(
-              color: (namePresent.value) 
-              ? Theme.of(context).accentColor 
-              : Colors.grey,
-              onPressed: ()async{
-                if(namePresent.value){
-                  //add workout to our list
-                  await ExcerciseData.addExcercise(AnExcercise(
-                    //basic
-                    name: name.value,
-                    url: url.value,
-                    note: note.value,
+      appBar: 
+      PreferredSize(
+        preferredSize: Size.fromHeight(kToolbarHeight),
+        child: Container(
+          width: MediaQuery.of(context).size.width,
+          color: Colors.red,
+          child: SafeArea(
+            child: Container(
+              color: Colors.blue,
+              child: Stack(
+                alignment: Alignment.center,
+                children: <Widget>[
+                  Positioned(
+                    left: 0,
+                    bottom: 0,
+                    top: 0,
+                    right: 0,
+                    child: AddNewHero(
+                      inAppBar: true,
+                    ),
+                  ),
+                  Positioned(
+                    right: 0,
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                        right: 8.0,
+                      ),
+                      child: RaisedButton(
+                        color: (namePresent.value) 
+                        ? Theme.of(context).accentColor 
+                        : Colors.grey,
+                        onPressed: ()async{
+                          if(namePresent.value){
+                            //add workout to our list
+                            await ExcerciseData.addExcercise(AnExcercise(
+                              //basic
+                              name: name.value,
+                              url: url.value,
+                              note: note.value,
 
-                    //we must work off of current so the list is build properly
-                    //the new excercises you added the longest time ago are on top
-                    lastTimeStamp: DateTime.now().subtract(Duration(days: 365 * 100)),
+                              //we must work off of current so the list is build properly
+                              //the new excercises you added the longest time ago are on top
+                              lastTimeStamp: DateTime.now().subtract(Duration(days: 365 * 100)),
 
-                    //other
-                    lastSetTarget: setTarget.value,
-                    predictionID: functionIndex,
-                    recoveryPeriod: recoveryPeriod.value,
-                    repTarget: repTarget.value,
-                  ));
+                              //other
+                              lastSetTarget: setTarget.value,
+                              predictionID: functionIndex,
+                              recoveryPeriod: recoveryPeriod.value,
+                              repTarget: repTarget.value,
+                            ));
 
-                  //exit pop up
-                  Navigator.pop(context);
-                }
-                else{
-                  nameError.value = true;
-                  setState(() {});
-                }
-              },
-              child: Text(
-                "Save",
-                style: TextStyle(
-                  color: Colors.black,
-                ),
+                            //exit pop up
+                            Navigator.pop(context);
+                          }
+                          else{
+                            nameError.value = true;
+                            setState(() {});
+                          }
+                        },
+                        child: Text(
+                          "Save",
+                          style: TextStyle(
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
+        ),
+      ),
+      
+       
+
+    
+      
+      /*
+      TODO: the widget we are trying to imitate
+      AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.close),
+          onPressed: (){
+            Navigator.of(context).pop();
+          },
+        ),
+        title: Text('Add New'),
+        actions: <Widget>[
+          
         ],
       ),
+      */
+      
+      
       body: ListView(
         shrinkWrap: true,
         padding: EdgeInsets.symmetric(
