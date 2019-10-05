@@ -6,12 +6,9 @@ import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
-import 'package:async/async.dart';
 import 'package:swol/learn/learn.dart';
 
 //internal: basics
-import 'package:swol/other/theme.dart';
-import 'package:swol/excerciseSearch/searchesData.dart';
 import 'package:swol/excercise/excerciseData.dart';
 import 'package:swol/excercise/excerciseStructure.dart';
 import 'package:swol/excerciseSelection/decoration.dart';
@@ -29,10 +26,6 @@ class ExcerciseSelect extends StatefulWidget {
   _ExcerciseSelectState createState() => _ExcerciseSelectState();
 }
 
-//NOTE: only stateful for SingleTickerProvider
-//using regular since FutureBuilder MAY cause the animation to trigger twice
-//although I'm preventing that by using the memoizer
-//flutter doesn't detect that and this silences the error
 class _ExcerciseSelectState extends State<ExcerciseSelect>{
   final AutoScrollController autoScrollController = new AutoScrollController();
 
@@ -61,34 +54,34 @@ class _ExcerciseSelectState extends State<ExcerciseSelect>{
               Navigator.push(
                 context, 
                 PageTransition(
-                  type: PageTransitionType.upToDown, 
+                  type: PageTransitionType.rightToLeft, 
                   child: LearnExcercise(),
                 ),
               );
             },
-            icon: Icon(FontAwesomeIcons.bookOpen),
+            icon: Icon(FontAwesomeIcons.bookOpen)
           ),
         ],
       ),
-      body: ListOnDone(
+      body: ExcerciseList(
         autoScrollController: autoScrollController,
       ),
     );
   }
 }
 
-class ListOnDone extends StatefulWidget {
-  ListOnDone({
+class ExcerciseList extends StatefulWidget {
+  ExcerciseList({
     @required this.autoScrollController,
   });
 
   final AutoScrollController autoScrollController;
 
   @override
-  _ListOnDoneState createState() => _ListOnDoneState();
+  _ExcerciseListState createState() => _ExcerciseListState();
 }
 
-class _ListOnDoneState extends State<ListOnDone> {
+class _ExcerciseListState extends State<ExcerciseList> {
   bool newWorkoutSection = false;
   bool hiddenWorkoutSection = false;
   final Duration maxDistanceBetweenExcercises = Duration(hours: 1, minutes: 30);

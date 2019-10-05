@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 //plugin
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:swol/excerciseSelection/excerciseList.dart';
 
 //build
 class LearnExcercise extends StatelessWidget {
@@ -10,6 +11,9 @@ class LearnExcercise extends StatelessWidget {
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.black,
+        automaticallyImplyLeading: false,
+        primary: true,
         title: Row(
           children: <Widget>[
             Icon(FontAwesomeIcons.bookOpen),
@@ -21,6 +25,14 @@ class LearnExcercise extends StatelessWidget {
             ),
           ],
         ), 
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.close),
+            onPressed: (){
+              Navigator.of(context).pop();
+            },
+          )
+        ], 
       ),
       body: new ListView(
         children: [
