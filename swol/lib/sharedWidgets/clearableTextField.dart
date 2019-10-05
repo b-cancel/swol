@@ -79,7 +79,15 @@ class _TextFieldWithClearButtonState extends State<TextFieldWithClearButton> {
     if(widget.editOneAtAtTime == false){
       if(widget.autofocus){
         WidgetsBinding.instance.addPostFrameCallback((_){
-          FocusScope.of(context).requestFocus(focusNode);
+          /*
+          Future.delayed(
+            //wait a little bit so animations are visible
+            Duration(milliseconds: 250),
+            (){
+              FocusScope.of(context).requestFocus(focusNode);
+            }
+          );
+          */
         });
       }
     }

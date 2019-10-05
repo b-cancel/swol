@@ -95,12 +95,11 @@ class _AddExcerciseState extends State<AddExcercise> {
 
     //build
     return Scaffold(
-      appBar: 
-      PreferredSize(
+      appBar: PreferredSize(
         preferredSize: Size.fromHeight(kToolbarHeight),
         child: Container(
           width: MediaQuery.of(context).size.width,
-          color: Colors.red,
+          color: Colors.transparent,
           child: SafeArea(
             child: Container(
               color: Colors.blue,

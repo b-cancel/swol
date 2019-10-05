@@ -449,72 +449,76 @@ class AddNewHero extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedContainer(
-      duration: Duration(milliseconds: 300), //default page transition
-      decoration: BoxDecoration(
-        color: inAppBar ? Colors.black : Theme.of(context).accentColor,
-        borderRadius: new BorderRadius.all(
-          new Radius.circular(
-            inAppBar ? 0 : (48 / 2),
+    return Hero(
+      tag: 'addNew',
+      child: AnimatedContainer(
+        duration: Duration(milliseconds: 300), //default page transition
+        decoration: BoxDecoration(
+          color: inAppBar ? Colors.black : Theme.of(context).accentColor,
+          borderRadius: new BorderRadius.all(
+            new Radius.circular(
+              inAppBar ? 0 : (48 / 2),
+            ),
           ),
         ),
-      ),
-      child: ClipRRect(
-        borderRadius: new BorderRadius.all(
-          new Radius.circular(
-            inAppBar ? 0 : (48 / 2),
+        height: inAppBar ? MediaQuery.of(context).padding.top : 48,
+        child: ClipRRect(
+          borderRadius: new BorderRadius.all(
+            new Radius.circular(
+              inAppBar ? 0 : (48 / 2),
+            ),
           ),
-        ),
-        child: Material(
-          color: Colors.transparent,
-          child: InkWell(
-            onTap: (){
-              if(inAppBar) Navigator.of(context).pop();
-              else{
-                Navigator.push(
-                  context, 
-                  PageTransition(
-                    type: PageTransitionType.downToUp, 
-                    child: AddExcercise(),
-                  ),
-                );
-              }
-            },
-            child: AnimatedContainer(
-              duration: Duration(milliseconds: 300), //default page transition
-              height: inAppBar ? MediaQuery.of(context).padding.top : 48,
-              padding: EdgeInsets.symmetric(
-                horizontal: 16,
-              ),
-              child: Row(
-                children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.only(
-                      right: (inAppBar) ? (NavigationToolbar.kMiddleSpacing * 2) : 8,
+          child: Material(
+            color: Colors.transparent,
+            child: InkWell(
+              onTap: (){
+                if(inAppBar) Navigator.of(context).pop();
+                else{
+                  Navigator.push(
+                    context, 
+                    PageTransition(
+                      duration: Duration(seconds: 5),
+                      type: PageTransitionType.downToUp, 
+                      child: AddExcercise(),
                     ),
-                    child: Icon(
-                      (inAppBar) ? Icons.close : Icons.add,
-                      color: inAppBar ? Colors.white : Theme.of(context).primaryColorDark,
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(
-                      right: 8,
-                    ),
-                    child: DefaultTextStyle(
-                      style: inAppBar 
-                      ? (AppBarTheme.of(context).textTheme ?? Theme.of(context).primaryTextTheme.title)
-                      : TextStyle(
-                        color: Theme.of(context).primaryColorDark,
-                        fontWeight: FontWeight.w500,
-                        letterSpacing: 1,
+                  );
+                }
+              },
+              child: AnimatedContainer(
+                duration: Duration(milliseconds: 300), //default page transition
+                padding: EdgeInsets.symmetric(
+                  horizontal: 16,
+                ),
+                child: Row(
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.only(
+                        right: (inAppBar) ? (NavigationToolbar.kMiddleSpacing * 2) : 8,
                       ),
-                      softWrap: false,
-                      overflow: TextOverflow.ellipsis,
-                      child: Text("Add New")
+                      child: Icon(
+                        (inAppBar) ? Icons.close : Icons.add,
+                        color: inAppBar ? Colors.white : Theme.of(context).primaryColorDark,
+                      ),
                     ),
-                  ),
-                ],
+                    Padding(
+                      padding: EdgeInsets.only(
+                        right: 8,
+                      ),
+                      child: DefaultTextStyle(
+                        style: inAppBar 
+                        ? (AppBarTheme.of(context).textTheme ?? Theme.of(context).primaryTextTheme.title)
+                        : TextStyle(
+                          color: Theme.of(context).primaryColorDark,
+                          fontWeight: FontWeight.w500,
+                          letterSpacing: 1,
+                        ),
+                        softWrap: false,
+                        overflow: TextOverflow.ellipsis,
+                        child: Text("Add New")
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
@@ -523,3 +527,77 @@ class AddNewHero extends StatelessWidget {
     );
   }
 }
+
+//TODO: alternative example code if using flutter villains doesn't do the job
+/*
+flightShuttleBuilder: (
+        BuildContext flightContext,
+        Animation<double> animation,
+        HeroFlightDirection flightDirection,
+        BuildContext fromHeroContext,
+        BuildContext toHeroContext,
+      ) {
+        /*
+        final Hero toHero = toHeroContext.widget;
+        return FadeTransition(
+          opacity: animation.drive(
+            Tween<double>(begin: 0.0, end: 1.0).chain(
+              CurveTween(
+                curve: Interval(0.0, 1.0,
+                    curve: ValleyQuadraticCurve()),
+              ),
+            ),
+          ),
+          child: toHero.child,
+        );
+        */
+        /*
+        final Hero toHero = toHeroContext.widget;
+          return ScaleTransition(
+            scale: animation.drive(
+              Tween<double>(begin: 0.0, end: 1.0).chain(
+                CurveTween(
+                  curve: Interval(0.0, 1.0,
+                      curve: PeakQuadraticCurve()),
+                ),
+              ),
+            ),
+            child: toHero.child,
+          );
+        */
+        /*
+        final Hero toHero = toHeroContext.widget;
+  return ScaleTransition(
+    scale: animation.drive(
+      Tween<double>(begin: 0.0, end: 1.0).chain(
+        CurveTween(
+          curve: Interval(0.0, 1.0,
+            curve: PeakQuadraticCurve()),
+        ),
+      ),
+    ),
+    child: flightDirection == HeroFlightDirection.push
+      ? RotationTransition(
+          turns: animation,
+          child: toHero.child,
+        )
+      : FadeTransition(
+          opacity: animation.drive(
+            Tween<double>(begin: 0.0, end: 1.0).chain(
+              CurveTween(
+                curve: Interval(0.0, 1.0,
+                  curve: ValleyQuadraticCurve()),
+              ),
+            ),
+          ),
+          child: toHero.child,
+        ),
+    );
+        */
+        final Hero toHero = toHeroContext.widget;
+        return RotationTransition(
+          turns: animation,
+          child: toHero.child,
+        );
+      },
+*/
