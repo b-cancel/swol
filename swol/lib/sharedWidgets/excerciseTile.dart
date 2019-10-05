@@ -15,39 +15,54 @@ import 'package:swol/excerciseAction/excercisePage.dart';
 class ExcerciseTile extends StatelessWidget {
   ExcerciseTile({
     @required this.excerciseID,
-    this.listDisplay,
+    this.tileInSearch: false,
   });
 
   final int excerciseID;
   //If this is displayed in the list then we dont have to show alot of info
-  final bool listDisplay;
+  final bool tileInSearch;
 
   @override
   Widget build(BuildContext context) {
     AnExcercise thisExcercise = ExcerciseData.getExcercises().value[excerciseID];
 
-    //calculations
     Duration timeSince = DateTime.now().difference(thisExcercise.lastTimeStamp);
+    Widget subtitle = (tileInSearch) 
+    ?  MyChip(
+      chipString: 'New',
+    ) 
+    : Container();
 
-    //subtitle gen
-    Widget subtitle;
-    if(timeSince < Duration.zero) subtitle = null;
-    else if(timeSince > Duration(days: 365 * 100)) subtitle = null;
-    else{
-      subtitle = Text(DurationFormat.format(timeSince));
-    }
+    //adjust if its an archived excercise or a regular one
+    if((timeSince > Duration(days: 365 * 100)) == false){
+      //its PROBABLY NOT NEW 
+      //NOTE: its entirely possible that it is tho by the person adding it and then immediately archiving it
 
-    //if not display
-    if(listDisplay == false && subtitle == null){
-      if(timeSince < Duration.zero){
-        subtitle = MyChip(
-          chipString: "Hidden",
-        );
-      }
-      else{
-        subtitle = MyChip(
-          chipString: 'New',
-        );
+      //TODO: confirm that its not new
+      bool notNew = true;
+      
+      if(notNew){
+        //TODO: actual calculate 1 rep max based on previous data 
+        //TODO: and perhaps express accuracy of calculation based on distance from 1 rep max
+        int oneRepMax = 160;
+
+        //subtitle gen
+        subtitle = Text(oneRepMax.toString() + " 1RM");
+
+        if(timeSince < Duration.zero){ //hidden item
+          subtitle = Row(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              (tileInSearch) 
+              ?  MyChip(
+                chipString: 'Hidden',
+              ) 
+              : Container(),
+              subtitle,
+            ],
+          );
+        }
+        //ELSE... regular item only need the calculated 1 rep max
       }
     }
 
@@ -99,21 +114,26 @@ class MyChip extends StatelessWidget {
 
     return Container(
       alignment: Alignment.topLeft,
-      child: Container(
-        padding: EdgeInsets.symmetric(
-          horizontal: 4,
+      child: Padding(
+        padding: EdgeInsets.only(
+          right: 4,
         ),
-        decoration: new BoxDecoration(
-          color: chipColor,
-          borderRadius: new BorderRadius.all(
-            Radius.circular(12.0),
+        child: Container(
+          padding: EdgeInsets.symmetric(
+            horizontal: 4,
           ),
-        ),
-        child: Text(
-          chipString,
-          style: TextStyle(
-            color: textColor,
-            fontWeight: FontWeight.bold,
+          decoration: new BoxDecoration(
+            color: chipColor,
+            borderRadius: new BorderRadius.all(
+              Radius.circular(12.0),
+            ),
+          ),
+          child: Text(
+            chipString,
+            style: TextStyle(
+              color: textColor,
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ),
       ),

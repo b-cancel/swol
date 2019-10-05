@@ -60,6 +60,7 @@ class MyInfoDialog extends StatelessWidget {
       data: ThemeData.light(),
       child: SimpleDialog(
         title: Row(
+          mainAxisSize: MainAxisSize.max,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Padding(
@@ -106,7 +107,10 @@ class MyInfoDialog extends StatelessWidget {
           ],
         ),
         children: <Widget>[
-          child,
+          Container(
+            width: MediaQuery.of(context).size.width,
+            child: child,
+          ),
         ],
       ),
     );

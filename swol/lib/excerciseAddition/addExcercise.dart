@@ -183,7 +183,7 @@ class _AddExcerciseState extends State<AddExcercise> {
                     children: <Widget>[
                       Container(
                         child: HeaderWithInfo(
-                          title: "Recovery Time Between Sets",
+                          title: "Recovery Time",
                           popUp: SetBreakPopUp(),
                         ),
                       ),
@@ -305,6 +305,9 @@ class _AddExcerciseState extends State<AddExcercise> {
                       value: setTarget,
                       lastTick: 9,
                     ),
+                    //TODO: when set target is above 6
+                    //TODO: explain that it might be best to increase something else
+                    //TODO: because if you wait this long , your muscles will cool down between sets
                     AnimatedBuilder(
                       animation: setTarget,
                       builder: (context, child){

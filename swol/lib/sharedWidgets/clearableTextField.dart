@@ -61,6 +61,7 @@ class _TextFieldWithClearButtonState extends State<TextFieldWithClearButton> {
       if(widget.editOneAtAtTime == false){
         widget.valueToUpdate.value = tempValueToUpdate.value;
       }
+      //reflect changes in UI
       setState(() {});
     });
 
@@ -173,6 +174,12 @@ class _TextFieldWithClearButtonState extends State<TextFieldWithClearButton> {
     );
 
     bool twoButtons = (widget.editOneAtAtTime && isEditing.value);
+
+    //NOTE: we know we could have two buttons but do we need them?
+    //only show undo if it does anything
+    if(twoButtons){
+      twoButtons = (tempValueToUpdate.value != widget.valueToUpdate.value);
+    }
 
     Widget undoButton = (twoButtons == false) ? Container()
     : Expanded(

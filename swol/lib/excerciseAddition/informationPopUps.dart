@@ -67,6 +67,7 @@ class PredictionFormulasPopUp extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Container(
               alignment: Alignment.centerLeft,
@@ -161,6 +162,7 @@ class AutoUpdatePopUp extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Container(
               alignment: Alignment.centerLeft,
@@ -224,6 +226,7 @@ class SetTargetPopUp extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Container(
               alignment: Alignment.centerLeft,
@@ -294,6 +297,7 @@ class SetBreakPopUp extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Container(
               alignment: Alignment.centerLeft,
@@ -355,7 +359,7 @@ class ReferenceLinkPopUp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MyInfoDialog(
       title: "Reference Link",
-      subtitle: "Copy and paste from web browser",
+      subtitle: "Copy and paste",
       child: Container(
         padding: EdgeInsets.only(
           left: 32,
@@ -365,25 +369,18 @@ class ReferenceLinkPopUp extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Container(
               alignment: Alignment.centerLeft,
               child: Text(
-                "Form is incredibly important!"
+                "It's helpful to have a resource at hand\n",
               ),
             ),
-            new MyDivider(),
             Container(
               alignment: Alignment.centerLeft,
               child: Text(
-                "Especially as you're approaching your 1 rep max, if your form isn't perfect, you could get permanently injured",
-              ),
-            ),
-            new MyDivider(),
-            Container(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                "So it's a good idea to keep a link to a video or picture of the proper form of each excercise",
+                "Link a video or image of the proper form, or anything else that might help",
               ),
             ),
           ],
@@ -412,29 +409,12 @@ class ExcerciseNotePopUp extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Container(
               alignment: Alignment.centerLeft,
               child: Text(
-                "Here you can write in details like: \n",
-              ),
-            ),
-            Container(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                "1. Preferred grip",
-              ),
-            ),
-            Container(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                "2. Modifications you made to form",
-              ),
-            ),
-            Container(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                "3. Etc...",
+                "A space for any extra details",
               ),
             ),
           ],
@@ -453,7 +433,7 @@ class ExcerciseNamePopUp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MyInfoDialog(
       title: "Excercise Name",
-      subtitle: "Unique Name",
+      subtitle: "Choose a unique name",
       child: Container(
         padding: EdgeInsets.only(
           left: 32,
@@ -463,22 +443,129 @@ class ExcerciseNamePopUp extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
+            RichText(
+              text: TextSpan(
+                style: TextStyle(
+                  color: Colors.black,
+                ),
+                children: [
+                  TextSpan(
+                    text: "You can have ",
+                  ),
+                  TextSpan(
+                    text: "multiple excercises",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  TextSpan(
+                    text: " with the ",
+                  ),
+                  TextSpan(
+                    text: "same name\n",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ]
+              ),
+            ),
+            //---
+            RichText(
+              text: TextSpan(
+                style: TextStyle(
+                  color: Colors.black,
+                ),
+                children: [
+                  TextSpan(
+                    text: "But,",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  TextSpan(
+                    text: " it's ",
+                  ),
+                  TextSpan(
+                    text: "best",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  TextSpan(
+                    text: " if you keep the name ",
+                  ),
+                  TextSpan(
+                    text: "unique\n",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ]
+              ),
+            ),
+            //---
+            RichText(
+              text: TextSpan(
+                style: TextStyle(
+                  color: Colors.black,
+                ),
+                children: [
+                  TextSpan(
+                    text: "Especially",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  TextSpan(
+                    text: " when you do the "
+                    + "same excercise, multiple times, in the same workout"
+                    + " but with different rep targets",
+                  ),
+                ]
+              ),
+            ),
+            /*
             Container(
               alignment: Alignment.centerLeft,
               child: Text(
-                "Don't worry about adding too many details here\n",
+                "Although the you can have multiple excercises with the same name\n",
               ),
             ),
             Container(
               alignment: Alignment.centerLeft,
               child: Text(
-                "Extra details should be placed in notes",
+                "Extra details should be placed in notes", sdfsd
               ),
             ),
+            */
           ],
         ),
       ),
     );
   }
 }
+
+/*
+BASIC TEMPLATE
+RichText(
+  text: TextSpan(
+    style: TextStyle(
+      color: Colors.black,
+    ),
+    children: [
+      TextSpan(
+        text: "bold text",
+        style: TextStyle(
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+      TextSpan(
+        text: " non bold text ",
+      ),
+    ]
+  ),
+),
+*/

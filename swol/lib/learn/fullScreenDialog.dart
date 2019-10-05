@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:swol/learn/learn.dart';
 import 'reusableWidgets.dart';
 
+/*
 final details = [
   new FullScreenDialog(
       title: "Ability Is A Function",
@@ -225,3 +226,4 @@ class FullScreenDialog extends StatelessWidget {
     );
   }
 }
+*/

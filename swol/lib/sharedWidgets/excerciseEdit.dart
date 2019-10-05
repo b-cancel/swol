@@ -50,7 +50,7 @@ class _BasicEditorState extends State<BasicEditor> {
       mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
         HeaderWithInfo(
-          title: "Excercise Name",
+          title: "Name",
           popUp: ExcerciseNamePopUp(),
         ),
         new TextFieldWithClearButton(
@@ -66,7 +66,7 @@ class _BasicEditorState extends State<BasicEditor> {
           otherFocusNode: noteFocusNode,
         ),
         HeaderWithInfo(
-          title: "Excercise Notes",
+          title: "Notes",
           popUp: ExcerciseNotePopUp(),
         ),
         new TextFieldWithClearButton(

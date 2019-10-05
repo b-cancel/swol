@@ -33,16 +33,8 @@ class ExcerciseSelect extends StatefulWidget {
 //using regular since FutureBuilder MAY cause the animation to trigger twice
 //although I'm preventing that by using the memoizer
 //flutter doesn't detect that and this silences the error
-class _ExcerciseSelectState extends State<ExcerciseSelect> with TickerProviderStateMixin{
+class _ExcerciseSelectState extends State<ExcerciseSelect>{
   final AutoScrollController autoScrollController = new AutoScrollController();
-  final AsyncMemoizer _memoizer = AsyncMemoizer();
-
-  fetchData() {
-    return this._memoizer.runOnce(() async {
-      await SearchesData.searchesInit();
-      return await ExcerciseData.excercisesInit();
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,13 +48,14 @@ class _ExcerciseSelectState extends State<ExcerciseSelect> with TickerProviderSt
         backgroundColor: Theme.of(context).primaryColorDark,
         title: new SwolLogo(),
         actions: <Widget>[
+          /*
           IconButton(
             onPressed: (){
               showThemeSwitcher(context);
             },
             icon: Icon(Icons.settings),
           )
-          /*
+          */
           IconButton(
             onPressed: (){
               Navigator.push(
@@ -75,48 +68,10 @@ class _ExcerciseSelectState extends State<ExcerciseSelect> with TickerProviderSt
             },
             icon: Icon(FontAwesomeIcons.bookOpen),
           ),
-          */
         ],
       ),
-      body: new FutureBuilder(
-        future: fetchData(),
-        builder: (BuildContext context, AsyncSnapshot snapshot) {
-          if(snapshot.connectionState == ConnectionState.done){
-            return ListOnDone(
-              autoScrollController: autoScrollController,
-            );
-          }
-          else{
-            return CustomScrollView(
-              controller: autoScrollController,
-              slivers: [
-                SliverPersistentHeader(
-                  pinned: false,
-                  floating: false,
-                  delegate: PersistentHeaderDelegate(
-                    semiClosedHeight: 40,
-                    openHeight: MediaQuery.of(context).size.height / 3,
-                    closedHeight: 0,
-                  ),
-                ),
-                SliverFillRemaining(
-                  hasScrollBody: false,
-                  child: Center(
-                    child: PumpingHeart( 
-                      color: Colors.red,
-                      size: 75.0,
-                      controller: AnimationController(
-                        vsync: this, 
-                        //80 bpm / 60 seconds = 1.3 beat per second
-                        duration: const Duration(milliseconds: 1333),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            );
-          }
-        },
+      body: ListOnDone(
+        autoScrollController: autoScrollController,
       ),
     );
   }

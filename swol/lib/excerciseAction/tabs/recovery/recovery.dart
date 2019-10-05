@@ -5,6 +5,11 @@ import 'package:swol/excerciseAction/tabs/recovery/breath.dart';
 import 'package:swol/excerciseAction/tabs/sharedWidgets/done.dart';
 import 'package:swol/sharedWidgets/timePicker.dart';
 
+//TODO: 0 -> 60 seconds: Endurance
+//TODO: 60 -> 2 minutes: Mass
+//TODO: 2 -> 3: Mass/Strength
+//TODO: 3 -> 5: Strength
+
 class Recovery extends StatefulWidget {
   Recovery({
     @required this.recoveryDuration,
@@ -143,6 +148,8 @@ class _RecoveryState extends State<Recovery> with SingleTickerProviderStateMixin
                     onPressed: (){
                       Navigator.pop(context);
                     },
+                    //TODO: if our next set will go above our targer alert the user of this 
+                    //TODO:  and ask if they want to proceed or end
                     child: Text("Next Set"),
                   ),
                 ],

@@ -260,7 +260,7 @@ class _SearchExcerciseState extends State<SearchExcercise> {
           itemBuilder: (context, index){
             return ExcerciseTile(
               excerciseID: ExcerciseData.getExcercises().value[queryResults[index]].id,
-              listDisplay: false,
+              tileInSearch: true,
             );
           },
         );
