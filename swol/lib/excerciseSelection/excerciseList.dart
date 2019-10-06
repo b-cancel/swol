@@ -1,3 +1,6 @@
+//dart
+import 'dart:math' as math;
+
 //flutter
 import 'package:flutter/material.dart';
 
@@ -14,6 +17,7 @@ import 'package:swol/excercise/excerciseStructure.dart';
 import 'package:swol/excerciseSelection/decoration.dart';
 import 'package:swol/excerciseSelection/persistentHeaderDelegate.dart';
 import 'package:swol/other/durationFormat.dart';
+import 'package:swol/other/otherHelper.dart';
 import 'package:swol/sharedWidgets/excerciseTile.dart';
 import 'package:swol/sharedWidgets/scrollToTop.dart';
 
@@ -431,7 +435,7 @@ class _ExcerciseListState extends State<ExcerciseList> {
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             //NOTE: this must be seperate so the inkwell is visible
-            child: new AddNewHero(inAppBar: transformed)
+            child: new AddNewHero(inAppBar: false),
           ),
         ),
       ],
@@ -451,70 +455,157 @@ class AddNewHero extends StatelessWidget {
   Widget build(BuildContext context) {
     return Hero(
       tag: 'addNew',
-      child: AnimatedContainer(
-        duration: Duration(milliseconds: 300), //default page transition
-        decoration: BoxDecoration(
-          color: inAppBar ? Colors.black : Theme.of(context).accentColor,
-          borderRadius: new BorderRadius.all(
-            new Radius.circular(
-              inAppBar ? 0 : (48 / 2),
+      flightShuttleBuilder: (
+        BuildContext flightContext,
+        Animation<double> animation,
+        HeroFlightDirection flightDirection,
+        BuildContext fromHeroContext,
+        BuildContext toHeroContext,
+      ) {
+        return AnimatedBuilder(
+          animation: animation,
+          builder: (context, child){
+            return AddNewHeroHelper(
+              percentToAppBar: animation.value,
+            );
+          },
+        );
+      },
+      child: AddNewHeroHelper(
+        percentToAppBar: (inAppBar) ? 1 : 0,
+      ),
+    );
+  }
+}
+
+class AddNewHeroHelper extends StatelessWidget {
+  static ValueNotifier<bool> toAddDone = new ValueNotifier(false);
+
+  const AddNewHeroHelper({
+    Key key,
+    @required this.percentToAppBar,
+  }) : super(key: key);
+
+  final double percentToAppBar;
+
+  @override
+  Widget build(BuildContext context) {
+    //set toAddDone function (so button can pop into place)
+    toAddDone.value = (percentToAppBar == 1);
+
+    //determine on tap function
+    Function onTap;
+    if(percentToAppBar == 0 || percentToAppBar == 1){
+      if(percentToAppBar == 1) onTap = () => Navigator.of(context).pop();
+      else{
+        onTap = (){
+          Navigator.push(
+            context, 
+            PageTransition(
+              duration: Duration(seconds: 5),
+              type: PageTransitionType.downToUp, 
+              child: AddExcercise(),
             ),
-          ),
+          );
+        };
+      }
+    } //Tapping while transitioning does nothing
+    else onTap = (){};
+
+    //NOTE in all cases below (regular button first, then app bar button)
+    return ClipRRect(
+      borderRadius: new BorderRadius.all(
+        new Radius.circular(
+          //button size should never be larger than 56
+          //and even if its a little bit above nothing bad will happen
+          lerpDouble(28, 0, percentToAppBar),
         ),
-        height: inAppBar ? MediaQuery.of(context).padding.top : 48,
-        child: ClipRRect(
-          borderRadius: new BorderRadius.all(
-            new Radius.circular(
-              inAppBar ? 0 : (48 / 2),
-            ),
-          ),
-          child: Material(
-            color: Colors.transparent,
-            child: InkWell(
-              onTap: (){
-                if(inAppBar) Navigator.of(context).pop();
-                else{
-                  Navigator.push(
-                    context, 
-                    PageTransition(
-                      duration: Duration(seconds: 5),
-                      type: PageTransitionType.downToUp, 
-                      child: AddExcercise(),
-                    ),
-                  );
-                }
-              },
-              child: AnimatedContainer(
-                duration: Duration(milliseconds: 300), //default page transition
-                padding: EdgeInsets.symmetric(
-                  horizontal: 16,
-                ),
+      ),
+      child: Container(
+        color: Color.lerp(
+          Theme.of(context).accentColor, 
+          Theme.of(context).primaryColorDark, 
+          percentToAppBar,
+        ),
+        child: Material(
+          color: Colors.transparent,
+          child: InkWell(
+            onTap: onTap,
+            child: Container(
+              padding: EdgeInsets.symmetric(
+                horizontal: 16,
+              ),
+              //------------------------------
+              child: Container(
+                height: 48,
                 child: Row(
                   children: <Widget>[
                     Padding(
                       padding: EdgeInsets.only(
-                        right: (inAppBar) ? (NavigationToolbar.kMiddleSpacing * 2) : 8,
+                        right: lerpDouble(
+                          8,
+                          (NavigationToolbar.kMiddleSpacing * 2),
+                          percentToAppBar,
+                        ), 
                       ),
-                      child: Icon(
-                        (inAppBar) ? Icons.close : Icons.add,
-                        color: inAppBar ? Colors.white : Theme.of(context).primaryColorDark,
+                      child: Transform.rotate(
+                        angle: (-math.pi / 4) * (5 * percentToAppBar),
+                        child: (percentToAppBar == 0) 
+                        ? Icon(
+                          Icons.add,
+                          color: Color.lerp(
+                            Theme.of(context).primaryColorDark,
+                            Colors.white,
+                            percentToAppBar,
+                          ),
+                        )
+                        //NOTE: the close button must be turned to look like an add button
+                        : Transform.rotate(
+                          angle: (-math.pi / 4),
+                          child: Icon(
+                            Icons.close,
+                            color: Color.lerp(
+                              Theme.of(context).primaryColorDark,
+                              Colors.white,
+                              percentToAppBar,
+                            ),
+                          ),
+                        ),
                       ),
                     ),
+              //------------------------------
                     Padding(
                       padding: EdgeInsets.only(
                         right: 8,
                       ),
                       child: DefaultTextStyle(
-                        style: inAppBar 
-                        ? (AppBarTheme.of(context).textTheme ?? Theme.of(context).primaryTextTheme.title)
-                        : TextStyle(
-                          color: Theme.of(context).primaryColorDark,
+                        style: TextStyle(
+                          decoration: TextDecoration.none,
+                          textBaseline: TextBaseline.alphabetic,
                           fontWeight: FontWeight.w500,
-                          letterSpacing: 1,
+                        ),
+                        child: Text(
+                          "Add New",
+                          style: TextStyle.lerp(
+                          TextStyle(
+                            color: Theme.of(context).primaryColorDark,
+                            letterSpacing: 1,
+                            fontSize: 14,
+                          ),
+                          //NOTE: I have absolutely no idea why its isnt allowing me to jut use
+                          //Theme.of(context).primaryTextTheme.title
+                          //but after print it I realized what values are different
+                          //and can simply copy them over
+                          TextStyle(
+                            color: Colors.white,
+                            letterSpacing: 0,
+                            fontSize: 20,
+                          ),
+                          percentToAppBar,
                         ),
                         softWrap: false,
                         overflow: TextOverflow.ellipsis,
-                        child: Text("Add New")
+                        ),
                       ),
                     ),
                   ],
@@ -524,6 +615,78 @@ class AddNewHero extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+class HeroAnimatingSongCard extends StatelessWidget {
+  HeroAnimatingSongCard(
+      {this.song, this.color, this.heroAnimation, this.onPressed});
+
+  final String song;
+  final Color color;
+  final Animation<double> heroAnimation;
+  final VoidCallback onPressed;
+
+  double get playButtonSize => 50 + 50 * heroAnimation.value;
+
+  @override
+  Widget build(context) {
+    // This is an inefficient usage of AnimatedBuilder since it's rebuilding
+    // the entire subtree instead of passing in a non-changing child and
+    // building a transition widget in between.
+    //
+    // Left simple in this demo because this card doesn't have any real inner
+    // content so this just rebuilds everything while animating.
+    return AnimatedBuilder(
+      animation: heroAnimation,
+      builder: (context, child) {
+        return Container(
+          child: SizedBox(
+            height: 250,
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                // The song title banner slides off in the hero animation.
+                Positioned(
+                  bottom: -80 * heroAnimation.value,
+                  left: 0,
+                  right: 0,
+                  child: Container(
+                    height: 80,
+                    color: Colors.black12,
+                    alignment: Alignment.centerLeft,
+                    padding: EdgeInsets.symmetric(horizontal: 12),
+                    child: Text(
+                      song,
+                      style: TextStyle(
+                        fontSize: 21,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                ),
+                // The play button grows in the hero animation.
+                Padding(
+                  padding:
+                      EdgeInsets.only(bottom: 45) * (1 - heroAnimation.value),
+                  child: Container(
+                    height: playButtonSize,
+                    width: playButtonSize,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.black12,
+                    ),
+                    alignment: Alignment.center,
+                    child: Icon(Icons.play_arrow,
+                        size: playButtonSize, color: Colors.black38),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }

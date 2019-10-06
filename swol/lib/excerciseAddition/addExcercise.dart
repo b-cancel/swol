@@ -95,6 +95,7 @@ class _AddExcerciseState extends State<AddExcercise> {
 
     //build
     return Scaffold(
+      backgroundColor: Colors.transparent,
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(kToolbarHeight),
         child: Container(
@@ -102,7 +103,6 @@ class _AddExcerciseState extends State<AddExcercise> {
           color: Colors.transparent,
           child: SafeArea(
             child: Container(
-              color: Colors.blue,
               child: Stack(
                 alignment: Alignment.center,
                 children: <Widget>[
@@ -121,44 +121,61 @@ class _AddExcerciseState extends State<AddExcercise> {
                       padding: const EdgeInsets.only(
                         right: 8.0,
                       ),
-                      child: RaisedButton(
-                        color: (namePresent.value) 
-                        ? Theme.of(context).accentColor 
-                        : Colors.grey,
-                        onPressed: ()async{
-                          if(namePresent.value){
-                            //add workout to our list
-                            await ExcerciseData.addExcercise(AnExcercise(
-                              //basic
-                              name: name.value,
-                              url: url.value,
-                              note: note.value,
+                      child: AnimatedBuilder(
+                        animation: AddNewHeroHelper.toAddDone,
+                        builder: (context, child){
+                          return AnimatedContainer(
+                            duration: Duration(milliseconds: 300),
+                            curve: Curves.bounceInOut,
+                            constraints: BoxConstraints(
+                              //no limit vs limit
+                              //the 100 is so large its never going to be a limitation
+                              maxHeight: (AddNewHeroHelper.toAddDone.value) ? 100 : 0,
+                            ),
+                            child: FittedBox(
+                              fit: BoxFit.contain,
+                              child: RaisedButton(
+                                color: (namePresent.value) 
+                                ? Theme.of(context).accentColor 
+                                : Colors.grey,
+                                onPressed: ()async{
+                                  if(namePresent.value){
+                                    //add workout to our list
+                                    await ExcerciseData.addExcercise(AnExcercise(
+                                      //basic
+                                      name: name.value,
+                                      url: url.value,
+                                      note: note.value,
 
-                              //we must work off of current so the list is build properly
-                              //the new excercises you added the longest time ago are on top
-                              lastTimeStamp: DateTime.now().subtract(Duration(days: 365 * 100)),
+                                      //we must work off of current so the list is build properly
+                                      //the new excercises you added the longest time ago are on top
+                                      lastTimeStamp: DateTime.now().subtract(Duration(days: 365 * 100)),
 
-                              //other
-                              lastSetTarget: setTarget.value,
-                              predictionID: functionIndex,
-                              recoveryPeriod: recoveryPeriod.value,
-                              repTarget: repTarget.value,
-                            ));
+                                      //other
+                                      lastSetTarget: setTarget.value,
+                                      predictionID: functionIndex,
+                                      recoveryPeriod: recoveryPeriod.value,
+                                      repTarget: repTarget.value,
+                                    ));
 
-                            //exit pop up
-                            Navigator.pop(context);
-                          }
-                          else{
-                            nameError.value = true;
-                            setState(() {});
-                          }
+                                    //exit pop up
+                                    Navigator.pop(context);
+                                  }
+                                  else{
+                                    nameError.value = true;
+                                    setState(() {});
+                                  }
+                                },
+                                child: Text(
+                                  "Save",
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          );
                         },
-                        child: Text(
-                          "Save",
-                          style: TextStyle(
-                            color: Colors.black,
-                          ),
-                        ),
                       ),
                     ),
                   ),
@@ -190,216 +207,219 @@ class _AddExcerciseState extends State<AddExcercise> {
       */
       
       
-      body: ListView(
-        shrinkWrap: true,
-        padding: EdgeInsets.symmetric(
-          vertical: 16,
-        ),
-        children: <Widget>[
-          Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              Card(
-                margin: EdgeInsets.all(8),
-                child: Padding(
-                  padding: EdgeInsets.only(
-                    top: 8,
-                    left: 16,
-                    right: 16,
-                    bottom: 16,
-                  ),
-                  child: new BasicEditor(
-                    namePresent: namePresent,
-                    nameError: nameError,
-                    name: name,
-                    note: note,
-                    url: url,
+      body: Container(
+        color: Theme.of(context).scaffoldBackgroundColor,
+        child: ListView(
+          shrinkWrap: true,
+          padding: EdgeInsets.symmetric(
+            vertical: 16,
+          ),
+          children: <Widget>[
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                Card(
+                  margin: EdgeInsets.all(8),
+                  child: Padding(
+                    padding: EdgeInsets.only(
+                      top: 8,
+                      left: 16,
+                      right: 16,
+                      bottom: 16,
+                    ),
+                    child: new BasicEditor(
+                      namePresent: namePresent,
+                      nameError: nameError,
+                      name: name,
+                      note: note,
+                      url: url,
+                    ),
                   ),
                 ),
-              ),
-              Card(
-                margin: EdgeInsets.all(8),
-                child: Container(
-                  padding: EdgeInsets.only(
-                    top: 8,
-                    left: 16,
-                    right: 16,
-                    bottom: 16,
-                  ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      Container(
-                        child: HeaderWithInfo(
-                          title: "Recovery Time",
-                          popUp: SetBreakPopUp(),
+                Card(
+                  margin: EdgeInsets.all(8),
+                  child: Container(
+                    padding: EdgeInsets.only(
+                      top: 8,
+                      left: 16,
+                      right: 16,
+                      bottom: 16,
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        Container(
+                          child: HeaderWithInfo(
+                            title: "Recovery Time",
+                            popUp: SetBreakPopUp(),
+                          ),
                         ),
-                      ),
-                      TimePicker(
-                        duration: recoveryPeriod,
-                      ),
-                      new MinsSecsBelowTimePicker(
-                        showS: showS,
-                      ),
-                      MyDivider(),
-                      Container(
-                        padding: EdgeInsets.only(
-                          top: 16,
-                          bottom: 8,
+                        TimePicker(
+                          duration: recoveryPeriod,
                         ),
-                        child: Container(
-                          width: MediaQuery.of(context).size.width,
-                          child: FittedBox(
-                            fit: BoxFit.fitWidth,
-                            child: Text(
-                              "This recovery time is best for increasing muscle",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
+                        new MinsSecsBelowTimePicker(
+                          showS: showS,
+                        ),
+                        MyDivider(),
+                        Container(
+                          padding: EdgeInsets.only(
+                            top: 16,
+                            bottom: 8,
+                          ),
+                          child: Container(
+                            width: MediaQuery.of(context).size.width,
+                            child: FittedBox(
+                              fit: BoxFit.fitWidth,
+                              child: Text(
+                                "This recovery time is best for increasing muscle",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ),
                           ),
                         ),
+                        new AnimatedRecoveryTimeInfo(
+                          changeDuration: changeDuration, 
+                          sectionGrown: sectionGrown, 
+                          grownWidth: sliderWidth, 
+                          regularWidth: 0, 
+                          textHeight: textHeight, 
+                          textMaxWidth: textMaxWidth,
+                          selectedDuration: recoveryPeriod,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Card(
+                  margin: EdgeInsets.all(8),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Container(
+                        padding: EdgeInsets.only(
+                          top: 8,
+                          left: 16,
+                          right: 16,
+                        ),
+                        child: new HeaderWithInfo(
+                          title: "Rep Target",
+                          popUp: new RepTargetPopUp(),
+                        ),
                       ),
-                      new AnimatedRecoveryTimeInfo(
-                        changeDuration: changeDuration, 
-                        sectionGrown: sectionGrown, 
-                        grownWidth: sliderWidth, 
-                        regularWidth: 0, 
-                        textHeight: textHeight, 
-                        textMaxWidth: textMaxWidth,
-                        selectedDuration: recoveryPeriod,
+                      CustomSlider(
+                        value: repTarget,
+                        lastTick: 35,
                       ),
+                      CustomSliderWarning(repTarget: repTarget),
+                      Container(
+                        padding: EdgeInsets.only(
+                          //Top 16 padding address above
+                          left: 16,
+                          right: 16,
+                        ),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            Padding(
+                              padding: EdgeInsets.only(
+                                top: 16,
+                                bottom: 0,
+                              ),
+                              child: Container(
+                                color: Theme.of(context).dividerColor,
+                                height: 2,
+                                width: MediaQuery.of(context).size.width,
+                              ),
+                            ),
+                            Container(
+                              child: new HeaderWithInfo(
+                                title: "Prediction Formula",
+                                popUp: new PredictionFormulasPopUp(),
+                              ),
+                            ),
+                            DropdownButton<String>(
+                              value: functionValue,
+                              icon: Icon(Icons.arrow_drop_down),
+                              isExpanded: true,
+                              iconSize: 24,
+                              elevation: 16,
+                              onChanged: (String newValue) {
+                                setState(() {
+                                  functionValue = newValue;
+                                  functionIndex = Functions.functionToIndex[functionValue];
+                                });
+                              },
+                              items: Functions.functions.map<DropdownMenuItem<String>>((String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(value),
+                                );
+                              })
+                              .toList(),
+                            ),
+                            Container(
+                              child: new HeaderWithInfo(
+                                title: "Set Target",
+                                popUp: new SetTargetPopUp(),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      new CustomSlider(
+                        value: setTarget,
+                        lastTick: 9,
+                      ),
+                      //TODO: when set target is above 6
+                      //TODO: explain that it might be best to increase something else
+                      //TODO: because if you wait this long , your muscles will cool down between sets
+                      AnimatedBuilder(
+                        animation: setTarget,
+                        builder: (context, child){
+                          if(setTarget.value <= 6) return Container();
+                          else{
+                            return Container(
+                              padding: EdgeInsets.only(
+                                left: 24,
+                                right: 24,
+                                bottom: 16,
+                              ),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: <Widget>[
+                                  Padding(
+                                    padding: EdgeInsets.only(
+                                      right: 8,
+                                    ),
+                                    child: Icon(
+                                      Icons.warning,
+                                      color: Colors.yellow,
+                                    ),
+                                  ),
+                                  Expanded(
+                                    child: Text(
+                                      "Consider increasing weight or reps instead",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            );
+                          }
+                        },
+                      )
                     ],
                   ),
                 ),
-              ),
-              Card(
-                margin: EdgeInsets.all(8),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    Container(
-                      padding: EdgeInsets.only(
-                        top: 8,
-                        left: 16,
-                        right: 16,
-                      ),
-                      child: new HeaderWithInfo(
-                        title: "Rep Target",
-                        popUp: new RepTargetPopUp(),
-                      ),
-                    ),
-                    CustomSlider(
-                      value: repTarget,
-                      lastTick: 35,
-                    ),
-                    CustomSliderWarning(repTarget: repTarget),
-                    Container(
-                      padding: EdgeInsets.only(
-                        //Top 16 padding address above
-                        left: 16,
-                        right: 16,
-                      ),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          Padding(
-                            padding: EdgeInsets.only(
-                              top: 16,
-                              bottom: 0,
-                            ),
-                            child: Container(
-                              color: Theme.of(context).dividerColor,
-                              height: 2,
-                              width: MediaQuery.of(context).size.width,
-                            ),
-                          ),
-                          Container(
-                            child: new HeaderWithInfo(
-                              title: "Prediction Formula",
-                              popUp: new PredictionFormulasPopUp(),
-                            ),
-                          ),
-                          DropdownButton<String>(
-                            value: functionValue,
-                            icon: Icon(Icons.arrow_drop_down),
-                            isExpanded: true,
-                            iconSize: 24,
-                            elevation: 16,
-                            onChanged: (String newValue) {
-                              setState(() {
-                                functionValue = newValue;
-                                functionIndex = Functions.functionToIndex[functionValue];
-                              });
-                            },
-                            items: Functions.functions.map<DropdownMenuItem<String>>((String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(value),
-                              );
-                            })
-                            .toList(),
-                          ),
-                          Container(
-                            child: new HeaderWithInfo(
-                              title: "Set Target",
-                              popUp: new SetTargetPopUp(),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    new CustomSlider(
-                      value: setTarget,
-                      lastTick: 9,
-                    ),
-                    //TODO: when set target is above 6
-                    //TODO: explain that it might be best to increase something else
-                    //TODO: because if you wait this long , your muscles will cool down between sets
-                    AnimatedBuilder(
-                      animation: setTarget,
-                      builder: (context, child){
-                        if(setTarget.value <= 6) return Container();
-                        else{
-                          return Container(
-                            padding: EdgeInsets.only(
-                              left: 24,
-                              right: 24,
-                              bottom: 16,
-                            ),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: <Widget>[
-                                Padding(
-                                  padding: EdgeInsets.only(
-                                    right: 8,
-                                  ),
-                                  child: Icon(
-                                    Icons.warning,
-                                    color: Colors.yellow,
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Text(
-                                    "Consider increasing weight or reps instead",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                )
-                              ],
-                            ),
-                          );
-                        }
-                      },
-                    )
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ],
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
