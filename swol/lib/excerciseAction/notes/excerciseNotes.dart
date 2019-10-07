@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:swol/excercise/excerciseData.dart';
+import 'package:swol/excerciseAction/notes/excerciseMessages.dart';
 import 'package:swol/sharedWidgets/excerciseEdit.dart';
 
 class ExcerciseNotes extends StatefulWidget {
@@ -25,23 +27,15 @@ class _ExcerciseNotesState extends State<ExcerciseNotes> {
 
   //pop ups for archiving or deleting
   areyouSurePopUp(BuildContext context, bool delete){
-    Function tripplePop = (){
-      //get rid of this pop up
-      Navigator.of(context).pop();
-
-      //go back to our excercise page
-      Navigator.of(context).pop();
-
-      //go back to our list
-      Navigator.of(context).pop();
-    };
-
     //grab the name of the excercise
     String theName = ExcerciseData.getExcercises().value[widget.excerciseID].name;
     theName = "\"" + theName + "\"";
-
     String actionString = (delete) ? "Delete" : "Hide";
     Color buttonColor = (delete) ? Colors.red : Colors.blue;
+    IconData icon = (delete) ? Icons.delete : FontAwesomeIcons.solidEyeSlash;
+    double iconSpace = (delete) ? 8 : 16;
+
+    //create action function
     Function actionFunction;
     if(delete){
       actionFunction = (){
@@ -61,109 +55,14 @@ class _ExcerciseNotesState extends State<ExcerciseNotes> {
         );
       };
     }
+
+    //create message
     Widget message;
     if(delete){
-      message = RichText(
-        text: TextSpan(
-          style: TextStyle(
-            color: Colors.black,
-          ),
-          children: [
-            TextSpan(
-              text: theName,
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-              )
-            ),
-            TextSpan(
-              text: " will be ",
-            ),
-            TextSpan(
-              text: "Permanently Deleted",
-              style: TextStyle(
-                fontWeight: FontWeight.bold
-              ),
-            ),
-            TextSpan(
-              text: " from your list of excercises\n\n",
-            ),
-            TextSpan(
-              text: "If you ",
-            ),
-            TextSpan(
-              text: "don't want to lose your data,\n",
-              style: TextStyle(
-                fontWeight: FontWeight.bold
-              ),
-            ),
-            TextSpan(
-              text: "but you do want to stop it from cycling back up the list, "
-            ),
-            TextSpan(
-              text: "then you should "
-            ),
-            TextSpan(
-              text: "Hide",
-              style: TextStyle(
-                fontWeight: FontWeight.bold
-              ),
-            ),
-            TextSpan(
-              text: " it instead"
-            ),
-          ]
-        ),
-      );
+      message = new DeleteMessage(theName: theName);
     }
     else{
-       message = RichText(
-        text: TextSpan(
-          style: TextStyle(
-            color: Colors.black,
-          ),
-          children: [
-            TextSpan(
-              text: theName,
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-              )
-            ),
-            TextSpan(
-              text: " will be ",
-            ),
-            TextSpan(
-              text: "Hidden",
-              style: TextStyle(
-                fontWeight: FontWeight.bold
-              ),
-            ),
-            TextSpan(
-              text: " at the bottom of your list of excercises\n\n",
-            ),
-            TextSpan(
-              text: "If you ",
-            ),
-            TextSpan(
-              text: "want to delete your excercise,\n",
-              style: TextStyle(
-                fontWeight: FontWeight.bold
-              ),
-            ),
-            TextSpan(
-              text: "then you should "
-            ),
-            TextSpan(
-              text: "Delete",
-              style: TextStyle(
-                fontWeight: FontWeight.bold
-              ),
-            ),
-            TextSpan(
-              text: " it instead"
-            ),
-          ]
-        ),
-      );
+       message = new HideMessage(theName: theName);
     }
 
     //show the dialog
@@ -178,11 +77,24 @@ class _ExcerciseNotesState extends State<ExcerciseNotes> {
             title: Container(
               padding: EdgeInsets.all(16),
               color: buttonColor,
-              child: Text(
-                actionString + " Excercise?",
-                style: TextStyle(
-                  color: Colors.white,
-                ),
+              child: Row(
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.only(
+                      right: iconSpace,
+                    ),
+                    child: Icon(
+                      icon,
+                      color: Colors.white,
+                    ),
+                  ),
+                  Text(
+                    actionString + " Excercise?",
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                ],
               ),
             ),
             contentPadding: EdgeInsets.all(0),
@@ -212,9 +124,23 @@ class _ExcerciseNotesState extends State<ExcerciseNotes> {
               RaisedButton(
                 color: buttonColor,
                 onPressed: (){
-                  //TODO: perhaps make an edit here
+                  //get rid of keyboard that MAY be shown
+                  FocusScope.of(context).unfocus();
+
+                  print("before deleting");
                   actionFunction();
-                  tripplePop();
+
+                  //get rid of this pop up
+                  Navigator.of(context).pop();
+
+                  //go back to our excercise page
+                  Navigator.of(context).pop();
+
+                  //go back to our list
+                  Navigator.of(context).pop();
+
+                  //show the changing nav bar
+                  widget.navSpread.value = false;
                 },
                 child: Text(
                   "Yes, " + actionString,
@@ -260,6 +186,7 @@ class _ExcerciseNotesState extends State<ExcerciseNotes> {
     return Scaffold(
       backgroundColor: Theme.of(context).cardColor,
       appBar: AppBar(
+        leading: new BackFromExcercise(),
         title: Text("Notes"),
         actions: [
           Container(
@@ -275,7 +202,7 @@ class _ExcerciseNotesState extends State<ExcerciseNotes> {
                     horizontal: 16,
                   ),
                   child: Icon(
-                    Icons.archive,
+                    FontAwesomeIcons.solidEyeSlash,
                     color: Colors.blue,
                   ),
                 ),

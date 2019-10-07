@@ -91,3 +91,33 @@ class _BasicEditorState extends State<BasicEditor> {
     );
   }
 }
+
+class BackFromExcercise extends StatelessWidget {
+  const BackFromExcercise({
+    Key key,
+    this.navSpread,
+  }) : super(key: key);
+
+  final ValueNotifier<bool> navSpread;
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      icon: const BackButtonIcon(),
+      color: Theme.of(context).iconTheme.color,
+      tooltip: MaterialLocalizations.of(context).backButtonTooltip,
+      onPressed: () {
+        //close keyboard if perhaps typing next set
+        FocusScope.of(context).unfocus();
+
+        //navigator
+        if(navSpread != null){
+          navSpread.value = false;
+        }
+        
+        //to excercise do, or excercise list page
+        Navigator.of(context).pop();
+      },
+    );
+  }
+}

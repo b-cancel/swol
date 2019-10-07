@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:swol/excercise/excerciseData.dart';
-import 'package:swol/excerciseAction/excerciseNotes.dart';
+import 'package:swol/excercise/excerciseStructure.dart';
+import 'package:swol/excerciseAction/notes/excerciseNotes.dart';
 import 'package:swol/excerciseAction/tabs/verticalTabs.dart';
+import 'package:swol/sharedWidgets/excerciseEdit.dart';
 
 class ExcercisePage extends StatefulWidget {
   ExcercisePage({
@@ -19,6 +21,10 @@ class ExcercisePage extends StatefulWidget {
 
 class _ExcercisePageState extends State<ExcercisePage> {
   toNotes(BuildContext context){
+    //close keyboard if perhaps typing next set
+    FocusScope.of(context).unfocus();
+
+    //go to notes
     Navigator.push(
       context, 
       PageTransition(
@@ -38,18 +44,17 @@ class _ExcercisePageState extends State<ExcercisePage> {
 
   @override
   Widget build(BuildContext context) {
-    String name = ExcerciseData.getExcercises().value[widget.excerciseID].name;
+    String name = "";
+    Map<int, AnExcercise> indexToExcercises = ExcerciseData.getExcercises().value;
+    if(indexToExcercises.containsKey(widget.excerciseID)){
+      name = indexToExcercises[widget.excerciseID].name;
+    }
 
+    //build
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          icon: const BackButtonIcon(),
-          color: Theme.of(context).iconTheme.color,
-          tooltip: MaterialLocalizations.of(context).backButtonTooltip,
-          onPressed: () {
-            widget.navSpread.value = false;
-            Navigator.of(context).pop();
-          },
+        leading: new BackFromExcercise(
+          navSpread: widget.navSpread,
         ),
         title: Column(
           mainAxisSize: MainAxisSize.max,
@@ -59,6 +64,10 @@ class _ExcercisePageState extends State<ExcercisePage> {
                 color: Colors.transparent,
                 child: InkWell(
                   onTap: (){
+                    //NOTE: taping the name also goes to notes
+                    //BECAUSE the assumed action the user wants to take 
+                    //is to change the name
+                    //and from notes you can change the name
                     toNotes(context);
                   },
                   child: Container(
