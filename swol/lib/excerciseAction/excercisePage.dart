@@ -7,9 +7,11 @@ import 'package:swol/excerciseAction/tabs/verticalTabs.dart';
 class ExcercisePage extends StatefulWidget {
   ExcercisePage({
     @required this.excerciseID,
+    @required this.navSpread,
   });
 
   final int excerciseID;
+  final ValueNotifier<bool> navSpread;
 
   @override
   _ExcercisePageState createState() => _ExcercisePageState();
@@ -23,6 +25,7 @@ class _ExcercisePageState extends State<ExcercisePage> {
         type: PageTransitionType.rightToLeft, 
         child: ExcerciseNotes(
           excerciseID: widget.excerciseID,
+          navSpread: widget.navSpread,
         ),
       ),
     );
@@ -39,6 +42,15 @@ class _ExcercisePageState extends State<ExcercisePage> {
 
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: const BackButtonIcon(),
+          color: Theme.of(context).iconTheme.color,
+          tooltip: MaterialLocalizations.of(context).backButtonTooltip,
+          onPressed: () {
+            widget.navSpread.value = false;
+            Navigator.of(context).pop();
+          },
+        ),
         title: Column(
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[

@@ -5,9 +5,11 @@ import 'package:swol/sharedWidgets/excerciseEdit.dart';
 class ExcerciseNotes extends StatefulWidget {
   ExcerciseNotes({
     @required this.excerciseID,
+    @required this.navSpread,
   });
 
   final int excerciseID;
+  final ValueNotifier<bool> navSpread;
 
   @override
   _ExcerciseNotesState createState() => _ExcerciseNotesState();

@@ -371,6 +371,7 @@ class _ExcerciseListState extends State<ExcerciseList> {
                         itemBuilder: (context, index){
                           return ExcerciseTile(
                             excerciseID: thisGroup[index].id,
+                            navSpread: widget.navSpread,
                           );
                         },
                       ),
@@ -472,7 +473,9 @@ class _ExcerciseListState extends State<ExcerciseList> {
                   context, 
                   PageTransition(
                     type: PageTransitionType.downToUp, 
-                    child: SearchExcercise(),
+                    child: SearchExcercise(
+                      navSpread: widget.navSpread,
+                    ),
                   ),
                 );
               },

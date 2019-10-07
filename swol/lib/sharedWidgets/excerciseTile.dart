@@ -16,11 +16,13 @@ class ExcerciseTile extends StatelessWidget {
   ExcerciseTile({
     @required this.excerciseID,
     this.tileInSearch: false,
+    @required this.navSpread,
   });
 
   final int excerciseID;
   //If this is displayed in the list then we dont have to show alot of info
   final bool tileInSearch;
+  final ValueNotifier<bool> navSpread;
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +33,7 @@ class ExcerciseTile extends StatelessWidget {
     ?  MyChip(
       chipString: 'New',
     ) 
-    : Container();
+    : null;
 
     //adjust if its an archived excercise or a regular one
     if((timeSince > Duration(days: 365 * 100)) == false){
@@ -80,12 +82,21 @@ class ExcerciseTile extends StatelessWidget {
         print("prediction ID: " + thisExcercise.predictionID.toString());
         print("set target: " + thisExcercise.lastSetTarget.toString());
 
+        //pop search page
+        if(tileInSearch){
+          FocusScope.of(context).unfocus();
+          Navigator.of(context).pop();
+        }
+
+        //travel to page
+        navSpread.value = true;
         Navigator.push(
           context, 
           PageTransition(
             type: PageTransitionType.rightToLeft, 
             child: ExcercisePage(
               excerciseID: excerciseID,
+              navSpread: navSpread,
             ),
           ),
         );
