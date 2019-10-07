@@ -117,65 +117,69 @@ class _AddExcerciseState extends State<AddExcercise> {
                   ),
                   Positioned(
                     right: 0,
-                    child: Padding(
-                      padding: const EdgeInsets.only(
-                        right: 8.0,
-                      ),
-                      child: AnimatedBuilder(
-                        animation: AddNewHeroHelper.toAddDone,
-                        builder: (context, child){
-                          return AnimatedContainer(
-                            duration: Duration(milliseconds: 300),
-                            curve: Curves.bounceInOut,
-                            constraints: BoxConstraints(
-                              //no limit vs limit
-                              //the 100 is so large its never going to be a limitation
-                              maxHeight: (AddNewHeroHelper.toAddDone.value) ? 100 : 0,
-                            ),
-                            child: FittedBox(
-                              fit: BoxFit.contain,
-                              child: RaisedButton(
-                                color: (namePresent.value) 
-                                ? Theme.of(context).accentColor 
-                                : Colors.grey,
-                                onPressed: ()async{
-                                  if(namePresent.value){
-                                    //add workout to our list
-                                    await ExcerciseData.addExcercise(AnExcercise(
-                                      //basic
-                                      name: name.value,
-                                      url: url.value,
-                                      note: note.value,
+                    bottom: 0,
+                    top: 0,
+                    child: Center(
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                          right: 8.0,
+                        ),
+                        child: AnimatedBuilder(
+                          animation: AddNewHeroHelper.toAddDone,
+                          builder: (context, child){
+                            return AnimatedContainer(
+                              duration: Duration(milliseconds: 250),
+                              curve: Curves.easeInOut,
+                              constraints: BoxConstraints(
+                                //no limit vs limit
+                                //the 100 is so large its never going to be a limitation
+                                maxHeight: (AddNewHeroHelper.toAddDone.value) ? 100 : 0,
+                              ),
+                              child: FittedBox(
+                                fit: BoxFit.contain,
+                                child: RaisedButton(
+                                  color: (namePresent.value) 
+                                  ? Theme.of(context).accentColor 
+                                  : Colors.grey,
+                                  onPressed: ()async{
+                                    if(namePresent.value){
+                                      //add workout to our list
+                                      await ExcerciseData.addExcercise(AnExcercise(
+                                        //basic
+                                        name: name.value,
+                                        url: url.value,
+                                        note: note.value,
 
-                                      //we must work off of current so the list is build properly
-                                      //the new excercises you added the longest time ago are on top
-                                      lastTimeStamp: DateTime.now().subtract(Duration(days: 365 * 100)),
+                                        //we must work off of current so the list is build properly
+                                        //the new excercises you added the longest time ago are on top
+                                        lastTimeStamp: DateTime.now().subtract(Duration(days: 365 * 100)),
 
-                                      //other
-                                      lastSetTarget: setTarget.value,
-                                      predictionID: functionIndex,
-                                      recoveryPeriod: recoveryPeriod.value,
-                                      repTarget: repTarget.value,
-                                    ));
+                                        //other
+                                        lastSetTarget: setTarget.value,
+                                        predictionID: functionIndex,
+                                        recoveryPeriod: recoveryPeriod.value,
+                                        repTarget: repTarget.value,
+                                      ));
 
-                                    //exit pop up
-                                    Navigator.pop(context);
-                                  }
-                                  else{
-                                    nameError.value = true;
-                                    setState(() {});
-                                  }
-                                },
-                                child: Text(
-                                  "Save",
-                                  style: TextStyle(
-                                    color: Colors.black,
+                                      //exit pop up
+                                      Navigator.pop(context);
+                                    }
+                                    else{
+                                      nameError.value = true;
+                                      setState(() {});
+                                    }
+                                  },
+                                  child: Text(
+                                    "Save",
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                          );
-                        },
+                            );
+                          },
+                        ),
                       ),
                     ),
                   ),

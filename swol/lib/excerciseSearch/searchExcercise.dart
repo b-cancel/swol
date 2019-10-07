@@ -336,6 +336,7 @@ class _SearchExcerciseState extends State<SearchExcercise> {
                           decoration: InputDecoration(
                             contentPadding: EdgeInsets.all(0),
                             border: InputBorder.none,
+                            hintText: "Search",
                           ),
                         ),
                       ),

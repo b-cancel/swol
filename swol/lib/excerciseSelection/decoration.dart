@@ -16,7 +16,7 @@ class SwolLogo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 40,
+      height: MediaQuery.of(context).padding.top,
       child: FittedBox(
         fit: BoxFit.cover,
         child: DefaultTextStyle(

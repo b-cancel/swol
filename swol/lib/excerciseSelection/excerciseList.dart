@@ -462,6 +462,8 @@ class AddNewHero extends StatelessWidget {
         BuildContext fromHeroContext,
         BuildContext toHeroContext,
       ) {
+        print("dir: " + flightDirection.index.toString());
+
         return AnimatedBuilder(
           animation: animation,
           builder: (context, child){
@@ -491,7 +493,9 @@ class AddNewHeroHelper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //set toAddDone function (so button can pop into place)
-    toAddDone.value = (percentToAppBar == 1);
+    WidgetsBinding.instance.addPostFrameCallback((_){
+      toAddDone.value = (percentToAppBar == 1);
+    });
 
     //determine on tap function
     Function onTap;
@@ -502,7 +506,7 @@ class AddNewHeroHelper extends StatelessWidget {
           Navigator.push(
             context, 
             PageTransition(
-              duration: Duration(seconds: 5),
+              duration: Duration(milliseconds: 500),
               type: PageTransitionType.downToUp, 
               child: AddExcercise(),
             ),
@@ -535,76 +539,79 @@ class AddNewHeroHelper extends StatelessWidget {
               padding: EdgeInsets.symmetric(
                 horizontal: 16,
               ),
-              //------------------------------
               child: Container(
                 height: 48,
                 child: Row(
+                  mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.only(
-                        right: lerpDouble(
-                          8,
-                          (NavigationToolbar.kMiddleSpacing * 2),
-                          percentToAppBar,
-                        ), 
-                      ),
-                      child: Transform.rotate(
-                        angle: (-math.pi / 4) * (5 * percentToAppBar),
-                        child: (percentToAppBar == 0) 
-                        ? Icon(
-                          Icons.add,
-                          color: Color.lerp(
-                            Theme.of(context).primaryColorDark,
-                            Colors.white,
+                    Flexible(
+                      child: Padding(
+                        padding: EdgeInsets.only(
+                          right: lerpDouble(
+                            8,
+                            (NavigationToolbar.kMiddleSpacing * 2),
                             percentToAppBar,
                           ),
-                        )
-                        //NOTE: the close button must be turned to look like an add button
-                        : Transform.rotate(
-                          angle: (-math.pi / 4),
-                          child: Icon(
-                            Icons.close,
+                        ),
+                        child: Transform.rotate(
+                          angle: (-math.pi / 4) * (5 * percentToAppBar),
+                          child: (percentToAppBar == 0) 
+                          ? Icon(
+                            Icons.add,
                             color: Color.lerp(
                               Theme.of(context).primaryColorDark,
                               Colors.white,
                               percentToAppBar,
                             ),
+                          )
+                          //NOTE: the close button must be turned to look like an add button
+                          : Transform.rotate(
+                            angle: (-math.pi / 4),
+                            child: Icon(
+                              Icons.close,
+                              color: Color.lerp(
+                                Theme.of(context).primaryColorDark,
+                                Colors.white,
+                                percentToAppBar,
+                              ),
+                            ),
                           ),
                         ),
                       ),
                     ),
-              //------------------------------
-                    Padding(
-                      padding: EdgeInsets.only(
-                        right: 8,
-                      ),
-                      child: DefaultTextStyle(
-                        style: TextStyle(
-                          decoration: TextDecoration.none,
-                          textBaseline: TextBaseline.alphabetic,
-                          fontWeight: FontWeight.w500,
+                    Flexible(
+                      child: Padding(
+                        padding: EdgeInsets.only(
+                          right: 8,
                         ),
-                        child: Text(
-                          "Add New",
-                          style: TextStyle.lerp(
-                          TextStyle(
-                            color: Theme.of(context).primaryColorDark,
-                            letterSpacing: 1,
-                            fontSize: 14,
+                        child: DefaultTextStyle(
+                          style: TextStyle(
+                            decoration: TextDecoration.none,
+                            textBaseline: TextBaseline.alphabetic,
+                            fontWeight: FontWeight.w500,
                           ),
-                          //NOTE: I have absolutely no idea why its isnt allowing me to jut use
-                          //Theme.of(context).primaryTextTheme.title
-                          //but after print it I realized what values are different
-                          //and can simply copy them over
-                          TextStyle(
-                            color: Colors.white,
-                            letterSpacing: 0,
-                            fontSize: 20,
+                          child: Text(
+                            "Add New",
+                            style: TextStyle.lerp(
+                            TextStyle(
+                              color: Theme.of(context).primaryColorDark,
+                              letterSpacing: 1,
+                              fontSize: 14,
+                            ),
+                            //NOTE: I have absolutely no idea why its isnt allowing me to jut use
+                            //Theme.of(context).primaryTextTheme.title
+                            //but after print it I realized what values are different
+                            //and can simply copy them over
+                            TextStyle(
+                              color: Colors.white,
+                              letterSpacing: 0,
+                              fontSize: 20,
+                            ),
+                            percentToAppBar,
                           ),
-                          percentToAppBar,
-                        ),
-                        softWrap: false,
-                        overflow: TextOverflow.ellipsis,
+                          softWrap: false,
+                          overflow: TextOverflow.ellipsis,
+                          ),
                         ),
                       ),
                     ),
