@@ -51,57 +51,64 @@ class _ExcercisePageState extends State<ExcercisePage> {
     }
 
     //build
-    return Scaffold(
-      appBar: AppBar(
-        leading: new BackFromExcercise(
-          navSpread: widget.navSpread,
-        ),
-        title: Column(
-          mainAxisSize: MainAxisSize.max,
-          children: <Widget>[
-            Expanded(
-              child: Material(
-                color: Colors.transparent,
-                child: InkWell(
-                  onTap: (){
-                    //NOTE: taping the name also goes to notes
-                    //BECAUSE the assumed action the user wants to take 
-                    //is to change the name
-                    //and from notes you can change the name
-                    toNotes(context);
-                  },
-                  child: Container(
-                    width: MediaQuery.of(context).size.width,
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      name,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        fontSize: 18,
+    return WillPopScope(
+      onWillPop: ()async{
+        FocusScope.of(context).unfocus();
+        widget.navSpread.value = false;
+        return true; //can still pop
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          leading: new BackFromExcercise(
+            navSpread: widget.navSpread,
+          ),
+          title: Column(
+            mainAxisSize: MainAxisSize.max,
+            children: <Widget>[
+              Expanded(
+                child: Material(
+                  color: Colors.transparent,
+                  child: InkWell(
+                    onTap: (){
+                      //NOTE: taping the name also goes to notes
+                      //BECAUSE the assumed action the user wants to take 
+                      //is to change the name
+                      //and from notes you can change the name
+                      toNotes(context);
+                    },
+                    child: Container(
+                      width: MediaQuery.of(context).size.width,
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        name,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontSize: 18,
+                        ),
                       ),
                     ),
                   ),
                 ),
               ),
+            ],
+          ),
+          actions: <Widget>[
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: OutlineButton.icon(
+                highlightedBorderColor: Theme.of(context).accentColor,
+                onPressed: (){
+                  toNotes(context);
+                },
+                icon: Icon(Icons.edit),
+                label: Text("Notes"),
+              ),
             ),
           ],
         ),
-        actions: <Widget>[
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: OutlineButton.icon(
-              highlightedBorderColor: Theme.of(context).accentColor,
-              onPressed: (){
-                toNotes(context);
-              },
-              icon: Icon(Icons.edit),
-              label: Text("Notes"),
-            ),
-          ),
-        ],
-      ),
-      body: VerticalTabs(
-        excerciseID: widget.excerciseID,
+        body: VerticalTabs(
+          excerciseID: widget.excerciseID,
+        ),
       ),
     );
   }

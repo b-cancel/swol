@@ -301,69 +301,76 @@ class _SearchExcerciseState extends State<SearchExcercise> {
     }
 
     //build
-    return Scaffold(
-      backgroundColor: Colors.transparent,
-      body: SafeArea(
-        child: Container(
-          color: Theme.of(context).primaryColorDark,
-          padding: EdgeInsets.symmetric(vertical: 4),
-          child: Column(
-            children: <Widget>[
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(25.0)),
-                  color: Theme.of(context).cardColor,
-                ),
-                width: MediaQuery.of(context).size.width,
-                padding: EdgeInsets.all(12),
-                child: Row(
-                  children: <Widget>[
-                    InkWell(
-                      onTap: (){
-                        widget.navSpread.value= false;
-                        FocusScope.of(context).unfocus();
-                        Navigator.pop(context);
-                      },
-                      child: Padding(
-                        padding: EdgeInsets.only(right: 16.0),
-                        child: Icon(Icons.keyboard_arrow_left),
+    return WillPopScope(
+      onWillPop: ()async{
+        FocusScope.of(context).unfocus();
+        widget.navSpread.value = false;
+        return true; //can still pop
+      },
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        body: SafeArea(
+          child: Container(
+            color: Theme.of(context).primaryColorDark,
+            padding: EdgeInsets.symmetric(vertical: 4),
+            child: Column(
+              children: <Widget>[
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(25.0)),
+                    color: Theme.of(context).cardColor,
+                  ),
+                  width: MediaQuery.of(context).size.width,
+                  padding: EdgeInsets.all(12),
+                  child: Row(
+                    children: <Widget>[
+                      InkWell(
+                        onTap: (){
+                          widget.navSpread.value= false;
+                          FocusScope.of(context).unfocus();
+                          Navigator.pop(context);
+                        },
+                        child: Padding(
+                          padding: EdgeInsets.only(right: 16.0),
+                          child: Icon(Icons.keyboard_arrow_left),
+                        ),
                       ),
-                    ),
-                    Flexible(
-                      child: Padding(
-                        padding: EdgeInsets.only(top: 4.0),
-                        child: TextField(
-                          scrollPadding: EdgeInsets.all(0),
-                          textInputAction: TextInputAction.search,
-                          onSubmitted: (str){
-                            if(search.text != null && search.text != ""){
-                              SearchesData.addToSearches(search.text);
-                            }
-                          },
-                          controller: search,
-                          autofocus: true,
-                          decoration: InputDecoration(
-                            contentPadding: EdgeInsets.all(0),
-                            border: InputBorder.none,
-                            hintText: "Search",
+                      Flexible(
+                        child: Padding(
+                          padding: EdgeInsets.only(top: 4.0),
+                          child: TextField(
+                            scrollPadding: EdgeInsets.all(0),
+                            textInputAction: TextInputAction.search,
+                            onSubmitted: (str){
+                              if(search.text != null && search.text != ""){
+                                SearchesData.addToSearches(search.text);
+                              }
+                            },
+                            controller: search,
+                            autofocus: true,
+                            decoration: InputDecoration(
+                              contentPadding: EdgeInsets.all(0),
+                              border: InputBorder.none,
+                              hintText: "Search",
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    GestureDetector(
-                      onTap: (){
-                        search.text = "";
-                      },
-                      child: Icon(Icons.close)
-                    ),
-                  ],
+                      GestureDetector(
+                        onTap: (){
+                          search.text = "";
+                        },
+                        child: Icon(Icons.close)
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              cardHeader,
-              Expanded(
-                child: mainContent,
-              )
-            ],
+                cardHeader,
+                Expanded(
+                  child: mainContent,
+                )
+              ],
+            ),
           ),
         ),
       ),
