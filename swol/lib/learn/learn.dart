@@ -6,6 +6,12 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 //build
 class LearnExcercise extends StatelessWidget {
+  LearnExcercise({
+    @required this.navSpread,
+  });
+
+  final ValueNotifier navSpread;
+
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -28,6 +34,7 @@ class LearnExcercise extends StatelessWidget {
           IconButton(
             icon: Icon(Icons.close),
             onPressed: (){
+              navSpread.value = false;
               Navigator.of(context).pop();
             },
           )

@@ -10,13 +10,16 @@ import 'package:swol/other/theme.dart';
 
 class SwolLogo extends StatelessWidget {
   const SwolLogo({
+    this.height,
     Key key,
   }) : super(key: key);
+
+  final height;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).padding.top,
+      height: height,
       child: FittedBox(
         fit: BoxFit.cover,
         child: DefaultTextStyle(

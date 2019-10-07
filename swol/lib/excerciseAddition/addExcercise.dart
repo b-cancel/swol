@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 //internal
 import 'package:swol/excercise/excerciseData.dart';
 import 'package:swol/excercise/excerciseStructure.dart';
-import 'package:swol/excerciseSelection/excerciseList.dart';
+import 'package:swol/excerciseSelection/addNewHero.dart';
 import 'package:swol/sharedWidgets/excerciseEdit.dart';
 import 'package:swol/sharedWidgets/informationDisplay.dart';
 import 'package:swol/sharedWidgets/mySlider.dart';
@@ -16,13 +16,18 @@ import 'package:swol/other/functions/helper.dart';
 class AddExcercise extends StatefulWidget {
   const AddExcercise({
     Key key,
+    @required this.navSpread,
   }) : super(key: key);
+
+  final ValueNotifier<bool> navSpread;
 
   @override
   _AddExcerciseState createState() => _AddExcerciseState();
 }
 
 class _AddExcerciseState extends State<AddExcercise> {
+  ValueNotifier<bool> showSaveButton = new ValueNotifier(false);
+
   //basics
   ValueNotifier<bool> namePresent = new ValueNotifier(false);
   ValueNotifier<bool> nameError = new ValueNotifier(false);
@@ -51,6 +56,10 @@ class _AddExcerciseState extends State<AddExcercise> {
 
   @override
   void initState() {
+    Future.delayed(Duration(milliseconds: 500), (){
+      showSaveButton.value = true;
+    });
+
     //update when break updates
     recoveryPeriod.addListener((){
       setState(() {});
@@ -113,6 +122,7 @@ class _AddExcerciseState extends State<AddExcercise> {
                     right: 0,
                     child: AddNewHero(
                       inAppBar: true,
+                      navSpread: widget.navSpread,
                     ),
                   ),
                   Positioned(
@@ -125,7 +135,7 @@ class _AddExcerciseState extends State<AddExcercise> {
                           right: 8.0,
                         ),
                         child: AnimatedBuilder(
-                          animation: AddNewHeroHelper.toAddDone,
+                          animation: showSaveButton,
                           builder: (context, child){
                             return AnimatedContainer(
                               duration: Duration(milliseconds: 250),
@@ -133,7 +143,7 @@ class _AddExcerciseState extends State<AddExcercise> {
                               constraints: BoxConstraints(
                                 //no limit vs limit
                                 //the 100 is so large its never going to be a limitation
-                                maxHeight: (AddNewHeroHelper.toAddDone.value) ? 100 : 0,
+                                maxHeight: (showSaveButton.value) ? 100 : 0,
                               ),
                               child: FittedBox(
                                 fit: BoxFit.contain,
@@ -143,6 +153,9 @@ class _AddExcerciseState extends State<AddExcercise> {
                                   : Colors.grey,
                                   onPressed: ()async{
                                     if(namePresent.value){
+                                      //remove keyboard
+                                      FocusScope.of(context).unfocus();
+
                                       //add workout to our list
                                       await ExcerciseData.addExcercise(AnExcercise(
                                         //basic
@@ -162,6 +175,7 @@ class _AddExcerciseState extends State<AddExcercise> {
                                       ));
 
                                       //exit pop up
+                                      widget.navSpread.value = false;
                                       Navigator.pop(context);
                                     }
                                     else{
@@ -189,28 +203,6 @@ class _AddExcerciseState extends State<AddExcercise> {
           ),
         ),
       ),
-      
-       
-
-    
-      
-      /*
-      TODO: the widget we are trying to imitate
-      AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.close),
-          onPressed: (){
-            Navigator.of(context).pop();
-          },
-        ),
-        title: Text('Add New'),
-        actions: <Widget>[
-          
-        ],
-      ),
-      */
-      
-      
       body: Container(
         color: Theme.of(context).scaffoldBackgroundColor,
         child: ListView(

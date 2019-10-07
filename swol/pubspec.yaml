@@ -20,6 +20,9 @@ dependencies:
   flutter:
     sdk: flutter
 
+  #ANIMATION
+  animator: ^1.0.0+1
+
   #STATUS AND NAVIGATION BAR
   flutter_statusbarcolor: ^0.2.2
 

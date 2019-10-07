@@ -2,6 +2,7 @@
 import 'dart:math' as math;
 
 //flutter
+import 'package:animator/animator.dart';
 import 'package:flutter/material.dart';
 
 //plugin
@@ -9,6 +10,8 @@ import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
+import 'package:swol/excerciseSelection/addNewHero.dart';
+import 'package:vector_math/vector_math_64.dart' as vect;
 import 'package:swol/learn/learn.dart';
 
 //internal: basics
@@ -33,17 +36,44 @@ class ExcerciseSelect extends StatefulWidget {
 class _ExcerciseSelectState extends State<ExcerciseSelect>{
   final AutoScrollController autoScrollController = new AutoScrollController();
 
+  ValueNotifier<bool> navSpread = new ValueNotifier(false);
+
   @override
   Widget build(BuildContext context) {
     //setup vars
     double expandHeight = MediaQuery.of(context).size.height / 3;
     expandHeight = (expandHeight < 40) ? 40 : expandHeight;
+    
+    //offset presets for learn section
+    Offset outOfViewRight = Offset(36 + NavigationToolbar.kMiddleSpacing, 0);
+    Offset inView = Offset(0,0);
+
+    //swolheight (Since with mediaquery must be done here)
+    double statusBarHeight = MediaQuery.of(context).padding.top;
+    double screenWidth = MediaQuery.of(context).size.width;
 
     //build
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).primaryColorDark,
-        title: new SwolLogo(),
+        title: AnimatedBuilder(
+          animation: navSpread,
+          builder: (context, child){
+            return AnimatedContainer(
+              duration: Duration(milliseconds: 300),
+              transform: Matrix4.translation(
+                vect.Vector3(
+                  (navSpread.value == true) ? -screenWidth/2 : 0,
+                  0,
+                  0,
+                ),  
+              ),
+              child: new SwolLogo(
+                height: statusBarHeight,
+              ),
+            );
+          },
+        ),
         actions: <Widget>[
           /*
           IconButton(
@@ -53,22 +83,44 @@ class _ExcerciseSelectState extends State<ExcerciseSelect>{
             icon: Icon(Icons.settings),
           )
           */
-          IconButton(
-            onPressed: (){
-              Navigator.push(
-                context, 
-                PageTransition(
-                  type: PageTransitionType.rightToLeft, 
-                  child: LearnExcercise(),
+          AnimatedBuilder(
+            animation: navSpread,
+            builder: (context,child){
+              Widget button = IconButton(
+                onPressed: (){
+                  navSpread.value = true;
+                  Navigator.push(
+                    context, 
+                    PageTransition(
+                      type: PageTransitionType.rightToLeft, 
+                      child: LearnExcercise(
+                        navSpread: navSpread,
+                      ),
+                    ),
+                  );
+                },
+                icon: Icon(FontAwesomeIcons.bookOpen)
+              );
+
+              //-----Animated Offset
+              return AnimatedContainer(
+                transform: Matrix4.translation(
+                  vect.Vector3(
+                    (navSpread.value == true) ? screenWidth/2 : 0,
+                    0,
+                    0
+                  ),  
                 ),
+                duration: Duration(milliseconds: 300),
+                child: button,
               );
             },
-            icon: Icon(FontAwesomeIcons.bookOpen)
           ),
         ],
       ),
       body: ExcerciseList(
         autoScrollController: autoScrollController,
+        navSpread: navSpread,
       ),
     );
   }
@@ -77,9 +129,11 @@ class _ExcerciseSelectState extends State<ExcerciseSelect>{
 class ExcerciseList extends StatefulWidget {
   ExcerciseList({
     @required this.autoScrollController,
+    @required this.navSpread,
   });
 
   final AutoScrollController autoScrollController;
+  final ValueNotifier<bool> navSpread;
 
   @override
   _ExcerciseListState createState() => _ExcerciseListState();
@@ -95,7 +149,9 @@ class _ExcerciseListState extends State<ExcerciseList> {
   void initState() {
     //Updates every time we update[timestamp], add, or remove some excercise
     ExcerciseData.excercisesOrder.addListener((){
-      setState(() {});
+      if(mounted){
+        setState(() {});
+      }
     });
 
     //scroll inits
@@ -411,6 +467,7 @@ class _ExcerciseListState extends State<ExcerciseList> {
             padding: const EdgeInsets.all(16.0),
             child: FloatingActionButton.extended(
               onPressed: (){
+                widget.navSpread.value = true;
                 Navigator.push(
                   context, 
                   PageTransition(
@@ -435,339 +492,13 @@ class _ExcerciseListState extends State<ExcerciseList> {
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             //NOTE: this must be seperate so the inkwell is visible
-            child: new AddNewHero(inAppBar: false),
+            child: new AddNewHero(
+              inAppBar: false,
+              navSpread: widget.navSpread,
+            ),
           ),
         ),
       ],
     );
   }
 }
-
-class AddNewHero extends StatelessWidget {
-  const AddNewHero({
-    Key key,
-    @required this.inAppBar,
-  }) : super(key: key);
-
-  final bool inAppBar;
-
-  @override
-  Widget build(BuildContext context) {
-    return Hero(
-      tag: 'addNew',
-      flightShuttleBuilder: (
-        BuildContext flightContext,
-        Animation<double> animation,
-        HeroFlightDirection flightDirection,
-        BuildContext fromHeroContext,
-        BuildContext toHeroContext,
-      ) {
-        print("dir: " + flightDirection.index.toString());
-
-        return AnimatedBuilder(
-          animation: animation,
-          builder: (context, child){
-            return AddNewHeroHelper(
-              percentToAppBar: animation.value,
-            );
-          },
-        );
-      },
-      child: AddNewHeroHelper(
-        percentToAppBar: (inAppBar) ? 1 : 0,
-      ),
-    );
-  }
-}
-
-class AddNewHeroHelper extends StatelessWidget {
-  static ValueNotifier<bool> toAddDone = new ValueNotifier(false);
-
-  const AddNewHeroHelper({
-    Key key,
-    @required this.percentToAppBar,
-  }) : super(key: key);
-
-  final double percentToAppBar;
-
-  @override
-  Widget build(BuildContext context) {
-    //set toAddDone function (so button can pop into place)
-    WidgetsBinding.instance.addPostFrameCallback((_){
-      toAddDone.value = (percentToAppBar == 1);
-    });
-
-    //determine on tap function
-    Function onTap;
-    if(percentToAppBar == 0 || percentToAppBar == 1){
-      if(percentToAppBar == 1) onTap = () => Navigator.of(context).pop();
-      else{
-        onTap = (){
-          Navigator.push(
-            context, 
-            PageTransition(
-              duration: Duration(milliseconds: 500),
-              type: PageTransitionType.downToUp, 
-              child: AddExcercise(),
-            ),
-          );
-        };
-      }
-    } //Tapping while transitioning does nothing
-    else onTap = (){};
-
-    //NOTE in all cases below (regular button first, then app bar button)
-    return ClipRRect(
-      borderRadius: new BorderRadius.all(
-        new Radius.circular(
-          //button size should never be larger than 56
-          //and even if its a little bit above nothing bad will happen
-          lerpDouble(28, 0, percentToAppBar),
-        ),
-      ),
-      child: Container(
-        color: Color.lerp(
-          Theme.of(context).accentColor, 
-          Theme.of(context).primaryColorDark, 
-          percentToAppBar,
-        ),
-        child: Material(
-          color: Colors.transparent,
-          child: InkWell(
-            onTap: onTap,
-            child: Container(
-              padding: EdgeInsets.symmetric(
-                horizontal: 16,
-              ),
-              child: Container(
-                height: 48,
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    Flexible(
-                      child: Padding(
-                        padding: EdgeInsets.only(
-                          right: lerpDouble(
-                            8,
-                            (NavigationToolbar.kMiddleSpacing * 2),
-                            percentToAppBar,
-                          ),
-                        ),
-                        child: Transform.rotate(
-                          angle: (-math.pi / 4) * (5 * percentToAppBar),
-                          child: (percentToAppBar == 0) 
-                          ? Icon(
-                            Icons.add,
-                            color: Color.lerp(
-                              Theme.of(context).primaryColorDark,
-                              Colors.white,
-                              percentToAppBar,
-                            ),
-                          )
-                          //NOTE: the close button must be turned to look like an add button
-                          : Transform.rotate(
-                            angle: (-math.pi / 4),
-                            child: Icon(
-                              Icons.close,
-                              color: Color.lerp(
-                                Theme.of(context).primaryColorDark,
-                                Colors.white,
-                                percentToAppBar,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    Flexible(
-                      child: Padding(
-                        padding: EdgeInsets.only(
-                          right: 8,
-                        ),
-                        child: DefaultTextStyle(
-                          style: TextStyle(
-                            decoration: TextDecoration.none,
-                            textBaseline: TextBaseline.alphabetic,
-                            fontWeight: FontWeight.w500,
-                          ),
-                          child: Text(
-                            "Add New",
-                            style: TextStyle.lerp(
-                            TextStyle(
-                              color: Theme.of(context).primaryColorDark,
-                              letterSpacing: 1,
-                              fontSize: 14,
-                            ),
-                            //NOTE: I have absolutely no idea why its isnt allowing me to jut use
-                            //Theme.of(context).primaryTextTheme.title
-                            //but after print it I realized what values are different
-                            //and can simply copy them over
-                            TextStyle(
-                              color: Colors.white,
-                              letterSpacing: 0,
-                              fontSize: 20,
-                            ),
-                            percentToAppBar,
-                          ),
-                          softWrap: false,
-                          overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class HeroAnimatingSongCard extends StatelessWidget {
-  HeroAnimatingSongCard(
-      {this.song, this.color, this.heroAnimation, this.onPressed});
-
-  final String song;
-  final Color color;
-  final Animation<double> heroAnimation;
-  final VoidCallback onPressed;
-
-  double get playButtonSize => 50 + 50 * heroAnimation.value;
-
-  @override
-  Widget build(context) {
-    // This is an inefficient usage of AnimatedBuilder since it's rebuilding
-    // the entire subtree instead of passing in a non-changing child and
-    // building a transition widget in between.
-    //
-    // Left simple in this demo because this card doesn't have any real inner
-    // content so this just rebuilds everything while animating.
-    return AnimatedBuilder(
-      animation: heroAnimation,
-      builder: (context, child) {
-        return Container(
-          child: SizedBox(
-            height: 250,
-            child: Stack(
-              alignment: Alignment.center,
-              children: [
-                // The song title banner slides off in the hero animation.
-                Positioned(
-                  bottom: -80 * heroAnimation.value,
-                  left: 0,
-                  right: 0,
-                  child: Container(
-                    height: 80,
-                    color: Colors.black12,
-                    alignment: Alignment.centerLeft,
-                    padding: EdgeInsets.symmetric(horizontal: 12),
-                    child: Text(
-                      song,
-                      style: TextStyle(
-                        fontSize: 21,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ),
-                ),
-                // The play button grows in the hero animation.
-                Padding(
-                  padding:
-                      EdgeInsets.only(bottom: 45) * (1 - heroAnimation.value),
-                  child: Container(
-                    height: playButtonSize,
-                    width: playButtonSize,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Colors.black12,
-                    ),
-                    alignment: Alignment.center,
-                    child: Icon(Icons.play_arrow,
-                        size: playButtonSize, color: Colors.black38),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
-}
-
-//TODO: alternative example code if using flutter villains doesn't do the job
-/*
-flightShuttleBuilder: (
-        BuildContext flightContext,
-        Animation<double> animation,
-        HeroFlightDirection flightDirection,
-        BuildContext fromHeroContext,
-        BuildContext toHeroContext,
-      ) {
-        /*
-        final Hero toHero = toHeroContext.widget;
-        return FadeTransition(
-          opacity: animation.drive(
-            Tween<double>(begin: 0.0, end: 1.0).chain(
-              CurveTween(
-                curve: Interval(0.0, 1.0,
-                    curve: ValleyQuadraticCurve()),
-              ),
-            ),
-          ),
-          child: toHero.child,
-        );
-        */
-        /*
-        final Hero toHero = toHeroContext.widget;
-          return ScaleTransition(
-            scale: animation.drive(
-              Tween<double>(begin: 0.0, end: 1.0).chain(
-                CurveTween(
-                  curve: Interval(0.0, 1.0,
-                      curve: PeakQuadraticCurve()),
-                ),
-              ),
-            ),
-            child: toHero.child,
-          );
-        */
-        /*
-        final Hero toHero = toHeroContext.widget;
-  return ScaleTransition(
-    scale: animation.drive(
-      Tween<double>(begin: 0.0, end: 1.0).chain(
-        CurveTween(
-          curve: Interval(0.0, 1.0,
-            curve: PeakQuadraticCurve()),
-        ),
-      ),
-    ),
-    child: flightDirection == HeroFlightDirection.push
-      ? RotationTransition(
-          turns: animation,
-          child: toHero.child,
-        )
-      : FadeTransition(
-          opacity: animation.drive(
-            Tween<double>(begin: 0.0, end: 1.0).chain(
-              CurveTween(
-                curve: Interval(0.0, 1.0,
-                  curve: ValleyQuadraticCurve()),
-              ),
-            ),
-          ),
-          child: toHero.child,
-        ),
-    );
-        */
-        final Hero toHero = toHeroContext.widget;
-        return RotationTransition(
-          turns: animation,
-          child: toHero.child,
-        );
-      },
-*/
