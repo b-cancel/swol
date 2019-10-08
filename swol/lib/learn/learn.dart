@@ -1,11 +1,9 @@
 //flutter
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 //plugin
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:folding_cell/folding_cell.dart';
-import 'package:swol/learn/foldingCard.dart';
+import 'package:expandable/expandable.dart';
 
 //build
 class LearnExcercise extends StatefulWidget {
@@ -20,52 +18,55 @@ class LearnExcercise extends StatefulWidget {
 }
 
 class _LearnExcerciseState extends State<LearnExcercise> {
-  Map<GlobalKey<SimpleFoldingCellState>, bool> cellKeysToOpen;
-  final introductionCellKey = GlobalKey<SimpleFoldingCellState>();
-  final definitionsCellKey = GlobalKey<SimpleFoldingCellState>();
-  final trainingCellKey = GlobalKey<SimpleFoldingCellState>();
-  final precautionsCellKey = GlobalKey<SimpleFoldingCellState>();
-  final oneRepMaxCellKey = GlobalKey<SimpleFoldingCellState>();
-  final experimentCellKey = GlobalKey<SimpleFoldingCellState>();
-  final futureResearchCellKey = GlobalKey<SimpleFoldingCellState>();
+  List<ExpandableController> allControllers;
+  ExpandableController definitionCtrl = ExpandableController(
+    initialExpanded: false,
+  );
+  ExpandableController trainingCtrl = ExpandableController(
+    initialExpanded: false,
+  );
+  ExpandableController precautionsCtrl = ExpandableController(
+    initialExpanded: false,
+  );
+  ExpandableController oneRepMaxCtrl = ExpandableController(
+    initialExpanded: false,
+  );
+  ExpandableController experimentCtrl = ExpandableController(
+    initialExpanded: false,
+  );
+  ExpandableController researchCtrl = ExpandableController(
+    initialExpanded: false,
+  );
 
-  @override
-  void initState() { 
-    //super init
-    super.initState();
-    
-    //create list of keys
-    cellKeysToOpen = {
-      introductionCellKey: false,
-      definitionsCellKey: false,
-      trainingCellKey: false,
-      precautionsCellKey: false,
-      oneRepMaxCellKey: false,
-      experimentCellKey: false,
-      futureResearchCellKey: false,
-    };
-  }
-
-  //NOTE: assumes that open is only called IF its close
-  openSection(GlobalKey<SimpleFoldingCellState> thisCellKey){
-    //open ourselves
-    thisCellKey.currentState.toggleFold();
-    cellKeysToOpen[thisCellKey] = true;
-
-    //close others
-    List<GlobalKey<SimpleFoldingCellState>> cellKeys = cellKeysToOpen.keys;
-    for(int i = 0; i < cellKeys.length; i++){
-      GlobalKey<SimpleFoldingCellState> cellKey = cellKeys[i];
-      //others
-      if(cellKey != thisCellKey){
-        //that are open (will only ever be one)
-        //TODO: given the above CAN optimize
-        if(cellKeysToOpen[cellKey]){
-          cellKey.currentState.toggleFold();
-          cellKeysToOpen[cellKey] = false;
+  closeOthers(ExpandableController ctrl){
+    for(int i = 0; i < allControllers.length; i++){
+      ExpandableController thisCtrl = allControllers[i];
+      if(thisCtrl != ctrl){
+        print(i.toString() + " -> 1");
+        if(thisCtrl.expanded){
+          print("closed");
+          thisCtrl.expanded = false;
         }
       }
+      else print(i.toString() + " -> 0");
     }
+  }
+
+  @override
+  void initState() {
+    //super init
+    super.initState();
+
+    //make controller list
+    allControllers = new List<ExpandableController>();
+    allControllers.addAll([
+      definitionCtrl,
+      trainingCtrl,
+      precautionsCtrl,
+      oneRepMaxCtrl,
+      experimentCtrl,
+      researchCtrl,
+    ]);
   }
 
   @override
@@ -82,7 +83,7 @@ class _LearnExcerciseState extends State<LearnExcercise> {
           primary: true,
           title: Row(
             children: <Widget>[
-              Icon(FontAwesomeIcons.bookOpen),
+              Icon(FontAwesomeIcons.leanpub),
               Padding(
                 padding: const EdgeInsets.only(
                   left: 16.0,
@@ -103,63 +104,56 @@ class _LearnExcerciseState extends State<LearnExcercise> {
         ),
         body: new ListView(
           children: [
-            SimpleFoldingCell(
-              unfoldCell: true,
-              skipAnimation: false, //TODO: maybe we should do this?
-              padding: EdgeInsets.all(16),
-              animationDuration: Duration(milliseconds: 300),
-              borderRadius: 24,
-              //-----
-              frontWidget: buildFrontWidget(
-                "Introduction", 
-                (){},
-              ),
-              innerTopWidget: buildInnerTopWidget(),
-              innerBottomWidget: buildInnerBottomWidget(
-                (){},
-              ),
-              cellSize: Size(MediaQuery.of(context).size.width, 125),
+            new InfoSection(
+              headerIcon: FontAwesomeIcons.solidLightbulb, 
+              headerText: "Introduction", 
+              permanentlyOpen: true,
+              thisExpanded: IntroductionBody(),
             ),
-            IntroductionHeader(),
-            IntroductionBody(),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Wrap(
-                spacing: 16,
-                runSpacing: 16,
-                children: <Widget>[
-                  Icon(Icons.description),
-                  Icon(Icons.chrome_reader_mode),
-                  Icon(Icons.warning),
-                  Icon(FontAwesomeIcons.lightbulb),
-                  Icon(FontAwesomeIcons.solidLightbulb),
-                  Icon(FontAwesomeIcons.rocket),
-                  Icon(FontAwesomeIcons.userAstronaut),
-                  Icon(FontAwesomeIcons.book),
-                  Icon(FontAwesomeIcons.bookDead),
-                  Icon(FontAwesomeIcons.bookmark),
-                  Icon(FontAwesomeIcons.solidBookmark),
-                  Icon(FontAwesomeIcons.dumbbell),
-                  Icon(FontAwesomeIcons.weight),
-                  Icon(FontAwesomeIcons.weightHanging),
-                  Icon(FontAwesomeIcons.skullCrossbones),
-                  Icon(FontAwesomeIcons.skull),
-                  Icon(FontAwesomeIcons.trophy),
-                  Icon(FontAwesomeIcons.award),
-                  Icon(FontAwesomeIcons.medal),
-                  Icon(FontAwesomeIcons.flask),
-                  Icon(FontAwesomeIcons.searchPlus),
-                  Icon(FontAwesomeIcons.researchgate),
-                  Icon(FontAwesomeIcons.search),
-                  Icon(FontAwesomeIcons.graduationCap),
-                  Icon(FontAwesomeIcons.userGraduate),
-                  Icon(FontAwesomeIcons.chalkboard),
-                  Icon(FontAwesomeIcons.chalkboardTeacher),
-                  Icon(FontAwesomeIcons.school),
-                  Icon(FontAwesomeIcons.leanpub),
-                ],
-              ),
-            )
+            new InfoSection(
+              expandableController: definitionCtrl,
+              headerIcon: Icons.chrome_reader_mode, 
+              headerText: "Definitions", 
+              thisExpanded: Text("info"),
+              closeOthers: closeOthers,
+            ),
+            new InfoSection(
+              expandableController: trainingCtrl,
+              headerIcon: FontAwesomeIcons.dumbbell, 
+              size: 18,
+              headerText: "Training", 
+              thisExpanded: Text("info"),
+              closeOthers: closeOthers,
+            ),
+            new InfoSection(
+              expandableController: precautionsCtrl,
+              headerIcon: Icons.warning, 
+              headerText: "Precautions", 
+              thisExpanded: Text("info"),
+              closeOthers: closeOthers,
+            ),
+            new InfoSection(
+              expandableController: oneRepMaxCtrl,
+              headerIcon: FontAwesomeIcons.trophy, 
+              size: 20,
+              headerText: "1 Rep Max", 
+              thisExpanded: Text("info"),
+              closeOthers: closeOthers,
+            ),
+            new InfoSection(
+              expandableController: experimentCtrl,
+              headerIcon: FontAwesomeIcons.flask, 
+              headerText: "Experiment", 
+              thisExpanded: Text("info"),
+              closeOthers: closeOthers,
+            ),
+            new InfoSection(
+              expandableController: researchCtrl,
+              headerIcon: FontAwesomeIcons.book, 
+              headerText: "Research", 
+              thisExpanded: Text("info"),
+              closeOthers: closeOthers,
+            ),
           ],
         ),
       ),
@@ -167,47 +161,95 @@ class _LearnExcerciseState extends State<LearnExcercise> {
   }
 }
 
-class IntroductionHeader extends StatelessWidget {
-  const IntroductionHeader({
+class InfoSection extends StatelessWidget {
+  const InfoSection({
     Key key,
+    @required this.headerIcon,
+    @required this.headerText,
+    @required this.thisExpanded,
+    //optional
+    this.expandableController,
+    this.closeOthers,
+    this.permanentlyOpen: false,
+    this.size,
   }) : super(key: key);
+
+  final IconData headerIcon;
+  final String headerText;
+  final Widget thisExpanded;
+  //optional
+  final ExpandableController expandableController;
+  final Function closeOthers;
+  final bool permanentlyOpen;
+  final double size;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.only(
-        right: 16,
-      ),
-      child: Container(
-        padding: EdgeInsets.only(
-          top: 8,
-        ),
-        width: MediaQuery.of(context).size.width,
-        alignment: Alignment.centerLeft,
-        child: Container(
-          padding: EdgeInsets.only(
-            left: 16,
-          ),
-          child: FractionallySizedBox(
-            widthFactor: .50,
-            child: FittedBox(
-              fit: BoxFit.contain,
-              child: Text(
-                "Introduction",
-                style: TextStyle(
-                  fontWeight: FontWeight.w400,
-                ),
+    ExpandableController actualExpandableController;
+    if(expandableController == null){
+      actualExpandableController = ExpandableController(
+        initialExpanded: permanentlyOpen,
+      );
+    }
+    else{
+      actualExpandableController = expandableController;
+    }
+
+    actualExpandableController.addListener((){
+      closeOthers(actualExpandableController);
+    });
+
+    return ExpandableNotifier(
+      initialExpanded: permanentlyOpen,
+      child: ScrollOnExpand(
+        child: Card(
+          color: Theme.of(context).primaryColor,
+          margin: EdgeInsets.all(8),
+          child: ExpandablePanel(
+            controller: actualExpandableController,
+            //basic booleans
+            tapHeaderToExpand: (permanentlyOpen == false),
+            tapBodyToCollapse: false,
+            hasIcon: (permanentlyOpen == false),
+            //other
+            header: Container(
+              padding: EdgeInsets.all(16),
+              child: Row(
+                children: <Widget>[
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    width: 22 + 8.0,
+                    child: Icon(
+                      headerIcon,
+                      size: (size == null) ? 24 : size,
+                    ),
+                  ),
+                  Text(
+                    headerText,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
               ),
             ),
+            /*
+            collapsed: Text(
+              "collapsed", 
+              softWrap: true, 
+              maxLines: 2, 
+              overflow: TextOverflow.ellipsis,
+            ),
+            */
+            expanded: Container(
+              color: Theme.of(context).cardColor,
+              width: MediaQuery.of(context).size.width,
+              padding: EdgeInsets.all(
+                16,
+              ),
+              child: thisExpanded,
+            ),
           ),
-        ),
-        decoration: BoxDecoration(
-          border: Border(
-            bottom: BorderSide(
-              width: 1,
-              color: Colors.grey,
-            )
-          )
         ),
       ),
     );
@@ -224,9 +266,9 @@ class IntroductionBody extends StatelessWidget {
     );
 
     return Container(
-      padding: EdgeInsets.symmetric(
-        horizontal: 16,
-        vertical: 8,
+      padding: EdgeInsets.only(
+        top: 4,
+        bottom: 4,
       ),
       child: Column(
         children: <Widget>[
@@ -307,7 +349,7 @@ class IntroductionBody extends StatelessWidget {
                   style: TextStyle(
                     fontWeight: FontWeight.w900,
                   ),
-                  text: "\tEnjoy Pumping Iron!\t" + newLine,
+                  text: "\tEnjoy Pumping Iron!\t",
                 ),
               ]
             ),

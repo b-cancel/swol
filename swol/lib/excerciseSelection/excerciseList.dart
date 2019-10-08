@@ -99,7 +99,7 @@ class _ExcerciseSelectState extends State<ExcerciseSelect>{
                     ),
                   );
                 },
-                icon: Icon(FontAwesomeIcons.bookOpen)
+                icon: Icon(FontAwesomeIcons.leanpub),
               );
 
               //-----Animated Offset
