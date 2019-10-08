@@ -28,6 +28,16 @@ class App extends StatelessWidget {
       DeviceOrientation.portraitDown,
     ]); 
 
+    //initially this is going to be flat black
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      systemNavigationBarColor: Colors.black,
+      statusBarColor: Colors.black,
+      systemNavigationBarDividerColor: Colors.black,
+      statusBarBrightness: Brightness.dark,
+      statusBarIconBrightness: Brightness.dark,
+      systemNavigationBarIconBrightness: Brightness.dark,
+    ));
+
     //main app build
     return MaterialApp(
       title: 'SWOL',

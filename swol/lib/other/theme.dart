@@ -1,5 +1,6 @@
 //flutter
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 //plugins
 import 'package:provider/provider.dart';
@@ -27,23 +28,14 @@ class ThemeChanger with ChangeNotifier {
 
   updateSystemUI() async{
     bool isDark = (_themeData == MyTheme.dark);
-    Color backgroundColor = (isDark) ? Colors.black : Colors.white;
-
-    //change the status bar color
-    await FlutterStatusbarcolor.setStatusBarColor(
-      backgroundColor,
-    );
-
-    //change the status text color
-    await FlutterStatusbarcolor.setStatusBarWhiteForeground(isDark);
-
-    //change the navigation bar color
-    await FlutterStatusbarcolor.setNavigationBarColor(
-      backgroundColor,
-    );
-
-    //change the navigation text color
-    FlutterStatusbarcolor.setNavigationBarWhiteForeground(isDark);
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      systemNavigationBarColor: (isDark) ? Colors.black : Colors.white,
+      statusBarColor: (isDark) ? Colors.black : Colors.white,
+      systemNavigationBarDividerColor: (isDark) ? Colors.black : Colors.white,
+      statusBarBrightness: (isDark) ? Brightness.light : Brightness.dark,
+      statusBarIconBrightness: (isDark) ? Brightness.light : Brightness.dark,
+      systemNavigationBarIconBrightness: (isDark) ? Brightness.light : Brightness.dark,
+    ));
   }
 
   //getter

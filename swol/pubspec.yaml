@@ -20,6 +20,9 @@ dependencies:
   flutter:
     sdk: flutter
 
+  #expand and contract info
+  folding_cell: "^0.1.2"
+
   #ANIMATION
   animator: ^1.0.0+1
 
