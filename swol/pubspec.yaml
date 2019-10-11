@@ -20,6 +20,12 @@ dependencies:
   flutter:
     sdk: flutter
 
+  #transforms
+  matrix4_transform: ^1.1.1
+
+  #other sticky
+  sticky_headers: "^0.1.8"
+
   #expand and contract info
   expandable: ^3.0.0+1
 

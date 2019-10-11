@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 //plugin
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:expandable/expandable.dart';
+import 'package:swol/learn/body.dart';
+import 'package:swol/learn/expandableTile.dart';
+import 'package:swol/learn/section.dart';
 
 //build
 class LearnExcercise extends StatefulWidget {
@@ -17,8 +20,30 @@ class LearnExcercise extends StatefulWidget {
   _LearnExcerciseState createState() => _LearnExcerciseState();
 }
 
+/*
+//Scrollable.ensureVisible(dataKey.currentContext),
+
+
+
+
+
+
+final scrollController = ScrollController();
+
+// ...
+ListView(controller: scrollController // ...
+);
+// ...
+scrollController.animateTo(height, duration: Duration(milliseconds: 678), 
+  curve: Curves.ease);
+*/
+
 class _LearnExcerciseState extends State<LearnExcercise> {
+  /*
   List<ExpandableController> allControllers;
+  ExpandableController introductionCtrl = ExpandableController(
+    initialExpanded: true, //NOTE: always starts open
+  );
   ExpandableController definitionCtrl = ExpandableController(
     initialExpanded: false,
   );
@@ -37,8 +62,11 @@ class _LearnExcerciseState extends State<LearnExcercise> {
   ExpandableController researchCtrl = ExpandableController(
     initialExpanded: false,
   );
+  */
 
+/*
   closeOthers(ExpandableController ctrl){
+    print("-------------------------");
     for(int i = 0; i < allControllers.length; i++){
       ExpandableController thisCtrl = allControllers[i];
       if(thisCtrl != ctrl){
@@ -51,15 +79,18 @@ class _LearnExcerciseState extends State<LearnExcercise> {
       else print(i.toString() + " -> 0");
     }
   }
+  */
 
   @override
   void initState() {
     //super init
     super.initState();
 
+    /*
     //make controller list
     allControllers = new List<ExpandableController>();
     allControllers.addAll([
+      introductionCtrl,
       definitionCtrl,
       trainingCtrl,
       precautionsCtrl,
@@ -67,7 +98,11 @@ class _LearnExcerciseState extends State<LearnExcercise> {
       experimentCtrl,
       researchCtrl,
     ]);
+    */
   }
+
+  ValueNotifier<bool> introductionIsOpen = new ValueNotifier(true);
+  ValueNotifier<bool> definitionsAreOpen = new ValueNotifier(false);
 
   @override
   Widget build(BuildContext context) {
@@ -104,257 +139,112 @@ class _LearnExcerciseState extends State<LearnExcercise> {
         ),
         body: new ListView(
           children: [
-            new InfoSection(
+            new ExpandableTile(
+              isOpen: introductionIsOpen,
               headerIcon: FontAwesomeIcons.solidLightbulb, 
               headerText: "Introduction", 
-              permanentlyOpen: true,
               thisExpanded: IntroductionBody(),
             ),
-            new InfoSection(
-              expandableController: definitionCtrl,
+            new ExpandableTile(
+              isOpen: definitionsAreOpen,
               headerIcon: Icons.chrome_reader_mode, 
               headerText: "Definitions", 
-              thisExpanded: Text("info"),
-              closeOthers: closeOthers,
-            ),
-            new InfoSection(
-              expandableController: trainingCtrl,
-              headerIcon: FontAwesomeIcons.dumbbell, 
-              size: 18,
-              headerText: "Training", 
-              thisExpanded: Text("info"),
-              closeOthers: closeOthers,
-            ),
-            new InfoSection(
-              expandableController: precautionsCtrl,
-              headerIcon: Icons.warning, 
-              headerText: "Precautions", 
-              thisExpanded: Text("info"),
-              closeOthers: closeOthers,
-            ),
-            new InfoSection(
-              expandableController: oneRepMaxCtrl,
-              headerIcon: FontAwesomeIcons.trophy, 
-              size: 20,
-              headerText: "1 Rep Max", 
-              thisExpanded: Text("info"),
-              closeOthers: closeOthers,
-            ),
-            new InfoSection(
-              expandableController: experimentCtrl,
-              headerIcon: FontAwesomeIcons.flask, 
-              headerText: "Experiment", 
-              thisExpanded: Text("info"),
-              closeOthers: closeOthers,
-            ),
-            new InfoSection(
-              expandableController: researchCtrl,
-              headerIcon: FontAwesomeIcons.book, 
-              headerText: "Research", 
-              thisExpanded: Text("info"),
-              closeOthers: closeOthers,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class InfoSection extends StatelessWidget {
-  const InfoSection({
-    Key key,
-    @required this.headerIcon,
-    @required this.headerText,
-    @required this.thisExpanded,
-    //optional
-    this.expandableController,
-    this.closeOthers,
-    this.permanentlyOpen: false,
-    this.size,
-  }) : super(key: key);
-
-  final IconData headerIcon;
-  final String headerText;
-  final Widget thisExpanded;
-  //optional
-  final ExpandableController expandableController;
-  final Function closeOthers;
-  final bool permanentlyOpen;
-  final double size;
-
-  @override
-  Widget build(BuildContext context) {
-    ExpandableController actualExpandableController;
-    if(expandableController == null){
-      actualExpandableController = ExpandableController(
-        initialExpanded: permanentlyOpen,
-      );
-    }
-    else{
-      actualExpandableController = expandableController;
-    }
-
-    actualExpandableController.addListener((){
-      closeOthers(actualExpandableController);
-    });
-
-    return ExpandableNotifier(
-      initialExpanded: permanentlyOpen,
-      child: ScrollOnExpand(
-        child: Card(
-          color: Theme.of(context).primaryColor,
-          margin: EdgeInsets.all(8),
-          child: ExpandablePanel(
-            controller: actualExpandableController,
-            //basic booleans
-            tapHeaderToExpand: (permanentlyOpen == false),
-            tapBodyToCollapse: false,
-            hasIcon: (permanentlyOpen == false),
-            //other
-            header: Container(
-              padding: EdgeInsets.all(16),
-              child: Row(
+              thisExpanded: Column(
                 children: <Widget>[
-                  Container(
-                    alignment: Alignment.centerLeft,
-                    width: 22 + 8.0,
-                    child: Icon(
-                      headerIcon,
-                      size: (size == null) ? 24 : size,
-                    ),
-                  ),
-                  Text(
-                    headerText,
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
+                  IntroductionBody(),
+                  IntroductionBody(),
+                  IntroductionBody(),
+                  IntroductionBody(),
+                  IntroductionBody(),
+                  IntroductionBody(),
+                  IntroductionBody(),
                 ],
               ),
             ),
-            /*
-            collapsed: Text(
-              "collapsed", 
-              softWrap: true, 
-              maxLines: 2, 
-              overflow: TextOverflow.ellipsis,
-            ),
-            */
-            expanded: Container(
-              color: Theme.of(context).cardColor,
-              width: MediaQuery.of(context).size.width,
-              padding: EdgeInsets.all(
-                16,
+            new ExpandableTile(
+              isOpen: new ValueNotifier(false),
+              headerIcon: FontAwesomeIcons.dumbbell, 
+              size: 18,
+              headerText: "Training", 
+              thisExpanded: Column(
+                children: <Widget>[
+                  IntroductionBody(),
+                  IntroductionBody(),
+                  IntroductionBody(),
+                  IntroductionBody(),
+                  IntroductionBody(),
+                  IntroductionBody(),
+                  IntroductionBody(),
+                ],
               ),
-              child: thisExpanded,
             ),
-          ),
+            new ExpandableTile(
+              isOpen: new ValueNotifier(false),
+              headerIcon: Icons.warning, 
+              headerText: "Precautions", 
+              thisExpanded: Column(
+                children: <Widget>[
+                  IntroductionBody(),
+                  IntroductionBody(),
+                  IntroductionBody(),
+                  IntroductionBody(),
+                  IntroductionBody(),
+                  IntroductionBody(),
+                  IntroductionBody(),
+                ],
+              ),
+            ),
+            new ExpandableTile(
+              isOpen: new ValueNotifier(false),
+              headerIcon: FontAwesomeIcons.trophy, 
+              size: 20,
+              headerText: "1 Rep Max", 
+              thisExpanded: Column(
+                children: <Widget>[
+                  IntroductionBody(),
+                  IntroductionBody(),
+                  IntroductionBody(),
+                  IntroductionBody(),
+                  IntroductionBody(),
+                  IntroductionBody(),
+                  IntroductionBody(),
+                ],
+              ),
+            ),
+            new ExpandableTile(
+              isOpen: new ValueNotifier(false),
+              headerIcon: FontAwesomeIcons.flask, 
+              headerText: "Experiment", 
+              thisExpanded: Column(
+                children: <Widget>[
+                  IntroductionBody(),
+                  IntroductionBody(),
+                  IntroductionBody(),
+                  IntroductionBody(),
+                  IntroductionBody(),
+                  IntroductionBody(),
+                  IntroductionBody(),
+                ],
+              ),
+            ),
+            new ExpandableTile(
+              isOpen: new ValueNotifier(false),
+              headerIcon: FontAwesomeIcons.book, 
+              headerText: "Research", 
+              thisExpanded: Column(
+                children: <Widget>[
+                  IntroductionBody(),
+                  IntroductionBody(),
+                  IntroductionBody(),
+                  IntroductionBody(),
+                  IntroductionBody(),
+                  IntroductionBody(),
+                  IntroductionBody(),
+                ],
+              ),
+            ),
+          ],
         ),
-      ),
-    );
-  }
-}
-
-class IntroductionBody extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    String tab = "\t\t\t\t\t";
-    String newLine = "\n";
-    TextStyle defaultStyle = TextStyle(
-      fontSize: 16,
-    );
-
-    return Container(
-      padding: EdgeInsets.only(
-        top: 4,
-        bottom: 4,
-      ),
-      child: Column(
-        children: <Widget>[
-          RichText(
-            text: TextSpan(
-              style: defaultStyle,
-              children: [
-                TextSpan(
-                  text: tab + "Swol is an app that helps "
-                ),
-                TextSpan(
-                  style: TextStyle(
-                    fontWeight: FontWeight.w900,
-                  ),
-                  text: "\thelps beginners get into weightlifting as quick as possible.\t"
-                ),
-                TextSpan(
-                  text: " It does not focus on tracking progress; it focuses on creating a habit. "
-                  +" What matters is that you do the best that you can now; the results will come on their own." + newLine,
-                ),
-              ]
-            ),
-          ),
-          RichText(
-            text: TextSpan(
-              style: defaultStyle,
-              children: [
-                TextSpan(
-                  text: tab + "In order to help you, "
-                ),
-                TextSpan(
-                  style: TextStyle(
-                    fontWeight: FontWeight.w900,
-                  ),
-                  text: "\twe have many suggestions\t"
-                ),
-                TextSpan(
-                  text: " but it's your responsibility to stay safe. "
-                  +"We are not liable for any harm that you may cause yourself or others. "
-                ),
-                TextSpan(
-                  style: TextStyle(
-                    fontWeight: FontWeight.w900,
-                  ),
-                  text: "\tFollow our suggestions at your own risk.\t" + newLine,
-                ),
-              ]
-            ),
-          ),
-          RichText(
-            text: TextSpan(
-              style: defaultStyle,
-              children: [
-                TextSpan(
-                  text: tab + "Additionally, be aware that "
-                ),
-                TextSpan(
-                  style: TextStyle(
-                    fontWeight: FontWeight.w900,
-                  ),
-                  text: "\tpart of our app is experimental.\t"
-                ),
-                TextSpan(
-                  text: " We suspect that one rep max formulas can be used to give users a new goal to work towards after each set,"
-                  +" but this has not been proven yet." + newLine,
-                ),
-              ]
-            ),
-          ),
-          RichText(
-            text: TextSpan(
-              style: defaultStyle,
-              children: [
-                TextSpan(
-                  text: tab + "Below are some suggestions to get you started. "
-                ),
-                TextSpan(
-                  style: TextStyle(
-                    fontWeight: FontWeight.w900,
-                  ),
-                  text: "\tEnjoy Pumping Iron!\t",
-                ),
-              ]
-            ),
-          ),
-        ],
       ),
     );
   }
