@@ -19,12 +19,11 @@ class LearnExcercise extends StatefulWidget {
 }
 
 /*
+controller.createScrollPosition(physics, context, oldPosition) AND attach
+
+print("positions: " + controller.positions.toString());
+
 //Scrollable.ensureVisible(dataKey.currentContext),
-
-
-
-
-
 
 final scrollController = ScrollController();
 
@@ -37,6 +36,9 @@ scrollController.animateTo(height, duration: Duration(milliseconds: 678),
 */
 
 class _LearnExcerciseState extends State<LearnExcercise> {
+  ScrollController controller = new ScrollController();
+
+  //is opens
   List<ValueNotifier<bool>> allIsOpens = new List<ValueNotifier<bool>>();
 
   ValueNotifier<bool> introductionIsOpen = new ValueNotifier(true);
@@ -49,6 +51,7 @@ class _LearnExcerciseState extends State<LearnExcercise> {
 
   maybeCloseOthers(ValueNotifier<bool> notifier){
     if(notifier.value){
+      //close others
       closeOthers(notifier);
     }
   }
@@ -125,8 +128,7 @@ class _LearnExcerciseState extends State<LearnExcercise> {
           ], 
         ),
         body: new CustomScrollView(
-          physics: ClampingScrollPhysics(),
-          shrinkWrap: true,
+          controller: ,
           slivers: [
             new ExpandableTile(
               isOpen: introductionIsOpen,
