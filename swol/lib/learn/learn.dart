@@ -137,8 +137,10 @@ class _LearnExcerciseState extends State<LearnExcercise> {
             )
           ], 
         ),
-        body: new ListView(
-          children: [
+        body: new CustomScrollView(
+          physics: ClampingScrollPhysics(),
+          shrinkWrap: true,
+          slivers: [
             new ExpandableTile(
               isOpen: introductionIsOpen,
               headerIcon: FontAwesomeIcons.solidLightbulb, 

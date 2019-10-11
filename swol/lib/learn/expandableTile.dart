@@ -1,7 +1,5 @@
+import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:animator/animator.dart';
-import 'package:sticky_headers/sticky_headers.dart';
-import 'package:expandable/expandable.dart';
-import 'package:matrix4_transform/matrix4_transform.dart';
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
 
@@ -28,11 +26,7 @@ class ExpandableTile extends StatefulWidget {
 class _ExpandableTileState extends State<ExpandableTile> {
   @override
   Widget build(BuildContext context) {
-    Widget _bodyWidget;
-    Widget _opened;
-    Widget _closed;
-
-    _opened = Container(
+    Widget _opened = Container(
       key: UniqueKey(),
       color: Theme.of(context).cardColor,
       width: MediaQuery.of(context).size.width,
@@ -41,27 +35,29 @@ class _ExpandableTileState extends State<ExpandableTile> {
       ),
       child: widget.thisExpanded,
     );
-
-    _closed = Container(
+    Widget _closed = Container(
       key: UniqueKey(),
       height: 0,
       width: MediaQuery.of(context).size.width,
     );
 
-    _bodyWidget = (widget.isOpen.value) ? _opened : _closed;
-
     openOrClose(){
-      _bodyWidget = (widget.isOpen.value == false) ? _opened : _closed;
       widget.isOpen.value = !widget.isOpen.value;
       setState(() {});
     }
 
-    return Card(
-      color: Theme.of(context).primaryColor,
-      margin: EdgeInsets.all(8),
-      child: Column(
-        children: [
-          Material(
+    return SliverStickyHeader(
+      header: Container(
+        color: Theme.of(context).scaffoldBackgroundColor,
+        padding: EdgeInsets.only(
+          top: 8,
+        ),
+        child: Card(
+          color: Theme.of(context).primaryColor,
+          margin: EdgeInsets.symmetric(
+            horizontal: 8,
+          ),
+          child: Material(
             color: Colors.transparent,
             child: InkWell(
               onTap: openOrClose,
@@ -100,26 +96,36 @@ class _ExpandableTileState extends State<ExpandableTile> {
               ),
             ),
           ),
-          AnimatedBuilder(
-            animation: widget.isOpen,
-            builder: (context, child){
-              return AnimatedSwitcher(
-                duration: Duration(milliseconds: 300),
-                transitionBuilder: (widget, animation){
-                  print("builder");
-                  return SizeTransition(
-                    child: widget,
-                    sizeFactor: Tween<double>(
-                      begin: 0, 
-                      end: 1,
-                    ).animate(animation),
-                  );
-                },
-                child: (widget.isOpen.value) ? _opened : _closed,
-              );
-            },
-          )
-        ],
+        ),
+      ),
+      sliver: new SliverList(
+        delegate: new SliverChildListDelegate([
+          Card(
+            margin: EdgeInsets.only(
+              bottom: 8,
+              left: 8,
+              right: 8,
+            ),
+            child: AnimatedBuilder(
+              animation: widget.isOpen,
+              builder: (context, child){
+                return AnimatedSwitcher(
+                  duration: Duration(milliseconds: 300),
+                  transitionBuilder: (widget, animation){
+                    return SizeTransition(
+                      child: widget,
+                      sizeFactor: Tween<double>(
+                        begin: 0, 
+                        end: 1,
+                      ).animate(animation),
+                    );
+                  },
+                  child: (widget.isOpen.value) ? _opened : _closed,
+                );
+              },
+            ),
+          ),
+        ]),
       ),
     );
   }

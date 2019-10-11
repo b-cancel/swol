@@ -1,8 +1,4 @@
-//dart
-import 'dart:math' as math;
-
 //flutter
-import 'package:animator/animator.dart';
 import 'package:flutter/material.dart';
 
 //plugin
@@ -20,12 +16,10 @@ import 'package:swol/excercise/excerciseStructure.dart';
 import 'package:swol/excerciseSelection/decoration.dart';
 import 'package:swol/excerciseSelection/persistentHeaderDelegate.dart';
 import 'package:swol/other/durationFormat.dart';
-import 'package:swol/other/otherHelper.dart';
 import 'package:swol/sharedWidgets/excerciseTile.dart';
 import 'package:swol/sharedWidgets/scrollToTop.dart';
 
 //internal: links
-import 'package:swol/excerciseAddition/addExcercise.dart';
 import 'package:swol/excerciseSearch/searchExcercise.dart';
 
 class ExcerciseSelect extends StatefulWidget {
