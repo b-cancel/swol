@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 //plugin
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:scroll_to_index/scroll_to_index.dart';
 import 'package:swol/learn/body.dart';
 import 'package:swol/learn/expandableTile.dart';
 
@@ -36,7 +37,8 @@ scrollController.animateTo(height, duration: Duration(milliseconds: 678),
 */
 
 class _LearnExcerciseState extends State<LearnExcercise> {
-  ScrollController controller = new ScrollController();
+  GlobalKey listKey = new GlobalKey();
+  AutoScrollController autoScrollController = new AutoScrollController();
 
   //is opens
   List<ValueNotifier<bool>> allIsOpens = new List<ValueNotifier<bool>>();
@@ -53,6 +55,28 @@ class _LearnExcerciseState extends State<LearnExcercise> {
     if(notifier.value){
       //close others
       closeOthers(notifier);
+
+      //scroll to other
+      //autoScrollController.
+      Future.delayed(
+        Duration(
+          //300 to wait for the other sections to close
+          //100 as a buffere since processing this takes a tad longer
+          milliseconds: 300 + 100,
+        ), 
+        (){
+          RenderBox renderBoxRed = listKey.currentContext.findRenderObject();
+          double theHeight  = renderBoxRed.size.height;
+          print("size" + theHeight.toString());
+          //size721.7142857142857
+          
+          //scroll to index
+          autoScrollController.scrollToIndex(
+            allIsOpens.indexOf(notifier), 
+            preferPosition: AutoScrollPosition.begin,
+          );
+        }
+      );
     }
   }
 
@@ -124,19 +148,24 @@ class _LearnExcerciseState extends State<LearnExcercise> {
                 widget.navSpread.value = false;
                 Navigator.of(context).pop();
               },
-            )
+            ),
           ], 
         ),
         body: new CustomScrollView(
-          controller: ,
+          key: listKey,
+          controller: autoScrollController,
           slivers: [
             new ExpandableTile(
+              autoScrollController: autoScrollController,
+              index: 0,
               isOpen: introductionIsOpen,
               headerIcon: FontAwesomeIcons.solidLightbulb, 
               headerText: "Introduction", 
               thisExpanded: IntroductionBody(),
             ),
             new ExpandableTile(
+              autoScrollController: autoScrollController,
+              index: 1,
               isOpen: definitionIsOpen,
               headerIcon: Icons.chrome_reader_mode, 
               headerText: "Definitions", 
@@ -153,6 +182,8 @@ class _LearnExcerciseState extends State<LearnExcercise> {
               ),
             ),
             new ExpandableTile(
+              autoScrollController: autoScrollController,
+              index: 2,
               isOpen: trainingIsOpen,
               headerIcon: FontAwesomeIcons.dumbbell, 
               size: 18,
@@ -170,6 +201,8 @@ class _LearnExcerciseState extends State<LearnExcercise> {
               ),
             ),
             new ExpandableTile(
+              autoScrollController: autoScrollController,
+              index: 3,
               isOpen: precautionIsOpen,
               headerIcon: Icons.warning, 
               headerText: "Precautions", 
@@ -186,6 +219,8 @@ class _LearnExcerciseState extends State<LearnExcercise> {
               ),
             ),
             new ExpandableTile(
+              autoScrollController: autoScrollController,
+              index: 4,
               isOpen: oneRepMaxIsOpen,
               headerIcon: FontAwesomeIcons.trophy, 
               size: 20,
@@ -203,6 +238,8 @@ class _LearnExcerciseState extends State<LearnExcercise> {
               ),
             ),
             new ExpandableTile(
+              autoScrollController: autoScrollController,
+              index: 5,
               isOpen: experimentIsOpen,
               headerIcon: FontAwesomeIcons.flask, 
               headerText: "Experiment", 
@@ -219,6 +256,8 @@ class _LearnExcerciseState extends State<LearnExcercise> {
               ),
             ),
             new ExpandableTile(
+              autoScrollController: autoScrollController,
+              index: 6,
               isOpen: researchIsOpen,
               headerIcon: FontAwesomeIcons.book, 
               headerText: "Research", 
