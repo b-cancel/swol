@@ -109,6 +109,17 @@ class _ExpandableTileState extends State<ExpandableTile> {
             child: AnimatedBuilder(
               animation: widget.isOpen,
               builder: (context, child){
+                if(widget.isOpen.value){
+                  //wait a little longer than it takes for things to close up
+                  Future.delayed(Duration(milliseconds: 350),(){
+                    //make sure our info container is visible
+                    //IF we still want it open
+                    if(widget.isOpen.value){
+                      Scrollable.ensureVisible(context);
+                    }
+                  });
+                }
+
                 return AnimatedSwitcher(
                   duration: Duration(milliseconds: 300),
                   transitionBuilder: (widget, animation){

@@ -3,10 +3,8 @@ import 'package:flutter/material.dart';
 
 //plugin
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:expandable/expandable.dart';
 import 'package:swol/learn/body.dart';
 import 'package:swol/learn/expandableTile.dart';
-import 'package:swol/learn/section.dart';
 
 //build
 class LearnExcercise extends StatefulWidget {
@@ -39,70 +37,59 @@ scrollController.animateTo(height, duration: Duration(milliseconds: 678),
 */
 
 class _LearnExcerciseState extends State<LearnExcercise> {
-  /*
-  List<ExpandableController> allControllers;
-  ExpandableController introductionCtrl = ExpandableController(
-    initialExpanded: true, //NOTE: always starts open
-  );
-  ExpandableController definitionCtrl = ExpandableController(
-    initialExpanded: false,
-  );
-  ExpandableController trainingCtrl = ExpandableController(
-    initialExpanded: false,
-  );
-  ExpandableController precautionsCtrl = ExpandableController(
-    initialExpanded: false,
-  );
-  ExpandableController oneRepMaxCtrl = ExpandableController(
-    initialExpanded: false,
-  );
-  ExpandableController experimentCtrl = ExpandableController(
-    initialExpanded: false,
-  );
-  ExpandableController researchCtrl = ExpandableController(
-    initialExpanded: false,
-  );
-  */
+  List<ValueNotifier<bool>> allIsOpens = new List<ValueNotifier<bool>>();
 
-/*
-  closeOthers(ExpandableController ctrl){
-    print("-------------------------");
-    for(int i = 0; i < allControllers.length; i++){
-      ExpandableController thisCtrl = allControllers[i];
-      if(thisCtrl != ctrl){
-        print(i.toString() + " -> 1");
-        if(thisCtrl.expanded){
-          print("closed");
-          thisCtrl.expanded = false;
-        }
-      }
-      else print(i.toString() + " -> 0");
+  ValueNotifier<bool> introductionIsOpen = new ValueNotifier(true);
+  ValueNotifier<bool> definitionIsOpen = new ValueNotifier(false);
+  ValueNotifier<bool> trainingIsOpen = new ValueNotifier(false);
+  ValueNotifier<bool> precautionIsOpen = new ValueNotifier(false);
+  ValueNotifier<bool> oneRepMaxIsOpen = new ValueNotifier(false);
+  ValueNotifier<bool> experimentIsOpen = new ValueNotifier(false);
+  ValueNotifier<bool> researchIsOpen = new ValueNotifier(false);
+
+  maybeCloseOthers(ValueNotifier<bool> notifier){
+    if(notifier.value){
+      closeOthers(notifier);
     }
   }
-  */
+
+  closeOthers(ValueNotifier<bool> passedNotifier){
+    for(int i = 0; i < allIsOpens.length; i++){
+      ValueNotifier<bool> thisNotifier = allIsOpens[i];
+      if(thisNotifier != passedNotifier){
+        if(thisNotifier.value){
+          thisNotifier.value = false;
+        }
+      }
+    }
+  }
 
   @override
   void initState() {
     //super init
     super.initState();
 
-    /*
     //make controller list
-    allControllers = new List<ExpandableController>();
-    allControllers.addAll([
-      introductionCtrl,
-      definitionCtrl,
-      trainingCtrl,
-      precautionsCtrl,
-      oneRepMaxCtrl,
-      experimentCtrl,
-      researchCtrl,
+    allIsOpens = new List<ValueNotifier<bool>>();
+    allIsOpens.addAll([
+      introductionIsOpen,
+      definitionIsOpen,
+      trainingIsOpen,
+      precautionIsOpen,
+      oneRepMaxIsOpen,
+      experimentIsOpen,
+      researchIsOpen,
     ]);
-    */
-  }
 
-  ValueNotifier<bool> introductionIsOpen = new ValueNotifier(true);
-  ValueNotifier<bool> definitionsAreOpen = new ValueNotifier(false);
+    //make listeners
+    introductionIsOpen.addListener(() => maybeCloseOthers(introductionIsOpen));
+    definitionIsOpen.addListener(() => maybeCloseOthers(definitionIsOpen));
+    trainingIsOpen.addListener(() => maybeCloseOthers(trainingIsOpen));
+    precautionIsOpen.addListener(() => maybeCloseOthers(precautionIsOpen));
+    oneRepMaxIsOpen.addListener(() => maybeCloseOthers(oneRepMaxIsOpen));
+    experimentIsOpen.addListener(() => maybeCloseOthers(experimentIsOpen));
+    researchIsOpen.addListener(() => maybeCloseOthers(researchIsOpen));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -148,7 +135,7 @@ class _LearnExcerciseState extends State<LearnExcercise> {
               thisExpanded: IntroductionBody(),
             ),
             new ExpandableTile(
-              isOpen: definitionsAreOpen,
+              isOpen: definitionIsOpen,
               headerIcon: Icons.chrome_reader_mode, 
               headerText: "Definitions", 
               thisExpanded: Column(
@@ -164,7 +151,7 @@ class _LearnExcerciseState extends State<LearnExcercise> {
               ),
             ),
             new ExpandableTile(
-              isOpen: new ValueNotifier(false),
+              isOpen: trainingIsOpen,
               headerIcon: FontAwesomeIcons.dumbbell, 
               size: 18,
               headerText: "Training", 
@@ -181,7 +168,7 @@ class _LearnExcerciseState extends State<LearnExcercise> {
               ),
             ),
             new ExpandableTile(
-              isOpen: new ValueNotifier(false),
+              isOpen: precautionIsOpen,
               headerIcon: Icons.warning, 
               headerText: "Precautions", 
               thisExpanded: Column(
@@ -197,7 +184,7 @@ class _LearnExcerciseState extends State<LearnExcercise> {
               ),
             ),
             new ExpandableTile(
-              isOpen: new ValueNotifier(false),
+              isOpen: oneRepMaxIsOpen,
               headerIcon: FontAwesomeIcons.trophy, 
               size: 20,
               headerText: "1 Rep Max", 
@@ -214,7 +201,7 @@ class _LearnExcerciseState extends State<LearnExcercise> {
               ),
             ),
             new ExpandableTile(
-              isOpen: new ValueNotifier(false),
+              isOpen: experimentIsOpen,
               headerIcon: FontAwesomeIcons.flask, 
               headerText: "Experiment", 
               thisExpanded: Column(
@@ -230,7 +217,7 @@ class _LearnExcerciseState extends State<LearnExcercise> {
               ),
             ),
             new ExpandableTile(
-              isOpen: new ValueNotifier(false),
+              isOpen: researchIsOpen,
               headerIcon: FontAwesomeIcons.book, 
               headerText: "Research", 
               thisExpanded: Column(
