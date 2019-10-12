@@ -35,7 +35,7 @@ class _ExpandableTileState extends State<ExpandableTile> {
     //Widget to switch between
     Widget _opened = Container(
       key: UniqueKey(),
-      color: Theme.of(context).cardColor,
+      color: Theme.of(context).primaryColor,
       width: MediaQuery.of(context).size.width,
       padding: EdgeInsets.all(
         16,
@@ -66,7 +66,7 @@ class _ExpandableTileState extends State<ExpandableTile> {
           animation: widget.isOpen,
           builder: (context, child){
             return Container(
-              color: Theme.of(context).primaryColor,
+              color: Theme.of(context).cardColor,
               child: Material(
                 color: Colors.transparent,
                 child: InkWell(

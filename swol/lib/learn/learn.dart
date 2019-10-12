@@ -169,17 +169,7 @@ class _LearnExcerciseState extends State<LearnExcercise> {
               isOpen: definitionIsOpen,
               headerIcon: Icons.chrome_reader_mode, 
               headerText: "Definitions", 
-              thisExpanded: Column(
-                children: <Widget>[
-                  IntroductionBody(),
-                  IntroductionBody(),
-                  IntroductionBody(),
-                  IntroductionBody(),
-                  IntroductionBody(),
-                  IntroductionBody(),
-                  IntroductionBody(),
-                ],
-              ),
+              thisExpanded: DefinitionBody(),
             ),
             new ExpandableTile(
               autoScrollController: autoScrollController,
@@ -225,17 +215,7 @@ class _LearnExcerciseState extends State<LearnExcercise> {
               headerIcon: FontAwesomeIcons.trophy, 
               size: 20,
               headerText: "1 Rep Max", 
-              thisExpanded: Column(
-                children: <Widget>[
-                  IntroductionBody(),
-                  IntroductionBody(),
-                  IntroductionBody(),
-                  IntroductionBody(),
-                  IntroductionBody(),
-                  IntroductionBody(),
-                  IntroductionBody(),
-                ],
-              ),
+              thisExpanded: OneRepMaxBody(),
             ),
             new ExpandableTile(
               autoScrollController: autoScrollController,
