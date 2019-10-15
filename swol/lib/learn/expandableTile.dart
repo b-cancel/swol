@@ -37,9 +37,6 @@ class _ExpandableTileState extends State<ExpandableTile> {
       key: UniqueKey(),
       color: Theme.of(context).primaryColor,
       width: MediaQuery.of(context).size.width,
-      padding: EdgeInsets.all(
-        16,
-      ),
       child: widget.thisExpanded,
     );
 

@@ -2,10 +2,18 @@
 import 'package:flutter/material.dart';
 
 //plugin
+
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
 import 'package:swol/learn/body.dart';
+import 'package:swol/learn/cardTable.dart';
 import 'package:swol/learn/expandableTile.dart';
+
+import 'package:flutter_banner_swiper/flutter_banner_swiper.dart';
+import 'package:flutter_swiper/flutter_swiper.dart';
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:simple_coverflow/simple_coverflow.dart';
+import 'package:swipe_stack/swipe_stack.dart';
 
 //build
 class LearnExcercise extends StatefulWidget {
@@ -18,23 +26,6 @@ class LearnExcercise extends StatefulWidget {
   @override
   _LearnExcerciseState createState() => _LearnExcerciseState();
 }
-
-/*
-controller.createScrollPosition(physics, context, oldPosition) AND attach
-
-print("positions: " + controller.positions.toString());
-
-//Scrollable.ensureVisible(dataKey.currentContext),
-
-final scrollController = ScrollController();
-
-// ...
-ListView(controller: scrollController // ...
-);
-// ...
-scrollController.animateTo(height, duration: Duration(milliseconds: 678), 
-  curve: Curves.ease);
-*/
 
 class _LearnExcerciseState extends State<LearnExcercise> {
   GlobalKey listKey = new GlobalKey();
@@ -178,16 +169,119 @@ class _LearnExcerciseState extends State<LearnExcercise> {
               headerIcon: FontAwesomeIcons.dumbbell, 
               size: 18,
               headerText: "Training", 
-              thisExpanded: Column(
-                children: <Widget>[
-                  IntroductionBody(),
-                  IntroductionBody(),
-                  IntroductionBody(),
-                  IntroductionBody(),
-                  IntroductionBody(),
-                  IntroductionBody(),
-                  IntroductionBody(),
-                ],
+              thisExpanded: IntrinsicHeight(
+                child: Row(
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.symmetric(
+                        vertical: 16,
+                      ),
+                      child: PersistentCardTable(
+                        items: [
+                          "Training Type",
+                          "Weight Heaviness",
+                          "Recovery Duration",
+                          "Rep Targets",
+                          "Set Targets",
+                          "Primary Goal",
+                          "Increase Muscle",
+                          "Risk To",
+                        ],
+                      ),
+                    ),
+                    Expanded(
+                      child: Stack(
+                        children: <Widget>[
+                          Padding(
+                            padding: EdgeInsets.symmetric(
+                              vertical: 16,
+                            ),
+                            child: CarouselSlider(
+                              height: 256.0,
+                              //so they can compare both
+                              enableInfiniteScroll: true,
+                              enlargeCenterPage: true,
+                              autoPlay: false,
+                              viewportFraction: .75,
+                              items: [0,1,2].map((i) {
+                                List<String> one = [
+                                  "Strength ",
+                                  "Very Heavy",
+                                  "3 to 5 mins",
+                                  "1 to 6",
+                                  "4 to 6",
+                                  "Tension",
+                                  "Strength",
+                                  "Joints",
+                                ];
+
+                                List<String> two = [
+                                  "\tHypertrophy",//NOTE: extra space for dumbell
+                                  "Heavy",
+                                  "1 to 2 mins",
+                                  "7 to 12",
+                                  "3 to 5",
+                                  "Hypertrophy", 
+                                  "Size",
+                                  "Joints and Tissue",
+                                ];
+
+                                List<String> three = [
+                                  "Endurance ",
+                                  "Light",
+                                  "15 seconds to 1 min",
+                                  "13+",
+                                  "2 to 4",
+                                  "Metabolic Stress",
+                                  "Endurance",
+                                  "Connective Tissue",
+                                ];
+
+                                List<List<String>> lists = [one,two,three];
+
+                                return Builder(
+                                  builder: (BuildContext context) {
+                                    return CardTable(
+                                      items: lists[i],
+                                      icon: [
+                                        FontAwesomeIcons.weightHanging,
+                                        FontAwesomeIcons.dumbbell,
+                                        FontAwesomeIcons.weight,
+                                      ][i],
+                                    );
+                                  },
+                                );
+                              }).toList(),
+                            ),
+                          ),
+                          Positioned(
+                            top: 0,
+                            bottom: 0,
+                            child: Container(
+                              width: 32,
+                              
+                              decoration: BoxDecoration(
+                                // Box decoration takes a gradient
+                                gradient: LinearGradient(
+                                  // Where the linear gradient begins and ends
+                                  begin: Alignment.centerLeft,
+                                  end: Alignment.centerRight,
+                                  // Add one stop for each color. Stops should increase from 0 to 1
+                                  stops: [0.1,1.0],
+                                  colors: [
+                                    Theme.of(context).primaryColor,
+                                    Colors.transparent,
+                                  ],
+                                ),
+                              ),
+                              child: Container(),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
             new ExpandableTile(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:swol/learn/cardTable.dart';
 import 'package:swol/learn/reusableWidgets.dart';
 
 class IntroductionBody extends StatelessWidget {
@@ -357,10 +358,14 @@ class ADefinition extends StatelessWidget {
 class OneRepMaxBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        FunctionTable(),
-      ],
+    return Padding(
+      padding: EdgeInsets.symmetric(
+        horizontal: 16,
+        vertical: 16,
+      ),
+      child: FunctionCardTable(
+        context: context,
+      ),
     );
   }
 }
