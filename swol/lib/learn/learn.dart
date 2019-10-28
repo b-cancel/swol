@@ -2,18 +2,13 @@
 import 'package:flutter/material.dart';
 
 //plugin
-
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
+
+//internal
 import 'package:swol/learn/body.dart';
 import 'package:swol/learn/cardTable.dart';
 import 'package:swol/learn/expandableTile.dart';
-
-import 'package:flutter_banner_swiper/flutter_banner_swiper.dart';
-import 'package:flutter_swiper/flutter_swiper.dart';
-import 'package:carousel_slider/carousel_slider.dart';
-import 'package:simple_coverflow/simple_coverflow.dart';
-import 'package:swipe_stack/swipe_stack.dart';
 import 'package:swol/learn/reusableWidgets.dart';
 
 //build
@@ -118,6 +113,7 @@ class _LearnExcerciseState extends State<LearnExcercise> {
         return true; //can still pop
       },
       child: new Scaffold(
+        backgroundColor: Theme.of(context).primaryColor,
         appBar: AppBar(
           backgroundColor: Colors.black,
           automaticallyImplyLeading: false,
@@ -187,21 +183,6 @@ class _LearnExcerciseState extends State<LearnExcercise> {
               headerIcon: FontAwesomeIcons.trophy, 
               size: 20,
               headerText: "1 Rep Max", 
-              /*
-              Hitting a new personal record is a rush and a good way to track your progress. 
-              But doing a one rep max (1RM) puts you at a high risk for injury.
-
-              So 1RM formulas were created to help you get a rough idea of what your 1RM should be, 
-              based on any other set, without putting you at a high risk for injury.
-              
-              However, there are some downsides
-
-              - Your estimated 1RM gets less precise as you increase reps and/or the weight you are lifting
-              - The formulas can only give you an estimated 1RM if you plug in a set with less than 35 reps
-              - There are multiple 1RM formulas that give slightly different results, but no clear indicator of when to use which
-	
-	            We tried to fix all of this in "The Experiment"
-              */
               thisExpanded: OneRepMaxBody(),
             ),
             new ExpandableTile(
@@ -209,83 +190,174 @@ class _LearnExcerciseState extends State<LearnExcercise> {
               index: 5,
               isOpen: experimentIsOpen,
               headerIcon: FontAwesomeIcons.flask, 
-              headerText: "Experiment", 
-              /*
-              We suspect that one rep max formulas can be helpful for more than just tracking your progress. 
-              Based on our limited experience and experimentation we believe
-
-              1. The ABILITY of a set of muscles is the maximum amount of weight they can lift at all rep range targets (below 35)
-              2. The ABILITY of a set of muscles can therefore be represented by a formula (one of the one rep max formulas)
-              3. Additionally, the ABILITY of a set of muscles does not just depend on how strong those muscles are, but also on how much of them you can voluntarily activate
-              4. Furthermore, because you need different amounts of control over your entire nervous system for different exercises, different ABILITY formulas will be used for different exercises
-              5. We believe that what ABILITY formula each exercise uses, indicates to what extent you can voluntarily activate your muscles due to your overall level of nervous system control
-              6. So as you continue to train, the ABILITY formulas that each exercise uses should change to reflect an overall increase in the control you have over your entire nervous system
-
-              If we make these assumptions, for each exercise, 
-              we can use the 1RM formulas to give you a goal to work towards for your next set by using 
-              [1] your previous set 
-              [2] your desired exertion level 
-              [3] your prefered or suggested ability formula 
-              [4] and your rep target. 
-              As new sets are recorded we can also switch to a formula 
-              that more accurately reflects the results of your last recorded set. 
-              
-              We believe this will help you improve as fast as possible, 
-              regardless of what type of training you are using, 
-              without getting injured. 
-
-              Below is a chart of all the Ability Formulas 
-              (previously known as 1 rep max formulas) 
-              and what level of limitation they imply. 
-              */
-              thisExpanded: Column(
-                children: <Widget>[
-                  IntroductionBody(),
-                  Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 16,
-                    ),
-                    child: FunctionCardTable(
-                      context: context,
-                    ),
-                  ),
-                  IntroductionBody(),
-                ],
-              ),
+              headerText: "Experiment",
+              thisExpanded: new ExperimentBody(),
             ),
             new ExpandableTile(
               autoScrollController: autoScrollController,
               index: 6,
               isOpen: researchIsOpen,
               headerIcon: FontAwesomeIcons.book, 
-              headerText: "Research", 
-              /*
-              Here are some topics that you can look into, to help you get even more out of your workouts
-
-              - How do you focus at each stage of movement to get the most out of each exercise?
-                  1. Concentric Stage (positive reps): where your muscle contracts and shortens
-                  2. Isometric Stage (holds): where your muscle contracts, and neither shortens or lengthens
-                  3. Eccentric Stage (negative reps): where your muscle contracts and lengthens
-
-              - How does each energy system work and how can use your knowledge of each to your advantage?
-                  1. Anaerobic System
-                  2. Glycolytic System
-                  3. Aerobic System
-              */
-              thisExpanded: Column(
-                children: <Widget>[
-                  IntroductionBody(),
-                  IntroductionBody(),
-                  IntroductionBody(),
-                  IntroductionBody(),
-                  IntroductionBody(),
-                  IntroductionBody(),
-                  IntroductionBody(),
-                ],
-              ),
+              headerText: "Research",
+              thisExpanded: new ResearchBody(),
             ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class ResearchBody extends StatelessWidget {
+  const ResearchBody({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: <Widget>[
+        SectionDescription(
+          child: Text(
+            "Here are some topics that you can look into, to help you get even more out of your workouts",
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 16.0,
+          ),
+          child: Column(
+            children: <Widget>[
+              ResearchCard(
+                title: "How do you focus at each stage of movement to get the most out of each exercise?", 
+                items: [
+                  RichText(
+                    text: TextSpan(
+                      children: [
+                        TextSpan(
+                          text: "Concentric Stage (positive reps): ",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        TextSpan(
+                          text: "where your muscle contracts and shortens",
+                        ),
+                      ]
+                    ),
+                  ),
+                  RichText(
+                    text: TextSpan(
+                      children: [
+                        TextSpan(
+                          text: "Isometric Stage (holds): ",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        TextSpan(
+                          text: " where your muscle contracts, and neither shortens or lengthens",
+                        ),
+                      ]
+                    ),
+                  ),
+                  RichText(
+                    text: TextSpan(
+                      children: [
+                        TextSpan(
+                          text: "Eccentric Stage (negative reps): ",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        TextSpan(
+                          text: "where your muscle contracts and lengthens",
+                        ),
+                      ]
+                    ),
+                  ),
+                ],
+              ),
+              ResearchCard(
+                title: "How does each energy system work and how can use your knowledge of each to your advantage?", 
+                items: [
+                  Text("Anaerobic System"),
+                  Text("Glycolytic System"),
+                  Text("Aerobic System"),
+                ],
+              ),
+            ],
+          ),
+        )
+      ],
+    );
+  }
+}
+
+class ResearchCard extends StatelessWidget {
+  const ResearchCard({
+    Key key,
+    @required this.title,
+    @required this.items,
+  }) : super(key: key);
+
+  final String title;
+  final List<Widget> items;
+
+  @override
+  Widget build(BuildContext context) {
+    List<Widget> listItems = new List<Widget>();
+    for(int i = 0; i < items.length; i++){
+      listItems.add(
+        ListItem(
+          circleColor: Theme.of(context).accentColor,
+          circleText: (i + 1).toString(),
+          circleTextSize: 18,
+          content: items[i],
+        ),
+      );
+    }
+
+    return Padding(
+      padding: const EdgeInsets.only(
+        bottom: 16.0,
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(25),
+        child: Container(
+          child: Container(
+            width: MediaQuery.of(context).size.width,
+            child: Column(
+              children: <Widget>[
+                Container(
+                  color: Theme.of(context).accentColor,
+                  padding: EdgeInsets.all(16),
+                  child: Text(
+                    title,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Theme.of(context).primaryColor,
+                    ),
+                  ),
+                ),
+                Container(
+                  color: Theme.of(context).cardColor,
+                  width: MediaQuery.of(context).size.width,
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 16,
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                      top: 16.0,
+                    ),
+                    child: Column(
+                      children: listItems,
+                    ),
+                  ),
+                )
+              ],
+            ),
+          ),
         ),
       ),
     );
