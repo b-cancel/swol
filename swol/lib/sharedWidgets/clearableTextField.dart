@@ -32,7 +32,7 @@ class _TextFieldWithClearButtonState extends State<TextFieldWithClearButton> {
   ValueNotifier<String> tempValueToUpdate;
   TextEditingController ctrl = new TextEditingController();
   ValueNotifier<bool> isEditing;
-  FocusNode focusNode;
+  final ValueNotifier<FocusNode> focusNodeVN = new ValueNotifier(new FocusNode());
   ValueNotifier<bool> present;
 
   //init
@@ -44,9 +44,9 @@ class _TextFieldWithClearButtonState extends State<TextFieldWithClearButton> {
 
     //handle focus passed or not
     if(widget.focusNode == null){
-      focusNode = new FocusNode();
+      focusNodeVN.value = new FocusNode();
     }
-    else focusNode = widget.focusNode;
+    else focusNodeVN.value = widget.focusNode;
 
     //set the initial value of the fields
     ctrl.text = widget.valueToUpdate.value;
@@ -84,7 +84,7 @@ class _TextFieldWithClearButtonState extends State<TextFieldWithClearButton> {
             //wait a little bit so animations page transition animation complete
             Duration(milliseconds: 300),
             (){
-              FocusScope.of(context).requestFocus(focusNode);
+              FocusScope.of(context).requestFocus(focusNodeVN.value);
             }
           );
         });
@@ -95,74 +95,119 @@ class _TextFieldWithClearButtonState extends State<TextFieldWithClearButton> {
       //if our focus node no longer has focus
       //we revert back to our old value
       //and we change is editing
-      /*
-      focusNode.addListener((){
-        if(focusNode.hasFocus == false){
-          print("no focus");
-          //auto undo (will also update tempValueToUpdate)
-          ctrl.text = widget.valueToUpdate.value;
-
-          //we are no longer editing
-          //cuz we can only edit one at a time and we are not focused
-          isEditing.value = false;
-          
-          //NOTE: this will trigger the thing below
-        }
+      WidgetsBinding.instance.addPostFrameCallback((_){
+        focusNodeVN.value.addListener((){
+          WidgetsBinding.instance.addPostFrameCallback((_){
+            if(focusNodeVN.value.hasFocus == false){
+              isEditing.value = false;
+            }
+          });
+        });
       });
-      */
     }
 
     //if editing value changes then update
     isEditing.addListener((){
-      if(isEditing.value == false){
-        //we have just confirmed
-
-        //make sure not empty and if emtpy correct
-        if(widget.otherFocusNode != null){ //name must be not empty
-          if(tempValueToUpdate.value == ""){
-            //auto undo (will also update tempValueToUpdate)
-            ctrl.text = widget.valueToUpdate.value;
-            
-            //let the user know their action is invalid
-            final snackBar = SnackBar(
-              backgroundColor: Theme.of(context).primaryColorDark,
-              content: Text(
-                'A Name Is Required',
-                style: TextStyle(
-                  color: Colors.white,
+      //TODO--------------------------------------------------OPTIMIZE BELOW
+      if(widget.editOneAtAtTime == false){
+        //no longer editing so SAVE
+        if(isEditing.value == false){
+          //make sure not empty and if empty correct
+          if(widget.otherFocusNode != null){ //name must be not empty
+            if(tempValueToUpdate.value == ""){
+              //auto undo (will also update tempValueToUpdate)
+              ctrl.text = widget.valueToUpdate.value;
+              
+              //let the user know their action is invalid
+              final snackBar = SnackBar(
+                backgroundColor: Theme.of(context).primaryColorDark,
+                content: Text(
+                  'A Name Is Required',
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
                 ),
-              ),
-            );
-            Scaffold.of(context).showSnackBar(snackBar);
+              );
+              Scaffold.of(context).showSnackBar(snackBar);
+            }
           }
+
+          //release focus
+          if(widget.editOneAtAtTime){
+            //NOTE: we shouldn't need this
+            //BUT we haven't got only the one button to be active at a time
+            //so we have this as a back up as an intermediate
+            //between the worst and best UX
+            if(focusNodeVN.value.hasFocus){
+              FocusScope.of(context).unfocus();
+            }
+          }
+          else FocusScope.of(context).unfocus();
+
+          //update actual value (will only trigger update if different)
+          widget.valueToUpdate.value = tempValueToUpdate.value;
         }
 
-        //release focus
-        if(widget.editOneAtAtTime){
-          //NOTE: we shouldn't need this
-          //BUT we haven't got only the one button to be active at a time
-          //so we have this as a back up as an intermediate
-          //between the worst and best UX
-          if(focusNode.hasFocus){
-            FocusScope.of(context).unfocus();
-          }
-        }
-        else FocusScope.of(context).unfocus();
-
-        //update actual value (will only trigger update if different)
-        widget.valueToUpdate.value = tempValueToUpdate.value;
+        //show check or edit
+        setState(() {});
       }
       else{
-        if(widget.editOneAtAtTime){
+        //-------------------------------------------------- BELOW
+        if(isEditing.value){
           //autofocus on the field
           WidgetsBinding.instance.addPostFrameCallback((_){
-            FocusScope.of(context).requestFocus(focusNode);
+            FocusScope.of(context).requestFocus(focusNodeVN.value);
           });
         }
-      }
+        else{//no longer editing so SAVE OR UNDO?
+          //make sure not empty and if empty correct (IF SAVE (we are currently focused))
+          //undo (IF UNDO (we are currently NOT focused))
+          if(focusNodeVN.value.hasFocus){
+            if(widget.otherFocusNode != null){ //name must be not empty
+              if(tempValueToUpdate.value == ""){
+                //auto undo (will also update tempValueToUpdate)
+                ctrl.text = widget.valueToUpdate.value;
+                
+                //let the user know their action is invalid
+                final snackBar = SnackBar(
+                  backgroundColor: Theme.of(context).primaryColorDark,
+                  content: Text(
+                    'A Name Is Required',
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                );
+                Scaffold.of(context).showSnackBar(snackBar);
+              }
+            }
 
-      //show check or edit
-      setState(() {});
+            //release focus
+            if(widget.editOneAtAtTime){
+              //NOTE: we shouldn't need this
+              //BUT we haven't got only the one button to be active at a time
+              //so we have this as a back up as an intermediate
+              //between the worst and best UX
+              if(focusNodeVN.value.hasFocus){
+                FocusScope.of(context).unfocus();
+              }
+            }
+            else FocusScope.of(context).unfocus();
+          }
+          else{
+            //auto undo (will also update tempValueToUpdate)
+            ctrl.text = widget.valueToUpdate.value;
+          }
+
+          //update actual value (will only trigger update if different)
+          widget.valueToUpdate.value = tempValueToUpdate.value;
+        }
+
+        //show check or edit
+        setState(() {});
+        //-------------------------------------------------- ABOVE
+      }
+      //TODO--------------------------------------------------OPTIMIZE ABOVE
     });
 
     //super init
@@ -290,7 +335,7 @@ class _TextFieldWithClearButtonState extends State<TextFieldWithClearButton> {
                           isEditing.value = true;
                         },
                         controller: ctrl,
-                        focusNode: focusNode,
+                        focusNode: focusNodeVN.value,
                         maxLines: (widget.otherFocusNode == null) ? null : 1,
                         minLines: 1,
                         keyboardType: TextInputType.text,

@@ -44,6 +44,7 @@ class _ReferenceLinkBoxState extends State<ReferenceLinkBox> {
       padding: EdgeInsets.all(0),
       onPressed: (){
         isEditing.value = true;
+        FocusScope.of(context).unfocus();
       },
       child: Icon(
         Icons.edit,
