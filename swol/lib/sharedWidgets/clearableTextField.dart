@@ -137,7 +137,7 @@ class _TextFieldWithClearButtonState extends State<TextFieldWithClearButton> {
           }
         }
 
-        //release focu
+        //release focus
         if(widget.editOneAtAtTime){
           //NOTE: we shouldn't need this
           //BUT we haven't got only the one button to be active at a time
@@ -153,10 +153,12 @@ class _TextFieldWithClearButtonState extends State<TextFieldWithClearButton> {
         widget.valueToUpdate.value = tempValueToUpdate.value;
       }
       else{
-        //autofocus on the field
-        WidgetsBinding.instance.addPostFrameCallback((_){
-          FocusScope.of(context).requestFocus(focusNode);
-        });
+        if(widget.editOneAtAtTime){
+          //autofocus on the field
+          WidgetsBinding.instance.addPostFrameCallback((_){
+            FocusScope.of(context).requestFocus(focusNode);
+          });
+        }
       }
 
       //show check or edit
