@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:swol/learn/reusableWidgets.dart';
 import 'package:swol/sharedWidgets/informationDisplay.dart';
 
 class RepTargetPopUp extends StatelessWidget {
@@ -480,16 +481,7 @@ class ExcerciseNamePopUp extends StatelessWidget {
                 ),
                 children: [
                   TextSpan(
-                    text: "But,",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  TextSpan(
-                    text: " it's ",
-                  ),
-                  TextSpan(
-                    text: "best",
+                    text: "But, it's best",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                     ),
@@ -522,11 +514,54 @@ class ExcerciseNamePopUp extends StatelessWidget {
                   TextSpan(
                     text: " when you do the "
                     + "same excercise, multiple times, in the same workout"
-                    + " but with different rep targets",
+                    + " but with a ",
                   ),
-                ]
+                  TextSpan(
+                    text: "different",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
               ),
             ),
+            Padding(
+              padding: const EdgeInsets.only(
+                top: 16.0,
+              ),
+              child: Column(
+                children: <Widget>[
+                  ListItem(
+                    circleColor: Colors.blue,
+                    circleText: "1",
+                    circleTextSize: 18,
+                    circleTextColor: Colors.white,
+                    content: Text("Previous Set"),
+                  ),
+                  ListItem(
+                    circleColor: Colors.blue,
+                    circleText: "2",
+                    circleTextSize: 18,
+                    circleTextColor: Colors.white,
+                    content: Text("Desired Effort Level"),
+                  ),
+                  ListItem(
+                    circleColor: Colors.blue,
+                    circleText: "3",
+                    circleTextSize: 18,
+                    circleTextColor: Colors.white,
+                    content: Text("Ability Formula"),
+                  ),
+                  ListItem(
+                    circleColor: Colors.blue,
+                    circleText: "4",
+                    circleTextSize: 18,
+                    circleTextColor: Colors.white,
+                    content: Text("Rep Target"),
+                  )
+                ],
+              ),
+            )
             /*
             Container(
               alignment: Alignment.centerLeft,

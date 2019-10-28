@@ -90,14 +90,32 @@ class _TextFieldWithClearButtonState extends State<TextFieldWithClearButton> {
         });
       }
     }
+    else{
+      //if we are editing one at a time
+      //if our focus node no longer has focus
+      //we revert back to our old value
+      //and we change is editing
+      /*
+      focusNode.addListener((){
+        if(focusNode.hasFocus == false){
+          print("no focus");
+          //auto undo (will also update tempValueToUpdate)
+          ctrl.text = widget.valueToUpdate.value;
+
+          //we are no longer editing
+          //cuz we can only edit one at a time and we are not focused
+          isEditing.value = false;
+          
+          //NOTE: this will trigger the thing below
+        }
+      });
+      */
+    }
 
     //if editing value changes then update
     isEditing.addListener((){
       if(isEditing.value == false){
         //we have just confirmed
-
-        //release focus
-        FocusScope.of(context).unfocus();
 
         //make sure not empty and if emtpy correct
         if(widget.otherFocusNode != null){ //name must be not empty
@@ -119,9 +137,29 @@ class _TextFieldWithClearButtonState extends State<TextFieldWithClearButton> {
           }
         }
 
+        //release focu
+        if(widget.editOneAtAtTime){
+          //NOTE: we shouldn't need this
+          //BUT we haven't got only the one button to be active at a time
+          //so we have this as a back up as an intermediate
+          //between the worst and best UX
+          if(focusNode.hasFocus){
+            FocusScope.of(context).unfocus();
+          }
+        }
+        else FocusScope.of(context).unfocus();
+
         //update actual value (will only trigger update if different)
         widget.valueToUpdate.value = tempValueToUpdate.value;
       }
+      else{
+        //autofocus on the field
+        WidgetsBinding.instance.addPostFrameCallback((_){
+          FocusScope.of(context).requestFocus(focusNode);
+        });
+      }
+
+      //show check or edit
       setState(() {});
     });
 
