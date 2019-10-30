@@ -102,6 +102,8 @@ dependencies:
 flutter_native_splash:
   image: assets/splash/splash.png
   color: "000000"
+  # fill: true
+  # android_disable_fullscreen: false
 
 flutter_icons:
   android: "launcher_icon" 

@@ -257,12 +257,42 @@ class _AddExcerciseState extends State<AddExcercise> {
                               popUp: SetBreakPopUp(),
                             ),
                           ),
+                          AnimatedRecoveryTimeInfo(
+                            changeDuration: changeDuration, 
+                            sectionGrown: sectionGrown, 
+                            grownWidth: sliderWidth, 
+                            regularWidth: 0, 
+                            textHeight: textHeight, 
+                            textMaxWidth: textMaxWidth,
+                            selectedDuration: recoveryPeriod,
+                            passedNameStrings: [
+                              "ENDURANCE",
+                              "MASS",
+                              "STRENGTH",
+                            ],
+                            passedNameTaps: [
+                              (){print("end");},
+                              (){print("mass");},
+                              (){print("str");},
+                            ],
+                            passedTickTypes: [
+                              [7],
+                              [5,6],
+                              [5, 11, 11, 11],
+                            ],
+                            passedStartTick: [
+                              0,
+                              35,
+                              95,
+                            ],
+                          ),
                           TimePicker(
                             duration: recoveryPeriod,
                           ),
-                          new MinsSecsBelowTimePicker(
+                          MinsSecsBelowTimePicker(
                             showS: showS,
                           ),
+                          /*
                           MyDivider(),
                           Container(
                             padding: EdgeInsets.only(
@@ -282,15 +312,7 @@ class _AddExcerciseState extends State<AddExcercise> {
                               ),
                             ),
                           ),
-                          new AnimatedRecoveryTimeInfo(
-                            changeDuration: changeDuration, 
-                            sectionGrown: sectionGrown, 
-                            grownWidth: sliderWidth, 
-                            regularWidth: 0, 
-                            textHeight: textHeight, 
-                            textMaxWidth: textMaxWidth,
-                            selectedDuration: recoveryPeriod,
-                          ),
+                          */
                         ],
                       ),
                     ),

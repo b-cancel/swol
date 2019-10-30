@@ -371,7 +371,7 @@ class SectionDescription extends StatelessWidget {
       ),
       child: Container(
         decoration: BoxDecoration(
-          color: Theme.of(context).cardColor,
+          color: Theme.of(context).accentColor,
           border: Border(
             bottom: BorderSide(
               color: Colors.white.withOpacity(0.5),
@@ -379,7 +379,14 @@ class SectionDescription extends StatelessWidget {
           )
         ),
         padding: EdgeInsets.all(16),
-        child: child,
+        child: DefaultTextStyle(
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+            color: Theme.of(context).primaryColor,
+          ),
+          child: child,
+        ),
       ),
     );
   }
@@ -520,126 +527,149 @@ class TrainingBody extends StatelessWidget {
           child: Text(
             "Select a training based on the results you desire\n\n"
             + "But first research the risks, and have a plan to eliminate or minimize them",
-            style: TextStyle(
-              fontSize: 16,
+          ),
+        ),
+        new ScrollableTrainingTypes(),
+      ],
+    );
+  }
+}
+
+class ScrollableTrainingTypes extends StatelessWidget {
+  const ScrollableTrainingTypes({
+    Key key,
+    this.showStrength: true,
+    this.showHypertrophy: true,
+    this.showEndurance: true,
+  }) : super(key: key);
+
+  final bool showStrength;
+  final bool showHypertrophy;
+  final bool showEndurance;
+
+  @override
+  Widget build(BuildContext context) {
+    List<Widget> types = new List<Widget>();
+
+    if(showStrength){
+      types.add(
+        CardTable(
+          items: [
+            "Strength ",
+            "Very Heavy",
+            "2:35 -> 5:00",
+            "1 to 6",
+            "4 to 6",
+            "Tension",
+            "Strength",
+            "Joints",
+          ],
+          icon: FontAwesomeIcons.weightHanging,
+        ),
+      );
+    }
+
+    if(showHypertrophy){
+      types.add(
+        CardTable(
+          items: [
+            "\tHypertrophy",//NOTE: extra space for dumbell
+            "Heavy",
+            "1:05 -> 2:30",
+            "7 to 12",
+            "3 to 5",
+            "Hypertrophy", 
+            "Size",
+            "Joints and Tissue",
+          ],
+          icon: FontAwesomeIcons.dumbbell,
+        ),
+      );
+    }
+    
+    if(showEndurance){
+      types.add(
+        CardTable(
+          items: [
+            "Endurance ",
+            "Light",
+            "15 secs -> 1:00",
+            "13+",
+            "2 to 4",
+            "Metabolic Stress",
+            "Endurance",
+            "Connective Tissue",
+          ],
+          icon: FontAwesomeIcons.weight,
+        ),
+      );
+    }
+
+    return IntrinsicHeight(
+      child: Row(
+        children: <Widget>[
+          Padding(
+            padding: EdgeInsets.symmetric(
+              vertical: 16,
+            ),
+            child: PersistentCardTable(
+              items: [
+                "Training Type",
+                "Weight Heaviness",
+                "Recovery Duration",
+                "Rep Targets",
+                "Set Targets",
+                "Primary Goal",
+                "Increase Muscle",
+                "Risk To",
+              ],
             ),
           ),
-        ),
-        IntrinsicHeight(
-          child: Row(
-            children: <Widget>[
-              Padding(
-                padding: EdgeInsets.symmetric(
-                  vertical: 16,
+          Expanded(
+            child: Stack(
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.symmetric(
+                    vertical: 16,
+                  ),
+                  child: CarouselSlider(
+                    height: 256.0,
+                    //so they can compare both
+                    enableInfiniteScroll: true,
+                    enlargeCenterPage: true,
+                    autoPlay: false,
+                    viewportFraction: .75,
+                    items: types,
+                  ),
                 ),
-                child: PersistentCardTable(
-                  items: [
-                    "Training Type",
-                    "Weight Heaviness",
-                    "Recovery Duration",
-                    "Rep Targets",
-                    "Set Targets",
-                    "Primary Goal",
-                    "Increase Muscle",
-                    "Risk To",
-                  ],
-                ),
-              ),
-              Expanded(
-                child: Stack(
-                  children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.symmetric(
-                        vertical: 16,
-                      ),
-                      child: CarouselSlider(
-                        height: 256.0,
-                        //so they can compare both
-                        enableInfiniteScroll: true,
-                        enlargeCenterPage: true,
-                        autoPlay: false,
-                        viewportFraction: .75,
-                        items: [0,1,2].map((i) {
-                          List<String> one = [
-                            "Strength ",
-                            "Very Heavy",
-                            "3 to 5 mins",
-                            "1 to 6",
-                            "4 to 6",
-                            "Tension",
-                            "Strength",
-                            "Joints",
-                          ];
-
-                          List<String> two = [
-                            "\tHypertrophy",//NOTE: extra space for dumbell
-                            "Heavy",
-                            "1 to 2 mins",
-                            "7 to 12",
-                            "3 to 5",
-                            "Hypertrophy", 
-                            "Size",
-                            "Joints and Tissue",
-                          ];
-
-                          List<String> three = [
-                            "Endurance ",
-                            "Light",
-                            "15 seconds to 1 min",
-                            "13+",
-                            "2 to 4",
-                            "Metabolic Stress",
-                            "Endurance",
-                            "Connective Tissue",
-                          ];
-
-                          List<List<String>> lists = [one,two,three];
-
-                          return Builder(
-                            builder: (BuildContext context) {
-                              return CardTable(
-                                items: lists[i],
-                                icon: [
-                                  FontAwesomeIcons.weightHanging,
-                                  FontAwesomeIcons.dumbbell,
-                                  FontAwesomeIcons.weight,
-                                ][i],
-                              );
-                            },
-                          );
-                        }).toList(),
+                Positioned(
+                  top: 0,
+                  bottom: 0,
+                  child: Container(
+                    width: 32,
+                    
+                    decoration: BoxDecoration(
+                      // Box decoration takes a gradient
+                      gradient: LinearGradient(
+                        // Where the linear gradient begins and ends
+                        begin: Alignment.centerLeft,
+                        end: Alignment.centerRight,
+                        // Add one stop for each color. Stops should increase from 0 to 1
+                        stops: [0.1,1.0],
+                        colors: [
+                          Theme.of(context).primaryColor,
+                          Colors.transparent,
+                        ],
                       ),
                     ),
-                    Positioned(
-                      top: 0,
-                      bottom: 0,
-                      child: Container(
-                        width: 32,
-                        
-                        decoration: BoxDecoration(
-                          // Box decoration takes a gradient
-                          gradient: LinearGradient(
-                            // Where the linear gradient begins and ends
-                            begin: Alignment.centerLeft,
-                            end: Alignment.centerRight,
-                            // Add one stop for each color. Stops should increase from 0 to 1
-                            stops: [0.1,1.0],
-                            colors: [
-                              Theme.of(context).primaryColor,
-                              Colors.transparent,
-                            ],
-                          ),
-                        ),
-                        child: Container(),
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            ],
+                    child: Container(),
+                  ),
+                )
+              ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

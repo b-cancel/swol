@@ -181,6 +181,10 @@ class AnimatedRecoveryTimeInfo extends StatelessWidget {
     @required this.textHeight,
     @required this.textMaxWidth,
     @required this.selectedDuration,
+    @required this.passedNameStrings,
+    @required this.passedNameTaps,
+    @required this.passedTickTypes,
+    @required this.passedStartTick,
   }) : super(key: key);
 
   final Duration changeDuration;
@@ -190,9 +194,14 @@ class AnimatedRecoveryTimeInfo extends StatelessWidget {
   final double textHeight;
   final double textMaxWidth;
   final ValueNotifier<Duration> selectedDuration;
+  final List<String> passedNameStrings;
+  final List<Function> passedNameTaps;
+  final List<List<int>> passedTickTypes;
+  final List<int> passedStartTick;
 
   @override
   Widget build(BuildContext context) {
+    //quick maths
     double sub = -(textMaxWidth * 2);
     double sizeWhenGrown = grownWidth + sub;
     double sizeWhenShrunk = regularWidth + sub;
@@ -200,125 +209,47 @@ class AnimatedRecoveryTimeInfo extends StatelessWidget {
       sizeWhenShrunk = 0;
     }
 
-    //build
-    return Center(
-      child: Stack(
-        children: <Widget>[
-          Padding(
-            padding: EdgeInsets.only(
-              top: 24.0,
-            ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                AnimatedContainer(
-                  duration: changeDuration,
-                  width: (sectionGrown == 0) ? grownWidth : regularWidth,
-                  child: Container(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: (sectionGrown == 0) ? 16 : 0,
-                    ),
-                    child: Center(
-                      child: Text(
-                        "ENDURANCE",
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 1,
-                        style: TextStyle(
-                          fontWeight: (sectionGrown == 0) ? FontWeight.bold : FontWeight.normal,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                AnimatedContainer(
-                  duration: changeDuration,
-                  width: (sectionGrown == 1) ? grownWidth : regularWidth,
-                  child: Container(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: (sectionGrown == 1) ? 16 : 0,
-                    ),
-                    child: Center(
-                      child: Text(
-                        "MASS",
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 1,
-                        style: TextStyle(
-                          fontWeight: (sectionGrown == 1) ? FontWeight.bold : FontWeight.normal,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                AnimatedContainer(
-                  duration: changeDuration,
-                  width: (sectionGrown == 2) ? grownWidth : regularWidth,
-                  child: Container(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: (sectionGrown == 2) ? 16 : 0,
-                    ),
-                    child: Center(
-                      child: Text(
-                        "STRENGTH",
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 1,
-                        style: TextStyle(
-                          fontWeight: (sectionGrown == 2) ? FontWeight.bold : FontWeight.normal,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Row(
-            children: <Widget>[
-              AnimatedContainer(
-                duration: changeDuration,
-                height: 16,
-                width: (sectionGrown == 0) ? grownWidth : 0,
-                child: (sectionGrown == 0) ? TickGenerator(
-                  tickTypes: [7],
-                  startTick: 0,
-                  selectedDuration: selectedDuration,
-                ) : Container(),
-              ),
-              AnimatedContainer(
-                duration: changeDuration,
-                height: 16,
-                width:  (sectionGrown == 1) ? grownWidth : 0,
-                child: (sectionGrown == 1) ? TickGenerator(
-                  tickTypes: [5,6],
-                  startTick: 35,
-                  selectedDuration: selectedDuration,
-                ) : Container(),
-              ),
-              AnimatedContainer(
-                duration: changeDuration,
-                height: 16,
-                width: (sectionGrown == 2) ? grownWidth : 0,
-                child: (sectionGrown == 2) ? TickGenerator(
-                  tickTypes: [5, 11, 11, 11],
-                  startTick: 95,
-                  selectedDuration: selectedDuration,
-                ) : Container(),
-              ),
-            ],
-          ),
-          DefaultTextStyle(
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-            ),
-            child: Padding(
-              padding: EdgeInsets.only(
-                top: 16,
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.max,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  AnimatedContainer(
+    //create
+    List<Widget> nameSections = new List<Widget>();
+    List<Widget> tickSections = new List<Widget>();
+    List<Widget> endSections = new List<Widget>();
+    for(int i = 0; i < passedNameStrings.length; i++){
+      //grab single data
+      String name = passedNameStrings[i];
+      Function onTapName = passedNameTaps[i];
+      List<int> tickTypes =  passedTickTypes[i];
+      int startTick = passedStartTick[i];
+
+      //add name section
+      nameSections.add(
+        ANameSection(
+          changeDuration: changeDuration, 
+          grownWidth: grownWidth, 
+          regularWidth: regularWidth,
+          sectionGrown: sectionGrown,
+          //-----
+          sectionNumber: i, 
+          sectionName: name,
+          sectionTap: onTapName, 
+        ),
+      );
+
+      //add tick section
+      tickSections.add(
+        AnimatedContainer(
+          duration: changeDuration,
+          height: 16,
+          width: (sectionGrown == i) ? grownWidth : 0,
+          child: (sectionGrown == i) ? TickGenerator(
+            tickTypes: tickTypes,
+            startTick: startTick,
+            selectedDuration: selectedDuration,
+          ) : Container(),
+        ),
+      );
+
+      /*
+      AnimatedContainer(
                     duration: changeDuration,
                     height: textHeight,                 
                     width: (sectionGrown == 0) ? textMaxWidth : 0,
@@ -388,11 +319,93 @@ class AnimatedRecoveryTimeInfo extends StatelessWidget {
                       ),
                     ),
                   ),
-                ],
+      */
+    }
+
+    //build
+    return Container(
+      color: Colors.green,
+      child: Stack(
+        children: <Widget>[
+          Padding(
+            padding: EdgeInsets.only(
+              top: 24.0,
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: nameSections,
+            ),
+          ),
+          Row(
+            children: tickSections,
+          ),
+          DefaultTextStyle(
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+            child: Padding(
+              padding: EdgeInsets.only(
+                top: 16,
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.max,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: endSections,
               ),
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class ANameSection extends StatelessWidget {
+  const ANameSection({
+    Key key,
+    @required this.changeDuration,
+    @required this.sectionGrown,
+    @required this.sectionNumber,
+    @required this.grownWidth,
+    @required this.regularWidth,
+    @required this.sectionTap,
+    @required this.sectionName,
+  }) : super(key: key);
+
+  final Duration changeDuration;
+  final int sectionGrown;
+  final int sectionNumber;
+  final double grownWidth;
+  final double regularWidth;
+  final Function sectionTap;
+  final String sectionName;
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedContainer(
+      duration: changeDuration,
+      width: (sectionGrown == sectionNumber) ? grownWidth : regularWidth,
+      child: Container(
+        padding: EdgeInsets.symmetric(
+          horizontal: (sectionGrown == 0) ? 16 : 0,
+        ),
+        child: Material(
+          color: Colors.transparent,
+          child: InkWell(
+            onTap: sectionTap,
+            child: Center(
+              child: Text(
+                sectionName,
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,
+                style: TextStyle(
+                  fontWeight: (sectionGrown == 0) ? FontWeight.bold : FontWeight.normal,
+                ),
+              ),
+            ),
+          ),
+        ),
       ),
     );
   }
