@@ -665,14 +665,15 @@ class ScrollableTrainingTypes extends StatelessWidget {
                         decoration: BoxDecoration(
                           // Box decoration takes a gradient
                           gradient: LinearGradient(
+                            tileMode: TileMode.clamp,
                             // Where the linear gradient begins and ends
                             begin: Alignment.centerLeft,
                             end: Alignment.centerRight,
                             // Add one stop for each color. Stops should increase from 0 to 1
                             stops: [0.1,1.0],
                             colors: [
-                              (lightMode) ? Colors.transparent : Theme.of(context).primaryColor,
-                              Colors.transparent,
+                              (lightMode) ? Colors.white : Theme.of(context).primaryColor,
+                              (lightMode) ? Colors.white.withOpacity(0) : Colors.transparent,
                             ],
                           ),
                         ),
