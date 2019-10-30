@@ -8,6 +8,7 @@ import 'package:swol/excerciseSelection/addNewHero.dart';
 import 'package:swol/sharedWidgets/excerciseEdit.dart';
 import 'package:swol/sharedWidgets/informationDisplay.dart';
 import 'package:swol/sharedWidgets/mySlider.dart';
+import 'package:swol/sharedWidgets/timeHelper.dart';
 import 'package:swol/sharedWidgets/timePicker.dart';
 import 'package:swol/excerciseAddition/informationPopUps.dart';
 import 'package:swol/other/functions/helper.dart';
@@ -86,13 +87,6 @@ class _AddExcerciseState extends State<AddExcercise> {
 
     //how long it takes to shift focus to a different section
     Duration changeDuration = Duration(milliseconds: 250);
-
-    //cal best for
-    int sectionGrown;
-    if(recoveryPeriod.value <= Duration(seconds: 30)) sectionGrown = 0;
-    else if(recoveryPeriod.value <= Duration(seconds: 90)) sectionGrown = 1;
-    else if(recoveryPeriod.value <= Duration(minutes: 5)) sectionGrown = 2;
-    else sectionGrown = 3;
 
     //size of the middle text and such
     double textMaxWidth = 28;
@@ -257,62 +251,42 @@ class _AddExcerciseState extends State<AddExcercise> {
                               popUp: SetBreakPopUp(),
                             ),
                           ),
+                          /*
                           AnimatedRecoveryTimeInfo(
-                            changeDuration: changeDuration, 
-                            sectionGrown: sectionGrown, 
+                            changeDuration: changeDuration,
                             grownWidth: sliderWidth, 
                             regularWidth: 0, 
                             textHeight: textHeight, 
                             textMaxWidth: textMaxWidth,
                             selectedDuration: recoveryPeriod,
                             passedNameStrings: [
-                              "ENDURANCE",
-                              "MASS",
-                              "STRENGTH",
+                              "Endurance Training",
+                              "Hypertrophy Training",
+                              "Strength Training",
                             ],
                             passedNameTaps: [
                               (){print("end");},
                               (){print("mass");},
                               (){print("str");},
                             ],
-                            passedTickTypes: [
-                              [7],
-                              [5,6],
-                              [5, 11, 11, 11],
-                            ],
                             passedStartTick: [
-                              0,
-                              35,
-                              95,
+                              15,
+                              65,
+                              125,
+                            ],
+                            passedEndTick: [
+                              60,
+                              120,
+                              295,
                             ],
                           ),
+                          */
                           TimePicker(
                             duration: recoveryPeriod,
                           ),
                           MinsSecsBelowTimePicker(
                             showS: showS,
                           ),
-                          /*
-                          MyDivider(),
-                          Container(
-                            padding: EdgeInsets.only(
-                              top: 16,
-                              bottom: 8,
-                            ),
-                            child: Container(
-                              width: MediaQuery.of(context).size.width,
-                              child: FittedBox(
-                                fit: BoxFit.fitWidth,
-                                child: Text(
-                                  "This recovery time is best for increasing muscle",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          */
                         ],
                       ),
                     ),
