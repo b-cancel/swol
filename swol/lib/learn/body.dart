@@ -538,11 +538,13 @@ class TrainingBody extends StatelessWidget {
 class ScrollableTrainingTypes extends StatelessWidget {
   const ScrollableTrainingTypes({
     Key key,
+    this.lightMode: false,
     this.showStrength: true,
     this.showHypertrophy: true,
     this.showEndurance: true,
   }) : super(key: key);
 
+  final bool lightMode;
   final bool showStrength;
   final bool showHypertrophy;
   final bool showEndurance;
@@ -551,13 +553,17 @@ class ScrollableTrainingTypes extends StatelessWidget {
   Widget build(BuildContext context) {
     List<Widget> types = new List<Widget>();
 
+    int activeCount = 0;
+
     if(showStrength){
+      activeCount++;
       types.add(
         CardTable(
+          lightMode: lightMode,
           items: [
             "Strength ",
             "Very Heavy",
-            "2:35 -> 5:00",
+            "3:00 to 5:00",
             "1 to 6",
             "4 to 6",
             "Tension",
@@ -570,12 +576,14 @@ class ScrollableTrainingTypes extends StatelessWidget {
     }
 
     if(showHypertrophy){
+      activeCount++;
       types.add(
         CardTable(
+          lightMode: lightMode,
           items: [
             "\tHypertrophy",//NOTE: extra space for dumbell
             "Heavy",
-            "1:05 -> 2:30",
+            "1:05 to 2:00",
             "7 to 12",
             "3 to 5",
             "Hypertrophy", 
@@ -588,12 +596,14 @@ class ScrollableTrainingTypes extends StatelessWidget {
     }
     
     if(showEndurance){
+      activeCount++;
       types.add(
         CardTable(
+          lightMode: lightMode,
           items: [
             "Endurance ",
             "Light",
-            "15 secs -> 1:00",
+            "0:15 to 1:00",
             "13+",
             "2 to 4",
             "Metabolic Stress",
@@ -605,70 +615,76 @@ class ScrollableTrainingTypes extends StatelessWidget {
       );
     }
 
-    return IntrinsicHeight(
-      child: Row(
-        children: <Widget>[
-          Padding(
-            padding: EdgeInsets.symmetric(
-              vertical: 16,
+    return Container(
+      color: (lightMode) ? Colors.white : Theme.of(context).primaryColor,
+      child: IntrinsicHeight(
+        child: Row(
+          children: <Widget>[
+            Padding(
+              padding: EdgeInsets.symmetric(
+                vertical: 16,
+              ),
+              child: PersistentCardTable(
+                lightMode: lightMode,
+                items: [
+                  "Training Type",
+                  "Weight Heaviness",
+                  "Recovery Duration",
+                  "Rep Targets",
+                  "Set Targets",
+                  "Primary Goal",
+                  "Increase Muscle",
+                  "Risk To",
+                ],
+              ),
             ),
-            child: PersistentCardTable(
-              items: [
-                "Training Type",
-                "Weight Heaviness",
-                "Recovery Duration",
-                "Rep Targets",
-                "Set Targets",
-                "Primary Goal",
-                "Increase Muscle",
-                "Risk To",
-              ],
-            ),
-          ),
-          Expanded(
-            child: Stack(
-              children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.symmetric(
-                    vertical: 16,
-                  ),
-                  child: CarouselSlider(
-                    height: 256.0,
-                    //so they can compare both
-                    enableInfiniteScroll: true,
-                    enlargeCenterPage: true,
-                    autoPlay: false,
-                    viewportFraction: .75,
-                    items: types,
-                  ),
-                ),
-                Positioned(
-                  top: 0,
-                  bottom: 0,
-                  child: Container(
-                    width: 32,
-                    
-                    decoration: BoxDecoration(
-                      // Box decoration takes a gradient
-                      gradient: LinearGradient(
-                        // Where the linear gradient begins and ends
-                        begin: Alignment.centerLeft,
-                        end: Alignment.centerRight,
-                        // Add one stop for each color. Stops should increase from 0 to 1
-                        stops: [0.1,1.0],
-                        colors: [
-                          Theme.of(context).primaryColor,
-                          Colors.transparent,
-                        ],
+            Expanded(
+              child: Container(
+                color: (lightMode) ? Colors.white: Theme.of(context).primaryColor,
+                child: Stack(
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.symmetric(
+                        vertical: 16,
+                      ),
+                      child: CarouselSlider(
+                        height: 256.0,
+                        //so they can compare both
+                        enableInfiniteScroll: (activeCount > 1),
+                        enlargeCenterPage: true,
+                        autoPlay: false,
+                        viewportFraction: .75,
+                        items: types,
                       ),
                     ),
-                    child: Container(),
-                  ),
-                )
-              ],
+                    Positioned(
+                      top: 0,
+                      bottom: 0,
+                      child: Container(
+                        width: 32,
+                        decoration: BoxDecoration(
+                          // Box decoration takes a gradient
+                          gradient: LinearGradient(
+                            // Where the linear gradient begins and ends
+                            begin: Alignment.centerLeft,
+                            end: Alignment.centerRight,
+                            // Add one stop for each color. Stops should increase from 0 to 1
+                            stops: [0.1,1.0],
+                            colors: [
+                              (lightMode) ? Colors.transparent : Theme.of(context).primaryColor,
+                              Colors.transparent,
+                            ],
+                          ),
+                        ),
+                        child: Container(),
+                      ),
+                    )
+                  ],
+                ),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

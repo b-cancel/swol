@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:swol/excercise/excerciseData.dart';
 import 'package:swol/excercise/excerciseStructure.dart';
 import 'package:swol/excerciseSelection/addNewHero.dart';
+import 'package:swol/learn/body.dart';
 import 'package:swol/sharedWidgets/excerciseEdit.dart';
 import 'package:swol/sharedWidgets/informationDisplay.dart';
 import 'package:swol/sharedWidgets/mySlider.dart';
@@ -73,6 +74,64 @@ class _AddExcerciseState extends State<AddExcercise> {
 
     //super init
     super.initState();
+  }
+
+  makeTrainingTypePopUp({
+    @required String title,
+    bool showStrength: false,
+    bool showHypertrophy: false,
+    bool showEndurance: false,
+  }){
+    return (){
+      showDialog(
+        context: context,
+        builder: (BuildContext context){
+          return SimpleDialog(
+            contentPadding: EdgeInsets.all(0),
+            titlePadding: EdgeInsets.all(0),
+            title: Container(
+              width: MediaQuery.of(context).size.width,
+              color: Colors.blue,
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Row(
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.only(
+                        right: 8,
+                      ),
+                      child: Icon(
+                        Icons.info,
+                        color: Colors.white,
+                      ),
+                    ),
+                    new Text(
+                      title,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            children: <Widget>[
+              Container(
+                color: Colors.white,
+                width: MediaQuery.of(context).size.width,
+                child: ScrollableTrainingTypes(
+                  lightMode: true,
+                  showEndurance: showEndurance,
+                  showHypertrophy: showHypertrophy,
+                  showStrength: showStrength,
+                ),
+              ),
+            ],
+          );
+        }
+      );
+    };
   }
 
   @override
@@ -251,36 +310,66 @@ class _AddExcerciseState extends State<AddExcercise> {
                               popUp: SetBreakPopUp(),
                             ),
                           ),
-                          /*
                           AnimatedRecoveryTimeInfo(
                             changeDuration: changeDuration,
                             grownWidth: sliderWidth, 
-                            regularWidth: 0, 
                             textHeight: textHeight, 
                             textMaxWidth: textMaxWidth,
                             selectedDuration: recoveryPeriod,
-                            passedNameStrings: [
-                              "Endurance Training",
-                              "Hypertrophy Training",
-                              "Strength Training",
-                            ],
-                            passedNameTaps: [
-                              (){print("end");},
-                              (){print("mass");},
-                              (){print("str");},
-                            ],
-                            passedStartTick: [
-                              15,
-                              65,
-                              125,
-                            ],
-                            passedEndTick: [
-                              60,
-                              120,
-                              295,
+                            ranges: [
+                              Range(
+                                name: "Endurance Training",
+                                onTap: makeTrainingTypePopUp(
+                                  title: "Endurance Training",
+                                  showEndurance: true,
+                                ),
+                                left: new SliderToolTipButton(
+                                  buttonText: "15s",
+                                  tooltipText: "lower bad",
+                                ),
+                                right: Text("1m"),
+                                startSeconds: 15,
+                                endSeconds: 60,
+                              ),
+                              Range(
+                                name: "Hypertrophy Training",
+                                onTap: makeTrainingTypePopUp(
+                                  title: "Hypertrophy Training",
+                                  showHypertrophy: true,
+                                ),
+                                left: Text("1:05"),
+                                right: Text("2m"),
+                                startSeconds: 65,
+                                endSeconds: 120,
+                              ),
+                              Range(
+                                name: "Hypertrophy/Strength (50/50)",
+                                onTap: makeTrainingTypePopUp(
+                                  title: "Hyper/Str (50/50)",
+                                  showHypertrophy: true,
+                                  showStrength: true,
+                                ),
+                                left: Text("2:05"),
+                                right: Text("3m"),
+                                startSeconds: 125,
+                                endSeconds: 180,
+                              ),
+                              Range(
+                                name: "Strength Training",
+                                onTap: makeTrainingTypePopUp(
+                                  title: "Strength Training",
+                                  showStrength: true,
+                                ),
+                                left: Text("3:05"),
+                                right: SliderToolTipButton(
+                                  buttonText: "4:55",
+                                  tooltipText: "more bad",
+                                ),
+                                startSeconds: 185,
+                                endSeconds: 295,
+                              )
                             ],
                           ),
-                          */
                           TimePicker(
                             duration: recoveryPeriod,
                           ),

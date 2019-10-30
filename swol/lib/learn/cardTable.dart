@@ -108,19 +108,30 @@ class FunctionCardTable extends StatelessWidget {
 class PersistentCardTable extends StatelessWidget {
   PersistentCardTable({
     @required this.items,
+    @required this.lightMode,
   });
 
   final List<String> items;
+  final bool lightMode;
 
   @override
   Widget build(BuildContext context) {
+    Color accentColor = (lightMode) ? Colors.blue : Theme.of(context).accentColor;
+    Color titleColor = (lightMode) ? Colors.white : Theme.of(context).primaryColor; 
+    Color otherColor = Colors.white; //(lightMode) ? Theme.of(context).primaryColor : 
+    Color backgroudColor = Theme.of(context).primaryColor; //(lightMode) ? Colors.white : 
+
+    //alternating colors
+    Color colorEven = Theme.of(context).cardColor; //(lightMode) ? Colors.blue.withOpacity(0.5) : 
+    Color colorOdd = Theme.of(context).primaryColor.withOpacity(0.5); //(lightMode) ? Colors.white : 
+
     List<Widget> buildFields = new List<Widget>();
     for(int i = 0; i < items.length; i++){
       Color fieldColor;
-      if(i == 0) fieldColor = Theme.of(context).accentColor;
+      if(i == 0) fieldColor = accentColor;
       else{
-        if(i%2==0) fieldColor = Theme.of(context).cardColor;
-        else fieldColor = Theme.of(context).primaryColor.withOpacity(0.5);
+        if(i%2==0) fieldColor = colorEven;
+        else fieldColor = colorOdd;
       }
 
       buildFields.add(
@@ -142,7 +153,7 @@ class PersistentCardTable extends StatelessWidget {
                     Text(
                       items[i],
                       style: TextStyle(
-                        color: (i == 0) ? Colors.black : Colors.white,
+                        color: (i == 0) ? titleColor : otherColor,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -162,7 +173,7 @@ class PersistentCardTable extends StatelessWidget {
       ),
       child: Container(
         height: 256, 
-        color: Theme.of(context).cardColor,
+        color: backgroudColor,
         child: IntrinsicWidth(
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -180,20 +191,31 @@ class CardTable extends StatelessWidget {
   CardTable({
     @required this.items,
     @required this.icon,
+    @required this.lightMode,
   });
 
   final List<String> items;
   final IconData icon;
+  final bool lightMode;
 
   @override
   Widget build(BuildContext context) {
+    Color accentColor = (lightMode) ? Colors.blue : Theme.of(context).accentColor;
+    Color titleColor = (lightMode) ? Colors.white : Theme.of(context).primaryColor; 
+    Color otherColor = Colors.white; //(lightMode) ? Theme.of(context).primaryColor : 
+    Color backgroudColor = Theme.of(context).primaryColor; //(lightMode) ? Colors.white : 
+
+    //alternating colors
+    Color colorEven = Theme.of(context).cardColor; //(lightMode) ? Colors.blue.withOpacity(0.5) : 
+    Color colorOdd = Theme.of(context).primaryColor.withOpacity(0.5); //(lightMode) ? Colors.white : 
+
     List<Widget> buildFields = new List<Widget>();
     for(int i = 0; i < items.length; i++){
       Color fieldColor;
-      if(i == 0) fieldColor = Theme.of(context).accentColor;
+      if(i == 0) fieldColor = accentColor;
       else{
-        if(i%2==0) fieldColor = Theme.of(context).cardColor;
-        else fieldColor = Theme.of(context).primaryColor.withOpacity(0.5);
+        if(i%2==0) fieldColor = colorEven;
+        else fieldColor = colorOdd;
       }
 
       buildFields.add(
@@ -216,18 +238,18 @@ class CardTable extends StatelessWidget {
                   (i != 0) ? Container() : 
                   Padding(
                     padding: EdgeInsets.only(
-                      right: 4,
+                      right: 8,
                     ),
                     child: Icon(
                       icon,
-                      color: Theme.of(context).primaryColor,
+                      color: titleColor,
                       size: 16,
                     ),
                   ),
                   Text(
                     items[i],
                     style: TextStyle(
-                      color: (i == 0) ? Colors.black : Colors.white,
+                      color: (i == 0) ? titleColor : otherColor,
                       fontWeight: (i == 0) ? FontWeight.bold : FontWeight.normal,
                     ),
                   ),
@@ -246,8 +268,8 @@ class CardTable extends StatelessWidget {
       child: ClipRRect(
         borderRadius: BorderRadius.circular(25),
         child: Container(
-          height: 256, //TODO: instead of havin to manually pass this do thing automatically
-          color: Theme.of(context).cardColor,
+          height: 256, 
+          color: backgroudColor,
           child: IntrinsicWidth(
             child: Column(
               mainAxisSize: MainAxisSize.min,

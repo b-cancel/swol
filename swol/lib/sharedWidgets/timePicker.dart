@@ -189,7 +189,7 @@ class MinsSecsBelowTimePicker extends StatelessWidget {
                 fit: BoxFit.cover,
                 child: Text(
                   "MINUTE"
-                  + ((showS) ? "S" : ""),
+                  + ((showS) ? "S" : " "),
                 ),
               ),
             ),
