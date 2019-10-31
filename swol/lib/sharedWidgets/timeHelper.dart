@@ -1,9 +1,95 @@
 import 'package:flutter/material.dart';
 
+class TickGenerator extends StatefulWidget {
+  TickGenerator({
+    @required this.startTick,
+    @required this.endTick,
+    this.selectedDuration,
+  });
+
+  final int startTick;
+  final int endTick;
+  final ValueNotifier<Duration> selectedDuration;
+
+  @override
+  _TickGeneratorState createState() => _TickGeneratorState();
+}
+
+class _TickGeneratorState extends State<TickGenerator> {
+  maybeSetState(){
+    if(mounted){
+      setState(() {});
+    }
+  }
+
+  @override
+  void initState() {
+    widget.selectedDuration.addListener(maybeSetState);
+
+    //super init
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    widget.selectedDuration.removeListener(maybeSetState);
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    double tickWidth = 3;
+
+    Widget spacer = Expanded(
+      child: Container(),
+    );
+
+    int selected = widget.selectedDuration.value.inSeconds;
+
+    //generate ticks
+    List<Widget> ticks = new List<Widget>();
+    int tickCount = ((widget.endTick - widget.startTick) ~/ 5) + 1;
+    for(int i = 0; i < tickCount; i++){
+      int thisTick = widget.startTick + (i * 5);
+      bool highlight = (thisTick == selected);
+      bool bigTick = ((thisTick % 30) == 0);
+
+      //add tick
+      ticks.add(
+        Container(
+          width: 0,
+          child: OverflowBox(
+            minWidth: tickWidth,
+            maxWidth: tickWidth,
+            child: Container(
+              height: (bigTick) ? 16 : 8,
+              width: tickWidth,
+              color: (highlight) 
+              ? Theme.of(context).accentColor
+              : Theme.of(context).backgroundColor,
+            ),
+          ),
+        ),
+      );
+
+      //add trailing spacer
+      ticks.add(spacer);
+    }
+
+    //remove trailing spacer
+    ticks.removeLast();
+
+    //build
+    return Row(
+      children: ticks,
+    );
+  }
+}
+
 class SliderToolTipButton extends StatelessWidget {
   const SliderToolTipButton({
     @required this.buttonText,
-    @required this.tooltipText,
+    this.tooltipText,
     Key key,
   }) : super(key: key);
 
@@ -12,30 +98,44 @@ class SliderToolTipButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Tooltip(
-      message: tooltipText,
-      child: RaisedButton(
-        color: Theme.of(context).primaryColor,
-        onPressed: (){
-          print(tooltipText);
-        },
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.only(
-                right: 8.0,
-              ),
-              child: Icon(
-                Icons.info,
-                color: Theme.of(context).primaryColor,
-              ),
+    Widget mainButton = Container(
+      decoration: BoxDecoration(
+        border: Border.all(
+          color: (tooltipText == null) ? Colors.transparent : Theme.of(context).primaryColorDark,
+          width: 2,
+        )
+      ),
+      padding: EdgeInsets.symmetric(
+        horizontal: (tooltipText == null) ? 0 : 4,
+        vertical: 4,
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          (tooltipText == null) ? Container()
+          : Padding(
+            padding: const EdgeInsets.only(
+              right: 8.0,
             ),
-            Text(buttonText)
-          ],
-        ),
+            child: Icon(
+              Icons.info,
+              color: Theme.of(context).primaryColorDark,
+            ),
+          ),
+          Text(buttonText)
+        ],
       ),
     );
+    
+    if(tooltipText == null) return mainButton;
+    else{
+      return Tooltip(
+        message: tooltipText,
+        waitDuration: Duration(milliseconds: 100),
+        preferBelow: false,
+        child: mainButton,
+      );
+    }
   }
 }
 
@@ -135,157 +235,100 @@ class _AnimatedRecoveryTimeInfoState extends State<AnimatedRecoveryTimeInfo> {
           //-----
           sectionID: i, 
           sectionName: widget.ranges[i].name,
+          sectionTap: widget.ranges[sectionGrown].onTap,
         ),
       );
-      
-      /*
-      //grab single data
-      String name = widget.passedNameStrings[i];
-      int startTick = widget.passedStartTick[i];
-      int endTick = widget.passedEndTick[i];
-
-      //add name section
-      nameSections.add(
-        ANameSection(
-          changeDuration: widget.changeDuration, 
-          grownWidth: widget.grownWidth, 
-          regularWidth: widget.regularWidth,
-          sectionGrown: sectionGrown,
-          //-----
-          sectionID: i, 
-          sectionName: name,
-        ),
-      );
-      */
 
       //add tick section
-      /*
       tickSections.add(
         AnimatedContainer(
           duration: widget.changeDuration,
           height: 16,
           width: (sectionGrown == i) ? widget.grownWidth : 0,
           child: (sectionGrown == i) ? TickGenerator(
-            startTick: startTick,
-            endTick: endTick,
+            startTick: widget.ranges[i].startSeconds,
+            endTick: widget.ranges[i].endSeconds,
             selectedDuration: widget.selectedDuration,
           ) : Container(),
         ),
       );
-      */
 
-      /*
-      AnimatedContainer(
-                    duration: changeDuration,
-                    height: textHeight,                 
-                    width: (sectionGrown == 0) ? textMaxWidth : 0,
-                    alignment: Alignment.centerLeft,
-                    child: FittedBox(
-                      fit: BoxFit.fitHeight,
-                      child: Text(
-                        "0s",
-                      ),
-                    ),
-                  ),
-                  AnimatedContainer(
-                    duration: changeDuration,
-                    constraints: BoxConstraints(
-                      maxWidth: (sectionGrown == 0) ? sizeWhenGrown : sizeWhenShrunk,
-                    ),
-                  ),
-                  AnimatedContainer(
-                    duration: changeDuration,
-                    height: textHeight,
-                    width: (sectionGrown == 0 || sectionGrown == 1) ? textMaxWidth : 0,
-                    alignment: (sectionGrown == 0) ? Alignment.centerRight : Alignment.centerLeft,
-                    child: FittedBox(
-                      fit: BoxFit.fitHeight,
-                      child: Center(
-                        child: Text("3"
-                        + ((sectionGrown == 0) ? "0" : "5") 
-                        + "s"),
-                      ),
-                    ),
-                  ),
-                  AnimatedContainer(
-                    duration: changeDuration,
-                    constraints: BoxConstraints(
-                      maxWidth: (sectionGrown == 1) ? sizeWhenGrown : sizeWhenShrunk,
-                    ),
-                  ),
-                  AnimatedContainer(
-                    duration: changeDuration,
-                    height: textHeight,
-                    width: (sectionGrown == 1 || sectionGrown == 2) ? textMaxWidth : 0,
-                    alignment: (sectionGrown == 1) ? Alignment.centerRight : Alignment.centerLeft,
-                    child: FittedBox(
-                      fit: BoxFit.fitHeight,
-                      child: Center(
-                        child: Text("9"
-                        + ((sectionGrown == 1) ? "0" : "5") 
-                        + "s"),
-                      ),
-                    ),
-                  ),
-                  AnimatedContainer(
-                    duration: changeDuration,
-                    constraints: BoxConstraints(
-                      maxWidth: (sectionGrown == 2) ? sizeWhenGrown : sizeWhenShrunk,
-                    ),
-                  ),
-                  AnimatedContainer(
-                    duration: changeDuration,                           
-                    height: textHeight,
-                    width: (sectionGrown == 2) ? textMaxWidth : 0,
-                    alignment: Alignment.centerRight,
-                    child: FittedBox(
-                      fit: BoxFit.fitHeight,
-                      child: Center(
-                        child: Text("4:55"),
-                      ),
-                    ),
-                  ),
-      */
+      //add range section
+      Widget left = AnimatedContainer(
+        duration: widget.changeDuration,         
+        width: (sectionGrown == i) ? MediaQuery.of(context).size.width - 48: 0,
+        alignment: Alignment.centerLeft,
+        child: Opacity(
+          opacity: (sectionGrown == i) ? 1 : 0,
+          child: widget.ranges[i].left,
+        )
+      );
+
+      Widget right = AnimatedContainer(
+        duration: widget.changeDuration,         
+        width: (sectionGrown == i) ? MediaQuery.of(context).size.width - 48: 0,
+        alignment: Alignment.centerRight,
+        child: Opacity(
+          opacity: (sectionGrown == i) ? 1 : 0,
+          child: widget.ranges[i].right,
+        ),
+      );
+
+      //usually left OVER right
+      if(i != (widget.ranges.length-1)){
+        endSections.add(
+          Stack(
+            children: <Widget>[
+              right,
+              left,
+            ],
+          ),
+        );
+      }
+      else{
+        endSections.add(
+          Stack(
+            children: <Widget>[
+              left,
+              right,
+            ],
+          ),
+        );
+      }
     }
 
     //build
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        onTap: widget.ranges[sectionGrown].onTap,
-        child: Stack(
-          children: <Widget>[
-            Padding(
-              padding: EdgeInsets.only(
-                top: 24.0,
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: nameSections,
-              ),
-            ),
-            Row(
-              children: tickSections,
-            ),
-            DefaultTextStyle(
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-              ),
-              child: Padding(
-                padding: EdgeInsets.only(
-                  top: 16,
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.max,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: endSections,
-                ),
-              ),
-            ),
-          ],
+    return Stack(
+      children: <Widget>[
+        Padding(
+          padding: EdgeInsets.only(
+            top: 24.0,
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: nameSections,
+          ),
         ),
-      ),
+        Row(
+          children: tickSections,
+        ),
+        DefaultTextStyle(
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+          ),
+          child: Padding(
+            padding: EdgeInsets.only(
+              top: 24,
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.max,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: endSections,
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
@@ -298,6 +341,7 @@ class ANameSection extends StatelessWidget {
     @required this.sectionID,
     @required this.grownWidth,
     @required this.sectionName,
+    @required this.sectionTap,
   }) : super(key: key);
 
   final Duration changeDuration;
@@ -305,6 +349,7 @@ class ANameSection extends StatelessWidget {
   final int sectionID;
   final double grownWidth;
   final String sectionName;
+  final Function sectionTap;
 
   @override
   Widget build(BuildContext context) {
@@ -313,117 +358,38 @@ class ANameSection extends StatelessWidget {
       duration: changeDuration,
       width:  selected ? grownWidth : 0,
       child: Center(
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Padding(
-              padding: EdgeInsets.only(
-                right: 8,
-              ),
-              child: Icon(
-                Icons.info,
-                color: Theme.of(context).accentColor,
+        child: Material(
+          color: Colors.transparent,
+          child: InkWell(
+            onTap: sectionTap,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.only(
+                      right: 8,
+                    ),
+                    child: Icon(
+                      Icons.info,
+                      color: Theme.of(context).accentColor,
+                    ),
+                  ),
+                  Text(
+                    sectionName,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
               ),
             ),
-            Text(
-              sectionName,
-              overflow: TextOverflow.ellipsis,
-              maxLines: 1,
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ],
+          ),
         ),
       ),
     );
   }
 }
-
-/*
-class TickGenerator extends StatefulWidget {
-  TickGenerator({
-    @required this.startTick,
-    @required this.endTick,
-    this.selectedDuration,
-  });
-
-  final int startTick;
-  final int endTick;
-  final ValueNotifier<Duration> selectedDuration;
-
-  @override
-  _TickGeneratorState createState() => _TickGeneratorState();
-}
-
-class _TickGeneratorState extends State<TickGenerator> {
-  maybeSetState(){
-    if(mounted){
-      setState(() {});
-    }
-  }
-
-  @override
-  void initState() {
-    widget.selectedDuration.addListener(maybeSetState);
-
-    //super init
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    widget.selectedDuration.removeListener(maybeSetState);
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    double tickWidth = 3;
-
-    Widget spacer = Expanded(
-      child: Container(),
-    );
-
-    int selected = widget.selectedDuration.value.inSeconds;
-
-    //generate ticks
-    List<Widget> ticks = new List<Widget>();
-    int tickCount = ((widget.endTick - widget.startTick) ~/ 5) + 1;
-    for(int i = 0; i < tickCount; i++){
-      int thisTick = widget.startTick + (i * 5);
-      bool highlight = (thisTick == selected);
-      bool bigTick = ((thisTick % 60) == 0);
-
-      //add tick
-      ticks.add(
-        Container(
-          width: 0,
-          child: OverflowBox(
-            minWidth: tickWidth,
-            maxWidth: tickWidth,
-            child: Container(
-              height: (bigTick) ? 16 : 8,
-              width: tickWidth,
-              color: (highlight) 
-              ? Theme.of(context).accentColor
-              : Theme.of(context).backgroundColor,
-            ),
-          ),
-        ),
-      );
-
-      //add trailing spacer
-      ticks.add(spacer);
-    }
-
-    //remove trailing spacer
-    ticks.removeLast();
-
-    //build
-    return Row(
-      children: ticks,
-    );
-  }
-}
-*/

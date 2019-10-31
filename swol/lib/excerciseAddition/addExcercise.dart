@@ -125,6 +125,7 @@ class _AddExcerciseState extends State<AddExcercise> {
                   showEndurance: showEndurance,
                   showHypertrophy: showHypertrophy,
                   showStrength: showStrength,
+                  highlightField: 2,
                 ),
               ),
             ],
@@ -325,9 +326,11 @@ class _AddExcerciseState extends State<AddExcercise> {
                                 ),
                                 left: new SliderToolTipButton(
                                   buttonText: "15s",
-                                  tooltipText: "lower bad",
+                                  tooltipText: "any less, wouldn't be enough",
                                 ),
-                                right: Text("1m"),
+                                right: SliderToolTipButton(
+                                  buttonText: "1m",
+                                ),
                                 startSeconds: 15,
                                 endSeconds: 60,
                               ),
@@ -337,8 +340,12 @@ class _AddExcerciseState extends State<AddExcercise> {
                                   title: "Hypertrophy Training",
                                   showHypertrophy: true,
                                 ),
-                                left: Text("1:05"),
-                                right: Text("2m"),
+                                left: SliderToolTipButton(
+                                  buttonText: "1:05",
+                                ),
+                                right: SliderToolTipButton(
+                                  buttonText: "2m",
+                                ),
                                 startSeconds: 65,
                                 endSeconds: 120,
                               ),
@@ -349,8 +356,12 @@ class _AddExcerciseState extends State<AddExcercise> {
                                   showHypertrophy: true,
                                   showStrength: true,
                                 ),
-                                left: Text("2:05"),
-                                right: Text("3m"),
+                                left: SliderToolTipButton(
+                                  buttonText: "2:05",
+                                ),
+                                right: SliderToolTipButton(
+                                  buttonText: "3m",
+                                ),
                                 startSeconds: 125,
                                 endSeconds: 180,
                               ),
@@ -360,10 +371,12 @@ class _AddExcerciseState extends State<AddExcercise> {
                                   title: "Strength Training",
                                   showStrength: true,
                                 ),
-                                left: Text("3:05"),
+                                left: SliderToolTipButton(
+                                  buttonText: "3:05",
+                                ),
                                 right: SliderToolTipButton(
                                   buttonText: "4:55",
-                                  tooltipText: "more bad",
+                                  tooltipText: "any more, and your muscles would've cooled off",
                                 ),
                                 startSeconds: 185,
                                 endSeconds: 295,

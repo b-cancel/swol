@@ -109,10 +109,12 @@ class PersistentCardTable extends StatelessWidget {
   PersistentCardTable({
     @required this.items,
     @required this.lightMode,
+    this.highlightField,
   });
 
   final List<String> items;
   final bool lightMode;
+  final int highlightField;
 
   @override
   Widget build(BuildContext context) {
@@ -128,10 +130,13 @@ class PersistentCardTable extends StatelessWidget {
     List<Widget> buildFields = new List<Widget>();
     for(int i = 0; i < items.length; i++){
       Color fieldColor;
-      if(i == 0) fieldColor = accentColor;
+      if(i == highlightField) fieldColor = accentColor;
       else{
-        if(i%2==0) fieldColor = colorEven;
-        else fieldColor = colorOdd;
+        if(i == 0) fieldColor = accentColor;
+        else{
+          if(i%2==0) fieldColor = colorEven;
+          else fieldColor = colorOdd;
+        }
       }
 
       buildFields.add(
@@ -192,11 +197,13 @@ class CardTable extends StatelessWidget {
     @required this.items,
     @required this.icon,
     @required this.lightMode,
+    this.highlightField,
   });
 
   final List<String> items;
   final IconData icon;
   final bool lightMode;
+  final int highlightField;
 
   @override
   Widget build(BuildContext context) {
@@ -212,10 +219,13 @@ class CardTable extends StatelessWidget {
     List<Widget> buildFields = new List<Widget>();
     for(int i = 0; i < items.length; i++){
       Color fieldColor;
-      if(i == 0) fieldColor = accentColor;
+      if(i == highlightField) fieldColor = accentColor;
       else{
-        if(i%2==0) fieldColor = colorEven;
-        else fieldColor = colorOdd;
+        if(i == 0) fieldColor = accentColor;
+        else{
+          if(i%2==0) fieldColor = colorEven;
+          else fieldColor = colorOdd;
+        }
       }
 
       buildFields.add(
@@ -250,7 +260,7 @@ class CardTable extends StatelessWidget {
                     items[i],
                     style: TextStyle(
                       color: (i == 0) ? titleColor : otherColor,
-                      fontWeight: (i == 0) ? FontWeight.bold : FontWeight.normal,
+                      fontWeight: (i == 0 || i == highlightField) ? FontWeight.bold : FontWeight.normal,
                     ),
                   ),
                 ],

@@ -113,6 +113,7 @@ class ListItem extends StatelessWidget {
     this.circleTextColor = Colors.black,
     this.circleTextSize = 12.0,
     this.bottomSpacing = 16.0,
+    this.circlePadding = 4,
   });
 
   final Widget content;
@@ -125,6 +126,8 @@ class ListItem extends StatelessWidget {
   final double circleTextSize;
 
   final double bottomSpacing;
+
+  final double circlePadding;
 
   @override
   Widget build(BuildContext context) {
@@ -140,12 +143,15 @@ class ListItem extends StatelessWidget {
               shape: BoxShape.circle,
               color: circleColor,
             ),
-            child: new Text(
-              circleText,
-              style: TextStyle(
-                color: circleTextColor,
-                fontSize: circleTextSize,
-                fontWeight: FontWeight.bold,
+            child: Padding(
+              padding: EdgeInsets.all(circlePadding),
+              child: new Text(
+                circleText,
+                style: TextStyle(
+                  color: circleTextColor,
+                  fontSize: circleTextSize,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
           ),

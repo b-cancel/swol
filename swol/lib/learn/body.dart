@@ -542,12 +542,14 @@ class ScrollableTrainingTypes extends StatelessWidget {
     this.showStrength: true,
     this.showHypertrophy: true,
     this.showEndurance: true,
+    this.highlightField: -1,
   }) : super(key: key);
 
   final bool lightMode;
   final bool showStrength;
   final bool showHypertrophy;
   final bool showEndurance;
+  final int highlightField;
 
   @override
   Widget build(BuildContext context) {
@@ -570,6 +572,7 @@ class ScrollableTrainingTypes extends StatelessWidget {
             "Strength",
             "Joints",
           ],
+          highlightField: highlightField,
           icon: FontAwesomeIcons.weightHanging,
         ),
       );
@@ -590,6 +593,7 @@ class ScrollableTrainingTypes extends StatelessWidget {
             "Size",
             "Joints and Tissue",
           ],
+          highlightField: highlightField,
           icon: FontAwesomeIcons.dumbbell,
         ),
       );
@@ -610,6 +614,7 @@ class ScrollableTrainingTypes extends StatelessWidget {
             "Endurance",
             "Connective Tissue",
           ],
+          highlightField: highlightField,
           icon: FontAwesomeIcons.weight,
         ),
       );
@@ -629,13 +634,14 @@ class ScrollableTrainingTypes extends StatelessWidget {
                 items: [
                   "Training Type",
                   "Weight Heaviness",
-                  "Recovery Duration",
+                  "Recovery Time",
                   "Rep Targets",
                   "Set Targets",
                   "Primary Goal",
                   "Increase Muscle",
                   "Risk To",
                 ],
+                highlightField: highlightField,
               ),
             ),
             Expanded(
