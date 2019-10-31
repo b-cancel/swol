@@ -665,7 +665,7 @@ class _TrainingTypeIndicatorState extends State<TrainingTypeIndicator> {
     widget.setTarget.addListener((){
       setTargetToSection();
       controller.animateTo(
-        (((MediaQuery.of(context).size.width - 24)/4) * section),
+        (((MediaQuery.of(context).size.width-48)/4) * section),
         duration: Duration(milliseconds: 250),
         curve: Curves.easeInOut,
       );
@@ -677,65 +677,259 @@ class _TrainingTypeIndicatorState extends State<TrainingTypeIndicator> {
 
   @override
   Widget build(BuildContext context) {
-    double sectionSize = (MediaQuery.of(context).size.width - 24)/4;
-
+    double sectionSize = (MediaQuery.of(context).size.width-48)/4;
     return Container(
-      height: 16,
+      height: 96, //manually set
       child: ListView(
         physics: NeverScrollableScrollPhysics(),
         scrollDirection: Axis.horizontal,
         controller: controller,
-        children: <Widget>[
-          Container(
-            height: 16,
-            width: sectionSize,
-            color: Colors.red,
-            child: Text("1"),
-          ),
-          Container(
-            height: 16,
-            width: sectionSize,
-            color: Colors.blue,
-            child: Text("2"),
-          ),
-          Container(
-            height: 16,
-            width: sectionSize,
-            color: Colors.red,
-            child: Text("3"),
-          ),
-          Container(
-            height: 16,
-            width: sectionSize,
-            color: Colors.blue,
-            child: Text("4"),
-          ),
-          Container(
-            height: 16,
-            width: sectionSize,
-            color: Colors.red,
-            child: Text("5"),
-          ),
-          Container(
-            height: 16,
-            width: sectionSize,
-            color: Colors.blue,
-            child: Text("6"),
-          ),
-          Container(
-            height: 16,
-            width: sectionSize,
-            color: Colors.red,
-            child: Text("7"),
-          ),
-          Container(
-            height: 16,
-            width: sectionSize,
-            color: Colors.blue,
-            child: Text("8"),
+        children: [
+          Stack(
+            children: <Widget>[
+              
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Tick(
+                    tickActive: (widget.setTarget.value == 1),
+                  ),
+                  Container(
+                    height: 16,
+                    width: sectionSize,
+                    color: Colors.red,
+                    child: Text("1"),
+                  ),
+                  Tick(
+                    tickActive: (widget.setTarget.value == 2),
+                  ),
+                  Container(
+                    height: 16,
+                    width: sectionSize,
+                    color: Colors.blue,
+                    child: Text("2"),
+                  ),
+                  Tick(
+                    tickActive: (widget.setTarget.value == 3),
+                  ),
+                  Container(
+                    height: 16,
+                    width: sectionSize,
+                    color: Colors.red,
+                    child: Text("3"),
+                  ),
+                  Tick(
+                    tickActive: (widget.setTarget.value == 4),
+                  ),
+                  Container(
+                    height: 16,
+                    width: sectionSize,
+                    color: Colors.blue,
+                    child: Text("4"),
+                  ),
+                  Tick(
+                    tickActive: (widget.setTarget.value == 5),
+                  ),
+                  Container(
+                    height: 16,
+                    width: sectionSize,
+                    color: Colors.red,
+                    child: Text("5"),
+                  ),
+                  Tick(
+                    tickActive: (widget.setTarget.value == 6),
+                  ),
+                  Container(
+                    height: 16,
+                    width: sectionSize,
+                    color: Colors.blue,
+                    child: Text("6"),
+                  ),
+                  Tick(
+                    tickActive: (widget.setTarget.value == 7),
+                  ),
+                  Container(
+                    height: 16,
+                    width: sectionSize,
+                    color: Colors.red,
+                    child: Text("7"),
+                  ),
+                  Tick(
+                    tickActive: (widget.setTarget.value == 8),
+                  ),
+                  Container(
+                    height: 16,
+                    width: sectionSize,
+                    color: Colors.blue,
+                    child: Text("8"),
+                  ),
+                  Tick(
+                    tickActive: (widget.setTarget.value == 9),
+                  ),
+                ],
+              ),
+              
+              Column(
+                children: <Widget>[
+                  Pill(
+                    setTarget: widget.setTarget,
+                    actives: [4,5,6],
+                    sectionSize: sectionSize,
+                    name: "Endurance Training",
+                    onTap: (){
+                      print("end");
+                    },
+                    leftMultiplier: 2.5,
+                    rightMultiplier: 2.5,
+                  ),
+                  Pill(
+                    setTarget: widget.setTarget,
+                    actives: [3,4,5],
+                    sectionSize: sectionSize,
+                    name: "Hypertrophy Training",
+                    onTap: (){
+                      print("hyper");
+                    },
+                    leftMultiplier: 1.5,
+                    rightMultiplier: 3.5,
+                  ),
+                  Pill(
+                    setTarget: widget.setTarget,
+                    actives: [2,3,4],
+                    sectionSize: sectionSize,
+                    name: "Strength Training",
+                    onTap: (){
+                      print("str");
+                    },
+                    leftMultiplier: .5,
+                    rightMultiplier: 4.5,
+                  ),
+                ],
+              )
+            ],
           ),
         ],
       ),
     );
+  }
+}
+
+class Pill extends StatefulWidget {
+  const Pill({
+    Key key,
+    @required this.sectionSize,
+    @required this.setTarget,
+    @required this.actives,
+    @required this.name,
+    @required this.onTap,
+    @required this.leftMultiplier,
+    @required this.rightMultiplier,
+  }) : super(key: key);
+
+  final double sectionSize;
+  final ValueNotifier<int> setTarget;
+  final List<int> actives;
+  final String name;
+  final Function onTap;
+  final double leftMultiplier;
+  final double rightMultiplier;
+
+  @override
+  _PillState createState() => _PillState();
+}
+
+class _PillState extends State<Pill> {
+  bool active;
+
+  setTargetToActive(){
+    active = widget.actives.contains(widget.setTarget.value);
+  }
+
+  @override
+  void initState() {
+    //init
+    setTargetToActive();
+
+    //by update
+    widget.setTarget.addListener((){
+      setTargetToActive();
+      setState(() {});
+    });
+
+    //super
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.symmetric(
+        vertical: 4,
+      ),
+      child: Row(
+        children: <Widget>[
+          Container(
+            width: widget.leftMultiplier * widget.sectionSize,
+          ),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(24),
+            child: AnimatedContainer(
+              duration: Duration(milliseconds: 250),
+              color: active ? Theme.of(context).accentColor : Theme.of(context).primaryColor,
+              child: Material(
+                color: Colors.transparent,
+                child: InkWell(
+                  onTap: widget.onTap,
+                  child: Container(
+                    padding: EdgeInsets.all(4),
+                    width: (widget.sectionSize * 3),
+                    child: Center(
+                      child: Text(
+                        widget.name,
+                        style: TextStyle(
+                          color: active  ? Theme.of(context).primaryColor : Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Container(
+            width: widget.rightMultiplier * widget.sectionSize,
+          )
+        ],
+      ),
+    );
+  }
+}
+
+class Tick extends StatelessWidget {
+  const Tick({
+    Key key,
+    @required this.tickActive,
+  }) : super(key: key);
+
+  final bool tickActive;
+
+  @override
+  Widget build(BuildContext context) {
+    double tickHeight = 16;
+    double tickWidth = 3;
+
+    double actualTickWidth =  (tickActive) ? tickWidth : 0;
+
+    return Container();
+    
+    /*SizedOverflowBox(
+      size: Size(actualTickWidth, tickHeight),
+      child: Container(
+        height: tickHeight,
+        width: actualTickWidth,
+        color: Theme.of(context).accentColor,
+      ),
+    );
+    */
   }
 }
