@@ -14,34 +14,55 @@ class RepTargetPopUp extends StatelessWidget {
       title: "Rep Target",
       subtitle: "Not sure? Keep the default",
       child: Container(
-        padding: EdgeInsets.only(
-          left: 32,
-          right: 32,
-          bottom: 16,
-        ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            Container(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                "Given your last weight and last reps we can calculate your 1 rep max",
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 24,
+              ),
+              child: RichText(
+                text: TextSpan(
+                  style: TextStyle(
+                    color: Colors.black,
+                  ),
+                  children: [
+                    TextSpan(
+                      text: "Select a ",
+                    ),
+                    TextSpan(
+                      text: "rep target",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      )
+                    ),
+                    TextSpan(
+                      text: " for the ",
+                    ),
+                    TextSpan(
+                      text: "training type",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      )
+                    ),
+                    TextSpan(
+                      text: " you are working towards"
+                    ),
+                  ]
+                ),
               ),
             ),
-            MyDivider(),
-            Container(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                "But then its up to you to decide your rep target",
-              ),
-            ),
-            MyDivider(),
-            Container(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                "So we can calculate the weight you should be using for your next set",
-              ),
+            Theme(
+              data: ThemeData.dark(),
+              child: Container(
+                  color: Colors.white,
+                  width: MediaQuery.of(context).size.width,
+                  child: ScrollableTrainingTypes(
+                    lightMode: true,
+                    highlightField: 3,
+                  ),
+                ),
             ),
           ],
         ),

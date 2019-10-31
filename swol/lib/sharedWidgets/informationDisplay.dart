@@ -19,6 +19,7 @@ class HeaderWithInfo extends StatelessWidget {
           title,
           style: TextStyle(
             fontWeight: FontWeight.bold,
+            fontSize: 18,
           ),
         ),
         Transform.translate(

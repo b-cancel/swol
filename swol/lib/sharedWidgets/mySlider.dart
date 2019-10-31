@@ -12,11 +12,13 @@ class CustomSlider extends StatelessWidget {
   const CustomSlider({
     @required this.value,
     @required this.lastTick,
+    this.hideTicks: false,
     Key key,
   }) : super(key: key);
 
   final ValueNotifier<int> value;
   final int lastTick;
+  final bool hideTicks;
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +56,8 @@ class CustomSlider extends StatelessWidget {
     return Stack(
       alignment: AlignmentDirectional.bottomCenter,
       children: <Widget>[
-        Container(
+        (hideTicks) ?  Container()
+        : Container(
           padding: EdgeInsets.only(
             bottom: 40,
             left: sidePadding,

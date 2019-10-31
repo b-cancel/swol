@@ -4,11 +4,13 @@ class TickGenerator extends StatefulWidget {
   TickGenerator({
     @required this.startTick,
     @required this.endTick,
+    @required this.bigTickNumber,
     this.selectedDuration,
   });
 
   final int startTick;
   final int endTick;
+  final int bigTickNumber;
   final ValueNotifier<Duration> selectedDuration;
 
   @override
@@ -52,7 +54,7 @@ class _TickGeneratorState extends State<TickGenerator> {
     for(int i = 0; i < tickCount; i++){
       int thisTick = widget.startTick + (i * 5);
       bool highlight = (thisTick == selected);
-      bool bigTick = ((thisTick % 30) == 0);
+      bool bigTick = ((thisTick % widget.bigTickNumber) == 0);
 
       //add tick
       ticks.add(
@@ -166,6 +168,7 @@ class AnimatedRecoveryTimeInfo extends StatefulWidget {
     @required this.textMaxWidth,
     @required this.selectedDuration,
     @required this.ranges,
+    this.bigTickNumber: 30,
   }) : super(key: key);
 
   final Duration changeDuration;
@@ -174,6 +177,7 @@ class AnimatedRecoveryTimeInfo extends StatefulWidget {
   final double textMaxWidth;
   final ValueNotifier<Duration> selectedDuration;
   final List<Range> ranges;
+  final int bigTickNumber;
 
   @override
   _AnimatedRecoveryTimeInfoState createState() => _AnimatedRecoveryTimeInfoState();
@@ -249,6 +253,7 @@ class _AnimatedRecoveryTimeInfoState extends State<AnimatedRecoveryTimeInfo> {
             startTick: widget.ranges[i].startSeconds,
             endTick: widget.ranges[i].endSeconds,
             selectedDuration: widget.selectedDuration,
+            bigTickNumber: widget.bigTickNumber,
           ) : Container(),
         ),
       );

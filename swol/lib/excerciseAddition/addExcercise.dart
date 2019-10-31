@@ -1,6 +1,9 @@
 //flutter
 import 'package:flutter/material.dart';
 
+//plugins
+import 'package:vector_math/vector_math_64.dart' as vect;
+
 //internal
 import 'package:swol/excercise/excerciseData.dart';
 import 'package:swol/excercise/excerciseStructure.dart';
@@ -55,6 +58,12 @@ class _AddExcerciseState extends State<AddExcercise> {
   ValueNotifier<int> repTarget = new ValueNotifier(
     AnExcercise.defaultRepTarget,
   );
+  //updated the above
+  ValueNotifier<Duration> repTargetDuration = new ValueNotifier(
+    Duration(
+      seconds: AnExcercise.defaultRepTarget * 5,
+    )
+  );
 
   @override
   void initState() {
@@ -72,6 +81,13 @@ class _AddExcerciseState extends State<AddExcercise> {
       setState(() {});
     });
 
+    //update duration for UI updates
+    repTarget.addListener((){
+      repTargetDuration.value = Duration(
+        seconds: repTarget.value * 5,
+      );
+    });
+
     //super init
     super.initState();
   }
@@ -81,6 +97,7 @@ class _AddExcerciseState extends State<AddExcercise> {
     bool showStrength: false,
     bool showHypertrophy: false,
     bool showEndurance: false,
+    int highlightfield: -1,
   }){
     return (){
       showDialog(
@@ -125,7 +142,7 @@ class _AddExcerciseState extends State<AddExcercise> {
                   showEndurance: showEndurance,
                   showHypertrophy: showHypertrophy,
                   showStrength: showStrength,
-                  highlightField: 2,
+                  highlightField: highlightfield,
                 ),
               ),
             ],
@@ -323,6 +340,7 @@ class _AddExcerciseState extends State<AddExcercise> {
                                 onTap: makeTrainingTypePopUp(
                                   title: "Endurance Training",
                                   showEndurance: true,
+                                  highlightfield: 2,
                                 ),
                                 left: new SliderToolTipButton(
                                   buttonText: "15s",
@@ -339,6 +357,7 @@ class _AddExcerciseState extends State<AddExcercise> {
                                 onTap: makeTrainingTypePopUp(
                                   title: "Hypertrophy Training",
                                   showHypertrophy: true,
+                                  highlightfield: 2,
                                 ),
                                 left: SliderToolTipButton(
                                   buttonText: "1:05",
@@ -355,6 +374,7 @@ class _AddExcerciseState extends State<AddExcercise> {
                                   title: "Hyper/Str (50/50)",
                                   showHypertrophy: true,
                                   showStrength: true,
+                                  highlightfield: 2,
                                 ),
                                 left: SliderToolTipButton(
                                   buttonText: "2:05",
@@ -370,6 +390,7 @@ class _AddExcerciseState extends State<AddExcercise> {
                                 onTap: makeTrainingTypePopUp(
                                   title: "Strength Training",
                                   showStrength: true,
+                                  highlightfield: 2,
                                 ),
                                 left: SliderToolTipButton(
                                   buttonText: "3:05",
@@ -400,22 +421,6 @@ class _AddExcerciseState extends State<AddExcercise> {
                       children: <Widget>[
                         Container(
                           padding: EdgeInsets.only(
-                            top: 8,
-                            left: 16,
-                            right: 16,
-                          ),
-                          child: new HeaderWithInfo(
-                            title: "Rep Target",
-                            popUp: new RepTargetPopUp(),
-                          ),
-                        ),
-                        CustomSlider(
-                          value: repTarget,
-                          lastTick: 35,
-                        ),
-                        CustomSliderWarning(repTarget: repTarget),
-                        Container(
-                          padding: EdgeInsets.only(
                             //Top 16 padding address above
                             left: 16,
                             right: 16,
@@ -423,48 +428,14 @@ class _AddExcerciseState extends State<AddExcercise> {
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: <Widget>[
-                              Padding(
-                                padding: EdgeInsets.only(
-                                  top: 16,
-                                  bottom: 0,
-                                ),
-                                child: Container(
-                                  color: Theme.of(context).dividerColor,
-                                  height: 2,
-                                  width: MediaQuery.of(context).size.width,
-                                ),
-                              ),
-                              Container(
-                                child: new HeaderWithInfo(
-                                  title: "Prediction Formula",
-                                  popUp: new PredictionFormulasPopUp(),
-                                ),
-                              ),
-                              DropdownButton<String>(
-                                value: functionValue,
-                                icon: Icon(Icons.arrow_drop_down),
-                                isExpanded: true,
-                                iconSize: 24,
-                                elevation: 16,
-                                onChanged: (String newValue) {
-                                  setState(() {
-                                    functionValue = newValue;
-                                    functionIndex = Functions.functionToIndex[functionValue];
-                                  });
-                                },
-                                items: Functions.functions.map<DropdownMenuItem<String>>((String value) {
-                                  return DropdownMenuItem<String>(
-                                    value: value,
-                                    child: Text(value),
-                                  );
-                                })
-                                .toList(),
-                              ),
                               Container(
                                 child: new HeaderWithInfo(
                                   title: "Set Target",
                                   popUp: new SetTargetPopUp(),
                                 ),
+                              ),
+                              TrainingTypeIndicator(
+                                setTarget: setTarget,
                               ),
                             ],
                           ),
@@ -512,8 +483,144 @@ class _AddExcerciseState extends State<AddExcercise> {
                               );
                             }
                           },
-                        )
+                        ),
+                      ]
+                    ),
+                  ),
+                  Card(
+                    margin: EdgeInsets.all(8),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        Container(
+                          padding: EdgeInsets.only(
+                            top: 8,
+                            left: 16,
+                            right: 16,
+                          ),
+                          child: new HeaderWithInfo(
+                            title: "Rep Target",
+                            popUp: new RepTargetPopUp(),
+                          ),
+                        ),
+                        CustomSlider(
+                          value: repTarget,
+                          lastTick: 35,
+                        ),
+                        Container(
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                              left: 16.0,
+                              bottom: 16,
+                            ),
+                            child: AnimatedRecoveryTimeInfo(
+                              changeDuration: changeDuration,
+                              grownWidth: sliderWidth, 
+                              textHeight: textHeight, 
+                              textMaxWidth: textMaxWidth,
+                              selectedDuration: repTargetDuration,
+                              bigTickNumber: 25,
+                              ranges: [
+                                Range(
+                                  name: "Strength Training",
+                                  onTap: makeTrainingTypePopUp(
+                                    title: "Strength Training",
+                                    showStrength: true,
+                                    highlightfield: 3,
+                                  ),
+                                  left: new SliderToolTipButton(
+                                    buttonText: "1",
+                                  ),
+                                  right: SliderToolTipButton(
+                                    buttonText: "6",
+                                  ),
+                                  startSeconds: (1*5),
+                                  endSeconds: (6*5),
+                                ),
+                                Range(
+                                  name: "Hypertrophy Training",
+                                  onTap: makeTrainingTypePopUp(
+                                    title: "Hypertrophy Training",
+                                    showHypertrophy: true,
+                                    highlightfield: 3,
+                                  ),
+                                  left: SliderToolTipButton(
+                                    buttonText: "7",
+                                  ),
+                                  right: SliderToolTipButton(
+                                    buttonText: "12",
+                                  ),
+                                  startSeconds: (7*5),
+                                  endSeconds: (12*5),
+                                ),
+                                Range(
+                                  name: "Endurance Training",
+                                  onTap: makeTrainingTypePopUp(
+                                    title: "Endurance Training",
+                                    showEndurance: true,
+                                    highlightfield: 3,
+                                  ),
+                                  left: SliderToolTipButton(
+                                    buttonText: "13",
+                                  ),
+                                  right: SliderToolTipButton(
+                                    buttonText: "35",
+                                    tooltipText: "any more, and the one rep max equation function will fail",
+                                  ),
+                                  startSeconds: (13*5),
+                                  endSeconds: (35*5),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
                       ],
+                    ),
+                  ),
+                  Card(
+                    margin: EdgeInsets.all(8),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        Container(
+                          padding: EdgeInsets.only(
+                            //Top 16 padding address above
+                            left: 16,
+                            right: 16,
+                          ),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              Container(
+                                child: new HeaderWithInfo(
+                                  title: "Prediction Formula",
+                                  popUp: new PredictionFormulasPopUp(),
+                                ),
+                              ),
+                              DropdownButton<String>(
+                                value: functionValue,
+                                icon: Icon(Icons.arrow_drop_down),
+                                isExpanded: true,
+                                iconSize: 24,
+                                elevation: 16,
+                                onChanged: (String newValue) {
+                                  setState(() {
+                                    functionValue = newValue;
+                                    functionIndex = Functions.functionToIndex[functionValue];
+                                  });
+                                },
+                                items: Functions.functions.map<DropdownMenuItem<String>>((String value) {
+                                  return DropdownMenuItem<String>(
+                                    value: value,
+                                    child: Text(value),
+                                  );
+                                })
+                                .toList(),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ]
                     ),
                   ),
                 ],
@@ -521,6 +628,113 @@ class _AddExcerciseState extends State<AddExcercise> {
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+class TrainingTypeIndicator extends StatefulWidget {
+  TrainingTypeIndicator({
+    @required this.setTarget,
+  });
+
+  final ValueNotifier<int> setTarget;
+
+  @override
+  _TrainingTypeIndicatorState createState() => _TrainingTypeIndicatorState();
+}
+
+class _TrainingTypeIndicatorState extends State<TrainingTypeIndicator> {
+  int section;
+  ScrollController controller = new ScrollController();
+
+  setTargetToSection(){
+    if(widget.setTarget.value > 7) section = 4;
+    else{
+      section = widget.setTarget.value - 3;
+      section = (section < 0) ? 0 : section;
+    }
+  }
+
+  @override
+  void initState() {
+    //init
+    setTargetToSection();
+
+    //listener
+    widget.setTarget.addListener((){
+      setTargetToSection();
+      controller.animateTo(
+        (((MediaQuery.of(context).size.width - 24)/4) * section),
+        duration: Duration(milliseconds: 250),
+        curve: Curves.easeInOut,
+      );
+    });
+
+    //super init
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    double sectionSize = (MediaQuery.of(context).size.width - 24)/4;
+
+    return Container(
+      height: 16,
+      child: ListView(
+        physics: NeverScrollableScrollPhysics(),
+        scrollDirection: Axis.horizontal,
+        controller: controller,
+        children: <Widget>[
+          Container(
+            height: 16,
+            width: sectionSize,
+            color: Colors.red,
+            child: Text("1"),
+          ),
+          Container(
+            height: 16,
+            width: sectionSize,
+            color: Colors.blue,
+            child: Text("2"),
+          ),
+          Container(
+            height: 16,
+            width: sectionSize,
+            color: Colors.red,
+            child: Text("3"),
+          ),
+          Container(
+            height: 16,
+            width: sectionSize,
+            color: Colors.blue,
+            child: Text("4"),
+          ),
+          Container(
+            height: 16,
+            width: sectionSize,
+            color: Colors.red,
+            child: Text("5"),
+          ),
+          Container(
+            height: 16,
+            width: sectionSize,
+            color: Colors.blue,
+            child: Text("6"),
+          ),
+          Container(
+            height: 16,
+            width: sectionSize,
+            color: Colors.red,
+            child: Text("7"),
+          ),
+          Container(
+            height: 16,
+            width: sectionSize,
+            color: Colors.blue,
+            child: Text("8"),
+          ),
+        ],
       ),
     );
   }
