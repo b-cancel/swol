@@ -34,7 +34,7 @@ makeTrainingTypePopUp({
             titlePadding: EdgeInsets.all(0),
             title: Container(
               width: MediaQuery.of(context).size.width,
-              color: Colors.blue,
+              color: Theme.of(context).primaryColor,
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Row(
@@ -63,12 +63,17 @@ makeTrainingTypePopUp({
               Container(
                 color: Colors.white,
                 width: MediaQuery.of(context).size.width,
-                child: ScrollableTrainingTypes(
-                  lightMode: true,
-                  showEndurance: showEndurance,
-                  showHypertrophy: showHypertrophy,
-                  showStrength: showStrength,
-                  highlightField: highlightfield,
+                child: Column(
+                  children: <Widget>[
+                    ScrollableTrainingTypes(
+                      lightMode: true,
+                      showEndurance: showEndurance,
+                      showHypertrophy: showHypertrophy,
+                      showStrength: showStrength,
+                      highlightField: highlightfield,
+                    ),
+                    new LearnPageSuggestion(),
+                  ],
                 ),
               ),
             ],
@@ -346,7 +351,7 @@ class _AddExcerciseState extends State<AddExcercise> {
                                 ),
                                 left: new SliderToolTipButton(
                                   buttonText: "15s",
-                                  tooltipText: "any less, wouldn't be enough",
+                                  tooltipText: "Any Less, wouldn't be enough",
                                 ),
                                 right: SliderToolTipButton(
                                   buttonText: "1m",
@@ -402,7 +407,7 @@ class _AddExcerciseState extends State<AddExcercise> {
                                 ),
                                 right: SliderToolTipButton(
                                   buttonText: "4:55",
-                                  tooltipText: "any more, and your muscles would have cooled off",
+                                  tooltipText: "Any More, and your muscles would have cooled off",
                                 ),
                                 startSeconds: 185,
                                 endSeconds: 295,
@@ -535,7 +540,7 @@ class _AddExcerciseState extends State<AddExcercise> {
                                   ),
                                   right: SliderToolTipButton(
                                     buttonText: "35",
-                                    tooltipText: "any more, and we won't be able to estimate your 1 Rep Max",
+                                    tooltipText: "Any More, and we won't be able to estimate your 1 Rep Max",
                                   ),
                                   startSeconds: (13*5),
                                   endSeconds: (35*5),
@@ -785,45 +790,6 @@ class _TrainingTypeIndicatorState extends State<TrainingTypeIndicator> {
             )
           ],
         ),
-      ),
-    );
-  }
-}
-
-class NoMoreThan6 extends StatelessWidget {
-  const NoMoreThan6({
-    Key key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Positioned.fill(
-      child: Row(
-        mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: <Widget>[
-          Tooltip(
-            message: "You shouldn't do anymore than 6 reps",
-            waitDuration: Duration(milliseconds: 100),
-            preferBelow: false,
-            child: Container(
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: Theme.of(context).primaryColorDark,
-                  width: 2,
-                )
-              ),
-              padding: EdgeInsets.symmetric(
-                horizontal: 4,
-                vertical: 4,
-              ),
-              child: Icon(
-                Icons.warning,
-                color: Theme.of(context).primaryColorDark,
-              ),
-            ),
-          ),
-        ],
       ),
     );
   }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:swol/learn/body.dart';
 import 'package:swol/learn/reusableWidgets.dart';
 import 'package:swol/sharedWidgets/informationDisplay.dart';
@@ -64,6 +65,7 @@ class RepTargetPopUp extends StatelessWidget {
                   ),
                 ),
             ),
+            LearnPageSuggestion(),
           ],
         ),
       ),
@@ -81,86 +83,46 @@ class PredictionFormulasPopUp extends StatelessWidget {
     return MyInfoDialog(
       title: "Prediction Formulas",
       subtitle: "Not sure? Keep the default",
-      child: Container(
-        padding: EdgeInsets.only(
-          left: 32,
-          right: 32,
-          bottom: 16,
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Container(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                "Although these formulas were originally used to calculate an individual's 1 rep max\n",
+      child: Column(
+        children: <Widget>[
+          Container(
+            padding: EdgeInsets.symmetric(
+              horizontal: 24,
+            ),
+            alignment: Alignment.centerLeft,
+            child: RichText(
+              text: TextSpan(
+                style: TextStyle(
+                  color: Colors.black,
+                ),
+                children: [
+                  TextSpan(
+                    text: "Select the formula that you ",
+                  ),
+                  TextSpan(
+                    text: "beleive",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  TextSpan(
+                    text: " will predict your ",
+                  ),
+                  TextSpan(
+                    text: "ability",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  TextSpan(
+                    text: " for this excercise\n"
+                  ),
+                ]
               ),
             ),
-            Container(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                "You can also use them to determine what your next set should be\n",
-              ),
-            ),
-            Container(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                "In other words, they can give you a realistic goal to push towards",
-              ),
-            ),
-            new MyDivider(),
-            Container(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                "Assming that you have both\n",
-              ),
-            ),
-            Container(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                "1. Kept proper form",
-              ),
-            ),
-            Container(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                "2. And taken an appropiate break between sets",
-              ),
-            ),
-            new MyDivider(),
-            //
-            Container(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                "Which formula works best, depends on"
-                  + " how much your nervous system is limiting you" 
-                  + " in each individual excercise",
-              ),
-            ),
-            new MyDivider(),
-            //
-            Container(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                "In general \n",
-              ),
-            ),
-            Container(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                "Exercises that use MORE muscle will put MORE strain on your nervous system\n",
-              ),
-            ),
-            Container(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                "Exercises that use LESS muscle will put LESS strain on your nervous system",
-              ),
-            ),
-          ],
-        ),
+          ),
+          LearnPageSuggestion(),
+        ],
       ),
     );
   }
@@ -241,59 +203,57 @@ class SetTargetPopUp extends StatelessWidget {
       title: "Set Target",
       subtitle: "Not sure? Keep the default",
       child: Container(
-        padding: EdgeInsets.only(
-          left: 32,
-          right: 32,
-          bottom: 16,
-        ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Container(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                "When you workout, it can be easy to forget how many sets you have left",
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 24,
+              ),
+              child: RichText(
+                text: TextSpan(
+                  style: TextStyle(
+                    color: Colors.black,
+                  ),
+                  children: [
+                    TextSpan(
+                      text: "Select a ",
+                    ),
+                    TextSpan(
+                      text: "set target",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      )
+                    ),
+                    TextSpan(
+                      text: " for the ",
+                    ),
+                    TextSpan(
+                      text: "training type",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      )
+                    ),
+                    TextSpan(
+                      text: " you are working towards"
+                    ),
+                  ]
+                ),
               ),
             ),
-            Container(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                "So we help you track them!",
-              ),
+            Theme(
+              data: ThemeData.dark(),
+              child: Container(
+                  color: Colors.white,
+                  width: MediaQuery.of(context).size.width,
+                  child: ScrollableTrainingTypes(
+                    lightMode: true,
+                    highlightField: 4,
+                  ),
+                ),
             ),
-            new MyDivider(),
-            Container(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                "In general\n",
-              ),
-            ),
-            Container(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                "The MORE reps you are doing per set",
-              ),
-            ),
-            Container(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                "the LESS sets you should be doing\n",
-              ),
-            ),
-            Container(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                "The LESS reps you are doing per set",
-              ),
-            ),
-            Container(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                "the MORE sets you should be doing",
-              ),
-            ),
+            LearnPageSuggestion(),
           ],
         ),
       ),
@@ -448,6 +408,56 @@ class SetBreakPopUp extends StatelessWidget {
                   highlightField: 2,
                 ),
               ),
+          ),
+          new LearnPageSuggestion(),
+        ],
+      ),
+    );
+  }
+}
+
+class LearnPageSuggestion extends StatelessWidget {
+  const LearnPageSuggestion({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: Colors.white,
+      padding: EdgeInsets.only(
+        left: 24,
+        right: 24,
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          RichText(
+            text: TextSpan(
+              style: TextStyle(
+                color: Colors.black,
+              ),
+              children: [
+                TextSpan(
+                  text: "To Learn More\nVisit the ",
+                ),
+                TextSpan(
+                  text: "Learn",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                TextSpan(
+                  text: " page\n"
+                ),
+              ]
+            ),
+          ),
+          Icon(
+            FontAwesomeIcons.leanpub,
+            color: Colors.black,
           ),
         ],
       ),
@@ -647,18 +657,11 @@ class ExcerciseNamePopUp extends StatelessWidget {
                     circleText: "2",
                     circleTextSize: 18,
                     circleTextColor: Colors.white,
-                    content: Text("Desired Effort Level"),
-                  ),
-                  ListItem(
-                    circleColor: Colors.blue,
-                    circleText: "3",
-                    circleTextSize: 18,
-                    circleTextColor: Colors.white,
                     content: Text("Ability Formula"),
                   ),
                   ListItem(
                     circleColor: Colors.blue,
-                    circleText: "4",
+                    circleText: "3",
                     circleTextSize: 18,
                     circleTextColor: Colors.white,
                     content: Text("Rep Target"),

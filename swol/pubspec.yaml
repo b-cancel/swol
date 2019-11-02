@@ -110,7 +110,7 @@ flutter_icons:
   ios: true
   #Required but not used if adaptive icons are supported
   image_path: "assets/launcher/icon2.png"
-  adaptive_icon_foreground: "assets/launcher/icon2.png"
+  adaptive_icon_foreground: "assets/launcher/icon3.png"
   adaptive_icon_background: "#000000"
 
 dev_dependencies:
