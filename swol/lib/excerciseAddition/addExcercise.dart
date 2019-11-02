@@ -17,6 +17,67 @@ import 'package:swol/sharedWidgets/timePicker.dart';
 import 'package:swol/excerciseAddition/informationPopUps.dart';
 import 'package:swol/other/functions/helper.dart';
 
+makeTrainingTypePopUp({
+    @required BuildContext context,
+    @required String title,
+    bool showStrength: false,
+    bool showHypertrophy: false,
+    bool showEndurance: false,
+    int highlightfield: -1,
+  }){
+    return (){
+      showDialog(
+        context: context,
+        builder: (BuildContext context){
+          return SimpleDialog(
+            contentPadding: EdgeInsets.all(0),
+            titlePadding: EdgeInsets.all(0),
+            title: Container(
+              width: MediaQuery.of(context).size.width,
+              color: Colors.blue,
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Row(
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.only(
+                        right: 8,
+                      ),
+                      child: Icon(
+                        Icons.info,
+                        color: Colors.white,
+                      ),
+                    ),
+                    new Text(
+                      title,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            children: <Widget>[
+              Container(
+                color: Colors.white,
+                width: MediaQuery.of(context).size.width,
+                child: ScrollableTrainingTypes(
+                  lightMode: true,
+                  showEndurance: showEndurance,
+                  showHypertrophy: showHypertrophy,
+                  showStrength: showStrength,
+                  highlightField: highlightfield,
+                ),
+              ),
+            ],
+          );
+        }
+      );
+    };
+  }
+
 //main widget
 class AddExcercise extends StatefulWidget {
   const AddExcercise({
@@ -90,66 +151,6 @@ class _AddExcerciseState extends State<AddExcercise> {
 
     //super init
     super.initState();
-  }
-
-  makeTrainingTypePopUp({
-    @required String title,
-    bool showStrength: false,
-    bool showHypertrophy: false,
-    bool showEndurance: false,
-    int highlightfield: -1,
-  }){
-    return (){
-      showDialog(
-        context: context,
-        builder: (BuildContext context){
-          return SimpleDialog(
-            contentPadding: EdgeInsets.all(0),
-            titlePadding: EdgeInsets.all(0),
-            title: Container(
-              width: MediaQuery.of(context).size.width,
-              color: Colors.blue,
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Row(
-                  children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.only(
-                        right: 8,
-                      ),
-                      child: Icon(
-                        Icons.info,
-                        color: Colors.white,
-                      ),
-                    ),
-                    new Text(
-                      title,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            children: <Widget>[
-              Container(
-                color: Colors.white,
-                width: MediaQuery.of(context).size.width,
-                child: ScrollableTrainingTypes(
-                  lightMode: true,
-                  showEndurance: showEndurance,
-                  showHypertrophy: showHypertrophy,
-                  showStrength: showStrength,
-                  highlightField: highlightfield,
-                ),
-              ),
-            ],
-          );
-        }
-      );
-    };
   }
 
   @override
@@ -338,6 +339,7 @@ class _AddExcerciseState extends State<AddExcercise> {
                               Range(
                                 name: "Endurance Training",
                                 onTap: makeTrainingTypePopUp(
+                                  context: context,
                                   title: "Endurance Training",
                                   showEndurance: true,
                                   highlightfield: 2,
@@ -355,6 +357,7 @@ class _AddExcerciseState extends State<AddExcercise> {
                               Range(
                                 name: "Hypertrophy Training",
                                 onTap: makeTrainingTypePopUp(
+                                  context: context,
                                   title: "Hypertrophy Training",
                                   showHypertrophy: true,
                                   highlightfield: 2,
@@ -371,6 +374,7 @@ class _AddExcerciseState extends State<AddExcercise> {
                               Range(
                                 name: "Hypertrophy/Strength (50/50)",
                                 onTap: makeTrainingTypePopUp(
+                                  context: context,
                                   title: "Hyper/Str (50/50)",
                                   showHypertrophy: true,
                                   showStrength: true,
@@ -388,6 +392,7 @@ class _AddExcerciseState extends State<AddExcercise> {
                               Range(
                                 name: "Strength Training",
                                 onTap: makeTrainingTypePopUp(
+                                  context: context,
                                   title: "Strength Training",
                                   showStrength: true,
                                   highlightfield: 2,
@@ -397,7 +402,7 @@ class _AddExcerciseState extends State<AddExcercise> {
                                 ),
                                 right: SliderToolTipButton(
                                   buttonText: "4:55",
-                                  tooltipText: "any more, and your muscles would've cooled off",
+                                  tooltipText: "any more, and your muscles would have cooled off",
                                 ),
                                 startSeconds: 185,
                                 endSeconds: 295,
@@ -425,64 +430,26 @@ class _AddExcerciseState extends State<AddExcercise> {
                             left: 16,
                             right: 16,
                           ),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              Container(
-                                child: new HeaderWithInfo(
-                                  title: "Set Target",
-                                  popUp: new SetTargetPopUp(),
-                                ),
-                              ),
-                              TrainingTypeIndicator(
-                                setTarget: setTarget,
-                              ),
-                            ],
+                          child: Container(
+                            child: new HeaderWithInfo(
+                              title: "Set Target",
+                              popUp: new SetTargetPopUp(),
+                            ),
                           ),
                         ),
                         new CustomSlider(
                           value: setTarget,
                           lastTick: 9,
                         ),
-                        //TODO: when set target is above 6
-                        //TODO: explain that it might be best to increase something else
-                        //TODO: because if you wait this long , your muscles will cool down between sets
-                        AnimatedBuilder(
-                          animation: setTarget,
-                          builder: (context, child){
-                            if(setTarget.value <= 6) return Container();
-                            else{
-                              return Container(
-                                padding: EdgeInsets.only(
-                                  left: 24,
-                                  right: 24,
-                                  bottom: 16,
-                                ),
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  children: <Widget>[
-                                    Padding(
-                                      padding: EdgeInsets.only(
-                                        right: 8,
-                                      ),
-                                      child: Icon(
-                                        Icons.warning,
-                                        color: Colors.yellow,
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child: Text(
-                                        "Consider increasing weight or reps instead",
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              );
-                            }
-                          },
+                        Container(
+                          padding: EdgeInsets.only(
+                            //Top 16 padding address above
+                            left: 16,
+                            right: 16,
+                          ),
+                          child: TrainingTypeIndicator(
+                            setTarget: setTarget,
+                          ),
                         ),
                       ]
                     ),
@@ -524,6 +491,7 @@ class _AddExcerciseState extends State<AddExcercise> {
                                 Range(
                                   name: "Strength Training",
                                   onTap: makeTrainingTypePopUp(
+                                    context: context,
                                     title: "Strength Training",
                                     showStrength: true,
                                     highlightfield: 3,
@@ -540,6 +508,7 @@ class _AddExcerciseState extends State<AddExcercise> {
                                 Range(
                                   name: "Hypertrophy Training",
                                   onTap: makeTrainingTypePopUp(
+                                    context: context,
                                     title: "Hypertrophy Training",
                                     showHypertrophy: true,
                                     highlightfield: 3,
@@ -556,6 +525,7 @@ class _AddExcerciseState extends State<AddExcercise> {
                                 Range(
                                   name: "Endurance Training",
                                   onTap: makeTrainingTypePopUp(
+                                    context: context,
                                     title: "Endurance Training",
                                     showEndurance: true,
                                     highlightfield: 3,
@@ -565,7 +535,7 @@ class _AddExcerciseState extends State<AddExcercise> {
                                   ),
                                   right: SliderToolTipButton(
                                     buttonText: "35",
-                                    tooltipText: "any more, and the one rep max equation function will fail",
+                                    tooltipText: "any more, and we won't be able to estimate your 1 Rep Max",
                                   ),
                                   startSeconds: (13*5),
                                   endSeconds: (35*5),
@@ -587,6 +557,7 @@ class _AddExcerciseState extends State<AddExcercise> {
                             //Top 16 padding address above
                             left: 16,
                             right: 16,
+                            bottom: 16,
                           ),
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
@@ -677,136 +648,180 @@ class _TrainingTypeIndicatorState extends State<TrainingTypeIndicator> {
 
   @override
   Widget build(BuildContext context) {
-    double sectionSize = (MediaQuery.of(context).size.width-48)/4;
-    return Container(
-      height: 96, //manually set
-      child: ListView(
-        physics: NeverScrollableScrollPhysics(),
-        scrollDirection: Axis.horizontal,
-        controller: controller,
-        children: [
-          Stack(
-            children: <Widget>[
-              
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Tick(
-                    tickActive: (widget.setTarget.value == 1),
+    double tickWidth = 4;
+    double totalScreenWidth = MediaQuery.of(context).size.width - 48;
+    double totalSliderWidth = (totalScreenWidth/4) * 8;
+
+    double tickSpace = tickWidth * 9;
+    double spacerSpace = totalSliderWidth - tickSpace;
+    double spacerWidth = spacerSpace / 8;
+
+    List<Widget> ticksAndStuff = new List<Widget>();
+    
+    //add our first tick
+    ticksAndStuff.add(
+      Tick(
+        tickWidth: tickWidth,
+        setTarget: widget.setTarget,
+        value: 1,
+      ),
+    );
+
+    //add spacer then tick 8 times
+    for(int i = 0; i < 8; i++){
+      //spacer
+      ticksAndStuff.add(
+        Container(
+          width: spacerWidth,
+        ),
+      );
+
+      //tick
+      ticksAndStuff.add(
+        Tick(
+          tickWidth: tickWidth,
+          setTarget: widget.setTarget,
+          value: (i+2),
+        ),
+      );
+    }
+
+    return Padding(
+      padding: const EdgeInsets.only(
+        bottom: 16.0,
+      ),
+      child: Container(
+        height: 108, //manually set
+        child: Stack(
+          children: <Widget>[
+            ListView(
+              physics: NeverScrollableScrollPhysics(),
+              scrollDirection: Axis.horizontal,
+              controller: controller,
+              children: [
+                Stack(
+                  children: <Widget>[
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: ticksAndStuff,
+                    ),
+                    Column(
+                      children: <Widget>[
+                        Pill(
+                          setTarget: widget.setTarget,
+                          actives: [4,5,6], 
+                          sectionSize: totalScreenWidth/4,
+                          name: "Strength Training",
+                          onTap: makeTrainingTypePopUp(
+                            context: context,
+                            title: "Strength Training",
+                            showStrength: true,
+                            highlightfield: 4,
+                          ),
+                          leftMultiplier: 2.5,
+                          rightMultiplier: 2.5,
+                        ),
+                        Pill(
+                          setTarget: widget.setTarget,
+                          actives: [3,4,5], 
+                          sectionSize: totalScreenWidth/4,
+                          name: "Hypertrophy Training",
+                          onTap: makeTrainingTypePopUp(
+                            context: context,
+                            title: "Hypertrophy Training",
+                            showHypertrophy: true,
+                            highlightfield: 4,
+                          ),
+                          leftMultiplier: 1.5,
+                          rightMultiplier: 3.5,
+                        ),
+                        Pill(
+                          setTarget: widget.setTarget,
+                          actives: [1,2,3], //+1
+                          sectionSize: totalScreenWidth/4,
+                          name: "Endurance Training",
+                          onTap: makeTrainingTypePopUp(
+                            context: context,
+                            title: "Endurance Training",
+                            showEndurance: true,
+                            highlightfield: 4,
+                          ),
+                          leftMultiplier: 0,
+                          rightMultiplier: 5.5,
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            Positioned(
+              right: 0,
+              top: 0,
+              bottom: 0,
+              child: Center(
+                child: Tooltip(
+                  message: "You shouldn't do anymore than 6 sets",
+                  waitDuration: Duration(milliseconds: 100),
+                  preferBelow: false,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: Theme.of(context).primaryColorDark,
+                        width: 2,
+                      )
+                    ),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 4,
+                      vertical: 4,
+                    ),
+                    child: Icon(
+                      Icons.warning,
+                      color: Theme.of(context).primaryColorDark,
+                    ),
                   ),
-                  Container(
-                    height: 16,
-                    width: sectionSize,
-                    color: Colors.red,
-                    child: Text("1"),
-                  ),
-                  Tick(
-                    tickActive: (widget.setTarget.value == 2),
-                  ),
-                  Container(
-                    height: 16,
-                    width: sectionSize,
-                    color: Colors.blue,
-                    child: Text("2"),
-                  ),
-                  Tick(
-                    tickActive: (widget.setTarget.value == 3),
-                  ),
-                  Container(
-                    height: 16,
-                    width: sectionSize,
-                    color: Colors.red,
-                    child: Text("3"),
-                  ),
-                  Tick(
-                    tickActive: (widget.setTarget.value == 4),
-                  ),
-                  Container(
-                    height: 16,
-                    width: sectionSize,
-                    color: Colors.blue,
-                    child: Text("4"),
-                  ),
-                  Tick(
-                    tickActive: (widget.setTarget.value == 5),
-                  ),
-                  Container(
-                    height: 16,
-                    width: sectionSize,
-                    color: Colors.red,
-                    child: Text("5"),
-                  ),
-                  Tick(
-                    tickActive: (widget.setTarget.value == 6),
-                  ),
-                  Container(
-                    height: 16,
-                    width: sectionSize,
-                    color: Colors.blue,
-                    child: Text("6"),
-                  ),
-                  Tick(
-                    tickActive: (widget.setTarget.value == 7),
-                  ),
-                  Container(
-                    height: 16,
-                    width: sectionSize,
-                    color: Colors.red,
-                    child: Text("7"),
-                  ),
-                  Tick(
-                    tickActive: (widget.setTarget.value == 8),
-                  ),
-                  Container(
-                    height: 16,
-                    width: sectionSize,
-                    color: Colors.blue,
-                    child: Text("8"),
-                  ),
-                  Tick(
-                    tickActive: (widget.setTarget.value == 9),
-                  ),
-                ],
+                ),
               ),
-              
-              Column(
-                children: <Widget>[
-                  Pill(
-                    setTarget: widget.setTarget,
-                    actives: [4,5,6],
-                    sectionSize: sectionSize,
-                    name: "Endurance Training",
-                    onTap: (){
-                      print("end");
-                    },
-                    leftMultiplier: 2.5,
-                    rightMultiplier: 2.5,
-                  ),
-                  Pill(
-                    setTarget: widget.setTarget,
-                    actives: [3,4,5],
-                    sectionSize: sectionSize,
-                    name: "Hypertrophy Training",
-                    onTap: (){
-                      print("hyper");
-                    },
-                    leftMultiplier: 1.5,
-                    rightMultiplier: 3.5,
-                  ),
-                  Pill(
-                    setTarget: widget.setTarget,
-                    actives: [2,3,4],
-                    sectionSize: sectionSize,
-                    name: "Strength Training",
-                    onTap: (){
-                      print("str");
-                    },
-                    leftMultiplier: .5,
-                    rightMultiplier: 4.5,
-                  ),
-                ],
-              )
-            ],
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class NoMoreThan6 extends StatelessWidget {
+  const NoMoreThan6({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Positioned.fill(
+      child: Row(
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: <Widget>[
+          Tooltip(
+            message: "You shouldn't do anymore than 6 reps",
+            waitDuration: Duration(milliseconds: 100),
+            preferBelow: false,
+            child: Container(
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: Theme.of(context).primaryColorDark,
+                  width: 2,
+                )
+              ),
+              padding: EdgeInsets.symmetric(
+                horizontal: 4,
+                vertical: 4,
+              ),
+              child: Icon(
+                Icons.warning,
+                color: Theme.of(context).primaryColorDark,
+              ),
+            ),
           ),
         ],
       ),
@@ -875,7 +890,14 @@ class _PillState extends State<Pill> {
             borderRadius: BorderRadius.circular(24),
             child: AnimatedContainer(
               duration: Duration(milliseconds: 250),
-              color: active ? Theme.of(context).accentColor : Theme.of(context).primaryColor,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(24),
+                border: Border.all(
+                  width: 2,
+                  color: Theme.of(context).primaryColor,
+                ),
+                color: active ? Theme.of(context).accentColor : Theme.of(context).primaryColor,
+              ),
               child: Material(
                 color: Colors.transparent,
                 child: InkWell(
@@ -905,31 +927,49 @@ class _PillState extends State<Pill> {
   }
 }
 
-class Tick extends StatelessWidget {
+class Tick extends StatefulWidget {
   const Tick({
     Key key,
-    @required this.tickActive,
+    @required this.tickWidth,
+    @required this.setTarget,
+    @required this.value,
   }) : super(key: key);
 
-  final bool tickActive;
+  final double tickWidth;
+  final ValueNotifier<int> setTarget;
+  final int value;
+
+  @override
+  _TickState createState() => _TickState();
+}
+
+class _TickState extends State<Tick> {
+  bool tickActive;
+
+  setTargetToTickActive(){
+    tickActive = (widget.setTarget.value == widget.value);
+  }
+
+  @override
+  void initState() {
+    //init
+    setTargetToTickActive();
+
+    //update
+    widget.setTarget.addListener((){
+      setTargetToTickActive();
+      setState(() {});
+    });
+
+    //super init
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    double tickHeight = 16;
-    double tickWidth = 3;
-
-    double actualTickWidth =  (tickActive) ? tickWidth : 0;
-
-    return Container();
-    
-    /*SizedOverflowBox(
-      size: Size(actualTickWidth, tickHeight),
-      child: Container(
-        height: tickHeight,
-        width: actualTickWidth,
-        color: Theme.of(context).accentColor,
-      ),
+    return Container(
+      width: widget.tickWidth,
+      color: (tickActive) ? Theme.of(context).accentColor : Theme.of(context).backgroundColor,
     );
-    */
   }
 }
