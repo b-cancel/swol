@@ -53,26 +53,24 @@ class FunctionCardTable extends StatelessWidget {
       borderRadius: BorderRadius.circular(25),
       child: Row(
         children: <Widget>[
-          Expanded(
-            child: Container(
-              color: Theme.of(context).cardColor,
-              child: IntrinsicWidth(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: buildFields([
-                    "Limitation Level",
-                    "8",
-                    "7",
-                    "6",
-                    "5",
-                    "4",
-                    "3",
-                    "2",
-                    "1 Professional Athlete",
-                  ]),
-                ),
+          Container(
+            color: Theme.of(context).cardColor,
+            child: IntrinsicWidth(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: buildFields([
+                  "Limitation Level",
+                  "8 BEGINNER",
+                  "7",
+                  "6",
+                  "5",
+                  "4 AVG",
+                  "3",
+                  "2",
+                  "1 PRO",
+                ]),
               ),
             ),
           ),

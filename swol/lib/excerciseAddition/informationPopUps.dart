@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:swol/learn/body.dart';
+import 'package:swol/learn/cardTable.dart';
 import 'package:swol/learn/reusableWidgets.dart';
 import 'package:swol/sharedWidgets/informationDisplay.dart';
 
@@ -118,6 +119,22 @@ class PredictionFormulasPopUp extends StatelessWidget {
                     text: " for this excercise\n"
                   ),
                 ]
+              ),
+            ),
+          ),
+          Theme(
+            data: ThemeData.dark(),
+            child: Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: 16,
+              ),
+              child: Padding(
+                padding: const EdgeInsets.only(
+                  bottom: 16.0,
+                ),
+                child: FunctionCardTable(
+                  context: context,
+                ),
               ),
             ),
           ),

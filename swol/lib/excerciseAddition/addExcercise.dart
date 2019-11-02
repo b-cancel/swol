@@ -414,6 +414,17 @@ class _AddExcerciseState extends State<AddExcercise> {
                               )
                             ],
                           ),
+                          Padding(
+                            padding: const EdgeInsets.only(
+                              top: 8,
+                              bottom: 16.0,
+                            ),
+                            child: Container(
+                              color: Theme.of(context).primaryColor,
+                              height: 2,
+                              width: MediaQuery.of(context).size.width,
+                            ),
+                          ),
                           TimePicker(
                             duration: recoveryPeriod,
                           ),
@@ -442,10 +453,6 @@ class _AddExcerciseState extends State<AddExcercise> {
                             ),
                           ),
                         ),
-                        new CustomSlider(
-                          value: setTarget,
-                          lastTick: 9,
-                        ),
                         Container(
                           padding: EdgeInsets.only(
                             //Top 16 padding address above
@@ -455,6 +462,23 @@ class _AddExcerciseState extends State<AddExcercise> {
                           child: TrainingTypeIndicator(
                             setTarget: setTarget,
                           ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(
+                            top: 8,
+                            bottom: 16.0,
+                            left: 16,
+                            right: 16,
+                          ),
+                          child: Container(
+                            color: Theme.of(context).primaryColor,
+                            height: 2,
+                            width: MediaQuery.of(context).size.width,
+                          ),
+                        ),
+                        new CustomSlider(
+                          value: setTarget,
+                          lastTick: 9,
                         ),
                       ]
                     ),
@@ -475,15 +499,10 @@ class _AddExcerciseState extends State<AddExcercise> {
                             popUp: new RepTargetPopUp(),
                           ),
                         ),
-                        CustomSlider(
-                          value: repTarget,
-                          lastTick: 35,
-                        ),
                         Container(
                           child: Padding(
                             padding: const EdgeInsets.only(
                               left: 16.0,
-                              bottom: 16,
                             ),
                             child: AnimatedRecoveryTimeInfo(
                               changeDuration: changeDuration,
@@ -548,6 +567,23 @@ class _AddExcerciseState extends State<AddExcercise> {
                               ],
                             ),
                           ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(
+                            bottom: 16.0,
+                            left: 16,
+                            right: 16,
+                            top: 8,
+                          ),
+                          child: Container(
+                            color: Theme.of(context).primaryColor,
+                            height: 2,
+                            width: MediaQuery.of(context).size.width,
+                          ),
+                        ),
+                        CustomSlider(
+                          value: repTarget,
+                          lastTick: 35,
                         ),
                       ],
                     ),
@@ -716,7 +752,7 @@ class _TrainingTypeIndicatorState extends State<TrainingTypeIndicator> {
                           setTarget: widget.setTarget,
                           actives: [4,5,6], 
                           sectionSize: totalScreenWidth/4,
-                          name: "Strength Training",
+                          name: "Train Strength",
                           onTap: makeTrainingTypePopUp(
                             context: context,
                             title: "Strength Training",
@@ -730,7 +766,7 @@ class _TrainingTypeIndicatorState extends State<TrainingTypeIndicator> {
                           setTarget: widget.setTarget,
                           actives: [3,4,5], 
                           sectionSize: totalScreenWidth/4,
-                          name: "Hypertrophy Training",
+                          name: "Train Hypertrophy",
                           onTap: makeTrainingTypePopUp(
                             context: context,
                             title: "Hypertrophy Training",
@@ -744,7 +780,7 @@ class _TrainingTypeIndicatorState extends State<TrainingTypeIndicator> {
                           setTarget: widget.setTarget,
                           actives: [1,2,3], //+1
                           sectionSize: totalScreenWidth/4,
-                          name: "Endurance Training",
+                          name: "Train Endurance",
                           onTap: makeTrainingTypePopUp(
                             context: context,
                             title: "Endurance Training",
@@ -876,6 +912,7 @@ class _PillState extends State<Pill> {
                         widget.name,
                         style: TextStyle(
                           color: active  ? Theme.of(context).primaryColor : Colors.white,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                     ),
