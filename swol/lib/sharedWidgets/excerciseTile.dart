@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 //plugin
 import 'package:page_transition/page_transition.dart';
+import 'package:swol/excercise/defaultDateTimes.dart';
 
 //internal: basic
 import 'package:swol/excercise/excerciseData.dart';
@@ -41,31 +42,29 @@ class ExcerciseTile extends StatelessWidget {
     Widget trailing;
 
     //if in progress set the proper icon
-    bool inProgress = (thisExcercise.tempSetCount > 0 || thisExcercise.tempStartTime != null);
-    if(inProgress){
+    if(LastTimeStamp.isInProgress(thisExcercise.lastTimeStamp)){
       if(thisExcercise.tempStartTime != null){
         //TODO test below
         Duration timeSinceBreakStarted = DateTime.now().difference(thisExcercise.tempStartTime);
         if(timeSinceBreakStarted > thisExcercise.recoveryPeriod){
           trailing = Icon(
-            Icons.alarm,
+            FontAwesomeIcons.hourglassEnd, //time done ticking
             color: Colors.red,
           );
         }
-        else trailing = Icon(Icons.alarm);
+        else trailing = Icon(FontAwesomeIcons.hourglassHalf); //time ticking
       }
-      else trailing = Icon(FontAwesomeIcons.hourglassHalf);
+      else trailing = Icon(FontAwesomeIcons.hourglassStart); //time may tick again
     }
     else{
       if(tileInSearch){
-        if(thisExcercise.lastTimeStamp == null){
+        if(LastTimeStamp.isNew(thisExcercise.lastTimeStamp)){
           trailing = MyChip(
             chipString: 'New',
           );
         }
         else{
-          Duration timeSinceLastTime = DateTime.now().difference(thisExcercise.lastTimeStamp);
-          if(timeSinceLastTime > Duration(days: 365 * 100)){
+          if(LastTimeStamp.isHidden(thisExcercise.lastTimeStamp)){
             trailing = MyChip(
               chipString: 'Hidden',
             );
@@ -73,12 +72,12 @@ class ExcerciseTile extends StatelessWidget {
           else{
             trailing = Text(
               DurationFormat.format(
-                timeSinceLastTime,
+                DateTime.now().difference(thisExcercise.lastTimeStamp),
                 showMinutes: false,
                 showSeconds: false,
                 showMilliseconds: false,
                 showMicroseconds: false,
-                short: false,
+                short: true,
               ),
             );
           }

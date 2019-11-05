@@ -30,6 +30,8 @@ class AnExcercise{
 
   //---Recorded
 
+  //NOTE: this MUST ALWAYS BE FILLED since its used to sort everything
+  //and taking an alternative approach would be a pain
   DateTime lastTimeStamp;
   int lastWeight;
   int lastReps;

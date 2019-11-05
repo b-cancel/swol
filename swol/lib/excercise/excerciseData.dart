@@ -67,7 +67,10 @@ class ExcerciseData{
   //1. heap
   //2. retain map instead of build each time
   //3. etc...
-  static addExcercise(AnExcercise theWorkout, {bool updateOrder: true, bool updateFile: true})async{
+  static addExcercise(AnExcercise theWorkout, {
+    bool updateOrder: true, 
+    bool updateFile: true,
+  })async{
     //give it an ID (IF needed)
     if(theWorkout.id == null){
       theWorkout.id = AnExcercise.nextID;
@@ -106,6 +109,7 @@ class ExcerciseData{
       String url,
       int predictionID,
       int repTarget,
+      int setTarget,
       bool updateFile: true,
   }){
     //update timestamp if desired
@@ -133,6 +137,10 @@ class ExcerciseData{
 
     if(repTarget != null){
       _excercises.value[id].repTarget = repTarget;
+    }
+
+    if(setTarget != null){
+      _excercises.value[id].setTarget = setTarget;
     }
 
     //update file

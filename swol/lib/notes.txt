@@ -1,3 +1,25 @@
+FOR TESTING
+-give random 1. weight 2. reps button (to test 1 rep max calculation functionality)
+
+HIDDING an item should also remove an intermediates by clearing
+-tempWeight;
+-tempReps;
+-tempStartTime;
+-tempSetCount;
+AND ALSO setting the proper lastTimeStamp
+
+
+
+
+
+
+
+
+
+
+
+
+
 To determine how to display out tiles
 
 "IN PROGRESS" IF (tempSetCount > 0 || tempStartTime IS SET) [extra icon]

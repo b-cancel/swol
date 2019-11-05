@@ -1,3 +1,6 @@
+//NOTE: I am fully aware this runs kind of slow
+//but it simplifies the code enough to be worth it
+
 /*
 Our Excercises should be sorted as such
 1. in progress
@@ -24,8 +27,14 @@ Else
 Now that we have the functions for best results we call returnSectionID
 that essentially does the above with more checks
 */
+enum TimeStampType {InProgress, New, Other, Hidden}
 
 class LastTimeStamp{
+  static String timeStampTypeToString(TimeStampType timeStampType){
+    if(timeStampType == TimeStampType.InProgress) return "In Progress";
+    else return timeStampType.toString();
+  }
+
   static int daysInYear = 365;
   static int lifeSpan = 125;
   static Duration inProgressLifeSpans = lifeSpans(counts: 3);
@@ -37,13 +46,13 @@ class LastTimeStamp{
     return Duration(days: daysInYear * (lifeSpan * counts));
   }
 
-  static int returnSectionID(DateTime lastTimeStamp){
-    if(isArchived(lastTimeStamp)) return 4;
+  static TimeStampType returnTimeStampType(DateTime lastTimeStamp){
+    if(isHidden(lastTimeStamp)) return TimeStampType.Hidden;
     else{
-      if(isInProgress(lastTimeStamp)) return 1;
+      if(isInProgress(lastTimeStamp)) return TimeStampType.InProgress;
       else{
-        if(isNew(lastTimeStamp)) return 2;
-        else return 3;
+        if(isNew(lastTimeStamp)) return TimeStampType.New;
+        else return TimeStampType.Other;
       }
     }
   }
@@ -89,9 +98,8 @@ class LastTimeStamp{
 
   //-------------------------Archiving-------------------------
 
-  static bool isArchived(DateTime lastTimeStamp){
+  static bool isHidden(DateTime lastTimeStamp){
     if(DateTime.now().isAfter(lastTimeStamp)){
-      //TODO check below
       Duration timeSince = DateTime.now().difference(lastTimeStamp);
       return (archivedLifeSpans <= timeSince); 
     }

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 //plugin
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
+import 'package:swol/excercise/defaultDateTimes.dart';
 
 //internal: basics
 import 'package:swol/excerciseSelection/animatedTitle.dart';
@@ -122,13 +123,13 @@ class _ExcerciseListState extends State<ExcerciseList> {
     List<List<AnExcercise>> listOfGroupOfExcercises = new List<List<AnExcercise>>();
 
     //try to see if we have workouts to add
-    if(ExcerciseData.getExcercises().value.length > 0){
+    if(ExcerciseData.excercisesOrder.value.length > 0){
       //-----------------------------------------------------------------------------------------------------------------------------
       //-----------------------------------------------------------------------------------------------------------------------------
       //-----------------------------------------------------------------------------------------------------------------------------
 
       //seperate excercise into their groups bassed on the max distance
-      DateTime lastDateTime = DateTime(1500);
+      DateTime lastDateTime = DateTime(1500); //MUST NOT COLLIDE WITH EVEN ARCHIVED DATE TIMES
       for(int i = 0; i < ExcerciseData.excercisesOrder.value.length; i++){
         int excerciseID = ExcerciseData.excercisesOrder.value[i];
 
@@ -190,42 +191,53 @@ class _ExcerciseListState extends State<ExcerciseList> {
         lastDateTime = thisDateTime;
       }
 
+      //-----------------------------------------------------------------------------------------------------------------------------
+      //-----------------------------------------------------------------------------------------------------------------------------
+      //-----------------------------------------------------------------------------------------------------------------------------
+
+      //TODO: the first section is always highlighted
+      //TODO: the archvied section is always highlighted
+
       //fill sliver list
       for(int i = 0; i < listOfGroupOfExcercises.length; i++){
         //create header text
         List<AnExcercise> thisGroup = listOfGroupOfExcercises[i];
         DateTime oldestDT = thisGroup[0].lastTimeStamp;
-        Duration timeSince = DateTime.now().difference(oldestDT);
+        TimeStampType sectionType = LastTimeStamp.returnTimeStampType(oldestDT);
 
-        //change title if new or in progress
-        //TODO: handle in progress
-        String title = DurationFormat.format(
-          timeSince,
-          showMinutes: false,
-          showSeconds: false,
-          showMilliseconds: false,
-          showMicroseconds: false,
-          short: false,
-        );
-        String subtitle = "on a " + DurationFormat.weekDayToString[oldestDT.weekday];
-        bool isHidden = false;
-        if(timeSince > Duration(days: 365 * 100)){
-          title = "New Excercises";
-          subtitle = null;
+        //vars to set
+        bool highlightTop = (i == 0 || sectionType == TimeStampType.Hidden);
+        String title;
+        String subtitle;
+
+        //set title and subtitle
+        if(sectionType == TimeStampType.Other){
+          Duration timeSince = DateTime.now().difference(oldestDT);
+          title = DurationFormat.format(
+            timeSince,
+            showMinutes: false,
+            showSeconds: false,
+            showMilliseconds: false,
+            showMicroseconds: false,
+            short: false,
+          );
+          subtitle = "on a " + DurationFormat.weekDayToString[oldestDT.weekday];
         }
-        else if(timeSince < Duration.zero){
-          isHidden = true;
-          title = "Hidden Excercises";
-          subtitle = null;
+        else{
+          title = LastTimeStamp.timeStampTypeToString(sectionType);
+          if(sectionType != TimeStampType.InProgress){
+            title = title + " Excercises";
+          }
         }
 
-        //highlight first workout section
-        //NOTE: may be NEW, or IN PROGRESS, or simple NEXT
-        bool isFirstSection = (i == 0);
+        //Determine Section styling
         Color topColor;
         Color textColor;
         FontWeight fontWeight;
-        if(isFirstSection || isHidden){
+        Color bottomColor;
+
+        //set top section color
+        if(highlightTop){
           topColor = Theme.of(context).accentColor;
           textColor = Theme.of(context).primaryColor;
           fontWeight = FontWeight.bold;
@@ -236,16 +248,15 @@ class _ExcerciseListState extends State<ExcerciseList> {
           fontWeight = FontWeight.normal;
         }
 
-        //determine if hidden are below
-        Color bottomColor = Theme.of(context).primaryColor;
+        //set bottom section color
         if((i + 1) < listOfGroupOfExcercises.length){
           //there is a section below our but is it hidden
           DateTime prevTS = listOfGroupOfExcercises[i+1][0].lastTimeStamp;
-          Duration timeSince = DateTime.now().difference(prevTS);
-          if(timeSince < Duration.zero){
+          if(LastTimeStamp.isHidden(prevTS)){
             bottomColor = Theme.of(context).accentColor;
           }
         }
+        else bottomColor = Theme.of(context).primaryColor;
 
         //add this section to the list of slivers
         sliverList.add(
@@ -274,7 +285,7 @@ class _ExcerciseListState extends State<ExcerciseList> {
                     ),
                     (subtitle == null)
                     ? MyChip(
-                      chipString: (isHidden) ? "HIDDEN" : "NEW", 
+                      chipString: LastTimeStamp.timeStampTypeToString(sectionType).toUpperCase(), 
                       inverse: true,
                     )
                     : Text(
