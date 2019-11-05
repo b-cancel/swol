@@ -276,21 +276,24 @@ class _SearchExcerciseState extends State<SearchExcercise> {
       //add styling both list type have
       mainContent = Stack(
         children: <Widget>[
-          ListView(
-            controller: autoScrollController,
-            children: <Widget>[
-              Card(
-                margin: EdgeInsets.all(0),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(25.0),
+          Container(
+            width: MediaQuery.of(context).size.width,
+            child: ListView(
+              controller: autoScrollController,
+              children: <Widget>[
+                Card(
+                  margin: EdgeInsets.all(0),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(25.0),
+                  ),
+                  clipBehavior: Clip.hardEdge,
+                  child: mainContent,
                 ),
-                clipBehavior: Clip.hardEdge,
-                child: mainContent,
-              ),
-              Container(
-                height: 16 + 56.0 + 16,
-              )
-            ],
+                Container(
+                  height: 16 + 56.0 + 16,
+                )
+              ],
+            ),
           ),
           ScrollToTopButton(
             onTop: onTop,
@@ -314,14 +317,19 @@ class _SearchExcerciseState extends State<SearchExcercise> {
             color: Theme.of(context).primaryColorDark,
             padding: EdgeInsets.symmetric(vertical: 4),
             child: Column(
+              mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 Container(
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(25.0)),
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(24.0),
+                    ),
                     color: Theme.of(context).cardColor,
                   ),
                   width: MediaQuery.of(context).size.width,
-                  padding: EdgeInsets.all(12),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 12,
+                  ),
                   child: Row(
                     children: <Widget>[
                       InkWell(
@@ -356,7 +364,10 @@ class _SearchExcerciseState extends State<SearchExcercise> {
                           ),
                         ),
                       ),
-                      GestureDetector(
+                      (search.text == "") ? Icon(
+                        Icons.search,
+                      )
+                      : GestureDetector(
                         onTap: (){
                           search.text = "";
                         },

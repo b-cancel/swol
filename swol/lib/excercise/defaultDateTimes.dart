@@ -32,7 +32,7 @@ enum TimeStampType {InProgress, New, Other, Hidden}
 class LastTimeStamp{
   static String timeStampTypeToString(TimeStampType timeStampType){
     if(timeStampType == TimeStampType.InProgress) return "In Progress";
-    else return timeStampType.toString();
+    else return timeStampType.toString().substring("TimeStampType.".length);
   }
 
   static int daysInYear = 365;
@@ -108,7 +108,7 @@ class LastTimeStamp{
 
   //timeSince will ONLY GROW
   //so IF timeSince >= 1 lifespan => archived
-  static DateTime archivedDateTime(){
+  static DateTime hiddenDateTime(){
     return DateTime.now().subtract(
       archivedLifeSpans,
     );

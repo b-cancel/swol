@@ -15,6 +15,21 @@ import 'package:swol/excercise/excerciseStructure.dart';
 import 'package:swol/excercise/excerciseData.dart';
 import 'package:swol/other/durationFormat.dart';
 
+//Section and how they are handled
+//New => newest additions on bottom
+//  since you would probably add your new routine and then work it
+//Hidden => newest addition on top [EXCEPTION]
+//  since the excercises you most recently archived are the ones most likely to be searched for again
+//In Progress => newest additions on bottom
+//  since we want to push people to doing super sets with atmost like 3 workouts
+//  and while doing super sets you are doing set 1 A, then set 1 B, then set 1 C
+//  and you would expect the user to go back to 1A before goign to 1B or 1C so 1A should be on top
+//Other => newest additions on the bottom
+//  since you want to cycle throughout all your workout routines
+//  so if you did legs on monday and 3 other work outs
+//  when its monday again you expect that workout to be on top with the first workout you did to be on top in the section
+
+//main widget
 class ExcerciseSelect extends StatefulWidget {
   @override
   _ExcerciseSelectState createState() => _ExcerciseSelectState();
@@ -85,12 +100,16 @@ class ExcerciseList extends StatefulWidget {
 }
 
 class _ExcerciseListState extends State<ExcerciseList> {
+  //special sections booleans to produce workout count
+  bool inprogressWorkoutSection = false;
   bool newWorkoutSection = false;
   bool hiddenWorkoutSection = false;
-  bool inprogressWorkoutSection = false;
-  final Duration maxDistanceBetweenExcercises = Duration(hours: 1, minutes: 30);
+
+  //other vars
+  final Duration maxTimeBetweenExcercises = Duration(hours: 1, minutes: 30);
   ValueNotifier<bool> onTop = new ValueNotifier(true);
 
+  //init
   @override
   void initState() {
     //Updates every time we update[timestamp], add, or remove some excercise
@@ -117,6 +136,7 @@ class _ExcerciseListState extends State<ExcerciseList> {
     super.initState();
   }
 
+  //build
   @override
   Widget build(BuildContext context) {
     List<Widget> sliverList = new List<Widget>();
@@ -129,74 +149,67 @@ class _ExcerciseListState extends State<ExcerciseList> {
       //-----------------------------------------------------------------------------------------------------------------------------
 
       //seperate excercise into their groups bassed on the max distance
-      DateTime lastDateTime = DateTime(1500); //MUST NOT COLLIDE WITH EVEN ARCHIVED DATE TIMES
+      DateTime lastDateTime; //MUST NOT COLLIDE WITH EVEN ARCHIVED DATE TIMES
       for(int i = 0; i < ExcerciseData.excercisesOrder.value.length; i++){
         int excerciseID = ExcerciseData.excercisesOrder.value[i];
 
         //easy to access vars
-        AnExcercise excercise = ExcerciseData.getExcercises().value[excerciseID];
-        DateTime thisDateTime = excercise.lastTimeStamp;
+        AnExcercise thisExcercise = ExcerciseData.getExcercises().value[excerciseID];
+        TimeStampType thisExcerciseType = LastTimeStamp.returnTimeStampType(thisExcercise.lastTimeStamp);
 
-        //make sure that a group exists for this excercise
-        //here we are making a new section if needed
-        if(thisDateTime.difference(lastDateTime) > maxDistanceBetweenExcercises){
-          //do we really need the new section?
-          Duration timeSince = DateTime.now().difference(thisDateTime);
-          Duration prevTimeSince = DateTime.now().difference(lastDateTime);
-          bool newGroupRequired;
+        //determine if we have any of the special section
+        if(inprogressWorkoutSection == false){
+          inprogressWorkoutSection = (thisExcerciseType == TimeStampType.InProgress);
+        }
 
-          //check if it belongs to a special section
-          bool newWorkout = timeSince > Duration(days: 365 * 100);
-          bool hiddenWorkout = timeSince < Duration.zero;
-          
-          //update to show correct workout count
-          if(newWorkoutSection == false && newWorkout){
-            newWorkoutSection = true;
-          }
+        if(newWorkoutSection == false){
+          newWorkoutSection = (thisExcerciseType == TimeStampType.New);
+        }
 
-          if(hiddenWorkoutSection == false && hiddenWorkout){
-            hiddenWorkoutSection = true;
-          }
+        if(hiddenWorkoutSection == false){
+          hiddenWorkoutSection = (thisExcerciseType == TimeStampType.Hidden);
+        }
 
-          //if we have a new workout then we only need a new group
-          //if the last item was also a new workout
-          if(newWorkout || hiddenWorkout){
-            //NOTE: its never both
-            if(newWorkout){
-              bool prevNewWorkout = prevTimeSince > Duration(days: 365 * 100);
-              if(prevNewWorkout) newGroupRequired = false;
-              else newGroupRequired = true;
+        //determine if new group is required
+        bool makeNewGroup;
+        if(lastDateTime == null) makeNewGroup = true;
+        else{
+          List<AnExcercise> lastGroup = listOfGroupOfExcercises[listOfGroupOfExcercises.length - 1];
+
+          //its not the first excercise we check so we MIGHT need a new group
+          //we know we process things in order... so we only need to check the last group added
+          //and even further really just the last item added to that group
+          AnExcercise lastExcercise = lastGroup[lastGroup.length - 1];
+          TimeStampType lastExcerciseType = LastTimeStamp.returnTimeStampType(lastExcercise.lastTimeStamp);
+
+          //we are a different kind of excercise that the previous one so we KNOW we need a new group
+          if(thisExcerciseType != lastExcerciseType) makeNewGroup = true;
+          else{ //we are the same type of excercise
+            if(thisExcerciseType == TimeStampType.Other){
+              Duration timeBetweenExcercises = thisExcercise.lastTimeStamp.difference(lastExcercise.lastTimeStamp);
+              makeNewGroup = (timeBetweenExcercises > maxTimeBetweenExcercises);
             }
-            else{
-              bool prevHiddenWorkout = prevTimeSince < Duration.zero;
-              if(prevHiddenWorkout) newGroupRequired = false;
-              else newGroupRequired = true;
-            }
+            else makeNewGroup = false;
           }
-          else newGroupRequired = true;
+        }
 
-          //add a new group because its needed
-          //or because we have no other group
-          if(newGroupRequired || listOfGroupOfExcercises.length == 0){
-            listOfGroupOfExcercises.add(new List<AnExcercise>());
-          }
+        //add a new group because its needed
+        if(makeNewGroup){
+          listOfGroupOfExcercises.add(new List<AnExcercise>());
         }
 
         //add this excercise to our 1. newly created group 2. OR old group
         listOfGroupOfExcercises[listOfGroupOfExcercises.length - 1].add(
-          excercise,
+          thisExcercise,
         );
 
         //update lastDateTime
-        lastDateTime = thisDateTime;
+        lastDateTime = thisExcercise.lastTimeStamp;
       }
 
       //-----------------------------------------------------------------------------------------------------------------------------
       //-----------------------------------------------------------------------------------------------------------------------------
       //-----------------------------------------------------------------------------------------------------------------------------
-
-      //TODO: the first section is always highlighted
-      //TODO: the archvied section is always highlighted
 
       //fill sliver list
       for(int i = 0; i < listOfGroupOfExcercises.length; i++){
@@ -286,7 +299,7 @@ class _ExcerciseListState extends State<ExcerciseList> {
                     (subtitle == null)
                     ? MyChip(
                       chipString: LastTimeStamp.timeStampTypeToString(sectionType).toUpperCase(), 
-                      inverse: true,
+                      inverse: highlightTop,
                     )
                     : Text(
                       subtitle,
@@ -328,6 +341,8 @@ class _ExcerciseListState extends State<ExcerciseList> {
                         shrinkWrap: true,
                         physics: ClampingScrollPhysics(),
                         itemCount: thisGroup.length,
+                        //ONLY false IF Hidden Section
+                        reverse: (sectionType != TimeStampType.Hidden),
                         itemBuilder: (context, index){
                           return ExcerciseTile(
                             excerciseID: thisGroup[index].id,
@@ -393,24 +408,27 @@ class _ExcerciseListState extends State<ExcerciseList> {
     finalWidgetList.addAll(sliverList);
 
     //return
-    return Stack(
-      children: <Widget>[
-        CustomScrollView(
-          controller: widget.autoScrollController,
-          slivers: finalWidgetList,
-        ),
-        SearchExcerciseButton(
-          navSpread: widget.navSpread,
-        ),
-        ScrollToTopButton(
-          onTop: onTop,
-          autoScrollController: widget.autoScrollController,
-        ),
-        //Add New Excercise Button
-        AddExcerciseButton(
-          navSpread: widget.navSpread,
-        ),
-      ],
+    return Container(
+      color: Theme.of(context).primaryColor,
+      child: Stack(
+        children: <Widget>[
+          CustomScrollView(
+            controller: widget.autoScrollController,
+            slivers: finalWidgetList,
+          ),
+          SearchExcerciseButton(
+            navSpread: widget.navSpread,
+          ),
+          ScrollToTopButton(
+            onTop: onTop,
+            autoScrollController: widget.autoScrollController,
+          ),
+          //Add New Excercise Button
+          AddExcerciseButton(
+            navSpread: widget.navSpread,
+          ),
+        ],
+      ),
     );
   }
 }

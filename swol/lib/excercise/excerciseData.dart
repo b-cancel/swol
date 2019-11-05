@@ -103,13 +103,33 @@ class ExcerciseData{
 
   static updateExcercise(
     int id, {
-      DateTime lastTimeStamp, 
+      //---settings
+      //for sorting purposes
+      DateTime lastTimeStamp,
+      //basic 
       String name,
       String note,
       String url,
+      //other
       int predictionID,
       int repTarget,
+      Duration recoveryPeriod,
       int setTarget,
+      //---recorded
+      int lastWeight,
+      int lastReps,
+
+      //---Temporary
+      int tempWeight,
+      bool tempWeightCanBeNull: false,
+      int tempReps,
+      bool tempRepsCanBeNull: false,
+      DateTime tempStartTime,
+      bool tempStartTimeCanBeNull: false,
+      int tempSetCount,
+      bool tempSetCountCanBeNull: false,
+
+      //---OTHER
       bool updateFile: true,
   }){
     //update timestamp if desired
@@ -143,6 +163,30 @@ class ExcerciseData{
       _excercises.value[id].setTarget = setTarget;
     }
 
+    if(lastWeight != null){
+      _excercises.value[id].lastWeight = lastWeight;
+    }
+
+    if(lastReps != null){
+      _excercises.value[id].lastReps = lastReps;
+    }
+
+    if(tempWeight != null || tempWeightCanBeNull){
+      _excercises.value[id].tempWeight = tempWeight;
+    }
+
+    if(tempReps != null || tempRepsCanBeNull){
+      _excercises.value[id].tempReps = tempReps;
+    }
+
+    if(tempStartTime != null || tempStartTimeCanBeNull){
+      _excercises.value[id].tempStartTime = tempStartTime;
+    }
+
+    if(tempSetCount != null || tempSetCountCanBeNull){
+      _excercises.value[id].tempSetCount = tempSetCount;
+    }
+
     //update file
     _updateFile(updateFile);
   }
@@ -159,7 +203,8 @@ class ExcerciseData{
 
     //sort
     List<DateTime> dates = dateTimeToID.keys.toList();
-    dates.sort();
+    Function compare = (DateTime a, DateTime b) => b.compareTo(a);
+    dates.sort(compare);
     //NOTE: dates are now sorted
 
     //initialize the structure we use if needed

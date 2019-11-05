@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:swol/excercise/defaultDateTimes.dart';
 import 'package:swol/excercise/excerciseData.dart';
 import 'package:swol/excerciseAction/notes/excerciseMessages.dart';
 import 'package:swol/sharedWidgets/excerciseEdit.dart';
@@ -46,12 +47,13 @@ class _ExcerciseNotesState extends State<ExcerciseNotes> {
       actionFunction = (){
         ExcerciseData.updateExcercise(
           widget.excerciseID, 
-          //archive it or get it out of the way
-          //but placing it 200 years in the future
-          //NO LESS
-          //because we want to make sure for duration of life
-          //that is archived and life is at most 100 years
-          lastTimeStamp: DateTime.now().add(Duration(days: 365 * 2)),
+          //set to hidden
+          lastTimeStamp: LastTimeStamp.hiddenDateTime(),
+          //wipe all temp vars
+          tempRepsCanBeNull: true,
+          tempSetCountCanBeNull: true,
+          tempStartTimeCanBeNull: true,
+          tempWeightCanBeNull: true,
         );
       };
     }

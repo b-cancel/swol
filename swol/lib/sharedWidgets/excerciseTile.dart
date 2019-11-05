@@ -40,7 +40,7 @@ class ExcerciseTile extends StatelessWidget {
 
     //right trailing icon
     Widget trailing;
-
+    
     //if in progress set the proper icon
     if(LastTimeStamp.isInProgress(thisExcercise.lastTimeStamp)){
       if(thisExcercise.tempStartTime != null){
@@ -59,14 +59,18 @@ class ExcerciseTile extends StatelessWidget {
     else{
       if(tileInSearch){
         if(LastTimeStamp.isNew(thisExcercise.lastTimeStamp)){
-          trailing = MyChip(
-            chipString: 'New',
+          trailing = ListTileChipShell(
+            chip: MyChip(
+              chipString: 'New',
+            ),
           );
         }
         else{
           if(LastTimeStamp.isHidden(thisExcercise.lastTimeStamp)){
-            trailing = MyChip(
-              chipString: 'Hidden',
+            trailing = ListTileChipShell(
+              chip: MyChip(
+                chipString: 'Hidden',
+              ),
             );
           }
           else{
@@ -85,12 +89,14 @@ class ExcerciseTile extends StatelessWidget {
       }
       else trailing = Icon(Icons.chevron_right);
     }
-
+    
     //build our widget given that search term
     return ListTile(
       onTap: (){
         //-----
-        print("name: " +  thisExcercise.name.toString() + " => " + excerciseID.toString());
+        print("id:" + excerciseID.toString());
+        print("time stamp: " + thisExcercise.lastTimeStamp.toString());
+        print("name: " +  thisExcercise.name.toString());
         print("url: " + thisExcercise.url.toString());
         print("note: " + thisExcercise.note.toString());
         //-----
@@ -121,6 +127,30 @@ class ExcerciseTile extends StatelessWidget {
       title: Text(thisExcercise.name),
       subtitle: subtitle,
       trailing: trailing,
+    );
+  }
+}
+
+class ListTileChipShell extends StatelessWidget {
+  const ListTileChipShell({
+    Key key,
+    @required this.chip,
+  }) : super(key: key);
+
+  final Widget chip;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.only(
+        top: 20,
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          chip,
+        ],
+      ),
     );
   }
 }
