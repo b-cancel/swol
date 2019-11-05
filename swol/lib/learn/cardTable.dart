@@ -3,16 +3,18 @@ import 'package:flutter/material.dart';
 class FunctionCardTable extends StatelessWidget {
   FunctionCardTable({
     @required this.context,
+    this.isDark: true,
   });
 
   final BuildContext context;
+  final bool isDark;
 
   List<Widget> buildFields(List<String> items){
     List<Widget> buildFields = new List<Widget>();
 
     for(int i = 0; i < items.length; i++){
       Color fieldColor;
-      if(i == 0) fieldColor = Theme.of(context).accentColor;
+      if(i == 0) fieldColor = (isDark) ? Theme.of(context).accentColor : Colors.blue;
       else{
         if(i%2==0) fieldColor = Theme.of(context).cardColor;
         else fieldColor = Theme.of(context).primaryColor.withOpacity(0.5);
@@ -34,7 +36,9 @@ class FunctionCardTable extends StatelessWidget {
               child: Text(
                 items[i],
                 style: TextStyle(
-                  color: (i == 0) ? Colors.black : Colors.white,
+                  color: (i == 0) 
+                  ? ((isDark) ? Colors.black : Colors.white) 
+                  : Colors.white,
                   fontWeight: (i == 0) ? FontWeight.bold : FontWeight.normal,
                 ),
               ),

@@ -134,6 +134,7 @@ class PredictionFormulasPopUp extends StatelessWidget {
                 ),
                 child: FunctionCardTable(
                   context: context,
+                  isDark: false,
                 ),
               ),
             ),

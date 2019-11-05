@@ -3,24 +3,16 @@ import 'package:flutter/material.dart';
 
 //plugin
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:page_transition/page_transition.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
-import 'package:swol/excerciseSelection/addNewHero.dart';
-import 'package:vector_math/vector_math_64.dart' as vect;
-import 'package:swol/learn/learn.dart';
 
 //internal: basics
-import 'package:swol/excercise/excerciseData.dart';
-import 'package:swol/excercise/excerciseStructure.dart';
-import 'package:swol/excerciseSelection/decoration.dart';
-import 'package:swol/excerciseSelection/persistentHeaderDelegate.dart';
-import 'package:swol/other/durationFormat.dart';
+import 'package:swol/excerciseSelection/animatedTitle.dart';
+import 'package:swol/excerciseSelection/secondary.dart';
 import 'package:swol/sharedWidgets/excerciseTile.dart';
 import 'package:swol/sharedWidgets/scrollToTop.dart';
-
-//internal: links
-import 'package:swol/excerciseSearch/searchExcercise.dart';
+import 'package:swol/excercise/excerciseStructure.dart';
+import 'package:swol/excercise/excerciseData.dart';
+import 'package:swol/other/durationFormat.dart';
 
 class ExcerciseSelect extends StatefulWidget {
   @override
@@ -50,23 +42,10 @@ class _ExcerciseSelectState extends State<ExcerciseSelect>{
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).primaryColorDark,
-        title: AnimatedBuilder(
-          animation: navSpread,
-          builder: (context, child){
-            return AnimatedContainer(
-              duration: Duration(milliseconds: 300),
-              transform: Matrix4.translation(
-                vect.Vector3(
-                  (navSpread.value == true) ? -screenWidth/2 : 0,
-                  0,
-                  0,
-                ),  
-              ),
-              child: new SwolLogo(
-                height: statusBarHeight,
-              ),
-            );
-          },
+        title: AnimatedTitle(
+          navSpread: navSpread, 
+          screenWidth: screenWidth, 
+          statusBarHeight: statusBarHeight,
         ),
         actions: <Widget>[
           /*
@@ -77,38 +56,9 @@ class _ExcerciseSelectState extends State<ExcerciseSelect>{
             icon: Icon(Icons.settings),
           )
           */
-          AnimatedBuilder(
-            animation: navSpread,
-            builder: (context,child){
-              Widget button = IconButton(
-                onPressed: (){
-                  navSpread.value = true;
-                  Navigator.push(
-                    context, 
-                    PageTransition(
-                      type: PageTransitionType.rightToLeft, 
-                      child: LearnExcercise(
-                        navSpread: navSpread,
-                      ),
-                    ),
-                  );
-                },
-                icon: Icon(FontAwesomeIcons.leanpub),
-              );
-
-              //-----Animated Offset
-              return AnimatedContainer(
-                transform: Matrix4.translation(
-                  vect.Vector3(
-                    (navSpread.value == true) ? screenWidth/2 : 0,
-                    0,
-                    0
-                  ),  
-                ),
-                duration: Duration(milliseconds: 300),
-                child: button,
-              );
-            },
+          AnimatedTitleAction(
+            navSpread: navSpread, 
+            screenWidth: screenWidth,
           ),
         ],
       ),
@@ -136,6 +86,7 @@ class ExcerciseList extends StatefulWidget {
 class _ExcerciseListState extends State<ExcerciseList> {
   bool newWorkoutSection = false;
   bool hiddenWorkoutSection = false;
+  bool inprogressWorkoutSection = false;
   final Duration maxDistanceBetweenExcercises = Duration(hours: 1, minutes: 30);
   ValueNotifier<bool> onTop = new ValueNotifier(true);
 
@@ -172,6 +123,10 @@ class _ExcerciseListState extends State<ExcerciseList> {
 
     //try to see if we have workouts to add
     if(ExcerciseData.getExcercises().value.length > 0){
+      //-----------------------------------------------------------------------------------------------------------------------------
+      //-----------------------------------------------------------------------------------------------------------------------------
+      //-----------------------------------------------------------------------------------------------------------------------------
+
       //seperate excercise into their groups bassed on the max distance
       DateTime lastDateTime = DateTime(1500);
       for(int i = 0; i < ExcerciseData.excercisesOrder.value.length; i++){
@@ -401,52 +356,30 @@ class _ExcerciseListState extends State<ExcerciseList> {
           ),
         ),
       );
+
+      //-----------------------------------------------------------------------------------------------------------------------------
+      //-----------------------------------------------------------------------------------------------------------------------------
+      //-----------------------------------------------------------------------------------------------------------------------------
     }
     else{
       //add sliver telling user to add item
       sliverList.add(
-        SliverFillRemaining(
-          hasScrollBody: false,
-          child: Center(
-            child: FractionallySizedBox(
-              widthFactor: .5,
-              child: FittedBox(
-                fit: BoxFit.cover,
-                child: Text(
-                  "Add an excercise below!",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ),
+        AddExcerciseFiller(),
       );
     }
 
     //add header
     List<Widget> finalWidgetList = new List<Widget>();
     finalWidgetList.add(
-      SliverPersistentHeader(
-        pinned: false,
-        floating: false,
-        delegate: PersistentHeaderDelegate(
-          semiClosedHeight: 60,
-          openHeight: MediaQuery.of(context).size.height / 3,
-          closedHeight: 0,
-          workoutCount: listOfGroupOfExcercises.length 
-          //exclude new workouts
-          - (newWorkoutSection ? 1 : 0) 
-          //exclude hidden workouts
-          - (hiddenWorkoutSection ? 1 : 0),
-        ),
+      HeaderForOneHandedUse(
+        listOfGroupOfExcercises: listOfGroupOfExcercises, 
+        newWorkoutSection: newWorkoutSection, 
+        hiddenWorkoutSection: hiddenWorkoutSection, 
+        inprogressWorkoutSection: inprogressWorkoutSection,
       ),
     );
 
     finalWidgetList.addAll(sliverList);
-
-    bool transformed = false;
 
     //return
     return Stack(
@@ -455,45 +388,16 @@ class _ExcerciseListState extends State<ExcerciseList> {
           controller: widget.autoScrollController,
           slivers: finalWidgetList,
         ),
-        Positioned(
-          right: 0,
-          bottom: 0,
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: FloatingActionButton.extended(
-              onPressed: (){
-                widget.navSpread.value = true;
-                Navigator.push(
-                  context, 
-                  PageTransition(
-                    type: PageTransitionType.downToUp, 
-                    child: SearchExcercise(
-                      navSpread: widget.navSpread,
-                    ),
-                  ),
-                );
-              },
-              icon: Icon(Icons.search),
-              label: Text("Search"),
-            ),
-          ),
+        SearchExcerciseButton(
+          navSpread: widget.navSpread,
         ),
         ScrollToTopButton(
           onTop: onTop,
           autoScrollController: widget.autoScrollController,
         ),
         //Add New Excercise Button
-        Positioned(
-          left: 0,
-          bottom: 0,
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            //NOTE: this must be seperate so the inkwell is visible
-            child: new AddNewHero(
-              inAppBar: false,
-              navSpread: widget.navSpread,
-            ),
-          ),
+        AddExcerciseButton(
+          navSpread: widget.navSpread,
         ),
       ],
     );

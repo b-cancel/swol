@@ -1,31 +1,7 @@
-% of max 1 Rep Max
-1 ->
-25 ->
-50 ->
-75 ->
-100
-Function Links
+To determine how to display out tiles
 
-muscular tension 
-0%
-20%
-20%
-60%
-90%
-https://www.desmos.com/calculator/ajcgllfbbo
-
-muscular damage
-10%
-20%
-60%
-20%
-10%
-https://www.desmos.com/calculator/yf2tl8pq3b
-
-metabolic stress
-90%
-60%
-20%
-20%
-0%
-https://www.desmos.com/calculator/tkwifmbtpi
+IN PROGRESS SECTION IF
+1. temp set > 0
+2. OR if tempStartTime IS set
+ELSE (new/archived/other)
+    
