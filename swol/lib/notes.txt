@@ -1,7 +1,34 @@
 To determine how to display out tiles
 
-IN PROGRESS SECTION IF
-1. temp set > 0
-2. OR if tempStartTime IS set
+"IN PROGRESS" IF (tempTimeStamp IS SET) [extra icon]
+    "IN BREAK" IF (tempStartTime IS SET)
+        "RINGING" IF (timeSicne tempStartTime is > recoveryPeriod)
+        ELSE (ticking down[perhaps show time])
+    ELSE (simply deciding on whether or not to start next set)
 ELSE (new/archived/other)
-    
+    "NEW" IF (no lastTimeStamp)
+    ELSE
+        "ARCHIVE" IF (lastTimeStamp is 100 years in the past or more)
+        ELSE (regular excercise) just place into section based on time stamp
+
+Data and what is set when
+
+BASIC
+    -name (required)
+    -url (no default)
+    -note (no default)
+OTHER (tempTimeStamp IS NOT NEEDED (use tempSetCount combined with tempStartTime instead))
+    ---RECORDED (no defaults)
+    -lastTimeStamp 
+    -lastWeight 
+    -lastReps 
+    ---SET
+    -predictionID (default of 4 [O'Conner])
+    -repTarget (default of 8)
+    -recoveryPeriod (default of 1:30)
+    -setTarget (default of 4) TODO change from lastSetTarget
+    ---temp
+    -tempStartTime
+    -tempSetCount
+    -tempWeight
+    -tempReps 
