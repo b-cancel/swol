@@ -18,6 +18,33 @@ class MyTheme{
 }
 
 class ThemeChanger with ChangeNotifier {
+  static SystemUiOverlayStyle allBlackStyle = SystemUiOverlayStyle(
+    systemNavigationBarColor: Colors.black,
+    statusBarColor: Colors.black,
+    systemNavigationBarDividerColor: Colors.black,
+    statusBarBrightness: Brightness.dark,
+    statusBarIconBrightness: Brightness.dark,
+    systemNavigationBarIconBrightness: Brightness.dark,
+  );
+
+  static SystemUiOverlayStyle darkStyle = SystemUiOverlayStyle(
+    systemNavigationBarColor: Colors.black,
+    statusBarColor: Colors.black,
+    systemNavigationBarDividerColor: Colors.black,
+    statusBarBrightness: Brightness.light,
+    statusBarIconBrightness: Brightness.light,
+    systemNavigationBarIconBrightness: Brightness.light,
+  );
+
+  static SystemUiOverlayStyle lightStyle = SystemUiOverlayStyle(
+    systemNavigationBarColor: Colors.white,
+    statusBarColor: Colors.white,
+    systemNavigationBarDividerColor: Colors.white,
+    statusBarBrightness: Brightness.dark,
+    statusBarIconBrightness: Brightness.dark,
+    systemNavigationBarIconBrightness: Brightness.dark,
+  );
+
   ThemeData _themeData;
 
   //constructor
@@ -28,14 +55,9 @@ class ThemeChanger with ChangeNotifier {
 
   updateSystemUI() async{
     bool isDark = (_themeData == MyTheme.dark);
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      systemNavigationBarColor: (isDark) ? Colors.black : Colors.white,
-      statusBarColor: (isDark) ? Colors.black : Colors.white,
-      systemNavigationBarDividerColor: (isDark) ? Colors.black : Colors.white,
-      statusBarBrightness: (isDark) ? Brightness.light : Brightness.dark,
-      statusBarIconBrightness: (isDark) ? Brightness.light : Brightness.dark,
-      systemNavigationBarIconBrightness: (isDark) ? Brightness.light : Brightness.dark,
-    ));
+    SystemChrome.setSystemUIOverlayStyle(
+      isDark ? darkStyle : lightStyle,
+    );
   }
 
   //getter

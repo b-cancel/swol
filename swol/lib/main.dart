@@ -29,14 +29,7 @@ class App extends StatelessWidget {
     ]); 
 
     //initially this is going to be flat black
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      systemNavigationBarColor: Colors.black,
-      statusBarColor: Colors.black,
-      systemNavigationBarDividerColor: Colors.black,
-      statusBarBrightness: Brightness.dark,
-      statusBarIconBrightness: Brightness.dark,
-      systemNavigationBarIconBrightness: Brightness.dark,
-    ));
+    SystemChrome.setSystemUIOverlayStyle(ThemeChanger.allBlackStyle);
 
     //main app build
     return MaterialApp(
@@ -68,9 +61,9 @@ class GrabSystemPrefs extends StatelessWidget {
 
           //handle theme stuff
           dynamic isDark = prefs.getBool("darkMode");
-          if(isDark == null){
-            prefs.setBool("darkMode", false);
-            isDark = false;
+          if(isDark == null){ //dark mode is the DEFAULT
+            prefs.setBool("darkMode", true);
+            isDark = true;
           }
 
           //handle workout stuff
@@ -79,6 +72,8 @@ class GrabSystemPrefs extends StatelessWidget {
             prefs.setInt("nextID", 0);
             nextID = 0;
           }
+
+          print("isDark: " + isDark.toString());
 
           //set nextID to its usable version
           AnExcercise.nextID = nextID;
