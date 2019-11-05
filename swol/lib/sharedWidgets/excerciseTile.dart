@@ -1,5 +1,6 @@
 //flutter
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 //plugin
 import 'package:page_transition/page_transition.dart';
@@ -12,19 +13,7 @@ import 'package:swol/other/durationFormat.dart';
 //internal: link
 import 'package:swol/excerciseAction/excercisePage.dart';
 
-//TODO: in all scenarios I should show the calculated 1 Rep max IF I CAN
-//NOTE: calculated 1 rep max NEVER bases itself on temp vars [LEFT below]
-
-//FOR BOTH (SEARCH and NOT IN SEARCH)
-//In Progress: with either [in progress icon | ticking timer | or animating timer] [ON RIGHT]
-
-//IF IN SEARCH
-//NEW: should show themeselves as such [RIGHT]
-//ARCHIVED: should show themeselves as such [RIGHT]
-//Other: should show the time since [RIGHT]
-
-//If NOT IN SEARCH
-//New, Archived, and Other allow show > arrow
+//widget
 class ExcerciseTile extends StatelessWidget {
   ExcerciseTile({
     @required this.excerciseID,
@@ -41,44 +30,61 @@ class ExcerciseTile extends StatelessWidget {
   Widget build(BuildContext context) {
     AnExcercise thisExcercise = ExcerciseData.getExcercises().value[excerciseID];
 
-    Duration timeSince = DateTime.now().difference(thisExcercise.lastTimeStamp);
-    Widget subtitle = (tileInSearch) 
-    ?  MyChip(
-      chipString: 'New',
-    ) 
-    : null;
+    //calcualted 1 rep max if possible
+    Widget subtitle;
+    if(thisExcercise.lastWeight != null){
+      //TODO: actually grab 1 rep max and calculate the std deviation given all the formulas results
+      subtitle = Text("160 +/- 5");
+    }
 
-    //adjust if its an archived excercise or a regular one
-    if((timeSince > Duration(days: 365 * 100)) == false){
-      //its PROBABLY NOT NEW 
-      //NOTE: its entirely possible that it is tho by the person adding it and then immediately archiving it
+    //right trailing icon
+    Widget trailing;
 
-      //TODO: confirm that its not new
-      bool notNew = true;
-      
-      if(notNew){
-        //TODO: actual calculate 1 rep max based on previous data 
-        //TODO: and perhaps express accuracy of calculation based on distance from 1 rep max
-        int oneRepMax = 160;
-
-        //subtitle gen
-        subtitle = Text(oneRepMax.toString() + " 1RM");
-
-        if(timeSince < Duration.zero){ //hidden item
-          subtitle = Row(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              (tileInSearch) 
-              ?  MyChip(
-                chipString: 'Hidden',
-              ) 
-              : Container(),
-              subtitle,
-            ],
+    //if in progress set the proper icon
+    bool inProgress = (thisExcercise.tempSetCount > 0 || thisExcercise.tempStartTime != null);
+    if(inProgress){
+      if(thisExcercise.tempStartTime != null){
+        //TODO test below
+        Duration timeSinceBreakStarted = DateTime.now().difference(thisExcercise.tempStartTime);
+        if(timeSinceBreakStarted > thisExcercise.recoveryPeriod){
+          trailing = Icon(
+            Icons.alarm,
+            color: Colors.red,
           );
         }
-        //ELSE... regular item only need the calculated 1 rep max
+        else trailing = Icon(Icons.alarm);
       }
+      else trailing = Icon(FontAwesomeIcons.hourglassHalf);
+    }
+    else{
+      if(tileInSearch){
+        if(thisExcercise.lastTimeStamp == null){
+          trailing = MyChip(
+            chipString: 'New',
+          );
+        }
+        else{
+          Duration timeSinceLastTime = DateTime.now().difference(thisExcercise.lastTimeStamp);
+          if(timeSinceLastTime > Duration(days: 365 * 100)){
+            trailing = MyChip(
+              chipString: 'Hidden',
+            );
+          }
+          else{
+            trailing = Text(
+              DurationFormat.format(
+                timeSinceLastTime,
+                showMinutes: false,
+                showSeconds: false,
+                showMilliseconds: false,
+                showMicroseconds: false,
+                short: false,
+              ),
+            );
+          }
+        }
+      }
+      else trailing = Icon(Icons.chevron_right);
     }
 
     //build our widget given that search term
@@ -115,7 +121,7 @@ class ExcerciseTile extends StatelessWidget {
       },
       title: Text(thisExcercise.name),
       subtitle: subtitle,
-      trailing: Icon(Icons.chevron_right),
+      trailing: trailing,
     );
   }
 }

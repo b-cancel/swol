@@ -1,6 +1,6 @@
 To determine how to display out tiles
 
-"IN PROGRESS" IF (tempTimeStamp IS SET) [extra icon]
+"IN PROGRESS" IF (tempSetCount > 0 || tempStartTime IS SET) [extra icon]
     "IN BREAK" IF (tempStartTime IS SET)
         "RINGING" IF (timeSicne tempStartTime is > recoveryPeriod)
         ELSE (ticking down[perhaps show time])
