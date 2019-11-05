@@ -8,7 +8,6 @@ class AnExcercise{
   static const int defaultRepTarget = 8;
   static const Duration defaultRecovery = const Duration(minutes: 1, seconds: 30);
   static const int defaultSetTarget = 4;
-  
 
   //static (used to assign ID)
   static int nextID;
@@ -54,6 +53,9 @@ class AnExcercise{
     @required this.repTarget,
     @required this.recoveryPeriod,
     @required this.setTarget,
+
+    //uses default but must be set
+    @required this.lastTimeStamp,
   });
 
   AnExcercise.fromJson(Map<String,dynamic> map){
@@ -132,11 +134,11 @@ class AnExcercise{
     };
   }
 
-  String _dateTimeToString(DateTime dt){
+  static String _dateTimeToString(DateTime dt){
     return dt?.toIso8601String() ?? null;
   }
 
-  String _durationToString(Duration d){
+  static String _durationToString(Duration d){
     return d?.inSeconds.toString() ?? null;
   }
 

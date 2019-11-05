@@ -19,7 +19,7 @@ BASIC
     -note (no default)
 OTHER (tempTimeStamp IS NOT NEEDED (use tempSetCount combined with tempStartTime instead))
     ---RECORDED (no defaults)
-    -lastTimeStamp 
+    -lastTimeStamp (ALWAYS FILLED)
     -lastWeight 
     -lastReps 
     ---SET

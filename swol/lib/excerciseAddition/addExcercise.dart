@@ -1,5 +1,6 @@
 //flutter
 import 'package:flutter/material.dart';
+import 'package:swol/excercise/defaultDateTimes.dart';
 
 //plugins
 import 'package:vector_math/vector_math_64.dart' as vect;
@@ -251,6 +252,9 @@ class _AddExcerciseState extends State<AddExcercise> {
                                           repTarget: repTarget.value,
                                           recoveryPeriod: recoveryPeriod.value,
                                           setTarget: setTarget.value,
+
+                                          //---
+                                          lastTimeStamp: LastTimeStamp.newDateTime(),
                                         ));
 
                                         //exit pop up
