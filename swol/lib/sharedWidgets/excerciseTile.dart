@@ -12,6 +12,19 @@ import 'package:swol/other/durationFormat.dart';
 //internal: link
 import 'package:swol/excerciseAction/excercisePage.dart';
 
+//TODO: in all scenarios I should show the calculated 1 Rep max IF I CAN
+//NOTE: calculated 1 rep max NEVER bases itself on temp vars [LEFT below]
+
+//FOR BOTH (SEARCH and NOT IN SEARCH)
+//In Progress: with either [in progress icon | ticking timer | or animating timer] [ON RIGHT]
+
+//IF IN SEARCH
+//NEW: should show themeselves as such [RIGHT]
+//ARCHIVED: should show themeselves as such [RIGHT]
+//Other: should show the time since [RIGHT]
+
+//If NOT IN SEARCH
+//New, Archived, and Other allow show > arrow
 class ExcerciseTile extends StatelessWidget {
   ExcerciseTile({
     @required this.excerciseID,

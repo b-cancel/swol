@@ -741,6 +741,14 @@ class _TrainingTypeIndicatorState extends State<TrainingTypeIndicator> {
       section = widget.setTarget.value - 3;
       section = (section < 0) ? 0 : section;
     }
+
+    WidgetsBinding.instance.addPostFrameCallback((_){
+      controller.animateTo(
+        (((MediaQuery.of(context).size.width-48)/4) * section),
+        duration: Duration(milliseconds: 250),
+        curve: Curves.easeInOut,
+      );
+    });
   }
 
   @override
@@ -751,11 +759,6 @@ class _TrainingTypeIndicatorState extends State<TrainingTypeIndicator> {
     //listener
     widget.setTarget.addListener((){
       setTargetToSection();
-      controller.animateTo(
-        (((MediaQuery.of(context).size.width-48)/4) * section),
-        duration: Duration(milliseconds: 250),
-        curve: Curves.easeInOut,
-      );
     });
 
     //super init

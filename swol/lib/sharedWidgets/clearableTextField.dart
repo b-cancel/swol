@@ -341,6 +341,11 @@ class _TextFieldWithClearButtonState extends State<TextFieldWithClearButton> {
                         keyboardType: TextInputType.text,
                         textInputAction: textInputAction,
                         decoration: InputDecoration(
+                          //TODO: figure out why all of a sudden this was required to not cause some ugly overflow problem
+                          contentPadding: EdgeInsets.only(
+                            top: 12,
+                            bottom: 18,
+                          ),
                           hintText: widget.hint,
                           errorText: widget.error,
                           //spacer so X doesn't cover the text
