@@ -83,12 +83,26 @@ class _RecoveryState extends State<Recovery> with SingleTickerProviderStateMixin
                 height: size,
                 width: size,
                 padding: EdgeInsets.all(24),
-                child: AnimLiquidIndicator(
-                  possibleFullDuration: possibleFullDuration,
-                  recoveryDuration: widget.recoveryDuration,
-                  timerStart: timerStart,
-                  //size of entire bubble = size container - padding for each size
-                  centerSize: size - (24 * 2),
+                child: Stack(
+                  children: <Widget>[
+                    Positioned.fill(
+                      child: Container(
+                        color: Colors.green,
+                        /*
+                        child: AnimLiquidIndicator(
+
+                        ),
+                        */
+                      ),
+                    ),
+                    AnimLiquidIndicator(
+                      possibleFullDuration: possibleFullDuration,
+                      recoveryDuration: widget.recoveryDuration,
+                      timerStart: timerStart,
+                      //size of entire bubble = size container - padding for each size
+                      centerSize: size - (24 * 2),
+                    ),
+                  ],
                 ),
               ),
             ),

@@ -156,7 +156,7 @@ class _AnimLiquidIndicatorState extends State<AnimLiquidIndicator> with SingleTi
         },
         child: LiquidCircularProgressIndicator(
           value: 1 - countDownController.value,
-          backgroundColor: Colors.white, 
+          backgroundColor: Colors.transparent, 
           borderColor: Colors.transparent,
           borderWidth: 0,
           direction: Axis.vertical, 
