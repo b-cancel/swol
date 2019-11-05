@@ -250,7 +250,7 @@ class _AddExcerciseState extends State<AddExcercise> {
                                           predictionID: functionIndex,
                                           repTarget: repTarget.value,
                                           recoveryPeriod: recoveryPeriod.value,
-                                          lastSetTarget: setTarget.value,
+                                          setTarget: setTarget.value,
                                         ));
 
                                         //exit pop up

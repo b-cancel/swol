@@ -203,7 +203,7 @@ bool maybeUpdateSetTarget(
   AnExcercise excercise,
   Function afterDone,
 ){
-  int setTarget = excercise.lastSetTarget;
+  int setTarget = excercise.setTarget;
   int newSetTarget = excercise.tempSetCount;
   if(setTarget == newSetTarget) return false;
   else{

@@ -53,7 +53,7 @@ class _SuggestionState extends State<Suggestion> {
 
     //set set target stuff initially
     repTarget = new ValueNotifier(
-      ExcerciseData.getExcercises().value[widget.excerciseID].lastSetTarget,
+      ExcerciseData.getExcercises().value[widget.excerciseID].setTarget,
     );
 
     //when value changes we update it

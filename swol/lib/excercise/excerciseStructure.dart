@@ -4,13 +4,16 @@ import 'package:swol/other/functions/helper.dart';
 
 class AnExcercise{
   //constants
-  static const Duration defaultRecovery = const Duration(minutes: 1, seconds: 30);
-  static const int defaultRepTarget = 8;
-  static const int defaultSetTarget = 3;
   static const int defaultFunctionID = Functions.defaultFunctionIndex;
+  static const int defaultRepTarget = 8;
+  static const Duration defaultRecovery = const Duration(minutes: 1, seconds: 30);
+  static const int defaultSetTarget = 4;
+  
 
   //static (used to assign ID)
   static int nextID;
+
+  //---Settings
 
   //NOTE: this is set after by the addExcercise function
   int id;
@@ -20,81 +23,69 @@ class AnExcercise{
   String url;
   String note;
 
-  //per excercise sets per workout
+  //other
+  int predictionID;
+  int repTarget;
+  Duration recoveryPeriod;
+  int setTarget;
+
+  //---Recorded
+
   DateTime lastTimeStamp;
-  int lastSetTarget;
-
-  DateTime tempTimeStamp;
-  int tempSetCount;
-
-  //per set
   int lastWeight;
   int lastReps;
 
-  DateTime tempStartTime;
+  //---Temporary
+
   int tempWeight;
   int tempReps;
-
-  //other
-  int predictionID;
-  Duration recoveryPeriod;
-  int repTarget;
+  DateTime tempStartTime;
+  int tempSetCount;
 
   //build
   AnExcercise({
     //basic data
     @required this.name,
-    this.url: "",
-    this.note: "",
-
-    //per excercise sets per workout
-    @required this.lastTimeStamp, //default set by addWorkout
-    this.lastSetTarget, //default set by addWorkout
-
-    this.tempTimeStamp,
-    this.tempSetCount,
-
-    //per set
-    this.lastWeight,
-    this.lastReps: defaultSetTarget,
-
-    this.tempStartTime,
-    this.tempWeight,
-    this.tempReps,
+    @required this.url,
+    @required this.note,
 
     //other
-    this.predictionID, //Default set by addWorkout
-    this.recoveryPeriod: defaultRecovery, //Default set by addWokrout
-    this.repTarget: defaultRepTarget, //Default set by addWokrout
+    @required this.predictionID,
+    @required this.repTarget,
+    @required this.recoveryPeriod,
+    @required this.setTarget,
   });
 
   AnExcercise.fromJson(Map<String,dynamic> map){
+    //---Auto Set
+
     id = map["id"];
+
+    //---Settings
 
     //basic data
     name = map["name"];
     url = map["url"];
     note = map["note"];
 
-    //per excercise sets per workout
+    //other
+    predictionID = map["predictionID"];
+    repTarget = map["repTarget"];
+    recoveryPeriod = _stringToDuration(map["recoveryPeriod"]);
+    setTarget = map["setTarget"];
+
+    //---Recorded
+
     lastTimeStamp = _stringToDateTime(map["lastTimeStamp"]);
-    lastSetTarget = map["lastSetTarget"];
-
-    tempTimeStamp = _stringToDateTime(map["tempTimeStamp"]);
-    tempSetCount = map["tempSetCount"];
-
-    //per set
     lastWeight = map["lastWeight"];
     lastReps = map["lastReps"];
 
-    tempStartTime = _stringToDateTime(map["tempStartTime"]);
+    //---Temporary
+
     tempWeight = map["tempWeight"];
     tempReps = map["tempReps"];
-
-    //other
-    predictionID = map["predictionID"];
-    recoveryPeriod = _stringToDuration(map["recoveryPeriod"]);
-    repTarget = map["repTarget"];
+    tempStartTime = _stringToDateTime(map["tempStartTime"]);
+    tempSetCount = map["tempSetCount"];
   }
 
   DateTime _stringToDateTime(String json){
@@ -109,32 +100,35 @@ class AnExcercise{
 
   Map<String, dynamic> toJson(){
     return {
+      //---Auto Set
+
       "id": id,
+
+      //---Settings
 
       //basic data
       "name": name,
       "url": url,
       "note": note,
 
-      //per excercise sets per workout
+      //other
+      "predictionID": predictionID,
+      "repTarget": repTarget,
+      "recoveryPeriod": _durationToString(recoveryPeriod),
+      "setTarget": setTarget,
+
+      //---Recorded
+
       "lastTimeStamp": _dateTimeToString(lastTimeStamp),
-      "lastSetTarget": lastSetTarget,
-
-      "tempTimeStamp": _dateTimeToString(tempTimeStamp),
-      "tempSetCount": tempSetCount,
-
-      //per set
       "lastWeight": lastWeight,
       "lastReps": lastReps,
 
-      "tempStartTime": _dateTimeToString(tempStartTime),
+      //---Temporary
+
       "tempWeight": tempWeight,
       "tempReps": tempReps,
-
-      //other
-      "predictionID": predictionID,
-      "recoveryPeriod": _durationToString(recoveryPeriod),
-      "repTarget": repTarget,
+      "tempStartTime": _dateTimeToString(tempStartTime),
+      "tempSetCount": tempSetCount,
     };
   }
 

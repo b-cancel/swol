@@ -71,16 +71,15 @@ class ExcerciseTile extends StatelessWidget {
     //build our widget given that search term
     return ListTile(
       onTap: (){
-        print("timestamp: " + thisExcercise.lastTimeStamp.toString());
         //-----
         print("name: " +  thisExcercise.name.toString() + " => " + excerciseID.toString());
         print("url: " + thisExcercise.url.toString());
         print("note: " + thisExcercise.note.toString());
         //-----
-        print("recovery: " + thisExcercise.recoveryPeriod.toString());
-        print("rep target: " + thisExcercise.repTarget.toString());
         print("prediction ID: " + thisExcercise.predictionID.toString());
-        print("set target: " + thisExcercise.lastSetTarget.toString());
+        print("rep target: " + thisExcercise.repTarget.toString());
+        print("recovery: " + thisExcercise.recoveryPeriod.toString());
+        print("set target: " + thisExcercise.setTarget.toString());
 
         //pop search page
         if(tileInSearch){
