@@ -22,6 +22,8 @@ class Recovery extends StatefulWidget {
 }
 
 class _RecoveryState extends State<Recovery> with SingleTickerProviderStateMixin {
+  ValueNotifier<Duration> longestDuration = new ValueNotifier<Duration>(Duration(minutes: 5));
+
   //primary vars
   DateTime timerStart;
 
@@ -88,19 +90,19 @@ class _RecoveryState extends State<Recovery> with SingleTickerProviderStateMixin
                     Positioned.fill(
                       child: Container(
                         color: Colors.green,
-                        /*
                         child: AnimLiquidIndicator(
-
+                          timerDuration: longestDuration,
+                          timerStart: timerStart,
                         ),
-                        */
                       ),
                     ),
                     AnimLiquidIndicator(
                       possibleFullDuration: possibleFullDuration,
-                      recoveryDuration: widget.recoveryDuration,
+                      timerDuration: widget.recoveryDuration,
                       timerStart: timerStart,
                       //size of entire bubble = size container - padding for each size
                       centerSize: size - (24 * 2),
+                      vibrateOnComplete: true,
                     ),
                   ],
                 ),

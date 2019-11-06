@@ -28,15 +28,18 @@ import 'package:swol/utils/vibrate.dart';
 
 class AnimLiquidIndicator extends StatefulWidget {
   AnimLiquidIndicator({
-    @required this.possibleFullDuration,
-    @required this.recoveryDuration,
+    @required this.timerDuration,
     @required this.timerStart,
-    @required this.centerSize,
+    this.vibrateOnComplete: false,
+    //TODO: required if vibratOnComplete == true
+    this.possibleFullDuration,
+    this.centerSize,
   });
 
-  final ValueNotifier<Duration> possibleFullDuration;
-  final ValueNotifier<Duration> recoveryDuration;
+  final ValueNotifier<Duration> timerDuration;
   final DateTime timerStart;
+  final bool vibrateOnComplete;
+  final ValueNotifier<Duration> possibleFullDuration;
   final double centerSize;
 
   @override
@@ -47,7 +50,8 @@ class _AnimLiquidIndicatorState extends State<AnimLiquidIndicator> with SingleTi
   List<String> durationFullStrings;
 
   //controllers
-  AnimationController countDownController;
+  Animation<Color> animation;
+  AnimationController controller;
 
   //init
   @override
@@ -56,65 +60,68 @@ class _AnimLiquidIndicatorState extends State<AnimLiquidIndicator> with SingleTi
     super.initState();
 
     //create animation controller
-    countDownController = AnimationController(
+    controller = AnimationController(
       vsync: this,
-      duration: widget.recoveryDuration.value,
+      duration: widget.timerDuration.value,
     );
+    animation = Tween<Color>(begin: Colors.red, end: Colors.blue).animate(controller);
 
     //refresh UI at phone framerate
-    countDownController.addListener((){
+    controller.addListener((){
        setState(() {});
     });
 
-    countDownController.addStatusListener((status){
-      if(status == AnimationStatus.completed){
-        Vibrator.startVibration();
-      }
-      else{
-        //NOTE:not cover case for isDismissed 
-        //but should never happen
-        Vibrator.stopVibration();
-      }
-    });
-
+    if(widget.vibrateOnComplete){
+      controller.addStatusListener((status){
+        if(status == AnimationStatus.completed){
+          Vibrator.startVibration();
+        }
+        else{
+          //NOTE:not cover case for isDismissed 
+          //but should never happen
+          Vibrator.stopVibration();
+        }
+      });
+    }
+    
     //start the countdown
-    countDownController.forward();
+    controller.forward();
 
     //init
-    durationFullStrings = durationToCustomDisplay(widget.recoveryDuration.value);
+    durationFullStrings = durationToCustomDisplay(widget.timerDuration.value);
 
     //react to update of full duration
-    widget.recoveryDuration.addListener((){
+    widget.timerDuration.addListener((){
       //update string
-      durationFullStrings = durationToCustomDisplay(widget.recoveryDuration.value);
+      durationFullStrings = durationToCustomDisplay(widget.timerDuration.value);
 
       //grab how much time has passed
       Duration durationSinceStart = DateTime.now().difference(widget.timerStart);
 
       //check how much time is left (may be negative)
-      Duration durationUntilEnd = widget.recoveryDuration.value - durationSinceStart;
+      Duration durationUntilEnd = widget.timerDuration.value - durationSinceStart;
 
       //determine if we need to modify the animation or just leave it as is
       if(durationUntilEnd > Duration.zero){ //we still need to count down
         //stop things so we can proceed to update
-        countDownController.stop();
+        controller.stop();
 
         //we only have X ammount left 
         //but for the output 0->1 value to be correct
         //we need to instead shift the value
-        countDownController.duration = widget.recoveryDuration.value;
+        controller.duration = widget.timerDuration.value;
 
         //update new value
-        double newValue = durationSinceStart.inMicroseconds / widget.recoveryDuration.value.inMicroseconds;
-        countDownController.value = newValue;
+        double newValue = durationSinceStart.inMicroseconds / widget.timerDuration.value.inMicroseconds;
+        controller.value = newValue;
         
         //start the animation mid way
-        countDownController.forward();
+        controller.forward();
       }
       else{ //we don't need to countdown
-        if(countDownController.isAnimating){
-          countDownController.stop();
-          countDownController.value = 1;
+        if(controller.isAnimating){
+          controller.stop();
+          controller.value = 1;
         }
         //ELSE: the animation was already complete
       }
@@ -127,7 +134,7 @@ class _AnimLiquidIndicatorState extends State<AnimLiquidIndicator> with SingleTi
   @override
   void dispose() {
     Vibrator.stopVibration();
-    countDownController.dispose();
+    controller.dispose();
     super.dispose();
   }
 
@@ -135,32 +142,38 @@ class _AnimLiquidIndicatorState extends State<AnimLiquidIndicator> with SingleTi
   Widget build(BuildContext context) {
     //calc time left
     Duration durationPassed = DateTime.now().difference(widget.timerStart);
-    Duration durationLeft = widget.recoveryDuration.value - durationPassed;
+    Duration durationLeft = widget.timerDuration.value - durationPassed;
 
     //calc strings
     List<String> durationPassedStrings = durationToCustomDisplay(durationPassed);
     List<String> durationLeftStrings = durationToCustomDisplay(durationLeft);
 
     //calc size
-    double textContainerSize = widget.centerSize - (24 * 2);
+    double textContainerSize = (widget.vibrateOnComplete) ? widget.centerSize - (24 * 2) : 0;
 
     //build return timer
     return ClipOval(
       child: InkWell(
-        onTap: (){
+        onTap: widget.vibrateOnComplete ? (){
           maybeChangeTime(
             context: context,
-            recoveryDuration: widget.recoveryDuration,
+            recoveryDuration: widget.timerDuration,
             possibleFullDuration: widget.possibleFullDuration,
           );
-        },
+        } : null,
         child: LiquidCircularProgressIndicator(
-          value: 1 - countDownController.value,
-          backgroundColor: Colors.transparent, 
+          //animated values
+          value: (widget.vibrateOnComplete) ? 1 - controller.value : controller.value,
+          valueColor: (widget.vibrateOnComplete) 
+          ? AlwaysStoppedAnimation(Theme.of(context).accentColor)
+          : AlwaysStoppedAnimation(Colors.blue),
+          //set value
+          backgroundColor: (widget.vibrateOnComplete) ? Colors.transparent : Colors.white, 
           borderColor: Colors.transparent,
           borderWidth: 0,
           direction: Axis.vertical, 
-          center: Container(
+          center: (widget.vibrateOnComplete == false) ? Container()
+          : Container(
             width: widget.centerSize,
             height: widget.centerSize,
             padding: EdgeInsets.all(24),
