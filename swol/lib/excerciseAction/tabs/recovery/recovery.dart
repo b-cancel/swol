@@ -5,11 +5,6 @@ import 'package:swol/excerciseAction/tabs/recovery/liquidIndicators.dart';
 import 'package:swol/excerciseAction/tabs/sharedWidgets/done.dart';
 import 'package:swol/sharedWidgets/timePicker.dart';
 
-//TODO: 0 -> 60 seconds: Endurance
-//TODO: 60 -> 2 minutes: Mass
-//TODO: 2 -> 3: Mass/Strength
-//TODO: 3 -> 5: Strength
-
 class Recovery extends StatefulWidget {
   Recovery({
     @required this.recoveryDuration,

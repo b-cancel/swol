@@ -328,61 +328,66 @@ class _AddExcerciseState extends State<AddExcercise> {
                   SetTargetCard(
                     setTarget: setTarget,
                   ),
-                  RepTargetCard(
-                    changeDuration: changeDuration, 
-                    sliderWidth: sliderWidth, 
-                    textHeight: textHeight, 
-                    textMaxWidth: textMaxWidth, 
-                    repTargetDuration: repTargetDuration, 
-                    repTarget: repTarget,
-                  ),
-                  Card(
-                    margin: EdgeInsets.all(8),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        Container(
-                          padding: EdgeInsets.only(
-                            //Top 16 padding address above
-                            left: 16,
-                            right: 16,
-                            bottom: 16,
-                          ),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              Container(
-                                child: new HeaderWithInfo(
-                                  title: "Prediction Formula",
-                                  popUp: new PredictionFormulasPopUp(),
-                                ),
+                  Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      RepTargetCard(
+                        changeDuration: changeDuration, 
+                        sliderWidth: sliderWidth, 
+                        textHeight: textHeight, 
+                        textMaxWidth: textMaxWidth, 
+                        repTargetDuration: repTargetDuration, 
+                        repTarget: repTarget,
+                      ),
+                      Card(
+                        margin: EdgeInsets.all(8),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            Container(
+                              padding: EdgeInsets.only(
+                                //Top 16 padding address above
+                                left: 16,
+                                right: 16,
+                                bottom: 16,
                               ),
-                              DropdownButton<String>(
-                                value: functionValue,
-                                icon: Icon(Icons.arrow_drop_down),
-                                isExpanded: true,
-                                iconSize: 24,
-                                elevation: 16,
-                                onChanged: (String newValue) {
-                                  setState(() {
-                                    functionValue = newValue;
-                                    functionIndex = Functions.functionToIndex[functionValue];
-                                  });
-                                },
-                                items: Functions.functions.map<DropdownMenuItem<String>>((String value) {
-                                  return DropdownMenuItem<String>(
-                                    value: value,
-                                    child: Text(value),
-                                  );
-                                })
-                                .toList(),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: <Widget>[
+                                  Container(
+                                    child: new HeaderWithInfo(
+                                      title: "Prediction Formula",
+                                      popUp: new PredictionFormulasPopUp(),
+                                    ),
+                                  ),
+                                  DropdownButton<String>(
+                                    value: functionValue,
+                                    icon: Icon(Icons.arrow_drop_down),
+                                    isExpanded: true,
+                                    iconSize: 24,
+                                    elevation: 16,
+                                    onChanged: (String newValue) {
+                                      setState(() {
+                                        functionValue = newValue;
+                                        functionIndex = Functions.functionToIndex[functionValue];
+                                      });
+                                    },
+                                    items: Functions.functions.map<DropdownMenuItem<String>>((String value) {
+                                      return DropdownMenuItem<String>(
+                                        value: value,
+                                        child: Text(value),
+                                      );
+                                    })
+                                    .toList(),
+                                  ),
+                                ],
                               ),
-                            ],
-                          ),
+                            ),
+                          ]
                         ),
-                      ]
-                    ),
-                  ),
+                      ),
+                    ],
+                  )
                 ],
               ),
             ],
