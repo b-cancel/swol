@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
-import 'package:swol/excerciseAction/tabs/recovery/liquidIndicator.dart';
 import 'package:swol/excerciseAction/tabs/recovery/breath.dart';
+import 'package:swol/excerciseAction/tabs/recovery/liquidIndicators.dart';
 import 'package:swol/excerciseAction/tabs/sharedWidgets/done.dart';
 import 'package:swol/sharedWidgets/timePicker.dart';
 
@@ -71,6 +71,7 @@ class _RecoveryState extends State<Recovery> with SingleTickerProviderStateMixin
                       ),
                       child: Text(
                         "Eliminating Lactic Acid Build-Up",
+                        //Ready For Next Set
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                         ),
@@ -87,22 +88,18 @@ class _RecoveryState extends State<Recovery> with SingleTickerProviderStateMixin
                 padding: EdgeInsets.all(24),
                 child: Stack(
                   children: <Widget>[
-                    Positioned.fill(
-                      child: Container(
-                        color: Colors.green,
-                        child: AnimLiquidIndicator(
-                          timerDuration: longestDuration,
-                          timerStart: timerStart,
-                        ),
-                      ),
+                    /*
+                    LiquidCountDown(
+                      changeableTimerDuration: longestDuration,
+                      timerStart: timerStart,
                     ),
-                    AnimLiquidIndicator(
+                    */
+                    LiquidCountDown(
                       possibleFullDuration: possibleFullDuration,
-                      timerDuration: widget.recoveryDuration,
+                      changeableTimerDuration: widget.recoveryDuration,
                       timerStart: timerStart,
                       //size of entire bubble = size container - padding for each size
                       centerSize: size - (24 * 2),
-                      vibrateOnComplete: true,
                     ),
                   ],
                 ),
