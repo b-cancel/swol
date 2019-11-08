@@ -17,18 +17,12 @@ class Recovery extends StatefulWidget {
 }
 
 class _RecoveryState extends State<Recovery> with SingleTickerProviderStateMixin {
-  ValueNotifier<Duration> longestDuration = new ValueNotifier<Duration>(Duration(minutes: 5));
-
   //primary vars
   DateTime timerStart;
-
-  //before changing fullDuration we let the picker change this
-  ValueNotifier<Duration> possibleFullDuration = new ValueNotifier(Duration.zero);
 
   //init
   @override
   void initState() {
-    //TODO: use the timer start of the object
     //record the time the timer started
     timerStart = DateTime.now();
 
@@ -47,122 +41,42 @@ class _RecoveryState extends State<Recovery> with SingleTickerProviderStateMixin
     return Scaffold(
       body: SafeArea(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisSize: MainAxisSize.max,
           children: <Widget>[
-            Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                FittedBox(
-                  fit: BoxFit.contain,
-                  child: Padding(
-                    padding: EdgeInsets.only(
-                      top: 16,
-                      bottom: 8
-                    ),
-                    child: Container(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 16,
-                      ),
-                      child: Text(
-                        "Eliminating Lactic Acid Build-Up",
-                        //Ready For Next Set
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            Center(
-              child: Container(
-                height: size,
-                width: size,
-                padding: EdgeInsets.all(24),
-                child: Stack(
-                  children: <Widget>[
-                    /*
-                    LiquidCountDown(
-                      changeableTimerDuration: longestDuration,
-                      timerStart: timerStart,
-                    ),
-                    */
-                    LiquidCountDown(
-                      possibleFullDuration: possibleFullDuration,
-                      changeableTimerDuration: widget.recoveryDuration,
-                      timerStart: timerStart,
-                      //size of entire bubble = size container - padding for each size
-                      centerSize: size - (24 * 2),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            Center(
-              child: InkWell(
-                onTap: (){
-                  Navigator.push(
-                    context, 
-                    PageTransition(
-                      type: PageTransitionType.fade, 
-                      child: Breath(),
-                    ),
-                  );
-                },
-                child: Padding(
-                  padding: EdgeInsets.all(
-                    16,
-                  ),
-                  child: Container(
-                    width: 50,
-                    height: 50,
-                    child: Hero(
-                      tag: 'breath',
-                      child: new Image(
-                        image: new AssetImage("assets/gifs/breathMod.gif"),
-                        //lines being slightly distinguishable is ugly
-                        color: Theme.of(context).accentColor,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
             Expanded(
-              child: Container(),
+              child: Center(
+                child: Container(
+                  color: Colors.red,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: <Widget>[
+                      //---Actually Animated Stuff
+                      Stack(
+                        children: <Widget>[
+                          /*
+                          LiquidCountDown(
+                            changeableTimerDuration: longestDuration,
+                            timerStart: timerStart,
+                          ),
+                          */
+                          LiquidCountDown(
+                            changeableTimerDuration: widget.recoveryDuration,
+                            timerStart: timerStart,
+                            //size of entire bubble = size container - padding for each size
+                            centerSize: size - (24 * 2),
+                          ),
+                        ],
+                      ),
+                      //---Pretend Animated Stuff
+                      ToBreath(),
+                    ],
+                  ),
+                ),
+              )
             ),
-            Container(
-              padding: EdgeInsets.all(16),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: <Widget>[
-                  DoneButton(),
-                  Expanded(
-                    child: Container(),
-                  ),
-                  FlatButton(
-                    onPressed: (){
-                      Navigator.pop(context);
-                    },
-                    child: Text("Back"),
-                  ),
-                  //both paddings + button size
-                  //height: (16 * 2) + 48.0,
-                  RaisedButton(
-                    color: Theme.of(context).accentColor,
-                    textColor: Theme.of(context).primaryColor,
-                    onPressed: (){
-                      Navigator.pop(context);
-                    },
-                    //TODO: if our next set will go above our targer alert the user of this 
-                    //TODO:  and ask if they want to proceed or end
-                    child: Text("Next Set"),
-                  ),
-                ],
-              ),
-            )
+            BottomButtons()
           ],
         ),
       ),
@@ -170,13 +84,90 @@ class _RecoveryState extends State<Recovery> with SingleTickerProviderStateMixin
   }
 }
 
+class ToBreath extends StatelessWidget {
+  const ToBreath({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: (){
+        Navigator.push(
+          context, 
+          PageTransition(
+            type: PageTransitionType.fade, 
+            child: Breath(),
+          ),
+        );
+      },
+      child: Padding(
+        padding: EdgeInsets.all(
+          16,
+        ),
+        child: Container(
+          width: 50,
+          height: 50,
+          child: Hero(
+            tag: 'breath',
+            child: new Image(
+              image: new AssetImage("assets/gifs/breathMod.gif"),
+              //lines being slightly distinguishable is ugly
+              color: Theme.of(context).accentColor,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class BottomButtons extends StatelessWidget {
+  const BottomButtons({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(16),
+      child: Row(
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: <Widget>[
+          DoneButton(),
+          Expanded(
+            child: Container(),
+          ),
+          FlatButton(
+            onPressed: (){
+              Navigator.pop(context);
+            },
+            child: Text("Back"),
+          ),
+          //both paddings + button size
+          //height: (16 * 2) + 48.0,
+          RaisedButton(
+            color: Theme.of(context).accentColor,
+            textColor: Theme.of(context).primaryColor,
+            onPressed: (){
+              Navigator.pop(context);
+            },
+            //TODO: if our next set will go above our targer alert the user of this 
+            //TODO:  and ask if they want to proceed or end
+            child: Text("Next Set"),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 maybeChangeTime({
   @required BuildContext context,
-  @required ValueNotifier<Duration> possibleFullDuration,
   @required ValueNotifier<Duration> recoveryDuration,
   }){
-    possibleFullDuration.value = recoveryDuration.value;
-
+    ValueNotifier<Duration> possibleRecoveryDuration = new ValueNotifier(recoveryDuration.value);
     showDialog<void>(
       context: context,
       barrierDismissible: true,
@@ -202,7 +193,7 @@ maybeChangeTime({
             ),
             content: Container(
               child: TimePicker(
-                duration: possibleFullDuration,
+                duration: possibleRecoveryDuration,
                 darkTheme: false,
               ),
             ),
@@ -215,7 +206,7 @@ maybeChangeTime({
               ),
               RaisedButton(
                 onPressed: (){
-                  recoveryDuration.value = possibleFullDuration.value;
+                  recoveryDuration.value = possibleRecoveryDuration.value;
                   Navigator.pop(context);
                 },
                 child: Text(

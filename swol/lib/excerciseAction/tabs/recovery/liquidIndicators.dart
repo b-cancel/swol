@@ -63,13 +63,11 @@ class LiquidCountDown extends StatefulWidget {
   LiquidCountDown({
     @required this.changeableTimerDuration,
     @required this.timerStart,
-    @required this.possibleFullDuration,
     @required this.centerSize,
   });
 
   final ValueNotifier<Duration> changeableTimerDuration;
   final DateTime timerStart;
-  final ValueNotifier<Duration> possibleFullDuration;
   final double centerSize;
 
   @override
@@ -190,80 +188,111 @@ class _LiquidCountDownState extends State<LiquidCountDown> with SingleTickerProv
     double textContainerSize = widget.centerSize - (24 * 2);
 
     //build return timer
-    return ClipOval(
-      child: InkWell(
-        onTap: (){
-          maybeChangeTime(
-            context: context,
-            recoveryDuration: widget.changeableTimerDuration,
-            possibleFullDuration: widget.possibleFullDuration,
-          );
-        },
-        child: LiquidCircularProgressIndicator(
-          //animated values
-          value: controller.value,
-          valueColor: AlwaysStoppedAnimation(Theme.of(context).accentColor),
-          //set value
-          backgroundColor: Colors.transparent,
-          borderColor: Colors.transparent,
-          borderWidth: 0,
-          direction: Axis.vertical, 
-          center: Container(
-            width: widget.centerSize,
-            height: widget.centerSize,
-            padding: EdgeInsets.all(24),
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: <Widget>[
+        FittedBox(
+          fit: BoxFit.contain,
+          child: Padding(
+            padding: EdgeInsets.only(
+              top: 16,
+              bottom: 8
+            ),
             child: Container(
-              child: FittedBox(
-                fit: BoxFit.contain,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    Container(
-                      width: textContainerSize,
-                      child: FittedBox(
-                        fit: BoxFit.contain,
-                        child: Text(
-                          durationLeftStrings[0] + " : " + durationLeftStrings[1],
-                          style: TextStyle(
-                            color: Theme.of(context).primaryColor,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ),
-                    Container(
-                      width: textContainerSize,
-                      padding: EdgeInsets.symmetric(
-                        horizontal: (textContainerSize / 2) / 2,
-                      ),
-                      //NOTE: we want the text here to be HALF the size
-                      //of the text above it
-                      child: Container(
-                        child: FittedBox(
-                          fit: BoxFit.contain,
-                          child: DefaultTextStyle(
-                            style: TextStyle(
-                              color: Theme.of(context).primaryColor,
-                            ),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: <Widget>[
-                                Text(durationFullStrings[0] + " : " + durationFullStrings[1]),
-                                Text(" | "),
-                                Text(durationPassedStrings[0] + " : " + durationPassedStrings[1]),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
+              padding: EdgeInsets.symmetric(
+                horizontal: 16,
+              ),
+              child: Text(
+                "Eliminating Lactic Acid Build-Up",
+                //Ready For Next Set
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
                 ),
               ),
             ),
           ),
         ),
-      ),
+        Container(
+          height: widget.centerSize + (24 * 2),
+          width: widget.centerSize + (24 * 2),
+          padding: EdgeInsets.all(24),
+          child: ClipOval(
+            child: InkWell(
+              onTap: (){
+                maybeChangeTime(
+                  context: context,
+                  recoveryDuration: widget.changeableTimerDuration,
+                );
+              },
+              child: LiquidCircularProgressIndicator(
+                //animated values
+                value: controller.value,
+                valueColor: AlwaysStoppedAnimation(Theme.of(context).accentColor),
+                //set value
+                backgroundColor: Colors.transparent,
+                borderColor: Colors.transparent,
+                borderWidth: 0,
+                direction: Axis.vertical, 
+                center: Container(
+                  width: widget.centerSize,
+                  height: widget.centerSize,
+                  padding: EdgeInsets.all(24),
+                  child: Container(
+                    child: FittedBox(
+                      fit: BoxFit.contain,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          Container(
+                            width: textContainerSize,
+                            child: FittedBox(
+                              fit: BoxFit.contain,
+                              child: Text(
+                                durationLeftStrings[0] + " : " + durationLeftStrings[1],
+                                style: TextStyle(
+                                  color: Theme.of(context).primaryColor,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ),
+                          Container(
+                            width: textContainerSize,
+                            padding: EdgeInsets.symmetric(
+                              horizontal: (textContainerSize / 2) / 2,
+                            ),
+                            //NOTE: we want the text here to be HALF the size
+                            //of the text above it
+                            child: Container(
+                              child: FittedBox(
+                                fit: BoxFit.contain,
+                                child: DefaultTextStyle(
+                                  style: TextStyle(
+                                    color: Theme.of(context).primaryColor,
+                                  ),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: <Widget>[
+                                      Text(durationFullStrings[0] + " : " + durationFullStrings[1]),
+                                      Text(" | "),
+                                      Text(durationPassedStrings[0] + " : " + durationPassedStrings[1]),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
