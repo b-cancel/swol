@@ -32,12 +32,6 @@ class _RecoveryState extends State<Recovery> with SingleTickerProviderStateMixin
 
   @override
   Widget build(BuildContext context) {
-    //size the liquid loader
-    double width = MediaQuery.of(context).size.width;
-    double height = MediaQuery.of(context).size.height;
-    double size = (width < height) ? width : height;
-
-    //build
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -54,18 +48,31 @@ class _RecoveryState extends State<Recovery> with SingleTickerProviderStateMixin
                     children: <Widget>[
                       //---Actually Animated Stuff
                       Stack(
+                        alignment: Alignment.bottomCenter,
                         children: <Widget>[
-                          /*
-                          LiquidCountDown(
-                            changeableTimerDuration: longestDuration,
-                            timerStart: timerStart,
+                          //---White Backgrond circle
+                          Container(
+                            height: MediaQuery.of(context).size.width,
+                            width: MediaQuery.of(context).size.width,
+                            padding: EdgeInsets.all(24),
+                            child: ClipOval(
+                              child: Container(
+                                color: Colors.white,
+                              ),
+                            ),
                           ),
-                          */
-                          LiquidCountDown(
+                          //---The secondary
+                          Opacity(
+                            opacity: 1,
+                            child: LiquidStopwatch(
+                              changeableTimerDuration: widget.recoveryDuration,
+                              timerStart: timerStart,
+                            ),
+                          ),
+                          //---The main countdown timer
+                          LiquidTimer(
                             changeableTimerDuration: widget.recoveryDuration,
                             timerStart: timerStart,
-                            //size of entire bubble = size container - padding for each size
-                            centerSize: size - (24 * 2),
                           ),
                         ],
                       ),
