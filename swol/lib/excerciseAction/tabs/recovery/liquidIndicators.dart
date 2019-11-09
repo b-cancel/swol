@@ -43,21 +43,25 @@ List<String> durationToCustomDisplay(Duration duration){
   return [only1stDigit, always2Digits];
 }
 
-//the animation will go from 0 to 1 in some duration
-//when it start initially we will know what that duration is
-//when we change the duration the animation can be in one of two states
-//1. stopped
-//2. running
+//TODO: all below
+//the animation will go from 0 to 1 in 10 minutes always
 
-//when we receive our new duration we need to
-//1. update the animation duration
-//2. start the animation mid way
-//in some cases I image this may force us to restart our animation
+//After 10: show 9:99 and keep the wave at 1
 
-//NOTE: AFTER our main animation ends... We NEED to start our other one...
-//the other runs for 10 minutes until the clock reads 0 : 00
-//if we change our main animation before it ends then we don't have to worry about this other one
-//if we change it after our main animation has ended then we need to stop the other one and reset it and then proceed
+//Before 10:
+
+//IF our timer has not completed:
+//1. keep the wave at 0 and invisible
+//2. keep the text invisible (no need to calcuate the text each frame)
+
+//ELSE our timer has completed
+//the progress of our wave depends entirely on how much extra time has passed since our timer stopped
+//10 minutes - time passed = ammount of time stopwatch will show some animation or update [stop watch time]
+
+//TODO; complete notes and stuff
+
+//while Stop watch time > 0 
+//we only want to show text and the wave when we
 
 class LiquidTimer extends StatefulWidget {
   LiquidTimer({
