@@ -161,24 +161,12 @@ class _AddExcerciseState extends State<AddExcercise> {
 
   @override
   Widget build(BuildContext context) {
-    //add s? (such a minimal detail)
-    int mins = recoveryPeriod.value.inMinutes;
-    bool showS = (mins == 1) ? false : true;
-
     //for slider hatch mark
     double totalWidth = MediaQuery.of(context).size.width;
     double sliderWidth = totalWidth - (16.0 * 2) - (8 * 2);
 
     //how long it takes to shift focus to a different section
     Duration changeDuration = Duration(milliseconds: 250);
-
-    //size of the middle text and such
-    double textMaxWidth = 28;
-    double textHeight = 16;
-
-    //denom must match, and 2 items have regular width
-    //double grownWidth = sliderWidth * (5 / 7);
-    //double regularWidth = sliderWidth * (1 / 7);
 
     //build
     return WillPopScope(
@@ -319,11 +307,8 @@ class _AddExcerciseState extends State<AddExcercise> {
                   RecoveryTimeCard(
                     changeDuration: changeDuration, 
                     sliderWidth: sliderWidth, 
-                    textHeight: textHeight, 
-                    textMaxWidth: textMaxWidth, 
                     //value notifier below
                     recoveryPeriod: recoveryPeriod, 
-                    showS: showS,
                   ),
                   SetTargetCard(
                     setTarget: setTarget,
@@ -334,8 +319,6 @@ class _AddExcerciseState extends State<AddExcercise> {
                       RepTargetCard(
                         changeDuration: changeDuration, 
                         sliderWidth: sliderWidth, 
-                        textHeight: textHeight, 
-                        textMaxWidth: textMaxWidth, 
                         repTargetDuration: repTargetDuration, 
                         repTarget: repTarget,
                       ),
@@ -403,16 +386,12 @@ class RepTargetCard extends StatelessWidget {
     Key key,
     @required this.changeDuration,
     @required this.sliderWidth,
-    @required this.textHeight,
-    @required this.textMaxWidth,
     @required this.repTargetDuration,
     @required this.repTarget,
   }) : super(key: key);
 
   final Duration changeDuration;
   final double sliderWidth;
-  final double textHeight;
-  final double textMaxWidth;
   final ValueNotifier<Duration> repTargetDuration;
   final ValueNotifier<int> repTarget;
 
@@ -442,8 +421,8 @@ class RepTargetCard extends StatelessWidget {
               child: AnimatedRecoveryTimeInfo(
                 changeDuration: changeDuration,
                 grownWidth: sliderWidth, 
-                textHeight: textHeight, 
-                textMaxWidth: textMaxWidth,
+                textHeight: 16, 
+                textMaxWidth: 28,
                 selectedDuration: repTargetDuration,
                 bigTickNumber: 25,
                 ranges: [
@@ -592,18 +571,12 @@ class RecoveryTimeCard extends StatelessWidget {
     Key key,
     @required this.changeDuration,
     @required this.sliderWidth,
-    @required this.textHeight,
-    @required this.textMaxWidth,
     @required this.recoveryPeriod,
-    @required this.showS,
   }) : super(key: key);
 
   final Duration changeDuration;
   final double sliderWidth;
-  final double textHeight;
-  final double textMaxWidth;
   final ValueNotifier<Duration> recoveryPeriod;
-  final bool showS;
 
   @override
   Widget build(BuildContext context) {
@@ -625,106 +598,152 @@ class RecoveryTimeCard extends StatelessWidget {
                 popUp: SetBreakPopUp(),
               ),
             ),
-            AnimatedRecoveryTimeInfo(
-              changeDuration: changeDuration,
-              grownWidth: sliderWidth, 
-              textHeight: textHeight, 
-              textMaxWidth: textMaxWidth,
-              selectedDuration: recoveryPeriod,
-              ranges: [
-                Range(
-                  name: "Endurance Training",
-                  onTap: makeTrainingTypePopUp(
-                    context: context,
-                    title: "Endurance Training",
-                    showEndurance: true,
-                    highlightfield: 2,
-                  ),
-                  left: new SliderToolTipButton(
-                    buttonText: "15s",
-                    tooltipText: "Any Less, wouldn't be enough",
-                  ),
-                  right: SliderToolTipButton(
-                    buttonText: "1m",
-                  ),
-                  startSeconds: 15,
-                  endSeconds: 60,
-                ),
-                Range(
-                  name: "Hypertrophy Training",
-                  onTap: makeTrainingTypePopUp(
-                    context: context,
-                    title: "Hypertrophy Training",
-                    showHypertrophy: true,
-                    highlightfield: 2,
-                  ),
-                  left: SliderToolTipButton(
-                    buttonText: "1:05",
-                  ),
-                  right: SliderToolTipButton(
-                    buttonText: "2m",
-                  ),
-                  startSeconds: 65,
-                  endSeconds: 120,
-                ),
-                Range(
-                  name: "Hypertrophy/Strength (50/50)",
-                  onTap: makeTrainingTypePopUp(
-                    context: context,
-                    title: "Hyper/Str (50/50)",
-                    showHypertrophy: true,
-                    showStrength: true,
-                    highlightfield: 2,
-                  ),
-                  left: SliderToolTipButton(
-                    buttonText: "2:05",
-                  ),
-                  right: SliderToolTipButton(
-                    buttonText: "3m",
-                  ),
-                  startSeconds: 125,
-                  endSeconds: 180,
-                ),
-                Range(
-                  name: "Strength Training",
-                  onTap: makeTrainingTypePopUp(
-                    context: context,
-                    title: "Strength Training",
-                    showStrength: true,
-                    highlightfield: 2,
-                  ),
-                  left: SliderToolTipButton(
-                    buttonText: "3:05",
-                  ),
-                  right: SliderToolTipButton(
-                    buttonText: "4:55",
-                    tooltipText: "Any More, and your muscles would have cooled off",
-                  ),
-                  startSeconds: 185,
-                  endSeconds: 295,
-                )
-              ],
-            ),
-            Padding(
-              padding: const EdgeInsets.only(
-                top: 8,
-                bottom: 16.0,
-              ),
-              child: Container(
-                color: Theme.of(context).primaryColor,
-                height: 2,
-                width: MediaQuery.of(context).size.width,
-              ),
-            ),
-            TimePicker(
-              duration: recoveryPeriod,
-            ),
-            MinsSecsBelowTimePicker(
-              showS: showS,
+            RecoveryTimeWidget(
+              changeDuration: changeDuration, 
+              sliderWidth: sliderWidth, 
+              textHeight: 16, 
+              textMaxWidth: 28, 
+              recoveryPeriod: recoveryPeriod, 
             ),
           ],
         ),
       ),
+    );
+  }
+}
+
+class RecoveryTimeWidget extends StatelessWidget {
+  const RecoveryTimeWidget({
+    Key key,
+    @required this.changeDuration,
+    @required this.sliderWidth,
+    @required this.textHeight,
+    @required this.textMaxWidth,
+    @required this.recoveryPeriod,
+    this.darkTheme: true,
+  }) : super(key: key);
+
+  final Duration changeDuration;
+  final double sliderWidth;
+  final double textHeight;
+  final double textMaxWidth;
+  final ValueNotifier<Duration> recoveryPeriod;
+  final bool darkTheme;
+
+  @override
+  Widget build(BuildContext context) {
+    //add s? (such a minimal detail)
+    int mins = recoveryPeriod.value.inMinutes;
+    bool showS = (mins == 1) ? false : true;
+
+    //build
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        FittedBox(
+          fit: BoxFit.contain,
+          child: AnimatedRecoveryTimeInfo(
+            changeDuration: changeDuration,
+            grownWidth: sliderWidth, 
+            textHeight: textHeight, 
+            textMaxWidth: textMaxWidth,
+            selectedDuration: recoveryPeriod,
+            darkTheme: darkTheme,
+            ranges: [
+              Range(
+                name: "Endurance Training",
+                onTap: makeTrainingTypePopUp(
+                  context: context,
+                  title: "Endurance Training",
+                  showEndurance: true,
+                  highlightfield: 2,
+                ),
+                left: new SliderToolTipButton(
+                  buttonText: "15s",
+                  tooltipText: "Any Less, wouldn't be enough",
+                ),
+                right: SliderToolTipButton(
+                  buttonText: "1m",
+                ),
+                startSeconds: 15,
+                endSeconds: 60,
+              ),
+              Range(
+                name: "Hypertrophy Training",
+                onTap: makeTrainingTypePopUp(
+                  context: context,
+                  title: "Hypertrophy Training",
+                  showHypertrophy: true,
+                  highlightfield: 2,
+                ),
+                left: SliderToolTipButton(
+                  buttonText: "1:05",
+                ),
+                right: SliderToolTipButton(
+                  buttonText: "2m",
+                ),
+                startSeconds: 65,
+                endSeconds: 120,
+              ),
+              Range(
+                name: "Hypertrophy/Strength (50/50)",
+                onTap: makeTrainingTypePopUp(
+                  context: context,
+                  title: "Hyper/Str (50/50)",
+                  showHypertrophy: true,
+                  showStrength: true,
+                  highlightfield: 2,
+                ),
+                left: SliderToolTipButton(
+                  buttonText: "2:05",
+                ),
+                right: SliderToolTipButton(
+                  buttonText: "3m",
+                ),
+                startSeconds: 125,
+                endSeconds: 180,
+              ),
+              Range(
+                name: "Strength Training",
+                onTap: makeTrainingTypePopUp(
+                  context: context,
+                  title: "Strength Training",
+                  showStrength: true,
+                  highlightfield: 2,
+                ),
+                left: SliderToolTipButton(
+                  buttonText: "3:05",
+                ),
+                right: SliderToolTipButton(
+                  buttonText: "4:55",
+                  tooltipText: "Any More, and your muscles would have cooled off",
+                ),
+                startSeconds: 185,
+                endSeconds: 295,
+              )
+            ],
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(
+            top: 8,
+            bottom: 16.0,
+          ),
+          child: Container(
+            color: Theme.of(context).primaryColor,
+            height: 2,
+            width: MediaQuery.of(context).size.width,
+          ),
+        ),
+        TimePicker(
+          duration: recoveryPeriod,
+          darkTheme: darkTheme,
+        ),
+        MinsSecsBelowTimePicker(
+          showS: showS,
+          darkTheme: darkTheme,
+        ),
+      ],
     );
   }
 }

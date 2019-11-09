@@ -167,15 +167,18 @@ class MinsSecsBelowTimePicker extends StatelessWidget {
   const MinsSecsBelowTimePicker({
     Key key,
     @required this.showS,
+    this.darkTheme: true,
   }) : super(key: key);
 
   final bool showS;
+  final bool darkTheme;
 
   @override
   Widget build(BuildContext context) {
     return DefaultTextStyle(
       style: TextStyle(
-        fontWeight: FontWeight.bold
+        fontWeight: FontWeight.bold,
+        color: (darkTheme) ? Colors.white : Colors.black,
       ),
       child: Row(
         mainAxisSize: MainAxisSize.max,

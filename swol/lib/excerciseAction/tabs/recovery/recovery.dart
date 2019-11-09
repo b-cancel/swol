@@ -3,6 +3,7 @@ import 'package:page_transition/page_transition.dart';
 import 'package:swol/excerciseAction/tabs/recovery/breath.dart';
 import 'package:swol/excerciseAction/tabs/recovery/liquidIndicators.dart';
 import 'package:swol/excerciseAction/tabs/sharedWidgets/done.dart';
+import 'package:swol/excerciseAddition/addExcercise.dart';
 import 'package:swol/sharedWidgets/timePicker.dart';
 
 class Recovery extends StatefulWidget {
@@ -199,8 +200,12 @@ maybeChangeTime({
               ],
             ),
             content: Container(
-              child: TimePicker(
-                duration: possibleRecoveryDuration,
+              child: RecoveryTimeWidget(
+                changeDuration: Duration(milliseconds: 250), 
+                sliderWidth: MediaQuery.of(context).size.width, 
+                textHeight: 16, 
+                textMaxWidth: 28, 
+                recoveryPeriod: possibleRecoveryDuration, 
                 darkTheme: false,
               ),
             ),
@@ -212,6 +217,7 @@ maybeChangeTime({
                 child: Text("Cancel"),
               ),
               RaisedButton(
+                color: Colors.blue,
                 onPressed: (){
                   recoveryDuration.value = possibleRecoveryDuration.value;
                   Navigator.pop(context);

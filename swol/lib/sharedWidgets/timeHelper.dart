@@ -6,12 +6,14 @@ class TickGenerator extends StatefulWidget {
     @required this.endTick,
     @required this.bigTickNumber,
     this.selectedDuration,
+    this.darkTheme,
   });
 
   final int startTick;
   final int endTick;
   final int bigTickNumber;
   final ValueNotifier<Duration> selectedDuration;
+  final bool darkTheme;
 
   @override
   _TickGeneratorState createState() => _TickGeneratorState();
@@ -68,7 +70,7 @@ class _TickGeneratorState extends State<TickGenerator> {
               width: tickWidth,
               color: (highlight) 
               ? Theme.of(context).accentColor
-              : Theme.of(context).backgroundColor,
+              : (widget.darkTheme) ? Theme.of(context).backgroundColor : Colors.grey.withOpacity(0.5),
             ),
           ),
         ),
@@ -169,6 +171,7 @@ class AnimatedRecoveryTimeInfo extends StatefulWidget {
     @required this.selectedDuration,
     @required this.ranges,
     this.bigTickNumber: 30,
+    this.darkTheme: true,
   }) : super(key: key);
 
   final Duration changeDuration;
@@ -178,6 +181,7 @@ class AnimatedRecoveryTimeInfo extends StatefulWidget {
   final ValueNotifier<Duration> selectedDuration;
   final List<Range> ranges;
   final int bigTickNumber;
+  final bool darkTheme;
 
   @override
   _AnimatedRecoveryTimeInfoState createState() => _AnimatedRecoveryTimeInfoState();
@@ -217,14 +221,6 @@ class _AnimatedRecoveryTimeInfoState extends State<AnimatedRecoveryTimeInfo> {
 
   @override
   Widget build(BuildContext context) {
-    //quick maths
-    double sub = -(widget.textMaxWidth * 2);
-    double sizeWhenGrown = widget.grownWidth + sub;
-    double sizeWhenShrunk = 0 + sub;
-    if(sizeWhenShrunk.isNegative){
-      sizeWhenShrunk = 0;
-    }
-
     //create
     List<Widget> nameSections = new List<Widget>();
     List<Widget> tickSections = new List<Widget>();
@@ -254,6 +250,7 @@ class _AnimatedRecoveryTimeInfoState extends State<AnimatedRecoveryTimeInfo> {
             endTick: widget.ranges[i].endSeconds,
             selectedDuration: widget.selectedDuration,
             bigTickNumber: widget.bigTickNumber,
+            darkTheme: widget.darkTheme,
           ) : Container(),
         ),
       );
@@ -305,7 +302,10 @@ class _AnimatedRecoveryTimeInfoState extends State<AnimatedRecoveryTimeInfo> {
     //build
     return Stack(
       children: <Widget>[
-        Padding(
+        //---Name Sections
+        (widget.darkTheme == false) 
+        ? Container()
+        : Padding(
           padding: EdgeInsets.only(
             top: 24.0,
           ),
@@ -315,10 +315,19 @@ class _AnimatedRecoveryTimeInfoState extends State<AnimatedRecoveryTimeInfo> {
             children: nameSections,
           ),
         ),
-        Row(
-          children: tickSections,
+        //---Tick Sections
+        Padding(
+          padding: const EdgeInsets.only(
+            bottom: 24.0,
+          ),
+          child: Row(
+            children: tickSections,
+          ),
         ),
-        DefaultTextStyle(
+        //---End Sections
+        (widget.darkTheme == false) 
+        ? Container()
+        : DefaultTextStyle(
           style: TextStyle(
             fontWeight: FontWeight.bold,
           ),
