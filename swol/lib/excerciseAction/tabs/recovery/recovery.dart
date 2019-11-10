@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:swol/excerciseAction/tabs/recovery/breath.dart';
-import 'package:swol/excerciseAction/tabs/recovery/liquidIndicators.dart';
+import 'package:swol/excerciseAction/tabs/recovery/liquidStopwatch.dart';
+import 'package:swol/excerciseAction/tabs/recovery/liquidTimer.dart';
 import 'package:swol/excerciseAction/tabs/sharedWidgets/done.dart';
 import 'package:swol/excerciseAddition/addExcercise.dart';
-import 'package:swol/sharedWidgets/timePicker.dart';
 
 class Recovery extends StatefulWidget {
   Recovery({
