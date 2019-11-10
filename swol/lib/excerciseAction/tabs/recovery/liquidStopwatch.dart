@@ -37,9 +37,14 @@ class LiquidStopwatch extends StatefulWidget {
 }
 
 class _LiquidStopwatchState extends State<LiquidStopwatch> with SingleTickerProviderStateMixin {
-  //controllers
-  AnimationController controller;
-  Animation<Color> animation;
+  //main Controller
+  AnimationController controller10Minutes;
+
+  //color Controller
+  //NOTE: only used for the wave color and doesnt need a listener
+  //since while its running so will the controller10Minutes be running
+  AnimationController controller5Minutes;
+  Animation<Color> animation5Minutes;
 
   //function removable from listeners
   updateState(){
@@ -55,7 +60,7 @@ class _LiquidStopwatchState extends State<LiquidStopwatch> with SingleTickerProv
     super.initState();
 
     //create animation controller
-    controller = AnimationController(
+    controller10Minutes = AnimationController(
       vsync: this,
       //our max value is 9:99
       //so our max duration is 10
@@ -64,26 +69,31 @@ class _LiquidStopwatchState extends State<LiquidStopwatch> with SingleTickerProv
       duration: Duration(minutes: 10),
     );
 
-    animation = ColorTween(
+    controller5Minutes = AnimationController(
+      vsync: this,
+      duration: Duration(minutes: 5),
+    );
+
+    animation5Minutes = ColorTween(
       begin: Colors.red, 
       end: Colors.blue,
-    ).animate(controller);
+    ).animate(controller5Minutes);
 
     //refresh UI at phone framerate
-    controller.addListener(updateState);
+    controller10Minutes.addListener(updateState);
     widget.changeableTimerDuration.addListener(updateState);
 
     //start the stopwatch
-    controller.forward();
+    controller10Minutes.forward();
   }
 
   @override
   void dispose() {
     widget.changeableTimerDuration.removeListener(updateState);
-    controller.removeListener(updateState);
+    controller10Minutes.removeListener(updateState);
     
     //controller dispose
-    controller.dispose();
+    controller10Minutes.dispose();
 
     //super dispose
     super.dispose();
@@ -119,9 +129,10 @@ class _LiquidStopwatchState extends State<LiquidStopwatch> with SingleTickerProv
         child: LiquidCircularProgressIndicator(
           //animated values
           //TODO: the start value should be when extraDurationPassed = 0... the ending should be when totatDurationPassed == 10 min
-          value: controller.value, 
-          //TODO: adjust the color to the above as well MAYBE
-          valueColor: animation,
+          value: controller10Minutes.value, 
+          valueColor: (extraDurationPassed == Duration.zero) ? AlwaysStoppedAnimation(
+            Colors.transparent,
+          ) : animation5Minutes,
           //set value
           backgroundColor: Colors.transparent,
           borderColor: Colors.transparent,
