@@ -27,10 +27,12 @@ class LiquidStopwatch extends StatefulWidget {
   LiquidStopwatch({
     @required this.changeableTimerDuration,
     @required this.timerStart,
+    @required this.silver,
   });
 
   final ValueNotifier<Duration> changeableTimerDuration;
   final DateTime timerStart;
+  final Color silver;
 
   @override
   State<StatefulWidget> createState() => _LiquidStopwatchState();
@@ -79,7 +81,7 @@ class _LiquidStopwatchState extends State<LiquidStopwatch> with TickerProviderSt
     );
 
     animation5Minutes = ColorTween(
-      begin: Colors.red, 
+      begin: widget.silver, 
       end: finalBlue,
     ).animate(controller5Minutes);
 
@@ -126,6 +128,13 @@ class _LiquidStopwatchState extends State<LiquidStopwatch> with TickerProviderSt
     String bottomLeftNumber = timerDurationStrings[0] + " : " + timerDurationStrings[1];
     String bottomRightNumber = totalDurationPassedStrings[0] + " : " + totalDurationPassedStrings[1];
 
+    //if the total time passed overflows
+    //then our timer has run as much as possible
+    //so we overflow the larger top number as well
+    if(totalDurationPassedStrings[1] == "99"){
+      topNumber = "9:99";
+    }
+
     //make generate the proper progress value (we dont want it to jump)
     //thankfully since our max setable time is 4:55 and our actual max wait time is 5 minutes
     //we know we will have atleast 5 seconds for the 2nd progress bar to jump from bottom to top
@@ -156,12 +165,12 @@ class _LiquidStopwatchState extends State<LiquidStopwatch> with TickerProviderSt
       padding: EdgeInsets.all(24),
       child: ClipOval(
         child: Container(
-          color: (totalDurationPassed > fiveMinutes) ? finalBlue : Colors.transparent,
+          color: Colors.white,
           child: LiquidCircularProgressIndicator(
             //animated values
-            value: progressValue,
+            value: 1- progressValue,
             valueColor: (extraDurationPassed == Duration.zero || totalDurationPassed > fiveMinutes) 
-            ? AlwaysStoppedAnimation(Colors.transparent) : animation5Minutes,
+            ? AlwaysStoppedAnimation(Colors.transparent) : AlwaysStoppedAnimation(widget.silver),
             //set value
             backgroundColor: Colors.transparent,
             borderColor: Colors.transparent,

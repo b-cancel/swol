@@ -33,6 +33,8 @@ class _RecoveryState extends State<Recovery> with SingleTickerProviderStateMixin
 
   @override
   Widget build(BuildContext context) {
+    Color silver =  Color(0xFFBFBFBF);
+
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -51,25 +53,17 @@ class _RecoveryState extends State<Recovery> with SingleTickerProviderStateMixin
                         alignment: Alignment.bottomCenter,
                         children: <Widget>[
                           //---White Backgrond circle
-                          Container(
-                            height: MediaQuery.of(context).size.width,
-                            width: MediaQuery.of(context).size.width,
-                            padding: EdgeInsets.all(24),
-                            child: ClipOval(
-                              child: Container(
-                                color: Colors.white,
-                              ),
-                            ),
-                          ),
                           //---The secondary
                           LiquidStopwatch(
                             changeableTimerDuration: widget.recoveryDuration,
                             timerStart: timerStart,
+                            silver: silver,
                           ),
                           //---The main countdown timer
                           LiquidTimer(
                             changeableTimerDuration: widget.recoveryDuration,
                             timerStart: timerStart,
+                            silver: silver,
                           ),
                         ],
                       ),
