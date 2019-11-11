@@ -36,7 +36,11 @@ class LiquidStopwatch extends StatefulWidget {
   State<StatefulWidget> createState() => _LiquidStopwatchState();
 }
 
-class _LiquidStopwatchState extends State<LiquidStopwatch> with SingleTickerProviderStateMixin {
+class _LiquidStopwatchState extends State<LiquidStopwatch> with TickerProviderStateMixin {
+  final Duration fiveMinutes = Duration(minutes: 5);
+  final Color finalBlue = Color(0xFF145C9E);
+  final Color finalBlue2 = Color(0xFF2193FF);
+
   //main Controller
   AnimationController controller10Minutes;
 
@@ -71,12 +75,12 @@ class _LiquidStopwatchState extends State<LiquidStopwatch> with SingleTickerProv
 
     controller5Minutes = AnimationController(
       vsync: this,
-      duration: Duration(minutes: 5),
+      duration: fiveMinutes,
     );
 
     animation5Minutes = ColorTween(
       begin: Colors.red, 
-      end: Colors.blue,
+      end: finalBlue,
     ).animate(controller5Minutes);
 
     //refresh UI at phone framerate
@@ -85,6 +89,7 @@ class _LiquidStopwatchState extends State<LiquidStopwatch> with SingleTickerProv
 
     //start the stopwatch
     controller10Minutes.forward();
+    controller5Minutes.forward();
   }
 
   @override
@@ -94,6 +99,7 @@ class _LiquidStopwatchState extends State<LiquidStopwatch> with SingleTickerProv
     
     //controller dispose
     controller10Minutes.dispose();
+    controller5Minutes.dispose();
 
     //super dispose
     super.dispose();
@@ -120,30 +126,54 @@ class _LiquidStopwatchState extends State<LiquidStopwatch> with SingleTickerProv
     String bottomLeftNumber = timerDurationStrings[0] + " : " + timerDurationStrings[1];
     String bottomRightNumber = totalDurationPassedStrings[0] + " : " + totalDurationPassedStrings[1];
 
+    //make generate the proper progress value (we dont want it to jump)
+    //thankfully since our max setable time is 4:55 and our actual max wait time is 5 minutes
+    //we know we will have atleast 5 seconds for the 2nd progress bar to jump from bottom to top
+    double progressValue = 0;
+    if(extraDurationPassed != Duration.zero){ //we should have some form of progress
+      if(totalDurationPassed > fiveMinutes) progressValue = 1;
+      else{ //between 0 and 1
+        //Output: 0 -> 1
+        //Input: widget.changeableTimerduration.value -> Duration(minutes 5)
+        //Input: 0 -> fiveMinutes - widget.changeabletimerDuration.value
+        Duration totalStopwatchAnimation = fiveMinutes - widget.changeableTimerDuration.value;
+        //Input: 0 -> totalStopwatchAnimation (MIN of 5 seconds)
+        //Output: 0 -> 1
+        Duration adjustedTimePassed = totalDurationPassed - widget.changeableTimerDuration.value;
+
+        //determine how far we have progressed within range
+        progressValue = adjustedTimePassed.inMicroseconds / totalStopwatchAnimation.inMicroseconds;
+        
+        //just in case for small floating point "mistakes"
+        progressValue = progressValue.clamp(0.0, 1.0).toDouble();
+      }
+    }
+
     //build return timer
     return Container(
       height: MediaQuery.of(context).size.width,
-      width: MediaQuery.of(context).size.width,
+      width: MediaQuery.of(context).size.width, //3.25/5
       padding: EdgeInsets.all(24),
       child: ClipOval(
-        child: LiquidCircularProgressIndicator(
-          //animated values
-          //TODO: the start value should be when extraDurationPassed = 0... the ending should be when totatDurationPassed == 10 min
-          value: controller10Minutes.value, 
-          valueColor: (extraDurationPassed == Duration.zero) ? AlwaysStoppedAnimation(
-            Colors.transparent,
-          ) : animation5Minutes,
-          //set value
-          backgroundColor: Colors.transparent,
-          borderColor: Colors.transparent,
-          borderWidth: 0,
-          direction: Axis.vertical, 
-          //only show when our timer has completed
-          center: (extraDurationPassed == Duration.zero) ? Container() : TimeDisplay(
-            textContainerSize: textContainerSize, 
-            topNumber: topNumber, 
-            bottomLeftNumber: bottomLeftNumber, 
-            bottomRightNumber: bottomRightNumber,
+        child: Container(
+          color: (totalDurationPassed > fiveMinutes) ? finalBlue : Colors.transparent,
+          child: LiquidCircularProgressIndicator(
+            //animated values
+            value: progressValue,
+            valueColor: (extraDurationPassed == Duration.zero || totalDurationPassed > fiveMinutes) 
+            ? AlwaysStoppedAnimation(Colors.transparent) : animation5Minutes,
+            //set value
+            backgroundColor: Colors.transparent,
+            borderColor: Colors.transparent,
+            borderWidth: 0,
+            direction: Axis.vertical, 
+            //only show when our timer has completed
+            center: (extraDurationPassed == Duration.zero) ? Container() : TimeDisplay(
+              textContainerSize: textContainerSize, 
+              topNumber: topNumber, 
+              bottomLeftNumber: bottomLeftNumber, 
+              bottomRightNumber: bottomRightNumber,
+            ),
           ),
         ),
       ),

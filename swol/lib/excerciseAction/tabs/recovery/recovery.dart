@@ -42,7 +42,6 @@ class _RecoveryState extends State<Recovery> with SingleTickerProviderStateMixin
             Expanded(
               child: Center(
                 child: Container(
-                  color: Colors.red,
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -63,12 +62,9 @@ class _RecoveryState extends State<Recovery> with SingleTickerProviderStateMixin
                             ),
                           ),
                           //---The secondary
-                          Opacity(
-                            opacity: 1,
-                            child: LiquidStopwatch(
-                              changeableTimerDuration: widget.recoveryDuration,
-                              timerStart: timerStart,
-                            ),
+                          LiquidStopwatch(
+                            changeableTimerDuration: widget.recoveryDuration,
+                            timerStart: timerStart,
                           ),
                           //---The main countdown timer
                           LiquidTimer(
