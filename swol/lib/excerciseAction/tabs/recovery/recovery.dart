@@ -33,10 +33,16 @@ class _RecoveryState extends State<Recovery> with SingleTickerProviderStateMixin
 
   @override
   Widget build(BuildContext context) {
+    //-------------------------settings to play with--------------------
+
+    //Colors
     Color secondaryColorOne =  Color(0xFFBFBFBF);
     Color accentTimer = Theme.of(context).accentColor;
     Color accentStopwatch = Colors.red;
     Color secondaryColorTwo = Colors.white; 
+
+    //other
+    bool showArrows = true;
 
     return Scaffold(
       body: SafeArea(
@@ -62,7 +68,8 @@ class _RecoveryState extends State<Recovery> with SingleTickerProviderStateMixin
                             timerStart: timerStart,
                             waveColor: accentStopwatch,
                             backgroundColor: secondaryColorOne,
-                            maxExtraDuration: Duration(minutes: 4),
+                            maxExtraDuration: Duration(minutes: 5),
+                            showArrows: showArrows,
                           ),
                           //---The main countdown timer
                           LiquidTimer(
@@ -70,6 +77,7 @@ class _RecoveryState extends State<Recovery> with SingleTickerProviderStateMixin
                             timerStart: timerStart,
                             backgroundColor: secondaryColorOne,
                             waveColor: accentTimer,
+                            showArrows: showArrows,
                           ),
                         ],
                       ),

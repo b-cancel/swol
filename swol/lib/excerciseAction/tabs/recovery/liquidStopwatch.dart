@@ -30,6 +30,7 @@ class LiquidStopwatch extends StatefulWidget {
     @required this.waveColor,
     @required this.backgroundColor,
     this.maxExtraDuration: const Duration(minutes: 5),
+    this.showArrows: false,
   });
 
   final ValueNotifier<Duration> changeableTimerDuration;
@@ -37,6 +38,7 @@ class LiquidStopwatch extends StatefulWidget {
   final Color waveColor;
   final Color backgroundColor;
   final Duration maxExtraDuration;
+  final bool showArrows;
 
   @override
   State<StatefulWidget> createState() => _LiquidStopwatchState();
@@ -160,10 +162,10 @@ class _LiquidStopwatchState extends State<LiquidStopwatch> with TickerProviderSt
           center: (extraDurationPassed == Duration.zero) ? Container() : TimeDisplay(
             textContainerSize: textContainerSize, 
             topNumber: topNumber, 
-            topArrowUp: true,
+            topArrowUp: widget.showArrows ? true : null,
             bottomLeftNumber: bottomLeftNumber, 
             bottomRightNumber: bottomRightNumber,
-            showBottomArrow: true,
+            showBottomArrow: widget.showArrows ? true : false,
           ),
         ),
       ),
