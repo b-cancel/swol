@@ -1,5 +1,6 @@
 //flutter
 import 'package:flutter/material.dart';
+import 'package:swol/excerciseAction/tabs/recovery/triangle.dart';
 
 //utility (max is 9:59 but we indicate we are maxed out with 9:99)
 List<String> durationToCustomDisplay(Duration duration){
@@ -42,17 +43,29 @@ class TimeDisplay extends StatelessWidget {
     Key key,
     @required this.textContainerSize,
     @required this.topNumber,
+    this.topArrowUp,
     @required this.bottomLeftNumber,
     @required this.bottomRightNumber,
+    this.showBottomArrow: false,
   }) : super(key: key);
 
   final double textContainerSize;
   final String topNumber;
+  final bool topArrowUp;
   final String bottomLeftNumber;
   final String bottomRightNumber;
+  final bool showBottomArrow;
 
   @override
   Widget build(BuildContext context) {
+    Widget topTriangle = (topArrowUp == null) ? Container()
+    : Container(
+      child: FittedBox(
+        fit: BoxFit.contain,
+        child: topArrowUp ? TriangleUp() : TriangleDown(),
+      ),
+    );
+
     return Container(
       padding: EdgeInsets.all(24),
       child: FittedBox(
@@ -62,14 +75,30 @@ class TimeDisplay extends StatelessWidget {
           children: <Widget>[
             Container(
               width: textContainerSize,
-              child: FittedBox(
-                fit: BoxFit.contain,
-                child: Text(
-                  topNumber,
-                  style: TextStyle(
-                    color: Theme.of(context).primaryColor,
-                    fontWeight: FontWeight.bold,
-                  ),
+              child: IntrinsicWidth(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  mainAxisAlignment: topArrowUp == true ? MainAxisAlignment.start : MainAxisAlignment.end,
+                  children: <Widget>[
+                    (topArrowUp == true) ? topTriangle : Container(),
+                    FittedBox(
+                      fit: BoxFit.contain,
+                      child: Text(
+                        topNumber,
+                        style: TextStyle(
+                          color: Theme.of(context).primaryColor,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    (topArrowUp == false) ? Padding(
+                      padding: EdgeInsets.only(
+                        bottom: 16,
+                      ),
+                      child: topTriangle,
+                    ) : Container(),
+                  ],
                 ),
               ),
             ),
@@ -96,6 +125,7 @@ class TimeDisplay extends StatelessWidget {
                         ),
                         EditIcon(
                           invisible: true,
+                          showArrow: showBottomArrow,
                           text: bottomRightNumber,
                         )
                       ],
@@ -114,11 +144,13 @@ class TimeDisplay extends StatelessWidget {
 class EditIcon extends StatelessWidget {
   const EditIcon({
     this.invisible: false,
+    this.showArrow: false,
     @required this.text,
     Key key,
   }) : super(key: key);
 
   final bool invisible;
+  final bool showArrow;
   final String text;
 
   @override
@@ -140,29 +172,51 @@ class EditIcon extends StatelessWidget {
           bottomLeft: Radius.circular(8),
         )
       ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Container(
-            padding: EdgeInsets.all(2),
-            child: Text(text),
-          ),
-          (invisible) ? Container() : Container(
-            padding: EdgeInsets.all(2),
-            decoration: BoxDecoration(
-              border: Border(
-                left: borderSide,
-              )
+      child: IntrinsicWidth(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            showArrow == false ? Container() 
+            : Container(
+              height: 6,
+              child: TriangleUp(
+                //anything larger than 12 makes no difference
+                widthDivisor: 12, 
+              ),
             ),
-            child: Icon(
-              Icons.edit,
-              size: 18,
-              color: borderColor,
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Container(
+                  padding: EdgeInsets.only(
+                    left: 2,
+                    right: 2,
+                    top: 2,
+                    bottom: (showArrow) ? 0 : 2,
+                  ),
+                  child: Text(text),
+                ),
+                (invisible) ? Container() : Container(
+                  padding: EdgeInsets.all(2),
+                  decoration: BoxDecoration(
+                    border: Border(
+                      left: borderSide,
+                    )
+                  ),
+                  child: Icon(
+                    Icons.edit,
+                    size: 18,
+                    color: borderColor,
+                  ),
+                ),
+              ],
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

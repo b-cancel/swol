@@ -14,12 +14,14 @@ class LiquidTimer extends StatefulWidget {
   LiquidTimer({
     @required this.changeableTimerDuration,
     @required this.timerStart,
-    @required this.silver,
+    @required this.waveColor,
+    @required this.backgroundColor,
   });
 
   final ValueNotifier<Duration> changeableTimerDuration;
   final DateTime timerStart;
-  final Color silver;
+  final Color waveColor;
+  final Color backgroundColor;
 
   @override
   State<StatefulWidget> createState() => _LiquidTimerState();
@@ -158,34 +160,33 @@ class _LiquidTimerState extends State<LiquidTimer> with SingleTickerProviderStat
       width: MediaQuery.of(context).size.width,
       padding: EdgeInsets.all(24),
       child: ClipOval(
-        child: Container(
-          color: (controller.value == 1) ? Colors.transparent : widget.silver,
-          child: InkWell(
-            onTap: (){
-              maybeChangeTime(
-                context: context,
-                recoveryDuration: widget.changeableTimerDuration,
-              );
-            },
-            child: LiquidCircularProgressIndicator(
-              //animated values
-              value: 1 - controller.value,
-              valueColor: AlwaysStoppedAnimation(
-                (controller.value == 1) 
-                ? Colors.transparent 
-                : Theme.of(context).accentColor,
-              ),
-              //set value
-              backgroundColor: Colors.transparent,
-              borderColor: Colors.transparent,
-              borderWidth: 0,
-              direction: Axis.vertical, 
-              center: (controller.value == 1) ? Container() : TimeDisplay(
-                textContainerSize: textContainerSize, 
-                topNumber: topNumber, 
-                bottomLeftNumber: bottomLeftNumber, 
-                bottomRightNumber: bottomRightNumber,
-              ),
+        child: InkWell(
+          onTap: (){
+            maybeChangeTime(
+              context: context,
+              recoveryDuration: widget.changeableTimerDuration,
+            );
+          },
+          child: LiquidCircularProgressIndicator(
+            //animated values
+            value: 1 - controller.value,
+            valueColor: AlwaysStoppedAnimation(
+              (controller.value == 1) 
+              ? Colors.transparent 
+              : widget.waveColor,
+            ),
+            backgroundColor: (controller.value == 1) ? Colors.transparent : widget.backgroundColor,
+            //set value
+            borderColor: Colors.transparent,
+            borderWidth: 0,
+            direction: Axis.vertical, 
+            center: (controller.value == 1) ? Container() : TimeDisplay(
+              textContainerSize: textContainerSize, 
+              topNumber: topNumber, 
+              topArrowUp: false,
+              bottomLeftNumber: bottomLeftNumber, 
+              bottomRightNumber: bottomRightNumber,
+              showBottomArrow: true,
             ),
           ),
         ),
