@@ -43,6 +43,7 @@ class _RecoveryState extends State<Recovery> with SingleTickerProviderStateMixin
 
     //other
     bool showArrows = true;
+    bool showIcon = true;
 
     return Scaffold(
       body: SafeArea(
@@ -70,6 +71,7 @@ class _RecoveryState extends State<Recovery> with SingleTickerProviderStateMixin
                             backgroundColor: secondaryColorOne,
                             maxExtraDuration: Duration(minutes: 5),
                             showArrows: showArrows,
+                            showIcon: showIcon,
                           ),
                           //---The main countdown timer
                           LiquidTimer(
@@ -78,6 +80,7 @@ class _RecoveryState extends State<Recovery> with SingleTickerProviderStateMixin
                             backgroundColor: secondaryColorOne,
                             waveColor: accentTimer,
                             showArrows: showArrows,
+                            showIcon: showIcon,
                           ),
                         ],
                       ),

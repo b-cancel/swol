@@ -17,6 +17,7 @@ class LiquidTimer extends StatefulWidget {
     @required this.waveColor,
     @required this.backgroundColor,
     this.showArrows: false,
+    this.showIcon: false,
   });
 
   final ValueNotifier<Duration> changeableTimerDuration;
@@ -24,6 +25,7 @@ class LiquidTimer extends StatefulWidget {
   final Color waveColor;
   final Color backgroundColor;
   final bool showArrows;
+  final bool showIcon;
 
   @override
   State<StatefulWidget> createState() => _LiquidTimerState();
@@ -163,6 +165,8 @@ class _LiquidTimerState extends State<LiquidTimer> with SingleTickerProviderStat
       bottomLeftNumber: bottomLeftNumber, 
       bottomRightNumber: bottomRightNumber,
       showBottomArrow: widget.showArrows ? true : false,
+      isTimer: true,
+      showIcon: widget.showIcon,
     );
 
     //build return timer

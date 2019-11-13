@@ -95,6 +95,7 @@ dependencies:
   #ICONS
   cupertino_icons: ^0.1.2
   font_awesome_flutter: ^8.4.0
+  flutter_icons: ^0.3.1
 
   #TRANSITIONS
   page_transition: ^1.1.4

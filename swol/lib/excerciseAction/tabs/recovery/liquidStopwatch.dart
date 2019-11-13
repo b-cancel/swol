@@ -31,6 +31,7 @@ class LiquidStopwatch extends StatefulWidget {
     @required this.backgroundColor,
     this.maxExtraDuration: const Duration(minutes: 5),
     this.showArrows: false,
+    this.showIcon: false,
   });
 
   final ValueNotifier<Duration> changeableTimerDuration;
@@ -39,6 +40,7 @@ class LiquidStopwatch extends StatefulWidget {
   final Color backgroundColor;
   final Duration maxExtraDuration;
   final bool showArrows;
+  final bool showIcon;
 
   @override
   State<StatefulWidget> createState() => _LiquidStopwatchState();
@@ -142,32 +144,120 @@ class _LiquidStopwatchState extends State<LiquidStopwatch> with TickerProviderSt
       }
     }
 
+    //initially tells the user what happening
+    //then explains they can no longer to the training type behind the one they were aiming for
+    String extraMessage = (extraDurationPassed == Duration.zero) ? "Flushing Lactic Acid Build Up" : null;
+    
+    //reminds the user what this duration of break is good for
+    String readyFor; //only empty for the first 15 seconds
+    String lateFor;
+
+    //we are ready for some type of workout
+    if(Duration(seconds: 15) < totalDurationPassed && totalDurationPassed < Duration(minutes: 5)){
+      readyFor = "Ready For ";
+      if(totalDurationPassed < Duration(minutes: 1)){ //15s to 1m
+        readyFor += "Endurance";
+      } 
+      else{
+        lateFor = "To Late For ";
+        if(totalDurationPassed < Duration(minutes: 2)){ //to 2m hypertrophy
+          readyFor += "Hypertrophy";
+          lateFor += "Endurance";
+        }
+        else if(totalDurationPassed < Duration(minutes: 3)){ //to 3m hypertrophy or strength
+          readyFor += "Hypertrophy/Strength";
+          lateFor += "Hypertrophy";
+        }
+        else{ //to 5m strength
+          readyFor += "Strength";
+          lateFor += "Hypertrophy";
+        }
+        lateFor += " Training";
+      }
+      readyFor += " Training";
+    }
+
+    if(extraMessage == null && readyFor == null && lateFor == null){
+      extraMessage = "You Waited Too Long";
+      lateFor = "you need to warm up again";
+    }
+
+    //handle 3 liners a bit more delicately
+    if(lateFor != null && extraMessage != null && readyFor != null){
+      lateFor = lateFor.toLowerCase();
+      lateFor = null;
+    }
+
     //build return timer
     return Container(
-      height: MediaQuery.of(context).size.width,
-      width: MediaQuery.of(context).size.width, //3.25/5
-      padding: EdgeInsets.all(24),
-      child: ClipOval(
-        child: LiquidCircularProgressIndicator(
-          //animated values
-          value: 1 - progressValue,
-          valueColor: (extraDurationPassed == Duration.zero || totalDurationPassed > widget.maxExtraDuration) 
-          ? AlwaysStoppedAnimation(Colors.transparent) : AlwaysStoppedAnimation(widget.backgroundColor),
-          //set value
-          backgroundColor: widget.waveColor,
-          borderColor: Colors.transparent,
-          borderWidth: 0,
-          direction: Axis.vertical, 
-          //only show when our timer has completed
-          center: (extraDurationPassed == Duration.zero) ? Container() : TimeDisplay(
-            textContainerSize: textContainerSize, 
-            topNumber: topNumber, 
-            topArrowUp: widget.showArrows ? true : null,
-            bottomLeftNumber: bottomLeftNumber, 
-            bottomRightNumber: bottomRightNumber,
-            showBottomArrow: widget.showArrows ? true : false,
+      width: MediaQuery.of(context).size.width,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          FittedBox(
+            fit: BoxFit.contain,
+            child: Container(
+              padding: EdgeInsets.symmetric(
+                horizontal: 16,
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  extraMessage != null ? Text(
+                    extraMessage,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ) : EmptyContainer(),
+                  readyFor != null ? Text(
+                    readyFor,
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: extraMessage == null ? FontWeight.bold : FontWeight.normal,
+                    ),
+                  ) : EmptyContainer(),
+                  lateFor != null ? Text(
+                    lateFor,
+                    style: TextStyle(
+                      fontSize: 10,
+                    ),
+                  ) : EmptyContainer(),
+                ],
+              )
+            ),
           ),
-        ),
+          Container(
+            height: MediaQuery.of(context).size.width,
+            width: MediaQuery.of(context).size.width, //3.25/5
+            padding: EdgeInsets.all(24),
+            child: ClipOval(
+              child: LiquidCircularProgressIndicator(
+                //animated values
+                value: 1 - progressValue,
+                valueColor: (extraDurationPassed == Duration.zero || totalDurationPassed > widget.maxExtraDuration) 
+                ? AlwaysStoppedAnimation(Colors.transparent) : AlwaysStoppedAnimation(widget.backgroundColor),
+                //set value
+                backgroundColor: widget.waveColor,
+                borderColor: Colors.transparent,
+                borderWidth: 0,
+                direction: Axis.vertical, 
+                //only show when our timer has completed
+                center: (extraDurationPassed == Duration.zero) ? Container() : TimeDisplay(
+                  textContainerSize: textContainerSize, 
+                  topNumber: topNumber, 
+                  topArrowUp: widget.showArrows ? true : null,
+                  bottomLeftNumber: bottomLeftNumber, 
+                  bottomRightNumber: bottomRightNumber,
+                  showBottomArrow: widget.showArrows ? true : false,
+                  isTimer: false,
+                  showIcon: widget.showIcon,
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

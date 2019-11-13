@@ -1,6 +1,7 @@
 //flutter
 import 'package:flutter/material.dart';
 import 'package:swol/excerciseAction/tabs/recovery/triangle.dart';
+import 'package:flutter_icons/flutter_icons.dart';
 
 //utility (max is 9:59 but we indicate we are maxed out with 9:99)
 List<String> durationToCustomDisplay(Duration duration){
@@ -47,6 +48,8 @@ class TimeDisplay extends StatelessWidget {
     @required this.bottomLeftNumber,
     @required this.bottomRightNumber,
     this.showBottomArrow: false,
+    @required this.isTimer,
+    this.showIcon: false,
   }) : super(key: key);
 
   final double textContainerSize;
@@ -55,6 +58,8 @@ class TimeDisplay extends StatelessWidget {
   final String bottomLeftNumber;
   final String bottomRightNumber;
   final bool showBottomArrow;
+  final bool isTimer;
+  final bool showIcon;
 
   @override
   Widget build(BuildContext context) {
@@ -66,22 +71,33 @@ class TimeDisplay extends StatelessWidget {
       ),
     );
 
-    return Container(
-      padding: EdgeInsets.all(24),
-      child: FittedBox(
-        fit: BoxFit.contain,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Container(
-              width: textContainerSize,
-              child: IntrinsicWidth(
+    return Transform.translate(
+      //need because the icon throws off the balance of the design
+      offset: Offset(0, -((48.0 + 16.0) / 3)),
+      child: Container(
+        padding: EdgeInsets.all(24),
+        child: FittedBox(
+          fit: BoxFit.contain,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              (showIcon == false) ? EmptyContainer() : Padding(
+                padding: EdgeInsets.only(
+                  bottom: (isTimer) ? 0 : 16,
+                ),
+                child: Icon(
+                  isTimer ? Ionicons.getIconData("ios-timer") : Ionicons.getIconData("ios-stopwatch"),
+                  color: Theme.of(context).primaryColor,
+                  size: 48,
+                ),
+              ),
+              IntrinsicWidth(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   mainAxisAlignment: topArrowUp == true ? MainAxisAlignment.start : MainAxisAlignment.end,
                   children: <Widget>[
-                    (topArrowUp == true) ? topTriangle : Container(),
+                    (topArrowUp == true) ? topTriangle : EmptyContainer(),
                     FittedBox(
                       fit: BoxFit.contain,
                       child: Text(
@@ -97,46 +113,61 @@ class TimeDisplay extends StatelessWidget {
                         bottom: 16,
                       ),
                       child: topTriangle,
-                    ) : Container(),
+                    ) : EmptyContainer(),
                   ],
                 ),
               ),
-            ),
-            Container(
-              width: textContainerSize,
-              padding: EdgeInsets.symmetric(
-                horizontal: (textContainerSize / 2) / 2,
-              ),
-              //NOTE: we want the text here to be HALF the size
-              //of the text above it
-              child: Container(
-                child: FittedBox(
-                  fit: BoxFit.contain,
-                  child: DefaultTextStyle(
-                    style: TextStyle(
-                      color: Theme.of(context).primaryColor,
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        EditIcon(
-                          text: bottomLeftNumber,
-                        ),
-                        EditIcon(
-                          invisible: true,
-                          showArrow: showBottomArrow,
-                          text: bottomRightNumber,
-                        )
-                      ],
+              Container(
+                width: textContainerSize,
+                padding: EdgeInsets.symmetric(
+                  horizontal: (textContainerSize / 2) / 2,
+                ),
+                //NOTE: we want the text here to be HALF the size
+                //of the text above it
+                child: Container(
+                  child: FittedBox(
+                    fit: BoxFit.contain,
+                    child: DefaultTextStyle(
+                      style: TextStyle(
+                        color: Theme.of(context).primaryColor,
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          EditIcon(
+                            text: bottomLeftNumber,
+                          ),
+                          EditIcon(
+                            invisible: true,
+                            showArrow: showBottomArrow,
+                            text: bottomRightNumber,
+                          )
+                        ],
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
+    );
+  }
+}
+
+class EmptyContainer extends StatelessWidget {
+  const EmptyContainer({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 0,
+      width: 0,
+      child: Container(),
     );
   }
 }
