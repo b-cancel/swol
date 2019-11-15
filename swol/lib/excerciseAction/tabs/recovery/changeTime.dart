@@ -4,8 +4,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:swol/learn/cardTable.dart';
 import 'package:swol/sharedWidgets/timePicker.dart';
 
-class ChangeRecoveryTimeWidget extends StatelessWidget {
-  const ChangeRecoveryTimeWidget({
+class ChangeRecoveryTimeWidget extends StatefulWidget {
+  ChangeRecoveryTimeWidget({
     Key key,
     @required this.changeDuration,
     @required this.recoveryPeriod,
@@ -15,25 +15,87 @@ class ChangeRecoveryTimeWidget extends StatelessWidget {
   final ValueNotifier<Duration> recoveryPeriod;
 
   @override
-  Widget build(BuildContext context) {
-    //add s? (such a minimal detail)
-    int mins = recoveryPeriod.value.inMinutes;
-    bool showS = (mins == 1) ? false : true;
+  _ChangeRecoveryTimeWidgetState createState() => _ChangeRecoveryTimeWidgetState();
+}
 
-    //build
+class _ChangeRecoveryTimeWidgetState extends State<ChangeRecoveryTimeWidget> {
+  ValueNotifier<int> sectionID = new ValueNotifier(0);
+  ValueNotifier<bool> showS = new ValueNotifier(false);
+
+  recoveryPeriodToSectionID(){
+    if(widget.recoveryPeriod.value < Duration(seconds: 15)) sectionID.value = 0; //nothing
+    else{
+      if(widget.recoveryPeriod.value < Duration(minutes: 1)) sectionID.value = 1; //endurance
+      else{
+        if(widget.recoveryPeriod.value < Duration(minutes: 2)) sectionID.value = 2; //hypertrophy
+        else{
+          if(widget.recoveryPeriod.value < Duration(minutes: 3)) sectionID.value = 3; //hypertrophy/strength
+          else sectionID.value = 4;
+        }
+      }
+    }
+  }
+
+  recoveryPeriodToShowS(){
+    int mins = widget.recoveryPeriod.value.inMinutes;
+    showS.value = ((mins == 1) ? false : true);
+  }
+
+  //TODO: uncomment after we are sure the other more important stuff works
+  manualSetState(){
+    /*
+    WidgetsBinding.instance.addPostFrameCallback((_){
+      if(mounted){
+        setState(() {});
+      }
+    });
+    */
+  }
+
+  @override
+  void initState() {
+    //initial function calls
+    recoveryPeriodToSectionID();
+    recoveryPeriodToShowS();
+
+    //as the recovery period changes updates should occur
+    widget.recoveryPeriod.addListener(recoveryPeriodToSectionID);
+    widget.recoveryPeriod.addListener(recoveryPeriodToShowS);
+
+    //when showS changes we should set state (on next frame)
+    showS.addListener(manualSetState);
+
+    //super init
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    widget.recoveryPeriod.removeListener(recoveryPeriodToSectionID);
+    widget.recoveryPeriod.removeListener(recoveryPeriodToShowS);
+    showS.removeListener(manualSetState);
+
+    //super dispose
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return IntrinsicWidth(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           Container(
-            color: Colors.red,
             width: MediaQuery.of(context).size.width,
             child: Theme(
               data: ThemeData.dark(),
               child: ScrollTrainingTypes(
                 lightMode: true,
                 highlightField: 2,
+                //nothing / endurance / hypertrohpy / hypertrophy & strength / strength and above
+                sections: [[0], [0], [1], [1,2], [2]],
+                sectionID: sectionID,
               ),
             ),
           ),
@@ -44,11 +106,11 @@ class ChangeRecoveryTimeWidget extends StatelessWidget {
             child: Column(
               children: <Widget>[
                 TimePicker(
-                  duration: recoveryPeriod,
+                  duration: widget.recoveryPeriod,
                   darkTheme: false,
                 ),
                 MinsSecsBelowTimePicker(
-                  showS: showS,
+                  showS: showS.value,
                   darkTheme: false,
                 ),
               ],
@@ -60,138 +122,106 @@ class ChangeRecoveryTimeWidget extends StatelessWidget {
   }
 }
 
-//TODO: pass the different sections of data
-//for recovery we have 4 sections
-//the widget that modifies that value should set the section that is passed to this widget
-//[[0], [1], [1,2], [2]]
-//show each array depending on each section
+//TODO: finish the carosel in the carosel
 class ScrollTrainingTypes extends StatefulWidget {
   const ScrollTrainingTypes({
     Key key,
     this.lightMode: false,
-    this.showStrength: true,
-    this.showHypertrophy: true,
-    this.showEndurance: true,
     this.highlightField: -1,
-    this.sectionWithInitialFocus: 0,
+    @required this.sections,
+    @required this.sectionID,
   }) : super(key: key);
 
   final bool lightMode;
-  final bool showStrength;
-  final bool showHypertrophy;
-  final bool showEndurance;
   final int highlightField;
-  final int sectionWithInitialFocus;
+  final List<List<int>> sections; 
+  final ValueNotifier<int> sectionID;
 
   @override
   _ScrollTrainingTypesState createState() => _ScrollTrainingTypesState();
 }
 
 class _ScrollTrainingTypesState extends State<ScrollTrainingTypes> {
+  Widget enduranceCard;
+  Widget hypertrophyCard;
+  Widget strengthCard;
+  List<List<CardTable>> sectionsOfCards;
+
+  @override
+  void initState() {
+    //create all default card
+    enduranceCard = CardTable(
+      lightMode: widget.lightMode,
+      items: [
+        "Endurance ",
+        "Light",
+        "0:15 to 1:00",
+        "13+",
+        "2 to 4",
+        "Metabolic Stress",
+        "Endurance",
+        "Connective Tissue",
+      ],
+      highlightField: widget.highlightField,
+      icon: FontAwesomeIcons.weight,
+    );
+
+    hypertrophyCard = CardTable(
+      lightMode: widget.lightMode,
+      items: [
+        "\tHypertrophy",//NOTE: extra space for dumbell
+        "Heavy",
+        "1:05 to 2:00",
+        "7 to 12",
+        "3 to 5",
+        "Hypertrophy", 
+        "Size",
+        "Joints and Tissue",
+      ],
+      highlightField: widget.highlightField,
+      icon: FontAwesomeIcons.dumbbell,
+    );
+
+    strengthCard = CardTable(
+      lightMode: widget.lightMode,
+      items: [
+        "Strength ",
+        "Very Heavy",
+        "3:00 to 5:00",
+        "1 to 6",
+        "4 to 6",
+        "Tension",
+        "Strength",
+        "Joints",
+      ],
+      highlightField: widget.highlightField,
+      icon: FontAwesomeIcons.weightHanging,
+    );
+
+    //create section
+    sectionsOfCards = new List<List<CardTable>>();
+    for(int i = 0; i < widget.sections.length; i++){
+      List<int> aSection = widget.sections[i];
+      List<CardTable> aCardSection = new List<CardTable>();
+      for(int s = 0; s < aSection.length; s++){
+        int cardType = aSection[s];
+        switch(cardType){ //0,1,2
+          case 0: aCardSection.add(enduranceCard); break;
+          case 1: aCardSection.add(hypertrophyCard); break;
+          default: aCardSection.add(strengthCard); break;
+        }
+      }
+      sectionsOfCards.add(aCardSection);
+    }
+
+    //super init
+    super.initState();
+  }
+
+  //TODO: edit below or above ;)
   @override
   Widget build(BuildContext context) {
     List<Widget> types = new List<Widget>();
-
-    int activeCount = 0;
-
-    if(widget.showEndurance){
-      activeCount++;
-      types.add(
-        CardTable(
-          lightMode: widget.lightMode,
-          items: [
-            "Endurance ",
-            "Light",
-            "0:15 to 1:00",
-            "13+",
-            "2 to 4",
-            "Metabolic Stress",
-            "Endurance",
-            "Connective Tissue",
-          ],
-          highlightField: widget.highlightField,
-          icon: FontAwesomeIcons.weight,
-        ),
-      );
-    }
-
-    if(widget.showHypertrophy){
-      activeCount++;
-      types.add(
-        CardTable(
-          lightMode: widget.lightMode,
-          items: [
-            "\tHypertrophy",//NOTE: extra space for dumbell
-            "Heavy",
-            "1:05 to 2:00",
-            "7 to 12",
-            "3 to 5",
-            "Hypertrophy", 
-            "Size",
-            "Joints and Tissue",
-          ],
-          highlightField: widget.highlightField,
-          icon: FontAwesomeIcons.dumbbell,
-        ),
-      );
-    }
-
-    if(widget.showStrength){
-      activeCount++;
-      types.add(
-        CardTable(
-          lightMode: widget.lightMode,
-          items: [
-            "Strength ",
-            "Very Heavy",
-            "3:00 to 5:00",
-            "1 to 6",
-            "4 to 6",
-            "Tension",
-            "Strength",
-            "Joints",
-          ],
-          highlightField: widget.highlightField,
-          icon: FontAwesomeIcons.weightHanging,
-        ),
-      );
-    }
-
-    int adjustedStartTraining = widget.sectionWithInitialFocus.clamp(0, types.length - 1);
-    if(widget.sectionWithInitialFocus != 0){
-      //if length is one it wouldn't have come here
-      if(types.length == 2){
-        //input 0,1
-        //output 1,0
-
-        //switch the two values
-        CardTable ct = types.removeAt(0);
-        types.add(ct);
-      }
-      else{ //length is 3
-        if(adjustedStartTraining == 2){
-          //input 0,1,2
-          //output 2,0,1
-
-          //grab values
-          CardTable one = types.removeAt(1);
-          CardTable zero = types.removeAt(0);
-
-          //add values back
-          types.add(zero);
-          types.add(one);
-        }
-        else{
-          //input 0,1,2
-          //output 1,2,0
-
-          //switch the two values
-          CardTable ct = types.removeAt(0);
-          types.add(ct);
-        }
-      }
-    }
-
     return Container(
       color: (widget.lightMode) ? Colors.white : Theme.of(context).primaryColor,
       child: IntrinsicHeight(
