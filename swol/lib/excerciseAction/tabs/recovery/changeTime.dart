@@ -109,6 +109,7 @@ class _ChangeRecoveryTimeWidgetState extends State<ChangeRecoveryTimeWidget> {
                   duration: widget.recoveryPeriod,
                   darkTheme: false,
                 ),
+                //TODO: this widget should take in duration and decide based on that to avoid uneeded reloads elsewhere
                 MinsSecsBelowTimePicker(
                   showS: showS.value,
                   darkTheme: false,
