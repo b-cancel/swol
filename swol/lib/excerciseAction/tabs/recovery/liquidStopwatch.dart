@@ -60,8 +60,10 @@ class _LiquidStopwatchState extends State<LiquidStopwatch> with TickerProviderSt
     Future.delayed(
       Duration(minutes: 5),
       (){
-        if(Vibrator.isVibrating == false){
-          Vibrator.startVibration();
+        if(mounted){
+          if(Vibrator.isVibrating == false){
+            Vibrator.startVibration();
+          }
         }
       }
     );
@@ -81,6 +83,9 @@ class _LiquidStopwatchState extends State<LiquidStopwatch> with TickerProviderSt
     
     //controller dispose
     controller10Minutes.dispose();
+
+    //stop vibrating
+    Vibrator.stopVibration();
 
     //super dispose
     super.dispose();

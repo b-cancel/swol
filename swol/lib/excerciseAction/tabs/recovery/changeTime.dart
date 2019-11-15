@@ -25,9 +25,9 @@ class _ChangeRecoveryTimeWidgetState extends State<ChangeRecoveryTimeWidget> {
   recoveryPeriodToSectionID(){
     if(widget.recoveryPeriod.value < Duration(seconds: 15)) sectionID.value = 0; //nothing
     else{
-      if(widget.recoveryPeriod.value < Duration(minutes: 1)) sectionID.value = 1; //endurance
+      if(widget.recoveryPeriod.value <= Duration(minutes: 1)) sectionID.value = 1; //endurance
       else{
-        if(widget.recoveryPeriod.value < Duration(minutes: 2)) sectionID.value = 2; //hypertrophy
+        if(widget.recoveryPeriod.value <= Duration(minutes: 2)) sectionID.value = 2; //hypertrophy
         else{
           if(widget.recoveryPeriod.value < Duration(minutes: 3)) sectionID.value = 3; //hypertrophy/strength
           else sectionID.value = 4;
@@ -146,6 +146,19 @@ class _ScrollTrainingTypesState extends State<ScrollTrainingTypes> {
   Widget hypertrophyCard;
   Widget strengthCard;
   List<List<CardTable>> sectionsOfCards;
+  List<Widget> carousels;
+  var mainCarousel;
+
+  sectionIDToCarouselAction(){
+    WidgetsBinding.instance.addPostFrameCallback((_){
+      print("in section: " + widget.sectionID.value.toString());
+      mainCarousel.animateToPage(
+        widget.sectionID.value,
+        duration: Duration(milliseconds: 250), 
+        curve: Curves.linear,
+      );
+    });
+  }
 
   @override
   void initState() {
@@ -214,8 +227,53 @@ class _ScrollTrainingTypesState extends State<ScrollTrainingTypes> {
       sectionsOfCards.add(aCardSection);
     }
 
+    //create carosels based on that
+    carousels = new List<Widget>();
+    for(int i = 0; i < sectionsOfCards.length; i++){
+      carousels.add(
+        CarouselSlider(
+          height: 256.0 + (3.0 * 8),
+          //so they can compare both
+          enableInfiniteScroll: (sectionsOfCards[i].length > 1),
+          enlargeCenterPage: true,
+          autoPlay: false,
+          viewportFraction: .75,
+          items: sectionsOfCards[i],
+        ),
+      );
+    }
+
+    //create main carousel
+    mainCarousel = CarouselSlider(
+      scrollPhysics: NeverScrollableScrollPhysics(),
+      height: 256.0 + (3.0 * 8),
+      //so they can compare both
+      enableInfiniteScroll: (carousels.length > 1),
+      enlargeCenterPage: true,
+      autoPlay: false,
+      viewportFraction: 1.0,
+      items: carousels,
+    );
+
+    //init call for initial focus
+    WidgetsBinding.instance.addPostFrameCallback((_){
+      mainCarousel.jumpToPage(widget.sectionID.value);
+    });
+
+    //listener for further actions
+    widget.sectionID.addListener(sectionIDToCarouselAction);
+
     //super init
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    //remove listener
+    widget.sectionID.removeListener(sectionIDToCarouselAction);
+
+    //super dipose
+    super.dispose();
   }
 
   //TODO: edit below or above ;)
@@ -258,15 +316,7 @@ class _ScrollTrainingTypesState extends State<ScrollTrainingTypes> {
                       padding: EdgeInsets.symmetric(
                         vertical: 16,
                       ),
-                      child: CarouselSlider(
-                        height: 256.0 + (3.0 * 8),
-                        //so they can compare both
-                        enableInfiniteScroll: (activeCount > 1),
-                        enlargeCenterPage: true,
-                        autoPlay: false,
-                        viewportFraction: .75,
-                        items: types,
-                      ),
+                      child: mainCarousel,
                     ),
                     Positioned(
                       top: 0,

@@ -5,7 +5,6 @@ import 'package:swol/excerciseAction/tabs/recovery/changeTime.dart';
 import 'package:swol/excerciseAction/tabs/recovery/liquidStopwatch.dart';
 import 'package:swol/excerciseAction/tabs/recovery/liquidTimer.dart';
 import 'package:swol/excerciseAction/tabs/sharedWidgets/done.dart';
-import 'package:swol/excerciseAddition/addExcercise.dart';
 
 class Recovery extends StatefulWidget {
   Recovery({
