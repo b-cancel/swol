@@ -18,6 +18,13 @@ class SuggestionBody extends StatelessWidget {
       fontWeight: FontWeight.bold,
     );
 
+    Function onPressed = (){
+      print("pressed");
+    };
+    String name = "Rep Target";
+    String value = "9";
+    IconData icon = Icons.edit;
+
     return Padding(
       padding: EdgeInsets.only(top:16),
         child: Column(
@@ -59,14 +66,30 @@ class SuggestionBody extends StatelessWidget {
                       "(",
                       style: bigStyle,
                     ),
-                    Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        Text("easy wording"),
-                        Text("change rep target with pop up UI"),
-                        Text("change prediction target with pop up UI"),
-                        Text("easy conclusion"),
-                      ],
+                    IntrinsicWidth(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: <Widget>[
+                          SettingButton(
+                            onPressed: (){
+                              print("change rep target");
+                            }, 
+                            icon: Icons.repeat, 
+                            name: "Rep Target", 
+                            value: "9",
+                          ),
+                          SettingButton(
+                            onPressed: (){
+                              print("change prediction formula");
+                            }, 
+                            icon: Icons.functions, 
+                            name: "Prediction Formula", 
+                            value: "Almazan",
+                          ),
+                        ],
+                      ),
                     ),
                     Text(
                       "}",
@@ -96,6 +119,51 @@ class SuggestionBody extends StatelessWidget {
             ),
           ],
         ),
+    );
+  }
+}
+
+class SettingButton extends StatelessWidget {
+  const SettingButton({
+    Key key,
+    @required this.onPressed,
+    @required this.icon,
+    @required this.name,
+    @required this.value,
+  }) : super(key: key);
+
+  final Function onPressed;
+  final IconData icon;
+  final String name;
+  final String value;
+
+  @override
+  Widget build(BuildContext context) {
+    return FlatButton(
+      onPressed: onPressed,
+      child: Row(
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Padding(
+                padding: EdgeInsets.only(
+                  right: 8,
+                ),
+                child: Icon(
+                  icon,
+                ),
+              ),
+              Text(name + ": " + value),
+            ],
+          ),
+          Icon(
+            Icons.edit,
+          )
+        ],
+      ),
     );
   }
 }
