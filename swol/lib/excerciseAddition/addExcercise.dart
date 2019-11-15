@@ -1,6 +1,9 @@
 //flutter
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:swol/excercise/defaultDateTimes.dart';
+import 'package:swol/learn/cardTable.dart';
 
 //plugins
 import 'package:vector_math/vector_math_64.dart' as vect;

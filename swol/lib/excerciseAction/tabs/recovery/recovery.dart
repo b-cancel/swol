@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:swol/excerciseAction/tabs/recovery/breath.dart';
+import 'package:swol/excerciseAction/tabs/recovery/changeTime.dart';
 import 'package:swol/excerciseAction/tabs/recovery/liquidStopwatch.dart';
 import 'package:swol/excerciseAction/tabs/recovery/liquidTimer.dart';
 import 'package:swol/excerciseAction/tabs/sharedWidgets/done.dart';
@@ -190,6 +191,7 @@ maybeChangeTime({
         return Theme(
           data: ThemeData.light(),
           child: AlertDialog(
+            contentPadding: EdgeInsets.all(0),
             title: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -207,13 +209,9 @@ maybeChangeTime({
               ],
             ),
             content: Container(
-              child: RecoveryTimeWidget(
+              child: ChangeRecoveryTimeWidget(
                 changeDuration: Duration(milliseconds: 250), 
-                sliderWidth: MediaQuery.of(context).size.width, 
-                textHeight: 16, 
-                textMaxWidth: 28, 
                 recoveryPeriod: possibleRecoveryDuration, 
-                darkTheme: false,
               ),
             ),
             actions: <Widget>[

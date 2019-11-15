@@ -3,6 +3,7 @@ import 'package:vibration/vibration.dart';
 class Vibrator{
   static bool hasCheckedForVibrator = false;
   static bool hasVibration = false;
+  static bool isVibrating = false;
 
   static _vibrationCheck()async{
     if(hasCheckedForVibrator == false){
@@ -21,6 +22,7 @@ class Vibrator{
   static startVibration()async{
     await _vibrationCheck();
     if(hasVibration){
+      isVibrating = true;
       Vibration.vibrate(
         pattern: [500],
         intensities: [255],
@@ -32,6 +34,7 @@ class Vibrator{
   static stopVibration()async{
     await _vibrationCheck();
     if(hasVibration){
+      isVibrating = false;
       Vibration.cancel();
     }
   }

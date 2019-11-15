@@ -543,6 +543,7 @@ class ScrollableTrainingTypes extends StatelessWidget {
     this.showHypertrophy: true,
     this.showEndurance: true,
     this.highlightField: -1,
+    this.sectionWithInitialFocus: 0,
   }) : super(key: key);
 
   final bool lightMode;
@@ -550,6 +551,7 @@ class ScrollableTrainingTypes extends StatelessWidget {
   final bool showHypertrophy;
   final bool showEndurance;
   final int highlightField;
+  final int sectionWithInitialFocus;
 
   @override
   Widget build(BuildContext context) {
@@ -557,23 +559,23 @@ class ScrollableTrainingTypes extends StatelessWidget {
 
     int activeCount = 0;
 
-    if(showStrength){
+    if(showEndurance){
       activeCount++;
       types.add(
         CardTable(
           lightMode: lightMode,
           items: [
-            "Strength ",
-            "Very Heavy",
-            "3:00 to 5:00",
-            "1 to 6",
-            "4 to 6",
-            "Tension",
-            "Strength",
-            "Joints",
+            "Endurance ",
+            "Light",
+            "0:15 to 1:00",
+            "13+",
+            "2 to 4",
+            "Metabolic Stress",
+            "Endurance",
+            "Connective Tissue",
           ],
           highlightField: highlightField,
-          icon: FontAwesomeIcons.weightHanging,
+          icon: FontAwesomeIcons.weight,
         ),
       );
     }
@@ -598,26 +600,61 @@ class ScrollableTrainingTypes extends StatelessWidget {
         ),
       );
     }
-    
-    if(showEndurance){
+
+    if(showStrength){
       activeCount++;
       types.add(
         CardTable(
           lightMode: lightMode,
           items: [
-            "Endurance ",
-            "Light",
-            "0:15 to 1:00",
-            "13+",
-            "2 to 4",
-            "Metabolic Stress",
-            "Endurance",
-            "Connective Tissue",
+            "Strength ",
+            "Very Heavy",
+            "3:00 to 5:00",
+            "1 to 6",
+            "4 to 6",
+            "Tension",
+            "Strength",
+            "Joints",
           ],
           highlightField: highlightField,
-          icon: FontAwesomeIcons.weight,
+          icon: FontAwesomeIcons.weightHanging,
         ),
       );
+    }
+
+    int adjustedStartTraining = sectionWithInitialFocus.clamp(0, types.length - 1);
+    if(sectionWithInitialFocus != 0){
+      //if length is one it wouldn't have come here
+      if(types.length == 2){
+        //input 0,1
+        //output 1,0
+
+        //switch the two values
+        CardTable ct = types.removeAt(0);
+        types.add(ct);
+      }
+      else{ //length is 3
+        if(adjustedStartTraining == 2){
+          //input 0,1,2
+          //output 2,0,1
+
+          //grab values
+          CardTable one = types.removeAt(1);
+          CardTable zero = types.removeAt(0);
+
+          //add values back
+          types.add(zero);
+          types.add(one);
+        }
+        else{
+          //input 0,1,2
+          //output 1,2,0
+
+          //switch the two values
+          CardTable ct = types.removeAt(0);
+          types.add(ct);
+        }
+      }
     }
 
     return Container(

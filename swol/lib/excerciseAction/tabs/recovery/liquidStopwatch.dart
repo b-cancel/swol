@@ -1,27 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:liquid_progress_indicator/liquid_progress_indicator.dart';
 import 'package:swol/excerciseAction/tabs/recovery/liquidTime.dart';
-import 'package:swol/excerciseAction/tabs/recovery/liquidTimer.dart';
-
-//TODO: all below
-//the animation will go from 0 to 1 in 10 minutes always
-
-//After 10: show 9:99 and keep the wave at 1
-
-//Before 10:
-
-//IF our timer has not completed:
-//1. keep the wave at 0 and invisible
-//2. keep the text invisible (no need to calcuate the text each frame)
-
-//ELSE our timer has completed
-//the progress of our wave depends entirely on how much extra time has passed since our timer stopped
-//10 minutes - time passed = ammount of time stopwatch will show some animation or update [stop watch time]
-
-//TODO; complete notes and stuff
-
-//while Stop watch time > 0 
-//we only want to show text and the wave when we
+import 'package:swol/excerciseAddition/informationPopUps.dart';
+import 'package:swol/learn/body.dart';
+import 'package:swol/sharedWidgets/informationDisplay.dart';
+import 'package:swol/utils/vibrate.dart';
 
 class LiquidStopwatch extends StatefulWidget {
   LiquidStopwatch({
@@ -71,6 +54,16 @@ class _LiquidStopwatchState extends State<LiquidStopwatch> with TickerProviderSt
       //after that the ammount of time overflowed is kind of irrelvant
       //because you know for a fact your muscles are super cold
       duration: Duration(minutes: 10),
+    );
+    
+    //start vibrating again if the user turned off vibration
+    Future.delayed(
+      Duration(minutes: 5),
+      (){
+        if(Vibrator.isVibrating == false){
+          Vibrator.startVibration();
+        }
+      }
     );
 
     //refresh UI at phone framerate
@@ -146,11 +139,12 @@ class _LiquidStopwatchState extends State<LiquidStopwatch> with TickerProviderSt
 
     //initially tells the user what happening
     //then explains they can no longer to the training type behind the one they were aiming for
-    String extraMessage = (extraDurationPassed == Duration.zero) ? "Flushing Lactic Acid Build Up" : null;
+    String extraMessage = (extraDurationPassed == Duration.zero) ? "Flushing Acid Build Up" : null;
     
     //reminds the user what this duration of break is good for
     String readyFor; //only empty for the first 15 seconds
     String lateFor;
+    int sectionWithInitialFocus = 0;
 
     //we are ready for some type of workout
     if(Duration(seconds: 15) < totalDurationPassed && totalDurationPassed < Duration(minutes: 5)){
@@ -159,16 +153,19 @@ class _LiquidStopwatchState extends State<LiquidStopwatch> with TickerProviderSt
         readyFor += "Endurance";
       } 
       else{
-        lateFor = "To Late For ";
+        lateFor = "Too Late For ";
         if(totalDurationPassed < Duration(minutes: 2)){ //to 2m hypertrophy
+          sectionWithInitialFocus = 1;
           readyFor += "Hypertrophy";
           lateFor += "Endurance";
         }
         else if(totalDurationPassed < Duration(minutes: 3)){ //to 3m hypertrophy or strength
+          sectionWithInitialFocus = 1;
           readyFor += "Hypertrophy/Strength";
           lateFor += "Hypertrophy";
         }
         else{ //to 5m strength
+          sectionWithInitialFocus = 2;
           readyFor += "Strength";
           lateFor += "Hypertrophy";
         }
@@ -199,64 +196,178 @@ class _LiquidStopwatchState extends State<LiquidStopwatch> with TickerProviderSt
             fit: BoxFit.contain,
             child: Container(
               padding: EdgeInsets.symmetric(
-                horizontal: 16,
+                horizontal: 12,
+                vertical: 0,
               ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  extraMessage != null ? Text(
-                    extraMessage,
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ) : EmptyContainer(),
-                  readyFor != null ? Text(
-                    readyFor,
-                    style: TextStyle(
-                      fontSize: 12,
-                      fontWeight: extraMessage == null ? FontWeight.bold : FontWeight.normal,
-                    ),
-                  ) : EmptyContainer(),
-                  lateFor != null ? Text(
-                    lateFor,
-                    style: TextStyle(
-                      fontSize: 10,
-                    ),
-                  ) : EmptyContainer(),
-                ],
+              child: OutlineButton(
+                highlightedBorderColor: Theme.of(context).accentColor,
+                onPressed: (){
+                  showDialog<void>(
+                    context: context,
+                    barrierDismissible: true,
+                    builder: (BuildContext context) {
+                      return ExplainFunctionality(
+                        sectionWithInitialFocus: sectionWithInitialFocus,
+                      );
+                    },
+                  );
+                },
+                padding: EdgeInsets.symmetric(
+                  horizontal: 8,
+                  vertical: 4,
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    extraMessage != null ? Text(
+                      extraMessage,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                      ),
+                    ) : EmptyContainer(),
+                    readyFor != null ? 
+                    Text(
+                      readyFor,
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: extraMessage == null ? FontWeight.bold : FontWeight.normal,
+                      ),
+                    )
+                    : EmptyContainer(),
+                    lateFor != null ? Text(
+                      lateFor,
+                      style: TextStyle(
+                        fontSize: 10,
+                      ),
+                    ) : EmptyContainer(),
+                  ],
+                ),
               )
             ),
           ),
-          Container(
-            height: MediaQuery.of(context).size.width,
-            width: MediaQuery.of(context).size.width, //3.25/5
-            padding: EdgeInsets.all(24),
-            child: ClipOval(
-              child: LiquidCircularProgressIndicator(
-                //animated values
-                value: 1 - progressValue,
-                valueColor: (extraDurationPassed == Duration.zero || totalDurationPassed > widget.maxExtraDuration) 
-                ? AlwaysStoppedAnimation(Colors.transparent) : AlwaysStoppedAnimation(widget.backgroundColor),
-                //set value
-                backgroundColor: widget.waveColor,
-                borderColor: Colors.transparent,
-                borderWidth: 0,
-                direction: Axis.vertical, 
-                //only show when our timer has completed
-                center: (extraDurationPassed == Duration.zero) ? Container() : TimeDisplay(
-                  textContainerSize: textContainerSize, 
-                  topNumber: topNumber, 
-                  topArrowUp: widget.showArrows ? true : null,
-                  bottomLeftNumber: bottomLeftNumber, 
-                  bottomRightNumber: bottomRightNumber,
-                  showBottomArrow: widget.showArrows ? true : false,
-                  isTimer: false,
-                  showIcon: widget.showIcon,
+          Stack(
+            children: <Widget>[
+              Container(
+                height: MediaQuery.of(context).size.width,
+                width: MediaQuery.of(context).size.width, //3.25/5
+                padding: EdgeInsets.all(24),
+                child: ClipOval(
+                  child: LiquidCircularProgressIndicator(
+                    //animated values
+                    value: 1 - progressValue,
+                    valueColor: (extraDurationPassed == Duration.zero || totalDurationPassed > widget.maxExtraDuration) 
+                    ? AlwaysStoppedAnimation(Colors.transparent) : AlwaysStoppedAnimation(widget.backgroundColor),
+                    //set value
+                    backgroundColor: widget.waveColor,
+                    borderColor: Colors.transparent,
+                    borderWidth: 0,
+                    direction: Axis.vertical, 
+                    //only show when our timer has completed
+                    center: (extraDurationPassed == Duration.zero) ? Container() : TimeDisplay(
+                      textContainerSize: textContainerSize, 
+                      topNumber: topNumber, 
+                      topArrowUp: widget.showArrows ? true : null,
+                      bottomLeftNumber: bottomLeftNumber, 
+                      bottomRightNumber: bottomRightNumber,
+                      showBottomArrow: widget.showArrows ? true : false,
+                      isTimer: false,
+                      showIcon: widget.showIcon,
+                    ),
+                  ),
                 ),
+              ),
+              Positioned(
+                top: 0,
+                left: 0,
+                child: Opacity(
+                  opacity: (Vibrator.isVibrating && extraDurationPassed > Duration.zero) ? 1 : 0,
+                  child: IconButton(
+                    padding: EdgeInsets.all(32),
+                    tooltip: 'Turn Off Vibration',
+                    onPressed: (){
+                      Vibrator.stopVibration();
+                    },
+                    icon: Icon(
+                      Icons.vibration,
+                    ),
+                  ),
+                ),
+              )
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class ExplainFunctionality extends StatelessWidget {
+  const ExplainFunctionality({
+    Key key,
+    @required this.sectionWithInitialFocus,
+  }) : super(key: key);
+
+  final int sectionWithInitialFocus;
+
+  @override
+  Widget build(BuildContext context) {
+    return MyInfoDialog(
+      title: "Recovery Time",
+      subtitle: "Different training types require different recovery times",
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Container(
+            padding: EdgeInsets.symmetric(
+              horizontal: 16,
+            ),
+            child: RichText(
+              text: TextSpan(
+                style: TextStyle(
+                  color: Colors.black,
+                ),
+                children: [
+                  TextSpan(text: "Wait until your body finishes\n"),
+                  TextSpan(
+                    text: "Flushing",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  TextSpan(
+                    text: " the right ammount of ",
+                  ),
+                  TextSpan(
+                    text: "Acid Build Up\n",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  TextSpan(
+                    text: "for the type of training you are doing\n"
+                  ),
+                  TextSpan(
+                    text: "Then move onto your next set"
+                  )
+                ],
               ),
             ),
           ),
+          Theme(
+            data: ThemeData.dark(),
+            child: Container(
+                color: Colors.white,
+                width: MediaQuery.of(context).size.width,
+                child: ScrollableTrainingTypes(
+                  lightMode: true,
+                  highlightField: 2,
+                  sectionWithInitialFocus: sectionWithInitialFocus,
+                ),
+              ),
+          ),
+          new LearnPageSuggestion(),
         ],
       ),
     );
