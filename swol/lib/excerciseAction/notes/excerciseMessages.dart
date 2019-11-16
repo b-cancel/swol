@@ -1,5 +1,112 @@
 import 'package:flutter/material.dart';
 
+class ConfirmActionMessage extends StatelessWidget {
+  const ConfirmActionMessage({
+    Key key,
+    @required this.buttonColor,
+    @required this.iconSpace,
+    @required this.icon,
+    @required this.actionString,
+    @required this.message,
+    @required this.actionFunction,
+    @required this.navSpread,
+  }) : super(key: key);
+
+  final Color buttonColor;
+  final double iconSpace;
+  final IconData icon;
+  final String actionString;
+  final Widget message;
+  final Function actionFunction;
+  final ValueNotifier<bool> navSpread;
+
+  @override
+  Widget build(BuildContext context) {
+    return Theme(
+      data: ThemeData.light(),
+      child: AlertDialog(
+        titlePadding: EdgeInsets.all(0),
+        title: Container(
+          padding: EdgeInsets.all(16),
+          color: buttonColor,
+          child: Row(
+            children: <Widget>[
+              Padding(
+                padding: EdgeInsets.only(
+                  right: iconSpace,
+                ),
+                child: Icon(
+                  icon,
+                  color: Colors.white,
+                ),
+              ),
+              Text(
+                actionString + " Excercise?",
+                style: TextStyle(
+                  color: Colors.white,
+                ),
+              ),
+            ],
+          ),
+        ),
+        contentPadding: EdgeInsets.all(0),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.all(24.0),
+              child: message,
+            ),
+          ],
+        ),
+        actions: <Widget>[
+          FlatButton(
+            onPressed: (){
+              Navigator.of(context).pop();
+            },
+            child: Text(
+              "No, Don't " + actionString,
+              style: TextStyle(
+                color: Theme.of(context).primaryColorDark,
+              ),
+            ),
+          ),
+          RaisedButton(
+            color: buttonColor,
+            onPressed: (){
+              //get rid of keyboard that MAY be shown
+              FocusScope.of(context).unfocus();
+
+              print("before deleting");
+              actionFunction();
+
+              //get rid of this pop up
+              Navigator.of(context).pop();
+
+              //go back to our excercise page
+              Navigator.of(context).pop();
+
+              //go back to our list
+              Navigator.of(context).pop();
+
+              //show the changing nav bar
+              navSpread.value = false;
+            },
+            child: Text(
+              "Yes, " + actionString,
+              style: TextStyle(
+                color: Colors.white,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 class HideMessage extends StatelessWidget {
   const HideMessage({
     Key key,
