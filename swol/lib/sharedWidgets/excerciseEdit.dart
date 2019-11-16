@@ -7,6 +7,7 @@ import 'package:swol/sharedWidgets/clearableTextField.dart';
 import 'package:swol/sharedWidgets/informationDisplay.dart';
 import 'package:swol/sharedWidgets/referenceLink.dart';
 
+//editor of basic variables "name", "note", "url"
 class BasicEditor extends StatefulWidget {
   const BasicEditor({
     Key key,
