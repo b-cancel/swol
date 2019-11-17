@@ -3,7 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:swol/excercise/defaultDateTimes.dart';
 import 'package:swol/excercise/excerciseData.dart';
 import 'package:swol/excerciseAction/notes/excerciseMessages.dart';
-import 'package:swol/sharedWidgets/excerciseEdit.dart';
+import 'package:swol/sharedWidgets/basicFields/excerciseEdit.dart';
 
 class BigAction extends StatelessWidget {
   BigAction({
@@ -148,7 +148,7 @@ class _ExcerciseNotesState extends State<ExcerciseNotes> {
     return Scaffold(
       backgroundColor: Theme.of(context).cardColor,
       appBar: AppBar(
-        leading: new BackFromExcercise(),
+        leading: BackFromExcercise(),
         title: Text("Notes"),
         actions: [
           BigAction(

@@ -86,9 +86,7 @@ class _SearchExcerciseState extends State<SearchExcercise> {
     }
 
     //show the query results
-    setState(() {
-      
-    });
+    setState(() {});
   }
 
   //If true clicking the X does nothing

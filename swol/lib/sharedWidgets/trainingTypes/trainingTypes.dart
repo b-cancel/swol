@@ -164,7 +164,6 @@ class _ScrollTrainingTypesState extends State<ScrollTrainingTypes> {
   //TODO: edit below or above ;)
   @override
   Widget build(BuildContext context) {
-    List<Widget> types = new List<Widget>();
     return Container(
       color: (widget.lightMode) ? Colors.white : Theme.of(context).primaryColor,
       child: IntrinsicHeight(

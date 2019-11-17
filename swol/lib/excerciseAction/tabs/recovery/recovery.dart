@@ -63,7 +63,6 @@ class _RecoveryState extends State<Recovery> with SingleTickerProviderStateMixin
     Color secondaryColorOne =  Color(0xFFBFBFBF);
     Color accentTimer = Theme.of(context).accentColor;
     Color accentStopwatch = Colors.red;
-    Color secondaryColorTwo = Colors.white; 
 
     //other
     bool showArrows = true;

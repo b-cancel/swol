@@ -7,8 +7,8 @@ import 'package:page_transition/page_transition.dart';
 //internal
 import 'package:swol/excercise/excerciseStructure.dart';
 import 'package:swol/excerciseSearch/searchExcercise.dart';
-import 'package:swol/excerciseSelection/addNewHero.dart';
-import 'package:swol/excerciseSelection/persistentHeaderDelegate.dart';
+import 'package:swol/excerciseSelection/secondary/addNewHero.dart';
+import 'package:swol/excerciseSelection/secondary/persistentHeaderDelegate.dart';
 
 class AddExcerciseButton extends StatelessWidget {
   const AddExcerciseButton({

@@ -5,7 +5,6 @@ import 'package:flutter/services.dart';
 //plugins
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 
 class MyTheme{
   //set changes on theme

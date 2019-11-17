@@ -112,40 +112,12 @@ class _TimePickerState extends State<TimePicker> {
 
         //seconds affects minutes
         minutesSeconds = separateMinutesAndSeconds(widget.duration.value);
-        int oldMinutes = minutesSeconds[0];
-        int oldSeconds = minutesSeconds[1];
-
-        bool minutesAdjustedBySeconds = false;
-
-        /*
-        TODO: everything below would work if the picker would reload
-        //minutes DOWN ?
-        if(oldSeconds == 0 && newSeconds == 55){ 
-          newMinutes = (newMinutes == 0) ? 0 : newMinutes-1;
-          minutesAdjustedBySeconds = true;
-        }
-
-        //minutes UP ?
-        if(oldSeconds == 55 && newSeconds == 0){ 
-          newMinutes = (newMinutes == 4) ? 4 : newMinutes+1;
-          minutesAdjustedBySeconds = true;
-        }
-        */
-
-        print(newMinutes.toString() + " : " + newSeconds.toString());
 
         //update duration
         widget.duration.value = Duration(
           minutes: newMinutes, 
           seconds: newSeconds,
         );
-
-        if(minutesAdjustedBySeconds){
-          print("TRUE");
-          if(mounted){
-            setState((){});
-          }
-        }
       },
       adapter: PickerDataAdapter<String>(
         pickerdata: new JsonDecoder().convert(Times),

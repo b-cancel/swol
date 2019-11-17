@@ -1,12 +1,12 @@
 //flutter
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:swol/sharedWidgets/basicFields/buttonSpacer.dart';
 
 //plugin
 import 'package:url_launcher/url_launcher.dart';
 
 //internal
-import 'package:swol/sharedWidgets/buttonSpacer.dart';
 
 class ReferenceLinkBox extends StatefulWidget {
   const ReferenceLinkBox({

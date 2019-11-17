@@ -117,22 +117,3 @@ class MyInfoDialog extends StatelessWidget {
     );
   }
 }
-
-class MyDivider extends StatelessWidget {
-  const MyDivider({
-    Key key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(
-        top: 16,
-        bottom: 8,
-      ),
-      child: Divider(
-        height: 0,
-      ),
-    );
-  }
-}

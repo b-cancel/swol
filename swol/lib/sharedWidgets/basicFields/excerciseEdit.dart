@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 
 //internal
 import 'package:swol/excerciseAddition/informationPopUps.dart';
-import 'package:swol/sharedWidgets/clearableTextField.dart';
+import 'package:swol/sharedWidgets/basicFields/clearableTextField.dart';
+import 'package:swol/sharedWidgets/basicFields/referenceLink.dart';
 import 'package:swol/sharedWidgets/informationDisplay.dart';
-import 'package:swol/sharedWidgets/referenceLink.dart';
 
 //editor of basic variables "name", "note", "url"
 class BasicEditor extends StatefulWidget {
@@ -54,7 +54,7 @@ class _BasicEditorState extends State<BasicEditor> {
           title: "Name",
           popUp: ExcerciseNamePopUp(),
         ),
-        new TextFieldWithClearButton(
+        TextFieldWithClearButton(
           editOneAtAtTime: widget.editOneAtAtTime,
           valueToUpdate: widget.name,
           hint: "Required*", 
@@ -70,7 +70,7 @@ class _BasicEditorState extends State<BasicEditor> {
           title: "Notes",
           popUp: ExcerciseNotePopUp(),
         ),
-        new TextFieldWithClearButton(
+        TextFieldWithClearButton(
           editOneAtAtTime: widget.editOneAtAtTime,
           valueToUpdate: widget.note,
           hint: "Details", 
@@ -84,7 +84,7 @@ class _BasicEditorState extends State<BasicEditor> {
             popUp: new ReferenceLinkPopUp(),
           ),
         ),
-        new ReferenceLinkBox(
+        ReferenceLinkBox(
           url: widget.url,
           editOneAtAtTime: widget.editOneAtAtTime,
         ),

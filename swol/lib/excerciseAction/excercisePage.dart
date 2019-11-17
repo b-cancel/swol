@@ -4,7 +4,7 @@ import 'package:swol/excercise/excerciseData.dart';
 import 'package:swol/excercise/excerciseStructure.dart';
 import 'package:swol/excerciseAction/notes/excerciseNotes.dart';
 import 'package:swol/excerciseAction/tabs/verticalTabs.dart';
-import 'package:swol/sharedWidgets/excerciseEdit.dart';
+import 'package:swol/sharedWidgets/basicFields/excerciseEdit.dart';
 
 class ExcercisePage extends StatefulWidget {
   ExcercisePage({
@@ -59,7 +59,7 @@ class _ExcercisePageState extends State<ExcercisePage> {
       },
       child: Scaffold(
         appBar: AppBar(
-          leading: new BackFromExcercise(
+          leading: BackFromExcercise(
             navSpread: widget.navSpread,
           ),
           title: Material(

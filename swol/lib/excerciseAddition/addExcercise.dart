@@ -5,8 +5,8 @@ import 'package:swol/excercise/defaultDateTimes.dart';
 //internal
 import 'package:swol/excercise/excerciseData.dart';
 import 'package:swol/excercise/excerciseStructure.dart';
-import 'package:swol/excerciseSelection/addNewHero.dart';
-import 'package:swol/sharedWidgets/excerciseEdit.dart';
+import 'package:swol/excerciseSelection/secondary/addNewHero.dart';
+import 'package:swol/sharedWidgets/basicFields/excerciseEdit.dart';
 import 'package:swol/sharedWidgets/informationDisplay.dart';
 import 'package:swol/sharedWidgets/mySlider.dart';
 import 'package:swol/sharedWidgets/timeHelper.dart';
@@ -292,7 +292,7 @@ class _AddExcerciseState extends State<AddExcercise> {
                         right: 16,
                         bottom: 16,
                       ),
-                      child: new BasicEditor(
+                      child: BasicEditor(
                         namePresent: namePresent,
                         nameError: nameError,
                         name: name,

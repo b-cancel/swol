@@ -5,6 +5,25 @@ import 'package:swol/learn/shared.dart';
 import 'package:swol/sharedWidgets/informationDisplay.dart';
 import 'package:swol/sharedWidgets/trainingTypes/trainingTypes.dart';
 
+class MyDivider extends StatelessWidget {
+  const MyDivider({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.only(
+        top: 16,
+        bottom: 8,
+      ),
+      child: Divider(
+        height: 0,
+      ),
+    );
+  }
+}
+
 class RepTargetPopUp extends StatelessWidget {
   const RepTargetPopUp({
     Key key,

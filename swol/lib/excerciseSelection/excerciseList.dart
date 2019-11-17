@@ -7,8 +7,8 @@ import 'package:scroll_to_index/scroll_to_index.dart';
 import 'package:swol/excercise/defaultDateTimes.dart';
 
 //internal: basics
-import 'package:swol/excerciseSelection/animatedTitle.dart';
-import 'package:swol/excerciseSelection/secondary.dart';
+import 'package:swol/excerciseSelection/secondary/animatedTitle.dart';
+import 'package:swol/excerciseSelection/secondary/secondary.dart';
 import 'package:swol/sharedWidgets/excerciseTile.dart';
 import 'package:swol/sharedWidgets/scrollToTop.dart';
 import 'package:swol/excercise/excerciseStructure.dart';
@@ -45,10 +45,6 @@ class _ExcerciseSelectState extends State<ExcerciseSelect>{
     //setup vars
     double expandHeight = MediaQuery.of(context).size.height / 3;
     expandHeight = (expandHeight < 40) ? 40 : expandHeight;
-    
-    //offset presets for learn section
-    Offset outOfViewRight = Offset(36 + NavigationToolbar.kMiddleSpacing, 0);
-    Offset inView = Offset(0,0);
 
     //swolheight (Since with mediaquery must be done here)
     double statusBarHeight = MediaQuery.of(context).padding.top;

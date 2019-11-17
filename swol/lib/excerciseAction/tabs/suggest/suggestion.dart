@@ -18,13 +18,6 @@ class SuggestionBody extends StatelessWidget {
       fontWeight: FontWeight.bold,
     );
 
-    Function onPressed = (){
-      print("pressed");
-    };
-    String name = "Rep Target";
-    String value = "9";
-    IconData icon = Icons.edit;
-
     return Padding(
       padding: EdgeInsets.only(top:16),
         child: Column(
