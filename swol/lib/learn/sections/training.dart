@@ -9,16 +9,19 @@ class TrainingBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        SectionDescription(
-          child: Text(
-            "Select a training based on the results you desire\n\n"
-            + "But first research the risks, and have a plan to eliminate or minimize them",
+    return Container(
+      color: Theme.of(context).primaryColorDark,
+      child: Column(
+        children: <Widget>[
+          SectionDescription(
+            child: Text(
+              "Select a training based on the results you desire\n\n"
+              + "But first research the risks, and have a plan to eliminate or minimize them",
+            ),
           ),
-        ),
-        AllTrainingTypes(),
-      ],
+          AllTrainingTypes(),
+        ],
+      ),
     );
   }
 }

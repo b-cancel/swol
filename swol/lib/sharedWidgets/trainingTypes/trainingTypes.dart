@@ -226,21 +226,13 @@ class _TrainingTypeSectionsState extends State<TrainingTypeSections> {
     super.dispose();
   }
 
-  //TODO: edit below or above ;)
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: (widget.lightMode) ? Colors.white : Theme.of(context).primaryColor,
+      color: (widget.lightMode) ? Colors.white : Theme.of(context).primaryColorDark,
       child: IntrinsicHeight(
         child: Row(
           children: <Widget>[
-            /*
-            Padding(
-              padding: EdgeInsets.symmetric(
-                vertical: 16,
-              ),
-              child: PersistentCardTable(
-            */
             Padding(
               padding: EdgeInsets.symmetric(
                 vertical: 0,
@@ -265,7 +257,7 @@ class _TrainingTypeSectionsState extends State<TrainingTypeSections> {
             ),
             Expanded(
               child: Container(
-                color: (widget.lightMode) ? Colors.white: Theme.of(context).primaryColor,
+                color: (widget.lightMode) ? Colors.white: Theme.of(context).primaryColorDark,
                 child: Stack(
                   children: <Widget>[
                     Padding(
@@ -289,7 +281,7 @@ class _TrainingTypeSectionsState extends State<TrainingTypeSections> {
                             // Add one stop for each color. Stops should increase from 0 to 1
                             stops: [0.1,1.0],
                             colors: [
-                              (widget.lightMode) ? Colors.white : Theme.of(context).primaryColor,
+                              (widget.lightMode) ? Colors.white : Theme.of(context).primaryColorDark,
                               (widget.lightMode) ? Colors.white.withOpacity(0) : Colors.transparent,
                             ],
                           ),
