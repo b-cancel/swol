@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:page_transition/page_transition.dart';
 import 'package:swol/excercise/excerciseData.dart';
-import 'package:swol/excerciseAction/tabs/recovery/breath.dart';
 import 'package:swol/excerciseAction/tabs/recovery/changeTime.dart';
 import 'package:swol/excerciseAction/tabs/recovery/liquidStopwatch.dart';
 import 'package:swol/excerciseAction/tabs/recovery/liquidTimer.dart';
+import 'package:swol/excerciseAction/tabs/recovery/secondary/breath.dart';
 import 'package:swol/excerciseAction/tabs/sharedWidgets/bottomButtons.dart';
 
 class Recovery extends StatefulWidget {
@@ -25,8 +24,11 @@ class Recovery extends StatefulWidget {
 }
 
 class _RecoveryState extends State<Recovery> with SingleTickerProviderStateMixin {
-  //primary vars
+  //the time our timer starts that doesn't change
+  //TODO: this should get written into the excercise
   DateTime timerStart;
+
+  //so we can update our excercises duration
   ValueNotifier<Duration> recoveryDuration;
 
   //init
@@ -120,44 +122,6 @@ class _RecoveryState extends State<Recovery> with SingleTickerProviderStateMixin
               backAction: widget.backToRecordSet,
             )
           ],
-        ),
-      ),
-    );
-  }
-}
-
-class ToBreath extends StatelessWidget {
-  const ToBreath({
-    Key key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: (){
-        Navigator.push(
-          context, 
-          PageTransition(
-            type: PageTransitionType.fade, 
-            child: Breath(),
-          ),
-        );
-      },
-      child: Padding(
-        padding: EdgeInsets.all(
-          16,
-        ),
-        child: Container(
-          width: 50,
-          height: 50,
-          child: Hero(
-            tag: 'breath',
-            child: new Image(
-              image: new AssetImage("assets/gifs/breathMod.gif"),
-              //lines being slightly distinguishable is ugly
-              color: Theme.of(context).accentColor,
-            ),
-          ),
         ),
       ),
     );

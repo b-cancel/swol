@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:swol/excercise/excerciseStructure.dart';
 
+//TODO: this isn't even close to finish, i jump all the guns
+
 //When pressing "next set" or "done with excercise"
 //-------------------------
 //  maybeAreYouSure [dimissible]

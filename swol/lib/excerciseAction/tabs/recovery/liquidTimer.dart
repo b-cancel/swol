@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 
 //plugin
 import 'package:liquid_progress_indicator/liquid_progress_indicator.dart';
-import 'package:swol/excerciseAction/tabs/recovery/liquidTime.dart';
 
 //internal
 import 'package:swol/excerciseAction/tabs/recovery/recovery.dart';
+import 'package:swol/excerciseAction/tabs/recovery/secondary/timeDisplay.dart';
 import 'package:swol/utils/vibrate.dart';
 
 //widget

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:swol/learn/body.dart';
-import 'package:swol/learn/cardTable.dart';
-import 'package:swol/learn/reusableWidgets.dart';
+import 'package:swol/learn/sections/experiment.dart';
+import 'package:swol/learn/shared.dart';
 import 'package:swol/sharedWidgets/informationDisplay.dart';
+import 'package:swol/sharedWidgets/trainingTypes/trainingTypes.dart';
 
 class RepTargetPopUp extends StatelessWidget {
   const RepTargetPopUp({
