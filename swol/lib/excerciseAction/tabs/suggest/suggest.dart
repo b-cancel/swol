@@ -107,7 +107,8 @@ class _SuggestionState extends State<Suggestion> {
             ),
           ),
           BottomButtons(
-            forwardAction: () => widget.recordSet,
+            allSetsComplete: widget.allSetsComplete,
+            forwardAction: widget.recordSet,
             forwardActionWidget: RichText(
               text: TextSpan(
                 children: [

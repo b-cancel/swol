@@ -28,12 +28,12 @@ class BottomButtons extends StatelessWidget {
             child: Container(),
           ),
           backAction == null ? Container() : FlatButton(
-            onPressed: backAction,
+            onPressed: () => backAction(),
             child: Text("Back"),
           ),
           RaisedButton(
             color: Theme.of(context).accentColor,
-            onPressed: () => forwardAction,
+            onPressed: () => forwardAction(),
             child: forwardActionWidget,
           )
         ],
@@ -57,7 +57,7 @@ class DoneButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return OutlineButton(
       highlightedBorderColor: Theme.of(context).accentColor,
-      onPressed: allSetsComplete(),
+      onPressed: () => allSetsComplete(),
       child: RichText(
         text: TextSpan(
           children: [

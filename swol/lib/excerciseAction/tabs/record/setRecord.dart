@@ -26,9 +26,9 @@ class SetRecord extends StatelessWidget {
             child: Container(),
           ),
           BottomButtons(
-            forwardAction: () => setBreak,
+            forwardAction: setBreak,
             forwardActionWidget: Text("Take Set Break"),
-            backAction: () => backToSuggestion,
+            backAction: backToSuggestion,
           )
         ],
       ),

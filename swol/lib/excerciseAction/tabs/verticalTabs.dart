@@ -29,9 +29,10 @@ class VerticalTabs extends StatefulWidget {
 
 class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMixin {
   var carousel;
+  int tab;
 
   allSetsComplete(){
-    print("all sets complete");
+    print("fill all sets complete function");
   }
 
   toPage(int pageID){ //0->2
@@ -48,31 +49,32 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
     //TODO: select the first tab based on how far we are into the workout
     //for now this functionality is test our randomly
     var rng = new math.Random();
-    int tab = (rng.nextInt(3)).clamp(0, 2);
+    tab = (rng.nextInt(3)).clamp(0, 2);
 
     //carousel
     carousel = CarouselSlider(
       initialPage: tab,
       viewportFraction: 1.0,
+      //TODO: when we are done with debuging we can uncomment this
       //scrollPhysics: NeverScrollableScrollPhysics(),
       scrollDirection: Axis.vertical,
       height: widget.maxHeight,
       items: [
         Suggestion(
           excerciseID: widget.excerciseID,
-          allSetsComplete: () => allSetsComplete,
-          recordSet: () => toPage(1),
+          allSetsComplete: allSetsComplete,
+          recordSet: () => toPage(tab + 1),
         ),
         SetRecord(
           excerciseID: widget.excerciseID,
-          backToSuggestion: () => toPage(0),
-          setBreak: () => toPage(2),
+          backToSuggestion: () => toPage(tab + 0),
+          setBreak: () => toPage(tab + 2),
         ),
         Recovery(
           excerciseID: widget.excerciseID,
-          allSetsComplete: () => allSetsComplete,
-          backToRecordSet: () => toPage(1),
-          nextSet: () => toPage(0),
+          allSetsComplete: allSetsComplete,
+          backToRecordSet: () => toPage(tab + 1),
+          nextSet: () => toPage(tab + 0),
         ),
       ],
     );

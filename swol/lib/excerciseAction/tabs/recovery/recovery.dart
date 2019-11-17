@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:swol/excercise/excerciseData.dart';
-import 'package:swol/excercise/excerciseStructure.dart';
 import 'package:swol/excerciseAction/tabs/recovery/breath.dart';
 import 'package:swol/excerciseAction/tabs/recovery/changeTime.dart';
 import 'package:swol/excerciseAction/tabs/recovery/liquidStopwatch.dart';
@@ -115,10 +114,10 @@ class _RecoveryState extends State<Recovery> with SingleTickerProviderStateMixin
               )
             ),
             BottomButtons(
-              allSetsComplete: () => widget.allSetsComplete,
-              forwardAction: () => widget.nextSet,
+              allSetsComplete: widget.allSetsComplete,
+              forwardAction: widget.nextSet,
               forwardActionWidget: Text("Next Set"),
-              backAction: () => widget.backToRecordSet,
+              backAction: widget.backToRecordSet,
             )
           ],
         ),
