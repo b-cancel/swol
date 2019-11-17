@@ -17,7 +17,7 @@ class TrainingBody extends StatelessWidget {
             + "But first research the risks, and have a plan to eliminate or minimize them",
           ),
         ),
-        ScrollableTrainingTypes(),
+        AllTrainingTypes(),
       ],
     );
   }

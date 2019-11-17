@@ -88,12 +88,13 @@ class _ChangeRecoveryTimeWidgetState extends State<ChangeRecoveryTimeWidget> {
             width: MediaQuery.of(context).size.width,
             child: Theme(
               data: ThemeData.dark(),
-              child: ScrollTrainingTypes(
+              child: TrainingTypeSections(
                 lightMode: true,
                 highlightField: 2,
                 //nothing / endurance / hypertrohpy / hypertrophy & strength / strength and above
                 sections: [[0], [0], [1], [1,2], [2]],
                 sectionID: sectionID,
+                plus24: true,
               ),
             ),
           ),

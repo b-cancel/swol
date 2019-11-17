@@ -60,7 +60,7 @@ class ExplainFunctionality extends StatelessWidget {
             child: Container(
                 color: Colors.white,
                 width: MediaQuery.of(context).size.width,
-                child: ScrollableTrainingTypes(
+                child: AllTrainingTypes(
                   lightMode: true,
                   highlightField: 2,
                   sectionWithInitialFocus: sectionWithInitialFocus,

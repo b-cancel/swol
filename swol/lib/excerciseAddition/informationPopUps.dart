@@ -79,7 +79,7 @@ class RepTargetPopUp extends StatelessWidget {
               child: Container(
                   color: Colors.white,
                   width: MediaQuery.of(context).size.width,
-                  child: ScrollableTrainingTypes(
+                  child: AllTrainingTypes(
                     lightMode: true,
                     highlightField: 3,
                   ),
@@ -284,7 +284,7 @@ class SetTargetPopUp extends StatelessWidget {
               child: Container(
                   color: Colors.white,
                   width: MediaQuery.of(context).size.width,
-                  child: ScrollableTrainingTypes(
+                  child: AllTrainingTypes(
                     lightMode: true,
                     highlightField: 4,
                   ),
@@ -440,7 +440,7 @@ class SetBreakPopUp extends StatelessWidget {
             child: Container(
                 color: Colors.white,
                 width: MediaQuery.of(context).size.width,
-                child: ScrollableTrainingTypes(
+                child: AllTrainingTypes(
                   lightMode: true,
                   highlightField: 2,
                 ),
