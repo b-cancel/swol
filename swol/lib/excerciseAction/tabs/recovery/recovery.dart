@@ -1,17 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:swol/excercise/excerciseData.dart';
+import 'package:swol/excercise/excerciseStructure.dart';
 import 'package:swol/excerciseAction/tabs/recovery/breath.dart';
 import 'package:swol/excerciseAction/tabs/recovery/changeTime.dart';
 import 'package:swol/excerciseAction/tabs/recovery/liquidStopwatch.dart';
 import 'package:swol/excerciseAction/tabs/recovery/liquidTimer.dart';
-import 'package:swol/excerciseAction/tabs/sharedWidgets/done.dart';
+import 'package:swol/excerciseAction/tabs/sharedWidgets/bottomButtons.dart';
 
 class Recovery extends StatefulWidget {
   Recovery({
-    @required this.recoveryDuration,
+    @required this.excerciseID,
+    @required this.allSetsComplete,
+    @required this.backToRecordSet,
+    @required this.nextSet,
   });
 
-  final ValueNotifier<Duration> recoveryDuration;
+  final int excerciseID;
+  final Function allSetsComplete;
+  final Function backToRecordSet;
+  final Function nextSet;
 
   @override
   _RecoveryState createState() => _RecoveryState();
@@ -20,12 +28,27 @@ class Recovery extends StatefulWidget {
 class _RecoveryState extends State<Recovery> with SingleTickerProviderStateMixin {
   //primary vars
   DateTime timerStart;
+  ValueNotifier<Duration> recoveryDuration;
 
   //init
   @override
   void initState() {
     //record the time the timer started
     timerStart = DateTime.now();
+    
+    //set recovery duration init
+    //NOTE: assume we have this excercise ID
+    recoveryDuration = new ValueNotifier(
+      ExcerciseData.getExcercises().value[widget.excerciseID].recoveryPeriod,
+    );
+
+    //if recovery duration changes we must update it
+    recoveryDuration.addListener((){
+      ExcerciseData.updateExcercise(
+        widget.excerciseID,
+        recoveryPeriod: recoveryDuration.value,
+      );
+    });
 
     //super init
     super.initState();
@@ -65,7 +88,7 @@ class _RecoveryState extends State<Recovery> with SingleTickerProviderStateMixin
                           //---White Backgrond circle
                           //---The secondary
                           LiquidStopwatch(
-                            changeableTimerDuration: widget.recoveryDuration,
+                            changeableTimerDuration: recoveryDuration,
                             timerStart: timerStart,
                             waveColor: accentStopwatch,
                             backgroundColor: secondaryColorOne,
@@ -75,7 +98,7 @@ class _RecoveryState extends State<Recovery> with SingleTickerProviderStateMixin
                           ),
                           //---The main countdown timer
                           LiquidTimer(
-                            changeableTimerDuration: widget.recoveryDuration,
+                            changeableTimerDuration: recoveryDuration,
                             timerStart: timerStart,
                             backgroundColor: secondaryColorOne,
                             waveColor: accentTimer,
@@ -91,7 +114,12 @@ class _RecoveryState extends State<Recovery> with SingleTickerProviderStateMixin
                 ),
               )
             ),
-            BottomButtons()
+            BottomButtons(
+              allSetsComplete: () => widget.allSetsComplete,
+              forwardAction: () => widget.nextSet,
+              forwardActionWidget: Text("Next Set"),
+              backAction: () => widget.backToRecordSet,
+            )
           ],
         ),
       ),
@@ -132,47 +160,6 @@ class ToBreath extends StatelessWidget {
             ),
           ),
         ),
-      ),
-    );
-  }
-}
-
-class BottomButtons extends StatelessWidget {
-  const BottomButtons({
-    Key key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(16),
-      child: Row(
-        mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: <Widget>[
-          DoneButton(),
-          Expanded(
-            child: Container(),
-          ),
-          FlatButton(
-            onPressed: (){
-              Navigator.pop(context);
-            },
-            child: Text("Back"),
-          ),
-          //both paddings + button size
-          //height: (16 * 2) + 48.0,
-          RaisedButton(
-            color: Theme.of(context).accentColor,
-            textColor: Theme.of(context).primaryColor,
-            onPressed: (){
-              Navigator.pop(context);
-            },
-            //TODO: if our next set will go above our targer alert the user of this 
-            //TODO:  and ask if they want to proceed or end
-            child: Text("Next Set"),
-          ),
-        ],
       ),
     );
   }

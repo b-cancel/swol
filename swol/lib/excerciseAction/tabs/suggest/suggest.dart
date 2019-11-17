@@ -3,18 +3,21 @@ import 'package:flutter/material.dart';
 
 //internal
 import 'package:swol/excercise/excerciseData.dart';
-import 'package:swol/excerciseAction/tabs/sharedWidgets/done.dart';
+import 'package:swol/excerciseAction/tabs/sharedWidgets/bottomButtons.dart';
 import 'package:swol/excerciseAction/tabs/suggest/calibration.dart';
 import 'package:swol/excerciseAction/tabs/suggest/suggestion.dart';
 import 'package:swol/other/functions/helper.dart';
-import 'package:swol/sharedWidgets/mySlider.dart';
 
 class Suggestion extends StatefulWidget {
   Suggestion({
     @required this.excerciseID,
+    @required this.allSetsComplete,
+    @required this.recordSet,
   });
 
   final int excerciseID;
+  final Function allSetsComplete;
+  final Function recordSet;
 
   @override
   _SuggestionState createState() => _SuggestionState();
@@ -89,67 +92,50 @@ class _SuggestionState extends State<Suggestion> {
       lastReps: lastReps,
     );
 
-    return Column(
-      mainAxisSize: MainAxisSize.max,
-      children: <Widget>[
-        Expanded(
-          child: FlatButton(
-            onPressed: (){
-              firstTime.value = !firstTime.value;
-            },
-            child: (firstTime.value) ? calibration : suggestion,
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      color: Colors.red,
+      child: Column(
+        mainAxisSize: MainAxisSize.max,
+        children: <Widget>[
+          Expanded(
+            child: FlatButton(
+              onPressed: (){
+                firstTime.value = !firstTime.value;
+              },
+              child: (firstTime.value) ? calibration : suggestion,
+            ),
           ),
-        ),
-        Padding(
-          padding: EdgeInsets.only(
-            bottom: 16.0,
-            left: 16,
-            right: 16,
-            top: 16,
-          ),
-          child: Row(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: <Widget>[
-              new DoneButton(),
-              Expanded(
-                child: Container(),
-              ),
-              RaisedButton(
-                color: Theme.of(context).accentColor,
-                onPressed: (){
-                  print("do thing");
-                },
-                child: RichText(
-                  text: TextSpan(
-                    children: [
-                      TextSpan(
-                        text: "Record ",
-                        style: TextStyle(
-                          color: Theme.of(context).primaryColorDark,
-                        ),
-                      ),
-                      TextSpan(
-                        text: "Set 1",
-                        style: TextStyle(
-                          color: Theme.of(context).primaryColorDark,
-                          fontWeight: FontWeight.w900,
-                        ),
-                      ),
-                      TextSpan(
-                        text: "/3",
-                        style: TextStyle(
-                          color: Theme.of(context).primaryColorDark,
-                        ),
-                      ),
-                    ],
+          BottomButtons(
+            forwardAction: () => widget.recordSet,
+            forwardActionWidget: RichText(
+              text: TextSpan(
+                children: [
+                  TextSpan(
+                    text: "Record ",
+                    style: TextStyle(
+                      color: Theme.of(context).primaryColorDark,
+                    ),
                   ),
-                ),
-              )
-            ],
+                  TextSpan(
+                    text: "Set 1",
+                    style: TextStyle(
+                      color: Theme.of(context).primaryColorDark,
+                      fontWeight: FontWeight.w900,
+                    ),
+                  ),
+                  TextSpan(
+                    text: "/3",
+                    style: TextStyle(
+                      color: Theme.of(context).primaryColorDark,
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ),
-        )
-      ],
+        ],
+      ),
     );
   }
 }

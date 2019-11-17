@@ -101,6 +101,7 @@ class _ExcercisePageState extends State<ExcercisePage> {
         ),
         body: VerticalTabs(
           excerciseID: widget.excerciseID,
+          maxHeight: MediaQuery.of(context).size.height
         ),
       ),
     );

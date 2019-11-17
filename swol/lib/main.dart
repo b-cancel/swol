@@ -73,8 +73,6 @@ class GrabSystemPrefs extends StatelessWidget {
             nextID = 0;
           }
 
-          print("isDark: " + isDark.toString());
-
           //set nextID to its usable version
           AnExcercise.nextID = nextID;
 
