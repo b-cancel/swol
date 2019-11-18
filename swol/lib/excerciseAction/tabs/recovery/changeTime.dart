@@ -18,7 +18,6 @@ class ChangeRecoveryTimeWidget extends StatefulWidget {
 
 class _ChangeRecoveryTimeWidgetState extends State<ChangeRecoveryTimeWidget> {
   ValueNotifier<int> sectionID = new ValueNotifier(0);
-  ValueNotifier<bool> showS = new ValueNotifier(false);
 
   recoveryPeriodToSectionID(){
     if(widget.recoveryPeriod.value < Duration(seconds: 15)) sectionID.value = 0; //nothing
@@ -34,34 +33,13 @@ class _ChangeRecoveryTimeWidgetState extends State<ChangeRecoveryTimeWidget> {
     }
   }
 
-  recoveryPeriodToShowS(){
-    int mins = widget.recoveryPeriod.value.inMinutes;
-    showS.value = ((mins == 1) ? false : true);
-  }
-
-  //TODO: uncomment after we are sure the other more important stuff works
-  manualSetState(){
-    /*
-    WidgetsBinding.instance.addPostFrameCallback((_){
-      if(mounted){
-        setState(() {});
-      }
-    });
-    */
-  }
-
   @override
   void initState() {
     //initial function calls
     recoveryPeriodToSectionID();
-    recoveryPeriodToShowS();
 
     //as the recovery period changes updates should occur
     widget.recoveryPeriod.addListener(recoveryPeriodToSectionID);
-    widget.recoveryPeriod.addListener(recoveryPeriodToShowS);
-
-    //when showS changes we should set state (on next frame)
-    showS.addListener(manualSetState);
 
     //super init
     super.initState();
@@ -70,8 +48,6 @@ class _ChangeRecoveryTimeWidgetState extends State<ChangeRecoveryTimeWidget> {
   @override
   void dispose() {
     widget.recoveryPeriod.removeListener(recoveryPeriodToSectionID);
-    widget.recoveryPeriod.removeListener(recoveryPeriodToShowS);
-    showS.removeListener(manualSetState);
 
     //super dispose
     super.dispose();
@@ -108,9 +84,8 @@ class _ChangeRecoveryTimeWidgetState extends State<ChangeRecoveryTimeWidget> {
                   duration: widget.recoveryPeriod,
                   darkTheme: false,
                 ),
-                //TODO: this widget should take in duration and decide based on that to avoid uneeded reloads elsewhere
                 MinsSecsBelowTimePicker(
-                  showS: showS.value,
+                  duration: widget.recoveryPeriod,
                   darkTheme: false,
                 ),
               ],

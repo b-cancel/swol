@@ -737,7 +737,7 @@ class RecoveryTimeWidget extends StatelessWidget {
           darkTheme: darkTheme,
         ),
         MinsSecsBelowTimePicker(
-          showS: showS,
+          duration: recoveryPeriod,
           darkTheme: darkTheme,
         ),
       ],
