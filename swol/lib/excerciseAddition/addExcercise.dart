@@ -128,10 +128,9 @@ class AddExcercise extends StatelessWidget {
     )
   );
 
+  //TODO: figure out why this is still reloading on its own when closing the keyboard
   @override
   Widget build(BuildContext context) {
-    print("build add excercise");
-
     //let the button animate in after the add excercise page slides in
     Future.delayed(Duration(milliseconds: 500), (){
       showSaveButton.value = true;

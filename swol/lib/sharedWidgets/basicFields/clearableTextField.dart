@@ -78,12 +78,15 @@ class _TextFieldWithClearButtonState extends State<TextFieldWithClearButton> {
     //autofocus name
     if(widget.editOneAtAtTime == false){
       if(widget.autofocus){
+        print("we will be autofocusing after a bit");
         WidgetsBinding.instance.addPostFrameCallback((_){
+          print("in 300 more bits");
           //TODO: remove this when we have the add new animation working as desired"
           Future.delayed(
             //wait a little bit so animations page transition animation complete
             Duration(milliseconds: 300),
             (){
+              print("autofocusing now");
               FocusScope.of(context).requestFocus(focusNodeVN.value);
             }
           );

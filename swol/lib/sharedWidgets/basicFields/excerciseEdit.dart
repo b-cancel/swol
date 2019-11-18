@@ -8,8 +8,8 @@ import 'package:swol/sharedWidgets/basicFields/referenceLink.dart';
 import 'package:swol/sharedWidgets/informationDisplay.dart';
 
 //editor of basic variables "name", "note", "url"
-class BasicEditor extends StatefulWidget {
-  const BasicEditor({
+class BasicEditor extends StatelessWidget {
+  BasicEditor({
     Key key,
     @required this.namePresent,
     @required this.nameError,
@@ -26,18 +26,8 @@ class BasicEditor extends StatefulWidget {
   final ValueNotifier<String> url;
   final bool editOneAtAtTime;
 
-  @override
-  _BasicEditorState createState() => _BasicEditorState();
-}
-
-class _BasicEditorState extends State<BasicEditor> {
-  FocusNode noteFocusNode = FocusNode();
-
-  @override
-  void initState() {
-    //super init
-    super.initState();
-  }
+  //local
+  final FocusNode noteFocusNode = FocusNode();
 
   @override
   Widget build(BuildContext context) {
@@ -50,14 +40,14 @@ class _BasicEditorState extends State<BasicEditor> {
           popUp: ExcerciseNamePopUp(),
         ),
         TextFieldWithClearButton(
-          editOneAtAtTime: widget.editOneAtAtTime,
-          valueToUpdate: widget.name,
+          editOneAtAtTime: editOneAtAtTime,
+          valueToUpdate: name,
           hint: "Required*", 
-          error: (widget.nameError.value) ? "Name Is Required" : null, 
+          error: (nameError.value) ? "Name Is Required" : null, 
           //auto focus field
           autofocus: true,
           //we need to keep track above to determine whether we can active the button
-          present: widget.namePresent, 
+          present: namePresent, 
           //so next focuses on the note
           otherFocusNode: noteFocusNode,
         ),
@@ -66,8 +56,8 @@ class _BasicEditorState extends State<BasicEditor> {
           popUp: ExcerciseNotePopUp(),
         ),
         TextFieldWithClearButton(
-          editOneAtAtTime: widget.editOneAtAtTime,
-          valueToUpdate: widget.note,
+          editOneAtAtTime: editOneAtAtTime,
+          valueToUpdate: note,
           hint: "Details", 
           error: null, 
           //so we can link up both fields
@@ -80,8 +70,8 @@ class _BasicEditorState extends State<BasicEditor> {
           ),
         ),
         ReferenceLinkBox(
-          url: widget.url,
-          editOneAtAtTime: widget.editOneAtAtTime,
+          url: url,
+          editOneAtAtTime: editOneAtAtTime,
         ),
       ],
     );
