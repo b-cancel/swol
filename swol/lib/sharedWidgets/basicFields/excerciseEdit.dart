@@ -35,11 +35,6 @@ class _BasicEditorState extends State<BasicEditor> {
 
   @override
   void initState() {
-    //when url change we update
-    widget.url.addListener((){
-      setState(() {});
-    });
-
     //super init
     super.initState();
   }

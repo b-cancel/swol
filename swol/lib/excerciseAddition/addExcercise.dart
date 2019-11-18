@@ -82,7 +82,7 @@ makeTrainingTypePopUp({
   }
 
 //main widget
-class AddExcercise extends StatefulWidget {
+class AddExcercise extends StatelessWidget {
   const AddExcercise({
     Key key,
     @required this.navSpread,
@@ -91,73 +91,56 @@ class AddExcercise extends StatefulWidget {
   final ValueNotifier<bool> navSpread;
 
   @override
-  _AddExcerciseState createState() => _AddExcerciseState();
-}
+  Widget build(BuildContext context) {
+    ValueNotifier<bool> showSaveButton = new ValueNotifier(false);
 
-class _AddExcerciseState extends State<AddExcercise> {
-  ValueNotifier<bool> showSaveButton = new ValueNotifier(false);
+    //basics
+    ValueNotifier<bool> namePresent = new ValueNotifier(false);
+    ValueNotifier<bool> nameError = new ValueNotifier(false);
+    ValueNotifier<String> name = new ValueNotifier("");
+    ValueNotifier<String> note = new ValueNotifier("");
+    ValueNotifier<String> url = new ValueNotifier("");
 
-  //basics
-  ValueNotifier<bool> namePresent = new ValueNotifier(false);
-  ValueNotifier<bool> nameError = new ValueNotifier(false);
-  ValueNotifier<String> name = new ValueNotifier("");
-  ValueNotifier<String> note = new ValueNotifier("");
-  ValueNotifier<String> url = new ValueNotifier("");
+    //function select
+    ValueNotifier<int> functionIndex = new ValueNotifier(AnExcercise.defaultFunctionID);
+    ValueNotifier<String> functionString = new ValueNotifier(
+      Functions.functions[AnExcercise.defaultFunctionID],
+    );
 
-  //function select
-  int functionIndex = AnExcercise.defaultFunctionID;
-  String functionValue = Functions.functions[AnExcercise.defaultFunctionID];
+    //recovery period select
+    ValueNotifier<Duration> recoveryPeriod = new ValueNotifier(
+      AnExcercise.defaultRecovery,
+    );
 
-  //recovery period select
-  ValueNotifier<Duration> recoveryPeriod = new ValueNotifier(
-    AnExcercise.defaultRecovery,
-  );
+    //set target select
+    ValueNotifier<int> setTarget = new ValueNotifier(
+      AnExcercise.defaultSetTarget,
+    );
 
-  //set target select
-  ValueNotifier<int> setTarget = new ValueNotifier(
-    AnExcercise.defaultSetTarget,
-  );
+    //rep target select
+    ValueNotifier<int> repTarget = new ValueNotifier(
+      AnExcercise.defaultRepTarget,
+    );
 
-  //rep target select
-  ValueNotifier<int> repTarget = new ValueNotifier(
-    AnExcercise.defaultRepTarget,
-  );
-  //updated the above
-  ValueNotifier<Duration> repTargetDuration = new ValueNotifier(
-    Duration(
-      seconds: AnExcercise.defaultRepTarget * 5,
-    )
-  );
+    //updated the above
+    ValueNotifier<Duration> repTargetDuration = new ValueNotifier(
+      Duration(
+        seconds: AnExcercise.defaultRepTarget * 5,
+      )
+    );
 
-  @override
-  void initState() {
+    //let the button animate in after the add excercise page slides in
     Future.delayed(Duration(milliseconds: 500), (){
       showSaveButton.value = true;
     });
 
-    //update when break updates
-    recoveryPeriod.addListener((){
-      setState(() {});
-    });
-
-    //update button given once name given
-    namePresent.addListener((){
-      setState(() {});
-    });
-
-    //update duration for UI updates
+    //update duration so our ticks update
     repTarget.addListener((){
       repTargetDuration.value = Duration(
         seconds: repTarget.value * 5,
       );
     });
 
-    //super init
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
     //for slider hatch mark
     double totalWidth = MediaQuery.of(context).size.width;
     double sliderWidth = totalWidth - (16.0 * 2) - (8 * 2);
@@ -169,7 +152,7 @@ class _AddExcerciseState extends State<AddExcercise> {
     return WillPopScope(
       onWillPop: ()async{
         FocusScope.of(context).unfocus();
-        widget.navSpread.value = false;
+        navSpread.value = false;
         return true; //can still pop
       },
       child: Scaffold(
@@ -191,7 +174,7 @@ class _AddExcerciseState extends State<AddExcercise> {
                       right: 0,
                       child: AddNewHero(
                         inAppBar: true,
-                        navSpread: widget.navSpread,
+                        navSpread: navSpread,
                       ),
                     ),
                     Positioned(
@@ -203,64 +186,19 @@ class _AddExcerciseState extends State<AddExcercise> {
                           padding: const EdgeInsets.only(
                             right: 8.0,
                           ),
-                          child: AnimatedBuilder(
-                            animation: showSaveButton,
-                            builder: (context, child){
-                              return AnimatedContainer(
-                                duration: Duration(milliseconds: 250),
-                                curve: Curves.easeInOut,
-                                constraints: BoxConstraints(
-                                  //no limit vs limit
-                                  //the 100 is so large its never going to be a limitation
-                                  maxHeight: (showSaveButton.value) ? 100 : 0,
-                                ),
-                                child: FittedBox(
-                                  fit: BoxFit.contain,
-                                  child: RaisedButton(
-                                    color: (namePresent.value) 
-                                    ? Theme.of(context).accentColor 
-                                    : Colors.grey,
-                                    onPressed: ()async{
-                                      if(namePresent.value){
-                                        //remove keyboard
-                                        FocusScope.of(context).unfocus();
-
-                                        //add workout to our list
-                                        await ExcerciseData.addExcercise(AnExcercise(
-                                          //basic
-                                          name: name.value,
-                                          url: url.value,
-                                          note: note.value,
-
-                                          //other
-                                          predictionID: functionIndex,
-                                          repTarget: repTarget.value,
-                                          recoveryPeriod: recoveryPeriod.value,
-                                          setTarget: setTarget.value,
-
-                                          //---
-                                          lastTimeStamp: LastTimeStamp.newDateTime(),
-                                        ));
-
-                                        //exit pop up
-                                        widget.navSpread.value = false;
-                                        Navigator.pop(context);
-                                      }
-                                      else{
-                                        nameError.value = true;
-                                        setState(() {});
-                                      }
-                                    },
-                                    child: Text(
-                                      "Save",
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              );
-                            },
+                          child: SaveButton(
+                            navSpread: navSpread, 
+                            showSaveButton: showSaveButton, 
+                            nameError: nameError,
+                            //variables
+                            namePresent: namePresent, 
+                            name: name, 
+                            url: url, 
+                            note: note, 
+                            functionIndex: functionIndex, 
+                            repTarget: repTarget, 
+                            recoveryPeriod: recoveryPeriod, 
+                            setTarget: setTarget, 
                           ),
                         ),
                       ),
@@ -340,25 +278,9 @@ class _AddExcerciseState extends State<AddExcercise> {
                                       popUp: new PredictionFormulasPopUp(),
                                     ),
                                   ),
-                                  DropdownButton<String>(
-                                    value: functionValue,
-                                    icon: Icon(Icons.arrow_drop_down),
-                                    isExpanded: true,
-                                    iconSize: 24,
-                                    elevation: 16,
-                                    onChanged: (String newValue) {
-                                      setState(() {
-                                        functionValue = newValue;
-                                        functionIndex = Functions.functionToIndex[functionValue];
-                                      });
-                                    },
-                                    items: Functions.functions.map<DropdownMenuItem<String>>((String value) {
-                                      return DropdownMenuItem<String>(
-                                        value: value,
-                                        child: Text(value),
-                                      );
-                                    })
-                                    .toList(),
+                                  FunctionDropDown(
+                                    functionIndex: functionIndex,
+                                    functionString: functionString,
                                   ),
                                 ],
                               ),
@@ -371,6 +293,155 @@ class _AddExcerciseState extends State<AddExcercise> {
                 ],
               ),
             ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class FunctionDropDown extends StatefulWidget {
+  FunctionDropDown({
+    @required this.functionString,
+    @required this.functionIndex,
+  });
+
+  final ValueNotifier<String> functionString;
+  final ValueNotifier<int> functionIndex;
+
+  @override
+  _FunctionDropDownState createState() => _FunctionDropDownState();
+}
+
+class _FunctionDropDownState extends State<FunctionDropDown> {
+  @override
+  Widget build(BuildContext context) {
+    return DropdownButton<String>(
+      value: widget.functionString.value,
+      icon: Icon(Icons.arrow_drop_down),
+      isExpanded: true,
+      iconSize: 24,
+      elevation: 16,
+      onChanged: (String newValue) {
+        setState(() {
+          widget.functionString.value = newValue;
+          widget.functionIndex.value = Functions.functionToIndex[widget.functionString.value];
+        });
+      },
+      items: Functions.functions.map<DropdownMenuItem<String>>((String value) {
+        return DropdownMenuItem<String>(
+          value: value,
+          child: Text(value),
+        );
+      })
+      .toList(),
+    );
+  }
+}
+
+class SaveButton extends StatefulWidget {
+  const SaveButton({
+    Key key,
+    @required this.showSaveButton,
+    @required this.namePresent,
+    @required this.name,
+    @required this.url,
+    @required this.note,
+    @required this.functionIndex,
+    @required this.repTarget,
+    @required this.recoveryPeriod,
+    @required this.setTarget,
+    @required this.navSpread,
+    @required this.nameError,
+  }) : super(key: key);
+
+  final ValueNotifier<bool> showSaveButton;
+  final ValueNotifier<bool> namePresent;
+  final ValueNotifier<String> name;
+  final ValueNotifier<String> url;
+  final ValueNotifier<String> note;
+  final ValueNotifier<int> functionIndex;
+  final ValueNotifier<int> repTarget;
+  final ValueNotifier<Duration> recoveryPeriod;
+  final ValueNotifier<int> setTarget;
+  final ValueNotifier<bool> navSpread;
+  final ValueNotifier<bool> nameError;
+
+  @override
+  _SaveButtonState createState() => _SaveButtonState();
+}
+
+class _SaveButtonState extends State<SaveButton> {
+
+  //so it can be added and removed from listeners
+  manualSetState(){
+    if(mounted) setState(() {});
+  }
+  
+  @override
+  void initState() {
+    //add listeners
+    widget.showSaveButton.addListener(manualSetState);
+    widget.namePresent.addListener(manualSetState);
+
+    //super init
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedContainer(
+      duration: Duration(milliseconds: 250),
+      curve: Curves.easeInOut,
+      constraints: BoxConstraints(
+        //no limit vs limit
+        //the 100 is so large its never going to be a limitation
+        maxHeight: (widget.showSaveButton.value) ? 100 : 0,
+      ),
+      child: FittedBox(
+        fit: BoxFit.contain,
+        child: RaisedButton(
+          color: (widget.namePresent.value) 
+          ? Theme.of(context).accentColor 
+          : Colors.grey,
+          onPressed: ()async{
+            if(widget.namePresent.value){
+              //remove keyboard
+              FocusScope.of(context).unfocus();
+
+              //add workout to our list
+              await ExcerciseData.addExcercise(
+                AnExcercise(
+                  //basic
+                  name: widget.name.value,
+                  url: widget.url.value,
+                  note: widget.note.value,
+
+                  //other
+                  predictionID: widget.functionIndex.value,
+                  repTarget: widget.repTarget.value,
+                  recoveryPeriod: widget.recoveryPeriod.value,
+                  setTarget: widget.setTarget.value,
+
+                  //---
+                  lastTimeStamp: LastTimeStamp.newDateTime(),
+                ),
+              );
+
+              //exit pop up
+              widget.navSpread.value = false;
+              Navigator.pop(context);
+            }
+            else{
+              widget.nameError.value = true;
+              setState(() {});
+            }
+          },
+          child: Text(
+            "Save",
+            style: TextStyle(
+              color: Colors.black,
+            ),
           ),
         ),
       ),
