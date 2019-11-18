@@ -83,51 +83,54 @@ makeTrainingTypePopUp({
 
 //main widget
 class AddExcercise extends StatelessWidget {
-  const AddExcercise({
+  AddExcercise({
     Key key,
     @required this.navSpread,
   }) : super(key: key);
 
   final ValueNotifier<bool> navSpread;
 
+  //-----all the variables used below but not passed
+  final ValueNotifier<bool> showSaveButton = new ValueNotifier(false);
+
+  //basics
+  final ValueNotifier<bool> namePresent = new ValueNotifier(false);
+  final ValueNotifier<bool> nameError = new ValueNotifier(false);
+  final ValueNotifier<String> name = new ValueNotifier("");
+  final ValueNotifier<String> note = new ValueNotifier("");
+  final ValueNotifier<String> url = new ValueNotifier("");
+
+  //function select
+  final ValueNotifier<int> functionIndex = new ValueNotifier(AnExcercise.defaultFunctionID);
+  final ValueNotifier<String> functionString = new ValueNotifier(
+    Functions.functions[AnExcercise.defaultFunctionID],
+  );
+
+  //recovery period select
+  final ValueNotifier<Duration> recoveryPeriod = new ValueNotifier(
+    AnExcercise.defaultRecovery,
+  );
+
+  //set target select
+  final ValueNotifier<int> setTarget = new ValueNotifier(
+    AnExcercise.defaultSetTarget,
+  );
+
+  //rep target select
+  final ValueNotifier<int> repTarget = new ValueNotifier(
+    AnExcercise.defaultRepTarget,
+  );
+
+  //updated the above
+  final ValueNotifier<Duration> repTargetDuration = new ValueNotifier(
+    Duration(
+      seconds: AnExcercise.defaultRepTarget * 5,
+    )
+  );
+
   @override
   Widget build(BuildContext context) {
-    ValueNotifier<bool> showSaveButton = new ValueNotifier(false);
-
-    //basics
-    ValueNotifier<bool> namePresent = new ValueNotifier(false);
-    ValueNotifier<bool> nameError = new ValueNotifier(false);
-    ValueNotifier<String> name = new ValueNotifier("");
-    ValueNotifier<String> note = new ValueNotifier("");
-    ValueNotifier<String> url = new ValueNotifier("");
-
-    //function select
-    ValueNotifier<int> functionIndex = new ValueNotifier(AnExcercise.defaultFunctionID);
-    ValueNotifier<String> functionString = new ValueNotifier(
-      Functions.functions[AnExcercise.defaultFunctionID],
-    );
-
-    //recovery period select
-    ValueNotifier<Duration> recoveryPeriod = new ValueNotifier(
-      AnExcercise.defaultRecovery,
-    );
-
-    //set target select
-    ValueNotifier<int> setTarget = new ValueNotifier(
-      AnExcercise.defaultSetTarget,
-    );
-
-    //rep target select
-    ValueNotifier<int> repTarget = new ValueNotifier(
-      AnExcercise.defaultRepTarget,
-    );
-
-    //updated the above
-    ValueNotifier<Duration> repTargetDuration = new ValueNotifier(
-      Duration(
-        seconds: AnExcercise.defaultRepTarget * 5,
-      )
-    );
+    print("build add excercise");
 
     //let the button animate in after the add excercise page slides in
     Future.delayed(Duration(milliseconds: 500), (){
