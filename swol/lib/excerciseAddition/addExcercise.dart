@@ -15,6 +15,12 @@ import 'package:swol/excerciseAddition/informationPopUps.dart';
 import 'package:swol/other/functions/helper.dart';
 import 'package:swol/sharedWidgets/trainingTypes/trainingTypes.dart';
 
+/*
+when tapping 
+1. all header jazz
+2. all training type pop ups
+*/
+
 makeTrainingTypePopUp({
     @required BuildContext context,
     @required String title,
@@ -24,6 +30,10 @@ makeTrainingTypePopUp({
     int highlightfield: -1,
   }){
     return (){
+      //unfocus so whatever was focused before doesnt annoying scroll us back
+      FocusScope.of(context).unfocus();
+
+      //now show dialog
       showDialog(
         context: context,
         builder: (BuildContext context){

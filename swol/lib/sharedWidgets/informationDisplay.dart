@@ -26,6 +26,10 @@ class HeaderWithInfo extends StatelessWidget {
           offset: Offset(12, 0),
           child: IconButton(
             onPressed: (){
+              //unfocus so whatever was focused before doesnt annoying scroll us back
+              FocusScope.of(context).unfocus();
+
+              //now show dialog
               showDialog<void>(
                 context: context,
                 barrierDismissible: true,
