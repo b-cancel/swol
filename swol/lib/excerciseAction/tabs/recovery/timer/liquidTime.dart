@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:liquid_progress_indicator/liquid_progress_indicator.dart';
 import 'package:swol/excerciseAction/tabs/recovery/secondary/explained.dart';
 import 'package:swol/excerciseAction/tabs/recovery/secondary/timeDisplay.dart';
+import 'package:swol/excerciseAction/tabs/recovery/timer/changeTime.dart';
 import 'package:swol/utils/vibrate.dart';
 
 class LiquidTime extends StatefulWidget {
@@ -29,16 +30,87 @@ class _LiquidTimeState extends State<LiquidTime> with TickerProviderStateMixin {
 
   //function removable from listeners
   updateState(){
-    if(mounted){
-      setState(() {});
-    }
+    if(mounted) setState(() {});
   }
+
+  /*
+  //function make removable from listener
+  updateVibration(status){
+    if(status == AnimationStatus.completed){
+      Vibrator.startVibration();
+    }
+    else{
+      //NOTE:not cover case for isDismissed 
+      //but should never happen
+      Vibrator.stopVibration();
+    }
+
+    //upate the text
+    updateText();
+  }
+
+  //function make removable from listener
+  updateText(){
+    //update string
+    durationFullStrings = durationToCustomDisplay(widget.changeableTimerDuration.value);
+
+    //grab how much time has passed
+    Duration durationSinceStart = DateTime.now().difference(widget.timerStart);
+
+    //check how much time is left (may be negative)
+    Duration durationUntilEnd = widget.changeableTimerDuration.value - durationSinceStart;
+
+    //determine if we need to modify the animation or just leave it as is
+    if(durationUntilEnd > Duration.zero){ //we still need to count down
+      //stop things so we can proceed to update
+      controller.stop();
+
+      //we only have X ammount left 
+      //but for the output 0->1 value to be correct
+      //we need to instead shift the value
+      controller.duration = widget.changeableTimerDuration.value;
+
+      //update new value
+      controller.value = durationSinceStart.inMicroseconds 
+        / widget.changeableTimerDuration.value.inMicroseconds;
+      
+      //start the animation mid way
+      controller.forward();
+    }
+    else{ //we don't need to countdown
+      if(controller.isAnimating){
+        controller.stop();
+        controller.value = 1;
+      }
+      //ELSE: the animation was already complete
+    }
+
+    //the animation will automatically update here
+    updateState();
+  }
+  */
 
   //init
   @override
   void initState() {
     //super init
     super.initState();
+
+    /*
+    //create animation controller
+    controller = AnimationController(
+      vsync: this,
+      duration: widget.changeableTimerDuration.value,
+    );
+
+    //listeners
+    controller.addListener(updateState);
+    controller.addStatusListener(updateVibration);
+    widget.changeableTimerDuration.addListener(updateText);
+
+    //initiall duration left number
+    durationFullStrings = durationToCustomDisplay(widget.changeableTimerDuration.value);
+    */
 
     //create animation controller
     controller10Minutes = AnimationController(
@@ -52,7 +124,7 @@ class _LiquidTimeState extends State<LiquidTime> with TickerProviderStateMixin {
     
     //start vibrating again if the user turned off vibration
     Future.delayed(
-      Duration(minutes: 5),
+      widget.maxExtraDuration,
       (){
         if(mounted){
           if(Vibrator.isVibrating == false){
@@ -81,19 +153,59 @@ class _LiquidTimeState extends State<LiquidTime> with TickerProviderStateMixin {
     //stop vibrating
     Vibrator.stopVibration();
 
+    /*
+    //just in case it isn't done we leave this page
+    Vibrator.stopVibration();
+    
+    //remove listeners
+    controller.removeListener(updateState);
+    controller.removeStatusListener(updateVibration);
+    widget.changeableTimerDuration.removeListener(updateText);
+
+    //remove listener
+    controller.dispose();
+    */
+
     //super dispose
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    /*
+    //calc time left
+    Duration durationPassed = DateTime.now().difference(widget.timerStart);
+    //NOTE: this covers a small edge case
+    Duration durationLeft = widget.changeableTimerDuration.value - durationPassed + Duration(seconds: 1);
+
+    //calc strings
+    List<String> durationPassedStrings = durationToCustomDisplay(durationPassed);
+    List<String> durationLeftStrings = durationToCustomDisplay(durationLeft);
+
+    //prep vars
+    String topNumber = durationLeftStrings[0] + " : " + durationLeftStrings[1];
+    String bottomLeftNumber = durationFullStrings[0] + " : " + durationFullStrings[1];
+    String bottomRightNumber = durationPassedStrings[0] + " : " + durationPassedStrings[1];
+
+    Widget timeDisplay = (controller.value == 1) ? Container() : TimeDisplay(
+      textContainerSize: textContainerSize, 
+      topNumber: topNumber, 
+      topArrowUp:  widget.showArrows ? false : null,
+      bottomLeftNumber: bottomLeftNumber, 
+      bottomRightNumber: bottomRightNumber,
+      showBottomArrow: widget.showArrows ? true : false,
+      isTimer: true,
+      showIcon: widget.showIcon,
+    );
+    */
+
+    //calc size
+    double textContainerSize = MediaQuery.of(context).size.width - (24 * 2);
+
     //colors and stuff
     Color secondaryColorOne =  Color(0xFFBFBFBF);
     Color accentTimer = Theme.of(context).accentColor;
     Color accentStopwatch = Colors.red;
-
-    //calc size
-    double textContainerSize = MediaQuery.of(context).size.width - (24 * 2);
 
     //calc time left
     Duration totalDurationPassed = DateTime.now().difference(widget.timerStart);
@@ -101,6 +213,9 @@ class _LiquidTimeState extends State<LiquidTime> with TickerProviderStateMixin {
     if(totalDurationPassed > widget.changeableTimerDuration.value){
       extraDurationPassed = totalDurationPassed - widget.changeableTimerDuration.value;
     }
+
+    //simplifying varaible for the merge of timer and stopwatch widgets
+    bool stillNeedToWait = extraDurationPassed == Duration.zero;
 
     //calc strings
     List<String> extraDurationPassedStrings = durationToCustomDisplay(extraDurationPassed);
@@ -123,7 +238,10 @@ class _LiquidTimeState extends State<LiquidTime> with TickerProviderStateMixin {
     //thankfully since our max setable time is 4:55 and our actual max wait time is 5 minutes
     //we know we will have atleast 5 seconds for the 2nd progress bar to jump from bottom to top
     double progressValue = 0;
-    if(extraDurationPassed != Duration.zero){ //we should have some form of progress
+    Animation<Color> waveColor;
+    Color backgroundColor;
+    if(stillNeedToWait == false){ //we should have some form of progress
+      //TODO: inspect these below
       if(totalDurationPassed > widget.maxExtraDuration) progressValue = 1;
       else{ //between 0 and 1
         //Output: 0 -> 1
@@ -140,11 +258,31 @@ class _LiquidTimeState extends State<LiquidTime> with TickerProviderStateMixin {
         //just in case for small floating point "mistakes"
         progressValue = progressValue.clamp(0.0, 1.0).toDouble();
       }
+
+      //set wave color
+      if(totalDurationPassed > widget.maxExtraDuration) {
+        waveColor = AlwaysStoppedAnimation(Colors.transparent);
+      }
+      else waveColor = AlwaysStoppedAnimation(accentStopwatch);
+
+      //set background color
+      backgroundColor = secondaryColorOne;
+    }
+    else{
+      //TODO: create progress value for the wait 0->1 as well so we can invert in the widget
+
+      //setting color stuff
+      waveColor = AlwaysStoppedAnimation(
+        progressValue == 1 ? Colors.transparent : accentTimer,
+      );
+
+      //set background color
+      backgroundColor = (progressValue == 1) ? Colors.transparent : secondaryColorOne;
     }
 
     //initially tells the user what happening
     //then explains they can no longer to the training type behind the one they were aiming for
-    String extraMessage = (extraDurationPassed == Duration.zero) ? "Flushing Acid Build Up" : null;
+    String extraMessage = stillNeedToWait ? "Flushing Acid Build Up" : null;
     
     //reminds the user what this duration of break is good for
     String readyFor; //only empty for the first 15 seconds
@@ -262,23 +400,36 @@ class _LiquidTimeState extends State<LiquidTime> with TickerProviderStateMixin {
                   child: LiquidCircularProgressIndicator(
                     //animated values
                     value: 1 - progressValue,
-                    valueColor: (extraDurationPassed == Duration.zero || totalDurationPassed > widget.maxExtraDuration) 
-                    ? AlwaysStoppedAnimation(Colors.transparent) : AlwaysStoppedAnimation(accentStopwatch),
-                    //set value
-                    backgroundColor: secondaryColorOne,
+                    valueColor: waveColor,
+                    backgroundColor: backgroundColor,
+                    //set values
                     borderColor: Colors.transparent,
                     borderWidth: 0,
                     direction: Axis.vertical, 
                     //only show when our timer has completed
-                    center: (extraDurationPassed == Duration.zero) ? Container() : TimeDisplay(
-                      textContainerSize: textContainerSize, 
-                      topNumber: topNumber, 
-                      topArrowUp: widget.showArrows ? true : null,
-                      bottomLeftNumber: bottomLeftNumber, 
-                      bottomRightNumber: bottomRightNumber,
-                      showBottomArrow: widget.showArrows ? true : false,
-                      isTimer: false,
-                      showIcon: widget.showIcon,
+                    center: Material(
+                      color: Colors.transparent,
+                      child: InkWell(
+                        onTap: (){
+                          maybeChangeTime(
+                            context: context,
+                            recoveryDuration: widget.changeableTimerDuration,
+                          );
+                        },
+                        child: Center(
+                          child: stillNeedToWait ? Container() //timeDisplay 
+                          : TimeDisplay(
+                            textContainerSize: textContainerSize, 
+                            topNumber: topNumber, 
+                            topArrowUp: widget.showArrows ? true : null,
+                            bottomLeftNumber: bottomLeftNumber, 
+                            bottomRightNumber: bottomRightNumber,
+                            showBottomArrow: widget.showArrows ? true : false,
+                            isTimer: false,
+                            showIcon: widget.showIcon,
+                          ),
+                        ),
+                      ),
                     ),
                   ),
                 ),
@@ -287,7 +438,7 @@ class _LiquidTimeState extends State<LiquidTime> with TickerProviderStateMixin {
                 top: 0,
                 left: 0,
                 child: Opacity(
-                  opacity: (Vibrator.isVibrating && extraDurationPassed > Duration.zero) ? 1 : 0,
+                  opacity: (Vibrator.isVibrating && stillNeedToWait == false) ? 1 : 0,
                   child: IconButton(
                     padding: EdgeInsets.all(32),
                     tooltip: 'Turn Off Vibration',
@@ -307,217 +458,3 @@ class _LiquidTimeState extends State<LiquidTime> with TickerProviderStateMixin {
     );
   }
 }
-
-/*
-//flutter
-import 'package:flutter/material.dart';
-
-//plugin
-import 'package:liquid_progress_indicator/liquid_progress_indicator.dart';
-
-//internal
-import 'package:swol/excerciseAction/tabs/recovery/recovery.dart';
-import 'package:swol/excerciseAction/tabs/recovery/secondary/timeDisplay.dart';
-import 'package:swol/utils/vibrate.dart';
-
-
-//widget
-class LiquidTimer extends StatefulWidget {
-  LiquidTimer({
-    @required this.changeableTimerDuration,
-    @required this.timerStart,
-    @required this.waveColor,
-    @required this.backgroundColor,
-    this.showArrows: false,
-    this.showIcon: false,
-  });
-
-  final ValueNotifier<Duration> changeableTimerDuration;
-  final DateTime timerStart;
-  final Color waveColor;
-  final Color backgroundColor;
-  final bool showArrows;
-  final bool showIcon;
-
-  @override
-  State<StatefulWidget> createState() => _LiquidTimerState();
-}
-
-class _LiquidTimerState extends State<LiquidTimer> with SingleTickerProviderStateMixin {
-  List<String> durationFullStrings;
-
-  //controllers
-  AnimationController controller;
-
-  //function make removable from listener
-  updateState(){
-    if(mounted){
-      setState(() {});
-    }
-  }
-
-  //function make removable from listener
-  updateVibration(status){
-    if(status == AnimationStatus.completed){
-      Vibrator.startVibration();
-    }
-    else{
-      //NOTE:not cover case for isDismissed 
-      //but should never happen
-      Vibrator.stopVibration();
-    }
-
-    //upate the text
-    updateText();
-  }
-
-  //function make removable from listener
-  updateText(){
-    //update string
-    durationFullStrings = durationToCustomDisplay(widget.changeableTimerDuration.value);
-
-    //grab how much time has passed
-    Duration durationSinceStart = DateTime.now().difference(widget.timerStart);
-
-    //check how much time is left (may be negative)
-    Duration durationUntilEnd = widget.changeableTimerDuration.value - durationSinceStart;
-
-    //determine if we need to modify the animation or just leave it as is
-    if(durationUntilEnd > Duration.zero){ //we still need to count down
-      //stop things so we can proceed to update
-      controller.stop();
-
-      //we only have X ammount left 
-      //but for the output 0->1 value to be correct
-      //we need to instead shift the value
-      controller.duration = widget.changeableTimerDuration.value;
-
-      //update new value
-      controller.value = durationSinceStart.inMicroseconds 
-        / widget.changeableTimerDuration.value.inMicroseconds;
-      
-      //start the animation mid way
-      controller.forward();
-    }
-    else{ //we don't need to countdown
-      if(controller.isAnimating){
-        controller.stop();
-        controller.value = 1;
-      }
-      //ELSE: the animation was already complete
-    }
-
-    //the animation will automatically update here
-    updateState();
-  }
-
-  //init
-  @override
-  void initState() {
-    //super init
-    super.initState();
-
-    //create animation controller
-    controller = AnimationController(
-      vsync: this,
-      duration: widget.changeableTimerDuration.value,
-    );
-
-    //listeners
-    controller.addListener(updateState);
-    controller.addStatusListener(updateVibration);
-    widget.changeableTimerDuration.addListener(updateText);
-
-    //initiall duration left number
-    durationFullStrings = durationToCustomDisplay(widget.changeableTimerDuration.value);
-
-    //start the countdown
-    controller.forward();
-  }
-
-  @override
-  void dispose() {
-    //just in case it isn't done we leave this page
-    Vibrator.stopVibration();
-    
-    //remove listeners
-    controller.removeListener(updateState);
-    controller.removeStatusListener(updateVibration);
-    widget.changeableTimerDuration.removeListener(updateText);
-
-    //remove listener
-    controller.dispose();
-
-    //super dispose
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    double textContainerSize = MediaQuery.of(context).size.width - (24 * 2);
-
-    //calc time left
-    Duration durationPassed = DateTime.now().difference(widget.timerStart);
-    //NOTE: this covers a small edge case
-    Duration durationLeft = widget.changeableTimerDuration.value - durationPassed + Duration(seconds: 1);
-
-    //calc strings
-    List<String> durationPassedStrings = durationToCustomDisplay(durationPassed);
-    List<String> durationLeftStrings = durationToCustomDisplay(durationLeft);
-
-    //prep vars
-    String topNumber = durationLeftStrings[0] + " : " + durationLeftStrings[1];
-    String bottomLeftNumber = durationFullStrings[0] + " : " + durationFullStrings[1];
-    String bottomRightNumber = durationPassedStrings[0] + " : " + durationPassedStrings[1];
-
-    Widget timeDisplay = (controller.value == 1) ? Container() : TimeDisplay(
-      textContainerSize: textContainerSize, 
-      topNumber: topNumber, 
-      topArrowUp:  widget.showArrows ? false : null,
-      bottomLeftNumber: bottomLeftNumber, 
-      bottomRightNumber: bottomRightNumber,
-      showBottomArrow: widget.showArrows ? true : false,
-      isTimer: true,
-      showIcon: widget.showIcon,
-    );
-
-    //build return timer
-    return Container(
-      height: MediaQuery.of(context).size.width,
-      width: MediaQuery.of(context).size.width,
-      padding: EdgeInsets.all(24),
-      child: ClipOval(
-        clipBehavior: Clip.hardEdge,
-        child: LiquidCircularProgressIndicator(
-          //animated values
-          value: 1 - controller.value,
-          valueColor: AlwaysStoppedAnimation(
-            (controller.value == 1) 
-            ? Colors.transparent 
-            : widget.waveColor,
-          ),
-          backgroundColor: (controller.value == 1) ? Colors.transparent : widget.backgroundColor,
-          //set value
-          borderColor: Colors.transparent,
-          borderWidth: 0,
-          direction: Axis.vertical, 
-          center: Material(
-            color: Colors.transparent,
-            child: InkWell(
-              onTap: (){
-                maybeChangeTime(
-                  context: context,
-                  recoveryDuration: widget.changeableTimerDuration,
-                );
-              },
-              child: Center(
-                child: timeDisplay,
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-*/
