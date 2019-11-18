@@ -26,7 +26,6 @@ class DurationFormat{
     bool showDays: true, //24 hrs
     bool showHours: true, //60 minutes
     bool showMinutes: true, //60 seconds
-    //TODO: left true for testing later
     bool showSeconds: true, //1000 milliseconds
     bool showMilliseconds: false,
     bool showMicroseconds: false,

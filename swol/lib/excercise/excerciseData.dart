@@ -139,7 +139,8 @@ class ExcerciseData{
     }
 
     if(name != null){
-      //TODO: causes everything that needs to reload... to reload
+      //TODO: figure out how this is working
+      //It should cause things to reload but I'm not sure where its doing it
       _excercises.value[id].name = name;
     }
 

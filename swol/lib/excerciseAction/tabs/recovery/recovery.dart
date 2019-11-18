@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:swol/excercise/excerciseData.dart';
-import 'package:swol/excerciseAction/tabs/recovery/changeTime.dart';
-import 'package:swol/excerciseAction/tabs/recovery/liquidStopwatch.dart';
-import 'package:swol/excerciseAction/tabs/recovery/liquidTimer.dart';
 import 'package:swol/excerciseAction/tabs/recovery/secondary/breath.dart';
+import 'package:swol/excerciseAction/tabs/recovery/timer/liquidTime.dart';
 import 'package:swol/excerciseAction/tabs/sharedWidgets/bottomButtons.dart';
 
 class Recovery extends StatefulWidget {
@@ -25,7 +23,6 @@ class Recovery extends StatefulWidget {
 
 class _RecoveryState extends State<Recovery> with SingleTickerProviderStateMixin {
   //the time our timer starts that doesn't change
-  //TODO: this should get written into the excercise
   DateTime timerStart;
 
   //so we can update our excercises duration
@@ -34,6 +31,8 @@ class _RecoveryState extends State<Recovery> with SingleTickerProviderStateMixin
   //init
   @override
   void initState() {
+    //TODO: this should only not be read from the data structure
+    //TODO: IF timerStart is empty is the data structure
     //record the time the timer started
     timerStart = DateTime.now();
     
@@ -57,17 +56,6 @@ class _RecoveryState extends State<Recovery> with SingleTickerProviderStateMixin
 
   @override
   Widget build(BuildContext context) {
-    //-------------------------settings to play with--------------------
-
-    //Colors
-    Color secondaryColorOne =  Color(0xFFBFBFBF);
-    Color accentTimer = Theme.of(context).accentColor;
-    Color accentStopwatch = Colors.red;
-
-    //other
-    bool showArrows = true;
-    bool showIcon = true;
-
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -81,33 +69,11 @@ class _RecoveryState extends State<Recovery> with SingleTickerProviderStateMixin
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: <Widget>[
-                      //---Actually Animated Stuff
-                      Stack(
-                        alignment: Alignment.bottomCenter,
-                        children: <Widget>[
-                          //---White Backgrond circle
-                          //---The secondary
-                          LiquidStopwatch(
-                            changeableTimerDuration: recoveryDuration,
-                            timerStart: timerStart,
-                            waveColor: accentStopwatch,
-                            backgroundColor: secondaryColorOne,
-                            maxExtraDuration: Duration(minutes: 5),
-                            showArrows: showArrows,
-                            showIcon: showIcon,
-                          ),
-                          //---The main countdown timer
-                          LiquidTimer(
-                            changeableTimerDuration: recoveryDuration,
-                            timerStart: timerStart,
-                            backgroundColor: secondaryColorOne,
-                            waveColor: accentTimer,
-                            showArrows: showArrows,
-                            showIcon: showIcon,
-                          ),
-                        ],
+                      LiquidTime(
+                        changeableTimerDuration: recoveryDuration,
+                        timerStart: timerStart,
+                        maxExtraDuration: Duration(minutes: 5),
                       ),
-                      //---Pretend Animated Stuff
                       ToBreath(),
                     ],
                   ),
@@ -126,65 +92,3 @@ class _RecoveryState extends State<Recovery> with SingleTickerProviderStateMixin
     );
   }
 }
-
-maybeChangeTime({
-  @required BuildContext context,
-  @required ValueNotifier<Duration> recoveryDuration,
-  }){
-    ValueNotifier<Duration> possibleRecoveryDuration = new ValueNotifier(recoveryDuration.value);
-    showDialog<void>(
-      context: context,
-      barrierDismissible: true,
-      builder: (BuildContext context) {
-        return Theme(
-          data: ThemeData.light(),
-          child: AlertDialog(
-            contentPadding: EdgeInsets.all(0),
-            title: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  "Change Break Time",
-                ),
-                Text(
-                  "Don't Worry! The Timer Won't Reset",
-                  style: TextStyle(
-                    color: Colors.grey,
-                    fontSize: 12,
-                  ),
-                )
-              ],
-            ),
-            content: Container(
-              child: ChangeRecoveryTimeWidget(
-                changeDuration: Duration(milliseconds: 250), 
-                recoveryPeriod: possibleRecoveryDuration, 
-              ),
-            ),
-            actions: <Widget>[
-              FlatButton(
-                onPressed: (){
-                  Navigator.pop(context);
-                },
-                child: Text("Cancel"),
-              ),
-              RaisedButton(
-                color: Colors.blue,
-                onPressed: (){
-                  recoveryDuration.value = possibleRecoveryDuration.value;
-                  Navigator.pop(context);
-                },
-                child: Text(
-                  "Change",
-                  style: TextStyle(
-                    color: Colors.white,
-                  ),
-                ),
-              )
-            ],
-          ),
-        ); 
-      },
-    );
-  }

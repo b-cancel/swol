@@ -124,7 +124,6 @@ class CardTable extends StatelessWidget {
       }
 
       buildFields.add(
-        //TODO: add expanded here to share space
         Expanded(
           child: Container(
             color: fieldColor,

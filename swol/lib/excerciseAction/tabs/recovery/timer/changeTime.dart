@@ -2,6 +2,68 @@ import 'package:flutter/material.dart';
 import 'package:swol/sharedWidgets/timePicker.dart';
 import 'package:swol/sharedWidgets/trainingTypes/trainingTypes.dart';
 
+maybeChangeTime({
+  @required BuildContext context,
+  @required ValueNotifier<Duration> recoveryDuration,
+  }){
+  ValueNotifier<Duration> possibleRecoveryDuration = new ValueNotifier(recoveryDuration.value);
+  showDialog<void>(
+    context: context,
+    barrierDismissible: true,
+    builder: (BuildContext context) {
+      return Theme(
+        data: ThemeData.light(),
+        child: AlertDialog(
+          contentPadding: EdgeInsets.all(0),
+          title: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(
+                "Change Break Time",
+              ),
+              Text(
+                "Don't Worry! The Timer Won't Reset",
+                style: TextStyle(
+                  color: Colors.grey,
+                  fontSize: 12,
+                ),
+              )
+            ],
+          ),
+          content: Container(
+            child: ChangeRecoveryTimeWidget(
+              changeDuration: Duration(milliseconds: 250), 
+              recoveryPeriod: possibleRecoveryDuration, 
+            ),
+          ),
+          actions: <Widget>[
+            FlatButton(
+              onPressed: (){
+                Navigator.pop(context);
+              },
+              child: Text("Cancel"),
+            ),
+            RaisedButton(
+              color: Colors.blue,
+              onPressed: (){
+                recoveryDuration.value = possibleRecoveryDuration.value;
+                Navigator.pop(context);
+              },
+              child: Text(
+                "Change",
+                style: TextStyle(
+                  color: Colors.white,
+                ),
+              ),
+            )
+          ],
+        ),
+      ); 
+    },
+  );
+}
+
 class ChangeRecoveryTimeWidget extends StatefulWidget {
   ChangeRecoveryTimeWidget({
     Key key,

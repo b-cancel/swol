@@ -70,12 +70,6 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
           backToSuggestion: () => toPage(tab + 0),
           setBreak: () => toPage(tab + 2),
         ),
-        //TODO: now this is coded slightly different... 
-        //so our timer will start when it starts but nothing nothing should be triggered until the user arrive at that page
-        //additionally we have to pass it a valuenotifier of the startTime
-        //sure it should set itself initially (to 0 so hopefully nothing happens)
-        //but then when we actually set it by visiting the page
-        //the timer should start and so on
         Recovery(
           excerciseID: widget.excerciseID,
           allSetsComplete: allSetsComplete,

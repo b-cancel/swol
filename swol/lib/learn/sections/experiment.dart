@@ -28,7 +28,6 @@ class ExperimentBody extends StatelessWidget {
               ],
             ),
           ),
-          //TODO: refine below
           ListItem(
             circleColor: Theme.of(context).accentColor,
             circleText: "1",

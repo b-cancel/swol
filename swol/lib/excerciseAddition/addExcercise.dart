@@ -138,7 +138,7 @@ class AddExcercise extends StatelessWidget {
     )
   );
 
-  //TODO: figure out why this is still reloading on its own when closing the keyboard
+  //build
   @override
   Widget build(BuildContext context) {
     //let the button animate in after the add excercise page slides in
@@ -712,11 +712,6 @@ class RecoveryTimeWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //add s? (such a minimal detail)
-    int mins = recoveryPeriod.value.inMinutes;
-    bool showS = (mins == 1) ? false : true;
-
-    //build
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[

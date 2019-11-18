@@ -67,12 +67,6 @@ maybeAreYouSurePopUp(
     else seconds = 0;
     seconds += (5 * modResult);
 
-    //create object
-    Duration newTimerRuntime = Duration(
-      minutes: minutes,
-      seconds: seconds,
-    );
-
     //gen text
     String updateRecoveryText;
     if(minutes == 0 && seconds == 0){
