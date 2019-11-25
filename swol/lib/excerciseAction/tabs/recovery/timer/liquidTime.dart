@@ -9,14 +9,14 @@ class LiquidTime extends StatefulWidget {
   LiquidTime({
     @required this.changeableTimerDuration,
     @required this.timerStart,
-    this.maxExtraDuration: const Duration(minutes: 5),
+    this.maxDuration: const Duration(minutes: 5),
     this.showArrows: true,
     this.showIcon: true,
   });
 
   final ValueNotifier<Duration> changeableTimerDuration;
   final DateTime timerStart;
-  final Duration maxExtraDuration;
+  final Duration maxDuration;
   final bool showArrows;
   final bool showIcon;
 
@@ -34,20 +34,6 @@ class _LiquidTimeState extends State<LiquidTime> with TickerProviderStateMixin {
   }
 
   /*
-  //function make removable from listener
-  updateVibration(status){
-    if(status == AnimationStatus.completed){
-      Vibrator.startVibration();
-    }
-    else{
-      //NOTE:not cover case for isDismissed 
-      //but should never happen
-      Vibrator.stopVibration();
-    }
-
-    //upate the text
-    updateText();
-  }
 
   //function make removable from listener
   updateText(){
@@ -96,22 +82,6 @@ class _LiquidTimeState extends State<LiquidTime> with TickerProviderStateMixin {
     //super init
     super.initState();
 
-    /*
-    //create animation controller
-    controller = AnimationController(
-      vsync: this,
-      duration: widget.changeableTimerDuration.value,
-    );
-
-    //listeners
-    controller.addListener(updateState);
-    controller.addStatusListener(updateVibration);
-    widget.changeableTimerDuration.addListener(updateText);
-
-    //initiall duration left number
-    durationFullStrings = durationToCustomDisplay(widget.changeableTimerDuration.value);
-    */
-
     //create animation controller
     controller10Minutes = AnimationController(
       vsync: this,
@@ -124,13 +94,9 @@ class _LiquidTimeState extends State<LiquidTime> with TickerProviderStateMixin {
     
     //start vibrating again if the user turned off vibration
     Future.delayed(
-      widget.maxExtraDuration,
+      widget.maxDuration,
       (){
-        if(mounted){
-          if(Vibrator.isVibrating == false){
-            Vibrator.startVibration();
-          }
-        }
+        if(mounted) Vibrator.startVibration();
       }
     );
 
@@ -153,136 +119,126 @@ class _LiquidTimeState extends State<LiquidTime> with TickerProviderStateMixin {
     //stop vibrating
     Vibrator.stopVibration();
 
-    /*
-    //just in case it isn't done we leave this page
-    Vibrator.stopVibration();
-    
-    //remove listeners
-    controller.removeListener(updateState);
-    controller.removeStatusListener(updateVibration);
-    widget.changeableTimerDuration.removeListener(updateText);
-
-    //remove listener
-    controller.dispose();
-    */
-
     //super dispose
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    /*
-    //calc time left
-    Duration durationPassed = DateTime.now().difference(widget.timerStart);
-    //NOTE: this covers a small edge case
-    Duration durationLeft = widget.changeableTimerDuration.value - durationPassed + Duration(seconds: 1);
+    //chosen colors
+    final Color greyBackground =  Color(0xFFBFBFBF);
+    final Color greenTimerAccent = Theme.of(context).accentColor;
+    final Color redStopwatchAccent = Colors.red;
 
-    //calc strings
-    List<String> durationPassedStrings = durationToCustomDisplay(durationPassed);
-    List<String> durationLeftStrings = durationToCustomDisplay(durationLeft);
+    //---calculate string for timer duration
+    List<String> timerDurationStrings = durationToCustomDisplay(widget.changeableTimerDuration.value);
+    String timerDurationString = timerDurationStrings[0] + " : " + timerDurationStrings[1];
 
-    //prep vars
-    String topNumber = durationLeftStrings[0] + " : " + durationLeftStrings[1];
-    String bottomLeftNumber = durationFullStrings[0] + " : " + durationFullStrings[1];
-    String bottomRightNumber = durationPassedStrings[0] + " : " + durationPassedStrings[1];
-
-    Widget timeDisplay = (controller.value == 1) ? Container() : TimeDisplay(
-      textContainerSize: textContainerSize, 
-      topNumber: topNumber, 
-      topArrowUp:  widget.showArrows ? false : null,
-      bottomLeftNumber: bottomLeftNumber, 
-      bottomRightNumber: bottomRightNumber,
-      showBottomArrow: widget.showArrows ? true : false,
-      isTimer: true,
-      showIcon: widget.showIcon,
-    );
-    */
-
-    //calc size
-    double textContainerSize = MediaQuery.of(context).size.width - (24 * 2);
-
-    //colors and stuff
-    Color secondaryColorOne =  Color(0xFFBFBFBF);
-    Color accentTimer = Theme.of(context).accentColor;
-    Color accentStopwatch = Colors.red;
-
-    //calc time left
+    //---calculate total time passed
     Duration totalDurationPassed = DateTime.now().difference(widget.timerStart);
+    List<String> totalDurationPassedStrings = durationToCustomDisplay(totalDurationPassed);
+    String totalDurationString = totalDurationPassedStrings[0] + " : " + totalDurationPassedStrings[1]; //bottom right for ?
+    //if the total time passed overflows
+    //then our timer has run as much as possible
+    //so we overflow the larger top number as well
+    if(totalDurationPassedStrings[1] == "99"){
+      totalDurationString = "9 : 99";
+    }
+
+    //---calculate extra time passed
     Duration extraDurationPassed = Duration.zero;
     if(totalDurationPassed > widget.changeableTimerDuration.value){
       extraDurationPassed = totalDurationPassed - widget.changeableTimerDuration.value;
     }
 
     //simplifying varaible for the merge of timer and stopwatch widgets
-    bool stillNeedToWait = extraDurationPassed == Duration.zero;
+    bool firstTimerRunning = (extraDurationPassed == Duration.zero);
+    bool withinMaxDuration = (totalDurationPassed <= widget.maxDuration);
 
-    //calc strings
-    List<String> extraDurationPassedStrings = durationToCustomDisplay(extraDurationPassed);
-    List<String> timerDurationStrings = durationToCustomDisplay(widget.changeableTimerDuration.value);
-    List<String> totalDurationPassedStrings = durationToCustomDisplay(totalDurationPassed);
-    
-    //prep vars
-    String topNumber = extraDurationPassedStrings[0] + " : " + extraDurationPassedStrings[1];
-    String bottomLeftNumber = timerDurationStrings[0] + " : " + timerDurationStrings[1];
-    String bottomRightNumber = totalDurationPassedStrings[0] + " : " + totalDurationPassedStrings[1];
+    //-----variables that don't really vary
+    String bottomLeftNumber = timerDurationString;
+    String bottomRightNumber = totalDurationString;
 
-    //if the total time passed overflows
-    //then our timer has run as much as possible
-    //so we overflow the larger top number as well
-    if(totalDurationPassedStrings[1] == "99"){
-      topNumber = "9 : 99";
-    }
-
-    //make generate the proper progress value (we dont want it to jump)
-    //thankfully since our max setable time is 4:55 and our actual max wait time is 5 minutes
-    //we know we will have atleast 5 seconds for the 2nd progress bar to jump from bottom to top
-    double progressValue = 0;
+    //-----varaibles that varry below
+    //wave progress
+    double progressValue; //should run from 0 -> 1
+    //colors
     Animation<Color> waveColor;
     Color backgroundColor;
-    if(stillNeedToWait == false){ //we should have some form of progress
-      //TODO: inspect these below
-      if(totalDurationPassed > widget.maxExtraDuration) progressValue = 1;
-      else{ //between 0 and 1
-        //Output: 0 -> 1
-        //Input: widget.changeableTimerduration.value -> Duration(minutes 5)
-        //Input: 0 -> fiveMinutes - widget.changeabletimerDuration.value
-        Duration totalStopwatchAnimation = widget.maxExtraDuration - widget.changeableTimerDuration.value;
-        //Input: 0 -> totalStopwatchAnimation (MIN of 5 seconds)
-        //Output: 0 -> 1
-        Duration adjustedTimePassed = totalDurationPassed - widget.changeableTimerDuration.value;
+    //numbers
+    String topNumber;
 
-        //determine how far we have progressed within range
-        progressValue = adjustedTimePassed.inMicroseconds / totalStopwatchAnimation.inMicroseconds;
-        
-        //just in case for small floating point "mistakes"
-        progressValue = progressValue.clamp(0.0, 1.0).toDouble();
-      }
+    //react differently to the timer or stopwatch
+    if(firstTimerRunning){
+      //For Timer (GREY background & green wave)
+      backgroundColor = greyBackground;
+      waveColor = AlwaysStoppedAnimation(greenTimerAccent);
 
-      //set wave color
-      if(totalDurationPassed > widget.maxExtraDuration) {
-        waveColor = AlwaysStoppedAnimation(Colors.transparent);
-      }
-      else waveColor = AlwaysStoppedAnimation(accentStopwatch);
+      //calculate top number
+      Duration durationLeft = widget.changeableTimerDuration.value - totalDurationPassed + Duration(seconds: 1);
+      List<String> durationLeftStrings = durationToCustomDisplay(durationLeft);
+      String durationLeftString = durationLeftStrings[0] + " : " + durationLeftStrings[1]; //top number for timer
+      topNumber = durationLeftString;
 
-      //set background color
-      backgroundColor = secondaryColorOne;
+      //TODO: set progress here as well
     }
     else{
-      //TODO: create progress value for the wait 0->1 as well so we can invert in the widget
-
-      //setting color stuff
+      //For Stopwatch (red background & GREY background)
+      backgroundColor = redStopwatchAccent;
       waveColor = AlwaysStoppedAnimation(
-        progressValue == 1 ? Colors.transparent : accentTimer,
+        //when the stopwatch finishes we want our screen to be full red all the time
+        (withinMaxDuration) ? greyBackground : Colors.transparent,
       );
 
-      //set background color
-      backgroundColor = (progressValue == 1) ? Colors.transparent : secondaryColorOne;
+      //calculate top Number
+      List<String> extraDurationPassedStrings = durationToCustomDisplay(extraDurationPassed);
+      String extraDurationPassedString = extraDurationPassedStrings[0] + " : " + extraDurationPassedStrings[1];
+      topNumber = extraDurationPassedString;
+
+      //TODO: create progress value for the wait 0->1 as well so we can invert in the widget
+
+      /*
+      //make generate the proper progress value (we dont want it to jump)
+      //thankfully since our max setable time is 4:55 and our actual max wait time is 5 minutes
+      //we know we will have atleast 5 seconds for the 2nd progress bar to jump from bottom to top
+      
+      if(timerRunning == false){ //we should have some form of progress
+        //TODO: inspect these below
+        if(totalDurationPassed > widget.maxExtraDuration) progressValue = 1;
+        else{ //between 0 and 1
+          //Output: 0 -> 1
+          //Input: widget.changeableTimerduration.value -> Duration(minutes 5)
+          //Input: 0 -> fiveMinutes - widget.changeabletimerDuration.value
+          Duration totalStopwatchAnimation = widget.maxExtraDuration - widget.changeableTimerDuration.value;
+          //Input: 0 -> totalStopwatchAnimation (MIN of 5 seconds)
+          //Output: 0 -> 1
+          Duration adjustedTimePassed = totalDurationPassed - widget.changeableTimerDuration.value;
+
+          //determine how far we have progressed within range
+          progressValue = adjustedTimePassed.inMicroseconds / totalStopwatchAnimation.inMicroseconds;
+          
+          //just in case for small floating point "mistakes"
+          progressValue = progressValue.clamp(0.0, 1.0).toDouble();
+        }
+      }
+      */
     }
+
+    //based on all the calculated variables above show the various numbers
+    Widget timeDisplay = TimeDisplay(
+      textContainerSize: MediaQuery.of(context).size.width - (24 * 2),
+      topNumber: topNumber, 
+      topArrowUp:  widget.showArrows ? (firstTimerRunning ? false : true) : null,
+      bottomLeftNumber: bottomLeftNumber, 
+      bottomRightNumber: bottomRightNumber,
+      showBottomArrow: widget.showArrows ? true : false,
+      isTimer: (firstTimerRunning) ? true : false,
+      showIcon: widget.showIcon,
+    );
 
     //initially tells the user what happening
     //then explains they can no longer to the training type behind the one they were aiming for
-    String extraMessage = stillNeedToWait ? "Flushing Acid Build Up" : null;
+    String extraMessage = firstTimerRunning ? "Flushing Acid Build Up" : null;
     
     //reminds the user what this duration of break is good for
     String readyFor; //only empty for the first 15 seconds
@@ -399,7 +355,7 @@ class _LiquidTimeState extends State<LiquidTime> with TickerProviderStateMixin {
                 child: ClipOval(
                   child: LiquidCircularProgressIndicator(
                     //animated values
-                    value: 1 - progressValue,
+                    value: 1, // - progressValue,
                     valueColor: waveColor,
                     backgroundColor: backgroundColor,
                     //set values
@@ -417,17 +373,7 @@ class _LiquidTimeState extends State<LiquidTime> with TickerProviderStateMixin {
                           );
                         },
                         child: Center(
-                          child: stillNeedToWait ? Container() //timeDisplay 
-                          : TimeDisplay(
-                            textContainerSize: textContainerSize, 
-                            topNumber: topNumber, 
-                            topArrowUp: widget.showArrows ? true : null,
-                            bottomLeftNumber: bottomLeftNumber, 
-                            bottomRightNumber: bottomRightNumber,
-                            showBottomArrow: widget.showArrows ? true : false,
-                            isTimer: false,
-                            showIcon: widget.showIcon,
-                          ),
+                          child: timeDisplay
                         ),
                       ),
                     ),
@@ -437,8 +383,8 @@ class _LiquidTimeState extends State<LiquidTime> with TickerProviderStateMixin {
               Positioned(
                 top: 0,
                 left: 0,
-                child: Opacity(
-                  opacity: (Vibrator.isVibrating && stillNeedToWait == false) ? 1 : 0,
+                child: Visibility(
+                  visible: (Vibrator.isVibrating) ? true : false,
                   child: IconButton(
                     padding: EdgeInsets.all(32),
                     tooltip: 'Turn Off Vibration',

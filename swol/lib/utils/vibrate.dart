@@ -21,7 +21,7 @@ class Vibrator{
 
   static startVibration()async{
     await _vibrationCheck();
-    if(hasVibration){
+    if(hasVibration && isVibrating == false){
       isVibrating = true;
       Vibration.vibrate(
         pattern: [500],
@@ -33,7 +33,7 @@ class Vibrator{
 
   static stopVibration()async{
     await _vibrationCheck();
-    if(hasVibration){
+    if(hasVibration && isVibrating == true){
       isVibrating = false;
       Vibration.cancel();
     }

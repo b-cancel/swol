@@ -72,7 +72,7 @@ class _RecoveryState extends State<Recovery> with SingleTickerProviderStateMixin
                       LiquidTime(
                         changeableTimerDuration: recoveryDuration,
                         timerStart: timerStart,
-                        maxExtraDuration: Duration(minutes: 5),
+                        maxDuration: Duration(minutes: 5),
                       ),
                       ToBreath(),
                     ],
