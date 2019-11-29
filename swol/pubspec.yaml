@@ -26,6 +26,12 @@ dependencies:
   simple_coverflow: ^0.0.8
   swipe_stack: ^1.0.0
 
+  #progress indicators (pulse)
+  progress_indicators: ^0.1.4
+  loading_indicator_view: ^1.1.0
+  loading_indicator: ^1.1.0
+  flutter_spinkit: ^4.0.0
+
   #transforms
   matrix4_transform: ^1.1.1
 
@@ -68,11 +74,6 @@ dependencies:
 
   #STICKY HEADERS 
   flutter_sticky_header: ^0.4.0 
-
-  #INDICATOR
-  flutter_spinkit: ^4.0.0 #not used
-  loading_indicator: ^1.1.0 #not used
-  progress_indicators: ^0.1.4
 
   #VIBRATION
   vibration: ^1.2.1

@@ -5,18 +5,30 @@ import 'package:swol/excerciseAction/tabs/recovery/secondary/timeDisplay.dart';
 import 'package:swol/excerciseAction/tabs/recovery/timer/changeTime.dart';
 import 'package:swol/utils/vibrate.dart';
 
+//the pulse that activates after our timer starts uses one of these libraries
+import 'package:progress_indicators/progress_indicators.dart';
+import 'package:loading_indicator_view/loading_indicator_view.dart';
+import 'package:loading_indicator/loading_indicator.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+
+//build
 class LiquidTime extends StatefulWidget {
   LiquidTime({
-    @required this.changeableTimerDuration,
     @required this.timerStart,
+    @required this.changeableTimerDuration,
     this.maxDuration: const Duration(minutes: 5),
     this.showArrows: true,
     this.showIcon: true,
+    
   });
 
-  final ValueNotifier<Duration> changeableTimerDuration;
+  //initial controller set
   final DateTime timerStart;
+  //time before we go any level of red
+  final ValueNotifier<Duration> changeableTimerDuration;
+  //total time before we go full red
   final Duration maxDuration;
+  //smaller settings
   final bool showArrows;
   final bool showIcon;
 
@@ -26,7 +38,8 @@ class LiquidTime extends StatefulWidget {
 
 class _LiquidTimeState extends State<LiquidTime> with TickerProviderStateMixin {
   //main Controller
-  AnimationController controller10Minutes;
+  AnimationController controllerLonger; //never changes after init
+  AnimationController controllerShorter; //might change after init
 
   //function removable from listeners
   updateState(){
@@ -83,7 +96,12 @@ class _LiquidTimeState extends State<LiquidTime> with TickerProviderStateMixin {
     super.initState();
 
     //create animation controller
-    controller10Minutes = AnimationController(
+    Duration longDuration = Duration(minutes: 10);
+    //whether or not the timer just start is irelevant... 
+    //we know the date time we take here will always be 
+    //slightly after the one before this parent widget
+
+    controllerLonger = AnimationController(
       vsync: this,
       //our max value is 9:99
       //so our max duration is 10
@@ -91,6 +109,7 @@ class _LiquidTimeState extends State<LiquidTime> with TickerProviderStateMixin {
       //because you know for a fact your muscles are super cold
       duration: Duration(minutes: 10),
     );
+    
     
     //start vibrating again if the user turned off vibration
     Future.delayed(
@@ -101,20 +120,20 @@ class _LiquidTimeState extends State<LiquidTime> with TickerProviderStateMixin {
     );
 
     //refresh UI at phone framerate
-    controller10Minutes.addListener(updateState);
+    controllerLonger.addListener(updateState);
     widget.changeableTimerDuration.addListener(updateState);
 
     //start the stopwatch
-    controller10Minutes.forward();
+    controllerLonger.forward();
   }
 
   @override
   void dispose() {
     widget.changeableTimerDuration.removeListener(updateState);
-    controller10Minutes.removeListener(updateState);
+    controllerLonger.removeListener(updateState);
     
     //controller dispose
-    controller10Minutes.dispose();
+    controllerLonger.dispose();
 
     //stop vibrating
     Vibrator.stopVibration();
@@ -180,7 +199,8 @@ class _LiquidTimeState extends State<LiquidTime> with TickerProviderStateMixin {
       String durationLeftString = durationLeftStrings[0] + " : " + durationLeftStrings[1]; //top number for timer
       topNumber = durationLeftString;
 
-      //TODO: set progress here as well
+      //set progress value
+      progressValue = totalDurationPassed.inMicroseconds / widget.changeableTimerDuration.value.inMicroseconds;
     }
     else{
       //For Stopwatch (red background & GREY background)
@@ -195,34 +215,28 @@ class _LiquidTimeState extends State<LiquidTime> with TickerProviderStateMixin {
       String extraDurationPassedString = extraDurationPassedStrings[0] + " : " + extraDurationPassedStrings[1];
       topNumber = extraDurationPassedString;
 
-      //TODO: create progress value for the wait 0->1 as well so we can invert in the widget
-
-      /*
+      //---generate the progress values
       //make generate the proper progress value (we dont want it to jump)
       //thankfully since our max setable time is 4:55 and our actual max wait time is 5 minutes
       //we know we will have atleast 5 seconds for the 2nd progress bar to jump from bottom to top
       
-      if(timerRunning == false){ //we should have some form of progress
-        //TODO: inspect these below
-        if(totalDurationPassed > widget.maxExtraDuration) progressValue = 1;
-        else{ //between 0 and 1
-          //Output: 0 -> 1
-          //Input: widget.changeableTimerduration.value -> Duration(minutes 5)
-          //Input: 0 -> fiveMinutes - widget.changeabletimerDuration.value
-          Duration totalStopwatchAnimation = widget.maxExtraDuration - widget.changeableTimerDuration.value;
-          //Input: 0 -> totalStopwatchAnimation (MIN of 5 seconds)
-          //Output: 0 -> 1
-          Duration adjustedTimePassed = totalDurationPassed - widget.changeableTimerDuration.value;
+      if(withinMaxDuration == false) progressValue = 1;
+      else{ //between 0 and 1
+        //Output: 0 -> 1
+        //Input: widget.changeableTimerduration.value -> Duration(minutes 5)
+        //Input: 0 -> fiveMinutes - widget.changeabletimerDuration.value
+        Duration totalStopwatchAnimation = widget.maxDuration - widget.changeableTimerDuration.value;
+        //Input: 0 -> totalStopwatchAnimation (MIN of 5 seconds)
+        //Output: 0 -> 1
+        Duration adjustedTimePassed = totalDurationPassed - widget.changeableTimerDuration.value;
 
-          //determine how far we have progressed within range
-          progressValue = adjustedTimePassed.inMicroseconds / totalStopwatchAnimation.inMicroseconds;
-          
-          //just in case for small floating point "mistakes"
-          progressValue = progressValue.clamp(0.0, 1.0).toDouble();
-        }
+        //determine how far we have progressed within range
+        progressValue = adjustedTimePassed.inMicroseconds / totalStopwatchAnimation.inMicroseconds;
       }
-      */
     }
+
+    //just in case for small floating point "mistakes"
+    progressValue = progressValue.clamp(0.0, 1.0);
 
     //based on all the calculated variables above show the various numbers
     Widget timeDisplay = TimeDisplay(
@@ -355,7 +369,7 @@ class _LiquidTimeState extends State<LiquidTime> with TickerProviderStateMixin {
                 child: ClipOval(
                   child: LiquidCircularProgressIndicator(
                     //animated values
-                    value: 1, // - progressValue,
+                    value: 1 - progressValue,
                     valueColor: waveColor,
                     backgroundColor: backgroundColor,
                     //set values

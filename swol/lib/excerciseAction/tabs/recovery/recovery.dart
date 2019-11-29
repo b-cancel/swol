@@ -24,6 +24,7 @@ class Recovery extends StatefulWidget {
 class _RecoveryState extends State<Recovery> with SingleTickerProviderStateMixin {
   //the time our timer starts that doesn't change
   DateTime timerStart;
+  bool timerJustStarted;
 
   //so we can update our excercises duration
   ValueNotifier<Duration> recoveryDuration;
@@ -31,13 +32,19 @@ class _RecoveryState extends State<Recovery> with SingleTickerProviderStateMixin
   //init
   @override
   void initState() {
-    //TODO: this should only not be read from the data structure
-    //TODO: IF timerStart is empty is the data structure
-    //record the time the timer started
-    timerStart = DateTime.now();
+    DateTime currentTimerStart = ExcerciseData.getExcercises().value[widget.excerciseID].tempStartTime;
+
+    //based on whether or not the timer has already started set the timerStart
+    if(currentTimerStart == null){
+      ExcerciseData.updateExcercise(
+        widget.excerciseID,
+        tempStartTime: DateTime.now(),
+      );
+      timerStart = DateTime.now();
+    }
+    else timerStart = currentTimerStart;
     
     //set recovery duration init
-    //NOTE: assume we have this excercise ID
     recoveryDuration = new ValueNotifier(
       ExcerciseData.getExcercises().value[widget.excerciseID].recoveryPeriod,
     );
@@ -83,7 +90,12 @@ class _RecoveryState extends State<Recovery> with SingleTickerProviderStateMixin
             BottomButtons(
               allSetsComplete: widget.allSetsComplete,
               forwardAction: widget.nextSet,
-              forwardActionWidget: Text("Next Set"),
+              forwardActionWidget: Text(
+                "Next Set",
+                style: TextStyle(
+                  color: Theme.of(context).primaryColorDark,
+                ),
+              ),
               backAction: widget.backToRecordSet,
             )
           ],

@@ -27,7 +27,12 @@ class SetRecord extends StatelessWidget {
           ),
           BottomButtons(
             forwardAction: setBreak,
-            forwardActionWidget: Text("Take Set Break"),
+            forwardActionWidget: Text(
+              "Take Set Break",
+              style: TextStyle(
+                color: Theme.of(context).primaryColorDark,
+              ),
+            ),
             backAction: backToSuggestion,
           )
         ],
