@@ -105,29 +105,29 @@ class ExcerciseData{
     int id, {
       //---settings
       //for sorting purposes
-      DateTime lastTimeStamp,
+      DateTime lastTimeStamp, //TODO: test
       //basic 
-      String name,
-      String note,
+      String name, 
+      String note, 
       String url,
       //other
-      int predictionID,
-      int repTarget,
-      Duration recoveryPeriod,
-      int setTarget,
+      int predictionID, //TODO: test
+      int repTarget, //TODO: test
+      Duration recoveryPeriod, //TODO: test
+      int setTarget, //TODO: test
       //---recorded
-      int lastWeight,
-      int lastReps,
+      int lastWeight, //TODO: test
+      int lastReps, //TODO: test
 
       //---Temporary
-      int tempWeight,
-      bool tempWeightCanBeNull: false,
-      int tempReps,
-      bool tempRepsCanBeNull: false,
-      DateTime tempStartTime,
-      bool tempStartTimeCanBeNull: false,
-      int tempSetCount,
-      bool tempSetCountCanBeNull: false,
+      int tempWeight, //TODO: test
+      bool tempWeightCanBeNull: false, //TODO: test
+      int tempReps, //TODO: test
+      bool tempRepsCanBeNull: false, //TODO: test
+      DateTime tempStartTime, //TODO: test
+      bool tempStartTimeCanBeNull: false, //TODO: test
+      int tempSetCount, //TODO: test
+      bool tempSetCountCanBeNull: false, //TODO: test
 
       //---OTHER
       bool updateFile: true,
@@ -158,6 +158,10 @@ class ExcerciseData{
 
     if(repTarget != null){
       _excercises.value[id].repTarget = repTarget;
+    }
+
+    if(recoveryPeriod != null){
+      _excercises.value[id].recoveryPeriod = recoveryPeriod;
     }
 
     if(setTarget != null){
