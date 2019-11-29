@@ -22,6 +22,8 @@ class AllTrainingTypes extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(" with init focus: " + sectionWithInitialFocus.toString());
+
     List<int> sections = new List<int>();
     for(int i = 0; i < 3; i++){
       //adjust the section being added
@@ -29,7 +31,7 @@ class AllTrainingTypes extends StatelessWidget {
 
       //add the section (adjust for wrap around above)
       if(sectionToAdd <= 2) sections.add(sectionToAdd);
-      else sections.add(sectionToAdd - 2);
+      else sections.add(sectionToAdd - 3);
     }
 
     return TrainingTypeSections(

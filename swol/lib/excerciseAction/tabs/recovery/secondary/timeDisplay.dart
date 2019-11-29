@@ -81,14 +81,17 @@ class TimeDisplay extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              (showIcon == false) ? EmptyContainer() : Padding(
-                padding: EdgeInsets.only(
-                  bottom: (isTimer) ? 0 : 16,
-                ),
-                child: Icon(
-                  isTimer ? Ionicons.getIconData("ios-timer") : Ionicons.getIconData("ios-stopwatch"),
-                  color: Theme.of(context).primaryColor,
-                  size: 48,
+              Opacity(
+                opacity: showIcon ? 1.0 : 0.0,
+                child: Padding(
+                  padding: EdgeInsets.only(
+                    bottom: (isTimer) ? 0 : 16,
+                  ),
+                  child: Icon(
+                    isTimer ? Ionicons.getIconData("ios-timer") : Ionicons.getIconData("ios-stopwatch"),
+                    color: Theme.of(context).primaryColor,
+                    size: 48,
+                  ),
                 ),
               ),
               IntrinsicWidth(

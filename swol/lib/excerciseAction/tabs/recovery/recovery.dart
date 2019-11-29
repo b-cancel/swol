@@ -80,6 +80,7 @@ class _RecoveryState extends State<Recovery> with SingleTickerProviderStateMixin
                         changeableTimerDuration: recoveryDuration,
                         timerStart: timerStart,
                         maxDuration: Duration(minutes: 5),
+                        showIcon: false,
                       ),
                       ToBreath(),
                     ],

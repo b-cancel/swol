@@ -95,29 +95,31 @@ class _LiquidTimeState extends State<LiquidTime> with TickerProviderStateMixin {
     //super init
     super.initState();
 
-    //create animation controller
-    Duration longDuration = Duration(minutes: 10);
-    //whether or not the timer just start is irelevant... 
-    //we know the date time we take here will always be 
-    //slightly after the one before this parent widget
+    //how much has already passed in the background
+    Duration removeFromTotal = DateTime.now().difference(widget.timerStart);
+    //our max value is 9:99
+    //so our max duration is 10
+    //after that the ammount of time overflowed is kind of irrelvant
+    //because you know for a fact your muscles are super cold
+    Duration longDuration = Duration(minutes: 10) - removeFromTotal;
 
+    //create animation controller
     controllerLonger = AnimationController(
       vsync: this,
-      //our max value is 9:99
-      //so our max duration is 10
-      //after that the ammount of time overflowed is kind of irrelvant
-      //because you know for a fact your muscles are super cold
-      duration: Duration(minutes: 10),
+      duration: longDuration,
     );
     
-    
+    //TODO: if we return and we are either KINDA red -> startVibrtion
+    //TODO: or FULL red -> start vibration
     //start vibrating again if the user turned off vibration
+    /*
     Future.delayed(
       widget.maxDuration,
       (){
         if(mounted) Vibrator.startVibration();
       }
     );
+    */
 
     //refresh UI at phone framerate
     controllerLonger.addListener(updateState);
@@ -204,7 +206,7 @@ class _LiquidTimeState extends State<LiquidTime> with TickerProviderStateMixin {
     }
     else{
       //For Stopwatch (red background & GREY background)
-      backgroundColor = redStopwatchAccent;
+      backgroundColor = (withinMaxDuration) ? redStopwatchAccent : Colors.transparent;
       waveColor = AlwaysStoppedAnimation(
         //when the stopwatch finishes we want our screen to be full red all the time
         (withinMaxDuration) ? greyBackground : Colors.transparent,
@@ -257,12 +259,15 @@ class _LiquidTimeState extends State<LiquidTime> with TickerProviderStateMixin {
     //reminds the user what this duration of break is good for
     String readyFor; //only empty for the first 15 seconds
     String lateFor;
-    int sectionWithInitialFocus = 0;
+    int sectionWithInitialFocus;
 
     //we are ready for some type of workout
-    if(Duration(seconds: 15) < totalDurationPassed && totalDurationPassed < Duration(minutes: 5)){
+    if(totalDurationPassed < Duration(seconds: 15)) sectionWithInitialFocus = 0; //closest to endurance
+    else if(Duration(minutes: 5) < totalDurationPassed) sectionWithInitialFocus = 2; //closest to strength
+    else{
       readyFor = "Ready For ";
       if(totalDurationPassed < Duration(minutes: 1)){ //15s to 1m
+      sectionWithInitialFocus = 0;
         readyFor += "Endurance";
       } 
       else{
@@ -297,6 +302,37 @@ class _LiquidTimeState extends State<LiquidTime> with TickerProviderStateMixin {
       lateFor = lateFor.toLowerCase();
       lateFor = null;
     }
+
+    //in case at some point I want to switch between indicators
+    double maxWidthIndicator = MediaQuery.of(context).size.width + (24.0 * 2);
+    int theOption = 2;
+    List<Widget> pulsingIndicatorOptions = [
+      //import 'package:flutter_spinkit/flutter_spinkit.dart';
+      SpinKitDualRing(
+        lineWidth: maxWidthIndicator/2,
+        color: Colors.red,
+        size: maxWidthIndicator,
+      ),
+      SpinKitDoubleBounce(
+        color: Colors.red,
+        size: maxWidthIndicator,
+      ),
+      //import 'package:loading_indicator/loading_indicator.dart';
+      LoadingIndicator(
+        indicatorType: Indicator.ballScaleMultiple,
+        color: Colors.red,
+      ),
+      LoadingIndicator(
+        indicatorType: Indicator.ballScale, 
+        color: Colors.red,
+      ),
+      //import 'package:progress_indicators/progress_indicators.dart';
+      GlowingProgressIndicator(
+        child: Container(
+          color: Colors.red,
+        ),
+      ),
+    ];
 
     //build return timer
     return Container(
@@ -367,30 +403,43 @@ class _LiquidTimeState extends State<LiquidTime> with TickerProviderStateMixin {
                 width: MediaQuery.of(context).size.width, //3.25/5
                 padding: EdgeInsets.all(24),
                 child: ClipOval(
-                  child: LiquidCircularProgressIndicator(
-                    //animated values
-                    value: 1 - progressValue,
-                    valueColor: waveColor,
-                    backgroundColor: backgroundColor,
-                    //set values
-                    borderColor: Colors.transparent,
-                    borderWidth: 0,
-                    direction: Axis.vertical, 
-                    //only show when our timer has completed
-                    center: Material(
-                      color: Colors.transparent,
-                      child: InkWell(
-                        onTap: (){
-                          maybeChangeTime(
-                            context: context,
-                            recoveryDuration: widget.changeableTimerDuration,
-                          );
-                        },
-                        child: Center(
-                          child: timeDisplay
+                  child: Stack(
+                    children: <Widget>[
+                      Container(
+                        color: Colors.white,
+                        child: Container(
+                          alignment: Alignment.center,
+                          width: maxWidthIndicator,
+                          height: maxWidthIndicator,
+                          child: pulsingIndicatorOptions[theOption],
                         ),
                       ),
-                    ),
+                      LiquidCircularProgressIndicator(
+                        //animated values
+                        value: 1 - progressValue,
+                        valueColor: waveColor,
+                        backgroundColor: backgroundColor,
+                        //set values
+                        borderColor: Colors.transparent,
+                        borderWidth: 0,
+                        direction: Axis.vertical, 
+                        //only show when our timer has completed
+                        center: Material(
+                          color: Colors.transparent,
+                          child: InkWell(
+                            onTap: (){
+                              maybeChangeTime(
+                                context: context,
+                                recoveryDuration: widget.changeableTimerDuration,
+                              );
+                            },
+                            child: Center(
+                              child: timeDisplay
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
