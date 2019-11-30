@@ -3,8 +3,11 @@ import 'dart:math' as math;
 
 class To1RM{
   static double fromWeightAndReps(double weight, double reps, int predictionID){
+    print("before switch: " + predictionID.toString());
     switch(predictionID){
-      case 0: return brzycki(weight, reps); break;
+      case 0: 
+        return brzycki(weight, reps); 
+      break;
       case 1: return mcGlothinOrLanders(weight, reps); break;
       case 2: return almazan(weight, reps); break;
       case 3: return epleyOrBaechle(weight, reps); break;
@@ -21,7 +24,7 @@ class To1RM{
   static double brzycki(double weight, double reps){
     double a = 37 - reps;
     double b = 36 / a;
-    double c = weight * b;
+    double c= weight * b;
     return c;
   }
 
@@ -49,7 +52,7 @@ class To1RM{
   ])
   */ 
 
-  static double almazan(double weight, double reps){
+  static double almazan(double weight, double reps){ 
     double a = math.log(2);
     double b = a * weight;
     //---
@@ -59,7 +62,7 @@ class To1RM{
     double f = 0.244879 * e;
     //---
     double g = b / f;
-    return g;
+    return -g;
   }
 
 

@@ -13,6 +13,7 @@ import 'package:swol/other/durationFormat.dart';
 
 //internal: link
 import 'package:swol/excerciseAction/excercisePage.dart';
+import 'package:swol/other/functions/helper.dart';
 
 //widget
 class ExcerciseTile extends StatelessWidget {
@@ -35,8 +36,18 @@ class ExcerciseTile extends StatelessWidget {
     Widget subtitle;
     if(thisExcercise.lastWeight != null){
       //TODO: actually grab 1 rep max and calculate the std deviation given all the formulas results
-      String oneRepMax = "160";
-      String error = "5";
+
+      List<int> oneRepMaxValues = Functions.getOneRepMaxValues(
+        thisExcercise.lastWeight, 
+        thisExcercise.lastReps,
+        thisExcercise.predictionID,
+      );
+
+      //splits things up
+      String oneRepMax = oneRepMaxValues[0].toString();
+      String error = oneRepMaxValues[1].toString();
+
+      //create the subtitle given the retreived values
       subtitle = Container(
         child: Row(
           mainAxisSize: MainAxisSize.min,

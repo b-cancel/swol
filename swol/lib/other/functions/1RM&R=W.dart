@@ -49,8 +49,8 @@ class ToWeight{
     double b = a / 109.3355;
     double c = math.log(b);
     double d = 0.244879 * max * c;
-    double e = -d / math.log(2);
-    return e;
+    double e = d / math.log(2);
+    return -e;
   }
 
   //4 Epley (or Baechle) Function

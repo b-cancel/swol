@@ -105,6 +105,14 @@ class _SuggestionState extends State<Suggestion> {
       lastReps: lastReps,
     );
 
+    int lastRecordedWeight = ExcerciseData.getExcercises().value[widget.excerciseID].lastWeight;
+    String extra = "";
+    if(lastRecordedWeight != null){
+      extra = "different than ";
+      extra += lastRecordedWeight.toString() + " x ";
+      extra += ExcerciseData.getExcercises().value[widget.excerciseID].lastReps.toString();
+    }
+
     return Stack(
       children: <Widget>[
         Container(
@@ -163,7 +171,7 @@ class _SuggestionState extends State<Suggestion> {
                   lastReps: rnd.nextInt(34) + 1,
                 );
               },
-              child: Text("random weight and reps [list testing]"),
+              child: Text("generate random weight and reps " + extra),
             ),
           ),
         ),
