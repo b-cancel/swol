@@ -35,7 +35,23 @@ class ExcerciseTile extends StatelessWidget {
     Widget subtitle;
     if(thisExcercise.lastWeight != null){
       //TODO: actually grab 1 rep max and calculate the std deviation given all the formulas results
-      subtitle = Text("160 +/- 5");
+      String oneRepMax = "160";
+      String error = "5";
+      subtitle = Container(
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Text(oneRepMax),
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 2.0,
+              ),
+              child: PlusMinusIcon(),
+            ),
+            Text(error),
+          ],
+        ),
+      );
     }
 
     //right trailing icon
@@ -61,7 +77,7 @@ class ExcerciseTile extends StatelessWidget {
         if(LastTimeStamp.isNew(thisExcercise.lastTimeStamp)){
           trailing = ListTileChipShell(
             chip: MyChip(
-              chipString: 'New',
+              chipString: 'NEW',
             ),
           );
         }
@@ -69,7 +85,7 @@ class ExcerciseTile extends StatelessWidget {
           if(LastTimeStamp.isHidden(thisExcercise.lastTimeStamp)){
             trailing = ListTileChipShell(
               chip: MyChip(
-                chipString: 'Hidden',
+                chipString: 'HIDDEN',
               ),
             );
           }
@@ -131,6 +147,91 @@ class ExcerciseTile extends StatelessWidget {
   }
 }
 
+class PlusMinusIcon extends StatelessWidget {
+  const PlusMinusIcon({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    double size = 16;
+
+    return Container(
+      height: size,
+      width: size,
+      child: Stack(
+        children: <Widget>[
+          Positioned.fill(
+            child: FittedBox(
+              fit: BoxFit.contain,
+              child: Icon(
+                FontAwesomeIcons.percentage,
+                color: Colors.white.withOpacity(0.75),
+              ),
+            ),
+          ),
+          Positioned(
+            top: 0,
+            left: 0,
+            child: Container(
+              height: size/2,
+              width: size/2,
+              child: FittedBox(
+                fit: BoxFit.contain,
+                child: Padding(
+                  padding: const EdgeInsets.all(1.0),
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                      top: 4.0,
+                    ),
+                    child: ClipOval(
+                      child: Container(
+                        color: Theme.of(context).cardColor,
+                        child: Icon(
+                          FontAwesomeIcons.plus,
+                          color: Colors.white.withOpacity(0.75),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Positioned(
+            bottom: 0,
+            right: 0,
+            child: Container(
+              height: size/2,
+              width: size/2,
+              child: FittedBox(
+                fit: BoxFit.contain,
+                child: Padding(
+                  padding: const EdgeInsets.all(1.0),
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                      bottom: 4.0,
+                    ),
+                    child: ClipOval(
+                      child: Container(
+                        color: Theme.of(context).cardColor,
+                        child: Icon(
+                          FontAwesomeIcons.minus,
+                          color: Colors.white.withOpacity(0.75),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 class ListTileChipShell extends StatelessWidget {
   const ListTileChipShell({
     Key key,
@@ -143,7 +244,7 @@ class ListTileChipShell extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.only(
-        top: 20,
+        top: 8,
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,

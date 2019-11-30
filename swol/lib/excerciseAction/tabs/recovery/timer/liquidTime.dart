@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:liquid_progress_indicator/liquid_progress_indicator.dart';
 import 'package:swol/excerciseAction/tabs/recovery/secondary/explained.dart';
 import 'package:swol/excerciseAction/tabs/recovery/secondary/timeDisplay.dart';
@@ -555,7 +556,7 @@ class _LiquidTimeState extends State<LiquidTime> with TickerProviderStateMixin {
                   Vibrator.stopVibration();
                 },
                 icon: Icon(
-                  Icons.vibration,
+                  FontAwesomeIcons.bellSlash, //solidBellSlash
                 ),
               ),
             ),

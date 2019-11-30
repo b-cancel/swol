@@ -1,5 +1,6 @@
 //flutter
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:swol/excercise/defaultDateTimes.dart';
 
 //internal
@@ -221,91 +222,114 @@ class AddExcercise extends StatelessWidget {
             ),
           ),
         ),
-        body: Container(
-          color: Theme.of(context).scaffoldBackgroundColor,
-          child: ListView(
-            shrinkWrap: true,
-            padding: EdgeInsets.symmetric(
-              vertical: 16,
-            ),
-            children: <Widget>[
-              Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
+        body: Stack(
+          children: <Widget>[
+            Container(
+              color: Theme.of(context).scaffoldBackgroundColor,
+              child: ListView(
+                shrinkWrap: true,
+                padding: EdgeInsets.symmetric(
+                  vertical: 16,
+                ),
                 children: <Widget>[
-                  Card(
-                    margin: EdgeInsets.all(8),
-                    child: Padding(
-                      padding: EdgeInsets.only(
-                        top: 8,
-                        left: 16,
-                        right: 16,
-                        bottom: 16,
-                      ),
-                      child: BasicEditor(
-                        namePresent: namePresent,
-                        nameError: nameError,
-                        name: name,
-                        note: note,
-                        url: url,
-                      ),
-                    ),
-                  ),
-                  RecoveryTimeCard(
-                    changeDuration: changeDuration, 
-                    sliderWidth: sliderWidth, 
-                    //value notifier below
-                    recoveryPeriod: recoveryPeriod, 
-                  ),
-                  SetTargetCard(
-                    setTarget: setTarget,
-                  ),
                   Column(
                     mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: <Widget>[
-                      RepTargetCard(
-                        changeDuration: changeDuration, 
-                        sliderWidth: sliderWidth, 
-                        repTargetDuration: repTargetDuration, 
-                        repTarget: repTarget,
-                      ),
                       Card(
                         margin: EdgeInsets.all(8),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            Container(
-                              padding: EdgeInsets.only(
-                                //Top 16 padding address above
-                                left: 16,
-                                right: 16,
-                                bottom: 16,
-                              ),
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: <Widget>[
-                                  Container(
-                                    child: new HeaderWithInfo(
-                                      title: "Prediction Formula",
-                                      popUp: new PredictionFormulasPopUp(),
-                                    ),
-                                  ),
-                                  FunctionDropDown(
-                                    functionIndex: functionIndex,
-                                    functionString: functionString,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ]
+                        child: Padding(
+                          padding: EdgeInsets.only(
+                            top: 8,
+                            left: 16,
+                            right: 16,
+                            bottom: 16,
+                          ),
+                          child: BasicEditor(
+                            namePresent: namePresent,
+                            nameError: nameError,
+                            name: name,
+                            note: note,
+                            url: url,
+                          ),
                         ),
                       ),
+                      RecoveryTimeCard(
+                        changeDuration: changeDuration, 
+                        sliderWidth: sliderWidth, 
+                        //value notifier below
+                        recoveryPeriod: recoveryPeriod, 
+                      ),
+                      SetTargetCard(
+                        setTarget: setTarget,
+                      ),
+                      Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          RepTargetCard(
+                            changeDuration: changeDuration, 
+                            sliderWidth: sliderWidth, 
+                            repTargetDuration: repTargetDuration, 
+                            repTarget: repTarget,
+                          ),
+                          Card(
+                            margin: EdgeInsets.all(8),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: <Widget>[
+                                Container(
+                                  padding: EdgeInsets.only(
+                                    //Top 16 padding address above
+                                    left: 16,
+                                    right: 16,
+                                    bottom: 16,
+                                  ),
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: <Widget>[
+                                      Container(
+                                        child: new HeaderWithInfo(
+                                          title: "Prediction Formula",
+                                          popUp: new PredictionFormulasPopUp(),
+                                        ),
+                                      ),
+                                      FunctionDropDown(
+                                        functionIndex: functionIndex,
+                                        functionString: functionString,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ]
+                            ),
+                          ),
+                        ],
+                      )
                     ],
+                  ),
+                  
+                  Container(
+                    height: 56.0 + 16,
                   )
+                  
                 ],
               ),
-            ],
-          ),
+            ),
+            Positioned(
+              bottom: 0,
+              child: Padding(
+                padding: EdgeInsets.all(16),
+                child: FloatingActionButton(
+                  backgroundColor: Theme.of(context).accentColor,
+                  onPressed: (){
+                    print("go to explain page");
+                  },
+                  tooltip: "What is all this stuff? (o_O)",
+                  child: Icon(FontAwesomeIcons.question),
+                ),
+              ),
+            )
+          ],
         ),
       ),
     );

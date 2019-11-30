@@ -1,4 +1,6 @@
 //flutter
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 //internal
@@ -103,49 +105,69 @@ class _SuggestionState extends State<Suggestion> {
       lastReps: lastReps,
     );
 
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      child: Column(
-        mainAxisSize: MainAxisSize.max,
-        children: <Widget>[
-          Expanded(
-            child: FlatButton(
-              onPressed: (){
-                flippedTesting = !flippedTesting;
-                firstTime.value = !firstTime.value;
-                //state will be set after
-              },
-              child: (firstTime.value) ? calibration : suggestion,
-            ),
-          ),
-          BottomButtons(
-            allSetsComplete: widget.allSetsComplete,
-            forwardAction: widget.recordSet,
-            flipped: flippedTesting,
-            forwardActionWidget: RichText(
-              text: TextSpan(
-                style: TextStyle(
-                  color: flippedTesting ? Colors.white : Theme.of(context).primaryColorDark,
+    return Stack(
+      children: <Widget>[
+        Container(
+          width: MediaQuery.of(context).size.width,
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            children: <Widget>[
+              Expanded(
+                child: FlatButton(
+                  onPressed: (){
+                    flippedTesting = !flippedTesting;
+                    firstTime.value = !firstTime.value;
+                    //state will be set after
+                  },
+                  child: (firstTime.value) ? calibration : suggestion,
                 ),
-                children: [
-                  TextSpan(
-                    text: "Record ",
-                  ),
-                  TextSpan(
-                    text: "Set 1",
-                    style: TextStyle(
-                      fontWeight: FontWeight.w900,
-                    ),
-                  ),
-                  TextSpan(
-                    text: "/3",
-                  ),
-                ],
               ),
+              BottomButtons(
+                allSetsComplete: widget.allSetsComplete,
+                forwardAction: widget.recordSet,
+                flipped: flippedTesting,
+                forwardActionWidget: RichText(
+                  text: TextSpan(
+                    style: TextStyle(
+                      color: flippedTesting ? Colors.white : Theme.of(context).primaryColorDark,
+                    ),
+                    children: [
+                      TextSpan(
+                        text: "Record ",
+                      ),
+                      TextSpan(
+                        text: "Set 1",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w900,
+                        ),
+                      ),
+                      TextSpan(
+                        text: "/3",
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        Positioned(
+          child: Center(
+            child: RaisedButton(
+              onPressed: (){
+                //give the item a random lastWeight [5->75] and random lastReps [1->35]
+                var rnd = new Random();
+                ExcerciseData.updateExcercise(
+                  widget.excerciseID,
+                  lastWeight: rnd.nextInt(70) + 5,
+                  lastReps: rnd.nextInt(34) + 1,
+                );
+              },
+              child: Text("random weight and reps [list testing]"),
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

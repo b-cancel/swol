@@ -220,7 +220,7 @@ class _LearnExcerciseState extends State<LearnExcercise> {
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: FloatingActionButton(
-                  tooltip: "Just in case you wanted to use our calculator ;)",
+                  tooltip: "Just in case you wanted to use our calculator (^_-)",
                   onPressed: (){
                     print("go to calculator page");
                   },
