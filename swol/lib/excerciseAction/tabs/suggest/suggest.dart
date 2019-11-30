@@ -8,6 +8,14 @@ import 'package:swol/excerciseAction/tabs/suggest/calibration.dart';
 import 'package:swol/excerciseAction/tabs/suggest/suggestion.dart';
 import 'package:swol/other/functions/helper.dart';
 
+//TODO: implement this
+//FLIPPED used when the user arrived directly to the suggest page
+//and the temp set was not null
+//meaning they came from the excercise list and for some reason either
+//1. left the excercise without starting there break
+//2. finished the break and was done with the excercise 
+//    but didn't mark it as done
+
 class Suggestion extends StatefulWidget {
   Suggestion({
     @required this.excerciseID,
@@ -24,6 +32,9 @@ class Suggestion extends StatefulWidget {
 }
 
 class _SuggestionState extends State<Suggestion> {
+  //TODO: remove test code
+  bool flippedTesting = false;
+
   //function select
   ValueNotifier<int> functionIndex;
   String functionValue;
@@ -94,14 +105,15 @@ class _SuggestionState extends State<Suggestion> {
 
     return Container(
       width: MediaQuery.of(context).size.width,
-      color: Colors.red,
       child: Column(
         mainAxisSize: MainAxisSize.max,
         children: <Widget>[
           Expanded(
             child: FlatButton(
               onPressed: (){
+                flippedTesting = !flippedTesting;
                 firstTime.value = !firstTime.value;
+                //state will be set after
               },
               child: (firstTime.value) ? calibration : suggestion,
             ),
@@ -109,27 +121,24 @@ class _SuggestionState extends State<Suggestion> {
           BottomButtons(
             allSetsComplete: widget.allSetsComplete,
             forwardAction: widget.recordSet,
+            flipped: flippedTesting,
             forwardActionWidget: RichText(
               text: TextSpan(
+                style: TextStyle(
+                  color: flippedTesting ? Colors.white : Theme.of(context).primaryColorDark,
+                ),
                 children: [
                   TextSpan(
                     text: "Record ",
-                    style: TextStyle(
-                      color: Theme.of(context).primaryColorDark,
-                    ),
                   ),
                   TextSpan(
                     text: "Set 1",
                     style: TextStyle(
-                      color: Theme.of(context).primaryColorDark,
                       fontWeight: FontWeight.w900,
                     ),
                   ),
                   TextSpan(
                     text: "/3",
-                    style: TextStyle(
-                      color: Theme.of(context).primaryColorDark,
-                    ),
                   ),
                 ],
               ),

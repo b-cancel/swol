@@ -89,6 +89,18 @@ class _LiquidTimeState extends State<LiquidTime> with TickerProviderStateMixin {
   }
   */
 
+  explainFunctionalityPopUp(int sectionWithInitialFocus){
+    showDialog<void>(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return ExplainFunctionality(
+          sectionWithInitialFocus: sectionWithInitialFocus,
+        );
+      },
+    );
+  }
+
   //init
   @override
   void initState() {
@@ -102,6 +114,7 @@ class _LiquidTimeState extends State<LiquidTime> with TickerProviderStateMixin {
     //after that the ammount of time overflowed is kind of irrelvant
     //because you know for a fact your muscles are super cold
     Duration longDuration = Duration(minutes: 10) - removeFromTotal;
+    if(longDuration <= Duration.zero) longDuration = Duration(seconds: 1);
 
     //create animation controller
     controllerLonger = AnimationController(
@@ -146,324 +159,424 @@ class _LiquidTimeState extends State<LiquidTime> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    //chosen colors
     final Color greyBackground =  Color(0xFFBFBFBF);
-    final Color greenTimerAccent = Theme.of(context).accentColor;
-    final Color redStopwatchAccent = Colors.red;
 
-    //---calculate string for timer duration
-    List<String> timerDurationStrings = durationToCustomDisplay(widget.changeableTimerDuration.value);
-    String timerDurationString = timerDurationStrings[0] + " : " + timerDurationStrings[1];
-
-    //---calculate total time passed
-    Duration totalDurationPassed = DateTime.now().difference(widget.timerStart);
-    List<String> totalDurationPassedStrings = durationToCustomDisplay(totalDurationPassed);
-    String totalDurationString = totalDurationPassedStrings[0] + " : " + totalDurationPassedStrings[1]; //bottom right for ?
-    //if the total time passed overflows
-    //then our timer has run as much as possible
-    //so we overflow the larger top number as well
-    if(totalDurationPassedStrings[1] == "99"){
-      totalDurationString = "9 : 99";
-    }
-
-    //---calculate extra time passed
-    Duration extraDurationPassed = Duration.zero;
-    if(totalDurationPassed > widget.changeableTimerDuration.value){
-      extraDurationPassed = totalDurationPassed - widget.changeableTimerDuration.value;
-    }
-
-    //simplifying varaible for the merge of timer and stopwatch widgets
-    bool firstTimerRunning = (extraDurationPassed == Duration.zero);
-    bool withinMaxDuration = (totalDurationPassed <= widget.maxDuration);
-
-    //-----variables that don't really vary
-    String bottomLeftNumber = timerDurationString;
-    String bottomRightNumber = totalDurationString;
-
-    //-----varaibles that varry below
-    //wave progress
-    double progressValue; //should run from 0 -> 1
-    //colors
-    Animation<Color> waveColor;
-    Color backgroundColor;
-    //numbers
-    String topNumber;
-
-    //react differently to the timer or stopwatch
-    if(firstTimerRunning){
-      //For Timer (GREY background & green wave)
-      backgroundColor = greyBackground;
-      waveColor = AlwaysStoppedAnimation(greenTimerAccent);
-
-      //calculate top number
-      Duration durationLeft = widget.changeableTimerDuration.value - totalDurationPassed + Duration(seconds: 1);
-      List<String> durationLeftStrings = durationToCustomDisplay(durationLeft);
-      String durationLeftString = durationLeftStrings[0] + " : " + durationLeftStrings[1]; //top number for timer
-      topNumber = durationLeftString;
-
-      //set progress value
-      progressValue = totalDurationPassed.inMicroseconds / widget.changeableTimerDuration.value.inMicroseconds;
-    }
-    else{
-      //For Stopwatch (red background & GREY background)
-      backgroundColor = (withinMaxDuration) ? redStopwatchAccent : Colors.transparent;
-      waveColor = AlwaysStoppedAnimation(
-        //when the stopwatch finishes we want our screen to be full red all the time
-        (withinMaxDuration) ? greyBackground : Colors.transparent,
-      );
-
-      //calculate top Number
-      List<String> extraDurationPassedStrings = durationToCustomDisplay(extraDurationPassed);
-      String extraDurationPassedString = extraDurationPassedStrings[0] + " : " + extraDurationPassedStrings[1];
-      topNumber = extraDurationPassedString;
-
-      //---generate the progress values
-      //make generate the proper progress value (we dont want it to jump)
-      //thankfully since our max setable time is 4:55 and our actual max wait time is 5 minutes
-      //we know we will have atleast 5 seconds for the 2nd progress bar to jump from bottom to top
-      
-      if(withinMaxDuration == false) progressValue = 1;
-      else{ //between 0 and 1
-        //Output: 0 -> 1
-        //Input: widget.changeableTimerduration.value -> Duration(minutes 5)
-        //Input: 0 -> fiveMinutes - widget.changeabletimerDuration.value
-        Duration totalStopwatchAnimation = widget.maxDuration - widget.changeableTimerDuration.value;
-        //Input: 0 -> totalStopwatchAnimation (MIN of 5 seconds)
-        //Output: 0 -> 1
-        Duration adjustedTimePassed = totalDurationPassed - widget.changeableTimerDuration.value;
-
-        //determine how far we have progressed within range
-        progressValue = adjustedTimePassed.inMicroseconds / totalStopwatchAnimation.inMicroseconds;
-      }
-    }
-
-    //just in case for small floating point "mistakes"
-    progressValue = progressValue.clamp(0.0, 1.0);
-
-    //based on all the calculated variables above show the various numbers
-    Widget timeDisplay = TimeDisplay(
-      textContainerSize: MediaQuery.of(context).size.width - (24 * 2),
-      topNumber: topNumber, 
-      topArrowUp:  widget.showArrows ? (firstTimerRunning ? false : true) : null,
-      bottomLeftNumber: bottomLeftNumber, 
-      bottomRightNumber: bottomRightNumber,
-      showBottomArrow: widget.showArrows ? true : false,
-      isTimer: (firstTimerRunning) ? true : false,
-      showIcon: widget.showIcon,
-    );
-
-    //initially tells the user what happening
-    //then explains they can no longer to the training type behind the one they were aiming for
-    String extraMessage = firstTimerRunning ? "Flushing Acid Build Up" : null;
+    //---the glowing indicator that we may or may not use
     
-    //reminds the user what this duration of break is good for
-    String readyFor; //only empty for the first 15 seconds
-    String lateFor;
-    int sectionWithInitialFocus;
-
-    //we are ready for some type of workout
-    if(totalDurationPassed < Duration(seconds: 15)) sectionWithInitialFocus = 0; //closest to endurance
-    else if(Duration(minutes: 5) < totalDurationPassed) sectionWithInitialFocus = 2; //closest to strength
-    else{
-      readyFor = "Ready For ";
-      if(totalDurationPassed < Duration(minutes: 1)){ //15s to 1m
-      sectionWithInitialFocus = 0;
-        readyFor += "Endurance";
-      } 
-      else{
-        lateFor = "Too Late For ";
-        if(totalDurationPassed < Duration(minutes: 2)){ //to 2m hypertrophy
-          sectionWithInitialFocus = 1;
-          readyFor += "Hypertrophy";
-          lateFor += "Endurance";
-        }
-        else if(totalDurationPassed < Duration(minutes: 3)){ //to 3m hypertrophy or strength
-          sectionWithInitialFocus = 1;
-          readyFor += "Hypertrophy/Strength";
-          lateFor += "Hypertrophy";
-        }
-        else{ //to 5m strength
-          sectionWithInitialFocus = 2;
-          readyFor += "Strength";
-          lateFor += "Hypertrophy";
-        }
-        lateFor += " Training";
-      }
-      readyFor += " Training";
-    }
-
-    if(extraMessage == null && readyFor == null && lateFor == null){
-      extraMessage = "You Waited Too Long";
-      lateFor = "you need to warm up again";
-    }
-
-    //handle 3 liners a bit more delicately
-    if(lateFor != null && extraMessage != null && readyFor != null){
-      lateFor = lateFor.toLowerCase();
-      lateFor = null;
-    }
+    //max size of pusler given width and nanually set padding
+    double maxWidthIndicator = MediaQuery.of(context).size.width + (24.0 * 2);
 
     //in case at some point I want to switch between indicators
-    double maxWidthIndicator = MediaQuery.of(context).size.width + (24.0 * 2);
-    int theOption = 2;
-    List<Widget> pulsingIndicatorOptions = [
+    Duration pusleDuration = Duration(milliseconds: 1000);
+    List<Widget> pulsingBackgrounds = [
       //import 'package:flutter_spinkit/flutter_spinkit.dart';
       SpinKitDualRing(
         lineWidth: maxWidthIndicator/2,
-        color: Colors.red,
+        color: Colors.white,
         size: maxWidthIndicator,
+        duration: pusleDuration,
       ),
-      SpinKitDoubleBounce(
-        color: Colors.red,
+      SpinKitDoubleBounce( //ABBY LIKED
+        color: Colors.white,
         size: maxWidthIndicator,
+        duration: pusleDuration,
       ),
       //import 'package:loading_indicator/loading_indicator.dart';
       LoadingIndicator(
         indicatorType: Indicator.ballScaleMultiple,
-        color: Colors.red,
+        color: Colors.white,
       ),
       LoadingIndicator(
         indicatorType: Indicator.ballScale, 
-        color: Colors.red,
+        color: Colors.white,
       ),
       //import 'package:progress_indicators/progress_indicators.dart';
-      GlowingProgressIndicator(
+      GlowingProgressIndicator( //KOBE LIKED
         child: Container(
-          color: Colors.red,
+          color: Colors.red.withOpacity(0.75),
         ),
+        duration: Duration(milliseconds: 5000),
       ),
     ];
 
-    //build return timer
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        mainAxisSize: MainAxisSize.min,
+    //pusling backgrond widget that may or may not be used
+    Widget pulsingBackground = Container(
+      color: greyBackground,
+      child: Stack(
         children: <Widget>[
-          FittedBox(
-            fit: BoxFit.contain,
-            child: Container(
-              padding: EdgeInsets.symmetric(
-                horizontal: 12,
-                vertical: 0,
-              ),
-              child: OutlineButton(
-                highlightedBorderColor: Theme.of(context).accentColor,
-                onPressed: (){
-                  showDialog<void>(
-                    context: context,
-                    barrierDismissible: true,
-                    builder: (BuildContext context) {
-                      return ExplainFunctionality(
-                        sectionWithInitialFocus: sectionWithInitialFocus,
-                      );
-                    },
-                  );
-                },
-                padding: EdgeInsets.symmetric(
-                  horizontal: 8,
-                  vertical: 4,
-                ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    extraMessage != null ? Text(
-                      extraMessage,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
-                      ),
-                    ) : EmptyContainer(),
-                    readyFor != null ? 
-                    Text(
-                      readyFor,
-                      style: TextStyle(
-                        fontSize: 12,
-                        fontWeight: extraMessage == null ? FontWeight.bold : FontWeight.normal,
-                      ),
-                    )
-                    : EmptyContainer(),
-                    lateFor != null ? Text(
-                      lateFor,
-                      style: TextStyle(
-                        fontSize: 10,
-                      ),
-                    ) : EmptyContainer(),
-                  ],
-                ),
-              )
-            ),
+          //pulsingBackgrounds[4],
+          Container(
+            color: Colors.red,
           ),
-          Stack(
+          Container(
+            alignment: Alignment.center,
+            width: maxWidthIndicator,
+            height: maxWidthIndicator,
+            child: pulsingBackgrounds[1],
+          ),
+          
+        ],
+      ),
+    );
+
+    //---calculate total time passed and react based on the result
+    Duration totalDurationPassed = DateTime.now().difference(widget.timerStart);
+
+    //---determine what section to focus on first when the user is looking for guidance
+    int sectionWithInitialFocus;
+    if(totalDurationPassed <= Duration(minutes: 1)) sectionWithInitialFocus = 0;
+    else if(totalDurationPassed < Duration(minutes: 3)) sectionWithInitialFocus = 1;
+    else sectionWithInitialFocus = 2;
+
+    //---set main widget based on total duration passed
+    Widget mainWidget;
+
+    //super red gives us a completely different widget
+    if(totalDurationPassed >= Duration(minutes: 10)){
+      //TODO: just glowing indicator with some special text in front
+      /*
+      "You Waited Too Long";
+        lateFor = "you need to warm up again";
+      */
+      /*
+      Container(
+            
+      */
+      mainWidget = Container(
+        height: MediaQuery.of(context).size.width,
+        width: MediaQuery.of(context).size.width, //3.25/5
+        padding: EdgeInsets.all(24),
+        child: ClipOval(
+          child: Stack(
             children: <Widget>[
-              Container(
-                height: MediaQuery.of(context).size.width,
-                width: MediaQuery.of(context).size.width, //3.25/5
-                padding: EdgeInsets.all(24),
-                child: ClipOval(
-                  child: Stack(
-                    children: <Widget>[
-                      Container(
-                        color: Colors.white,
-                        child: Container(
-                          alignment: Alignment.center,
-                          width: maxWidthIndicator,
-                          height: maxWidthIndicator,
-                          child: pulsingIndicatorOptions[theOption],
-                        ),
+              pulsingBackground,
+              Positioned.fill(
+                child: FittedBox(
+                  fit: BoxFit.contain,
+                  child: Padding(
+                    padding: EdgeInsets.all(24.0),
+                    child: OutlineButton(
+                      highlightedBorderColor: Theme.of(context).accentColor,
+                      borderSide: BorderSide(
+                        color: Theme.of(context).primaryColor,
                       ),
-                      LiquidCircularProgressIndicator(
-                        //animated values
-                        value: 1 - progressValue,
-                        valueColor: waveColor,
-                        backgroundColor: backgroundColor,
-                        //set values
-                        borderColor: Colors.transparent,
-                        borderWidth: 0,
-                        direction: Axis.vertical, 
-                        //only show when our timer has completed
-                        center: Material(
-                          color: Colors.transparent,
-                          child: InkWell(
-                            onTap: (){
-                              maybeChangeTime(
-                                context: context,
-                                recoveryDuration: widget.changeableTimerDuration,
-                              );
-                            },
-                            child: Center(
-                              child: timeDisplay
+                      onPressed: () => explainFunctionalityPopUp(sectionWithInitialFocus),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 4,
+                      ),
+                      child: DefaultTextStyle(
+                        style: TextStyle(
+                          color: Theme.of(context).primaryColorDark,
+                        ),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            Text(
+                              "You Waited Too Long",
+                              style: TextStyle(
+                                fontSize: 24,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
-                          ),
+                            Text("you need to warm up again"),
+                            Text(
+                              totalDurationPassed.inSeconds.toString() + " minutes",
+                            ),
+                          ],
                         ),
                       ),
-                    ],
-                  ),
-                ),
-              ),
-              Positioned(
-                top: 0,
-                left: 0,
-                child: Visibility(
-                  visible: (Vibrator.isVibrating) ? true : false,
-                  child: IconButton(
-                    padding: EdgeInsets.all(32),
-                    tooltip: 'Turn Off Vibration',
-                    onPressed: (){
-                      Vibrator.stopVibration();
-                    },
-                    icon: Icon(
-                      Icons.vibration,
                     ),
                   ),
                 ),
               )
             ],
           ),
+        ),
+      );
+      
+      /*
+      Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          topInfoButton,
+          timeWidget,
         ],
-      ),
+      );
+      */
+    }
+    else{ //either we are half red or not red at all
+      List<String> totalDurationPassedStrings = durationToCustomDisplay(totalDurationPassed);
+      String totalDurationString = totalDurationPassedStrings[0] + " : " + totalDurationPassedStrings[1]; //bottom right for ?
+      //if the total time passed overflows
+      //then our timer has run as much as possible
+      //so we overflow the larger top number as well
+      if(totalDurationPassedStrings[1] == "99"){
+        totalDurationString = "9 : 99";
+      }
+
+      //chosen colors
+      final Color greenTimerAccent = Theme.of(context).accentColor;
+      final Color redStopwatchAccent = Colors.red;
+
+      //---calculate string for timer duration
+      List<String> timerDurationStrings = durationToCustomDisplay(widget.changeableTimerDuration.value);
+      String timerDurationString = timerDurationStrings[0] + " : " + timerDurationStrings[1];
+
+      //---calculate extra time passed
+      Duration extraDurationPassed = Duration.zero;
+      if(totalDurationPassed > widget.changeableTimerDuration.value){
+        extraDurationPassed = totalDurationPassed - widget.changeableTimerDuration.value;
+      }
+
+      //simplifying varaible for the merge of timer and stopwatch widgets
+      bool firstTimerRunning = (extraDurationPassed == Duration.zero);
+      bool withinMaxDuration = (totalDurationPassed <= widget.maxDuration);
+
+      //-----variables that don't really vary
+      String bottomLeftNumber = timerDurationString;
+      String bottomRightNumber = totalDurationString;
+
+      //-----varaibles that varry below
+      //wave progress
+      double progressValue; //should run from 0 -> 1
+      //colors
+      Animation<Color> waveColor;
+      Color backgroundColor;
+      //numbers
+      String topNumber;
+
+      //react differently to the timer or stopwatch
+      if(firstTimerRunning){
+        //For Timer (GREY background & green wave)
+        backgroundColor = greyBackground;
+        waveColor = AlwaysStoppedAnimation(greenTimerAccent);
+
+        //calculate top number
+        Duration durationLeft = widget.changeableTimerDuration.value - totalDurationPassed + Duration(seconds: 1);
+        List<String> durationLeftStrings = durationToCustomDisplay(durationLeft);
+        String durationLeftString = durationLeftStrings[0] + " : " + durationLeftStrings[1]; //top number for timer
+        topNumber = durationLeftString;
+
+        //set progress value
+        progressValue = totalDurationPassed.inMicroseconds / widget.changeableTimerDuration.value.inMicroseconds;
+      }
+      else{
+        //For Stopwatch (red background & GREY background)
+        backgroundColor = (withinMaxDuration) ? redStopwatchAccent : Colors.transparent;
+        waveColor = AlwaysStoppedAnimation(
+          //when the stopwatch finishes we want our screen to be full red all the time
+          (withinMaxDuration) ? greyBackground : Colors.transparent,
+        );
+
+        //calculate top Number
+        List<String> extraDurationPassedStrings = durationToCustomDisplay(extraDurationPassed);
+        String extraDurationPassedString = extraDurationPassedStrings[0] + " : " + extraDurationPassedStrings[1];
+        topNumber = extraDurationPassedString;
+
+        //---generate the progress values
+        //make generate the proper progress value (we dont want it to jump)
+        //thankfully since our max setable time is 4:55 and our actual max wait time is 5 minutes
+        //we know we will have atleast 5 seconds for the 2nd progress bar to jump from bottom to top
+        
+        if(withinMaxDuration == false) progressValue = 1;
+        else{ //between 0 and 1
+          //Output: 0 -> 1
+          //Input: widget.changeableTimerduration.value -> Duration(minutes 5)
+          //Input: 0 -> fiveMinutes - widget.changeabletimerDuration.value
+          Duration totalStopwatchAnimation = widget.maxDuration - widget.changeableTimerDuration.value;
+          //Input: 0 -> totalStopwatchAnimation (MIN of 5 seconds)
+          //Output: 0 -> 1
+          Duration adjustedTimePassed = totalDurationPassed - widget.changeableTimerDuration.value;
+
+          //determine how far we have progressed within range
+          progressValue = adjustedTimePassed.inMicroseconds / totalStopwatchAnimation.inMicroseconds;
+        }
+      }
+
+      //just in case for small floating point "mistakes"
+      progressValue = progressValue.clamp(0.0, 1.0);
+
+      //based on all the calculated variables above show the various numbers
+      Widget timeDisplay = TimeDisplay(
+        textContainerSize: MediaQuery.of(context).size.width - (24 * 2),
+        topNumber: topNumber, 
+        topArrowUp:  widget.showArrows ? (firstTimerRunning ? false : true) : null,
+        bottomLeftNumber: bottomLeftNumber, 
+        bottomRightNumber: bottomRightNumber,
+        showBottomArrow: widget.showArrows ? true : false,
+        isTimer: (firstTimerRunning) ? true : false,
+        showIcon: widget.showIcon,
+      );
+
+      //initially tells the user what happening
+      //then explains they can no longer to the training type behind the one they were aiming for
+      String extraMessage = firstTimerRunning ? "Flushing Acid Build Up" : null;
+      
+      //reminds the user what this duration of break is good for
+      String readyFor; //only empty for the first 15 seconds
+      String lateFor;
+
+      //we are ready for some type of workout
+      //TODO: double check
+      if(totalDurationPassed < Duration(seconds: 15) == false 
+      && Duration(minutes: 5) < totalDurationPassed == false){
+        readyFor = "Ready For ";
+        if(totalDurationPassed < Duration(minutes: 1)){ //15s to 1m
+          readyFor += "Endurance";
+        } 
+        else{
+          lateFor = "Too Late For ";
+          if(totalDurationPassed < Duration(minutes: 2)){ //to 2m hypertrophy
+            readyFor += "Hypertrophy";
+            lateFor += "Endurance";
+          }
+          else if(totalDurationPassed < Duration(minutes: 3)){ //to 3m hypertrophy or strength
+            readyFor += "Hypertrophy/Strength";
+            lateFor += "Hypertrophy";
+          }
+          else{ //to 5m strength
+            readyFor += "Strength";
+            lateFor += "Hypertrophy";
+          }
+          lateFor += " Training";
+        }
+        readyFor += " Training";
+      }
+
+      if(extraMessage == null && readyFor == null && lateFor == null){
+        extraMessage = "You Waited Too Long";
+        lateFor = "you need to warm up again";
+      }
+
+      //handle 3 liners a bit more delicately
+      if(lateFor != null && extraMessage != null && readyFor != null){
+        lateFor = lateFor.toLowerCase();
+        lateFor = null;
+      }
+
+      //---------------------
+      Widget topInfoButton = FittedBox(
+        fit: BoxFit.contain,
+        child: Container(
+          padding: EdgeInsets.symmetric(
+            horizontal: 12,
+            vertical: 0,
+          ),
+          child: OutlineButton(
+            highlightedBorderColor: Theme.of(context).accentColor,
+            onPressed: () => explainFunctionalityPopUp(sectionWithInitialFocus),
+            padding: EdgeInsets.symmetric(
+              horizontal: 8,
+              vertical: 4,
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                extraMessage != null ? Text(
+                  extraMessage,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                  ),
+                ) : EmptyContainer(),
+                readyFor != null ? 
+                Text(
+                  readyFor,
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: extraMessage == null ? FontWeight.bold : FontWeight.normal,
+                  ),
+                )
+                : EmptyContainer(),
+                lateFor != null ? Text(
+                  lateFor,
+                  style: TextStyle(
+                    fontSize: 10,
+                  ),
+                ) : EmptyContainer(),
+              ],
+            ),
+          )
+        ),
+      );
+
+      Widget timeWidget = Stack(
+        children: <Widget>[
+          Container(
+            height: MediaQuery.of(context).size.width,
+            width: MediaQuery.of(context).size.width, //3.25/5
+            padding: EdgeInsets.all(24),
+            child: ClipOval(
+              child: Stack(
+                children: <Widget>[
+                  pulsingBackground,
+                  LiquidCircularProgressIndicator(
+                    //animated values
+                    value: 1 - progressValue,
+                    valueColor: waveColor,
+                    backgroundColor: backgroundColor,
+                    //set values
+                    borderColor: Colors.transparent,
+                    borderWidth: 0,
+                    direction: Axis.vertical, 
+                    //only show when our timer has completed
+                    center: Material(
+                      color: Colors.transparent,
+                      child: InkWell(
+                        onTap: (){
+                          maybeChangeTime(
+                            context: context,
+                            recoveryDuration: widget.changeableTimerDuration,
+                          );
+                        },
+                        child: Center(
+                          child: timeDisplay
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Positioned(
+            top: 0,
+            left: 0,
+            child: Visibility(
+              visible: (Vibrator.isVibrating) ? true : false,
+              child: IconButton(
+                padding: EdgeInsets.all(32),
+                tooltip: 'Turn Off Vibration',
+                onPressed: (){
+                  Vibrator.stopVibration();
+                },
+                icon: Icon(
+                  Icons.vibration,
+                ),
+              ),
+            ),
+          )
+        ],
+      );
+
+      mainWidget = Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          topInfoButton,
+          timeWidget,
+        ],
+      );
+    }
+    
+    //build return timer
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      child: mainWidget,
     );
   }
 }

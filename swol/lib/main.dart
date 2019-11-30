@@ -155,10 +155,13 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
         children: <Widget>[
           //NOTE: only 2 expands (the logo must always be centered)
           Expand(),
-          Image.asset(
-            "assets/splash/splash.png",
-            //width: 1080/2, //1080,
-            //height: 1462/2 , //1462,
+          Padding(
+            padding: const EdgeInsets.all(24.0),
+            child: Image.asset(
+              "assets/splash/splashCut.png",
+              //width: 1080/2, //1080,
+              //height: 1462/2 , //1462,
+            ),
           ),
           Expanded(
             child: Center(
