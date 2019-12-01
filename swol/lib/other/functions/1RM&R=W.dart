@@ -17,6 +17,8 @@ class ToWeight{
 
   //1 Brzycki Function
   //[m * (37- r)] / 36
+  //TODO: watch out for limits, after the limit the result might also be bogus
+  //TODO: alt for this is mcGlothin (watch out for circular reasoning)
   static double brzycki(double reps, double max){
     double a = 37 - reps;
     double b = max * a;
@@ -26,6 +28,8 @@ class ToWeight{
 
   //2 McGlothin (or Landers) Function
   //[m * (101.3 - [2.67123 * r])] / 100
+  //TODO: watch out for limits, after the limit the result might also be bogus
+  //TODO: alt for this is brzyci (watch out for circular reasoning)
   static double mcGlothinOrLanders(double reps, double max){
     double a = 2.67123 * reps;
     double b = 101.3 - a;
@@ -44,6 +48,7 @@ class ToWeight{
   ----------------------
   ln(2)
   */
+  //TODO: watch out for limits, after the limit the result might also be bogus
   static double almazan(double reps, double max){
     double a = reps + 4.99195;
     double b = a / 109.3355;

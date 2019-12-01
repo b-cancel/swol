@@ -15,7 +15,7 @@ import 'package:swol/excercise/excerciseStructure.dart';
 import 'package:swol/excercise/excerciseData.dart';
 import 'package:swol/other/durationFormat.dart';
 
-//Section and how they are handled
+//Sections and how they are handled
 //New => newest additions on bottom
 //  since you would probably add your new routine and then work it
 //Hidden => newest addition on top [EXCEPTION]
@@ -40,8 +40,27 @@ class _ExcerciseSelectState extends State<ExcerciseSelect>{
 
   ValueNotifier<bool> navSpread = new ValueNotifier(false);
 
+  testing() async{
+    //grab all the data... x:Reps y:weigth z:standard deviation
+
+    //sections (output count for each)
+    //purple:7.5 or less
+    //blue:15
+    //green:30
+    //yellow:60
+    //orange:120
+    //red: 240
+    for(int weight = 1; weight < 501; weight++){
+      for(int rep = 1; rep < 36; rep++){
+        
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    testing();
+
     //setup vars
     double expandHeight = MediaQuery.of(context).size.height / 3;
     expandHeight = (expandHeight < 40) ? 40 : expandHeight;

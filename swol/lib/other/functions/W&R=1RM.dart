@@ -1,31 +1,41 @@
 import 'dart:math' as math;
-//rep range: 1 - > 35
 
 class To1RM{
+  //NOTE: some functions can fail but that's okay we always have back ups for those that do
+  //at all weight ranges, the function that approximate the one failing the most
+  //is the one to its right
+  //BACKUP ORDER: brzycki, mcGlothinOrLander, almazan, epleyOrBaechle [non failing]
   static double fromWeightAndReps(double weight, double reps, int predictionID){
-    print("before switch: " + predictionID.toString());
-    switch(predictionID){
-      case 0: 
-        return brzycki(weight, reps); 
-      break;
-      case 1: return mcGlothinOrLanders(weight, reps); break;
-      case 2: return almazan(weight, reps); break;
-      case 3: return epleyOrBaechle(weight, reps); break;
-      case 4: return oConner(weight, reps); break;
-      case 5: return wathan(weight, reps); break;
-      case 6: return mayhew(weight, reps); break;
-      default: return lombardi(weight, reps); break;
+    bool positiveWeight = (weight > 0);
+    bool repsInt = ((reps.toInt()).toDouble() == reps);
+    if(positiveWeight && repsInt){
+      switch(predictionID){
+        case 0: return brzycki(weight, reps); break;
+        case 1: return mcGlothinOrLanders(weight, reps); break;
+        case 2: return almazan(weight, reps); break;
+        case 3: return epleyOrBaechle(weight, reps); break;
+        case 4: return oConner(weight, reps); break;
+        case 5: return wathan(weight, reps); break;
+        case 6: return mayhew(weight, reps); break;
+        default: return lombardi(weight, reps); break;
+      }
     }
+    else return null;
   }
 
   //1 Brzycki Function
   //w * (36 / [37 - r]) 
-
+  //r: must not be 37 (for sure)
+  //r: must not be anything above 37 (logically)
+  static bool brzyckiUsefull(double reps) => (reps < 37);
   static double brzycki(double weight, double reps){
-    double a = 37 - reps;
-    double b = 36 / a;
-    double c= weight * b;
-    return c;
+    if(brzyckiUsefull(reps)){
+      double a = 37 - reps;
+      double b = 36 / a;
+      double c = weight * b;
+      return c;
+    }
+    else return mcGlothinOrLanders(weight, reps);
   }
 
   //2 McGlothin (or Landers) Function
@@ -34,13 +44,21 @@ class To1RM{
   ------------------------
   (101.3 - [2.67123 * r])
   */
-
+  //r: must not be 37.9226049423 (technically)
+  //r: must not be anything above 37.9226049423 (logically)
+  //r: and logically you can assume the number is 38 
+  //    1. because we are only ever going to be passed int reps
+  //    2. and because 37 actually does work here whereas 38 does not
+  static bool mcGlothinOrLandersUsefull(double reps) => (reps < 38);
   static double mcGlothinOrLanders(double weight, double reps){
-    double a = 100 * weight;
-    double b = 2.67123 * reps;
-    double c = 101.3 - b;
-    double d = a / c;
-    return d;
+    if(mcGlothinOrLandersUsefull(reps)){
+      double a = 100 * weight;
+      double b = 2.67123 * reps;
+      double c = 101.3 - b;
+      double d = a / c;
+      return d;
+    }
+    else return almazan(weight, reps);
   }
 
   //3 Almazan Function
@@ -51,20 +69,27 @@ class To1RM{
     (r + 4.99195) / 109.3355
   ])
   */ 
-
+  //r: must not be 104.34355 (technically)
+  //r: must not anything above 104.34355 (logically)
+  //r: and logically youc an assume the number is 105
+  //    1. because we are only ever going to be passed int reps
+  //    2. and because 104 does work here whereas 105 does not
+  static bool almazanUsefull(double reps) => (reps < 105);
   static double almazan(double weight, double reps){ 
-    double a = math.log(2);
-    double b = a * weight;
-    //---
-    double c = reps + 4.99195;
-    double d = c / 109.3355;
-    double e = math.log(d);
-    double f = 0.244879 * e;
-    //---
-    double g = b / f;
-    return -g;
+    if(almazanUsefull(reps)){
+      double a = math.log(2);
+      double b = a * weight;
+      //---
+      double c = reps + 4.99195;
+      double d = c / 109.3355;
+      double e = math.log(d);
+      double f = 0.244879 * e;
+      //---
+      double g = b / f;
+      return -g;
+    } 
+    else return epleyOrBaechle(weight, reps);
   }
-
 
   //4 Epley (or Baechle) Function
   //w * (1 + [r / 30])
@@ -80,7 +105,7 @@ class To1RM{
     return _helperOne(weight, reps, 40);
   }
 
-  //6 Wathan Function
+  //6 Wathan Function (no limit although it seems like there would be)
   /*
   100 * w
   ------------------------
@@ -99,7 +124,7 @@ class To1RM{
     );
   }
 
-  //7 Mayhew Function
+  //7 Mayhew Function (no limit although it seems like there would be)
   /*
   100 * w
   ------------------------
