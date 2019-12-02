@@ -9,11 +9,13 @@ import 'package:swol/excercise/defaultDateTimes.dart';
 //internal: basics
 import 'package:swol/excerciseSelection/secondary/animatedTitle.dart';
 import 'package:swol/excerciseSelection/secondary/secondary.dart';
+import 'package:swol/other/functions/helper.dart';
 import 'package:swol/sharedWidgets/excerciseTile.dart';
 import 'package:swol/sharedWidgets/scrollToTop.dart';
 import 'package:swol/excercise/excerciseStructure.dart';
 import 'package:swol/excercise/excerciseData.dart';
 import 'package:swol/other/durationFormat.dart';
+import 'package:swol/testing.dart';
 
 //Sections and how they are handled
 //New => newest additions on bottom
@@ -40,52 +42,8 @@ class _ExcerciseSelectState extends State<ExcerciseSelect>{
 
   ValueNotifier<bool> navSpread = new ValueNotifier(false);
 
-  //ratio (for 1 by 1 square we need about 5 times less data on the x axis)
-  //screen: 19:9
-  //data: 351:37 = > 100:10
-
-  testing() async{
-    //NOTE: how at the moment we don't need to care about what function we focused on or used
-    //BUT... if we instead consider the standard deviation in relation to one rep max weight
-    //we will have to use multiple graphs
-    //perhaps 1 for each function... then another for the average of all the functions outputs
-    //I can easily make the function output this data after 1 calculation since its doing all that math anyways
-    //grab all the data... x:Reps y:weigth z:standard deviation
-
-    //NOTE: adjust sections until you have an approximately equal distribution
-    //sections (output count for each) [raw deviation]
-    //1] purple:7.5 or less
-    //2] blue:15
-    //3] green:30
-    //4] yellow:60
-    //5] orange:120
-    //6] red: 240
-
-    //NOTE: adjust sections until you have an approximately equal distribution
-    //sections (output count for each) [digested deviation] multiple charts
-    //1] purple: 5% (deviation 5% of calculated 1 Rep Max)
-    //2] blue: 12%
-    //3] green: 20%
-    //4] yellow: 29%
-    //5] orange: 39%
-    //6] red: 50% (should never happen)
-
-    /*
-    //Max Weight: guesstimate of largest lift for average lifter for any excercise
-    for(int weight = 1; weight < 351; weight++){ 
-      //Max Reps: up to before 37 because any larger will crash it
-      for(int rep = 1; rep < 37; rep++){ 
-
-      }
-    }
-    */
-  }
-
   @override
   Widget build(BuildContext context) {
-    testing();
-
-    //setup vars
     double expandHeight = MediaQuery.of(context).size.height / 3;
     expandHeight = (expandHeight < 40) ? 40 : expandHeight;
 

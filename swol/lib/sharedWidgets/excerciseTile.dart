@@ -37,15 +37,14 @@ class ExcerciseTile extends StatelessWidget {
     if(thisExcercise.lastWeight != null){
       //TODO: actually grab 1 rep max and calculate the std deviation given all the formulas results
 
-      List<int> oneRepMaxValues = Functions.getOneRepMaxValues(
+      List oneRepMaxValues = Functions.getOneRepMaxValues(
         thisExcercise.lastWeight, 
         thisExcercise.lastReps,
-        thisExcercise.predictionID,
       );
 
       //splits things up
-      String oneRepMax = oneRepMaxValues[0].toString();
-      String error = oneRepMaxValues[1].toString();
+      String oneRepMax = oneRepMaxValues[0][thisExcercise.predictionID].toInt().toString();
+      String error = oneRepMaxValues[2].toInt().toString();
 
       //create the subtitle given the retreived values
       subtitle = Container(
