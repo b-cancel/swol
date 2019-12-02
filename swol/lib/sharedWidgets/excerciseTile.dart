@@ -35,7 +35,6 @@ class ExcerciseTile extends StatelessWidget {
     //calcualted 1 rep max if possible
     Widget subtitle;
     if(thisExcercise.lastWeight != null){
-      //TODO: actually grab 1 rep max and calculate the std deviation given all the formulas results
 
       List oneRepMaxValues = Functions.getOneRepMaxValues(
         thisExcercise.lastWeight, 
@@ -44,23 +43,105 @@ class ExcerciseTile extends StatelessWidget {
 
       //splits things up
       String oneRepMax = oneRepMaxValues[0][thisExcercise.predictionID].toInt().toString();
-      String error = oneRepMaxValues[2].toInt().toString();
+      String error;
+      String sureness;
+
+      int deviation = oneRepMaxValues[2].toInt();
+      print("Dev: " + deviation.toString());
+      int percentDeviation;
+      Color deviationBackgroundColor;
+      Color deviationTextColor;
+      if(deviation != 0){
+        error = deviation.toString();
+
+        percentDeviation = (
+          (oneRepMaxValues[1] == 0 || deviation == 0) 
+          ? 0 
+          : (oneRepMaxValues[2] / oneRepMaxValues[1]) * 100
+        ).toInt();
+
+        //set text
+        if(percentDeviation > 25) sureness = "Not Sure At All";
+        else if(percentDeviation > 20) sureness = "Very Un-Sure";
+        else if(percentDeviation > 15) sureness = "Somewhat Un-Sure";
+        else if(percentDeviation > 10) sureness = "Somewhat Sure";
+        else if(percentDeviation > 5) sureness = "Very Sure";
+        else sureness = "Extremely Sure";
+
+        //based on the deviation set the colors
+
+        //set background
+        if(percentDeviation > 25) deviationBackgroundColor = Colors.red;
+        else if(percentDeviation > 20) deviationBackgroundColor = Colors.orange;
+        else if(percentDeviation > 15) deviationBackgroundColor = Colors.yellow;
+        else if(percentDeviation > 10) deviationBackgroundColor = Colors.green;
+        else if(percentDeviation > 5) deviationBackgroundColor = Colors.blue;
+        else deviationBackgroundColor = Colors.purple;
+
+        //set text color
+        if(percentDeviation > 10) deviationTextColor = Colors.black;
+        else deviationTextColor = Colors.white;
+      }
 
       //create the subtitle given the retreived values
-      subtitle = Container(
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Text(oneRepMax),
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 2.0,
-              ),
-              child: PlusMinusIcon(),
+      subtitle = Row(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          Container(
+            padding: EdgeInsets.only(
+              top: 2,
             ),
-            Text(error),
-          ],
-        ),
+            child: error == null ? Container() : Tooltip(
+              preferBelow: false,
+              message: "We are \"" + sureness + "\" this is your 1 Rep Max",
+              child: Container(
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                    top: 2.0,
+                    bottom: 4,
+                    right: 16,
+                  ),
+                  child: Container(
+                    padding: EdgeInsets.all(4),
+                    decoration: BoxDecoration(
+                      border: Border.all(color: deviationBackgroundColor)
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        Text(
+                          oneRepMax,
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 2.0,
+                          ),
+                          child: PlusMinusIcon(),
+                        ),
+                        Text(
+                          error,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(
+                            left: 4.0,
+                          ),
+                          child: Icon(
+                            Icons.info_outline,
+                            color: Colors.white.withOpacity(0.50),
+                            size: 16,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
       );
     }
 
