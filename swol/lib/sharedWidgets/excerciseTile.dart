@@ -45,6 +45,7 @@ class ExcerciseTile extends StatelessWidget {
       String oneRepMax = oneRepMaxValues[0][thisExcercise.predictionID].toInt().toString();
       String error;
       String sureness;
+      int lessThanReps;
 
       int deviation = oneRepMaxValues[2].toInt();
       print("Dev: " + deviation.toString());
@@ -68,6 +69,14 @@ class ExcerciseTile extends StatelessWidget {
         else if(percentDeviation > 5) sureness = "Very Sure";
         else sureness = "Extremely Sure";
 
+        //less than reps
+        if(percentDeviation > 25) lessThanReps = 25;
+        else if(percentDeviation > 20) lessThanReps = 20;
+        else if(percentDeviation > 15) lessThanReps = 15;
+        else if(percentDeviation > 10) lessThanReps = 10;
+        else if(percentDeviation > 5) lessThanReps = 5;
+        else lessThanReps = 0;
+
         //based on the deviation set the colors
 
         //set background
@@ -83,17 +92,60 @@ class ExcerciseTile extends StatelessWidget {
         else deviationTextColor = Colors.white;
       }
 
+      Widget oneRepMaxText = Text(
+        oneRepMax,
+        style: TextStyle(
+          fontWeight: FontWeight.bold,
+        ),
+      );
+
+      double borderSize = 8;
+
       //create the subtitle given the retreived values
       subtitle = Row(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           Container(
-            padding: EdgeInsets.only(
-              top: 2,
+            decoration: BoxDecoration(
+              color: Theme.of(context).primaryColorDark,
+              borderRadius: new BorderRadius.only(
+                topLeft: Radius.circular(borderSize),
+                bottomLeft: Radius.circular(borderSize),
+              ),
             ),
-            child: error == null ? Container() : Tooltip(
+            padding: EdgeInsets.symmetric(
+              horizontal: 4,
+              vertical: 5,
+            ),
+            child: Text(
+              "1RM",
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          error == null ? Container(
+            decoration: BoxDecoration(
+              border: Border.all(color: Theme.of(context).primaryColorDark),
+              borderRadius: new BorderRadius.only(
+                bottomRight: Radius.circular(borderSize),
+                topRight: Radius.circular(borderSize),
+              ),
+            ),
+            padding: EdgeInsets.all(4),
+            child: oneRepMaxText,
+          ) : Padding(
+            padding: const EdgeInsets.only(
+              top: 2.0,
+            ),
+            child: Tooltip(
               preferBelow: false,
-              message: "We are \"" + sureness + "\" this is your 1 Rep Max",
+              message: "We are \"" + sureness + "\" this is your 1 Rep Max"
+               + (
+                 (lessThanReps >= 15) 
+                 ? "\nConsider doing less than " + lessThanReps.toString() + " reps for Better Results" 
+                 : ""
+              ),
               child: Container(
                 child: Padding(
                   padding: const EdgeInsets.only(
@@ -104,17 +156,16 @@ class ExcerciseTile extends StatelessWidget {
                   child: Container(
                     padding: EdgeInsets.all(4),
                     decoration: BoxDecoration(
-                      border: Border.all(color: deviationBackgroundColor)
+                      border: Border.all(color: deviationBackgroundColor),
+                      borderRadius: new BorderRadius.only(
+                        bottomRight: Radius.circular(borderSize),
+                        topRight: Radius.circular(borderSize),
+                      ),
                     ),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
-                        Text(
-                          oneRepMax,
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
+                        oneRepMaxText,
                         Padding(
                           padding: const EdgeInsets.symmetric(
                             horizontal: 2.0,
