@@ -4,6 +4,7 @@ import 'package:swol/excercise/defaultDateTimes.dart';
 import 'package:swol/excercise/excerciseStructure.dart';
 import 'package:swol/other/durationFormat.dart';
 import 'package:swol/sharedWidgets/excerciseListTile/excerciseTile.dart';
+import 'package:swol/sharedWidgets/excerciseListTile/triangleAngle.dart';
 
 class ExcerciseTileLeading extends StatelessWidget {
   ExcerciseTileLeading({
@@ -61,21 +62,6 @@ class ExcerciseTileLeading extends StatelessWidget {
   }
 }
 
-class AnimatedMiniTimer extends StatelessWidget {
-  AnimatedMiniTimer({
-    @required this.excerciseReference,
-  });
-
-  final AnExcercise excerciseReference;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: Icon(Icons.hourglass_full),
-    );
-  }
-}
-
 class ListTileChipShell extends StatelessWidget {
   const ListTileChipShell({
     Key key,
@@ -96,6 +82,56 @@ class ListTileChipShell extends StatelessWidget {
           chip,
         ],
       ),
+    );
+  }
+}
+
+class AnimatedMiniTimer extends StatelessWidget {
+  AnimatedMiniTimer({
+    @required this.excerciseReference,
+    this.evenSliceDivision: true,
+    this.negativeFirst: true,
+  });
+
+  final AnExcercise excerciseReference;
+  final bool evenSliceDivision;
+  final bool negativeFirst;
+
+  @override
+  Widget build(BuildContext context) {
+    
+    double pieSlice = 360/5;
+    double negativeMultiplier = (evenSliceDivision) ? .5 : .25;
+    double positiveMultiplier = (evenSliceDivision) ? .5 : .75;
+
+    //generate slices
+    List<Widget> slices = new List<Widget>();
+    for(int i = 0; i < 5; i++){ //always only 5 slices
+    /*
+      slices.add(
+        TriangleAngle(
+
+        )
+      );
+      */
+    }
+
+    //TODO: remove when slices are functional
+    slices.add(
+      Container(
+        color: Colors.pink,
+      )
+    );
+
+    //display slices
+    double size = 56; //NOTE: largest possible size seems to be 62
+    return Container(
+      width: size,
+      height: size,
+      color: Colors.pink,
+      child: Stack(
+        children: slices,
+      )
     );
   }
 }
