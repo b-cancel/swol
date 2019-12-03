@@ -56,7 +56,7 @@ class ExcerciseTileSubtitle extends StatelessWidget {
       double standardDevaition = oneRepMaxValues[2];
 
       if(standardDevaition.toInt() == 0){
-        tooltipMessage = "Without a doubt this is your 1 Rep Max";
+        tooltipMessage = "\"Without a doubt\" this is your 1 Rep Max";
         //NOTE: we keep default valueBorderColor
       }
       else{ //we aren't sure about our result
@@ -82,38 +82,38 @@ class ExcerciseTileSubtitle extends StatelessWidget {
         String surenessString;
         int lessThanReps;
         if(percentOfDeviation > 25){
-          surenessString = "Not Sure At All";
+          surenessString = "not sure at all";
           lessThanReps = 25;
           valueBorderColor = Colors.red;
         }
         else if(percentOfDeviation > 20){
-          surenessString = "Very Un-Sure";
+          surenessString = "very un-sure";
           lessThanReps = 20;
           valueBorderColor = Colors.orange;
         }
         else if(percentOfDeviation > 15){
-          surenessString = "Somewhat Un-Sure";
+          surenessString = "somewhat un-sure";
           lessThanReps = 15;
           valueBorderColor = Colors.yellow;
         }
         else if(percentOfDeviation > 10){
-          surenessString = "Somewhat Sure";
+          surenessString = "somewhat sure";
           lessThanReps = 10;
           valueBorderColor = Colors.green;
         }
         else if(percentOfDeviation > 5){
-          surenessString = "Very Sure";
+          surenessString = "very sure";
           lessThanReps = 5;
           valueBorderColor = Colors.blue;
         }
         else{
-          surenessString = "Extremely Sure";
+          surenessString = "extremely sure";
           lessThanReps = 0;
           valueBorderColor = Colors.purple;
         }
 
         //let the user know how far the guess is
-        tooltipMessage = "We are \"" + surenessString + "\" this is your 1 Rep Max";
+        tooltipMessage = "We are \"" + surenessString + "\" this is your one rep max";
         
         //ONLY discourage anything above 15 
         //since anything below is going to produce pretty good results
@@ -132,7 +132,7 @@ class ExcerciseTileSubtitle extends StatelessWidget {
               child: PlusMinusIcon(),
             ),
             Text(
-              standardDevaition.toInt().toString(),
+              percentOfDeviation.toInt().toString() + "%",
             ),
           ],
         );
@@ -199,7 +199,7 @@ class ExcerciseTileSubtitle extends StatelessWidget {
               padding: EdgeInsets.all(4),
               decoration: BoxDecoration(
                 border: Border.all( //default width of 1.0
-                  color: valueBorderColor,
+                  color: Theme.of(context).primaryColorDark,
                 ),
                 borderRadius: new BorderRadius.only(
                   bottomRight: Radius.circular(borderRadius),

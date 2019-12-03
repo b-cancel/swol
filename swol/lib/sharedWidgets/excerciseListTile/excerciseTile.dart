@@ -10,6 +10,7 @@ import 'package:swol/excercise/excerciseStructure.dart';
 
 //internal: link
 import 'package:swol/excerciseAction/excercisePage.dart';
+import 'package:swol/sharedWidgets/excerciseListTile/miniTimer.dart';
 import 'package:swol/sharedWidgets/excerciseListTile/oneRepMaxChip.dart';
 
 //widget
@@ -72,8 +73,10 @@ class ExcerciseTile extends StatelessWidget {
         lastReps: thisExcercise.lastReps,
         functionID: thisExcercise.predictionID,
       ),
-      //TODO: add the trailing bit here
-      //trailing: Container(),
+      trailing: ExcerciseTileLeading(
+        excerciseReference: thisExcercise,
+        tileInSearch: tileInSearch,
+      ),
     );
   }
 }
