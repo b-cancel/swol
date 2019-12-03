@@ -13,12 +13,8 @@ import 'package:swol/excerciseAction/tabs/recovery/timer/superOverflow.dart';
 import 'package:swol/excerciseAction/tabs/recovery/timer/turnOffVibration.dart';
 import 'package:swol/utils/vibrate.dart';
 
-//TODO: refine main build section... 
-//TODO: add the little edit time icon thingy in a special way once the total time passed is past 9:59
-//TODO: you can literaly do the exact same thing as when the timer is passing but center and with the right edges rounded as well
-//TODO: try to approximate scale as well
-
 //TODO: handle vibrations when the changable time changes
+
 //TODO: add the notifications to come up regardless if the app is closed or not
 //TODO:   or if we are in the app or not
 
@@ -261,20 +257,15 @@ class _LiquidTimeState extends State<LiquidTime> with TickerProviderStateMixin {
       );
     }
     else{ //either we are half red or not red at all
-      //---determine what section to focus on first when the user is looking for guidance
+      //determine what section to focus on first when the user is looking for guidance
       int sectionWithInitialFocus;
       if(totalDurationPassed <= Duration(minutes: 1)) sectionWithInitialFocus = 0;
       else if(totalDurationPassed < Duration(minutes: 3)) sectionWithInitialFocus = 1;
       else sectionWithInitialFocus = 2;
 
+      //format how much time has passed into a string
       List<String> totalDurationPassedStrings = durationToCustomDisplay(totalDurationPassed);
       String totalDurationString = totalDurationPassedStrings[0] + " : " + totalDurationPassedStrings[1]; //bottom right for ?
-      //if the total time passed overflows
-      //then our timer has run as much as possible
-      //so we overflow the larger top number as well
-      if(totalDurationPassedStrings[1] == "99"){
-        totalDurationString = "9 : 99";
-      }
 
       //chosen colors
       final Color greenTimerAccent = Theme.of(context).accentColor;
@@ -309,7 +300,7 @@ class _LiquidTimeState extends State<LiquidTime> with TickerProviderStateMixin {
         backgroundColor = greyBackground;
         waveColor = AlwaysStoppedAnimation(greenTimerAccent);
 
-        //calculate top number
+        //calculate top number (+1 second handles a rounded error)
         Duration durationLeft = widget.changeableTimerDuration.value - totalDurationPassed + Duration(seconds: 1);
         List<String> durationLeftStrings = durationToCustomDisplay(durationLeft);
         String durationLeftString = durationLeftStrings[0] + " : " + durationLeftStrings[1]; //top number for timer
