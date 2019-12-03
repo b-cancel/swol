@@ -7,7 +7,7 @@ import 'package:diacritic/diacritic.dart';
 import 'package:swol/excercise/excerciseData.dart';
 import 'package:swol/excercise/excerciseStructure.dart';
 import 'package:swol/excerciseSearch/searchesData.dart';
-import 'package:swol/sharedWidgets/excerciseTile.dart';
+import 'package:swol/sharedWidgets/excerciseListTile/excerciseTile.dart';
 import 'package:swol/sharedWidgets/scrollToTop.dart';
 
 //internal

@@ -9,13 +9,11 @@ import 'package:swol/excercise/defaultDateTimes.dart';
 //internal: basics
 import 'package:swol/excerciseSelection/secondary/animatedTitle.dart';
 import 'package:swol/excerciseSelection/secondary/secondary.dart';
-import 'package:swol/other/functions/helper.dart';
-import 'package:swol/sharedWidgets/excerciseTile.dart';
+import 'package:swol/sharedWidgets/excerciseListTile/excerciseTile.dart';
 import 'package:swol/sharedWidgets/scrollToTop.dart';
 import 'package:swol/excercise/excerciseStructure.dart';
 import 'package:swol/excercise/excerciseData.dart';
 import 'package:swol/other/durationFormat.dart';
-import 'package:swol/testing.dart';
 
 //Sections and how they are handled
 //New => newest additions on bottom
