@@ -2,45 +2,55 @@ import 'package:flutter/material.dart';
 
 class TriangleAngle extends StatelessWidget {
   const TriangleAngle({
+    @required this.size,
     @required this.start,
     @required this.end,
+    this.color: Colors.white,
     Key key,
   }) : super(key: key);
 
+  final double size;
   final double start;
   final double end;
+  final Color color;
 
   @override
   Widget build(BuildContext context) {
-    /*
     return CustomPaint(
       painter: TrianglePainter(
-        faceDown: true,
+        start: start,
+        end: end,
+        color: color,
       ),
       child: Container(
-        width: MediaQuery.of(context).size.width,
-        height: 24,
+        width: size,
+        height: size,
       ),
     );
-    */
-    return Container();
   }
 }
 
 class TrianglePainter extends CustomPainter {
   TrianglePainter({
-    this.faceDown: false,
+    @required this.start,
+    @required this.end,
+    @required this.color,
   });
 
-  final bool faceDown;
+  final double start;
+  final double end;
+  final Color color;
 
   @override
   void paint(Canvas canvas, Size size) {
+    //setup for drawing shape
     final paint = Paint();
-
-    paint.color = Colors.black;
-
+    paint.color = color;
     var path = Path();
+
+    //setup the first point
+    
+    /*
     if(faceDown){
       path.lineTo(0, 0);
       path.lineTo(size.width, 0);
@@ -53,8 +63,10 @@ class TrianglePainter extends CustomPainter {
       path.lineTo(size.width/2, 0);
       path.lineTo(0, size.height);
     }
-    path.close();
+    */
 
+    //draw the shape
+    path.close();
     canvas.drawPath(path, paint);
   }
 

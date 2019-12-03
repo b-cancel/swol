@@ -118,6 +118,8 @@ class AnimatedMiniTimer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double size = 56; //NOTE: largest possible size seems to be 62
+
     //generate all start angles of slices
     List<int> angles = new List<int>();
     
@@ -150,6 +152,7 @@ class AnimatedMiniTimer extends StatelessWidget {
       if(useStartAngle){
         slices.add(
           TriangleAngle(
+            size: size,
             start: angles[i].toDouble(),
             end: angles[i + 1].toDouble(),
           )
@@ -158,7 +161,6 @@ class AnimatedMiniTimer extends StatelessWidget {
     }
 
     //display slices
-    double size = 56; //NOTE: largest possible size seems to be 62
     return Container(
       width: size,
       height: size,
