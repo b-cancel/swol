@@ -5,8 +5,8 @@ class DurationFormat{
   ];
 
   static List<String> _indexToLong = [
-    "year", "month", "week", "day", "hour", 
-    "minute", "second", "millisecond", "microsecond",
+    "yr", "month", "wk", "day", "hr", 
+    "min", "sec", "millisec", "microsec",
   ];
 
   static Map<int,String> weekDayToString = {

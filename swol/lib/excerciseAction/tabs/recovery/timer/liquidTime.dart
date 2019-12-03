@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 
 //packages
 import 'package:liquid_progress_indicator/liquid_progress_indicator.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 //internal
 import 'package:swol/excerciseAction/tabs/recovery/secondary/explained.dart';
 import 'package:swol/excerciseAction/tabs/recovery/secondary/timeDisplay.dart';
 import 'package:swol/excerciseAction/tabs/recovery/timer/changeTime.dart';
 import 'package:swol/excerciseAction/tabs/recovery/timer/pulsingBackground.dart';
+import 'package:swol/excerciseAction/tabs/recovery/timer/superOverflow.dart';
 import 'package:swol/excerciseAction/tabs/recovery/timer/turnOffVibration.dart';
 import 'package:swol/utils/vibrate.dart';
 
@@ -246,10 +246,6 @@ class _LiquidTimeState extends State<LiquidTime> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    
-
-    
-
     //---calculate total time passed and react based on the result
     Duration totalDurationPassed = DateTime.now().difference(widget.timerStart);
 
@@ -264,89 +260,11 @@ class _LiquidTimeState extends State<LiquidTime> with TickerProviderStateMixin {
 
     //super red gives us a completely different widget
     if(totalDurationPassed >= maxEffectiveTimerDuration){
-      //TODO: just glowing indicator with some special text in front
-      /*
-      "You Waited Too Long";
-        lateFor = "you need to warm up again";
-      */
-      /*
-      Container(
-            
-      */
-      mainWidget = Container(
-        height: MediaQuery.of(context).size.width,
-        width: MediaQuery.of(context).size.width, //3.25/5
-        padding: EdgeInsets.all(24),
-        child: Stack(
-          children: <Widget>[
-            ClipOval(
-              child: Stack(
-                children: <Widget>[
-                  PulsingBackground(
-                    width: MediaQuery.of(context).size.width,
-                  ),
-                  Positioned.fill(
-                    child: FittedBox(
-                      fit: BoxFit.contain,
-                      child: Padding(
-                        padding: EdgeInsets.all(24.0),
-                        child: OutlineButton(
-                          highlightedBorderColor: Theme.of(context).accentColor,
-                          borderSide: BorderSide(
-                            color: Theme.of(context).primaryColor,
-                          ),
-                          onPressed: () => explainFunctionalityPopUp(sectionWithInitialFocus),
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 8,
-                            vertical: 4,
-                          ),
-                          child: DefaultTextStyle(
-                            style: TextStyle(
-                              color: Theme.of(context).primaryColorDark,
-                            ),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: <Widget>[
-                                Text(
-                                  "You Waited Too Long",
-                                  style: TextStyle(
-                                    fontSize: 24,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                Text("you need to warm up again"),
-                                Text(
-                                  //TODO: include the "s" only where necessary
-                                  "24 hrs, 59 mins, 59 secs"
-                                  //TODO: use actual time and stuffs
-                                  //totalDurationPassed.inSeconds.toString() + " minutes",
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            VibrationSwitch(),
-          ],
-        ),
+      mainWidget = SuperOverflow(
+        totalDurationPassed: totalDurationPassed,
+        updateState: updateState,
+        explainFunctionality: () => explainFunctionalityPopUp(sectionWithInitialFocus),
       );
-      
-      /*
-      Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          topInfoButton,
-          timeWidget,
-        ],
-      );
-      */
     }
     else{ //either we are half red or not red at all
       List<String> totalDurationPassedStrings = durationToCustomDisplay(totalDurationPassed);
