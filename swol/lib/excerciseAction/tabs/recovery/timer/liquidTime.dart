@@ -13,25 +13,14 @@ import 'package:swol/excerciseAction/tabs/recovery/timer/superOverflow.dart';
 import 'package:swol/excerciseAction/tabs/recovery/timer/turnOffVibration.dart';
 import 'package:swol/utils/vibrate.dart';
 
-//TODO: refine main build section... we only need the pusling section AFTER the first 5 minutes... 
-//TODO: before that we shouldn't even need to calculate it
+//TODO: refine main build section... 
 //TODO: add the little edit time icon thingy in a special way once the total time passed is past 9:59
 //TODO: you can literaly do the exact same thing as when the timer is passing but center and with the right edges rounded as well
 //TODO: try to approximate scale as well
-//TODO: show the expanded version of time with everything up to seconds (if possible)
 
-//TODO: … preping to have special UI after we go past 10 minutes... 
-//TODO: it should refresh every 250 milliseconds to show exactly how many minutes and seconds have passed since the last set
-
-//TODO: handle vibrations
-//TODO: if we return and we are either KINDA red -> startVibrtion
-//TODO: or FULL red -> start vibration
-
-//TODO: setup and start controller shorter
-//TODO: setup status listeners for both controller longer and controller shorter
-//TODO: both need to run for atleast a single second if they run for less they will crash
-//TODO: however because of the above.... if we should have been vibrating and we just came into the widget
-//TODO: vibration will be called twice and I SUSPECT this might cause a bug... so handl it
+//TODO: handle vibrations when the changable time changes
+//TODO: add the notifications to come up regardless if the app is closed or not
+//TODO:   or if we are in the app or not
 
 //build
 class LiquidTime extends StatefulWidget {
@@ -246,27 +235,24 @@ class _LiquidTimeState extends State<LiquidTime> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    //---calculate total time passed and react based on the result
+    //show UI depending on how much time has passed
     Duration totalDurationPassed = DateTime.now().difference(widget.timerStart);
-
-    //---determine what section to focus on first when the user is looking for guidance
-    int sectionWithInitialFocus;
-    if(totalDurationPassed <= Duration(minutes: 1)) sectionWithInitialFocus = 0;
-    else if(totalDurationPassed < Duration(minutes: 3)) sectionWithInitialFocus = 1;
-    else sectionWithInitialFocus = 2;
-
-    //---set main widget based on total duration passed
-    Widget mainWidget;
 
     //super red gives us a completely different widget
     if(totalDurationPassed >= maxEffectiveTimerDuration){
-      mainWidget = SuperOverflow(
+      return SuperOverflow(
         totalDurationPassed: totalDurationPassed,
         updateState: updateState,
-        explainFunctionality: () => explainFunctionalityPopUp(sectionWithInitialFocus),
+        explainFunctionality: () => explainFunctionalityPopUp(2),
       );
     }
     else{ //either we are half red or not red at all
+      //---determine what section to focus on first when the user is looking for guidance
+      int sectionWithInitialFocus;
+      if(totalDurationPassed <= Duration(minutes: 1)) sectionWithInitialFocus = 0;
+      else if(totalDurationPassed < Duration(minutes: 3)) sectionWithInitialFocus = 1;
+      else sectionWithInitialFocus = 2;
+
       List<String> totalDurationPassedStrings = durationToCustomDisplay(totalDurationPassed);
       String totalDurationString = totalDurationPassedStrings[0] + " : " + totalDurationPassedStrings[1]; //bottom right for ?
       //if the total time passed overflows
@@ -508,7 +494,7 @@ class _LiquidTimeState extends State<LiquidTime> with TickerProviderStateMixin {
         ],
       );
 
-      mainWidget = Column(
+      return Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
@@ -517,11 +503,5 @@ class _LiquidTimeState extends State<LiquidTime> with TickerProviderStateMixin {
         ],
       );
     }
-    
-    //build return timer
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      child: mainWidget,
-    );
   }
 }
