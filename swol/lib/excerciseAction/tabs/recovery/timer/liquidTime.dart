@@ -13,8 +13,6 @@ import 'package:swol/excerciseAction/tabs/recovery/timer/superOverflow.dart';
 import 'package:swol/excerciseAction/tabs/recovery/timer/turnOffVibration.dart';
 import 'package:swol/utils/vibrate.dart';
 
-//TODO: handle vibrations when the changable time changes
-
 //build
 class LiquidTime extends StatefulWidget {
   LiquidTime({
@@ -59,12 +57,42 @@ class _LiquidTimeState extends State<LiquidTime> with TickerProviderStateMixin {
   }
 
   updateTimerDuration(){
-    //cases to handle
-    
-    //TODO: handle vibration and such... 
-    //TODO: also adjust notification when we have it
-    //case 1: was vibrating -> now shouldn't be
-    //case 2: was not vibrating -> now should be 
+    Duration timePassed = DateTime.now().difference(widget.timerStart);
+    bool shouldBeVibrating = (timePassed >= widget.changeableTimerDuration.value);
+
+    //update vibration
+    if(shouldBeVibrating && Vibrator.isVibrating == false){
+      Vibrator.startVibration();
+    }
+    else if(shouldBeVibrating == false && Vibrator.isVibrating){
+      Vibrator.stopVibration();
+    }
+
+    //update controller
+    if(shouldBeVibrating == false){ //we still need to count down
+      //stop things so we can proceed to update
+      controllerTimer.stop();
+
+      //we only have X ammount left 
+      //but for the output 0->1 value to be correct
+      //we need to instead shift the value
+      Duration newControllerDuration = widget.changeableTimerDuration.value;
+      if(newControllerDuration < Duration(seconds: 1)) newControllerDuration = Duration(seconds: 1);
+      controllerTimer.duration = newControllerDuration;
+
+      //update new value
+      controllerTimer.value = timePassed.inMicroseconds / widget.changeableTimerDuration.value.inMicroseconds;
+      
+      //start the animation mid way
+      controllerTimer.forward();
+    }
+    else{ //we don't need to countdown
+      if(controllerTimer.isAnimating){
+        controllerTimer.stop();
+        controllerTimer.value = 1;
+      }
+      //ELSE: the animation was already complete
+    }
 
     //might not need this
     updateState();
@@ -77,49 +105,6 @@ class _LiquidTimeState extends State<LiquidTime> with TickerProviderStateMixin {
       recoveryDuration: widget.changeableTimerDuration,
     );
   }
-
-  /*
-
-  //function make removable from listener
-  updateText(){
-    //update string
-    durationFullStrings = durationToCustomDisplay(widget.changeableTimerDuration.value);
-
-    //grab how much time has passed
-    Duration durationSinceStart = DateTime.now().difference(widget.timerStart);
-
-    //check how much time is left (may be negative)
-    Duration durationUntilEnd = widget.changeableTimerDuration.value - durationSinceStart;
-
-    //determine if we need to modify the animation or just leave it as is
-    if(durationUntilEnd > Duration.zero){ //we still need to count down
-      //stop things so we can proceed to update
-      controller.stop();
-
-      //we only have X ammount left 
-      //but for the output 0->1 value to be correct
-      //we need to instead shift the value
-      controller.duration = widget.changeableTimerDuration.value;
-
-      //update new value
-      controller.value = durationSinceStart.inMicroseconds 
-        / widget.changeableTimerDuration.value.inMicroseconds;
-      
-      //start the animation mid way
-      controller.forward();
-    }
-    else{ //we don't need to countdown
-      if(controller.isAnimating){
-        controller.stop();
-        controller.value = 1;
-      }
-      //ELSE: the animation was already complete
-    }
-
-    //the animation will automatically update here
-    updateState();
-  }
-  */
 
   explainFunctionalityPopUp(int sectionWithInitialFocus){
     showDialog<void>(
@@ -363,7 +348,6 @@ class _LiquidTimeState extends State<LiquidTime> with TickerProviderStateMixin {
       String lateFor;
 
       //we are ready for some type of workout
-      //TODO: double check
       if(totalDurationPassed < Duration(seconds: 15) == false 
       && Duration(minutes: 5) < totalDurationPassed == false){
         readyFor = "Ready For ";

@@ -26,7 +26,7 @@ dependencies:
   simple_coverflow: ^0.0.8
   swipe_stack: ^1.0.0
 
-  flutter_local_notifications: ^0.8.4+3
+  #flutter_local_notifications: ^0.8.4+3
 
   #progress indicators (pulse)
   progress_indicators: ^0.1.4
