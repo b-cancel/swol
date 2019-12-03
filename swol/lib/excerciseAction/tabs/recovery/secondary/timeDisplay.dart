@@ -179,12 +179,14 @@ class EditIcon extends StatelessWidget {
   const EditIcon({
     this.invisible: false,
     this.showArrow: false,
+    this.roundedRight: false,
     @required this.text,
     Key key,
   }) : super(key: key);
 
   final bool invisible;
   final bool showArrow;
+  final bool roundedRight;
   final String text;
 
   @override
@@ -204,6 +206,8 @@ class EditIcon extends StatelessWidget {
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(8),
           bottomLeft: Radius.circular(8),
+          bottomRight: Radius.circular(roundedRight ? 8 : 0),
+          topRight: Radius.circular(roundedRight ? 8 : 0),
         )
       ),
       child: IntrinsicWidth(

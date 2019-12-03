@@ -77,6 +77,14 @@ class _LiquidTimeState extends State<LiquidTime> with TickerProviderStateMixin {
     updateState();
   }
 
+  //other functions
+  maybeChangeRecoveryDuration(){
+    maybeChangeTime(
+      context: context,
+      recoveryDuration: widget.changeableTimerDuration,
+    );
+  }
+
   /*
 
   //function make removable from listener
@@ -238,12 +246,18 @@ class _LiquidTimeState extends State<LiquidTime> with TickerProviderStateMixin {
     //show UI depending on how much time has passed
     Duration totalDurationPassed = DateTime.now().difference(widget.timerStart);
 
+    //calculate string for timer duration
+    List<String> timerDurationStrings = durationToCustomDisplay(widget.changeableTimerDuration.value);
+    String timerDurationString = timerDurationStrings[0] + " : " + timerDurationStrings[1];
+
     //super red gives us a completely different widget
     if(totalDurationPassed >= maxEffectiveTimerDuration){
       return SuperOverflow(
         totalDurationPassed: totalDurationPassed,
+        recoveryDurationString: timerDurationString,
         updateState: updateState,
         explainFunctionality: () => explainFunctionalityPopUp(2),
+        maybeChangeRecoveryDuration: maybeChangeRecoveryDuration,
       );
     }
     else{ //either we are half red or not red at all
@@ -265,10 +279,6 @@ class _LiquidTimeState extends State<LiquidTime> with TickerProviderStateMixin {
       //chosen colors
       final Color greenTimerAccent = Theme.of(context).accentColor;
       final Color redStopwatchAccent = Colors.red;
-
-      //---calculate string for timer duration
-      List<String> timerDurationStrings = durationToCustomDisplay(widget.changeableTimerDuration.value);
-      String timerDurationString = timerDurationStrings[0] + " : " + timerDurationStrings[1];
 
       //---calculate extra time passed
       Duration extraDurationPassed = Duration.zero;
@@ -474,12 +484,7 @@ class _LiquidTimeState extends State<LiquidTime> with TickerProviderStateMixin {
                     center: Material(
                       color: Colors.transparent,
                       child: InkWell(
-                        onTap: (){
-                          maybeChangeTime(
-                            context: context,
-                            recoveryDuration: widget.changeableTimerDuration,
-                          );
-                        },
+                        onTap: () => maybeChangeRecoveryDuration(),
                         child: Center(
                           child: timeDisplay
                         ),

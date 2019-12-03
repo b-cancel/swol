@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:swol/excerciseAction/tabs/recovery/secondary/timeDisplay.dart';
 import 'package:swol/excerciseAction/tabs/recovery/timer/pulsingBackground.dart';
 import 'package:swol/excerciseAction/tabs/recovery/timer/turnOffVibration.dart';
 import 'package:swol/other/durationFormat.dart';
@@ -6,13 +7,17 @@ import 'package:swol/other/durationFormat.dart';
 class SuperOverflow extends StatelessWidget {
   SuperOverflow({
     @required this.totalDurationPassed,
+    @required this.recoveryDurationString,
     @required this.updateState,
     @required this.explainFunctionality,
+    @required this.maybeChangeRecoveryDuration,
   });
 
   final Duration totalDurationPassed;
+  final String recoveryDurationString;
   final Function updateState;
   final Function explainFunctionality;
+  final Function maybeChangeRecoveryDuration;
 
   @override
   Widget build(BuildContext context) {
@@ -119,22 +124,64 @@ class SuperOverflow extends StatelessWidget {
                   child: FittedBox(
                     fit: BoxFit.contain,
                     child: Padding(
-                      padding: EdgeInsets.all(24.0),
-                      child: OutlineButton(
-                        highlightedBorderColor: Theme.of(context).accentColor,
-                        borderSide: BorderSide(
-                          color: Theme.of(context).primaryColor,
-                        ),
-                        onPressed: () => explainFunctionality(),
+                      padding: EdgeInsets.only(
+                        //button size - half bordered part size
+                        top: (24.0 + (16 * 2)) - 24,
+                      ),
+                      child: Padding(
                         padding: EdgeInsets.symmetric(
-                          horizontal: 8,
-                          vertical: 4,
+                          horizontal: 24.0,
                         ),
-                        child: DefaultTextStyle(
-                          style: TextStyle(
-                            color: Theme.of(context).primaryColorDark,
-                          ),
-                          child: timePassedSuggestion,
+                        child: Column(
+                          children: <Widget>[
+                            OutlineButton(
+                              highlightedBorderColor: Theme.of(context).accentColor,
+                              borderSide: BorderSide(
+                                color: Theme.of(context).primaryColor,
+                              ),
+                              onPressed: () => explainFunctionality(),
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 8,
+                                vertical: 4,
+                              ),
+                              child: DefaultTextStyle(
+                                style: TextStyle(
+                                  color: Theme.of(context).primaryColorDark,
+                                ),
+                                child: timePassedSuggestion,
+                              ),
+                            ),
+                            Center(
+                              child: Material(
+                                color: Colors.transparent,
+                                child: InkWell(
+                                  highlightColor: Colors.white.withOpacity(.75),
+                                  borderRadius: BorderRadius.circular(24),
+                                  onTap: () => maybeChangeRecoveryDuration(),
+                                  child: Container(
+                                    padding: const EdgeInsets.all(12.0),
+                                    child: ConstrainedBox(
+                                      constraints: BoxConstraints(
+                                        maxWidth: MediaQuery.of(context).size.width/6,
+                                      ),
+                                      child: FittedBox(
+                                        fit: BoxFit.contain,
+                                        child: DefaultTextStyle(
+                                          style: TextStyle(
+                                            color: Theme.of(context).primaryColorDark,
+                                          ),
+                                          child: EditIcon(
+                                            text: recoveryDurationString,
+                                            roundedRight: true,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
