@@ -10,6 +10,7 @@ import 'package:swol/excerciseAction/tabs/recovery/secondary/explained.dart';
 import 'package:swol/excerciseAction/tabs/recovery/secondary/timeDisplay.dart';
 import 'package:swol/excerciseAction/tabs/recovery/timer/changeTime.dart';
 import 'package:swol/excerciseAction/tabs/recovery/timer/pulsingBackground.dart';
+import 'package:swol/excerciseAction/tabs/recovery/timer/turnOffVibration.dart';
 import 'package:swol/utils/vibrate.dart';
 
 //TODO: refine main build section... we only need the pusling section AFTER the first 5 minutes... 
@@ -276,58 +277,63 @@ class _LiquidTimeState extends State<LiquidTime> with TickerProviderStateMixin {
         height: MediaQuery.of(context).size.width,
         width: MediaQuery.of(context).size.width, //3.25/5
         padding: EdgeInsets.all(24),
-        child: ClipOval(
-          child: Stack(
-            children: <Widget>[
-              PulsingBackground(
-                width: MediaQuery.of(context).size.width,
-              ),
-              Positioned.fill(
-                child: FittedBox(
-                  fit: BoxFit.contain,
-                  child: Padding(
-                    padding: EdgeInsets.all(24.0),
-                    child: OutlineButton(
-                      highlightedBorderColor: Theme.of(context).accentColor,
-                      borderSide: BorderSide(
-                        color: Theme.of(context).primaryColor,
-                      ),
-                      onPressed: () => explainFunctionalityPopUp(sectionWithInitialFocus),
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 8,
-                        vertical: 4,
-                      ),
-                      child: DefaultTextStyle(
-                        style: TextStyle(
-                          color: Theme.of(context).primaryColorDark,
-                        ),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[
-                            Text(
-                              "You Waited Too Long",
-                              style: TextStyle(
-                                fontSize: 24,
-                                fontWeight: FontWeight.bold,
-                              ),
+        child: Stack(
+          children: <Widget>[
+            ClipOval(
+              child: Stack(
+                children: <Widget>[
+                  PulsingBackground(
+                    width: MediaQuery.of(context).size.width,
+                  ),
+                  Positioned.fill(
+                    child: FittedBox(
+                      fit: BoxFit.contain,
+                      child: Padding(
+                        padding: EdgeInsets.all(24.0),
+                        child: OutlineButton(
+                          highlightedBorderColor: Theme.of(context).accentColor,
+                          borderSide: BorderSide(
+                            color: Theme.of(context).primaryColor,
+                          ),
+                          onPressed: () => explainFunctionalityPopUp(sectionWithInitialFocus),
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 8,
+                            vertical: 4,
+                          ),
+                          child: DefaultTextStyle(
+                            style: TextStyle(
+                              color: Theme.of(context).primaryColorDark,
                             ),
-                            Text("you need to warm up again"),
-                            Text(
-                              //TODO: include the "s" only where necessary
-                              "24 hrs, 59 mins, 59 secs"
-                              //TODO: use actual time and stuffs
-                              //totalDurationPassed.inSeconds.toString() + " minutes",
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                Text(
+                                  "You Waited Too Long",
+                                  style: TextStyle(
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                Text("you need to warm up again"),
+                                Text(
+                                  //TODO: include the "s" only where necessary
+                                  "24 hrs, 59 mins, 59 secs"
+                                  //TODO: use actual time and stuffs
+                                  //totalDurationPassed.inSeconds.toString() + " minutes",
+                                ),
+                              ],
                             ),
-                          ],
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
-              )
-            ],
-          ),
+                ],
+              ),
+            ),
+            VibrationSwitch(),
+          ],
         ),
       );
       
@@ -580,23 +586,7 @@ class _LiquidTimeState extends State<LiquidTime> with TickerProviderStateMixin {
               ),
             ),
           ),
-          Positioned(
-            top: 0,
-            left: 0,
-            child: Visibility(
-              visible: (Vibrator.isVibrating) ? true : false,
-              child: IconButton(
-                padding: EdgeInsets.all(32),
-                tooltip: 'Turn Off Vibration',
-                onPressed: (){
-                  Vibrator.stopVibration();
-                },
-                icon: Icon(
-                  FontAwesomeIcons.bellSlash, //solidBellSlash
-                ),
-              ),
-            ),
-          )
+          VibrationSwitch(),
         ],
       );
 
