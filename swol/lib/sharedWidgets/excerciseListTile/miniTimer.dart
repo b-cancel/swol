@@ -19,7 +19,11 @@ class ExcerciseTileLeading extends StatelessWidget {
   Widget build(BuildContext context) {
     //NOTE: timer takes precendence over regular inprogress
     if(excerciseReference.tempStartTime != null){
-      return AnimatedMiniTimer(excerciseReference: excerciseReference);
+      return AnimatedMiniTimer(
+        excerciseReference: excerciseReference,
+        evenSliceDivision: true, 
+        negativeFirst: true,
+      );
     }
     else if(LastTimeStamp.isInProgress(excerciseReference.lastTimeStamp)){
       return Container(
@@ -90,38 +94,68 @@ class AnimatedMiniTimer extends StatelessWidget {
   AnimatedMiniTimer({
     @required this.excerciseReference,
     this.evenSliceDivision: true,
+    this.flipUnEveness: false,
     this.negativeFirst: true,
   });
 
   final AnExcercise excerciseReference;
   final bool evenSliceDivision;
+  final bool flipUnEveness;
   final bool negativeFirst;
+  //entire slice---
+  //360/5 = 72
+
+  //even---
+  //72/2 = 36
+
+  //uneven---
+  //72/4 = 18
+  //  * 3 = 54
+
+  int by36(int i){
+    return 36 * i;
+  }
 
   @override
   Widget build(BuildContext context) {
+    //generate all start angles of slices
+    List<int> angles = new List<int>();
     
-    double pieSlice = 360/5;
-    double negativeMultiplier = (evenSliceDivision) ? .5 : .25;
-    double positiveMultiplier = (evenSliceDivision) ? .5 : .75;
-
-    //generate slices
-    List<Widget> slices = new List<Widget>();
-    for(int i = 0; i < 5; i++){ //always only 5 slices
-    /*
-      slices.add(
-        TriangleAngle(
-
-        )
-      );
-      */
+    //generate all angles
+    if(evenSliceDivision){
+      for(int i = 0; i < 10 ; i++) angles.add(by36(i));
+    }
+    else{
+      for(int i = 0; i < 5; i++){
+        int first = flipUnEveness ? 1 : 3;
+        angles.add(by36(i*2)); 
+        angles.add(by36(i*2) + (18 * first));
+      }
     }
 
-    //TODO: remove when slices are functional
-    slices.add(
-      Container(
-        color: Colors.pink,
-      )
-    );
+    //in all cases you are going to end in 360
+    //you may or may not need this
+    //plan for it below
+    angles.add(360);
+
+    //generate slices
+    
+    List<Widget> slices = new List<Widget>();
+    //-1 is for the 360
+    for(int i = 0; i < angles.length-1; i++){ 
+      bool isEven = (i%2 == 0);
+      bool useStartAngle = false;
+      if(isEven && negativeFirst == false) useStartAngle = true;
+      else if(isEven == false && negativeFirst) useStartAngle = true;
+      if(useStartAngle){
+        slices.add(
+          TriangleAngle(
+            start: angles[i].toDouble(),
+            end: angles[i + 1].toDouble(),
+          )
+        );
+      }
+    }
 
     //display slices
     double size = 56; //NOTE: largest possible size seems to be 62
