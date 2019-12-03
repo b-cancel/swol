@@ -8,29 +8,32 @@ class ToBreath extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: (){
-        Navigator.push(
-          context, 
-          PageTransition(
-            type: PageTransitionType.fade, 
-            child: Breath(),
+    return Center(
+      child: InkWell(
+        borderRadius: BorderRadius.circular(50),
+        onTap: (){
+          Navigator.push(
+            context, 
+            PageTransition(
+              type: PageTransitionType.fade, 
+              child: Breath(),
+            ),
+          );
+        },
+        child: Padding(
+          padding: EdgeInsets.all(
+            16,
           ),
-        );
-      },
-      child: Padding(
-        padding: EdgeInsets.all(
-          16,
-        ),
-        child: Container(
-          width: 50,
-          height: 50,
-          child: Hero(
-            tag: 'breath',
-            child: new Image(
-              image: new AssetImage("assets/gifs/breathMod.gif"),
-              //lines being slightly distinguishable is ugly
-              color: Theme.of(context).accentColor,
+          child: Container(
+            width: 50,
+            height: 50,
+            child: Hero(
+              tag: 'breath',
+              child: new Image(
+                image: new AssetImage("assets/gifs/breathMod.gif"),
+                //lines being slightly distinguishable is ugly
+                color: Theme.of(context).accentColor,
+              ),
             ),
           ),
         ),

@@ -82,7 +82,6 @@ class _RecoveryState extends State<Recovery> with SingleTickerProviderStateMixin
                         maxDuration: Duration(minutes: 5),
                         showIcon: false,
                       ),
-                      //TODO: fix the on press space
                       ToBreath(),
                     ],
                   ),
