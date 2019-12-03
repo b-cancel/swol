@@ -15,9 +15,6 @@ import 'package:swol/utils/vibrate.dart';
 
 //TODO: handle vibrations when the changable time changes
 
-//TODO: add the notifications to come up regardless if the app is closed or not
-//TODO:   or if we are in the app or not
-
 //build
 class LiquidTime extends StatefulWidget {
   LiquidTime({
