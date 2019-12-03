@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:swol/sharedWidgets/timePicker.dart';
 import 'package:swol/sharedWidgets/trainingTypes/trainingTypes.dart';
 
+//allows user to change the time visually without actually changing it UNTIL they click confirm
 maybeChangeTime({
   @required BuildContext context,
   @required ValueNotifier<Duration> recoveryDuration,
@@ -11,59 +12,80 @@ maybeChangeTime({
     context: context,
     barrierDismissible: true,
     builder: (BuildContext context) {
-      return Theme(
-        data: ThemeData.light(),
-        child: AlertDialog(
-          contentPadding: EdgeInsets.all(0),
-          title: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text(
-                "Change Break Time",
-              ),
-              Text(
-                "Don't Worry! The Timer Won't Reset",
-                style: TextStyle(
-                  color: Colors.grey,
-                  fontSize: 12,
-                ),
-              )
-            ],
-          ),
-          content: Container(
-            child: ChangeRecoveryTimeWidget(
-              changeDuration: Duration(milliseconds: 250), 
-              recoveryPeriod: possibleRecoveryDuration, 
-            ),
-          ),
-          actions: <Widget>[
-            FlatButton(
-              onPressed: (){
-                Navigator.pop(context);
-              },
-              child: Text("Cancel"),
-            ),
-            RaisedButton(
-              color: Colors.blue,
-              onPressed: (){
-                recoveryDuration.value = possibleRecoveryDuration.value;
-                Navigator.pop(context);
-              },
-              child: Text(
-                "Change",
-                style: TextStyle(
-                  color: Colors.white,
-                ),
-              ),
-            )
-          ],
-        ),
+      return ChangeRecoveryTimePopUp(
+        possibleRecoveryDuration: possibleRecoveryDuration,
+        recoveryDuration: recoveryDuration,
       ); 
     },
   );
 }
 
+//the outer shell of the pop up and the confirm and cancel buttons
+class ChangeRecoveryTimePopUp extends StatelessWidget {
+  const ChangeRecoveryTimePopUp({
+    Key key,
+    @required this.possibleRecoveryDuration,
+    @required this.recoveryDuration,
+  }) : super(key: key);
+
+  final ValueNotifier<Duration> possibleRecoveryDuration;
+  final ValueNotifier<Duration> recoveryDuration;
+
+  @override
+  Widget build(BuildContext context) {
+    return Theme(
+      data: ThemeData.light(),
+      child: AlertDialog(
+        contentPadding: EdgeInsets.all(0),
+        title: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text(
+              "Change Break Time",
+            ),
+            Text(
+              "Don't Worry! The Timer Won't Reset",
+              style: TextStyle(
+                color: Colors.grey,
+                fontSize: 12,
+              ),
+            )
+          ],
+        ),
+        content: Container(
+          child: ChangeRecoveryTimeWidget(
+            changeDuration: Duration(milliseconds: 250), 
+            recoveryPeriod: possibleRecoveryDuration, 
+          ),
+        ),
+        actions: <Widget>[
+          FlatButton(
+            onPressed: (){
+              Navigator.pop(context);
+            },
+            child: Text("Cancel"),
+          ),
+          RaisedButton(
+            color: Colors.blue,
+            onPressed: (){
+              recoveryDuration.value = possibleRecoveryDuration.value;
+              Navigator.pop(context);
+            },
+            child: Text(
+              "Change",
+              style: TextStyle(
+                color: Colors.white,
+              ),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+}
+
+//the main beef and content that switches or slides between the different options as the user edits the setting
 class ChangeRecoveryTimeWidget extends StatefulWidget {
   ChangeRecoveryTimeWidget({
     Key key,

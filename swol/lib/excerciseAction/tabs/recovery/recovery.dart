@@ -29,6 +29,14 @@ class _RecoveryState extends State<Recovery> with SingleTickerProviderStateMixin
   //so we can update our excercises duration
   ValueNotifier<Duration> recoveryDuration;
 
+  //function that is removable from listener
+  updateRecoveryDuration(){
+    ExcerciseData.updateExcercise(
+      widget.excerciseID,
+      recoveryPeriod: recoveryDuration.value,
+    );
+  }
+
   //init
   @override
   void initState() {
@@ -50,15 +58,19 @@ class _RecoveryState extends State<Recovery> with SingleTickerProviderStateMixin
     );
 
     //if recovery duration changes we must update it
-    recoveryDuration.addListener((){
-      ExcerciseData.updateExcercise(
-        widget.excerciseID,
-        recoveryPeriod: recoveryDuration.value,
-      );
-    });
+    recoveryDuration.addListener(updateRecoveryDuration);
 
     //super init
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    //remove listeners
+    recoveryDuration.removeListener(updateRecoveryDuration);
+
+    //super dispose
+    super.dispose();
   }
 
   @override
@@ -79,7 +91,6 @@ class _RecoveryState extends State<Recovery> with SingleTickerProviderStateMixin
                       LiquidTime(
                         changeableTimerDuration: recoveryDuration,
                         timerStart: timerStart,
-                        maxDuration: Duration(minutes: 5),
                         showIcon: false,
                       ),
                       ToBreath(),

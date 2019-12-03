@@ -4,14 +4,12 @@ import 'package:flutter/material.dart';
 //packages
 import 'package:liquid_progress_indicator/liquid_progress_indicator.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:progress_indicators/progress_indicators.dart'; //one of the pulses
-import 'package:loading_indicator/loading_indicator.dart'; //one of the pulses
-import 'package:flutter_spinkit/flutter_spinkit.dart'; //one of the pulses
 
 //internal
 import 'package:swol/excerciseAction/tabs/recovery/secondary/explained.dart';
 import 'package:swol/excerciseAction/tabs/recovery/secondary/timeDisplay.dart';
 import 'package:swol/excerciseAction/tabs/recovery/timer/changeTime.dart';
+import 'package:swol/excerciseAction/tabs/recovery/timer/pulsingBackground.dart';
 import 'package:swol/utils/vibrate.dart';
 
 //TODO: refine main build section... we only need the pusling section AFTER the first 5 minutes... 
@@ -39,7 +37,6 @@ class LiquidTime extends StatefulWidget {
   LiquidTime({
     @required this.timerStart,
     @required this.changeableTimerDuration,
-    this.maxDuration: const Duration(minutes: 5),
     this.showArrows: true,
     this.showIcon: true,
   });
@@ -48,8 +45,6 @@ class LiquidTime extends StatefulWidget {
   final DateTime timerStart;
   //time before we go any level of red
   final ValueNotifier<Duration> changeableTimerDuration;
-  //total time before we go full red
-  final Duration maxDuration;
   //smaller settings
   final bool showArrows;
   final bool showIcon;
@@ -59,13 +54,37 @@ class LiquidTime extends StatefulWidget {
 }
 
 class _LiquidTimeState extends State<LiquidTime> with TickerProviderStateMixin {
+  //color constants
+  final Color greyBackground = const Color(0xFFBFBFBF);
+
+  //time constants
+  final Duration maxEffectiveTimerDuration = const Duration(minutes: 10);
+  final Duration maxEffectiveBreakDuration = const Duration(minutes: 5);
+
   //main Controller
-  AnimationController controllerLonger; //never changes after init
-  AnimationController controllerShorter; //might change after init
+  AnimationController controllerLonger; 
+  AnimationController controllerShorter; 
+  AnimationController controllerTimer; 
 
   //function removable from listeners
   updateState(){
     if(mounted) setState(() {});
+  }
+
+  vibrateOnComplete(AnimationStatus status){
+    if(status == AnimationStatus.completed) Vibrator.startVibration();
+  }
+
+  updateTimerDuration(){
+    //cases to handle
+    
+    //TODO: handle vibration and such... 
+    //TODO: also adjust notification when we have it
+    //case 1: was vibrating -> now shouldn't be
+    //case 2: was not vibrating -> now should be 
+
+    //might not need this
+    updateState();
   }
 
   /*
@@ -128,50 +147,96 @@ class _LiquidTimeState extends State<LiquidTime> with TickerProviderStateMixin {
   void initState() {
     //super init
     super.initState();
-
+ 
     //how much has already passed in the background
-    Duration removeFromTotal = DateTime.now().difference(widget.timerStart);
+    Duration timePassed = DateTime.now().difference(widget.timerStart);
+
+    //---Vibrate on start when its needed
+    //NOTE: for any of these three, another listener may be setup below to start a vibration
+    //since specifically short and long controller NEED atleast 1 second to not break
+    //these functions will tell the vibrator to vibrate when its already vibrating
+    //thankfully this isn't a big deal since the vibrator only starts vibrating if its isn't vibrating already
+    if(timePassed >= widget.changeableTimerDuration.value){
+      Vibrator.startVibration();
+    }
+    else if(timePassed >= maxEffectiveBreakDuration){
+      Vibrator.startVibration();
+    }
+    else if(timePassed >= maxEffectiveTimerDuration){
+      Vibrator.startVibration();
+    }
+    //ELSE: we shouldn't be vibrating just yet
+
+    //---Set Controller Durations
+
     //our max value is 9:99
     //so our max duration is 10
     //after that the ammount of time overflowed is kind of irrelvant
     //because you know for a fact your muscles are super cold
-    Duration longDuration = Duration(minutes: 10) - removeFromTotal;
+    Duration longDuration = maxEffectiveTimerDuration - timePassed;
     //we need a minimum of 1 second for the animation to not crash
     if(longDuration <= Duration.zero) longDuration = Duration(seconds: 1);
 
-    //create animation controller
+    Duration shortDuration = maxEffectiveBreakDuration - timePassed;
+    if(shortDuration <= Duration.zero) shortDuration = Duration(seconds: 1);
+
+    Duration timerDuration = widget.changeableTimerDuration.value - timePassed;
+    if(timerDuration <= Duration.zero) timerDuration = Duration(seconds: 1);
+
+    //---Create Animation Controllers
     controllerLonger = AnimationController(
       vsync: this,
       duration: longDuration,
     );
-    
-    //start vibrating again if the user turned off vibration
-    /*
-    Future.delayed(
-      widget.maxDuration,
-      (){
-        if(mounted) Vibrator.startVibration();
-      }
+
+    controllerShorter = AnimationController(
+      vsync: this,
+      duration: shortDuration,
     );
-    */
 
-    //refresh UI at phone framerate
+    controllerTimer = AnimationController(
+      vsync: this,
+      duration: timerDuration,
+    );
+
+    //---default vibration starts after controllers end
+    controllerLonger.addStatusListener(vibrateOnComplete);
+    controllerShorter.addStatusListener(vibrateOnComplete);
+    controllerTimer.addStatusListener(vibrateOnComplete);
+
+    //---Update the UI as time passed
     controllerLonger.addListener(updateState);
-    widget.changeableTimerDuration.addListener(updateState);
+    //controllerShorter.addListener(updateState); //NOTE: the above handles this too
+    //controllerTimer.addListener(updateState); //NOTE: the above handles this too
 
-    //start the stopwatch
+    //---immediate update of time if it changes NOTE: might not be needed
+    widget.changeableTimerDuration.addListener(updateTimerDuration);
+
+    //---start the controllers
     controllerLonger.forward();
+    controllerShorter.forward();
+    controllerTimer.forward();
   }
 
   @override
   void dispose() {
-    widget.changeableTimerDuration.removeListener(updateState);
+    //remove from changeableTimerDuration
+    widget.changeableTimerDuration.removeListener(updateTimerDuration);
+
+    //remove the UI updater
     controllerLonger.removeListener(updateState);
+
+    //remove status listeners
+    controllerTimer.removeStatusListener(vibrateOnComplete);
+    controllerShorter.removeStatusListener(vibrateOnComplete);
+    controllerLonger.removeStatusListener(vibrateOnComplete);
     
     //controller dispose
+    controllerTimer.dispose();
+    controllerShorter.dispose();
     controllerLonger.dispose();
 
-    //stop vibrating
+    //stop vibrating (when out of this page we don't vibrate, we only notify)
     Vibrator.stopVibration();
 
     //super dispose
@@ -180,64 +245,9 @@ class _LiquidTimeState extends State<LiquidTime> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    final Color greyBackground =  Color(0xFFBFBFBF);
-
-    //---the glowing indicator that we may or may not use
     
-    //max size of pusler given width and nanually set padding
-    double maxWidthIndicator = MediaQuery.of(context).size.width + (24.0 * 2);
 
-    //in case at some point I want to switch between indicators
-    Duration pusleDuration = Duration(milliseconds: 1000);
-    List<Widget> pulsingBackgrounds = [
-      //import 'package:flutter_spinkit/flutter_spinkit.dart';
-      SpinKitDualRing(
-        lineWidth: maxWidthIndicator/2,
-        color: Colors.white,
-        size: maxWidthIndicator,
-        duration: pusleDuration,
-      ),
-      SpinKitDoubleBounce( //ABBY LIKED
-        color: Colors.white,
-        size: maxWidthIndicator,
-        duration: pusleDuration,
-      ),
-      //import 'package:loading_indicator/loading_indicator.dart';
-      LoadingIndicator(
-        indicatorType: Indicator.ballScaleMultiple,
-        color: Colors.white,
-      ),
-      LoadingIndicator(
-        indicatorType: Indicator.ballScale, 
-        color: Colors.white,
-      ),
-      //import 'package:progress_indicators/progress_indicators.dart';
-      GlowingProgressIndicator( //KOBE LIKED
-        child: Container(
-          color: Colors.red.withOpacity(0.75),
-        ),
-        duration: Duration(milliseconds: 5000),
-      ),
-    ];
-
-    //pusling backgrond widget that may or may not be used
-    Widget pulsingBackground = Container(
-      color: greyBackground,
-      child: Stack(
-        children: <Widget>[
-          //pulsingBackgrounds[4],
-          Container(
-            color: Colors.red,
-          ),
-          Container(
-            alignment: Alignment.center,
-            width: maxWidthIndicator,
-            height: maxWidthIndicator,
-            child: pulsingBackgrounds[1],
-          ),
-        ],
-      ),
-    );
+    
 
     //---calculate total time passed and react based on the result
     Duration totalDurationPassed = DateTime.now().difference(widget.timerStart);
@@ -252,7 +262,7 @@ class _LiquidTimeState extends State<LiquidTime> with TickerProviderStateMixin {
     Widget mainWidget;
 
     //super red gives us a completely different widget
-    if(totalDurationPassed >= Duration(minutes: 10)){
+    if(totalDurationPassed >= maxEffectiveTimerDuration){
       //TODO: just glowing indicator with some special text in front
       /*
       "You Waited Too Long";
@@ -269,7 +279,9 @@ class _LiquidTimeState extends State<LiquidTime> with TickerProviderStateMixin {
         child: ClipOval(
           child: Stack(
             children: <Widget>[
-              pulsingBackground,
+              PulsingBackground(
+                width: MediaQuery.of(context).size.width,
+              ),
               Positioned.fill(
                 child: FittedBox(
                   fit: BoxFit.contain,
@@ -303,7 +315,7 @@ class _LiquidTimeState extends State<LiquidTime> with TickerProviderStateMixin {
                             Text("you need to warm up again"),
                             Text(
                               //TODO: include the "s" only where necessary
-                              "99 yrs 12 mths, 4 wks, 7 dys, 24 hrs, 59 mins, 59 secs"
+                              "24 hrs, 59 mins, 59 secs"
                               //TODO: use actual time and stuffs
                               //totalDurationPassed.inSeconds.toString() + " minutes",
                             ),
@@ -356,7 +368,7 @@ class _LiquidTimeState extends State<LiquidTime> with TickerProviderStateMixin {
 
       //simplifying varaible for the merge of timer and stopwatch widgets
       bool firstTimerRunning = (extraDurationPassed == Duration.zero);
-      bool withinMaxDuration = (totalDurationPassed <= widget.maxDuration);
+      bool withinMaxDuration = (totalDurationPassed <= maxEffectiveTimerDuration);
 
       //-----variables that don't really vary
       String bottomLeftNumber = timerDurationString;
@@ -409,7 +421,7 @@ class _LiquidTimeState extends State<LiquidTime> with TickerProviderStateMixin {
           //Output: 0 -> 1
           //Input: widget.changeableTimerduration.value -> Duration(minutes 5)
           //Input: 0 -> fiveMinutes - widget.changeabletimerDuration.value
-          Duration totalStopwatchAnimation = widget.maxDuration - widget.changeableTimerDuration.value;
+          Duration totalStopwatchAnimation = maxEffectiveTimerDuration - widget.changeableTimerDuration.value;
           //Input: 0 -> totalStopwatchAnimation (MIN of 5 seconds)
           //Output: 0 -> 1
           Duration adjustedTimePassed = totalDurationPassed - widget.changeableTimerDuration.value;
@@ -536,7 +548,9 @@ class _LiquidTimeState extends State<LiquidTime> with TickerProviderStateMixin {
             child: ClipOval(
               child: Stack(
                 children: <Widget>[
-                  pulsingBackground,
+                  PulsingBackground(
+                    width: MediaQuery.of(context).size.width,
+                  ),
                   LiquidCircularProgressIndicator(
                     //animated values
                     value: 1 - progressValue,
