@@ -15,6 +15,8 @@ import 'package:swol/learn/sections/precautions.dart';
 import 'package:swol/learn/sections/research.dart';
 import 'package:swol/learn/sections/training.dart';
 
+//TODO: point out the fact that users can use just the calculator somehow
+
 //build
 class LearnExcercise extends StatefulWidget {
   LearnExcercise({

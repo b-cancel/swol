@@ -16,6 +16,17 @@ import 'package:swol/excerciseAddition/informationPopUps.dart';
 import 'package:swol/other/functions/helper.dart';
 import 'package:swol/sharedWidgets/trainingTypes/trainingTypes.dart';
 
+//TODO: when the user comes in here for the first time automatically open the question mark pop up
+//TODO: this pop up should morph graphfully from the question mark into the pop up
+//TODO: ofcourse this should be openable afterwards but only comes up automatically the first time
+
+//TODO: when we have animated "to learn section" hyperlinks 
+//TODO: whenever exiting this page NOT manually we should save all of the data in a file
+//TODO: so whenever we open up this page we automatically ask the user if they would like to load up the previous data
+//TODO: or perhaps we could yolo it and load it up cuz it really isnt that much hassle to clear out the fields anyways
+//TODO: once the data is loaded in so that we are restoring an add workout session... 
+//TODO:   after having traveled away into the learn section we wipe the file ofcourse
+
 /*
 when tapping 
 1. all header jazz

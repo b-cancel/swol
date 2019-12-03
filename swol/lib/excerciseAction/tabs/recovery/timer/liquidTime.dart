@@ -12,6 +12,10 @@ import 'package:loading_indicator_view/loading_indicator_view.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
+//TODO: … preping to have special UI after we go past 10 minutes... 
+//TODO: it should refresh every 250 milliseconds to show exactly how many minutes and seconds have passed since the last set
+//TODO: handle vibrations
+
 //build
 class LiquidTime extends StatefulWidget {
   LiquidTime({

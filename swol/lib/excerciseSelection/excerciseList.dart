@@ -29,6 +29,9 @@ import 'package:swol/other/durationFormat.dart';
 //  so if you did legs on monday and 3 other work outs
 //  when its monday again you expect that workout to be on top with the first workout you did to be on top in the section
 
+//TODO: when the user open the app and there is ONLY 1 excercise in progress
+//TODO: automatically go to that excercse (ensure animation)
+
 //main widget
 class ExcerciseSelect extends StatefulWidget {
   @override
