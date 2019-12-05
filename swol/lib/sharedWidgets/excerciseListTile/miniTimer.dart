@@ -95,36 +95,29 @@ class AnimatedMiniTimer extends StatelessWidget {
     this.evenSliceDivision: true,
     this.flipUnEveness: false,
     this.negativeFirst: true,
+    //NOTE: largest possible size seems to be 62
+    //NOTE: 56 feels right
+    this.circleSize: 48, 
+    this.circleToTicksPadding: 4,
+    this.tickWidth: 4,
+    this.ticksToProgressCirclePadding: 4,
   });
 
   final AnExcercise excerciseReference;
   final bool evenSliceDivision;
   final bool flipUnEveness;
   final bool negativeFirst;
-
-  //entire slice---
-  //360/5 = 72
-
-  //even---
-  //72/2 = 36
-
-  //uneven---
-  //72/4 = 18
-  //  * 3 = 54
+  final double circleSize;
+  final double circleToTicksPadding;
+  final double tickWidth;
+  final double ticksToProgressCirclePadding;
 
   int by36(int i){
     return 36 * i;
   }
 
-  //circle size
-  //circle to ticks padding
-  //ticks width
-  //ticks to progress circle padding
-
   @override
   Widget build(BuildContext context) {
-    double size = 56; //NOTE: largest possible size seems to be 62
-
     //generate all start angles of slices
     List<int> angles = new List<int>();
     
@@ -146,7 +139,6 @@ class AnimatedMiniTimer extends StatelessWidget {
     angles.add(360);
 
     //generate slices
-    
     List<Widget> slices = new List<Widget>();
     //-1 is for the 360
     for(int i = 0; i < angles.length-1; i++){ 
@@ -157,7 +149,7 @@ class AnimatedMiniTimer extends StatelessWidget {
       if(useStartAngle){
         slices.add(
           TriangleAngle(
-            size: size,
+            size: circleSize - circleToTicksPadding,
             start: angles[i].toDouble(),
             end: angles[i + 1].toDouble(),
           )
@@ -165,27 +157,156 @@ class AnimatedMiniTimer extends StatelessWidget {
       }
     }
 
+    double littleCircleSize = circleSize 
+      - (circleToTicksPadding * 2) 
+      - (tickWidth * 2) 
+      - (ticksToProgressCirclePadding * 2);
+
+    //TODO: remove test print
+    print("little circle size: " + littleCircleSize.toString());
+
     //display slices
     return ClipOval(
       child: Container(
-        width: size,
-        height: size,
-        //color: Colors.pink,
-        child: Stack(
-          children: <Widget>[
-            Stack(
-              children: slices,
-            ),
-            Container(
-              padding: EdgeInsets.all(6),
-              child: ClipOval(
-                child: Container(
-                  color: Theme.of(context).primaryColorDark,
-                ),
+        width: circleSize,
+        height: circleSize,
+        color: Theme.of(context).primaryColorDark,
+        padding: EdgeInsets.all(
+          circleToTicksPadding,
+        ),
+        child: ClipOval(
+          child: Stack(
+            children: <Widget>[
+              Stack(
+                children: slices,
               ),
-            )
-          ],
+              Container(
+                padding: EdgeInsets.all(
+                  tickWidth,
+                ),
+                child: ClipOval(
+                  child: Container(
+                    color: Theme.of(context).primaryColorDark,
+                    padding: EdgeInsets.all(
+                      ticksToProgressCirclePadding,
+                    ),
+                    child: ClipOval(
+                      child: CircleProgress(
+                        excerciseReference: excerciseReference,
+                        size: littleCircleSize,
+                      ),
+                    ),
+                  ),
+                ),
+              )
+            ],
+          ),
         )
+      ),
+    );
+  }
+}
+
+class CircleProgress extends StatefulWidget {
+  CircleProgress({
+    @required this.excerciseReference,
+    @required this.size,
+  });
+
+  final AnExcercise excerciseReference;
+  final double size;
+
+  @override
+  _CircleProgressState createState() => _CircleProgressState();
+}
+
+class _CircleProgressState extends State<CircleProgress> with SingleTickerProviderStateMixin{
+  AnimationController controller; 
+  final Duration maxDuration = const Duration(minutes: 5);
+
+  //function removable from listeners
+  updateState(){
+    if(mounted) setState(() {});
+  }
+  updateStateAnim(AnimationStatus status) => updateState();
+
+  @override
+  void initState() {
+    //create the controller
+    controller = AnimationController(
+      vsync: this,
+      duration: maxDuration,
+    );
+
+    //add listeners
+    controller.addListener(updateState);
+    controller.addStatusListener(updateStateAnim);
+    
+    //set the value based on how far we arein
+    DateTime timerStarted = widget.excerciseReference.tempStartTime;
+    Duration timePassed = DateTime.now().difference(timerStarted);
+    controller.value = timeToLerpValue(timePassed);
+
+    //start animation
+    controller.forward();
+
+    //super init
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    //remove the UI updater
+    controller.removeListener(updateState);
+    controller.removeStatusListener(updateStateAnim);
+    controller.dispose();
+
+    //super dispose
+    super.dispose();
+  }
+
+  double timeToLerpValue(Duration timePassed){
+    return timePassed.inMicroseconds / maxDuration.inMicroseconds;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    //time calcs
+    DateTime timerStarted = widget.excerciseReference.tempStartTime;
+    Duration timePassed = DateTime.now().difference(timerStarted);
+
+    //set basic variables
+    bool thereIsStillTime = timePassed <= widget.excerciseReference.recoveryPeriod;
+    double timeSetAngle = (timeToLerpValue(widget.excerciseReference.recoveryPeriod)).clamp(0.0, 1.0);
+    double timePassedAngle = (timeToLerpValue(timePassed)).clamp(0.0, 1.0);
+    Color flatGrey = Color.fromRGBO(128,128,128,1);
+
+    //create angles
+    double firstAngle = (thereIsStillTime ? timePassedAngle : timeSetAngle) * 360;
+    double secondAngle = (thereIsStillTime ? timeSetAngle : timePassedAngle) * 360;
+
+    //test print
+    print("-------------------------0 -> " + firstAngle.toString() + " -> " + secondAngle.toString());
+
+    //output
+    return Container(
+      width: widget.size,
+      height: widget.size,
+      child: Stack(
+        children: <Widget>[
+          TriangleAngle(
+            start: 0,
+            end: firstAngle,
+            color: flatGrey,
+            size: widget.size,
+          ),
+          TriangleAngle(
+            start: firstAngle,
+            end: secondAngle,
+            color: thereIsStillTime ? Theme.of(context).accentColor : Colors.red,
+            size: widget.size,
+          ),
+        ],
       ),
     );
   }

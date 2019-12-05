@@ -40,8 +40,11 @@ class TriangleMath{
   //counter clockwise (to corner)
   //NOTE: we don't need to handle corners 
   //becaue worst case scenario we have the same point twice
-  static List<List<double>> fromPoint(List<double> point){
-    if(isTopEdge(point)) return [];
+  static List<List<double>> fromPoint(List<double> point, bool goAllAround){
+    if(isTopEdge(point)){
+      if(point[0] < 0.5) return [topLeft, bottomLeft, bottomRight, topRight];
+      else return [];
+    }
     else if(isRightEdge(point)) return [topRight];
     else if(isBottomEdge(point)) return [bottomRight, topRight];
     else return [bottomLeft, bottomRight, topRight];
@@ -49,9 +52,6 @@ class TriangleMath{
 
   //exactly what it says it does
   static List<double> angleToPoint(double angle){
-    //make sure angle is less than 360
-    if(angle >= 360) angle = angle % 360;
-
     //determine if its one of the 8 solid points
     if((angle.toInt().toDouble() == angle)){
       int intAngle = angle.toInt();
@@ -68,13 +68,14 @@ class TriangleMath{
       }
     }
 
-    print("not solid");
+    //make sure angle is less than 360
+    if(angle >= 360) angle = angle % 360;
 
     //if we haven't returned by now then we are not one of the 8
     List<double> xy = [0,0];
 
     //set the one dimmension we know
-    if(315 < angle || (0 < angle && angle < 45)) xy[1] = 0; //set y to 0
+    if(315 < angle || angle < 45) xy[1] = 0; //set y to 0
     else if(angle < 135) xy[0] = 1; //set x to 1
     else if(angle < 225) xy[1] = 1; //set y to 1
     else xy[0] = 0; //set x to 0
@@ -184,12 +185,15 @@ class TrianglePainter extends CustomPainter {
     points.add(startPoint);
     points.add(center);
     points.add(endPoint);
-    points.addAll(TriangleMath.fromPoint(endPoint));
+    points.addAll(
+      TriangleMath.fromPoint(
+        endPoint,
+        end > 315,
+      ),
+    );
     points.add(corner);
 
-    //TODO: remove test print
-    print("start: " + start.toString() + " - > " + "end: " + end.toString());
-    print(points);
+    print(start.toString() + "->" + end.toString() + "=" + points.toString());
 
     //setup for drawing shape
     final paint = Paint();
@@ -212,5 +216,5 @@ class TrianglePainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(CustomPainter oldDelegate) => false;
+  bool shouldRepaint(CustomPainter oldDelegate) => true;
 }
