@@ -191,6 +191,10 @@ class _AnimatedMiniTimerState extends State<AnimatedMiniTimer> with SingleTicker
     //plan for it below
     angles.add(360);
 
+    DateTime timerStarted = widget.excerciseReference.tempStartTime;
+    Duration timePassed = DateTime.now().difference(timerStarted);
+    bool borderRed = timePassed > widget.excerciseReference.recoveryPeriod;
+
     //generate slices
     List<Widget> slices = new List<Widget>();
     //-1 is for the 360
@@ -205,7 +209,7 @@ class _AnimatedMiniTimerState extends State<AnimatedMiniTimer> with SingleTicker
             size: widget.circleSize - widget.circleToTicksPadding,
             start: angles[i].toDouble(),
             end: angles[i + 1].toDouble(),
-            color: controller.value == 1 ? Colors.red : Colors.white,
+            color: borderRed ? Colors.red : Colors.white,
           )
         );
       }
