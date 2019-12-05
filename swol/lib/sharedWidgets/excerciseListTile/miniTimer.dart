@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:swol/excercise/defaultDateTimes.dart';
 import 'package:swol/excercise/excerciseStructure.dart';
 import 'package:swol/other/durationFormat.dart';
@@ -102,6 +101,7 @@ class AnimatedMiniTimer extends StatelessWidget {
   final bool evenSliceDivision;
   final bool flipUnEveness;
   final bool negativeFirst;
+
   //entire slice---
   //360/5 = 72
 
@@ -115,6 +115,11 @@ class AnimatedMiniTimer extends StatelessWidget {
   int by36(int i){
     return 36 * i;
   }
+
+  //circle size
+  //circle to ticks padding
+  //ticks width
+  //ticks to progress circle padding
 
   @override
   Widget build(BuildContext context) {
@@ -161,13 +166,27 @@ class AnimatedMiniTimer extends StatelessWidget {
     }
 
     //display slices
-    return Container(
-      width: size,
-      height: size,
-      color: Colors.pink,
-      child: Stack(
-        children: slices,
-      )
+    return ClipOval(
+      child: Container(
+        width: size,
+        height: size,
+        //color: Colors.pink,
+        child: Stack(
+          children: <Widget>[
+            Stack(
+              children: slices,
+            ),
+            Container(
+              padding: EdgeInsets.all(6),
+              child: ClipOval(
+                child: Container(
+                  color: Theme.of(context).primaryColorDark,
+                ),
+              ),
+            )
+          ],
+        )
+      ),
     );
   }
 }
