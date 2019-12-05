@@ -193,8 +193,6 @@ class TrianglePainter extends CustomPainter {
     );
     points.add(corner);
 
-    print(start.toString() + "->" + end.toString() + "=" + points.toString());
-
     //setup for drawing shape
     final paint = Paint();
     paint.color = color;
