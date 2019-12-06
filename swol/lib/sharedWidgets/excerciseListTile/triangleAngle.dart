@@ -30,8 +30,11 @@ class TriangleMath{
   //clockwise (from corner)
   //NOTE: we don't need to handle corners 
   //becaue worst case scenario we have the same point twice
-  static List<List<double>> toPoint(List<double> point){
-    if(isTopEdge(point)) return [];
+  static List<List<double>> toPoint(List<double> point, bool bothBefore){
+    if(isTopEdge(point)){
+      if(bothBefore) return [topRight, bottomRight, bottomLeft, topLeft];
+      else return [];
+    } //add to end
     else if(isRightEdge(point)) return [topRight];
     else if(isBottomEdge(point)) return [topRight, bottomRight];
     else return [topRight, bottomRight, bottomLeft];
@@ -40,11 +43,11 @@ class TriangleMath{
   //counter clockwise (to corner)
   //NOTE: we don't need to handle corners 
   //becaue worst case scenario we have the same point twice
-  static List<List<double>> fromPoint(List<double> point, bool goAllAround){
+  static List<List<double>> fromPoint(List<double> point){
     if(isTopEdge(point)){
       if(point[0] < 0.5) return [topLeft, bottomLeft, bottomRight, topRight];
       else return [];
-    }
+    } //add to start
     else if(isRightEdge(point)) return [topRight];
     else if(isBottomEdge(point)) return [bottomRight, topRight];
     else return [bottomLeft, bottomRight, topRight];
@@ -181,17 +184,17 @@ class TrianglePainter extends CustomPainter {
 
     //add in all the points
     points.add(corner);
-    points.addAll(TriangleMath.toPoint(startPoint));
+    points.addAll(TriangleMath.toPoint(
+      startPoint, 
+      startPoint[0] < 0.5 && endPoint[0] < 0.5,
+    ));
     points.add(startPoint);
     points.add(center);
     points.add(endPoint);
-    points.addAll(
-      TriangleMath.fromPoint(
-        endPoint,
-        end > 315,
-      ),
-    );
+    points.addAll(TriangleMath.fromPoint(endPoint),);
     points.add(corner);
+
+    print(start.toString() + " - > " + end.toString() + " = " + points.toString());
 
     //setup for drawing shape
     final paint = Paint();
