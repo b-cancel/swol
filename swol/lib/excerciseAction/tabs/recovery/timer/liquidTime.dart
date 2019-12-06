@@ -53,9 +53,11 @@ class _LiquidTimeState extends State<LiquidTime> with TickerProviderStateMixin {
   }
 
   vibrateOnComplete(AnimationStatus status){
+    print("vibrating on complete");
     if(status == AnimationStatus.completed) Vibrator.startVibration();
   }
 
+  /*
   updateTimerDuration(){
     Duration timePassed = DateTime.now().difference(widget.timerStart);
     bool shouldBeVibrating = (timePassed >= widget.changeableTimerDuration.value);
@@ -97,6 +99,7 @@ class _LiquidTimeState extends State<LiquidTime> with TickerProviderStateMixin {
     //might not need this
     updateState();
   }
+  */
 
   //other functions
   maybeChangeRecoveryDuration(){
@@ -118,61 +121,30 @@ class _LiquidTimeState extends State<LiquidTime> with TickerProviderStateMixin {
     );
   }
 
+  double timesToValue(Duration passed, Duration total){
+    return (passed.inMicroseconds / total.inMicroseconds).clamp(0.0, 1.0);
+  }
+
   //init
   @override
   void initState() {
     //super init
     super.initState();
- 
-    //how much has already passed in the background
-    Duration timePassed = DateTime.now().difference(widget.timerStart);
-
-    //---Vibrate on start when its needed
-    //NOTE: for any of these three, another listener may be setup below to start a vibration
-    //since specifically short and long controller NEED atleast 1 second to not break
-    //these functions will tell the vibrator to vibrate when its already vibrating
-    //thankfully this isn't a big deal since the vibrator only starts vibrating if its isn't vibrating already
-    if(timePassed >= widget.changeableTimerDuration.value){
-      Vibrator.startVibration();
-    }
-    else if(timePassed >= maxEffectiveBreakDuration){
-      Vibrator.startVibration();
-    }
-    else if(timePassed >= maxEffectiveTimerDuration){
-      Vibrator.startVibration();
-    }
-    //ELSE: we shouldn't be vibrating just yet
-
-    //---Set Controller Durations
-
-    //our max value is 9:99
-    //so our max duration is 10
-    //after that the ammount of time overflowed is kind of irrelvant
-    //because you know for a fact your muscles are super cold
-    Duration longDuration = maxEffectiveTimerDuration - timePassed;
-    //we need a minimum of 1 second for the animation to not crash
-    if(longDuration <= Duration.zero) longDuration = Duration(seconds: 1);
-
-    Duration shortDuration = maxEffectiveBreakDuration - timePassed;
-    if(shortDuration <= Duration.zero) shortDuration = Duration(seconds: 1);
-
-    Duration timerDuration = widget.changeableTimerDuration.value - timePassed;
-    if(timerDuration <= Duration.zero) timerDuration = Duration(seconds: 1);
 
     //---Create Animation Controllers
     controllerLonger = AnimationController(
       vsync: this,
-      duration: longDuration,
+      duration: maxEffectiveTimerDuration,
     );
 
     controllerShorter = AnimationController(
       vsync: this,
-      duration: shortDuration,
+      duration: maxEffectiveBreakDuration,
     );
 
     controllerTimer = AnimationController(
       vsync: this,
-      duration: timerDuration,
+      duration: widget.changeableTimerDuration.value,
     );
 
     //---default vibration starts after controllers end
@@ -186,7 +158,18 @@ class _LiquidTimeState extends State<LiquidTime> with TickerProviderStateMixin {
     //controllerTimer.addListener(updateState); //NOTE: the above handles this too
 
     //---immediate update of time if it changes NOTE: might not be needed
-    widget.changeableTimerDuration.addListener(updateTimerDuration);
+    //TODO: uncomment
+    //widget.changeableTimerDuration.addListener(updateTimerDuration);
+ 
+    //how much has already passed in the background
+    Duration timePassed = DateTime.now().difference(widget.timerStart);
+
+    //---Set Controller values
+    //NOTE: settings the values AFTER the vibrate on complete listeners functions are added
+    //means that if we should be vibrating on INIT we will start
+    controllerLonger.value = timesToValue(timePassed, maxEffectiveTimerDuration);
+    controllerShorter.value = timesToValue(timePassed, maxEffectiveBreakDuration);
+    controllerTimer.value = timesToValue(timePassed, widget.changeableTimerDuration.value);
 
     //---start the controllers
     controllerLonger.forward();
@@ -197,7 +180,8 @@ class _LiquidTimeState extends State<LiquidTime> with TickerProviderStateMixin {
   @override
   void dispose() {
     //remove from changeableTimerDuration
-    widget.changeableTimerDuration.removeListener(updateTimerDuration);
+    //TODO: uncomment
+    //widget.changeableTimerDuration.removeListener(updateTimerDuration);
 
     //remove the UI updater
     controllerLonger.removeListener(updateState);
@@ -275,6 +259,8 @@ class _LiquidTimeState extends State<LiquidTime> with TickerProviderStateMixin {
       Color backgroundColor;
       //numbers
       String topNumber;
+
+      //TODO: inspect stuff below
 
       //react differently to the timer or stopwatch
       if(firstTimerRunning){

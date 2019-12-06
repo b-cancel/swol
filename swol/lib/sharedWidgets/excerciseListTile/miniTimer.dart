@@ -101,7 +101,8 @@ class AnimatedMiniTimer extends StatefulWidget {
     this.flipUnEveness: false,
     this.negativeFirst: true,
     //NOTE: largest possible size seems to be 62
-    //NOTE: 56 feels right
+    //56 feels good
+    //48 feels better
     this.circleSize: 48, 
     this.circleToTicksPadding: 4,
     this.tickWidth: 4,
@@ -245,6 +246,8 @@ class _AnimatedMiniTimerState extends State<AnimatedMiniTimer> with SingleTicker
                 padding: EdgeInsets.all(
                   widget.tickWidth,
                 ),
+                //TODO: replace this illusion of a inverted ClipOval
+                //TODO: for an actual invertedClipOval so I can configured the background as I please
                 child: ClipOval(
                   child: Container(
                     color: Theme.of(context).primaryColorDark,
