@@ -21,7 +21,6 @@ class VibrationSwitch extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print("is vibrating? : " + Vibrator.isVibrating.toString());
     return Positioned(
       top: 0,
       left: 0,

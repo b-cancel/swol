@@ -144,14 +144,15 @@ class _AnimatedMiniTimerState extends State<AnimatedMiniTimer> with SingleTicker
     //set the value based on how far we arein
     DateTime timerStarted = widget.excerciseReference.tempStartTime;
     Duration timePassed = DateTime.now().difference(timerStarted);
-    controller.value = timeToLerpValue(timePassed);
 
     //add listeners
     controller.addListener(updateState);
     controller.addStatusListener(updateStateAnim);
 
     //start animation
-    controller.forward();
+    controller.forward(
+      from: timeToLerpValue(timePassed),
+    );
 
     //super init
     super.initState();
