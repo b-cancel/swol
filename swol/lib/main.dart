@@ -14,6 +14,7 @@ import 'package:swol/excerciseSelection/secondary/decoration.dart';
 import 'package:swol/other/theme.dart';
 import 'package:swol/excercise/excerciseData.dart';
 import 'package:swol/excerciseSearch/searchesData.dart';
+import 'package:swol/utils/onboarding.dart';
 
 //app start
 void main() => runApp(App());
@@ -73,6 +74,33 @@ class GrabSystemPrefs extends StatelessWidget {
             nextID = 0;
           }
 
+          //handle stuff from main page
+          dynamic permissionGiven = prefs.getBool("permissionGiven");
+          if(permissionGiven == null){
+            prefs.setBool("permissionGiven", false);
+          }
+
+          dynamic shownInitialControls = prefs.getBool("shownInitialControls");
+          if(shownInitialControls == null){
+            prefs.setBool("shownInitialControls", false);
+          }
+
+          dynamic shownSearchBar = prefs.getBool("shownSearchBar");
+          if(shownSearchBar == null){
+            prefs.setBool("shownSearchBar", false);
+          }
+
+          //handle stuff from learn page
+          dynamic shownCalculator = prefs.getBool("shownCalculator");
+          if(shownCalculator == null){
+            prefs.setBool("shownCalculator", false);
+          }
+
+          dynamic shownSettings = prefs.getBool("shownSettings");
+          if(shownSettings == null){
+            prefs.setBool("shownSettings", false);
+          }
+
           //set nextID to its usable version
           AnExcercise.nextID = nextID;
 
@@ -83,7 +111,13 @@ class GrabSystemPrefs extends StatelessWidget {
             builder: (_) => ThemeChanger(
               (isDark) ? MyTheme.dark : MyTheme.light,
             ), 
-            child: GrabFileData(),
+            child: GrabFileData(
+              permissionGiven: permissionGiven,
+              shownInitialControls: shownInitialControls,
+              shownSearchBar: shownSearchBar,
+              shownCalculator: shownCalculator,
+              shownSettings: shownSettings,
+            ),
           );
         }
         else{ //to load just show the logo a bit longer
@@ -98,6 +132,20 @@ class GrabSystemPrefs extends StatelessWidget {
 //1. previous searches for search section
 //2. excercises for showing them in the list
 class GrabFileData extends StatefulWidget {
+  GrabFileData({
+    @required this.permissionGiven,
+    @required this.shownInitialControls,
+    @required this.shownSearchBar,
+    @required this.shownCalculator,
+    @required this.shownSettings,
+  });
+
+  final bool permissionGiven;
+  final bool shownInitialControls;
+  final bool shownSearchBar;
+  final bool shownCalculator;
+  final bool shownSettings;
+
   @override
   _GrabFileDataState createState() => _GrabFileDataState();
 }
@@ -118,7 +166,13 @@ class _GrabFileDataState extends State<GrabFileData> {
       future: fetchData(),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         if(snapshot.connectionState == ConnectionState.done){
-          return ExcerciseSelect();
+          return ExcerciseSelect(
+            permissionGiven: widget.permissionGiven,
+            shownInitialControls: widget.shownInitialControls,
+            shownSearchBar: widget.shownSearchBar,
+            shownCalculator: widget.shownCalculator,
+            shownSettings: widget.shownSettings,
+          );
         }
         else{
           return SplashScreen();

@@ -36,6 +36,20 @@ import 'package:swol/other/durationFormat.dart';
 
 //main widget
 class ExcerciseSelect extends StatefulWidget {
+  ExcerciseSelect({
+    @required this.permissionGiven,
+    @required this.shownInitialControls,
+    @required this.shownSearchBar,
+    @required this.shownCalculator,
+    @required this.shownSettings,
+  });
+
+  final bool permissionGiven;
+  final bool shownInitialControls;
+  final bool shownSearchBar;
+  final bool shownCalculator;
+  final bool shownSettings;
+
   @override
   _ExcerciseSelectState createState() => _ExcerciseSelectState();
 }
@@ -44,6 +58,38 @@ class _ExcerciseSelectState extends State<ExcerciseSelect>{
   final AutoScrollController autoScrollController = new AutoScrollController();
 
   ValueNotifier<bool> navSpread = new ValueNotifier(false);
+
+  @override
+  void initState() { 
+    //pop up that may come up
+    if(widget.permissionGiven){
+      //TODO: show dialog box asking for permission if we haven't ask for permission before
+      /*
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          // return object of type Dialog
+          return AlertDialog(
+            title: new Text("Alert Dialog title"),
+            content: new Text("Alert Dialog body"),
+            actions: <Widget>[
+              // usually buttons at the bottom of the dialog
+              new FlatButton(
+                child: new Text("Close"),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
+      */
+    }
+
+    //super init
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

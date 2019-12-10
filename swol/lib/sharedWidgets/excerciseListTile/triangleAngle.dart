@@ -15,7 +15,6 @@ class TriangleMath{
   static const List<double> left          = [0,  0.5];
 
   //check vague point locations
-  //TODO: complete
   static bool isTopEdge(List<double> point) => (point[1] == 0);
   static bool isRightEdge(List<double> point) => (point[0] == 1);
   static bool isBottomEdge(List<double> point) => (point[1] == 1);
@@ -24,8 +23,6 @@ class TriangleMath{
   static double specialTan(double theta){
     return 0.5 * math.tan(vector.radians(theta));
   }
-
-  
 
   //clockwise (from corner)
   //NOTE: we don't need to handle corners 
@@ -193,8 +190,6 @@ class TrianglePainter extends CustomPainter {
     points.add(endPoint);
     points.addAll(TriangleMath.fromPoint(endPoint),);
     points.add(corner);
-
-    print(start.toString() + " - > " + end.toString() + " = " + points.toString());
 
     //setup for drawing shape
     final paint = Paint();
