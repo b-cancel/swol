@@ -9,13 +9,12 @@ import 'package:provider/provider.dart';
 import 'package:async/async.dart';
 
 //internal
-import 'package:swol/excerciseSelection/excerciseList.dart';
 import 'package:swol/excercise/excerciseStructure.dart';
+import 'package:swol/excerciseSelection/excerciseListPage.dart';
 import 'package:swol/excerciseSelection/secondary/decoration.dart';
 import 'package:swol/other/theme.dart';
 import 'package:swol/excercise/excerciseData.dart';
 import 'package:swol/excerciseSearch/searchesData.dart';
-import 'package:swol/utils/onboarding.dart';
 
 //app start
 void main() => runApp(App());

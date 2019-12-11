@@ -6,6 +6,21 @@ class OnBoarding{
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setBool("permissionGiven", true);
   }
+
+  static discoverBasicFeatures(){
+    //TODO: only discovery them if they haven't been discovery before
+    /*
+    FeatureDiscovery.discoverFeatures(
+      context,
+      [
+        //'swol_logo',
+        //'learn_page',
+        //'add_excercise',
+        'search_excercise',
+      ],
+    );
+    */
+  }
 }
 
 class OnBoardingText extends StatelessWidget {

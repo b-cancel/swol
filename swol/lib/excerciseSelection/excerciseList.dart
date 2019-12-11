@@ -1,239 +1,23 @@
-import 'dart:io';
-
-//flutter
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-
-//plugin
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
-import 'package:feature_discovery/feature_discovery.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
 import 'package:swol/excercise/defaultDateTimes.dart';
-import 'package:holding_gesture/holding_gesture.dart';
-
-//internal: basics
-import 'package:swol/excerciseSelection/secondary/animatedTitle.dart';
-import 'package:swol/excerciseSelection/secondary/secondary.dart';
-import 'package:swol/sharedWidgets/excerciseListTile/excerciseTile.dart';
-import 'package:swol/sharedWidgets/scrollToTop.dart';
-import 'package:swol/excercise/excerciseStructure.dart';
 import 'package:swol/excercise/excerciseData.dart';
+import 'package:swol/excercise/excerciseStructure.dart';
+import 'package:swol/excerciseSelection/secondary/secondary.dart';
 import 'package:swol/other/durationFormat.dart';
-import 'package:swol/utils/onboarding.dart';
-
-//Sections and how they are handled
-//New => newest additions on bottom
-//  since you would probably add your new routine and then work it
-//Hidden => newest addition on top [EXCEPTION]
-//  since the excercises you most recently archived are the ones most likely to be searched for again
-//In Progress => newest additions on bottom
-//  since we want to push people to doing super sets with atmost like 3 workouts
-//  and while doing super sets you are doing set 1 A, then set 1 B, then set 1 C
-//  and you would expect the user to go back to 1A before goign to 1B or 1C so 1A should be on top
-//Other => newest additions on the bottom
-//  since you want to cycle throughout all your workout routines
-//  so if you did legs on monday and 3 other work outs
-//  when its monday again you expect that workout to be on top with the first workout you did to be on top in the section
-
-//TODO: when its the users first time to go into the list it should automatically go into add excercise perhaps?
-
-//TODO: when the user open the app and there is ONLY 1 excercise in progress
-//TODO: automatically go to that excercse (ensure animation)
-
-//main widget
-class ExcerciseSelect extends StatefulWidget {
-  ExcerciseSelect({
-    @required this.permissionGiven,
-    @required this.shownInitialControls,
-    @required this.shownSearchBar,
-    @required this.shownCalculator,
-    @required this.shownSettings,
-  });
-
-  final bool permissionGiven;
-  final bool shownInitialControls;
-  final bool shownSearchBar;
-  final bool shownCalculator;
-  final bool shownSettings;
-
-  @override
-  _ExcerciseSelectState createState() => _ExcerciseSelectState();
-}
-
-class _ExcerciseSelectState extends State<ExcerciseSelect>{
-  final AutoScrollController autoScrollController = new AutoScrollController();
-
-  ValueNotifier<bool> navSpread = new ValueNotifier(false);
-
-  discoverBasicFeatures(){
-    /*
-    FeatureDiscovery.discoverFeatures(
-      context,
-      [
-        //'swol_logo',
-        //'learn_page',
-        //'add_excercise',
-        'search_excercise',
-      ],
-    );
-    */
-  }
-
-  @override
-  void initState() {
-    //SchedulerBinding.instance.addPostFrameCallback(
-    WidgetsBinding.instance.addPostFrameCallback((_){
-      //pop up that comes up asking for permission
-      if(widget.permissionGiven == false){
-        String tab = "\t\t\t\t\t";
-        String newLine = "\n\n";
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return Theme(
-              data: ThemeData.light(),
-              child: SimpleDialog(
-                contentPadding: EdgeInsets.all(0),
-                children: <Widget>[
-                  Container(
-                    color: Colors.red,
-                    padding: EdgeInsets.all(16),
-                    child: Text(
-                      "User End License Agreement",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 24,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                  Container(
-                    padding: EdgeInsets.all(16),
-                    child: RichText(
-                      text: TextSpan(
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.black,
-                        ),
-                        children: [
-                          TextSpan(
-                            text: tab + "In order to assist you, there are many suggestions throughout the app."
-                          ),
-                          TextSpan(
-                            style: TextStyle(
-                              fontWeight: FontWeight.w900,
-                            ),
-                            text: newLine + tab + "But it's your responsibility\nto stay safe.",
-                          ),
-                          TextSpan(
-                            text: newLine + tab + "We are not liable for any harm that you may cause yourself or others."
-                          ),
-                          TextSpan(
-                            style: TextStyle(
-                              fontWeight: FontWeight.w900,
-                            ),
-                            text: newLine + tab + "Follow our suggestions\nat your own risk.",
-                          ),
-                        ]
-                      ),
-                    ),
-                  ),
-                  Container(
-                    padding: EdgeInsets.all(16),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: <Widget>[
-                        FlatButton(
-                          onPressed: (){
-                            SystemChannels.platform.invokeMethod('SystemNavigator.pop');
-                          },
-                          child: Text("Close The App"),
-                        ),
-                        /*
-                        HoldDetector(
-                            onHold: _incrementCounter,
-                            holdTimeout: Duration(milliseconds: 200),
-                            enableHapticFeedback: true,
-                            child: RaisedButton(
-                              child: Text("I Agree"),
-                              onPressed: _incrementCounter,
-                          ),
-                        ),
-                        */
-                        RaisedButton(
-                          onPressed: ()async{
-                            await OnBoarding.givePermission();
-                            Navigator.of(context).pop();
-                            discoverBasicFeatures();
-                          },
-                          child: Text("I Agree"),
-                        ),
-                      ],
-                    ),
-                  )
-                ],
-              ),
-            );
-          },
-        );
-      } 
-      else discoverBasicFeatures();
-    });
-
-    //super init
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    double expandHeight = MediaQuery.of(context).size.height / 3;
-    expandHeight = (expandHeight < 40) ? 40 : expandHeight;
-
-    //swolheight (Since with mediaquery must be done here)
-    double statusBarHeight = MediaQuery.of(context).padding.top;
-    double screenWidth = MediaQuery.of(context).size.width;
-
-    //build
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).primaryColorDark,
-        title: AnimatedTitle(
-          navSpread: navSpread, 
-          screenWidth: screenWidth, 
-          statusBarHeight: statusBarHeight,
-        ),
-        actions: <Widget>[
-          /*
-          IconButton(
-            onPressed: (){
-              showThemeSwitcher(context);
-            },
-            icon: Icon(Icons.settings),
-          )
-          */
-          AnimatedTitleAction(
-            navSpread: navSpread, 
-            screenWidth: screenWidth,
-          ),
-        ],
-      ),
-      body: ExcerciseList(
-        autoScrollController: autoScrollController,
-        navSpread: navSpread,
-      ),
-    );
-  }
-}
+import 'package:swol/sharedWidgets/excerciseListTile/excerciseTile.dart';
 
 class ExcerciseList extends StatefulWidget {
   ExcerciseList({
     @required this.autoScrollController,
     @required this.navSpread,
+    @required this.onTop,
   });
 
   final AutoScrollController autoScrollController;
   final ValueNotifier<bool> navSpread;
+  final ValueNotifier<bool> onTop;
 
   @override
   _ExcerciseListState createState() => _ExcerciseListState();
@@ -247,33 +31,23 @@ class _ExcerciseListState extends State<ExcerciseList> {
 
   //other vars
   final Duration maxTimeBetweenExcercises = Duration(hours: 1, minutes: 30);
-  ValueNotifier<bool> onTop = new ValueNotifier(true);
+
+  updateState(){
+    if(mounted) setState(() {});
+  }
 
   //init
   @override
   void initState() {
     //Updates every time we update[timestamp], add, or remove some excercise
-    ExcerciseData.excercisesOrder.addListener((){
-      if(mounted){
-        setState(() {});
-      }
-    });
-
-    //scroll inits
-    //auto scroll controller
-    widget.autoScrollController.addListener((){
-      ScrollPosition position = widget.autoScrollController.position;
-      double currentOffset = widget.autoScrollController.offset;
-
-      //Determine whether we are on the top of the scroll area
-      if (currentOffset <= position.minScrollExtent) {
-        onTop.value = true;
-      }
-      else onTop.value = false;
-    });
-
-    //super init
+    ExcerciseData.excercisesOrder.addListener(updateState);
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    ExcerciseData.excercisesOrder.addListener(updateState);
+    super.dispose();
   }
 
   //build
@@ -547,6 +321,7 @@ class _ExcerciseListState extends State<ExcerciseList> {
 
     finalWidgetList.addAll(sliverList);
 
+    /*
     finalWidgetList.add(
       SliverFillRemaining(
         hasScrollBody: true,
@@ -565,34 +340,23 @@ class _ExcerciseListState extends State<ExcerciseList> {
         ),*/
       ),
     );
+    */
 
     //grab screen width so you can pass it through
     double screenWidth = MediaQuery.of(context).size.width;
 
     //return
-    return Container(
-      color: Theme.of(context).primaryColor,
-      child: Stack(
-        children: <Widget>[
-          CustomScrollView(
-            controller: widget.autoScrollController,
-            slivers: finalWidgetList,
-          ),
-          SearchExcerciseButton(
-            navSpread: widget.navSpread,
-            screenWidth: screenWidth,
-          ),
-          ScrollToTopButton(
-            onTop: onTop,
-            autoScrollController: widget.autoScrollController,
-          ),
-          //Add New Excercise Button
-          AddExcerciseButton(
-            navSpread: widget.navSpread,
-            screenWidth: screenWidth,
-          ),
-        ],
-      ),
+    return Stack(
+      children: <Widget>[
+        CustomScrollView(
+          controller: widget.autoScrollController,
+          slivers: finalWidgetList,
+        ),
+        SearchExcerciseButton(
+          navSpread: widget.navSpread,
+          screenWidth: screenWidth,
+        ),
+      ],
     );
   }
 }
