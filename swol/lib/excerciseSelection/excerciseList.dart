@@ -1,10 +1,15 @@
+import 'dart:io';
+
 //flutter
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 //plugin
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
+import 'package:feature_discovery/feature_discovery.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
 import 'package:swol/excercise/defaultDateTimes.dart';
+import 'package:holding_gesture/holding_gesture.dart';
 
 //internal: basics
 import 'package:swol/excerciseSelection/secondary/animatedTitle.dart';
@@ -14,6 +19,7 @@ import 'package:swol/sharedWidgets/scrollToTop.dart';
 import 'package:swol/excercise/excerciseStructure.dart';
 import 'package:swol/excercise/excerciseData.dart';
 import 'package:swol/other/durationFormat.dart';
+import 'package:swol/utils/onboarding.dart';
 
 //Sections and how they are handled
 //New => newest additions on bottom
@@ -59,33 +65,121 @@ class _ExcerciseSelectState extends State<ExcerciseSelect>{
 
   ValueNotifier<bool> navSpread = new ValueNotifier(false);
 
+  discoverBasicFeatures(){
+    /*
+    FeatureDiscovery.discoverFeatures(
+      context,
+      [
+        //'swol_logo',
+        //'learn_page',
+        //'add_excercise',
+        'search_excercise',
+      ],
+    );
+    */
+  }
+
   @override
-  void initState() { 
-    //pop up that may come up
-    if(widget.permissionGiven){
-      //TODO: show dialog box asking for permission if we haven't ask for permission before
-      /*
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          // return object of type Dialog
-          return AlertDialog(
-            title: new Text("Alert Dialog title"),
-            content: new Text("Alert Dialog body"),
-            actions: <Widget>[
-              // usually buttons at the bottom of the dialog
-              new FlatButton(
-                child: new Text("Close"),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
+  void initState() {
+    //SchedulerBinding.instance.addPostFrameCallback(
+    WidgetsBinding.instance.addPostFrameCallback((_){
+      //pop up that comes up asking for permission
+      if(widget.permissionGiven == false){
+        String tab = "\t\t\t\t\t";
+        String newLine = "\n\n";
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return Theme(
+              data: ThemeData.light(),
+              child: SimpleDialog(
+                contentPadding: EdgeInsets.all(0),
+                children: <Widget>[
+                  Container(
+                    color: Colors.red,
+                    padding: EdgeInsets.all(16),
+                    child: Text(
+                      "User End License Agreement",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 24,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.all(16),
+                    child: RichText(
+                      text: TextSpan(
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.black,
+                        ),
+                        children: [
+                          TextSpan(
+                            text: tab + "In order to assist you, there are many suggestions throughout the app."
+                          ),
+                          TextSpan(
+                            style: TextStyle(
+                              fontWeight: FontWeight.w900,
+                            ),
+                            text: newLine + tab + "But it's your responsibility\nto stay safe.",
+                          ),
+                          TextSpan(
+                            text: newLine + tab + "We are not liable for any harm that you may cause yourself or others."
+                          ),
+                          TextSpan(
+                            style: TextStyle(
+                              fontWeight: FontWeight.w900,
+                            ),
+                            text: newLine + tab + "Follow our suggestions\nat your own risk.",
+                          ),
+                        ]
+                      ),
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.all(16),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: <Widget>[
+                        FlatButton(
+                          onPressed: (){
+                            SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+                          },
+                          child: Text("Close The App"),
+                        ),
+                        /*
+                        HoldDetector(
+                            onHold: _incrementCounter,
+                            holdTimeout: Duration(milliseconds: 200),
+                            enableHapticFeedback: true,
+                            child: RaisedButton(
+                              child: Text("I Agree"),
+                              onPressed: _incrementCounter,
+                          ),
+                        ),
+                        */
+                        RaisedButton(
+                          onPressed: ()async{
+                            await OnBoarding.givePermission();
+                            Navigator.of(context).pop();
+                            discoverBasicFeatures();
+                          },
+                          child: Text("I Agree"),
+                        ),
+                      ],
+                    ),
+                  )
+                ],
               ),
-            ],
-          );
-        },
-      );
-      */
-    }
+            );
+          },
+        );
+      } 
+      else discoverBasicFeatures();
+    });
 
     //super init
     super.initState();
@@ -453,6 +547,28 @@ class _ExcerciseListState extends State<ExcerciseList> {
 
     finalWidgetList.addAll(sliverList);
 
+    finalWidgetList.add(
+      SliverFillRemaining(
+        hasScrollBody: true,
+        fillOverscroll: true,
+        child: Container(
+          color: Colors.red,
+          child: Container(),
+        ),
+        
+        
+        /*Center(
+          child: OnBoardingImage(
+            width: MediaQuery.of(context).size.width * (7/12),
+            imageUrl: "assets/biceps/bottomLeft.png",
+          ),
+        ),*/
+      ),
+    );
+
+    //grab screen width so you can pass it through
+    double screenWidth = MediaQuery.of(context).size.width;
+
     //return
     return Container(
       color: Theme.of(context).primaryColor,
@@ -464,6 +580,7 @@ class _ExcerciseListState extends State<ExcerciseList> {
           ),
           SearchExcerciseButton(
             navSpread: widget.navSpread,
+            screenWidth: screenWidth,
           ),
           ScrollToTopButton(
             onTop: onTop,
@@ -472,6 +589,7 @@ class _ExcerciseListState extends State<ExcerciseList> {
           //Add New Excercise Button
           AddExcerciseButton(
             navSpread: widget.navSpread,
+            screenWidth: screenWidth,
           ),
         ],
       ),

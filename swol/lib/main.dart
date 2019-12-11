@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 //plugins
+import 'package:feature_discovery/feature_discovery.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:provider/provider.dart';
 import 'package:async/async.dart';
@@ -33,10 +34,12 @@ class App extends StatelessWidget {
     SystemChrome.setSystemUIOverlayStyle(ThemeChanger.allBlackStyle);
 
     //main app build
-    return MaterialApp(
-      title: 'SWOL',
-      theme: ThemeData.dark(), //only until everything loads
-      home: GrabSystemPrefs(),
+    return FeatureDiscovery(
+      child: MaterialApp(
+        title: 'SWOL',
+        theme: ThemeData.dark(), //only until everything loads
+        home: GrabSystemPrefs(),
+      ),
     );
   }
 }
@@ -78,27 +81,32 @@ class GrabSystemPrefs extends StatelessWidget {
           dynamic permissionGiven = prefs.getBool("permissionGiven");
           if(permissionGiven == null){
             prefs.setBool("permissionGiven", false);
+            permissionGiven = false;
           }
 
           dynamic shownInitialControls = prefs.getBool("shownInitialControls");
           if(shownInitialControls == null){
             prefs.setBool("shownInitialControls", false);
+            shownInitialControls = false;
           }
 
           dynamic shownSearchBar = prefs.getBool("shownSearchBar");
           if(shownSearchBar == null){
             prefs.setBool("shownSearchBar", false);
+            shownSearchBar = false;
           }
 
           //handle stuff from learn page
           dynamic shownCalculator = prefs.getBool("shownCalculator");
           if(shownCalculator == null){
             prefs.setBool("shownCalculator", false);
+            shownCalculator = false;
           }
 
           dynamic shownSettings = prefs.getBool("shownSettings");
           if(shownSettings == null){
             prefs.setBool("shownSettings", false);
+            shownSettings = false;
           }
 
           //set nextID to its usable version
@@ -108,7 +116,7 @@ class GrabSystemPrefs extends StatelessWidget {
           return ChangeNotifierProvider<ThemeChanger>(
             //NOTE: this will also setup the status and notifiaction bar colors
             //we don't wait for this though, because constructors can't be async
-            builder: (_) => ThemeChanger(
+            create: (_) => ThemeChanger(
               (isDark) ? MyTheme.dark : MyTheme.light,
             ), 
             child: GrabFileData(

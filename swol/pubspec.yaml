@@ -80,7 +80,7 @@ dependencies:
   shared_preferences: ^0.5.3+4
 
   #THEME
-  provider: ^2.0.1
+  provider: ^3.1.0 #^2.0.1
 
   #STICKY HEADERS 
   flutter_sticky_header: ^0.4.0 
@@ -151,6 +151,11 @@ flutter:
    - assets/splash/splashCut.png
    - assets/gifs/breathMod.gif
    - assets/gifs/breathModBright.gif
+   - assets/biceps/topLeft.png
+   - assets/biceps/topRight.png
+   - assets/biceps/normal.png
+   - assets/biceps/bottomLeft.png
+   - assets/biceps/bottomRight.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

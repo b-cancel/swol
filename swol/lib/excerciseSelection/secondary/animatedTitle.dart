@@ -1,5 +1,7 @@
 //dart
+import 'package:feature_discovery/feature_discovery.dart';
 import 'package:swol/excerciseSelection/secondary/decoration.dart';
+import 'package:swol/utils/onboarding.dart';
 import 'package:vector_math/vector_math_64.dart' as vect;
 
 //flutter
@@ -53,7 +55,33 @@ class AnimatedTitleAction extends StatelessWidget {
             ),  
           ),
           duration: Duration(milliseconds: 300),
-          child: button,
+          child: DescribedFeatureOverlay(
+            featureId: 'learn_page',
+            //target
+            tapTarget: button,
+            targetColor: Theme.of(context).primaryColor,
+            //background
+            title: OnBoardingText(
+              text: "Tap here to LEARN"
+              + "\nabout the concepts,"
+              + "\nmath, and science" 
+              + "\nbehind our app",
+              toLeft: false,
+            ),
+            textColor: Colors.white,
+            description: OnBoardingImage(
+              width: MediaQuery.of(context).size.width,
+              multiplier: (2/3),
+              imageUrl: "assets/biceps/topRight.png",
+            ),
+            backgroundColor: Theme.of(context).primaryColorDark,
+            //settings
+            contentLocation: ContentLocation.below,
+            overflowMode: OverflowMode.wrapBackground,
+            enablePulsingAnimation: true,
+            //child
+            child: button,
+          ),
         );
       },
     );
@@ -74,6 +102,15 @@ class AnimatedTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Widget swolLogoSmall = SwolLogo(
+      height: statusBarHeight - 16,
+    );
+
+    Widget swolLogo = SwolLogo(
+      height: statusBarHeight,
+    );
+
+    //build
     return AnimatedBuilder(
       animation: navSpread,
       builder: (context, child){
@@ -86,8 +123,30 @@ class AnimatedTitle extends StatelessWidget {
               0,
             ),  
           ),
-          child: new SwolLogo(
-            height: statusBarHeight,
+          child: DescribedFeatureOverlay(
+            featureId: 'swol_logo',
+            //target
+            tapTarget: swolLogoSmall,
+            targetColor: Theme.of(context).primaryColor,
+            //background
+            title: OnBoardingText(
+              text: "What you're going to be"
+              + "\nafter using this app",
+              toLeft: true,
+            ),
+            textColor: Colors.white,
+            description: OnBoardingImage(
+              width: MediaQuery.of(context).size.width,
+              multiplier: (2/3),
+              imageUrl: "assets/biceps/topLeft.png",
+            ),
+            backgroundColor: Theme.of(context).primaryColorDark,
+            //settings
+            contentLocation: ContentLocation.below,
+            overflowMode: OverflowMode.wrapBackground,
+            enablePulsingAnimation: true,
+            //child
+            child: swolLogo,
           ),
         );
       },

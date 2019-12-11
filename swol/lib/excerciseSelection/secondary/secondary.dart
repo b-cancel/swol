@@ -1,4 +1,5 @@
 //flutter
+import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/material.dart';
 
 //plugin
@@ -9,14 +10,17 @@ import 'package:swol/excercise/excerciseStructure.dart';
 import 'package:swol/excerciseSearch/searchExcercise.dart';
 import 'package:swol/excerciseSelection/secondary/addNewHero.dart';
 import 'package:swol/excerciseSelection/secondary/persistentHeaderDelegate.dart';
+import 'package:swol/utils/onboarding.dart';
 
 class AddExcerciseButton extends StatelessWidget {
   const AddExcerciseButton({
     Key key,
     @required this.navSpread,
+    @required this.screenWidth,
   }) : super(key: key);
 
   final ValueNotifier<bool> navSpread;
+  final double screenWidth;
 
   @override
   Widget build(BuildContext context) {
@@ -26,9 +30,39 @@ class AddExcerciseButton extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         //NOTE: this must be seperate so the inkwell is visible
-        child: new AddNewHero(
-          inAppBar: false,
-          navSpread: navSpread,
+        child: DescribedFeatureOverlay(
+          featureId: 'add_excercise', // Unique id that identifies this overlay.
+          //target
+          tapTarget: FloatingActionButton(
+            onPressed: (){
+              //print("tapped");
+            },
+            child: Icon(Icons.add),
+          ),
+          targetColor: Theme.of(context).primaryColorDark,
+          //test and other description
+          title: OnBoardingImage(
+            width: MediaQuery.of(context).size.width,
+            multiplier: (2/3),
+            imageUrl: "assets/biceps/bottomLeft.png",
+            isLeft: false,
+          ),
+          description: OnBoardingText(
+            text: "Tap here to add a\n"
+            + "new excercise",
+            toLeft: true,
+          ),
+          textColor: Colors.white,
+          backgroundColor: Theme.of(context).primaryColor,
+          //settings
+          contentLocation: ContentLocation.above,
+          overflowMode: OverflowMode.wrapBackground,
+          enablePulsingAnimation: true,
+          //child
+          child: AddNewHero(
+            inAppBar: false,
+            navSpread: navSpread,
+          ),
         ),
       ),
     );
@@ -38,33 +72,72 @@ class AddExcerciseButton extends StatelessWidget {
 class SearchExcerciseButton extends StatelessWidget {
   const SearchExcerciseButton({
     @required this.navSpread,
+    @required this.screenWidth,
     Key key,
   }) : super(key: key);
   
   final ValueNotifier<bool> navSpread;
+  final double screenWidth;
 
   @override
   Widget build(BuildContext context) {
+    /*
+    TextStyle(
+      fontWeight: FontWeight.bold,
+      fontSize: 18,
+    ),
+    */
     return Positioned(
       right: 0,
       bottom: 0,
       child: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: FloatingActionButton.extended(
-          onPressed: (){
-            navSpread.value = true;
-            Navigator.push(
-              context, 
-              PageTransition(
-                type: PageTransitionType.downToUp, 
-                child: SearchExcercise(
-                  navSpread: navSpread,
+        child: DescribedFeatureOverlay(
+          featureId: 'search_excercise', // Unique id that identifies this overlay.
+          //target
+          tapTarget: FloatingActionButton(
+            onPressed: (){
+              //print("tapped");
+            },
+            child: Icon(Icons.search),
+          ),
+          targetColor: Theme.of(context).primaryColorDark,
+          //background
+          title: OnBoardingImage(
+            width: MediaQuery.of(context).size.width,
+            multiplier: (2/3),
+            isLeft: true,
+            imageUrl: "assets/biceps/bottomRight.png",
+          ),
+          description: OnBoardingText(
+            text: "Tap here to"
+            + "\nsearch through"
+            + "\nyour excercises",
+            toLeft: false,
+          ),
+          textColor: Colors.white,
+          backgroundColor: Theme.of(context).primaryColor,
+          //settings
+          contentLocation: ContentLocation.above,
+          overflowMode: OverflowMode.wrapBackground,
+          enablePulsingAnimation: true,
+          //child
+          child: FloatingActionButton.extended(
+            onPressed: (){
+              navSpread.value = true;
+              Navigator.push(
+                context, 
+                PageTransition(
+                  type: PageTransitionType.downToUp, 
+                  child: SearchExcercise(
+                    navSpread: navSpread,
+                  ),
                 ),
-              ),
-            );
-          },
-          icon: Icon(Icons.search),
-          label: Text("Search"),
+              );
+            },
+            icon: Icon(Icons.search),
+            label: Text("Search"),
+          ),
         ),
       ),
     );
