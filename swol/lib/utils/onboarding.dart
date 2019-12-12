@@ -10,19 +10,24 @@ class OnBoarding{
     prefs.setBool("permissionGiven", true);
   }
 
-  static discoverBasicFeatures(BuildContext context){
-    //TODO: only discovery them if they haven't been discovery before
-    /*
-    FeatureDiscovery.discoverFeatures(
-      context,
-      [
-        //AFeature.SwolLogo.toString(),
-        //AFeature.LearnPage.toString(),
-        //AFeature.AddExcercise.toString(),
-        AFeature.SearchExcercise.toString(),
-      ],
-    );
-    */
+  static discoverSwolLogo(BuildContext context){
+    FeatureDiscovery.discoverFeatures( context,
+    [AFeature.SwolLogo.toString()]);
+  }
+
+  static discoverLearnPage(BuildContext context){
+    FeatureDiscovery.discoverFeatures( context,
+    [AFeature.LearnPage.toString()]);
+  }
+
+  static discoverAddExcercise(BuildContext context){
+    FeatureDiscovery.discoverFeatures( context,
+    [AFeature.AddExcercise.toString()]);
+  }
+
+  static discoverSearchExcercise(BuildContext context){
+    FeatureDiscovery.discoverFeatures( context,
+    [AFeature.SearchExcercise.toString()]);
   }
 }
 
@@ -82,11 +87,8 @@ class OnBoardingImage extends StatelessWidget {
         : (isLeft) ? Alignment.centerLeft : Alignment.centerRight,
         child: Container(
           width: width * multiplier,
-          child: FittedBox(
-            fit: BoxFit.fitWidth,
-            child: Image.asset(
-              imageUrl,
-            ),
+          child: Image.asset(
+            imageUrl,
           ),
         ),
       ),
@@ -102,6 +104,8 @@ class FeatureWrapper extends StatelessWidget {
     @required this.child,
     this.top: true,
     this.left: true,
+    this.prevFeature,
+    this.nextFeature,
   });
 
   final String featureID;
@@ -110,6 +114,8 @@ class FeatureWrapper extends StatelessWidget {
   final Widget child;
   final bool top;
   final bool left;
+  final Function prevFeature;
+  final Function nextFeature;
 
   @override
   Widget build(BuildContext context) {
@@ -131,6 +137,24 @@ class FeatureWrapper extends StatelessWidget {
       isLeft: top ? null : (left == false),
     );
 
+    /*
+    Function toNextFeature;
+    /*
+    (){
+      FeatureDiscovery.completeCurrentStep(context);
+    };
+    */
+
+    if(nextFeature != null){
+      print("to next feature string: " + nextFeature);
+      toNextFeature = (){
+        FeatureDiscovery.discoverFeatures(context, [
+          nextFeature,
+        ]);
+      };
+    }
+    */
+
     return DescribedFeatureOverlay(
       featureId: featureID,
       //target
@@ -147,6 +171,17 @@ class FeatureWrapper extends StatelessWidget {
       enablePulsingAnimation: true,
       //child
       child: child,
+      //functions
+      onComplete: () async{
+        print("on complete");
+        if(nextFeature != null) nextFeature();
+        return true;
+      },
+      onDismiss: () async{
+        print("on dismiss");
+        if(nextFeature != null) nextFeature();
+        return true;
+      },
     );
   }
 }

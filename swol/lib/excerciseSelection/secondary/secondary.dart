@@ -43,6 +43,7 @@ class AddExcerciseButton extends StatelessWidget {
           ),
           top: false,
           left: true,
+          prevFeature: () => OnBoarding.discoverLearnPage(context),
         ),
       ),
     );

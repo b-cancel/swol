@@ -62,6 +62,8 @@ class AnimatedTitleAction extends StatelessWidget {
             ),
             top: true,
             left: false,
+            nextFeature: () => OnBoarding.discoverAddExcercise(context),
+            prevFeature: () => OnBoarding.discoverSwolLogo(context),
           ),
         );
       },
@@ -107,6 +109,7 @@ class AnimatedTitle extends StatelessWidget {
             ),
             top: true,
             left: true,
+            nextFeature: () => OnBoarding.discoverLearnPage(context),
           ),
         );
       },

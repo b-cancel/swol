@@ -258,7 +258,7 @@ class _BasicCountDownState extends State<BasicCountDown> with SingleTickerProvid
       //pop the permission pop up
       Navigator.of(context).pop();
       //start showing basic features (if they haven't yet been shown)
-      OnBoarding.discoverBasicFeatures(context);
+      OnBoarding.discoverSwolLogo(context);
     }
   }
 
