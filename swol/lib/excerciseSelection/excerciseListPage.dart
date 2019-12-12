@@ -80,7 +80,7 @@ class _ExcerciseSelectState extends State<ExcerciseSelect> {
           },
         );
       } 
-      else OnBoarding.discoverBasicFeatures();
+      else OnBoarding.discoverBasicFeatures(context);
     });
 
     //show or hide the to top button

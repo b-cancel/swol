@@ -29,23 +29,6 @@ class AnimatedTitleAction extends StatelessWidget {
     return AnimatedBuilder(
       animation: navSpread,
       builder: (context,child){
-        Widget button = IconButton(
-          onPressed: (){
-            navSpread.value = true;
-            Navigator.push(
-              context, 
-              PageTransition(
-                type: PageTransitionType.rightToLeft, 
-                child: LearnExcercise(
-                  navSpread: navSpread,
-                ),
-              ),
-            );
-          },
-          icon: Icon(FontAwesomeIcons.leanpub),
-        );
-
-        //-----Animated Offset
         return AnimatedContainer(
           transform: Matrix4.translation(
             vect.Vector3(
@@ -55,32 +38,30 @@ class AnimatedTitleAction extends StatelessWidget {
             ),  
           ),
           duration: Duration(milliseconds: 300),
-          child: DescribedFeatureOverlay(
-            featureId: 'learn_page',
-            //target
-            tapTarget: button,
-            targetColor: Theme.of(context).primaryColor,
-            //background
-            title: OnBoardingText(
-              text: "Tap here to LEARN"
-              + "\nabout the concepts,"
-              + "\nmath, and science" 
-              + "\nbehind our app",
-              toLeft: false,
+          child: FeatureWrapper(
+            featureID: AFeature.LearnPage.toString(),
+            tapTarget: Icon(FontAwesomeIcons.leanpub),
+            text: "Tap here to LEARN"
+            + "\nabout the concepts,"
+            + "\nmath, and science" 
+            + "\nbehind our app",
+            child: IconButton(
+              onPressed: (){
+                navSpread.value = true;
+                Navigator.push(
+                  context, 
+                  PageTransition(
+                    type: PageTransitionType.rightToLeft, 
+                    child: LearnExcercise(
+                      navSpread: navSpread,
+                    ),
+                  ),
+                );
+              },
+              icon: Icon(FontAwesomeIcons.leanpub),
             ),
-            textColor: Colors.white,
-            description: OnBoardingImage(
-              width: MediaQuery.of(context).size.width,
-              multiplier: (2/3),
-              imageUrl: "assets/biceps/topRight.png",
-            ),
-            backgroundColor: Theme.of(context).primaryColorDark,
-            //settings
-            contentLocation: ContentLocation.below,
-            overflowMode: OverflowMode.wrapBackground,
-            enablePulsingAnimation: true,
-            //child
-            child: button,
+            top: true,
+            left: false,
           ),
         );
       },
@@ -102,15 +83,6 @@ class AnimatedTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Widget swolLogoSmall = SwolLogo(
-      height: statusBarHeight - 16,
-    );
-
-    Widget swolLogo = SwolLogo(
-      height: statusBarHeight,
-    );
-
-    //build
     return AnimatedBuilder(
       animation: navSpread,
       builder: (context, child){
@@ -123,30 +95,18 @@ class AnimatedTitle extends StatelessWidget {
               0,
             ),  
           ),
-          child: DescribedFeatureOverlay(
-            featureId: 'swol_logo',
-            //target
-            tapTarget: swolLogoSmall,
-            targetColor: Theme.of(context).primaryColor,
-            //background
-            title: OnBoardingText(
-              text: "What you're going to be"
-              + "\nafter using this app",
-              toLeft: true,
+          child: FeatureWrapper(
+            featureID: AFeature.SwolLogo.toString(),
+            tapTarget: SwolLogo(
+              height: statusBarHeight - 16,
             ),
-            textColor: Colors.white,
-            description: OnBoardingImage(
-              width: MediaQuery.of(context).size.width,
-              multiplier: (2/3),
-              imageUrl: "assets/biceps/topLeft.png",
+            text: "What you're going to be"
+            + "\nafter using this app",
+            child: SwolLogo(
+              height: statusBarHeight,
             ),
-            backgroundColor: Theme.of(context).primaryColorDark,
-            //settings
-            contentLocation: ContentLocation.below,
-            overflowMode: OverflowMode.wrapBackground,
-            enablePulsingAnimation: true,
-            //child
-            child: swolLogo,
+            top: true,
+            left: true,
           ),
         );
       },

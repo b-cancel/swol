@@ -1,5 +1,8 @@
+import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+enum AFeature {SwolLogo, LearnPage, AddExcercise, SearchExcercise}
 
 class OnBoarding{
   static givePermission() async{
@@ -7,16 +10,16 @@ class OnBoarding{
     prefs.setBool("permissionGiven", true);
   }
 
-  static discoverBasicFeatures(){
+  static discoverBasicFeatures(BuildContext context){
     //TODO: only discovery them if they haven't been discovery before
     /*
     FeatureDiscovery.discoverFeatures(
       context,
       [
-        //'swol_logo',
-        //'learn_page',
-        //'add_excercise',
-        'search_excercise',
+        //AFeature.SwolLogo.toString(),
+        //AFeature.LearnPage.toString(),
+        //AFeature.AddExcercise.toString(),
+        AFeature.SearchExcercise.toString(),
       ],
     );
     */
@@ -26,28 +29,28 @@ class OnBoarding{
 class OnBoardingText extends StatelessWidget {
   OnBoardingText({
     @required this.text,
-    this.toLeft: true,
+    this.left: true,
   });
 
   final String text;
-  final bool toLeft;
+  final bool left;
 
   @override
   Widget build(BuildContext context) {
     return Row(
       children: <Widget>[
-        toLeft == false ?  Expanded(
+        left == false ?  Expanded(
           child: Container(),
         ) : Container(),
         Text(
           text,
-          textAlign: toLeft ? TextAlign.left : TextAlign.right,
+          textAlign: left ? TextAlign.left : TextAlign.right,
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 18,
           ),
         ),
-        toLeft ?  Expanded(
+        left ?  Expanded(
           child: Container(),
         ) : Container(),
       ],
@@ -87,6 +90,63 @@ class OnBoardingImage extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+class FeatureWrapper extends StatelessWidget {
+  FeatureWrapper({
+    @required this.featureID,
+    @required this.tapTarget,
+    @required this.text,
+    @required this.child,
+    this.top: true,
+    this.left: true,
+  });
+
+  final String featureID;
+  final Widget tapTarget;
+  final String text;
+  final Widget child;
+  final bool top;
+  final bool left;
+
+  @override
+  Widget build(BuildContext context) {
+    Widget textWidget = OnBoardingText(
+      text: text,
+      left: left,
+    );
+
+    String imageUrl;
+    if(top && left) imageUrl = "assets/biceps/topLeft.png";
+    else if(top && left == false) imageUrl = "assets/biceps/topRight.png";
+    else if(top == false && left) imageUrl = "assets/biceps/bottomLeft.png";
+    else imageUrl = "assets/biceps/bottomRight.png";
+
+    Widget image = OnBoardingImage(
+      width: MediaQuery.of(context).size.width,
+      multiplier: (2/3),
+      imageUrl: imageUrl,
+      isLeft: top ? null : (left == false),
+    );
+
+    return DescribedFeatureOverlay(
+      featureId: featureID,
+      //target
+      tapTarget: tapTarget,
+      targetColor: top ? Theme.of(context).primaryColor : Theme.of(context).primaryColorDark,
+      //background
+      title: top ? textWidget : image,
+      textColor: Colors.white,
+      description: top ? image : textWidget,
+      backgroundColor: top ? Theme.of(context).primaryColorDark : Theme.of(context).primaryColor,
+      //settings
+      contentLocation: top ? ContentLocation.below : ContentLocation.above,
+      overflowMode: OverflowMode.wrapBackground,
+      enablePulsingAnimation: true,
+      //child
+      child: child,
     );
   }
 }

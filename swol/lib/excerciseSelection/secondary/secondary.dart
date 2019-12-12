@@ -30,39 +30,19 @@ class AddExcerciseButton extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         //NOTE: this must be seperate so the inkwell is visible
-        child: DescribedFeatureOverlay(
-          featureId: 'add_excercise', // Unique id that identifies this overlay.
-          //target
+        child: FeatureWrapper(
+          featureID: AFeature.AddExcercise.toString(),
           tapTarget: FloatingActionButton(
-            onPressed: (){
-              //print("tapped");
-            },
             child: Icon(Icons.add),
           ),
-          targetColor: Theme.of(context).primaryColorDark,
-          //test and other description
-          title: OnBoardingImage(
-            width: MediaQuery.of(context).size.width,
-            multiplier: (2/3),
-            imageUrl: "assets/biceps/bottomLeft.png",
-            isLeft: false,
-          ),
-          description: OnBoardingText(
-            text: "Tap here to add a\n"
-            + "new excercise",
-            toLeft: true,
-          ),
-          textColor: Colors.white,
-          backgroundColor: Theme.of(context).primaryColor,
-          //settings
-          contentLocation: ContentLocation.above,
-          overflowMode: OverflowMode.wrapBackground,
-          enablePulsingAnimation: true,
-          //child
+          text: "Tap here to add a\n"
+          + "new excercise",
           child: AddNewHero(
             inAppBar: false,
             navSpread: navSpread,
           ),
+          top: false,
+          left: true,
         ),
       ),
     );
@@ -92,36 +72,14 @@ class SearchExcerciseButton extends StatelessWidget {
       bottom: 0,
       child: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: DescribedFeatureOverlay(
-          featureId: 'search_excercise', // Unique id that identifies this overlay.
-          //target
+        child: FeatureWrapper(
+          featureID: AFeature.SearchExcercise.toString(),
           tapTarget: FloatingActionButton(
-            onPressed: (){
-              //print("tapped");
-            },
             child: Icon(Icons.search),
           ),
-          targetColor: Theme.of(context).primaryColorDark,
-          //background
-          title: OnBoardingImage(
-            width: MediaQuery.of(context).size.width,
-            multiplier: (2/3),
-            isLeft: true,
-            imageUrl: "assets/biceps/bottomRight.png",
-          ),
-          description: OnBoardingText(
-            text: "Tap here to"
-            + "\nsearch through"
-            + "\nyour excercises",
-            toLeft: false,
-          ),
-          textColor: Colors.white,
-          backgroundColor: Theme.of(context).primaryColor,
-          //settings
-          contentLocation: ContentLocation.above,
-          overflowMode: OverflowMode.wrapBackground,
-          enablePulsingAnimation: true,
-          //child
+          text: "Tap here to"
+          + "\nsearch through"
+          + "\nyour excercises",
           child: FloatingActionButton.extended(
             onPressed: (){
               navSpread.value = true;
@@ -138,6 +96,8 @@ class SearchExcerciseButton extends StatelessWidget {
             icon: Icon(Icons.search),
             label: Text("Search"),
           ),
+          top: false,
+          left: false,
         ),
       ),
     );
