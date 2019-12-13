@@ -62,11 +62,16 @@ class AnimatedTitleAction extends StatelessWidget {
             ),
             top: true,
             left: false,
+            //TODO: Eventually figure out why I needed to do this 
+            //NOTE: I needed to cover up that my prev button didnt work 
+            //NOTE: only didn't work here, even after extensive testing
+            /*
             prevFeature: (){
-              print("before swol logo");
+              if(OnBoarding.showDebuging) print("before swol logo");
               OnBoarding.discoverSwolLogo(context);
-              print("after swol logo");
+              if(OnBoarding.showDebuging) print("after swol logo");
             },
+            */
             nextFeature: () => OnBoarding.discoverAddExcercise(context),
           ),
         );

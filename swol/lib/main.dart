@@ -89,6 +89,8 @@ class GrabSystemPrefs extends StatelessWidget {
             shownInitialControls = false;
           }
 
+          //TODO: handle stuff below
+
           dynamic shownSearchBar = prefs.getBool("shownSearchBar");
           if(shownSearchBar == null){
             prefs.setBool("shownSearchBar", false);

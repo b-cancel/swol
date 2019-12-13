@@ -68,6 +68,13 @@ class _ExcerciseSelectState extends State<ExcerciseSelect> {
 
   @override
   void initState() { 
+    //create function
+    Function afterConfirm = (){
+      if(widget.shownInitialControls == false){
+        OnBoarding.discoverSwolLogo(context);
+      }
+    };
+
     //ask for permission after the frame loads
     WidgetsBinding.instance.addPostFrameCallback((_){
       //pop up that comes up asking for permission
@@ -76,11 +83,13 @@ class _ExcerciseSelectState extends State<ExcerciseSelect> {
           context: context,
           barrierDismissible: false,
           builder: (BuildContext context) {
-            return UELA();
+            return UELA(
+              afterConfirm: () => afterConfirm(),
+            );
           },
         );
       } 
-      else OnBoarding.discoverSwolLogo(context);
+      else afterConfirm();
     });
 
     //show or hide the to top button

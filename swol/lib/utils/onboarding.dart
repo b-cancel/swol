@@ -5,29 +5,45 @@ import 'package:shared_preferences/shared_preferences.dart';
 enum AFeature {SwolLogo, LearnPage, AddExcercise, SearchExcercise}
 
 class OnBoarding{
+  static bool showDebuging = false;
+
   static givePermission() async{
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setBool("permissionGiven", true);
   }
 
+  static initialControlsShown() async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool("shownInitialControls", true);
+  }
+
+  //TODO: all other feature discovery stuff
+
   static discoverSwolLogo(BuildContext context){
-    FeatureDiscovery.discoverFeatures( context,
-    [AFeature.SwolLogo.toString()]);
+    if(OnBoarding.showDebuging) print("before feature discovery");
+    String featureToDiscover = AFeature.SwolLogo.toString();
+    if(OnBoarding.showDebuging) print("feature to discover: " + featureToDiscover);
+    discoverSet(context, featureToDiscover);
+    if(OnBoarding.showDebuging) print("after feature discovery");
   }
 
   static discoverLearnPage(BuildContext context){
-    FeatureDiscovery.discoverFeatures( context,
-    [AFeature.LearnPage.toString()]);
+    discoverSet(context, AFeature.LearnPage.toString());
   }
 
   static discoverAddExcercise(BuildContext context){
-    FeatureDiscovery.discoverFeatures( context,
-    [AFeature.AddExcercise.toString()]);
+    discoverSet(context, AFeature.AddExcercise.toString());
   }
 
   static discoverSearchExcercise(BuildContext context){
-    FeatureDiscovery.discoverFeatures( context,
-    [AFeature.SearchExcercise.toString()]);
+    discoverSet(context, AFeature.SearchExcercise.toString());
+  }
+
+  //utility function because Feature discovery seems to prefer sets
+  static discoverSet(BuildContext context, String featureName){
+    Set<String> aSet = new Set<String>();
+    aSet.add(featureName);
+    FeatureDiscovery.discoverFeatures(context, aSet);
   }
 }
 
@@ -38,6 +54,7 @@ class OnBoardingText extends StatelessWidget {
     this.onTapNext,
     this.onTapPrev,
     @required this.showDone,
+    
   });
 
   final String text;
@@ -49,10 +66,7 @@ class OnBoardingText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: (onTapNext == null) ? null : (){
-        print("----------------ON TAP NEXT");
-        onTapNext();
-      },
+      onTap: (onTapNext == null) ? null : () => onTapNext(),
       //NOTE: invisible container required to make tap target large
       child: Container(
         color: Colors.transparent,
@@ -208,6 +222,7 @@ class FeatureWrapper extends StatelessWidget {
     this.left: true,
     this.prevFeature,
     this.nextFeature,
+    this.doneInsteadOfNext: false,
   });
 
   final String featureID;
@@ -218,6 +233,7 @@ class FeatureWrapper extends StatelessWidget {
   final bool left;
   final Function prevFeature;
   final Function nextFeature;
+  final bool doneInsteadOfNext;
 
   @override
   Widget build(BuildContext context) {
@@ -230,9 +246,11 @@ class FeatureWrapper extends StatelessWidget {
 
     Function dismissThenPrevFeature = (prevFeature == null) ? null 
     : (){
+      if(OnBoarding.showDebuging) print("dimssin the previous feature discovery");
       FeatureDiscovery.dismiss(context);
-      print("prev feature for " + text);
+      if(OnBoarding.showDebuging) print("go to prev feature for \"" + text + "\"");
       prevFeature();
+      if(OnBoarding.showDebuging) print("after gone to next feature");
     };
 
     Widget textWidget = OnBoardingText(
@@ -240,7 +258,7 @@ class FeatureWrapper extends StatelessWidget {
       isLeft: left,
       onTapNext: dismissThenNextFeature,
       onTapPrev: dismissThenPrevFeature,
-      showDone: (nextFeature == null),
+      showDone: doneInsteadOfNext,
     );
 
     String imageUrl;

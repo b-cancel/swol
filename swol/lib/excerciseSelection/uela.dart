@@ -11,6 +11,12 @@ import 'package:swol/utils/onboarding.dart';
 import 'package:swol/utils/vibrate.dart';
 
 class UELA extends StatefulWidget {
+  UELA({
+    @required this.afterConfirm,
+  });
+
+  final Function afterConfirm;
+
   @override
   _UELAState createState() => _UELAState();
 }
@@ -65,6 +71,7 @@ class _UELAState extends State<UELA> {
                   ),
                   BasicCountDown(
                     seconds: 3,
+                    afterConfirm: () => widget.afterConfirm(),
                   ),
                 ],
               ),
@@ -234,9 +241,11 @@ class _UELAState extends State<UELA> {
 class BasicCountDown extends StatefulWidget {
   BasicCountDown({
     @required this.seconds,
+    @required this.afterConfirm,
   });
 
   final int seconds;
+  final Function afterConfirm;
 
   @override
   _BasicCountDownState createState() => _BasicCountDownState();
@@ -258,7 +267,7 @@ class _BasicCountDownState extends State<BasicCountDown> with SingleTickerProvid
       //pop the permission pop up
       Navigator.of(context).pop();
       //start showing basic features (if they haven't yet been shown)
-      OnBoarding.discoverSwolLogo(context);
+      widget.afterConfirm();
     }
   }
 
