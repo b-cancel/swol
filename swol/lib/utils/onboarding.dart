@@ -11,8 +11,6 @@ class OnBoarding{
   }
 
   static discoverSwolLogo(BuildContext context){
-    print("why arent you discovering the swol logo????");
-    print("the feature is called: " + AFeature.SwolLogo.toString());
     FeatureDiscovery.discoverFeatures( context,
     [AFeature.SwolLogo.toString()]);
   }
@@ -80,72 +78,76 @@ class OnBoardingText extends StatelessWidget {
                 ),
               ],
             ),
-            Padding(
-              padding: const EdgeInsets.only(
-                top: 8,
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: isLeft 
-                ? MainAxisAlignment.start
-                : MainAxisAlignment.end,
-                children: <Widget>[
-                  (onTapPrev == null) ? Container()
-                  : ClipRRect(
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(12),
-                      bottomLeft: Radius.circular(12),
+            Row(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: isLeft 
+              ? MainAxisAlignment.start
+              : MainAxisAlignment.end,
+              children: <Widget>[
+                (onTapPrev == null) ? Container()
+                : GestureDetector(
+                  onTap: () => onTapPrev(),
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                      top: 8,
                     ),
-                    clipBehavior: Clip.hardEdge,
-                    child: Material(
-                      color: Colors.transparent,
-                      child: InkWell(
-                        highlightColor: Theme.of(context).accentColor,
-                        onTap: () => onTapPrev(),
-                        child: Container(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 8,
-                          ),
-                          decoration: BoxDecoration(
-                            //color: Colors.blue,
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(12),
-                              bottomLeft: Radius.circular(12),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(12),
+                        bottomLeft: Radius.circular(12),
+                      ),
+                      clipBehavior: Clip.hardEdge,
+                      child: Material(
+                        color: Colors.transparent,
+                        child: InkWell(
+                          highlightColor: Theme.of(context).accentColor,
+                          onTap: () => onTapPrev(),
+                          child: Container(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 16,
+                              vertical: 8,
                             ),
-                            border: Border.all(
-                              color: Colors.white.withOpacity(0.5),
-                              width: 2,
-                            )
-                          ),
-                          child: Text(
-                            "Back",
-                            style: TextStyle(
-                              fontSize: 14,
+                            decoration: BoxDecoration(
+                              //color: Colors.blue,
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(12),
+                                bottomLeft: Radius.circular(12),
+                              ),
+                              border: Border.all(
+                                color: Colors.white.withOpacity(0.5),
+                                width: 2,
+                              )
+                            ),
+                            child: Text(
+                              "Back",
+                              style: TextStyle(
+                                fontSize: 14,
+                              ),
                             ),
                           ),
                         ),
                       ),
                     ),
                   ),
-                  Padding(
-                    padding: EdgeInsets.only(
-                      left: (onTapPrev == null) ? 0 : 16,
+                ),
+                Padding(
+                  padding: EdgeInsets.only(
+                    left: (onTapPrev == null) ? 0 : 16,
+                    top: 8 + 8.0,
+                  ),
+                  child: Container(
+                    padding: EdgeInsets.symmetric(
+                      vertical: 8,
                     ),
-                    child: Container(
-                      padding: EdgeInsets.symmetric(
-                        vertical: 8,
-                      ),
-                      child: Text(
-                        showDone ? "Done" : "Next",
-                        style: TextStyle(
-                          fontSize: 14,
-                        ),
+                    child: Text(
+                      showDone ? "Done" : "Next",
+                      style: TextStyle(
+                        fontSize: 14,
                       ),
                     ),
-                  )
-                ],
-              ),
+                  ),
+                )
+              ],
             )
           ],
         ),
