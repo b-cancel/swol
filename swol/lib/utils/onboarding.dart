@@ -11,6 +11,8 @@ class OnBoarding{
   }
 
   static discoverSwolLogo(BuildContext context){
+    print("why arent you discovering the swol logo????");
+    print("the feature is called: " + AFeature.SwolLogo.toString());
     FeatureDiscovery.discoverFeatures( context,
     [AFeature.SwolLogo.toString()]);
   }
@@ -34,31 +36,120 @@ class OnBoarding{
 class OnBoardingText extends StatelessWidget {
   OnBoardingText({
     @required this.text,
-    this.left: true,
+    this.isLeft: true,
+    this.onTapNext,
+    this.onTapPrev,
+    @required this.showDone,
   });
 
   final String text;
-  final bool left;
+  final bool isLeft;
+  final Function onTapNext;
+  final Function onTapPrev;
+  final bool showDone;
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: <Widget>[
-        left == false ?  Expanded(
-          child: Container(),
-        ) : Container(),
-        Text(
-          text,
-          textAlign: left ? TextAlign.left : TextAlign.right,
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 18,
-          ),
+    return GestureDetector(
+      onTap: (onTapNext == null) ? null : (){
+        print("----------------ON TAP NEXT");
+        onTapNext();
+      },
+      //NOTE: invisible container required to make tap target large
+      child: Container(
+        color: Colors.transparent,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: isLeft 
+          ? CrossAxisAlignment.start 
+          : CrossAxisAlignment.end,
+          children: <Widget>[
+            Row(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: isLeft 
+              ? MainAxisAlignment.start
+              : MainAxisAlignment.end,
+              children: <Widget>[
+                Text(
+                  text,
+                  textAlign: isLeft ? TextAlign.left : TextAlign.right,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                  ),
+                ),
+              ],
+            ),
+            Padding(
+              padding: const EdgeInsets.only(
+                top: 8,
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: isLeft 
+                ? MainAxisAlignment.start
+                : MainAxisAlignment.end,
+                children: <Widget>[
+                  (onTapPrev == null) ? Container()
+                  : ClipRRect(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(12),
+                      bottomLeft: Radius.circular(12),
+                    ),
+                    clipBehavior: Clip.hardEdge,
+                    child: Material(
+                      color: Colors.transparent,
+                      child: InkWell(
+                        highlightColor: Theme.of(context).accentColor,
+                        onTap: () => onTapPrev(),
+                        child: Container(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 8,
+                          ),
+                          decoration: BoxDecoration(
+                            //color: Colors.blue,
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(12),
+                              bottomLeft: Radius.circular(12),
+                            ),
+                            border: Border.all(
+                              color: Colors.white.withOpacity(0.5),
+                              width: 2,
+                            )
+                          ),
+                          child: Text(
+                            "Back",
+                            style: TextStyle(
+                              fontSize: 14,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(
+                      left: (onTapPrev == null) ? 0 : 16,
+                    ),
+                    child: Container(
+                      padding: EdgeInsets.symmetric(
+                        vertical: 8,
+                      ),
+                      child: Text(
+                        showDone ? "Done" : "Next",
+                        style: TextStyle(
+                          fontSize: 14,
+                        ),
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            )
+          ],
         ),
-        left ?  Expanded(
-          child: Container(),
-        ) : Container(),
-      ],
+      ),
     );
   }
 }
@@ -69,26 +160,35 @@ class OnBoardingImage extends StatelessWidget {
     @required this.multiplier,
     @required this.imageUrl,
     this.isLeft,
+    this.onTap,
   });
 
   final double width;
   final double multiplier;
   final String imageUrl;
   final bool isLeft;
+  final Function onTap;
 
   @override
   Widget build(BuildContext context) {
-    return FittedBox(
-      fit: BoxFit.contain,
+    return GestureDetector(
+      onTap: (onTap == null) ? null : () => onTap(),
+      //NOTE: invisible container required to make tap target large
       child: Container(
-        width: width,
-        height: width,
-        alignment: (isLeft == null) ? Alignment.center
-        : (isLeft) ? Alignment.centerLeft : Alignment.centerRight,
-        child: Container(
-          width: width * multiplier,
-          child: Image.asset(
-            imageUrl,
+        color: Colors.transparent,
+        child: FittedBox(
+          fit: BoxFit.contain,
+          child: Container(
+            width: width,
+            height: width,
+            alignment: (isLeft == null) ? Alignment.center
+            : (isLeft) ? Alignment.centerLeft : Alignment.centerRight,
+            child: Container(
+              width: width * multiplier,
+              child: Image.asset(
+                imageUrl,
+              ),
+            ),
           ),
         ),
       ),
@@ -119,9 +219,26 @@ class FeatureWrapper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Function dismissThenNextFeature = (nextFeature == null) 
+    ? () => FeatureDiscovery.dismiss(context) 
+    : (){
+      FeatureDiscovery.dismiss(context);
+      nextFeature();
+    };
+
+    Function dismissThenPrevFeature = (prevFeature == null) ? null 
+    : (){
+      FeatureDiscovery.dismiss(context);
+      print("prev feature for " + text);
+      prevFeature();
+    };
+
     Widget textWidget = OnBoardingText(
       text: text,
-      left: left,
+      isLeft: left,
+      onTapNext: dismissThenNextFeature,
+      onTapPrev: dismissThenPrevFeature,
+      showDone: (nextFeature == null),
     );
 
     String imageUrl;
@@ -134,26 +251,10 @@ class FeatureWrapper extends StatelessWidget {
       width: MediaQuery.of(context).size.width,
       multiplier: (2/3),
       imageUrl: imageUrl,
+      //NOTE: the top onBoardings are center aligned
       isLeft: top ? null : (left == false),
+      onTap: dismissThenNextFeature,
     );
-
-    /*
-    Function toNextFeature;
-    /*
-    (){
-      FeatureDiscovery.completeCurrentStep(context);
-    };
-    */
-
-    if(nextFeature != null){
-      print("to next feature string: " + nextFeature);
-      toNextFeature = (){
-        FeatureDiscovery.discoverFeatures(context, [
-          nextFeature,
-        ]);
-      };
-    }
-    */
 
     return DescribedFeatureOverlay(
       featureId: featureID,
@@ -173,12 +274,10 @@ class FeatureWrapper extends StatelessWidget {
       child: child,
       //functions
       onComplete: () async{
-        print("on complete");
         if(nextFeature != null) nextFeature();
         return true;
       },
       onDismiss: () async{
-        print("on dismiss");
         if(nextFeature != null) nextFeature();
         return true;
       },
