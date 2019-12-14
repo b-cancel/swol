@@ -33,6 +33,7 @@ class AddExcerciseButton extends StatelessWidget {
         child: FeatureWrapper(
           featureID: AFeature.AddExcercise.toString(),
           tapTarget: FloatingActionButton(
+            onPressed: null, //TODO: check
             child: Icon(Icons.add),
           ),
           text: "Tap here to add a\n"
@@ -45,7 +46,13 @@ class AddExcerciseButton extends StatelessWidget {
           left: true,
           prevFeature: () => OnBoarding.discoverLearnPage(context),
           doneInsteadOfNext: true,
-          nextFeature: () => OnBoarding.initialControlsShown(),
+          nextFeature: (){
+            print("next feature");
+            /*
+            print("initial controls shown and trigger from add button");
+            OnBoarding.initialControlsShown();
+            */
+          },
         ),
       ),
     );

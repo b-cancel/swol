@@ -1,6 +1,7 @@
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:swol/main.dart';
 
 enum AFeature {
   //permission
@@ -18,11 +19,18 @@ enum StoredBools {
 class OnBoarding{
   static bool setgetValue(SharedPreferences prefs, StoredBools storedBool){
     dynamic value = prefs.getBool(storedBool.toString());
+    print("value of " + storedBool.toString() + " of " + value.toString());
+    
+    if(storedBool == StoredBools.InitialControlsShown){
+      prefs.setBool(storedBool.toString(), false);
+      value = false;
+    }
+    
     if(value == null){
       prefs.setBool(storedBool.toString(), false);
       return false;
     }
-    else return true;
+    else return value;
   }
 
   static bool showDebuging = false;
@@ -86,77 +94,94 @@ class OnBoardingText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: (onTapNext == null) ? null : () => onTapNext(),
-      //NOTE: invisible container required to make tap target large
-      child: Container(
-        color: Colors.transparent,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: isLeft 
-          ? CrossAxisAlignment.start 
-          : CrossAxisAlignment.end,
-          children: <Widget>[
-            Row(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: isLeft 
-              ? MainAxisAlignment.start
-              : MainAxisAlignment.end,
-              children: <Widget>[
-                Text(
-                  text,
-                  textAlign: isLeft ? TextAlign.left : TextAlign.right,
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
-                  ),
+    Widget invisibleExpandedButton = Expanded(
+      child: GestureDetector(
+        onTap: (onTapNext == null) ? (){} : () => onTapNext(),
+        child: Container(
+          color: Colors.green,
+          child: Text(""),
+        ),
+      ),
+    );
+
+    //build
+    return Container(
+      color: Colors.transparent,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: isLeft 
+        ? CrossAxisAlignment.start 
+        : CrossAxisAlignment.end,
+        children: <Widget>[
+          GestureDetector(
+            onTap: (onTapNext == null) ? (){} : () => onTapNext(),
+            child: Container(
+              color: Colors.pink,
+              alignment: isLeft ? Alignment.centerLeft : Alignment.centerRight,
+              child: Text(
+                text,
+                textAlign: isLeft ? TextAlign.left : TextAlign.right,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
                 ),
-              ],
+              ),
             ),
-            Row(
+          ),
+          //-------------------------*-------------------------
+          IntrinsicHeight(
+            child: Row(
               mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: isLeft 
-              ? MainAxisAlignment.start
-              : MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
+                (isLeft == false) ? invisibleExpandedButton : Container(),
                 (onTapPrev == null) ? Container()
                 : GestureDetector(
-                  onTap: () => onTapPrev(),
-                  child: Padding(
-                    padding: const EdgeInsets.only(
-                      top: 8,
-                    ),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(12),
-                        bottomLeft: Radius.circular(12),
+                  onTap: (){
+                    print("on tap prev outer");
+                    onTapPrev();
+                  },
+                  child: Container(
+                    color: Colors.yellow,
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                        top: 8,
                       ),
-                      clipBehavior: Clip.hardEdge,
-                      child: Material(
-                        color: Colors.transparent,
-                        child: InkWell(
-                          highlightColor: Theme.of(context).accentColor,
-                          onTap: () => onTapPrev(),
-                          child: Container(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: 16,
-                              vertical: 8,
-                            ),
-                            decoration: BoxDecoration(
-                              //color: Colors.blue,
-                              borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(12),
-                                bottomLeft: Radius.circular(12),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(12),
+                          bottomLeft: Radius.circular(12),
+                        ),
+                        clipBehavior: Clip.hardEdge,
+                        child: Material(
+                          color: Colors.transparent,
+                          child: InkWell(
+                            highlightColor: Theme.of(context).accentColor,
+                            onTap: (){
+                              print("on tap prev inner");
+                              onTapPrev();
+                            },
+                            child: Container(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 16,
+                                vertical: 8,
                               ),
-                              border: Border.all(
-                                color: Colors.white.withOpacity(0.5),
-                                width: 2,
-                              )
-                            ),
-                            child: Text(
-                              "Back",
-                              style: TextStyle(
-                                fontSize: 14,
+                              decoration: BoxDecoration(
+                                //color: Colors.blue,
+                                borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(12),
+                                  bottomLeft: Radius.circular(12),
+                                ),
+                                border: Border.all(
+                                  color: Colors.white.withOpacity(0.5),
+                                  width: 2,
+                                )
+                              ),
+                              child: Text(
+                                "Back",
+                                style: TextStyle(
+                                  fontSize: 14,
+                                ),
                               ),
                             ),
                           ),
@@ -165,27 +190,35 @@ class OnBoardingText extends StatelessWidget {
                     ),
                   ),
                 ),
-                Padding(
-                  padding: EdgeInsets.only(
-                    left: (onTapPrev == null) ? 0 : 16,
-                    top: 8 + 8.0,
-                  ),
+                GestureDetector(
+                  onTap: (onTapNext == null) ? (){} : () => onTapNext(),
                   child: Container(
-                    padding: EdgeInsets.symmetric(
-                      vertical: 8,
-                    ),
-                    child: Text(
-                      showDone ? "Done" : "Next",
-                      style: TextStyle(
-                        fontSize: 14,
+                    color: Colors.orange,
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                        left: (onTapPrev == null) ? 0 : 16,
+                        top: 8 + 8.0,
+                      ),
+                      child: Container(
+                        padding: EdgeInsets.symmetric(
+                          vertical: 8,
+                        ),
+                        child: Text(
+                          showDone ? "Done" : "Next",
+                          style: TextStyle(
+                            fontSize: 14,
+                          ),
+                        ),
                       ),
                     ),
                   ),
-                )
+                ),
+                isLeft ? invisibleExpandedButton : Container(),
               ],
-            )
-          ],
-        ),
+            ),
+          ),
+          //-------------------------*-------------------------
+        ],
       ),
     );
   }
@@ -209,10 +242,10 @@ class OnBoardingImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: (onTap == null) ? null : () => onTap(),
+      onTap: (onTap == null) ? (){} : () => onTap(),
       //NOTE: invisible container required to make tap target large
       child: Container(
-        color: Colors.transparent,
+        color: Colors.grey,
         child: FittedBox(
           fit: BoxFit.contain,
           child: Container(
@@ -315,10 +348,12 @@ class FeatureWrapper extends StatelessWidget {
       child: child,
       //functions
       onComplete: () async{
+        print("from on complete");
         if(nextFeature != null) nextFeature();
         return true;
       },
       onDismiss: () async{
+        print("on dismiss");
         if(nextFeature != null) nextFeature();
         return true;
       },
