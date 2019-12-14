@@ -15,6 +15,7 @@ import 'package:swol/excerciseSelection/secondary/decoration.dart';
 import 'package:swol/other/theme.dart';
 import 'package:swol/excercise/excerciseData.dart';
 import 'package:swol/excerciseSearch/searchesData.dart';
+import 'package:swol/utils/onboarding.dart';
 
 //app start
 void main() => runApp(App());
@@ -76,39 +77,12 @@ class GrabSystemPrefs extends StatelessWidget {
             nextID = 0;
           }
 
-          //handle stuff from main page
-          dynamic permissionGiven = prefs.getBool("permissionGiven");
-          if(permissionGiven == null){
-            prefs.setBool("permissionGiven", false);
-            permissionGiven = false;
-          }
-
-          dynamic shownInitialControls = prefs.getBool("shownInitialControls");
-          if(shownInitialControls == null){
-            prefs.setBool("shownInitialControls", false);
-            shownInitialControls = false;
-          }
-
-          //TODO: handle stuff below
-
-          dynamic shownSearchBar = prefs.getBool("shownSearchBar");
-          if(shownSearchBar == null){
-            prefs.setBool("shownSearchBar", false);
-            shownSearchBar = false;
-          }
-
-          //handle stuff from learn page
-          dynamic shownCalculator = prefs.getBool("shownCalculator");
-          if(shownCalculator == null){
-            prefs.setBool("shownCalculator", false);
-            shownCalculator = false;
-          }
-
-          dynamic shownSettings = prefs.getBool("shownSettings");
-          if(shownSettings == null){
-            prefs.setBool("shownSettings", false);
-            shownSettings = false;
-          }
+          //get bool value
+          bool permissionGiven = OnBoarding.setgetValue(prefs, StoredBools.TermsAgreed);
+          bool shownInitialControls = OnBoarding.setgetValue(prefs, StoredBools.InitialControlsShown);
+          bool shownSearchButton = OnBoarding.setgetValue(prefs, StoredBools.SearchButtonShown);
+          bool shownCalculator = OnBoarding.setgetValue(prefs, StoredBools.CalculatorShown);
+          bool shownSettings = OnBoarding.setgetValue(prefs, StoredBools.SettingsShown);
 
           //set nextID to its usable version
           AnExcercise.nextID = nextID;
@@ -123,7 +97,7 @@ class GrabSystemPrefs extends StatelessWidget {
             child: GrabFileData(
               permissionGiven: permissionGiven,
               shownInitialControls: shownInitialControls,
-              shownSearchBar: shownSearchBar,
+              shownSearchBar: shownSearchButton,
               shownCalculator: shownCalculator,
               shownSettings: shownSettings,
             ),

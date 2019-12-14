@@ -2,47 +2,68 @@ import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-enum AFeature {SwolLogo, LearnPage, AddExcercise, SearchExcercise}
+enum AFeature {
+  //permission
+  SwolLogo, LearnPage, AddExcercise, SearchExcercise, //initial controls
+}
+
+enum StoredBools {
+  TermsAgreed, //permission
+  InitialControlsShown, //inital controls
+  SearchButtonShown,
+  CalculatorShown, 
+  SettingsShown,
+}
 
 class OnBoarding{
+  static bool setgetValue(SharedPreferences prefs, StoredBools storedBool){
+    dynamic value = prefs.getBool(storedBool.toString());
+    if(value == null){
+      prefs.setBool(storedBool.toString(), false);
+      return false;
+    }
+    else return true;
+  }
+
   static bool showDebuging = false;
 
-  static givePermission() async{
+  static givePermission() => boolSet(StoredBools.TermsAgreed);
+  static initialControlsShown() => boolSet(StoredBools.InitialControlsShown);
+  static searchButtonShown() => boolSet(StoredBools.SearchButtonShown);
+  static calculatorShown() => boolSet(StoredBools.CalculatorShown);
+  static settingsShown() => boolSet(StoredBools.SettingsShown);
+
+  static boolSet(StoredBools storedBool) async{
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setBool("permissionGiven", true);
+    prefs.setBool(storedBool.toString(), true);
   }
 
-  static initialControlsShown() async{
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setBool("shownInitialControls", true);
-  }
-
-  //TODO: all other feature discovery stuff
+  //-------------------------*-------------------------
 
   static discoverSwolLogo(BuildContext context){
     if(OnBoarding.showDebuging) print("before feature discovery");
-    String featureToDiscover = AFeature.SwolLogo.toString();
-    if(OnBoarding.showDebuging) print("feature to discover: " + featureToDiscover);
+    AFeature featureToDiscover = AFeature.SwolLogo;
+    if(OnBoarding.showDebuging) print("feature to discover: " + featureToDiscover.toString());
     discoverSet(context, featureToDiscover);
     if(OnBoarding.showDebuging) print("after feature discovery");
   }
 
   static discoverLearnPage(BuildContext context){
-    discoverSet(context, AFeature.LearnPage.toString());
+    discoverSet(context, AFeature.LearnPage);
   }
 
   static discoverAddExcercise(BuildContext context){
-    discoverSet(context, AFeature.AddExcercise.toString());
+    discoverSet(context, AFeature.AddExcercise);
   }
 
   static discoverSearchExcercise(BuildContext context){
-    discoverSet(context, AFeature.SearchExcercise.toString());
+    discoverSet(context, AFeature.SearchExcercise);
   }
 
   //utility function because Feature discovery seems to prefer sets
-  static discoverSet(BuildContext context, String featureName){
+  static discoverSet(BuildContext context, AFeature featureName){
     Set<String> aSet = new Set<String>();
-    aSet.add(featureName);
+    aSet.add(featureName.toString());
     FeatureDiscovery.discoverFeatures(context, aSet);
   }
 }
