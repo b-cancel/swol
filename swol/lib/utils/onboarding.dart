@@ -23,22 +23,12 @@ enum StoredBools {
 class OnBoarding{
   static bool setgetValue(SharedPreferences prefs, StoredBools storedBool){
     dynamic value = prefs.getBool(storedBool.toString());
-    print("value of " + storedBool.toString() + " of " + value.toString());
-    
-    //TODO: removing this debugging code which make the pop up always come up
-    if(storedBool == StoredBools.InitialControlsShown){
-      prefs.setBool(storedBool.toString(), false);
-      value = false;
-    }
-    
     if(value == null){
       prefs.setBool(storedBool.toString(), false);
       return false;
     }
     else return value;
   }
-
-  static bool showDebuging = false;
 
   static givePermission() => boolSet(StoredBools.TermsAgreed);
   static initialControlsShown() => boolSet(StoredBools.InitialControlsShown);
@@ -54,11 +44,7 @@ class OnBoarding{
   //-------------------------*-------------------------
 
   static discoverSwolLogo(BuildContext context){
-    if(OnBoarding.showDebuging) print("before feature discovery");
-    AFeature featureToDiscover = AFeature.SwolLogo;
-    if(OnBoarding.showDebuging) print("feature to discover: " + featureToDiscover.toString());
-    discoverSet(context, featureToDiscover);
-    if(OnBoarding.showDebuging) print("after feature discovery");
+    discoverSet(context, AFeature.SwolLogo);
   }
 
   static discoverLearnPage(BuildContext context){
@@ -145,10 +131,7 @@ class OnBoardingText extends StatelessWidget {
                 (isLeft == false) ? invisibleExpandedButton : Container(),
                 (onTapPrev == null) ? Container()
                 : GestureDetector(
-                  onTap: (){
-                    print("on tap prev outer");
-                    onTapPrev();
-                  },
+                  onTap: () => onTapPrev(),
                   child: Container(
                     color: Colors.yellow,
                     child: Padding(
@@ -165,10 +148,7 @@ class OnBoardingText extends StatelessWidget {
                           color: Colors.transparent,
                           child: InkWell(
                             highlightColor: Theme.of(context).accentColor,
-                            onTap: (){
-                              print("on tap prev inner");
-                              onTapPrev();
-                            },
+                            onTap: () => onTapPrev(),
                             child: Container(
                               padding: EdgeInsets.symmetric(
                                 horizontal: 16,
@@ -304,6 +284,10 @@ class FeatureWrapper extends StatelessWidget {
   //before moving onto the next feature discovery or finishing up the discoveries
   //we could have chosen either to use as our "pivot" be we chose [1]
 
+  //NOTE: these feature wrappers can be called or opened up multiple times without being rebuilt
+  //so in order for the buttons to continue working as expected
+  //we must reset the value notifier after every [1] or [2]
+
   //Potential User Actions
   //1 -> continue by pressing target
   //2 -> continue by pressing anything else
@@ -373,23 +357,20 @@ class FeatureWrapper extends StatelessWidget {
       child: child,
       //functions
       onComplete: () async{ 
-        print("from on complete");
         if(nextFeature != null) nextFeature();
-        return true;
+        continueForward.value = true; //reset
+        return true; //keep it simple always return true
       },
       onDismiss: () async{
-        print("from on dismiss");
         if(continueForward.value){
           if(nextFeature != null) nextFeature();
         }
         else{
           if(prevFeature != null) prevFeature();
         }
-        return true;
+        continueForward.value = true; //reset
+        return true; //keep it simple always return true
       },
     );
   }
 }
-
-//onComplete => from tapping target (complete * 3 + next feature)
-//onDismiss => from tapping outside of circle (dismiss * 3 + next feature)
