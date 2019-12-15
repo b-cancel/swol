@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:math' as math;
 import 'package:swol/excercise/excerciseStructure.dart';
 import 'package:swol/sharedWidgets/excerciseListTile/miniTimer.dart';
 import 'package:swol/sharedWidgets/excerciseListTile/triangleAngle.dart';
@@ -76,18 +77,37 @@ class _AnimatedMiniNormalTimerState extends State<AnimatedMiniNormalTimer> with 
   //build
   @override
   Widget build(BuildContext context) {
+    //generate all start angles of slices
+    List<int> angles = new List<int>();
+    for(int i = 0; i < 10 ; i++) angles.add(36 * i);
+    angles.add(360);
+
     DateTime timerStarted = widget.excerciseReference.tempStartTime;
     Duration timePassed = DateTime.now().difference(timerStarted);
     bool borderRed = timePassed > widget.excerciseReference.recoveryPeriod;
 
-    double tickSize = 15;
-    double halfTick = (tickSize/2.0);
+    //72 degrees 1 minutes
+    //36 degrees 30 seconds
+    //18 degrees 15 seconds
+    //9 degrees 7.5 seconds
+    //4.5 degrees 3.75 seconds
+    double halfTick = 9; 
+    List<Widget> ticks = new List<Widget>();
     Widget tick = TriangleAngle(
       size: widget.circleSize - widget.circleToTicksPadding,
       start: 360.0 - halfTick,
       end: halfTick,
       color: borderRed ? Colors.red : Colors.white,
     );
+
+    for(int i = 0; i < 5; i++){
+      ticks.add(
+        Transform.rotate(
+          angle: (math.pi / 2.5) * i, //72.0 * i,
+          child: tick,
+        ),
+      );
+    }
 
     double littleCircleSize = widget.circleSize 
       - (widget.circleToTicksPadding * 2) 
@@ -99,21 +119,25 @@ class _AnimatedMiniNormalTimerState extends State<AnimatedMiniNormalTimer> with 
       child: Container(
         width: widget.circleSize,
         height: widget.circleSize,
-        color: Colors.white, //TODO: decide rim color
+        color: controller.value == 1 ? Colors.red : Colors.white, //TODO: decide rim color
         padding: EdgeInsets.all(
           widget.circleToTicksPadding,
         ),
         child: ClipOval(
           child: Stack(
             children: <Widget>[
-              Stack(
-                children: slices,
+              Container(
+                color: Theme.of(context).primaryColorDark,
+                child: Container(),
               ),
               HighlightSlice(
                 excerciseReference: widget.excerciseReference,
                 size: widget.circleSize - widget.circleToTicksPadding,
                 angles: angles,
                 controllerValue: controller.value
+              ),
+              Stack(
+                children: ticks,
               ),
               Container(
                 padding: EdgeInsets.all(

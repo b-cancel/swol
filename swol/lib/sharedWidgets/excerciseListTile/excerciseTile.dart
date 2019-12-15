@@ -71,7 +71,8 @@ class ExcerciseTile extends StatelessWidget {
       //used so all tiles are the same height
       //and can properly show the mini timer
       ? Container(
-        height: 30,
+        height: 0,
+        //height: 30, //TODO: uncomment for equal spacing (I prefer it to be uneven)
       )
       //show 1 rep max stuffs
       : ExcerciseTileSubtitle(
