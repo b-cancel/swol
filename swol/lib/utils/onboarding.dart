@@ -1,8 +1,11 @@
-import 'package:feature_discovery/feature_discovery.dart';
+//flutter
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:swol/main.dart';
 
+//plugins
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:feature_discovery/feature_discovery.dart';
+
+//enums
 enum AFeature {
   //permission
   SwolLogo, LearnPage, AddExcercise, SearchExcercise, //initial controls
@@ -16,11 +19,13 @@ enum StoredBools {
   SettingsShown,
 }
 
+//classes
 class OnBoarding{
   static bool setgetValue(SharedPreferences prefs, StoredBools storedBool){
     dynamic value = prefs.getBool(storedBool.toString());
     print("value of " + storedBool.toString() + " of " + value.toString());
     
+    //TODO: removing this debugging code which make the pop up always come up
     if(storedBool == StoredBools.InitialControlsShown){
       prefs.setBool(storedBool.toString(), false);
       value = false;
@@ -83,7 +88,6 @@ class OnBoardingText extends StatelessWidget {
     this.onTapNext,
     this.onTapPrev,
     @required this.showDone,
-    
   });
 
   final String text;
@@ -94,9 +98,13 @@ class OnBoardingText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    //NOTE: its seperate so we can change it quickly later
+    //if need be
+    Function secondaryOnTapNext = (onTapNext == null) ? (){} : () => onTapNext();
+
     Widget invisibleExpandedButton = Expanded(
       child: GestureDetector(
-        onTap: (onTapNext == null) ? (){} : () => onTapNext(),
+        onTap: () => secondaryOnTapNext(),
         child: Container(
           color: Colors.green,
           child: Text(""),
@@ -114,7 +122,7 @@ class OnBoardingText extends StatelessWidget {
         : CrossAxisAlignment.end,
         children: <Widget>[
           GestureDetector(
-            onTap: (onTapNext == null) ? (){} : () => onTapNext(),
+            onTap: () => secondaryOnTapNext(),
             child: Container(
               color: Colors.pink,
               alignment: isLeft ? Alignment.centerLeft : Alignment.centerRight,
@@ -144,8 +152,8 @@ class OnBoardingText extends StatelessWidget {
                   child: Container(
                     color: Colors.yellow,
                     child: Padding(
-                      padding: const EdgeInsets.only(
-                        top: 8,
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 8,
                       ),
                       child: ClipRRect(
                         borderRadius: BorderRadius.only(
@@ -173,7 +181,7 @@ class OnBoardingText extends StatelessWidget {
                                   bottomLeft: Radius.circular(12),
                                 ),
                                 border: Border.all(
-                                  color: Colors.white.withOpacity(0.5),
+                                  color: Colors.green.withOpacity(0.5),
                                   width: 2,
                                 )
                               ),
@@ -197,16 +205,18 @@ class OnBoardingText extends StatelessWidget {
                     child: Padding(
                       padding: EdgeInsets.only(
                         left: (onTapPrev == null) ? 0 : 16,
-                        top: 8 + 8.0,
+                        right: 16,
+                        top: 16,
+                        bottom: 16,
                       ),
-                      child: Container(
-                        padding: EdgeInsets.symmetric(
-                          vertical: 8,
-                        ),
-                        child: Text(
-                          showDone ? "Done" : "Next",
-                          style: TextStyle(
-                            fontSize: 14,
+                      child: Center(
+                        child: Container(
+                          color: Colors.red,
+                          child: Text(
+                            showDone ? "Done" : "Next",
+                            style: TextStyle(
+                              fontSize: 14,
+                            ),
                           ),
                         ),
                       ),
@@ -289,29 +299,44 @@ class FeatureWrapper extends StatelessWidget {
   final Function nextFeature;
   final bool doneInsteadOfNext;
 
+  //NOTE: [1] Dismiss or [2] OnComplete are both going to be called 
+  //because we HAVE TO close the current discovery feature
+  //before moving onto the next feature discovery or finishing up the discoveries
+  //we could have chosen either to use as our "pivot" be we chose [1]
+
+  //Potential User Actions
+  //1 -> continue by pressing target
+  //2 -> continue by pressing anything else
+  //3 -> continue by pressing the next button
+  //4 -> go to the previous discovery feature
+  //5 -> continue by pressing outside the feature discovery
+
+  //there are 5 user actions each slightly different in their execution of onTap
+  //1 -> will automatically call [2] dismiss us and call next feature
+  //all the actions below use the pivot
+  //2 -> calls [1] manually
+  //3 -> calls [1] manually
+  //    NOTE: 3 is the same as 2 except we have them seperate 
+  //          just in case later on we want to seperate these 2 functions
+  //          tapping outside the buttons and going next may be unexpected
+  //4 -> reconfigured the variable that [1] reacts to, then call [1] manually
+  //5 -> will automatically call [1]
+
+  //NOTE: how 4 is the exception
+
+  final ValueNotifier<bool> continueForward = new ValueNotifier(true);
+
   @override
   Widget build(BuildContext context) {
-    Function dismissThenNextFeature = (nextFeature == null) 
-    ? () => FeatureDiscovery.dismiss(context) 
-    : (){
-      FeatureDiscovery.dismiss(context);
-      nextFeature();
-    };
-
-    Function dismissThenPrevFeature = (prevFeature == null) ? null 
-    : (){
-      if(OnBoarding.showDebuging) print("dimssin the previous feature discovery");
-      FeatureDiscovery.dismiss(context);
-      if(OnBoarding.showDebuging) print("go to prev feature for \"" + text + "\"");
-      prevFeature();
-      if(OnBoarding.showDebuging) print("after gone to next feature");
-    };
-
     Widget textWidget = OnBoardingText(
       text: text,
       isLeft: left,
-      onTapNext: dismissThenNextFeature,
-      onTapPrev: dismissThenPrevFeature,
+      onTapNext: () => FeatureDiscovery.dismiss(context),
+      onTapPrev: (prevFeature == null) ? null : (){
+        continueForward.value = false;
+        //because of the above dismiss will react differently
+        FeatureDiscovery.dismiss(context);
+      },
       showDone: doneInsteadOfNext,
     );
 
@@ -327,7 +352,7 @@ class FeatureWrapper extends StatelessWidget {
       imageUrl: imageUrl,
       //NOTE: the top onBoardings are center aligned
       isLeft: top ? null : (left == false),
-      onTap: dismissThenNextFeature,
+      onTap: () => FeatureDiscovery.dismiss(context),
     );
 
     return DescribedFeatureOverlay(
@@ -347,16 +372,24 @@ class FeatureWrapper extends StatelessWidget {
       //child
       child: child,
       //functions
-      onComplete: () async{
+      onComplete: () async{ 
         print("from on complete");
         if(nextFeature != null) nextFeature();
         return true;
       },
       onDismiss: () async{
-        print("on dismiss");
-        if(nextFeature != null) nextFeature();
+        print("from on dismiss");
+        if(continueForward.value){
+          if(nextFeature != null) nextFeature();
+        }
+        else{
+          if(prevFeature != null) prevFeature();
+        }
         return true;
       },
     );
   }
 }
+
+//onComplete => from tapping target (complete * 3 + next feature)
+//onDismiss => from tapping outside of circle (dismiss * 3 + next feature)

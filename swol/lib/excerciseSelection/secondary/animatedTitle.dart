@@ -1,5 +1,4 @@
 //dart
-import 'package:feature_discovery/feature_discovery.dart';
 import 'package:swol/excerciseSelection/secondary/decoration.dart';
 import 'package:swol/utils/onboarding.dart';
 import 'package:vector_math/vector_math_64.dart' as vect;
@@ -62,17 +61,14 @@ class AnimatedTitleAction extends StatelessWidget {
             ),
             top: true,
             left: false,
-            //TODO: Eventually figure out why I needed to do this 
-            //NOTE: I needed to cover up that my prev button didnt work 
-            //NOTE: only didn't work here, even after extensive testing
-            /*
             prevFeature: (){
-              if(OnBoarding.showDebuging) print("before swol logo");
+              print("to swol logo");
               OnBoarding.discoverSwolLogo(context);
-              if(OnBoarding.showDebuging) print("after swol logo");
             },
-            */
-            nextFeature: () => OnBoarding.discoverAddExcercise(context),
+            nextFeature: (){
+              print("to add excercise");
+              OnBoarding.discoverAddExcercise(context);
+            },
           ),
         );
       },
@@ -118,7 +114,10 @@ class AnimatedTitle extends StatelessWidget {
             ),
             top: true,
             left: true,
-            nextFeature: () => OnBoarding.discoverLearnPage(context),
+            nextFeature: (){
+              print("to learn page");
+              OnBoarding.discoverLearnPage(context);
+            }
           ),
         );
       },

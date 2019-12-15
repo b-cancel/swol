@@ -44,14 +44,14 @@ class AddExcerciseButton extends StatelessWidget {
           ),
           top: false,
           left: true,
-          prevFeature: () => OnBoarding.discoverLearnPage(context),
+          prevFeature: (){
+            print("to learn page");
+            OnBoarding.discoverLearnPage(context);
+          },
           doneInsteadOfNext: true,
           nextFeature: (){
-            print("next feature");
-            /*
             print("initial controls shown and trigger from add button");
             OnBoarding.initialControlsShown();
-            */
           },
         ),
       ),
