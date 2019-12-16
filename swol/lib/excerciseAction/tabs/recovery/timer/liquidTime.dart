@@ -13,6 +13,29 @@ import 'package:swol/excerciseAction/tabs/recovery/timer/superOverflow.dart';
 import 'package:swol/excerciseAction/tabs/recovery/timer/turnOffVibration.dart';
 import 'package:swol/utils/vibrate.dart';
 
+/*
+TODO: improve turning off the vibration
+the small snippet of code that stops vibration 
+in "updateTimerDuration" covers some of the cases below
+
+if you turned off the vibration after the timer went off
+then as long as the timer isnt extended
+changing it should not restart the vibration
+neither should leaving and entering the excercise again
+A.K.A.
+setting the timer to the same time
+or setting the timer to less time
+should not restart the vibration
+
+if you turned off the 5 minutes timer vibration
+then leaving and entering the excercise again 
+should not restart the vibration
+
+if you turned off the 10 minutes timer vibration
+then leaving and enter the excercise again 
+should not restart the vibration
+*/
+
 //build
 class LiquidTime extends StatefulWidget {
   LiquidTime({
@@ -47,32 +70,38 @@ class _LiquidTimeState extends State<LiquidTime> with TickerProviderStateMixin {
   AnimationController controllerShorter; 
   AnimationController controllerTimer; 
 
+  //TODO: fix it not switching over to the new ui after the full 10 has passed
+
   //function removable from listeners
   updateState(){
     if(mounted) setState(() {});
   }
 
   vibrateOnComplete(AnimationStatus status){
-    print("vibrating on complete");
-    if(status == AnimationStatus.completed) Vibrator.startVibration();
+    if(status == AnimationStatus.completed){
+      Vibrator.startVibration();
+      //needed so that when the 10 minutes pass 1 last reload causes us to switch to the new UI
+      updateState();
+    }
   }
 
   updateTimerDuration(){
-    //update all basic settings
+    controllerTimer.removeStatusListener(vibrateOnComplete);
     Duration timePassed = DateTime.now().difference(widget.timerStart);
     controllerTimer.duration = widget.changeableTimerDuration.value;
-    controllerTimer.value = 0; //so it can easily start
-    controllerTimer.forward(); //so it starts
-    controllerTimer.value = timesToValue(timePassed, widget.changeableTimerDuration.value);
+    controllerTimer.addStatusListener(vibrateOnComplete); 
+    controllerTimer.forward(
+      from: timesToValue(timePassed, widget.changeableTimerDuration.value),
+    );
 
-    //TODO: check if i really need to manually update vibration
+    //stops the vibration IF before you were past the set time but before 5 minutes
+    //but now you are within the set time and before 5 minutes
     bool shouldBeVibrating = (timePassed >= widget.changeableTimerDuration.value);
-    if(shouldBeVibrating)Vibrator.startVibration();
-    else if(shouldBeVibrating == false && Vibrator.isVibrating){
-      Vibrator.stopVibration();
-    }
+    //this extra condition guarantees that if the timer was shut off after 5, or 10
+    //it doesn't get reset
+    shouldBeVibrating = shouldBeVibrating && timePassed < maxEffectiveBreakDuration;
+    if(shouldBeVibrating == false && Vibrator.isVibrating) Vibrator.stopVibration();
 
-    //TODO: might not need this
     updateState();
   }
 
@@ -133,6 +162,11 @@ class _LiquidTimeState extends State<LiquidTime> with TickerProviderStateMixin {
     //how much has already passed in the background
     Duration timePassed = DateTime.now().difference(widget.timerStart);
 
+    //---default vibration starts after controllers end
+    controllerLonger.addStatusListener(vibrateOnComplete);
+    controllerShorter.addStatusListener(vibrateOnComplete);
+    controllerTimer.addStatusListener(vibrateOnComplete);
+
     //---start the controllers
     controllerLonger.forward(
       from: timesToValue(timePassed, maxEffectiveTimerDuration),
@@ -143,11 +177,6 @@ class _LiquidTimeState extends State<LiquidTime> with TickerProviderStateMixin {
     controllerTimer.forward(
       from: timesToValue(timePassed, widget.changeableTimerDuration.value),
     );
-
-    //---default vibration starts after controllers end
-    controllerLonger.addStatusListener(vibrateOnComplete);
-    controllerShorter.addStatusListener(vibrateOnComplete);
-    controllerTimer.addStatusListener(vibrateOnComplete);
   }
 
   @override
@@ -177,8 +206,6 @@ class _LiquidTimeState extends State<LiquidTime> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    print(controllerLonger.value.toString() + " -> " + controllerShorter.value.toString() + " -> " + controllerTimer.value.toString());
-
     //show UI depending on how much time has passed
     Duration totalDurationPassed = DateTime.now().difference(widget.timerStart);
 
@@ -186,8 +213,15 @@ class _LiquidTimeState extends State<LiquidTime> with TickerProviderStateMixin {
     List<String> timerDurationStrings = durationToCustomDisplay(widget.changeableTimerDuration.value);
     String timerDurationString = timerDurationStrings[0] + " : " + timerDurationStrings[1];
 
+    print(totalDurationPassed.toString() + " >= " + maxEffectiveTimerDuration.toString());
+    print(controllerLonger.value.toString());
+
     //super red gives us a completely different widget
-    if(totalDurationPassed >= maxEffectiveTimerDuration){
+    //NOTE: the ONE SECOND accounts for the fact that 
+    //the controller might not call set state immediately at the 10 minute mark
+    //but its highly unlikely the phone will lag so much 
+    //that it won't call it within the last 1 second
+    if(totalDurationPassed >= (maxEffectiveTimerDuration - Duration(seconds: 1))){
       return SuperOverflow(
         totalDurationPassed: totalDurationPassed,
         recoveryDurationString: timerDurationString,

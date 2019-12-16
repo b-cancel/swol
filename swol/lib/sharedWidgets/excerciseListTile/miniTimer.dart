@@ -1,5 +1,9 @@
 //flutter
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:loading_indicator/loading_indicator.dart';
+import 'package:progress_indicators/progress_indicators.dart';
 
 //internal structure
 import 'package:swol/excercise/defaultDateTimes.dart';
@@ -29,9 +33,92 @@ class ExcerciseTileLeading extends StatelessWidget {
   Widget build(BuildContext context) {
     //NOTE: timer takes precendence over regular inprogress
     if(excerciseReference.tempStartTime != null){
-      return AnimatedMiniNormalTimer(
-        excerciseReference: excerciseReference,
+      double width = 56;
+
+      //in case at some point I want to switch between indicators
+      Duration pusleDuration = Duration(milliseconds: 1000); //so its serves as a indicator of change as well
+      List<Widget> pulsingBackgrounds = [
+        //import 'package:flutter_spinkit/flutter_spinkit.dart';
+        SpinKitDualRing(
+          lineWidth: width/2,
+          color: Colors.white,
+          size: width,
+          duration: pusleDuration,
+        ),
+        SpinKitDoubleBounce( //ABBY LIKED
+          color: Colors.white,
+          size: width,
+          duration: pusleDuration,
+        ),
+        //import 'package:loading_indicator/loading_indicator.dart';
+        LoadingIndicator(
+          indicatorType: Indicator.ballScaleMultiple,
+          color: Colors.white,
+        ),
+        LoadingIndicator(
+          indicatorType: Indicator.ballScale, 
+          color: Colors.white,
+        ),
+        //import 'package:progress_indicators/progress_indicators.dart';
+        GlowingProgressIndicator( //KOBE LIKED
+          child: Container(
+            color: Colors.red.withOpacity(0.75),
+          ),
+          duration: Duration(milliseconds: 5000),
+        ),
+      ];
+
+      double maxSize = 54;
+    
+      //62 is max size
+      return Container(
+        height: maxSize,
+        width: maxSize,
+        child: Stack(
+          children: <Widget>[
+            Positioned.fill(
+              child: Transform.translate(
+                offset: Offset(0, 1.5),
+                child: Container(
+                  height: maxSize,
+                  width: maxSize,
+                  child: LoadingIndicator(
+                    indicatorType: Indicator.ballScaleMultiple, 
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
+            Positioned.fill(
+              child: Padding(
+                padding: const EdgeInsets.all(6.0),
+                child: new ClipPath(
+                  clipper: new InvertedCircleClipper(),
+                  child: Image(
+                    image: new AssetImage("assets/alarm.gif"),
+                    //lines being slightly distinguishable is ugly
+                    color: Colors.red,
+                  ),
+                ),
+              ),
+            ),
+            Positioned.fill(
+              child: Center(
+                child: Icon(
+                  FontAwesomeIcons.times,
+                  color: Colors.red,
+                )
+              ),
+            ),
+          ],
+        ),
       );
+      //TODO: add the little animated alarm clock to this widget and then also change the timer to match the alarm clock
+      //TODO: also start with a timer, then move onto a stopwatch (animate the little stick in)
+      //TODO: the whole thing stays WHITE as long as the alarm clock isnt ringing
+      /*AnimatedMiniNormalTimer(
+        excerciseReference: excerciseReference,
+      );*/
     }
     else if(LastTimeStamp.isInProgress(excerciseReference.lastTimeStamp)){
       return Container(
@@ -96,4 +183,20 @@ class ListTileChipShell extends StatelessWidget {
       ),
     );
   }
+}
+
+//from: https://stackoverflow.com/questions/49374893/flutter-inverted-clipoval/49396544
+class InvertedCircleClipper extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    return new Path()
+      ..addOval(new Rect.fromCircle(
+          center: new Offset(size.width / 2, size.height / 2),
+          radius: size.width * 0.25))
+      ..addRect(new Rect.fromLTWH(0.0, 0.0, size.width, size.height))
+      ..fillType = PathFillType.evenOdd;
+  }
+
+  @override
+  bool shouldReclip(CustomClipper<Path> oldClipper) => false;
 }
