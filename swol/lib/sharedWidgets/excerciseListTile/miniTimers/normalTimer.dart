@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:loading_indicator/loading_indicator.dart';
 import 'dart:math' as math;
 import 'package:swol/excercise/excerciseStructure.dart';
 import 'package:swol/sharedWidgets/excerciseListTile/miniTimer.dart';
 import 'package:swol/sharedWidgets/excerciseListTile/triangleAngle.dart';
+
+//TODO: add the little animated alarm clock to this widget and then also change the timer to match the alarm clock
+//TODO: also start with a timer, then move onto a stopwatch (animate the little stick in)
+//TODO: the whole thing stays WHITE as long as the alarm clock isnt ringing
 
 class AnimatedMiniNormalTimer extends StatefulWidget {
   AnimatedMiniNormalTimer({
@@ -11,7 +16,7 @@ class AnimatedMiniNormalTimer extends StatefulWidget {
     //56 feels good
     //48 feels better
     this.circleSize: 48, 
-    this.circleToTicksPadding: 4,
+    this.circleToTicksPadding: 3,
     this.tickWidth: 4,
     this.ticksToProgressCirclePadding: 4,
   });
@@ -114,14 +119,83 @@ class _AnimatedMiniNormalTimerState extends State<AnimatedMiniNormalTimer> with 
       - (widget.tickWidth * 2) 
       - (widget.ticksToProgressCirclePadding * 2);
 
-    //display slices
+    //62 is max size
+    return Stack(
+      children: <Widget>[
+        Positioned.fill(
+          child: Stack(
+            children: <Widget>[
+              Positioned.fill(
+                child: Transform.translate(
+                  offset: Offset(0, 2.25),
+                  child: Padding(
+                    padding: const EdgeInsets.all(6),
+                    child: AnimatedCircleWidget(
+                      angles: angles, 
+                      ticks: ticks,  
+                      controller: controller, 
+                      excerciseReference: widget.excerciseReference,
+                      //-----
+                      circleSize: widget.circleSize,
+                      circleToTicksPadding: widget.circleToTicksPadding,
+                      tickWidth: widget.tickWidth,
+                      ticksToProgressCirclePadding: widget.ticksToProgressCirclePadding,
+                      littleCircleSize: littleCircleSize,
+                    ),
+                  ),
+                ),
+              ),
+              //-----timer stuff for timer
+              //TODO: add this
+              //-----stopwatch stuff for stopwatch
+              //TODO: add this
+            ],
+          ),
+        ),
+        Opacity(
+          opacity: controller.value == 1 ? 1.0 : 0.0,
+          child: ShakingAlarm(maxSize: 54),
+        ),
+      ],
+    );
+  }
+}
+
+class AnimatedCircleWidget extends StatelessWidget {
+  const AnimatedCircleWidget({
+    Key key,
+    @required this.angles,
+    @required this.ticks,
+    @required this.controller,
+    @required this.excerciseReference,
+    //-----
+    @required this.circleSize,
+    @required this.circleToTicksPadding,
+    @required this.tickWidth,
+    @required this.ticksToProgressCirclePadding,
+    @required this.littleCircleSize,
+  }) : super(key: key);
+
+  final List<int> angles;
+  final List<Widget> ticks;
+  final AnimationController controller;
+  final AnExcercise excerciseReference;
+  //-----
+  final double circleSize;
+  final double circleToTicksPadding;
+  final double tickWidth;
+  final double ticksToProgressCirclePadding;
+  final double littleCircleSize;
+
+  @override
+  Widget build(BuildContext context) {
     return ClipOval(
       child: Container(
-        width: widget.circleSize,
-        height: widget.circleSize,
+        width: circleSize,
+        height: circleSize,
         color: controller.value == 1 ? Colors.red : Colors.white, //TODO: decide rim color
         padding: EdgeInsets.all(
-          widget.circleToTicksPadding,
+          circleToTicksPadding,
         ),
         child: ClipOval(
           child: Stack(
@@ -131,8 +205,8 @@ class _AnimatedMiniNormalTimerState extends State<AnimatedMiniNormalTimer> with 
                 child: Container(),
               ),
               HighlightSlice(
-                excerciseReference: widget.excerciseReference,
-                size: widget.circleSize - widget.circleToTicksPadding,
+                excerciseReference: excerciseReference,
+                size: circleSize - circleToTicksPadding,
                 angles: angles,
                 controllerValue: controller.value
               ),
@@ -141,7 +215,7 @@ class _AnimatedMiniNormalTimerState extends State<AnimatedMiniNormalTimer> with 
               ),
               Container(
                 padding: EdgeInsets.all(
-                  widget.tickWidth,
+                  tickWidth,
                 ),
                 //TODO: replace this illusion of a inverted ClipOval
                 //TODO: for an actual invertedClipOval so I can configured the background as I please
@@ -149,11 +223,11 @@ class _AnimatedMiniNormalTimerState extends State<AnimatedMiniNormalTimer> with 
                   child: Container(
                     color: Theme.of(context).primaryColorDark,
                     padding: EdgeInsets.all(
-                      widget.ticksToProgressCirclePadding,
+                      ticksToProgressCirclePadding,
                     ),
                     child: ClipOval(
                       child: CircleProgress(
-                        excerciseReference: widget.excerciseReference,
+                        excerciseReference: excerciseReference,
                         size: littleCircleSize,
                         fullRed: controller.value == 1,
                       ),
@@ -164,6 +238,61 @@ class _AnimatedMiniNormalTimerState extends State<AnimatedMiniNormalTimer> with 
             ],
           ),
         )
+      ),
+    );
+  }
+}
+
+class ShakingAlarm extends StatelessWidget {
+  const ShakingAlarm({
+    Key key,
+    @required this.maxSize,
+  }) : super(key: key);
+
+  final double maxSize;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: maxSize,
+      width: maxSize,
+      child: Stack(
+        children: <Widget>[
+          Positioned.fill(
+            child: Transform.translate(
+              offset: Offset(0, 1.5),
+              child: Container(
+                height: maxSize,
+                width: maxSize,
+                child: LoadingIndicator(
+                  indicatorType: Indicator.ballScaleMultiple, 
+                  color: Colors.red,
+                  //Color.fromRGBO(128,128,128,1),
+                ),
+              ),
+            ),
+          ),
+          Positioned.fill(
+            child: new ClipPath(
+              clipper: new InvertedCircleClipper(),
+              child: Image(
+                image: new AssetImage("assets/alarm.gif"),
+                //lines being slightly distinguishable is ugly
+                color: Colors.red,
+              ),
+            ),
+          ),
+          /*
+          Positioned.fill(
+            child: Center(
+              child: Icon(
+                FontAwesomeIcons.times,
+                color: Colors.red,
+              )
+            ),
+          ),
+          */
+        ],
       ),
     );
   }

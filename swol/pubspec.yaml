@@ -20,6 +20,9 @@ dependencies:
   flutter:
     sdk: flutter
 
+  auto_animated: ^1.2.3
+  flutter_sidekick: ^0.1.3
+
   #hold gesture
   holding_gesture: ^0.0.3 #import 'package:holding_gesture/holding_gesture.dart';
 
