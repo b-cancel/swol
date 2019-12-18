@@ -1,9 +1,5 @@
 //flutter
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:loading_indicator/loading_indicator.dart';
-import 'package:progress_indicators/progress_indicators.dart';
 
 //internal structure
 import 'package:swol/excercise/defaultDateTimes.dart';
@@ -11,14 +7,10 @@ import 'package:swol/excercise/excerciseStructure.dart';
 import 'package:swol/other/durationFormat.dart';
 
 //internal widgets
-import 'package:swol/sharedWidgets/excerciseListTile/miniTimers/alienTimer.dart';
 import 'package:swol/sharedWidgets/excerciseListTile/excerciseTile.dart';
 import 'package:swol/sharedWidgets/excerciseListTile/miniTimers/normalTimer.dart';
 
-//plugins
-import 'package:auto_animated/auto_animated.dart';
-import 'package:flutter_sidekick/flutter_sidekick.dart';
-
+//tile might need reloading
 class ExcerciseTileLeading extends StatelessWidget {
   ExcerciseTileLeading({
     @required this.excerciseReference,

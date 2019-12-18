@@ -213,9 +213,6 @@ class _LiquidTimeState extends State<LiquidTime> with TickerProviderStateMixin {
     List<String> timerDurationStrings = durationToCustomDisplay(widget.changeableTimerDuration.value);
     String timerDurationString = timerDurationStrings[0] + " : " + timerDurationStrings[1];
 
-    print(totalDurationPassed.toString() + " >= " + maxEffectiveTimerDuration.toString());
-    print(controllerLonger.value.toString());
-
     //super red gives us a completely different widget
     //NOTE: the ONE SECOND accounts for the fact that 
     //the controller might not call set state immediately at the 10 minute mark

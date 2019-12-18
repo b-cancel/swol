@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'dart:math' as math;
 import 'package:swol/excercise/excerciseStructure.dart';
 import 'package:swol/sharedWidgets/excerciseListTile/miniTimer.dart';
 import 'package:swol/sharedWidgets/excerciseListTile/triangleAngle.dart';
 
-//TODO: add the little animated alarm clock to this widget and then also change the timer to match the alarm clock
-//TODO: also start with a timer, then move onto a stopwatch (animate the little stick in)
-//TODO: the whole thing stays WHITE as long as the alarm clock isnt ringing
+//96 close but still too dark
+int greyValue = 128;
 
 class AnimatedMiniNormalTimer extends StatefulWidget {
   AnimatedMiniNormalTimer({
@@ -102,7 +102,7 @@ class _AnimatedMiniNormalTimerState extends State<AnimatedMiniNormalTimer> with 
       size: widget.circleSize - widget.circleToTicksPadding,
       start: 360.0 - halfTick,
       end: halfTick,
-      color: borderRed ? Colors.red : Colors.white,
+      color: controller.value == 1 ? Colors.red : Colors.white,
     );
 
     for(int i = 0; i < 5; i++){
@@ -119,12 +119,36 @@ class _AnimatedMiniNormalTimerState extends State<AnimatedMiniNormalTimer> with 
       - (widget.tickWidth * 2) 
       - (widget.ticksToProgressCirclePadding * 2);
 
+    bool thereIsStillTime = timePassed <= widget.excerciseReference.recoveryPeriod;
+
     //62 is max size
     return Stack(
       children: <Widget>[
         Positioned.fill(
           child: Stack(
             children: <Widget>[
+              thereIsStillTime ? Container() : Positioned.fill(
+                child: Transform.translate(
+                  offset: Offset(0, 1.5),
+                  child: Container(
+                    child: FittedBox(
+                      fit: BoxFit.fill,
+                      child: Transform.scale(
+                        scale: 1.3,
+                        child: Container(
+                          height: 50,
+                          width: 50,
+                          child: LoadingIndicator(
+                            indicatorType: Indicator.ballScaleMultiple, 
+                            color: Colors.red,
+                            //Color.fromRGBO(128,128,128,1),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
               Positioned.fill(
                 child: Transform.translate(
                   offset: Offset(0, 2.25),
@@ -146,9 +170,45 @@ class _AnimatedMiniNormalTimerState extends State<AnimatedMiniNormalTimer> with 
                 ),
               ),
               //-----timer stuff for timer
-              //TODO: add this
+              TimerButton(
+                isRight: true,
+              ),
               //-----stopwatch stuff for stopwatch
-              //TODO: add this
+              thereIsStillTime ? Container() : TimerButton(
+                isRight: false,
+              ),
+              //-----shaking thingymajig for both
+              Positioned.fill(
+                child: Opacity(
+                  opacity: controller.value == 1 ? 0.0 : 1.0,
+                  child: Transform.translate(
+                    offset: Offset(0, -4),
+                    child: Container(
+                      alignment: Alignment.topCenter,
+                      child: Container(
+                        width: 14,
+                        child: FittedBox(
+                          fit: BoxFit.fitWidth,
+                          child: Container(
+                            //NOTE: width and height are placeholders to avoid an error
+                            width: 50,
+                            height: 50,
+                            child: thereIsStillTime
+                            ? Image(
+                              image: new AssetImage("assets/tickStill.png"),
+                              color: Colors.white,
+                            )
+                            : Image(
+                              image: new AssetImage("assets/alarmTick.gif"),
+                              color: Colors.white,
+                            ),
+                          )
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
             ],
           ),
         ),
@@ -157,6 +217,39 @@ class _AnimatedMiniNormalTimerState extends State<AnimatedMiniNormalTimer> with 
           child: ShakingAlarm(maxSize: 54),
         ),
       ],
+    );
+  }
+}
+
+class TimerButton extends StatelessWidget {
+  TimerButton({
+    this.isRight: true,
+  });
+
+  final bool isRight;
+
+  @override
+  Widget build(BuildContext context) {
+    return Positioned(
+      top: 0,
+      right: isRight ? 0 : null,
+      left: isRight ? null : 0,
+      child: Padding(
+        padding: EdgeInsets.only(
+          top: 9,
+          right: isRight ? 5 : 0,
+          left: isRight ? 0 : 5,
+        ),
+        child: Transform.rotate(
+          angle: (- math.pi / 4) * (isRight ? 1 : -1),
+          child: Container(
+            color: Colors.white,
+            height: 6,
+            width: 4,
+            child: Container(),
+          ),
+        ),
+      ),
     );
   }
 }
@@ -189,11 +282,17 @@ class AnimatedCircleWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Color backgroundColor = controller.value == 1 ? Theme.of(context).cardColor : Theme.of(context).primaryColorDark;
+    DateTime timerStarted = excerciseReference.tempStartTime;
+    Duration timePassed = DateTime.now().difference(timerStarted);
+    bool thereIsStillTime = timePassed <= excerciseReference.recoveryPeriod;
+
+    //build
     return ClipOval(
       child: Container(
         width: circleSize,
         height: circleSize,
-        color: controller.value == 1 ? Colors.red : Colors.white, //TODO: decide rim color
+        color: controller.value == 1 ? Colors.red : Colors.white,
         padding: EdgeInsets.all(
           circleToTicksPadding,
         ),
@@ -201,27 +300,42 @@ class AnimatedCircleWidget extends StatelessWidget {
           child: Stack(
             children: <Widget>[
               Container(
-                color: Theme.of(context).primaryColorDark,
+                color: backgroundColor,
                 child: Container(),
               ),
-              HighlightSlice(
-                excerciseReference: excerciseReference,
-                size: circleSize - circleToTicksPadding,
-                angles: angles,
-                controllerValue: controller.value
+              //-----
+              Center(
+                child: ClipOval(
+                  child: Container(
+                    width: circleSize,
+                    height: circleSize,
+                    child: TriangleAngle(
+                      start: 0,
+                      end: controller.value * 360,
+                      size: circleSize,
+                      //thereIsStillTime ? Theme.of(context).accentColor : Colors.red,
+                      color: thereIsStillTime ? Color.fromRGBO(greyValue, greyValue, greyValue, 1) : Colors.red,
+                      //Colors.green, //Color.fromRGBO(128, 128, 128, 1),
+                    ),
+                  ),
+                ),
               ),
-              Stack(
-                children: ticks,
+              //-----
+              (controller.value == 1) ? Container() : ClipPath(
+                clipper: new InvertedCircleClipper(
+                  radiusPercent: 0.40,
+                ),
+                child: Stack(
+                  children: ticks,
+                ),
               ),
+              //-----
               Container(
                 padding: EdgeInsets.all(
                   tickWidth,
                 ),
-                //TODO: replace this illusion of a inverted ClipOval
-                //TODO: for an actual invertedClipOval so I can configured the background as I please
                 child: ClipOval(
                   child: Container(
-                    color: Theme.of(context).primaryColorDark,
                     padding: EdgeInsets.all(
                       ticksToProgressCirclePadding,
                     ),
@@ -235,6 +349,7 @@ class AnimatedCircleWidget extends StatelessWidget {
                   ),
                 ),
               ),
+              //-----
             ],
           ),
         )
@@ -282,16 +397,18 @@ class ShakingAlarm extends StatelessWidget {
               ),
             ),
           ),
-          /*
           Positioned.fill(
             child: Center(
-              child: Icon(
-                FontAwesomeIcons.times,
-                color: Colors.red,
+              child: Transform.translate(
+                offset: Offset(0, 1.5),
+                child: Icon(
+                  FontAwesomeIcons.times,
+                  color: Theme.of(context).cardColor,
+                  size: 14,
+                ),
               )
             ),
           ),
-          */
         ],
       ),
     );
@@ -313,17 +430,24 @@ class HighlightSlice extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    DateTime timerStarted = excerciseReference.tempStartTime;
+    Duration timePassed = DateTime.now().difference(timerStarted);
+    bool thereIsStillTime = timePassed <= excerciseReference.recoveryPeriod;
+    
+    //widget build
     if(controllerValue == 1) return Container();
     else{
+      double sub = (36/4*3);
       double angle = controllerValue * 360;
       double start;
       double end;
       //0,45,90
       for(int i = 0; i < angles.length; i++){
         double thisAngle = angles[i].toDouble();
-        if(thisAngle > angle){
-          start = angles[i-1].toDouble();
-          end = angles[i].toDouble();
+        if(thisAngle > angle){ //false, even, etc...
+          bool isEven = (i%2 == 0);
+          start = angles[i-1].toDouble() + (isEven ? sub : 0);
+          end = angles[i].toDouble() - (isEven == false ? sub : 0);
           break;
         }
       }
@@ -337,7 +461,8 @@ class HighlightSlice extends StatelessWidget {
               start: start,
               end: end,
               size: size,
-              color: Color.fromRGBO(128, 128, 128, 1),
+              //thereIsStillTime ? Theme.of(context).accentColor : Colors.red,
+              color: Theme.of(context).primaryColorDark,
             ),
           ),
         ),
@@ -390,7 +515,7 @@ class CircleProgress extends StatelessWidget {
             TriangleAngle(
               start: 0,
               end: firstAngle,
-              color: flatGrey,
+              color: Colors.white,
               size: size,
             ),
             TriangleAngle(
