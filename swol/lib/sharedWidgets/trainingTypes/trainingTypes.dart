@@ -104,11 +104,14 @@ class _TrainingTypeSectionsState extends State<TrainingTypeSections> {
 
   sectionIDToCarouselAction(){
     WidgetsBinding.instance.addPostFrameCallback((_){
-      mainCarousel.animateToPage(
-        widget.sectionID.value,
-        duration: Duration(milliseconds: 250), 
-        curve: Curves.linear,
-      );
+      if(mainCarousel == null) sectionIDToCarouselAction();
+      else{
+        mainCarousel.animateToPage(
+          widget.sectionID.value,
+          duration: Duration(milliseconds: 250), 
+          curve: Curves.linear,
+        );
+      }
     });
   }
 

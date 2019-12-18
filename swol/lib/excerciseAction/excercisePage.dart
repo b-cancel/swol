@@ -10,10 +10,12 @@ class ExcercisePage extends StatefulWidget {
   ExcercisePage({
     @required this.excerciseID,
     @required this.navSpread,
+    @required this.reloadLeading,
   });
 
   final int excerciseID;
   final ValueNotifier<bool> navSpread;
+  final ValueNotifier<bool> reloadLeading;
 
   @override
   _ExcercisePageState createState() => _ExcercisePageState();
@@ -53,9 +55,14 @@ class _ExcercisePageState extends State<ExcercisePage> {
     //build
     return WillPopScope(
       onWillPop: ()async{
+        //may have to unfocus
         FocusScope.of(context).unfocus();
+        //reload the mini timer
+        widget.reloadLeading.value = true;
+        //animate the header
         widget.navSpread.value = false;
-        return true; //can still pop
+        //can still pop
+        return true; 
       },
       child: Scaffold(
         appBar: AppBar(
@@ -101,7 +108,7 @@ class _ExcercisePageState extends State<ExcercisePage> {
         ),
         body: VerticalTabs(
           excerciseID: widget.excerciseID,
-          maxHeight: MediaQuery.of(context).size.height
+          maxHeight: MediaQuery.of(context).size.height,
         ),
       ),
     );

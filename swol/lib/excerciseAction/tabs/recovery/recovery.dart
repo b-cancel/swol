@@ -102,15 +102,15 @@ class _RecoveryState extends State<Recovery> with SingleTickerProviderStateMixin
             BottomButtons(
               allSetsComplete: widget.allSetsComplete,
               forwardAction: (){
+                //move onto the next set
+                widget.nextSet();
+
                 //zero out the tempStartTimer
                 ExcerciseData.updateExcercise(
                   widget.excerciseID,
                   tempStartTimeCanBeNull: true,
                   tempStartTime: null,
                 );
-
-                //move onto the next set
-                widget.nextSet();
               },
               forwardActionWidget: Text(
                 "Next Set",

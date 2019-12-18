@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'dart:math' as math;
 import 'package:vector_math/vector_math.dart' as vector;
 
-
 class TriangleMath{
   //points constants
   static const List<double> topLeft       = [0,    0];

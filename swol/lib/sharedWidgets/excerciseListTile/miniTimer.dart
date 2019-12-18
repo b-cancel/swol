@@ -11,14 +11,16 @@ import 'package:swol/sharedWidgets/excerciseListTile/excerciseTile.dart';
 import 'package:swol/sharedWidgets/excerciseListTile/miniTimers/normalTimer.dart';
 
 //tile might need reloading
-class ExcerciseTileLeading extends StatelessWidget {
+class ExcerciseTileLeading extends StatefulWidget {
   ExcerciseTileLeading({
     @required this.excerciseReference,
     @required this.tileInSearch,
+    @required this.reloadLeading,
   });
 
   final AnExcercise excerciseReference;
   final bool tileInSearch;
+  final ValueNotifier<bool> reloadLeading;
 
   //reusable function
   static double timeToLerpValue(Duration timePassed){
@@ -26,22 +28,50 @@ class ExcerciseTileLeading extends StatelessWidget {
   }
 
   @override
+  _ExcerciseTileLeadingState createState() => _ExcerciseTileLeadingState();
+}
+
+class _ExcerciseTileLeadingState extends State<ExcerciseTileLeading> {
+  manualLeadingReload(){
+    if(widget.reloadLeading.value == true){
+      print("manually settings state");
+      widget.reloadLeading.value = false;
+      setState(() {});
+    }
+  }
+
+  @override
+  void initState() {
+    widget.reloadLeading.addListener(manualLeadingReload);
+
+    //super init
+    super.initState();
+  }
+
+  @override
+  void dispose() { 
+    widget.reloadLeading.removeListener(manualLeadingReload);
+
+    //super dispose
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     //NOTE: timer takes precendence over regular inprogress
-    if(excerciseReference.tempStartTime != null){
-      print("buildiy boi");
+    if(widget.excerciseReference.tempStartTime != null){
       return AnimatedMiniNormalTimer(
-        excerciseReference: excerciseReference,
+        excerciseReference: widget.excerciseReference,
       );
     }
-    else if(LastTimeStamp.isInProgress(excerciseReference.lastTimeStamp)){
+    else if(LastTimeStamp.isInProgress(widget.excerciseReference.lastTimeStamp)){
       return Container(
         child: Text("Finished?"),
       );
     }
     else{ //NOT in timer, NOT in progress => show in what section it is
-      if(tileInSearch){
-        if(LastTimeStamp.isNew(excerciseReference.lastTimeStamp)){
+      if(widget.tileInSearch){
+        if(LastTimeStamp.isNew(widget.excerciseReference.lastTimeStamp)){
           return ListTileChipShell(
             chip: MyChip(
               chipString: 'NEW',
@@ -49,7 +79,7 @@ class ExcerciseTileLeading extends StatelessWidget {
           );
         }
         else{
-          if(LastTimeStamp.isHidden(excerciseReference.lastTimeStamp)){
+          if(LastTimeStamp.isHidden(widget.excerciseReference.lastTimeStamp)){
             return ListTileChipShell(
               chip: MyChip(
                 chipString: 'HIDDEN',
@@ -59,7 +89,7 @@ class ExcerciseTileLeading extends StatelessWidget {
           else{
             return Text(
               DurationFormat.format(
-                DateTime.now().difference(excerciseReference.lastTimeStamp),
+                DateTime.now().difference(widget.excerciseReference.lastTimeStamp),
                 showMinutes: false,
                 showSeconds: false,
                 showMilliseconds: false,

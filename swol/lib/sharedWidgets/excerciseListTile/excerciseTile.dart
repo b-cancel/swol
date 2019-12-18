@@ -25,8 +25,11 @@ class ExcerciseTile extends StatelessWidget {
   final bool tileInSearch;
   final ValueNotifier<bool> navSpread;
 
+  final ValueNotifier<bool> reloadLeading = new ValueNotifier(false);
+
   @override
   Widget build(BuildContext context) {
+    
     AnExcercise thisExcercise = ExcerciseData.getExcercises().value[excerciseID];
     return ListTile(
       onTap: (){
@@ -60,6 +63,7 @@ class ExcerciseTile extends StatelessWidget {
             child: ExcercisePage(
               excerciseID: excerciseID,
               navSpread: navSpread,
+              reloadLeading: reloadLeading,
             ),
           ),
         );
@@ -83,6 +87,7 @@ class ExcerciseTile extends StatelessWidget {
       trailing: ExcerciseTileLeading(
         excerciseReference: thisExcercise,
         tileInSearch: tileInSearch,
+        reloadLeading: reloadLeading,
       ),
     );
   }
