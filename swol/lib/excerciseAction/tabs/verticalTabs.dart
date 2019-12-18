@@ -36,6 +36,7 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
   }
 
   toPage(int pageID){ //0->2
+    print("to page: " + pageID.toString());
     carousel.animateToPage(
       pageID, 
       duration: Duration(milliseconds: 250), 
@@ -63,20 +64,20 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
         Suggestion(
           excerciseID: widget.excerciseID,
           allSetsComplete: allSetsComplete,
-          recordSet: () => toPage(tab + 1),
+          recordSet: () => toPage(1),
         ),
         SetRecord(
           excerciseID: widget.excerciseID,
-          backToSuggestion: () => toPage(tab + 0),
-          setBreak: () => toPage(tab + 2),
+          backToSuggestion: () => toPage(0),
+          setBreak: () => toPage(2),
         ),
         Recovery(
           excerciseID: widget.excerciseID,
           allSetsComplete: allSetsComplete,
           //TODO: hold the back button should also do the same as below
           //TODO: toast that the timer will not reset no matter what
-          backToRecordSet: () => toPage(tab + 1),
-          nextSet: () => toPage(tab + 0),
+          backToRecordSet: () => toPage(1),
+          nextSet: () => toPage(0),
         ),
       ],
     );

@@ -99,14 +99,6 @@ class _AnimatedMiniNormalTimerState extends State<AnimatedMiniNormalTimer> with 
     DateTime timerStarted = widget.excerciseReference.tempStartTime;
     Duration timePassed = DateTime.now().difference(timerStarted);
 
-    //NOTE: covers edge case
-    /*
-    if(timePassed > maxDuration){
-      print("-------------------------------------------------RESTART");
-      restart(timePassed);
-    }
-    */
-
     //72 degrees 1 minutes
     //36 degrees 30 seconds
     //18 degrees 15 seconds

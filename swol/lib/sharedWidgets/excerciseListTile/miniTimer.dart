@@ -29,6 +29,7 @@ class ExcerciseTileLeading extends StatelessWidget {
   Widget build(BuildContext context) {
     //NOTE: timer takes precendence over regular inprogress
     if(excerciseReference.tempStartTime != null){
+      print("buildiy boi");
       return AnimatedMiniNormalTimer(
         excerciseReference: excerciseReference,
       );
