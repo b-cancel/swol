@@ -41,18 +41,10 @@ class _AnimatedMiniNormalTimerState extends State<AnimatedMiniNormalTimer> with 
   }
   updateStateAnim(AnimationStatus status) => updateState();
 
-  //init
-  @override
-  void initState() {
-    //create the controller
-    controller = AnimationController(
-      vsync: this,
-      duration: maxDuration,
-    );
-
-    //set the value based on how far we arein
-    DateTime timerStarted = widget.excerciseReference.tempStartTime;
-    Duration timePassed = DateTime.now().difference(timerStarted);
+  restart(Duration timePassed){
+    //remove listeners
+    controller.removeListener(updateState);
+    controller.removeStatusListener(updateStateAnim);
 
     //add listeners
     controller.addListener(updateState);
@@ -62,6 +54,23 @@ class _AnimatedMiniNormalTimerState extends State<AnimatedMiniNormalTimer> with 
     controller.forward(
       from: ExcerciseTileLeading.timeToLerpValue(timePassed),
     );
+  }
+
+  //init
+  @override
+  void initState() {
+    print("init-----------------------------------------------------------------------------");
+
+    //create the controller
+    controller = AnimationController(
+      vsync: this,
+      duration: maxDuration,
+    );
+
+    //set the value based on how far we arein
+    DateTime timerStarted = widget.excerciseReference.tempStartTime;
+    Duration timePassed = DateTime.now().difference(timerStarted);
+    restart(timePassed);
 
     //super init
     super.initState();
@@ -89,7 +98,14 @@ class _AnimatedMiniNormalTimerState extends State<AnimatedMiniNormalTimer> with 
 
     DateTime timerStarted = widget.excerciseReference.tempStartTime;
     Duration timePassed = DateTime.now().difference(timerStarted);
-    bool borderRed = timePassed > widget.excerciseReference.recoveryPeriod;
+
+    //NOTE: covers edge case
+    /*
+    if(timePassed > maxDuration){
+      print("-------------------------------------------------RESTART");
+      restart(timePassed);
+    }
+    */
 
     //72 degrees 1 minutes
     //36 degrees 30 seconds
