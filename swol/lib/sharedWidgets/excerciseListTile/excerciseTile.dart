@@ -25,6 +25,8 @@ class ExcerciseTile extends StatelessWidget {
   final bool tileInSearch;
   final ValueNotifier<bool> navSpread;
 
+  //set to true by back button on excercise vertical pages
+  //causes reloading of leading widget
   final ValueNotifier<bool> reloadLeading = new ValueNotifier(false);
 
   @override
@@ -60,6 +62,8 @@ class ExcerciseTile extends StatelessWidget {
           context, 
           PageTransition(
             type: PageTransitionType.rightToLeft, 
+            //when transitioning to this page relaoding leading is always false
+            //WILL SET reloading leading to true
             child: ExcercisePage(
               excerciseID: excerciseID,
               navSpread: navSpread,

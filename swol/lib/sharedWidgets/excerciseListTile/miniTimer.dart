@@ -34,7 +34,7 @@ class ExcerciseTileLeading extends StatefulWidget {
 class _ExcerciseTileLeadingState extends State<ExcerciseTileLeading> {
   manualLeadingReload(){
     if(widget.reloadLeading.value == true){
-      print("manually settings state");
+      print("-------------set reload to false");
       widget.reloadLeading.value = false;
       setState(() {});
     }
@@ -60,9 +60,21 @@ class _ExcerciseTileLeadingState extends State<ExcerciseTileLeading> {
   Widget build(BuildContext context) {
     //NOTE: timer takes precendence over regular inprogress
     if(widget.excerciseReference.tempStartTime != null){
-      return AnimatedMiniNormalTimer(
-        excerciseReference: widget.excerciseReference,
-      );
+      Duration timePassed = DateTime.now().difference(widget.excerciseReference.tempStartTime);
+      if(timePassed > Duration(minutes: 5)){
+        print("more than 5----------------------");
+        return AnimatedMiniNormalTimer(
+          excerciseReference: widget.excerciseReference,
+          before5: false,
+        );
+      }
+      else{
+        print("less than 5----------------------");
+        return AnimatedMiniNormalTimerWrapper(
+          excerciseReference: widget.excerciseReference,
+          before5: true,
+        );
+      }
     }
     else if(LastTimeStamp.isInProgress(widget.excerciseReference.lastTimeStamp)){
       return Container(

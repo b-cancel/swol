@@ -58,6 +58,7 @@ class _ExcercisePageState extends State<ExcercisePage> {
         //may have to unfocus
         FocusScope.of(context).unfocus();
         //reload the mini timer
+        print("-------------set reload to true");
         widget.reloadLeading.value = true;
         //animate the header
         widget.navSpread.value = false;

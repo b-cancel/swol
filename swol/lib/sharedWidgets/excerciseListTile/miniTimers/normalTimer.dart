@@ -9,6 +9,24 @@ import 'package:swol/sharedWidgets/excerciseListTile/triangleAngle.dart';
 //96 close but still too dark
 int greyValue = 128;
 
+class AnimatedMiniNormalTimerWrapper extends StatelessWidget {
+  AnimatedMiniNormalTimerWrapper({
+    @required this.excerciseReference,
+    @required this.before5,
+  });
+
+  final AnExcercise excerciseReference;
+  final bool before5;
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedMiniNormalTimer(
+      excerciseReference: excerciseReference,
+      before5: before5,
+    );
+  }
+}
+
 class AnimatedMiniNormalTimer extends StatefulWidget {
   AnimatedMiniNormalTimer({
     @required this.excerciseReference,
@@ -19,6 +37,7 @@ class AnimatedMiniNormalTimer extends StatefulWidget {
     this.circleToTicksPadding: 3,
     this.tickWidth: 4,
     this.ticksToProgressCirclePadding: 4,
+    this.before5,
   });
 
   final AnExcercise excerciseReference;
@@ -26,6 +45,7 @@ class AnimatedMiniNormalTimer extends StatefulWidget {
   final double circleToTicksPadding;
   final double tickWidth;
   final double ticksToProgressCirclePadding;
+  final bool before5;
 
   @override
   _AnimatedMiniNormalTimerState createState() => _AnimatedMiniNormalTimerState();
@@ -42,6 +62,8 @@ class _AnimatedMiniNormalTimerState extends State<AnimatedMiniNormalTimer> with 
   updateStateAnim(AnimationStatus status) => updateState();
 
   restart(Duration timePassed){
+    print("timer says time passed is: " + timePassed.toString());
+
     //remove listeners
     controller.removeListener(updateState);
     controller.removeStatusListener(updateStateAnim);
@@ -59,7 +81,7 @@ class _AnimatedMiniNormalTimerState extends State<AnimatedMiniNormalTimer> with 
   //init
   @override
   void initState() {
-    print("init-----------------------------------------------------------------------------");
+    print("init-----------------------------------------------------------------------------before 5: " + widget.before5.toString());
 
     //create the controller
     controller = AnimationController(
