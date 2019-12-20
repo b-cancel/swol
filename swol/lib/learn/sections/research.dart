@@ -72,7 +72,7 @@ class ResearchBody extends StatelessWidget {
                 ],
               ),
               ResearchCard(
-                title: "How does each energy system work and how can use your knowledge of each to your advantage?", 
+                title: "How does each energy system work? How can you use your knowledge of each to improve your workouts?", 
                 items: [
                   Text("Anaerobic System"),
                   Text("Glycolytic System"),

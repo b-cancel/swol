@@ -15,24 +15,35 @@ class SectionDescription extends StatelessWidget {
       padding: const EdgeInsets.only(
         bottom: 16.0,
       ),
-      child: Container(
-        decoration: BoxDecoration(
-          color: Theme.of(context).accentColor,
-          border: Border(
-            bottom: BorderSide(
-              color: Colors.white.withOpacity(0.5),
-            )
-          )
-        ),
-        padding: EdgeInsets.all(16),
-        child: DefaultTextStyle(
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-            color: Theme.of(context).primaryColor,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          Container(
+            padding: EdgeInsets.all(16),
+            child: DefaultTextStyle(
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+              child: child,
+            ),
           ),
-          child: child,
-        ),
+          Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: 16.0,
+            ),
+            child: Container(
+              decoration: BoxDecoration(
+                border: Border(
+                  bottom: BorderSide(
+                    color: Colors.white.withOpacity(0.5),
+                  )
+                )
+              ),
+            ),
+          )
+        ],
       ),
     );
   }

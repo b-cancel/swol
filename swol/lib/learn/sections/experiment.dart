@@ -84,7 +84,7 @@ class ExperimentBody extends StatelessWidget {
             circleTextSize: 18,
             content: Text(
               "We believe that "
-              + "what ABILITY formula each exercise uses, indicates"
+              + "what ABILITY formula each exercise uses, indicates "
               + "to what extent you can voluntarily activate your muscles due to "
               + "your overall level of nervous system control"
             ),
@@ -133,20 +133,12 @@ class ExperimentBody extends StatelessWidget {
             circleText: "2",
             circleTextSize: 18,
             content: Text(
-              "your desired exertion level",
-            ),
-          ),
-          ListItem(
-            circleColor: Theme.of(context).accentColor,
-            circleText: "3",
-            circleTextSize: 18,
-            content: Text(
               "your prefered or suggested ability formula",
             ),
           ),
           ListItem(
             circleColor: Theme.of(context).accentColor,
-            circleText: "4",
+            circleText: "3",
             circleTextSize: 18,
             content: Text(
               "and your rep target",
