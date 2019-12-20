@@ -24,7 +24,6 @@ class ExcerciseTileSubtitle extends StatelessWidget {
     //TODO: this relies of the user not being allowed to plugin 0 as their rep count
     //TODO: the todo is to ensure this throughout the app
 
-    //TODO: perhaps add something special since they actual literally improved their 1RM
     //NOTE: contains defaults for when this set is indeed a one rep max
     bool isOneRepMaxEstimated = false; 
     Widget oneRepMaxWidget = Text(
@@ -159,9 +158,21 @@ class ExcerciseTileSubtitle extends StatelessWidget {
     //ELSE: this is the users 1 rm
 
     //create the subtitle given the retreived values
-    return Tooltip(
-      preferBelow: false,
-      message: tooltipMessage,
+    return GestureDetector(
+      onTap: (){
+        Scaffold.of(context).hideCurrentSnackBar();
+        Scaffold.of(context).showSnackBar(
+          SnackBar(
+            behavior: SnackBarBehavior.floating,
+            content: GestureDetector(
+              onTap: (){
+                Scaffold.of(context).hideCurrentSnackBar();
+              },
+              child: Text(tooltipMessage),
+            ),
+          ),
+        );
+      },
       //NOTE: this is just extra padding to make it easier to click the tooltip
       child: Padding(
         padding: EdgeInsets.only(
