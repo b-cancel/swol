@@ -27,7 +27,7 @@ class ExcerciseTile extends StatelessWidget {
 
   //set to true by back button on excercise vertical pages
   //causes reloading of leading widget
-  final ValueNotifier<bool> reloadLeading = new ValueNotifier(false);
+  final ValueNotifier<bool> reloadTimer = new ValueNotifier(false);
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +67,7 @@ class ExcerciseTile extends StatelessWidget {
             child: ExcercisePage(
               excerciseID: excerciseID,
               navSpread: navSpread,
-              reloadLeading: reloadLeading,
+              reloadTimer: reloadTimer,
             ),
           ),
         );
@@ -80,6 +80,7 @@ class ExcerciseTile extends StatelessWidget {
       //and can properly show the mini timer
       ? Container(
         height: 0,
+        width: 0,
         //height: 30, //TODO: uncomment for equal spacing (I prefer it to be uneven)
       )
       //show 1 rep max stuffs
@@ -91,7 +92,7 @@ class ExcerciseTile extends StatelessWidget {
       trailing: ExcerciseTileLeading(
         excerciseReference: thisExcercise,
         tileInSearch: tileInSearch,
-        reloadLeading: reloadLeading,
+        reloadTimer: reloadTimer,
       ),
     );
   }

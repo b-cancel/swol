@@ -11,16 +11,16 @@ import 'package:swol/sharedWidgets/excerciseListTile/excerciseTile.dart';
 import 'package:swol/sharedWidgets/excerciseListTile/miniTimers/normalTimer.dart';
 
 //tile might need reloading
-class ExcerciseTileLeading extends StatefulWidget {
+class ExcerciseTileLeading extends StatelessWidget {
   ExcerciseTileLeading({
     @required this.excerciseReference,
     @required this.tileInSearch,
-    @required this.reloadLeading,
+    @required this.reloadTimer,
   });
 
   final AnExcercise excerciseReference;
   final bool tileInSearch;
-  final ValueNotifier<bool> reloadLeading;
+  final ValueNotifier<bool> reloadTimer;
 
   //reusable function
   static double timeToLerpValue(Duration timePassed){
@@ -28,62 +28,24 @@ class ExcerciseTileLeading extends StatefulWidget {
   }
 
   @override
-  _ExcerciseTileLeadingState createState() => _ExcerciseTileLeadingState();
-}
-
-class _ExcerciseTileLeadingState extends State<ExcerciseTileLeading> {
-  manualLeadingReload(){
-    if(widget.reloadLeading.value == true){
-      print("-------------set reload to false");
-      widget.reloadLeading.value = false;
-      setState(() {});
-    }
-  }
-
-  @override
-  void initState() {
-    widget.reloadLeading.addListener(manualLeadingReload);
-
-    //super init
-    super.initState();
-  }
-
-  @override
-  void dispose() { 
-    widget.reloadLeading.removeListener(manualLeadingReload);
-
-    //super dispose
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     //NOTE: timer takes precendence over regular inprogress
-    if(widget.excerciseReference.tempStartTime != null){
-      Duration timePassed = DateTime.now().difference(widget.excerciseReference.tempStartTime);
-      if(timePassed > Duration(minutes: 5)){
-        print("more than 5----------------------");
-        return AnimatedMiniNormalTimer(
-          excerciseReference: widget.excerciseReference,
-          before5: false,
-        );
-      }
-      else{
-        print("less than 5----------------------");
-        return AnimatedMiniNormalTimerWrapper(
-          excerciseReference: widget.excerciseReference,
-          before5: true,
-        );
-      }
+    if(excerciseReference.tempStartTime != null){
+      Duration timePassed = DateTime.now().difference(excerciseReference.tempStartTime);
+      if(timePassed > Duration(minutes: 5)){print("hi");}
+      return AnimatedMiniNormalTimer(
+        excerciseReference: excerciseReference,
+        reloadTimer: reloadTimer,
+      );
     }
-    else if(LastTimeStamp.isInProgress(widget.excerciseReference.lastTimeStamp)){
+    else if(LastTimeStamp.isInProgress(excerciseReference.lastTimeStamp)){
       return Container(
         child: Text("Finished?"),
       );
     }
     else{ //NOT in timer, NOT in progress => show in what section it is
-      if(widget.tileInSearch){
-        if(LastTimeStamp.isNew(widget.excerciseReference.lastTimeStamp)){
+      if(tileInSearch){
+        if(LastTimeStamp.isNew(excerciseReference.lastTimeStamp)){
           return ListTileChipShell(
             chip: MyChip(
               chipString: 'NEW',
@@ -91,7 +53,7 @@ class _ExcerciseTileLeadingState extends State<ExcerciseTileLeading> {
           );
         }
         else{
-          if(LastTimeStamp.isHidden(widget.excerciseReference.lastTimeStamp)){
+          if(LastTimeStamp.isHidden(excerciseReference.lastTimeStamp)){
             return ListTileChipShell(
               chip: MyChip(
                 chipString: 'HIDDEN',
@@ -101,7 +63,7 @@ class _ExcerciseTileLeadingState extends State<ExcerciseTileLeading> {
           else{
             return Text(
               DurationFormat.format(
-                DateTime.now().difference(widget.excerciseReference.lastTimeStamp),
+                DateTime.now().difference(excerciseReference.lastTimeStamp),
                 showMinutes: false,
                 showSeconds: false,
                 showMilliseconds: false,

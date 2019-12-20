@@ -9,27 +9,10 @@ import 'package:swol/sharedWidgets/excerciseListTile/triangleAngle.dart';
 //96 close but still too dark
 int greyValue = 128;
 
-class AnimatedMiniNormalTimerWrapper extends StatelessWidget {
-  AnimatedMiniNormalTimerWrapper({
-    @required this.excerciseReference,
-    @required this.before5,
-  });
-
-  final AnExcercise excerciseReference;
-  final bool before5;
-
-  @override
-  Widget build(BuildContext context) {
-    return AnimatedMiniNormalTimer(
-      excerciseReference: excerciseReference,
-      before5: before5,
-    );
-  }
-}
-
 class AnimatedMiniNormalTimer extends StatefulWidget {
   AnimatedMiniNormalTimer({
     @required this.excerciseReference,
+    @required this.reloadTimer,
     //NOTE: largest possible size seems to be 62
     //56 feels good
     //48 feels better
@@ -37,15 +20,14 @@ class AnimatedMiniNormalTimer extends StatefulWidget {
     this.circleToTicksPadding: 3,
     this.tickWidth: 4,
     this.ticksToProgressCirclePadding: 4,
-    this.before5,
   });
 
   final AnExcercise excerciseReference;
+  final ValueNotifier<bool> reloadTimer;
   final double circleSize;
   final double circleToTicksPadding;
   final double tickWidth;
   final double ticksToProgressCirclePadding;
-  final bool before5;
 
   @override
   _AnimatedMiniNormalTimerState createState() => _AnimatedMiniNormalTimerState();
@@ -61,12 +43,24 @@ class _AnimatedMiniNormalTimerState extends State<AnimatedMiniNormalTimer> with 
   }
   updateStateAnim(AnimationStatus status) => updateState();
 
-  restart(Duration timePassed){
+  manualTimerReload(){
+    if(widget.reloadTimer.value == true){
+      print("-------------set reload to false");
+      widget.reloadTimer.value = false;
+      startOrReStart(restart: true);
+    }
+    print("----------------false by now " + widget.reloadTimer.value.toString());
+  }
+
+  startOrReStart({bool restart: false}){
+    Duration timePassed = DateTime.now().difference(widget.excerciseReference.tempStartTime);
     print("timer says time passed is: " + timePassed.toString());
 
-    //remove listeners
-    controller.removeListener(updateState);
-    controller.removeStatusListener(updateStateAnim);
+    if(restart){
+      //remove listeners
+      controller.removeListener(updateState);
+      controller.removeStatusListener(updateStateAnim);
+    }
 
     //add listeners
     controller.addListener(updateState);
@@ -81,18 +75,16 @@ class _AnimatedMiniNormalTimerState extends State<AnimatedMiniNormalTimer> with 
   //init
   @override
   void initState() {
-    print("init-----------------------------------------------------------------------------before 5: " + widget.before5.toString());
-
     //create the controller
     controller = AnimationController(
       vsync: this,
       duration: maxDuration,
     );
+    startOrReStart();
 
-    //set the value based on how far we arein
-    DateTime timerStarted = widget.excerciseReference.tempStartTime;
-    Duration timePassed = DateTime.now().difference(timerStarted);
-    restart(timePassed);
+    //reload on our edge case
+    manualTimerReload();
+    widget.reloadTimer.addListener(manualTimerReload);
 
     //super init
     super.initState();
@@ -105,6 +97,9 @@ class _AnimatedMiniNormalTimerState extends State<AnimatedMiniNormalTimer> with 
     controller.removeListener(updateState);
     controller.removeStatusListener(updateStateAnim);
     controller.dispose();
+
+    //reload on our edge case removal
+    widget.reloadTimer.removeListener(manualTimerReload);
 
     //super dispose
     super.dispose();
