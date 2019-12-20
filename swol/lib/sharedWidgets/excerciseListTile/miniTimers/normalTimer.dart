@@ -6,13 +6,27 @@ import 'package:swol/excercise/excerciseStructure.dart';
 import 'package:swol/sharedWidgets/excerciseListTile/miniTimer.dart';
 import 'package:swol/sharedWidgets/excerciseListTile/triangleAngle.dart';
 
+class AnimatedMiniNormalTimerAlternativeWrapper extends StatelessWidget {
+  AnimatedMiniNormalTimerAlternativeWrapper({
+    @required this.excerciseReference,
+  });
+
+  final AnExcercise excerciseReference;
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedMiniNormalTimer(
+      excerciseReference: excerciseReference,
+    );
+  }
+}
+
 //96 close but still too dark
 int greyValue = 128;
 
 class AnimatedMiniNormalTimer extends StatefulWidget {
   AnimatedMiniNormalTimer({
     @required this.excerciseReference,
-    @required this.reloadTimer,
     //NOTE: largest possible size seems to be 62
     //56 feels good
     //48 feels better
@@ -23,7 +37,6 @@ class AnimatedMiniNormalTimer extends StatefulWidget {
   });
 
   final AnExcercise excerciseReference;
-  final ValueNotifier<bool> reloadTimer;
   final double circleSize;
   final double circleToTicksPadding;
   final double tickWidth;
@@ -42,15 +55,6 @@ class _AnimatedMiniNormalTimerState extends State<AnimatedMiniNormalTimer> with 
     if(mounted) setState(() {});
   }
   updateStateAnim(AnimationStatus status) => updateState();
-
-  manualTimerReload(){
-    if(widget.reloadTimer.value == true){
-      print("-------------set reload to false");
-      widget.reloadTimer.value = false;
-      startOrReStart(restart: true);
-    }
-    print("----------------false by now " + widget.reloadTimer.value.toString());
-  }
 
   startOrReStart({bool restart: false}){
     Duration timePassed = DateTime.now().difference(widget.excerciseReference.tempStartTime);
@@ -82,10 +86,6 @@ class _AnimatedMiniNormalTimerState extends State<AnimatedMiniNormalTimer> with 
     );
     startOrReStart();
 
-    //reload on our edge case
-    manualTimerReload();
-    widget.reloadTimer.addListener(manualTimerReload);
-
     //super init
     super.initState();
   }
@@ -97,9 +97,6 @@ class _AnimatedMiniNormalTimerState extends State<AnimatedMiniNormalTimer> with 
     controller.removeListener(updateState);
     controller.removeStatusListener(updateStateAnim);
     controller.dispose();
-
-    //reload on our edge case removal
-    widget.reloadTimer.removeListener(manualTimerReload);
 
     //super dispose
     super.dispose();

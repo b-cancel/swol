@@ -25,10 +25,6 @@ class ExcerciseTile extends StatelessWidget {
   final bool tileInSearch;
   final ValueNotifier<bool> navSpread;
 
-  //set to true by back button on excercise vertical pages
-  //causes reloading of leading widget
-  final ValueNotifier<bool> reloadTimer = new ValueNotifier(false);
-
   @override
   Widget build(BuildContext context) {
     
@@ -67,7 +63,6 @@ class ExcerciseTile extends StatelessWidget {
             child: ExcercisePage(
               excerciseID: excerciseID,
               navSpread: navSpread,
-              reloadTimer: reloadTimer,
             ),
           ),
         );
@@ -92,7 +87,6 @@ class ExcerciseTile extends StatelessWidget {
       trailing: ExcerciseTileLeading(
         excerciseReference: thisExcercise,
         tileInSearch: tileInSearch,
-        reloadTimer: reloadTimer,
       ),
     );
   }

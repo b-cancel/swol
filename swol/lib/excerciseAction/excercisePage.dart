@@ -10,12 +10,10 @@ class ExcercisePage extends StatefulWidget {
   ExcercisePage({
     @required this.excerciseID,
     @required this.navSpread,
-    @required this.reloadTimer,
   });
 
   final int excerciseID;
   final ValueNotifier<bool> navSpread;
-  final ValueNotifier<bool> reloadTimer;
 
   @override
   _ExcercisePageState createState() => _ExcercisePageState();
@@ -57,9 +55,6 @@ class _ExcercisePageState extends State<ExcercisePage> {
       onWillPop: ()async{
         //may have to unfocus
         FocusScope.of(context).unfocus();
-        //reload the mini timer
-        print("-------------set reload to true");
-        widget.reloadTimer.value = true;
         //animate the header
         widget.navSpread.value = false;
         //can still pop

@@ -29,6 +29,22 @@ class PersistentHeaderDelegate extends SliverPersistentHeaderDelegate {
       //-----The Container that contracts and expands
       child: Container(
         height: openHeight,
+        /*
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            // Where the linear gradient begins and ends
+            begin: Alignment.bottomCenter,
+            end: Alignment.topCenter,
+            // Add one stop for each color. Stops should increase from 0 to 1
+            stops: [0.1,0.5,0.95],
+            colors: [
+              Theme.of(context).accentColor,
+              Colors.blue,
+              Colors.black,
+            ],
+          ),
+        ),
+        */
         color: Theme.of(context).primaryColorDark,
         //-----What sets the max width of our text
         child: FractionallySizedBox(
@@ -50,6 +66,9 @@ class PersistentHeaderDelegate extends SliverPersistentHeaderDelegate {
                 child: RichText(
                   textAlign: TextAlign.center,
                   text: TextSpan(
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
                     children: [
                       TextSpan(
                         text: "Exercises\n",

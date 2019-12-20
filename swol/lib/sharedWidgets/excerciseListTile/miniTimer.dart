@@ -15,12 +15,10 @@ class ExcerciseTileLeading extends StatelessWidget {
   ExcerciseTileLeading({
     @required this.excerciseReference,
     @required this.tileInSearch,
-    @required this.reloadTimer,
   });
 
   final AnExcercise excerciseReference;
   final bool tileInSearch;
-  final ValueNotifier<bool> reloadTimer;
 
   //reusable function
   static double timeToLerpValue(Duration timePassed){
@@ -32,11 +30,16 @@ class ExcerciseTileLeading extends StatelessWidget {
     //NOTE: timer takes precendence over regular inprogress
     if(excerciseReference.tempStartTime != null){
       Duration timePassed = DateTime.now().difference(excerciseReference.tempStartTime);
-      if(timePassed > Duration(minutes: 5)){print("hi");}
-      return AnimatedMiniNormalTimer(
-        excerciseReference: excerciseReference,
-        reloadTimer: reloadTimer,
-      );
+      if(timePassed > Duration(minutes: 5)){
+        return AnimatedMiniNormalTimerAlternativeWrapper(
+          excerciseReference: excerciseReference,
+        );
+      }
+      else{
+        return AnimatedMiniNormalTimer(
+          excerciseReference: excerciseReference,
+        );
+      }
     }
     else if(LastTimeStamp.isInProgress(excerciseReference.lastTimeStamp)){
       return Container(
