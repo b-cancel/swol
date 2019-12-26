@@ -2,11 +2,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:swol/sharedWidgets/basicFields/buttonSpacer.dart';
+import 'package:swol/sharedWidgets/ourSnackBar.dart';
 
 //plugin
 import 'package:url_launcher/url_launcher.dart';
-
-//internal
 
 class ReferenceLinkBox extends StatefulWidget {
   const ReferenceLinkBox({
@@ -36,6 +35,15 @@ class _ReferenceLinkBoxState extends State<ReferenceLinkBox> {
     });
   }
 
+  showWarning(String message){
+    openSnackBar(
+      context, 
+      message, 
+      Colors.yellow, 
+      Icons.warning,
+    );
+  }
+
   //NOTE: clearing or pasting a link finalizes an edit
   @override
   Widget build(BuildContext context) {
@@ -49,35 +57,6 @@ class _ReferenceLinkBoxState extends State<ReferenceLinkBox> {
       child: Icon(
         Icons.edit,
         color: Theme.of(context).primaryColorDark,
-      ),
-    );
-
-    Widget pasteButton = FlatButton(
-      color: Theme.of(context).accentColor,
-      padding: EdgeInsets.all(0),
-      onPressed: (){
-        Clipboard.getData('text/plain').then((clipboardContent) {
-          if(clipboardContent?.text != null){
-            widget.url.value = clipboardContent.text;
-          }
-          else{
-            final snackBar = SnackBar(
-              content: Text("Nothing In Clipboard"),
-            );
-
-            // Find the Scaffold in the widget tree and use it to show a SnackBar.
-            Scaffold.of(context).showSnackBar(snackBar);
-          }
-
-          isEditing.value = false;
-        });
-      },
-      child: Text(
-        "Paste",
-        style: TextStyle(
-          color: Theme.of(context).primaryColorDark,
-          fontWeight: FontWeight.bold,
-        ),
       ),
     );
 
@@ -164,14 +143,11 @@ class _ReferenceLinkBoxState extends State<ReferenceLinkBox> {
                 padding: EdgeInsets.all(0),
                 onPressed: ()async{
                   if (await canLaunch(widget.url.value)) {
+                    //launch the launchable url
                     await launch(widget.url.value);
                   } else {
-                    final snackBar = SnackBar(
-                      content: Text("Could Not Launch URL"),
-                    );
-
-                    // Find the Scaffold in the widget tree and use it to show a SnackBar.
-                    Scaffold.of(context).showSnackBar(snackBar);
+                    //show that we can't launch the url
+                    showWarning("Could Not Launch URL");
                   }
                 },
                 child: Container(
@@ -186,8 +162,55 @@ class _ReferenceLinkBoxState extends State<ReferenceLinkBox> {
                 ),
               ),
             ),
-            (showEditButtons) ? pasteButton : Container(),
+            (showEditButtons) ? PasteButton(
+              url: widget.url, 
+              isEditing: isEditing,
+              showWarning: showWarning,
+            ) : Container(),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class PasteButton extends StatelessWidget {
+  const PasteButton({
+    Key key,
+    @required this.url,
+    @required this.isEditing,
+    @required this.showWarning,
+  }) : super(key: key);
+
+  final ValueNotifier<String> url;
+  final ValueNotifier<bool> isEditing;
+  final Function showWarning;
+
+  @override
+  Widget build(BuildContext context) {
+    return FlatButton(
+      color: Theme.of(context).accentColor,
+      padding: EdgeInsets.all(0),
+      onPressed: (){
+        Clipboard.getData('text/plain').then((clipboardContent) {
+          if(clipboardContent?.text != null){
+            //pass new url text
+            url.value = clipboardContent.text;
+          }
+          else{
+            //show clipboard empty
+            showWarning("The Clipboard Is Empty");
+          }
+
+          //get out of edit mode
+          isEditing.value = false;
+        });
+      },
+      child: Text(
+        "Paste",
+        style: TextStyle(
+          color: Theme.of(context).primaryColorDark,
+          fontWeight: FontWeight.bold,
         ),
       ),
     );

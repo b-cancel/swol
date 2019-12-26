@@ -1,5 +1,4 @@
 //flutter
-import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/material.dart';
 
 //plugin
@@ -86,6 +85,7 @@ class SearchExcerciseButton extends StatelessWidget {
           featureID: AFeature.SearchExcercise.toString(),
           tapTarget: FloatingActionButton(
             child: Icon(Icons.search),
+            onPressed: null,
           ),
           text: "Tap here to"
           + "\nsearch through"

@@ -60,9 +60,6 @@ class _LearnExcerciseState extends State<LearnExcercise> {
           milliseconds: 300 + 100,
         ), 
         (){
-          RenderBox renderBoxRed = listKey.currentContext.findRenderObject();
-          double theHeight  = renderBoxRed.size.height;
-          
           //scroll to index
           autoScrollController.scrollToIndex(
             allIsOpens.indexOf(notifier), 

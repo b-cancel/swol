@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:swol/other/functions/helper.dart';
+import 'package:swol/sharedWidgets/ourSnackBar.dart';
 
 class ExcerciseTileSubtitle extends StatelessWidget {
   ExcerciseTileSubtitle({
@@ -31,8 +32,6 @@ class ExcerciseTileSubtitle extends StatelessWidget {
       style: BOLD,
     );
     String tooltipMessage = "Your 1 Rep Max";
-    Color valueBorderColor = Theme.of(context).primaryColorDark;
-    
 
     //only calculate the 1 rep max and all its related values if you must
     if(lastReps != 1){
@@ -78,37 +77,32 @@ class ExcerciseTileSubtitle extends StatelessWidget {
 
         //TODO: improvable by actually using Maps
         //"Map" percent devaition to all its respective components
+        //red, orange, yellow, green, blue, purple
         String surenessString;
         int lessThanReps;
         if(percentOfDeviation > 25){
           surenessString = "not sure at all";
           lessThanReps = 25;
-          valueBorderColor = Colors.red;
         }
         else if(percentOfDeviation > 20){
           surenessString = "very un-sure";
           lessThanReps = 20;
-          valueBorderColor = Colors.orange;
         }
         else if(percentOfDeviation > 15){
           surenessString = "somewhat un-sure";
           lessThanReps = 15;
-          valueBorderColor = Colors.yellow;
         }
         else if(percentOfDeviation > 10){
           surenessString = "somewhat sure";
           lessThanReps = 10;
-          valueBorderColor = Colors.green;
         }
         else if(percentOfDeviation > 5){
           surenessString = "very sure";
           lessThanReps = 5;
-          valueBorderColor = Colors.blue;
         }
         else{
           surenessString = "extremely sure";
           lessThanReps = 0;
-          valueBorderColor = Colors.purple;
         }
 
         //let the user know how far the guess is
@@ -160,67 +154,66 @@ class ExcerciseTileSubtitle extends StatelessWidget {
     //create the subtitle given the retreived values
     return GestureDetector(
       onTap: (){
-        Scaffold.of(context).hideCurrentSnackBar();
-        Scaffold.of(context).showSnackBar(
-          SnackBar(
-            behavior: SnackBarBehavior.floating,
-            content: GestureDetector(
-              onTap: (){
-                Scaffold.of(context).hideCurrentSnackBar();
-              },
-              child: Text(tooltipMessage),
-            ),
-          ),
+        openSnackBar(
+          context, 
+          tooltipMessage, 
+          Colors.blue, 
+          Icons.info_outline,
         );
       },
       //NOTE: this is just extra padding to make it easier to click the tooltip
-      child: Padding(
-        padding: EdgeInsets.only(
-          top: 2.0, 
-          right: 16.0,
-          bottom: 4.0,
-        ),
-        //NOTE: can join rounded edges but not border with rounded edges
-        //which is why those are seperate below
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            //-------------------------1 RM tag
-            Container(
-              decoration: BoxDecoration(
-                color: Theme.of(context).primaryColorDark,
-                borderRadius: new BorderRadius.only(
-                  topLeft: Radius.circular(borderRadius),
-                  bottomLeft: Radius.circular(borderRadius),
-                ),
-              ),
-              padding: EdgeInsets.symmetric(
-                horizontal: 4,
-                vertical: 5, //1 pixel to account for border width
-              ),
-              child: Text(
-                (isOneRepMaxEstimated ? "E-" : "") + "1RM",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          Padding(
+            padding: EdgeInsets.only(
+              top: 2.0, 
+              right: 16.0,
+              bottom: 4.0,
             ),
-            //-------------------------Value
-            Container(
-              padding: EdgeInsets.all(4),
-              decoration: BoxDecoration(
-                border: Border.all( //default width of 1.0
-                  color: Theme.of(context).primaryColorDark,
+            //NOTE: can join rounded edges but not border with rounded edges
+            //which is why those are seperate below
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                //-------------------------1 RM tag
+                Container(
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).primaryColorDark,
+                    borderRadius: new BorderRadius.only(
+                      topLeft: Radius.circular(borderRadius),
+                      bottomLeft: Radius.circular(borderRadius),
+                    ),
+                  ),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 4,
+                    vertical: 5, //1 pixel to account for border width
+                  ),
+                  child: Text(
+                    (isOneRepMaxEstimated ? "E-" : "") + "1RM",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ),
-                borderRadius: new BorderRadius.only(
-                  bottomRight: Radius.circular(borderRadius),
-                  topRight: Radius.circular(borderRadius),
+                //-------------------------Value
+                Container(
+                  padding: EdgeInsets.all(4),
+                  decoration: BoxDecoration(
+                    border: Border.all( //default width of 1.0
+                      color: Theme.of(context).primaryColorDark,
+                    ),
+                    borderRadius: new BorderRadius.only(
+                      bottomRight: Radius.circular(borderRadius),
+                      topRight: Radius.circular(borderRadius),
+                    ),
+                  ),
+                  child: oneRepMaxWidget,
                 ),
-              ),
-              child: oneRepMaxWidget,
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

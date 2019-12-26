@@ -452,11 +452,6 @@ class HighlightSlice extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    DateTime timerStarted = excerciseReference.tempStartTime;
-    Duration timePassed = DateTime.now().difference(timerStarted);
-    bool thereIsStillTime = timePassed <= excerciseReference.recoveryPeriod;
-    
-    //widget build
     if(controllerValue == 1) return Container();
     else{
       double sub = (36/4*3);
@@ -522,7 +517,6 @@ class CircleProgress extends StatelessWidget {
       bool thereIsStillTime = timePassed <= excerciseReference.recoveryPeriod;
       double timeSetAngle = (ExcerciseTileLeading.timeToLerpValue(excerciseReference.recoveryPeriod)).clamp(0.0, 1.0);
       double timePassedAngle = (ExcerciseTileLeading.timeToLerpValue(timePassed)).clamp(0.0, 1.0);
-      Color flatGrey = Color.fromRGBO(128,128,128,1);
 
       //create angles
       double firstAngle = (thereIsStillTime ? timePassedAngle : timeSetAngle) * 360;

@@ -1,5 +1,10 @@
+//flutter
 import 'package:flutter/material.dart';
 
+//plugin
+import 'package:swol/sharedWidgets/ourSnackBar.dart';
+
+//internal
 import 'buttonSpacer.dart';
 
 class TextFieldWithClearButton extends StatefulWidget {
@@ -34,6 +39,15 @@ class _TextFieldWithClearButtonState extends State<TextFieldWithClearButton> {
   ValueNotifier<bool> isEditing;
   final ValueNotifier<FocusNode> focusNodeVN = new ValueNotifier(new FocusNode());
   ValueNotifier<bool> present;
+
+  showSnackBar(){
+    openSnackBar(
+      context, 
+      "A Name Is Required", 
+      Colors.red, 
+      Icons.error_outline,
+    );
+  }
 
   //init
   @override
@@ -118,16 +132,7 @@ class _TextFieldWithClearButtonState extends State<TextFieldWithClearButton> {
               ctrl.text = widget.valueToUpdate.value;
               
               //let the user know their action is invalid
-              final snackBar = SnackBar(
-                backgroundColor: Theme.of(context).primaryColorDark,
-                content: Text(
-                  'A Name Is Required',
-                  style: TextStyle(
-                    color: Colors.white,
-                  ),
-                ),
-              );
-              Scaffold.of(context).showSnackBar(snackBar);
+              showSnackBar();
             }
           }
 
@@ -168,16 +173,7 @@ class _TextFieldWithClearButtonState extends State<TextFieldWithClearButton> {
                 ctrl.text = widget.valueToUpdate.value;
                 
                 //let the user know their action is invalid
-                final snackBar = SnackBar(
-                  backgroundColor: Theme.of(context).primaryColorDark,
-                  content: Text(
-                    'A Name Is Required',
-                    style: TextStyle(
-                      color: Colors.white,
-                    ),
-                  ),
-                );
-                Scaffold.of(context).showSnackBar(snackBar);
+                showSnackBar();
               }
             }
 

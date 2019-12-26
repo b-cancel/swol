@@ -128,7 +128,7 @@ class TestWidget extends StatelessWidget {
     @required this.values,
   });
 
-  List<List> values;
+  final List<List> values;
 
   @override
   Widget build(BuildContext context) {

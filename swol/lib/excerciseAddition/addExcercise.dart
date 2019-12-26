@@ -4,7 +4,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:swol/excercise/defaultDateTimes.dart';
 
 //plugins
-import 'package:direct_select_flutter/generated/i18n.dart';
 import 'package:direct_select_flutter/direct_select_container.dart';
 import 'package:direct_select_flutter/direct_select_item.dart';
 import 'package:direct_select_flutter/direct_select_list.dart';
@@ -388,12 +387,6 @@ class _EasyFunctionDropDownState extends State<EasyFunctionDropDown> {
         ),
       ),
       onItemSelectedListener: (item, index, context) {
-        Scaffold.of(context).showSnackBar(
-          SnackBar(
-            content: Text(item),
-          ),
-        );
-        
         setState(() {
           widget.functionString.value = item;
           widget.functionIndex.value = index;

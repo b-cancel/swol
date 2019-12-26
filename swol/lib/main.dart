@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 //plugins
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:bot_toast/bot_toast.dart';
 import 'package:provider/provider.dart';
 import 'package:async/async.dart';
 
@@ -34,11 +35,14 @@ class App extends StatelessWidget {
     SystemChrome.setSystemUIOverlayStyle(ThemeChanger.allBlackStyle);
 
     //main app build
-    return FeatureDiscovery(
-      child: MaterialApp(
-        title: 'SWOL',
-        theme: ThemeData.dark(), //only until everything loads
-        home: GrabSystemPrefs(),
+    return BotToastInit(
+      child: FeatureDiscovery(
+        child: MaterialApp(
+          title: 'SWOL',
+          navigatorObservers: [BotToastNavigatorObserver()],//2.registered route observer
+          theme: ThemeData.dark(), //only until everything loads
+          home: GrabSystemPrefs(),
+        ),
       ),
     );
   }
