@@ -27,6 +27,7 @@ openSnackBar(
     duration: Duration(seconds: 3),
     leftBarIndicatorColor: color,
     flushbarPosition: FlushbarPosition.BOTTOM,
-    flushbarStyle: FlushbarStyle.GROUNDED,
+    flushbarStyle: FlushbarStyle.FLOATING,
+    margin: EdgeInsets.all(16), 
   )..show(context);
 }
