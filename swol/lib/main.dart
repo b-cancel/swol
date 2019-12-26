@@ -17,10 +17,6 @@ import 'package:swol/excercise/excerciseData.dart';
 import 'package:swol/excerciseSearch/searchesData.dart';
 import 'package:swol/utils/onboarding.dart';
 
-//https://pub.dev/packages/animator
-//https://pub.dev/packages/auto_animated
-//https://pub.dev/packages/flutter_sidekick
-
 //app start
 void main() => runApp(App());
 

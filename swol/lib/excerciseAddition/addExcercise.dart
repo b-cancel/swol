@@ -3,6 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:swol/excercise/defaultDateTimes.dart';
 
+//plugins
+import 'package:direct_select_flutter/generated/i18n.dart';
+import 'package:direct_select_flutter/direct_select_container.dart';
+import 'package:direct_select_flutter/direct_select_item.dart';
+import 'package:direct_select_flutter/direct_select_list.dart';
+
 //internal
 import 'package:swol/excercise/excerciseData.dart';
 import 'package:swol/excercise/excerciseStructure.dart';
@@ -233,111 +239,185 @@ class AddExcercise extends StatelessWidget {
             ),
           ),
         ),
-        body: Stack(
-          children: <Widget>[
-            Container(
-              color: Theme.of(context).scaffoldBackgroundColor,
-              child: ListView(
-                shrinkWrap: true,
-                padding: EdgeInsets.symmetric(
-                  vertical: 16,
-                ),
-                children: <Widget>[
-                  Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: <Widget>[
-                      Card(
-                        margin: EdgeInsets.all(8),
-                        child: Padding(
-                          padding: EdgeInsets.only(
-                            top: 8,
-                            left: 16,
-                            right: 16,
-                            bottom: 16,
-                          ),
-                          child: BasicEditor(
-                            namePresent: namePresent,
-                            nameError: nameError,
-                            name: name,
-                            note: note,
-                            url: url,
-                          ),
-                        ),
-                      ),
-                      RecoveryTimeCard(
-                        changeDuration: changeDuration, 
-                        sliderWidth: sliderWidth, 
-                        //value notifier below
-                        recoveryPeriod: recoveryPeriod, 
-                      ),
-                      SetTargetCard(
-                        setTarget: setTarget,
-                      ),
-                      Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          RepTargetCard(
-                            changeDuration: changeDuration, 
-                            sliderWidth: sliderWidth, 
-                            repTargetDuration: repTargetDuration, 
-                            repTarget: repTarget,
-                          ),
-                          Card(
-                            margin: EdgeInsets.all(8),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: <Widget>[
-                                Container(
-                                  padding: EdgeInsets.only(
-                                    //Top 16 padding address above
-                                    left: 16,
-                                    right: 16,
-                                    bottom: 16,
-                                  ),
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: <Widget>[
-                                      Container(
-                                        child: new HeaderWithInfo(
-                                          title: "Prediction Formula",
-                                          popUp: new PredictionFormulasPopUp(),
-                                        ),
-                                      ),
-                                      FunctionDropDown(
-                                        functionIndex: functionIndex,
-                                        functionString: functionString,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ]
+        body: DirectSelectContainer(
+          child: Stack(
+            children: <Widget>[
+              Container(
+                color: Theme.of(context).scaffoldBackgroundColor,
+                child: ListView(
+                  shrinkWrap: true,
+                  padding: EdgeInsets.symmetric(
+                    vertical: 16,
+                  ),
+                  children: <Widget>[
+                    Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: <Widget>[
+                        Card(
+                          margin: EdgeInsets.all(8),
+                          child: Padding(
+                            padding: EdgeInsets.only(
+                              top: 8,
+                              left: 16,
+                              right: 16,
+                              bottom: 16,
+                            ),
+                            child: BasicEditor(
+                              namePresent: namePresent,
+                              nameError: nameError,
+                              name: name,
+                              note: note,
+                              url: url,
                             ),
                           ),
-                        ],
-                      )
-                    ],
+                        ),
+                        RecoveryTimeCard(
+                          changeDuration: changeDuration, 
+                          sliderWidth: sliderWidth, 
+                          //value notifier below
+                          recoveryPeriod: recoveryPeriod, 
+                        ),
+                        SetTargetCard(
+                          setTarget: setTarget,
+                        ),
+                        Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            RepTargetCard(
+                              changeDuration: changeDuration, 
+                              sliderWidth: sliderWidth, 
+                              repTargetDuration: repTargetDuration, 
+                              repTarget: repTarget,
+                            ),
+                            Card(
+                              margin: EdgeInsets.all(8),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: <Widget>[
+                                  Container(
+                                    padding: EdgeInsets.only(
+                                      //Top 16 padding address above
+                                      left: 16,
+                                      right: 16,
+                                      bottom: 16,
+                                    ),
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: <Widget>[
+                                        Container(
+                                          child: new HeaderWithInfo(
+                                            title: "Prediction Formula",
+                                            popUp: new PredictionFormulasPopUp(),
+                                          ),
+                                        ),
+                                        EasyFunctionDropDown(
+                                          functionIndex: functionIndex,
+                                          functionString: functionString,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ]
+                              ),
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
+                    Container(
+                      height: 56.0 + 16,
+                    ),
+                  ],
+                ),
+              ),
+              Positioned(
+                bottom: 0,
+                child: Padding(
+                  padding: EdgeInsets.all(16),
+                  child: FloatingActionButton(
+                    backgroundColor: Theme.of(context).accentColor,
+                    onPressed: (){
+                      print("go to explain page");
+                    },
+                    tooltip: "What is all this stuff? (o_O)",
+                    child: Icon(FontAwesomeIcons.question),
                   ),
-                  
-                  Container(
-                    height: 56.0 + 16,
-                  )
-                  
-                ],
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class EasyFunctionDropDown extends StatefulWidget {
+  EasyFunctionDropDown({
+    @required this.functionString,
+    @required this.functionIndex,
+  });
+
+  final ValueNotifier<String> functionString;
+  final ValueNotifier<int> functionIndex;
+
+  @override
+  _EasyFunctionDropDownState createState() => _EasyFunctionDropDownState();
+}
+
+class _EasyFunctionDropDownState extends State<EasyFunctionDropDown> {
+  @override
+  Widget build(BuildContext context) {
+    Widget directSelectList = DirectSelectList<String>(
+      values: Functions.functions,
+      defaultItemIndex: widget.functionIndex.value,
+      itemBuilder: (String value){
+        return DirectSelectItem<String>(
+          itemHeight: 56,
+          value: value,
+          itemBuilder: (context, value) {
+            return Text(value);
+          },
+        );
+      },
+      focusedItemDecoration: BoxDecoration(
+        border: BorderDirectional(
+          bottom: BorderSide(width: 1, color: Colors.black12),
+          top: BorderSide(width: 1, color: Colors.black12),
+        ),
+      ),
+      onItemSelectedListener: (item, index, context) {
+        Scaffold.of(context).showSnackBar(
+          SnackBar(
+            content: Text(item),
+          ),
+        );
+        
+        setState(() {
+          widget.functionString.value = item;
+          widget.functionIndex.value = index;
+        });
+      },
+    );
+
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(0, 8, 0, 0),
+      child: Card(
+        child: Row(
+          mainAxisSize: MainAxisSize.max,
+          children: <Widget>[
+            Expanded(
+              child: Padding(
+                padding: EdgeInsets.only(left: 12),
+                child: directSelectList,
               ),
             ),
-            Positioned(
-              bottom: 0,
-              child: Padding(
-                padding: EdgeInsets.all(16),
-                child: FloatingActionButton(
-                  backgroundColor: Theme.of(context).accentColor,
-                  onPressed: (){
-                    print("go to explain page");
-                  },
-                  tooltip: "What is all this stuff? (o_O)",
-                  child: Icon(FontAwesomeIcons.question),
-                ),
+            Padding(
+              padding: EdgeInsets.only(right: 8),
+              child: Icon(
+                Icons.unfold_more,
+                color: Colors.black38,
               ),
             )
           ],

@@ -30,6 +30,18 @@ import 'package:swol/utils/onboarding.dart';
 //TODO: when the user open the app and there is ONLY 1 excercise in progress
 //TODO: automatically go to that excercse (ensure animation)
 
+/*
+if (Navigator.of(tabs[index].tabContext).canPop()) {
+        Navigator.of(tabs[index].tabContext)
+            .popUntil((Route<dynamic> r) => r.isFirst);
+      }
+*/
+//Navigator.popUntil(context, (Route<dynamic> route) => route.isFirst)
+/*
+Navigator.pushNamedAndRemoveUntil(context, '/', (_) => false);
+The tricky part is the animation: looks like a push not a pop or replace.
+*/
+
 //main widget
 class ExcerciseSelect extends StatefulWidget {
   final bool permissionGiven;

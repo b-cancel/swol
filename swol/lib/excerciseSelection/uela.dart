@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 //packages
-import 'package:flutter_icons/flutter_icons.dart';
 import 'package:swol/sharedWidgets/excerciseListTile/triangleAngle.dart';
+import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
+import 'package:flutter_icons/flutter_icons.dart';
 import 'package:swol/utils/onboarding.dart';
 
 //internal
@@ -43,8 +44,11 @@ class _UELAState extends State<UELA> {
   @override
   Widget build(BuildContext context) {
     String tab = "\t\t\t\t\t";
-    String newLine = "\n";
     Widget holdWidget = Container();
+
+    Color theColor = Colors.blue;
+    //Color(0xFF33C3D5);
+
     if(holding.value){
       holdWidget = Column(
         mainAxisSize: MainAxisSize.min,
@@ -84,155 +88,179 @@ class _UELAState extends State<UELA> {
     //build
     return Theme(
       data: ThemeData.light(),
-      child: SimpleDialog(
+      child: AlertDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(
+            Radius.circular(12.0)
+          ),
+        ),
         contentPadding: EdgeInsets.all(0),
-        children: <Widget>[
-          Container(
-            color: Colors.black.withOpacity(0.85),
-            padding: EdgeInsets.all(16),
-            child: Row(
-              mainAxisSize: MainAxisSize.max,
-              crossAxisAlignment: CrossAxisAlignment.start,
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Stack(
               children: <Widget>[
-                Expanded(
-                  child: Text(
-                    "End User\nLicense Agreement",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 24,
-                      color: Colors.white,
+                Container(
+                  decoration: BoxDecoration(
+                    color: theColor,
+                    borderRadius: new BorderRadius.only(
+                      topLeft:  const  Radius.circular(12.0),
+                      topRight: const  Radius.circular(12.0),
                     ),
-                    maxLines: 2,
-                    overflow: TextOverflow.visible,
+                  ),
+                  padding: EdgeInsets.only(
+                    top: 8,
+                  ),
+                  child: Image.asset(
+                    "assets/popUpGifs/agree.gif",
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(
-                    left: 8.0,
-                  ),
-                  child: Icon(
-                    MaterialCommunityIcons.getIconData("file-document-edit"),
-                    color: Colors.white,
-                    size: 32,
+                Positioned.fill(
+                  child: Center(
+                    child: holdWidget,
                   ),
                 ),
               ],
             ),
-          ),
-          Stack(
-            children: <Widget>[
-              Container(
-                padding: EdgeInsets.all(16),
-                child: DefaultTextStyle(
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.black,
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      RichText(
-                        text: TextSpan(
+            Stack(
+              children: <Widget>[
+                Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        top: 16.0,
+                        bottom: 8,
+                      ),
+                      child: Container(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 16,
+                        ),
+                        child: DefaultTextStyle(
                           style: TextStyle(
-                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 24,
                             color: Colors.black,
                           ),
-                          children: [
-                            TextSpan(
-                              text: tab + "In order to help you, we offer many suggestions throughout the app.",
-                            ),
-                            TextSpan(
-                              text: " But it's your responsibility to stay safe.",
-                              style: TextStyle(
-                                fontWeight: FontWeight.w900,
-                              ),
-                            ),
-                          ]
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(
-                          top: 12.0,
-                        ),
-                        child: RichText(
-                          text: TextSpan(
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: Colors.black,
-                            ),
-                            children: [
-                              TextSpan(
-                                text: tab + "We are not liable for any harm that you may cause yourself or others by following our suggestions.",
-                              ),
-                              TextSpan(
-                                text: " Follow our suggestions at your own risk.",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w900,
-                                ),
-                              ),
-                            ]
+                          child: Column(
+                            children: <Widget>[
+                              Text("End User License"),
+                              Text("Agreement"),
+                            ],
                           ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Positioned.fill(
-                child: Center(
-                  child: holdWidget,
-                ),
-              )
-            ],
-          ),
-          Padding(
-            padding: EdgeInsets.only(
-              bottom: 8.0,
-            ),
-            child: Container(
-              padding: EdgeInsets.symmetric(
-                horizontal: 16,
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: <Widget>[
-                  FlatButton(
-                    onPressed: (){
-                      SystemChannels.platform.invokeMethod('SystemNavigator.pop');
-                    },
-                    child: Text("Close The App"),
-                  ),
-                  GestureDetector(
-                    onTapDown: (tapDownDetails){
-                      holding.value = true;
-                    },
-                    onTapUp: (tapUpDetails){
-                      holding.value = false;
-                    },
-                    child: Container(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 24,
-                        vertical: 8,
-                      ),
-                      decoration: BoxDecoration(
-                        color: Colors.blue,
-                        borderRadius: BorderRadius.circular(4),
-                      ),
-                      child: Text(
-                        "I Agree",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
                         ),
                       ),
                     ),
-                  ),
-                ],
-              ),
+                    Container(
+                      padding: EdgeInsets.all(16),
+                      child: DefaultTextStyle(
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.black,
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            RichText(
+                              text: TextSpan(
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: Colors.black,
+                                ),
+                                children: [
+                                  TextSpan(
+                                    text: tab + "In order to help you, we offer many suggestions throughout the app.",
+                                  ),
+                                  TextSpan(
+                                    text: " But it's your responsibility to stay safe.",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w900,
+                                    ),
+                                  ),
+                                ]
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(
+                                top: 12.0,
+                              ),
+                              child: RichText(
+                                text: TextSpan(
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.black,
+                                  ),
+                                  children: [
+                                    TextSpan(
+                                      text: tab + "We are not liable for any harm that you may cause yourself or others by following our suggestions.",
+                                    ),
+                                    TextSpan(
+                                      text: " Follow our suggestions at your own risk.",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w900,
+                                      ),
+                                    ),
+                                  ]
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
             ),
-          )
-        ],
+            Padding(
+              padding: EdgeInsets.only(
+                bottom: 8.0,
+              ),
+              child: Container(
+                padding: EdgeInsets.symmetric(
+                  horizontal: 16,
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    FlatButton(
+                      onPressed: (){
+                        SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+                      },
+                      child: Text("Close The App"),
+                    ),
+                    GestureDetector(
+                      onTapDown: (tapDownDetails){
+                        holding.value = true;
+                      },
+                      onTapUp: (tapUpDetails){
+                        holding.value = false;
+                      },
+                      child: Container(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 24,
+                          vertical: 8,
+                        ),
+                        decoration: BoxDecoration(
+                          color: theColor,
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                        child: Text(
+                          "I Agree",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            )
+          ],
+        )
       ),
     );
   }

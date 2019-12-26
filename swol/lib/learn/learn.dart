@@ -15,6 +15,10 @@ import 'package:swol/learn/sections/precautions.dart';
 import 'package:swol/learn/sections/research.dart';
 import 'package:swol/learn/sections/training.dart';
 
+//https://pub.dev/packages/expandable
+//https://stackoverflow.com/questions/54986328/how-to-make-expandable-card
+
+
 //build
 class LearnExcercise extends StatefulWidget {
   LearnExcercise({
