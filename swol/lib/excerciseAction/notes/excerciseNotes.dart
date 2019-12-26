@@ -51,6 +51,32 @@ class BigAction extends StatelessWidget {
       builder: (BuildContext context) {
         return ConfirmActionMessage(
           buttonColor: color, 
+          image: (delete) ? Padding(
+            padding: EdgeInsets.only(
+              bottom: 36,
+              top: 24,
+            ),
+            child: Container(
+              height: 140,
+              child: Image.asset(
+                "assets/popUpGifs/delete.gif",
+                color: Colors.white,
+              ),
+            ),
+          )
+          : Padding(
+            padding: const EdgeInsets.only(
+              top: 24.0,
+              bottom: 24,
+            ),
+            child: Container(
+              height: 140,
+              child: Image.asset(
+                "assets/popUpGifs/hide.gif",
+                color: Colors.white,
+              ),
+            ),
+          ),
           iconSpace: (delete) ? 8 : 16, 
           icon: icon, 
           actionString: (delete) ? "Delete" : "Hide", 

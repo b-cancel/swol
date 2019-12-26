@@ -4,6 +4,7 @@ class ConfirmActionMessage extends StatelessWidget {
   const ConfirmActionMessage({
     Key key,
     @required this.buttonColor,
+    @required this.image,
     @required this.iconSpace,
     @required this.icon,
     @required this.actionString,
@@ -13,6 +14,7 @@ class ConfirmActionMessage extends StatelessWidget {
   }) : super(key: key);
 
   final Color buttonColor;
+  final Widget image; 
   final double iconSpace;
   final IconData icon;
   final String actionString;
@@ -25,6 +27,12 @@ class ConfirmActionMessage extends StatelessWidget {
     return Theme(
       data: ThemeData.light(),
       child: AlertDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(
+            Radius.circular(12.0)
+          ),
+        ),
+        /*
         titlePadding: EdgeInsets.all(0),
         title: Container(
           padding: EdgeInsets.all(16),
@@ -49,12 +57,41 @@ class ConfirmActionMessage extends StatelessWidget {
             ],
           ),
         ),
+        */
         contentPadding: EdgeInsets.all(0),
         content: Column(
           mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
+            Container(
+              decoration: BoxDecoration(
+                color: buttonColor,
+                borderRadius: new BorderRadius.only(
+                  topLeft:  const  Radius.circular(12.0),
+                  topRight: const  Radius.circular(12.0),
+                ),
+              ),
+              child: image,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(
+                top: 16.0,
+              ),
+              child: Container(
+                alignment: Alignment.center,
+                padding: EdgeInsets.symmetric(
+                  horizontal: 16,
+                ),
+                child: DefaultTextStyle(
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 24,
+                    color: Colors.black,
+                  ),
+                  child: Text(actionString + " Excercise?"),
+                ),
+              ),
+            ),
             Padding(
               padding: const EdgeInsets.all(24.0),
               child: message,
@@ -79,7 +116,6 @@ class ConfirmActionMessage extends StatelessWidget {
               //get rid of keyboard that MAY be shown
               FocusScope.of(context).unfocus();
 
-              print("before deleting");
               actionFunction();
 
               //get rid of this pop up

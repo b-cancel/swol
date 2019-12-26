@@ -4,8 +4,6 @@ import 'package:flutter/services.dart';
 
 //packages
 import 'package:swol/sharedWidgets/excerciseListTile/triangleAngle.dart';
-import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
-import 'package:flutter_icons/flutter_icons.dart';
 import 'package:swol/utils/onboarding.dart';
 
 //internal
