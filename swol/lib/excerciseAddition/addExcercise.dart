@@ -189,38 +189,50 @@ class AddExcercise extends StatelessWidget {
                               right: 16,
                               bottom: 16,
                             ),
-                            child: BasicEditor(
-                              namePresent: namePresent,
-                              nameError: nameError,
-                              name: name,
-                              note: note,
-                              url: url,
+                            child: Theme(
+                              data: ThemeData.light(),
+                              child: BasicEditor(
+                                namePresent: namePresent,
+                                nameError: nameError,
+                                name: name,
+                                note: note,
+                                url: url,
+                              ),
                             ),
                           ),
                         ),
-                        RecoveryTimeCard(
-                          changeDuration: changeDuration, 
-                          sliderWidth: sliderWidth, 
-                          //value notifier below
-                          recoveryPeriod: recoveryPeriod, 
+                        Theme(
+                          data: ThemeData.light(),
+                          child: RecoveryTimeCard(
+                            changeDuration: changeDuration, 
+                            sliderWidth: sliderWidth, 
+                            //value notifier below
+                            recoveryPeriod: recoveryPeriod, 
+                          ),
                         ),
-                        SetTargetCard(
-                          setTarget: setTarget,
+                        Theme(
+                          data: ThemeData.light(),
+                          child: SetTargetCard(
+                            setTarget: setTarget,
+                          ),
                         ),
-                        Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            RepTargetCard(
-                              changeDuration: changeDuration, 
-                              sliderWidth: sliderWidth, 
-                              repTargetDuration: repTargetDuration, 
-                              repTarget: repTarget,
-                            ),
-                            FunctionSelection(
-                              functionIndex: functionIndex, 
-                              functionString: functionString,
-                            ),
-                          ],
+                        Theme(
+                          data: ThemeData.light(),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              RepTargetCard(
+                                changeDuration: changeDuration, 
+                                sliderWidth: sliderWidth, 
+                                repTargetDuration: repTargetDuration, 
+                                repTarget: repTarget,
+                              ),
+                              FunctionSelection(
+                                functionIndex: functionIndex, 
+                                functionString: functionString,
+                              ),
+                            ],
+                          ),
                         )
                       ],
                     ),

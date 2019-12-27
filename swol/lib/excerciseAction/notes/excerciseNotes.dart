@@ -196,13 +196,16 @@ class _ExcerciseNotesState extends State<ExcerciseNotes> {
               horizontal: 16,
               vertical: 8,
             ),
-            child: BasicEditor(
-              namePresent: namePresent,
-              nameError: nameError,
-              name: name,
-              note: note,
-              url: url,
-              editOneAtAtTime: true,
+            child: Theme(
+              data: ThemeData.light(),
+              child: BasicEditor(
+                namePresent: namePresent,
+                nameError: nameError,
+                name: name,
+                note: note,
+                url: url,
+                editOneAtAtTime: true,
+              ),
             ),
           ),
         ],

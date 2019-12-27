@@ -31,49 +31,52 @@ class BasicEditor extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: <Widget>[
-        HeaderWithInfo(
-          title: "Name",
-          popUpFunction: () => excerciseNamePopUp(context),
-        ),
-        TextFieldWithClearButton(
-          editOneAtAtTime: editOneAtAtTime,
-          valueToUpdate: name,
-          hint: "Required*", 
-          error: (nameError.value) ? "Name Is Required" : null, 
-          //auto focus field
-          autofocus: true,
-          //we need to keep track above to determine whether we can active the button
-          present: namePresent, 
-          //so next focuses on the note
-          otherFocusNode: noteFocusNode,
-        ),
-        HeaderWithInfo(
-          title: "Notes",
-          popUpFunction: () => excerciseNotePopUp(context),
-        ),
-        TextFieldWithClearButton(
-          editOneAtAtTime: editOneAtAtTime,
-          valueToUpdate: note,
-          hint: "Details", 
-          error: null, 
-          //so we can link up both fields
-          focusNode: noteFocusNode,
-        ),
-        Container(
-          child: HeaderWithInfo(
-            title: "Reference Link",
-            popUpFunction: () => referenceLinkPopUp(context),
+    return Theme(
+      data: ThemeData.dark(),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: <Widget>[
+          HeaderWithInfo(
+            title: "Name",
+            popUpFunction: () => excerciseNamePopUp(context),
           ),
-        ),
-        ReferenceLinkBox(
-          url: url,
-          editOneAtAtTime: editOneAtAtTime,
-        ),
-      ],
+          TextFieldWithClearButton(
+            editOneAtAtTime: editOneAtAtTime,
+            valueToUpdate: name,
+            hint: "Required*", 
+            error: (nameError.value) ? "Name Is Required" : null, 
+            //auto focus field
+            autofocus: true,
+            //we need to keep track above to determine whether we can active the button
+            present: namePresent, 
+            //so next focuses on the note
+            otherFocusNode: noteFocusNode,
+          ),
+          HeaderWithInfo(
+            title: "Notes",
+            popUpFunction: () => excerciseNotePopUp(context),
+          ),
+          TextFieldWithClearButton(
+            editOneAtAtTime: editOneAtAtTime,
+            valueToUpdate: note,
+            hint: "Details", 
+            error: null, 
+            //so we can link up both fields
+            focusNode: noteFocusNode,
+          ),
+          Container(
+            child: HeaderWithInfo(
+              title: "Reference Link",
+              popUpFunction: () => referenceLinkPopUp(context),
+            ),
+          ),
+          ReferenceLinkBox(
+            url: url,
+            editOneAtAtTime: editOneAtAtTime,
+          ),
+        ],
+      ),
     );
   }
 }

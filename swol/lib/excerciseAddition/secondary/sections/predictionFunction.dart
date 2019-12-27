@@ -18,36 +18,39 @@ class FunctionSelection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      margin: EdgeInsets.all(8),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          Container(
-            padding: EdgeInsets.only(
-              //Top 16 padding address above
-              left: 16,
-              right: 16,
-              bottom: 16,
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Container(
-                  child: new HeaderWithInfo(
-                    title: "Prediction Formula",
-                    popUpFunction: () => predictionFormulasPopUp(context),
+    return Theme(
+      data: ThemeData.dark(),
+      child: Card(
+        margin: EdgeInsets.all(8),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Container(
+              padding: EdgeInsets.only(
+                //Top 16 padding address above
+                left: 16,
+                right: 16,
+                bottom: 16,
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Container(
+                    child: new HeaderWithInfo(
+                      title: "Prediction Formula",
+                      popUpFunction: () => predictionFormulasPopUp(context),
+                    ),
                   ),
-                ),
-                //TODO: switch to the easy drop down after fixing issue
-                FunctionDropDown(
-                  functionIndex: functionIndex,
-                  functionString: functionString,
-                ),
-              ],
+                  //TODO: switch to the easy drop down after fixing issue
+                  FunctionDropDown(
+                    functionIndex: functionIndex,
+                    functionString: functionString,
+                  ),
+                ],
+              ),
             ),
-          ),
-        ]
+          ]
+        ),
       ),
     );
   }

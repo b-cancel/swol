@@ -73,5 +73,6 @@ predictionFormulasPopUp(BuildContext context){
     title: "Prediction Formulas",
     subtitle: "Not sure? Keep the default",
     body: PredictionFormulasPopUpBody(),
+    isDense: true,
   );
 }

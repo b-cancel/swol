@@ -24,32 +24,35 @@ class RecoveryTimeCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      margin: EdgeInsets.all(8),
-      child: Container(
-        padding: EdgeInsets.only(
-          top: 8,
-          left: 16,
-          right: 16,
-          bottom: 16,
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Container(
-              child: HeaderWithInfo(
-                title: "Recovery Time",
-                popUpFunction: () => recoveryTimePopUp(context),
+    return Theme(
+      data: ThemeData.dark(),
+      child: Card(
+        margin: EdgeInsets.all(8),
+        child: Container(
+          padding: EdgeInsets.only(
+            top: 8,
+            left: 16,
+            right: 16,
+            bottom: 16,
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Container(
+                child: HeaderWithInfo(
+                  title: "Recovery Time",
+                  popUpFunction: () => recoveryTimePopUp(context),
+                ),
               ),
-            ),
-            RecoveryTimeWidget(
-              changeDuration: changeDuration, 
-              sliderWidth: sliderWidth, 
-              textHeight: 16, 
-              textMaxWidth: 28, 
-              recoveryPeriod: recoveryPeriod, 
-            ),
-          ],
+              RecoveryTimeWidget(
+                changeDuration: changeDuration, 
+                sliderWidth: sliderWidth, 
+                textHeight: 16, 
+                textMaxWidth: 28, 
+                recoveryPeriod: recoveryPeriod, 
+              ),
+            ],
+          ),
         ),
       ),
     );

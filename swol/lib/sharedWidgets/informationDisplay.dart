@@ -7,6 +7,7 @@ infoPopUpFunction(
     @required title,
     subtitle: "",
     @required body,
+    isDense: false,
   }){
     print("------------------------------------------INFO POP UP");
 
@@ -19,7 +20,7 @@ infoPopUpFunction(
       dismissOnTouchOutside: true,
       animType: AnimType.SCALE,
       dialogType: DialogType.INFO,
-      isDense: false, //is dense true is slightly larger
+      isDense: isDense, //is dense true is slightly larger
       body: Theme(
         data: ThemeData.dark(),
         child: Container(

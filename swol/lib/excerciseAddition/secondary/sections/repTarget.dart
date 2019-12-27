@@ -26,55 +26,58 @@ class RepTargetCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      margin: EdgeInsets.all(8),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          Container(
-            padding: EdgeInsets.only(
-              top: 8,
-              left: 16,
-              right: 16,
-            ),
-            child: new HeaderWithInfo(
-              title: "Rep Target",
-              popUpFunction: () => repTargetPopUp(context),
-            ),
-          ),
-          Container(
-            child: Padding(
-              padding: const EdgeInsets.only(
-                left: 16.0,
+    return Theme(
+      data: ThemeData.dark(),
+      child: Card(
+        margin: EdgeInsets.all(8),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Container(
+              padding: EdgeInsets.only(
+                top: 8,
+                left: 16,
+                right: 16,
               ),
-              child: Theme(
-                data: ThemeData.light(),
-                child: AnimRepTargetInfoWhite(
-                  changeDuration: changeDuration, 
-                  sliderWidth: sliderWidth, 
-                  repTargetDuration: repTargetDuration,
+              child: new HeaderWithInfo(
+                title: "Rep Target",
+                popUpFunction: () => repTargetPopUp(context),
+              ),
+            ),
+            Container(
+              child: Padding(
+                padding: const EdgeInsets.only(
+                  left: 16.0,
+                ),
+                child: Theme(
+                  data: ThemeData.light(),
+                  child: AnimRepTargetInfoWhite(
+                    changeDuration: changeDuration, 
+                    sliderWidth: sliderWidth, 
+                    repTargetDuration: repTargetDuration,
+                  ),
                 ),
               ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(
-              bottom: 16.0,
-              left: 16,
-              right: 16,
-              top: 8,
+            Padding(
+              padding: const EdgeInsets.only(
+                bottom: 16.0,
+                left: 16,
+                right: 16,
+                top: 8,
+              ),
+              child: Container(
+                color: Colors.black, //line color
+                height: 2,
+                width: MediaQuery.of(context).size.width,
+              ),
             ),
-            child: Container(
-              color: Theme.of(context).primaryColor,
-              height: 2,
-              width: MediaQuery.of(context).size.width,
+            CustomSlider(
+              value: repTarget,
+              lastTick: 35,
             ),
-          ),
-          CustomSlider(
-            value: repTarget,
-            lastTick: 35,
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
