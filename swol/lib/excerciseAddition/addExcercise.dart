@@ -5,12 +5,17 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 //plugins
 import 'package:direct_select_flutter/direct_select_container.dart';
 
-//internal
-import 'package:swol/excercise/excerciseStructure.dart';
+//internal from addition
+import 'package:swol/excerciseAddition/secondary/sections/predictionFunction.dart';
+import 'package:swol/excerciseAddition/secondary/sections/recoveryTime.dart';
+import 'package:swol/excerciseAddition/secondary/sections/repTarget.dart';
+import 'package:swol/excerciseAddition/secondary/sections/setTarget.dart';
 import 'package:swol/excerciseAddition/secondary/save.dart';
-import 'package:swol/excerciseAddition/secondary/sections.dart';
+
+//internal other
 import 'package:swol/excerciseSelection/secondary/addNewHero.dart';
 import 'package:swol/sharedWidgets/basicFields/excerciseEdit.dart';
+import 'package:swol/excercise/excerciseStructure.dart';
 import 'package:swol/other/functions/helper.dart';
 
 //TODO: when the user comes in here for the first time automatically open the question mark pop up

@@ -298,8 +298,8 @@ class SetTargetPopUp extends StatelessWidget {
   }
 }
 
-class SetBreakPopUp extends StatelessWidget {
-  const SetBreakPopUp({
+class RecoveryTimePopUp extends StatelessWidget {
+  const RecoveryTimePopUp({
     Key key,
   }) : super(key: key);
 
