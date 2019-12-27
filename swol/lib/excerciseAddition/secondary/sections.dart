@@ -326,90 +326,17 @@ class RecoveryTimeWidget extends StatelessWidget {
         FittedBox(
           fit: BoxFit.contain,
           child: Center(
-            child: AnimatedRecoveryTimeInfo(
-              changeDuration: changeDuration,
-              grownWidth: sliderWidth, 
-              textHeight: textHeight, 
-              textMaxWidth: textMaxWidth,
-              selectedDuration: recoveryPeriod,
-              darkTheme: darkTheme,
-              ranges: [
-                Range(
-                  name: "Endurance Training",
-                  onTap: makeTrainingTypePopUp(
-                    context: context,
-                    title: "Endurance Training",
-                    showEndurance: true,
-                    highlightfield: 2,
-                    iconID: FitIcons.Endurance,
-                  ),
-                  left: new SliderToolTipButton(
-                    buttonText: "15s",
-                    tooltipText: "Any Less, wouldn't be enough",
-                  ),
-                  right: SliderToolTipButton(
-                    buttonText: "1m",
-                  ),
-                  startSeconds: 15,
-                  endSeconds: 60,
-                ),
-                Range(
-                  name: "Hypertrophy Training",
-                  onTap: makeTrainingTypePopUp(
-                    context: context,
-                    title: "Hypertrophy Training",
-                    showHypertrophy: true,
-                    highlightfield: 2,
-                    iconID: FitIcons.Hypertrophy,
-                  ),
-                  left: SliderToolTipButton(
-                    buttonText: "1:05",
-                  ),
-                  right: SliderToolTipButton(
-                    buttonText: "2m",
-                  ),
-                  startSeconds: 65,
-                  endSeconds: 120,
-                ),
-                Range(
-                  name: "Hypertrophy/Strength (50/50)",
-                  onTap: makeTrainingTypePopUp(
-                    context: context,
-                    title: "Hyper/Str (50/50)",
-                    showHypertrophy: true,
-                    showStrength: true,
-                    highlightfield: 2,
-                    iconID: FitIcons.HypAndStr,
-                  ),
-                  left: SliderToolTipButton(
-                    buttonText: "2:05",
-                  ),
-                  right: SliderToolTipButton(
-                    buttonText: "3m",
-                  ),
-                  startSeconds: 125,
-                  endSeconds: 180,
-                ),
-                Range(
-                  name: "Strength Training",
-                  onTap: makeTrainingTypePopUp(
-                    context: context,
-                    title: "Strength Training",
-                    showStrength: true,
-                    highlightfield: 2,
-                    iconID: FitIcons.Strength,
-                  ),
-                  left: SliderToolTipButton(
-                    buttonText: "3:05",
-                  ),
-                  right: SliderToolTipButton(
-                    buttonText: "4:55",
-                    tooltipText: "Any More, and your muscles would have cooled off",
-                  ),
-                  startSeconds: 185,
-                  endSeconds: 295,
-                )
-              ],
+            child: Theme(
+              //light so that our pop ups work properly
+              data: ThemeData.light(),
+              child: AnimRecoveryTimeInfoToWhiteTheme(
+                changeDuration: changeDuration, 
+                sliderWidth: sliderWidth, 
+                textHeight: textHeight, 
+                textMaxWidth: textMaxWidth, 
+                recoveryPeriod: recoveryPeriod, 
+                darkTheme: darkTheme,
+              ),
             ),
           ),
         ),
@@ -432,6 +359,114 @@ class RecoveryTimeWidget extends StatelessWidget {
           duration: recoveryPeriod,
           darkTheme: darkTheme,
         ),
+      ],
+    );
+  }
+}
+
+class AnimRecoveryTimeInfoToWhiteTheme extends StatelessWidget {
+  const AnimRecoveryTimeInfoToWhiteTheme({
+    Key key,
+    @required this.changeDuration,
+    @required this.sliderWidth,
+    @required this.textHeight,
+    @required this.textMaxWidth,
+    @required this.recoveryPeriod,
+    @required this.darkTheme,
+  }) : super(key: key);
+
+  final Duration changeDuration;
+  final double sliderWidth;
+  final double textHeight;
+  final double textMaxWidth;
+  final ValueNotifier<Duration> recoveryPeriod;
+  final bool darkTheme;
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedRecoveryTimeInfo(
+      changeDuration: changeDuration,
+      grownWidth: sliderWidth, 
+      textHeight: textHeight, 
+      textMaxWidth: textMaxWidth,
+      selectedDuration: recoveryPeriod,
+      darkTheme: darkTheme,
+      ranges: [
+        Range(
+          name: "Endurance Training",
+          onTap: makeTrainingTypePopUp(
+            context: context,
+            title: "Endurance Training",
+            showEndurance: true,
+            highlightfield: 2,
+            iconID: FitIcons.Endurance,
+          ),
+          left: new SliderToolTipButton(
+            buttonText: "15s",
+            tooltipText: "Any Less, wouldn't be enough",
+          ),
+          right: SliderToolTipButton(
+            buttonText: "1m",
+          ),
+          startSeconds: 15,
+          endSeconds: 60,
+        ),
+        Range(
+          name: "Hypertrophy Training",
+          onTap: makeTrainingTypePopUp(
+            context: context,
+            title: "Hypertrophy Training",
+            showHypertrophy: true,
+            highlightfield: 2,
+            iconID: FitIcons.Hypertrophy,
+          ),
+          left: SliderToolTipButton(
+            buttonText: "1:05",
+          ),
+          right: SliderToolTipButton(
+            buttonText: "2m",
+          ),
+          startSeconds: 65,
+          endSeconds: 120,
+        ),
+        Range(
+          name: "Hypertrophy/Strength",
+          onTap: makeTrainingTypePopUp(
+            context: context,
+            title: "Hypertrophy/Strength",
+            showHypertrophy: true,
+            showStrength: true,
+            highlightfield: 2,
+            iconID: FitIcons.HypAndStr,
+          ),
+          left: SliderToolTipButton(
+            buttonText: "2:05",
+          ),
+          right: SliderToolTipButton(
+            buttonText: "3m",
+          ),
+          startSeconds: 125,
+          endSeconds: 180,
+        ),
+        Range(
+          name: "Strength Training",
+          onTap: makeTrainingTypePopUp(
+            context: context,
+            title: "Strength Training",
+            showStrength: true,
+            highlightfield: 2,
+            iconID: FitIcons.Strength,
+          ),
+          left: SliderToolTipButton(
+            buttonText: "3:05",
+          ),
+          right: SliderToolTipButton(
+            buttonText: "4:55",
+            tooltipText: "Any More, and your muscles would have cooled off",
+          ),
+          startSeconds: 185,
+          endSeconds: 295,
+        )
       ],
     );
   }

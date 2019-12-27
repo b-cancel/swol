@@ -300,49 +300,52 @@ class _AnimatedRecoveryTimeInfoState extends State<AnimatedRecoveryTimeInfo> {
     }
 
     //build
-    return Stack(
-      children: <Widget>[
-        //---Name Sections
-        (widget.darkTheme == false) 
-        ? Container()
-        : Padding(
-          padding: EdgeInsets.only(
-            top: 24.0,
-          ),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: nameSections,
-          ),
-        ),
-        //---Tick Sections
-        Padding(
-          padding: const EdgeInsets.only(
-            bottom: 24.0,
-          ),
-          child: Row(
-            children: tickSections,
-          ),
-        ),
-        //---End Sections
-        (widget.darkTheme == false) 
-        ? Container()
-        : DefaultTextStyle(
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-          ),
-          child: Padding(
+    return Theme(
+      data: ThemeData.dark(),
+      child: Stack(
+        children: <Widget>[
+          //---Name Sections
+          (widget.darkTheme == false) 
+          ? Container()
+          : Padding(
             padding: EdgeInsets.only(
-              top: 24,
+              top: 24.0,
             ),
             child: Row(
-              mainAxisSize: MainAxisSize.max,
+              mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: endSections,
+              children: nameSections,
             ),
           ),
-        ),
-      ],
+          //---Tick Sections
+          Padding(
+            padding: const EdgeInsets.only(
+              bottom: 24.0,
+            ),
+            child: Row(
+              children: tickSections,
+            ),
+          ),
+          //---End Sections
+          (widget.darkTheme == false) 
+          ? Container()
+          : DefaultTextStyle(
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+            child: Padding(
+              padding: EdgeInsets.only(
+                top: 24,
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.max,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: endSections,
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

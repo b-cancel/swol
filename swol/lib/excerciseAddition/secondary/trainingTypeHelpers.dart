@@ -110,54 +110,13 @@ class _TrainingTypeIndicatorState extends State<TrainingTypeIndicator> {
                       mainAxisSize: MainAxisSize.min,
                       children: ticksAndStuff,
                     ),
-                    Column(
-                      children: <Widget>[
-                        Pill(
-                          setTarget: widget.setTarget,
-                          actives: [4,5,6], 
-                          sectionSize: totalScreenWidth/4,
-                          name: "Train Strength",
-                          onTap: makeTrainingTypePopUp(
-                            context: context,
-                            title: "Strength Training",
-                            showStrength: true,
-                            highlightfield: 4,
-                            iconID: FitIcons.Strength,
-                          ),
-                          leftMultiplier: 2.5,
-                          rightMultiplier: 2.5,
-                        ),
-                        Pill(
-                          setTarget: widget.setTarget,
-                          actives: [3,4,5], 
-                          sectionSize: totalScreenWidth/4,
-                          name: "Train Hypertrophy",
-                          onTap: makeTrainingTypePopUp(
-                            context: context,
-                            title: "Hypertrophy Training",
-                            showHypertrophy: true,
-                            highlightfield: 4,
-                            iconID: FitIcons.Hypertrophy,
-                          ),
-                          leftMultiplier: 1.5,
-                          rightMultiplier: 3.5,
-                        ),
-                        Pill(
-                          setTarget: widget.setTarget,
-                          actives: [1,2,3], //+1
-                          sectionSize: totalScreenWidth/4,
-                          name: "Train Endurance",
-                          onTap: makeTrainingTypePopUp(
-                            context: context,
-                            title: "Endurance Training",
-                            showEndurance: true,
-                            highlightfield: 4,
-                            iconID: FitIcons.Endurance,
-                          ),
-                          leftMultiplier: 0,
-                          rightMultiplier: 5.5,
-                        ),
-                      ],
+                    Theme(
+                      //light so that our pop ups work properly
+                      data: ThemeData.light(), 
+                      child: ThePills(
+                        setTarget: widget.setTarget, 
+                        totalScreenWidth: totalScreenWidth,
+                      ),
                     ),
                   ],
                 ),
@@ -198,6 +157,70 @@ class _TrainingTypeIndicatorState extends State<TrainingTypeIndicator> {
   }
 }
 
+class ThePills extends StatelessWidget {
+  const ThePills({
+    Key key,
+    @required this.setTarget,
+    @required this.totalScreenWidth,
+  }) : super(key: key);
+
+  final ValueNotifier<int> setTarget;
+  final double totalScreenWidth;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: <Widget>[
+        Pill(
+          setTarget: setTarget,
+          actives: [4,5,6], 
+          sectionSize: totalScreenWidth/4,
+          name: "Train Strength",
+          onTap: makeTrainingTypePopUp(
+            context: context,
+            title: "Strength Training",
+            showStrength: true,
+            highlightfield: 4,
+            iconID: FitIcons.Strength,
+          ),
+          leftMultiplier: 2.5,
+          rightMultiplier: 2.5,
+        ),
+        Pill(
+          setTarget: setTarget,
+          actives: [3,4,5], 
+          sectionSize: totalScreenWidth/4,
+          name: "Train Hypertrophy",
+          onTap: makeTrainingTypePopUp(
+            context: context,
+            title: "Hypertrophy Training",
+            showHypertrophy: true,
+            highlightfield: 4,
+            iconID: FitIcons.Hypertrophy,
+          ),
+          leftMultiplier: 1.5,
+          rightMultiplier: 3.5,
+        ),
+        Pill(
+          setTarget: setTarget,
+          actives: [1,2,3], //+1
+          sectionSize: totalScreenWidth/4,
+          name: "Train Endurance",
+          onTap: makeTrainingTypePopUp(
+            context: context,
+            title: "Endurance Training",
+            showEndurance: true,
+            highlightfield: 4,
+            iconID: FitIcons.Endurance,
+          ),
+          leftMultiplier: 0,
+          rightMultiplier: 5.5,
+        ),
+      ],
+    );
+  }
+}
+
 enum FitIcons {Endurance, Hypertrophy, HypAndStr, Strength}
 
 makeTrainingTypePopUp({
@@ -214,7 +237,7 @@ makeTrainingTypePopUp({
     //unfocus so whatever was focused before doesnt annoying scroll us back
     FocusScope.of(context).unfocus();
 
-    Color c = Colors.red;
+    Color c = Colors.white;
 
     //create header "icon"
     Widget header;
@@ -239,16 +262,24 @@ makeTrainingTypePopUp({
           color: c,
         ),
         iconColor: c,
+        backgroundColor: Colors.blue,
       );
       break;
     }
 
-    header = Container(
-      height: 56,
-      width: 56,
-      child: FittedBox(
-        fit: BoxFit.fill,
-        child: header,
+    header = ClipOval(
+      child: Container(
+        color: Colors.blue,
+        //NOTE: 28 is the max
+        padding: EdgeInsets.all(24),
+        child: Container(
+          height: 56,
+          width: 56,
+          child: FittedBox(
+            fit: BoxFit.fill,
+            child: header,
+          ),
+        ),
       ),
     );
 
@@ -266,6 +297,19 @@ makeTrainingTypePopUp({
           width: MediaQuery.of(context).size.width,
           child: Column(
             children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.only(
+                  bottom: 16.0,
+                ),
+                child: Text(
+                  title,
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 28,
+                  ),
+                ),
+              ),
               ScrollableTrainingTypes(
                 lightMode: true,
                 showEndurance: showEndurance,
@@ -273,18 +317,13 @@ makeTrainingTypePopUp({
                 showStrength: showStrength,
                 highlightField: highlightfield,
               ),
-              new LearnPageSuggestion(),
+              new LearnPageSuggestion(
+                bottomPadding: false,
+              ),
             ],
           ),
         ),
       ),
-      
-      /*Center(
-        child: Text(
-          'If the body is specified, then title and description will be ignored, this allows to further customize the dialogue.',
-          style: TextStyle(fontStyle: FontStyle.italic),
-        ),
-      ),*/
     ).show();
 
     /*
@@ -311,13 +350,7 @@ makeTrainingTypePopUp({
                       color: Colors.white,
                     ),
                   ),
-                  new Text(
-                    title,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
+                  new 
                 ],
               ),
             ),

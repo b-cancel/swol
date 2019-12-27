@@ -48,6 +48,46 @@ class _PillState extends State<Pill> {
 
   @override
   Widget build(BuildContext context) {
+    return Theme(
+      data: ThemeData.dark(),
+      child: DarkPills(
+        sectionSize: widget.sectionSize,
+        setTarget: widget.setTarget,
+        actives: widget.actives,
+        name: widget.name,
+        onTap: widget.onTap,
+        leftMultiplier: widget.leftMultiplier,
+        rightMultiplier: widget.rightMultiplier,
+        active: active,
+      ),
+      );
+  }
+}
+
+class DarkPills extends StatelessWidget {
+  const DarkPills({
+    Key key,
+    @required this.sectionSize,
+    @required this.setTarget,
+    @required this.actives,
+    @required this.name,
+    @required this.onTap,
+    @required this.leftMultiplier,
+    @required this.rightMultiplier,
+    @required this.active,
+  }) : super(key: key);
+
+  final double sectionSize;
+  final ValueNotifier<int> setTarget;
+  final List<int> actives;
+  final String name;
+  final Function onTap;
+  final double leftMultiplier;
+  final double rightMultiplier;
+  final bool active;
+
+  @override
+  Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(
         vertical: 4,
@@ -55,7 +95,7 @@ class _PillState extends State<Pill> {
       child: Row(
         children: <Widget>[
           Container(
-            width: widget.leftMultiplier * widget.sectionSize,
+            width: leftMultiplier * sectionSize,
           ),
           ClipRRect(
             borderRadius: BorderRadius.circular(24),
@@ -72,13 +112,13 @@ class _PillState extends State<Pill> {
               child: Material(
                 color: Colors.transparent,
                 child: InkWell(
-                  onTap: widget.onTap,
+                  onTap: onTap,
                   child: Container(
                     padding: EdgeInsets.all(4),
-                    width: (widget.sectionSize * 3),
+                    width: (sectionSize * 3),
                     child: Center(
                       child: Text(
-                        widget.name,
+                        name,
                         style: TextStyle(
                           color: active  ? Theme.of(context).primaryColor : Colors.white,
                           fontWeight: FontWeight.bold,
@@ -91,7 +131,7 @@ class _PillState extends State<Pill> {
             ),
           ),
           Container(
-            width: widget.rightMultiplier * widget.sectionSize,
+            width: rightMultiplier * sectionSize,
           )
         ],
       ),

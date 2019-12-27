@@ -456,7 +456,10 @@ class SetBreakPopUp extends StatelessWidget {
 class LearnPageSuggestion extends StatelessWidget {
   const LearnPageSuggestion({
     Key key,
+    this.bottomPadding: true,
   }) : super(key: key);
+
+  final bool bottomPadding;
 
   @override
   Widget build(BuildContext context) {
@@ -487,7 +490,7 @@ class LearnPageSuggestion extends StatelessWidget {
                   ),
                 ),
                 TextSpan(
-                  text: " page\n"
+                  text: " page" + (bottomPadding ? "\n" : ""),
                 ),
               ]
             ),
