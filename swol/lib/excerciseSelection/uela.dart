@@ -226,7 +226,7 @@ class _UELAState extends State<UELA> {
                       onPressed: (){
                         SystemChannels.platform.invokeMethod('SystemNavigator.pop');
                       },
-                      child: Text("Close The App"),
+                      child: Text("Close App"),
                     ),
                     GestureDetector(
                       onTapDown: (tapDownDetails){
@@ -245,7 +245,7 @@ class _UELAState extends State<UELA> {
                           borderRadius: BorderRadius.circular(4),
                         ),
                         child: Text(
-                          "I Agree",
+                          "Hold To Agree",
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             color: Colors.white,

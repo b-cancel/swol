@@ -122,7 +122,16 @@ class ExcerciseTileSubtitle extends StatelessWidget {
               padding: const EdgeInsets.symmetric(
                 horizontal: 2.0,
               ),
-              child: PlusMinusIcon(),
+              child: OneOverOther(
+                one: Icon(
+                  FontAwesomeIcons.plus,
+                  color: Colors.white.withOpacity(0.75),
+                ),
+                other: Icon(
+                  FontAwesomeIcons.minus,
+                  color: Colors.white.withOpacity(0.75),
+                ),
+              ),
             ),
             Text(
               percentOfDeviation.toInt().toString() + "%",
@@ -221,14 +230,26 @@ class ExcerciseTileSubtitle extends StatelessWidget {
 
 //-------------------------the icon I needed created programmatically for the giggles-------------------------
 
-class PlusMinusIcon extends StatelessWidget {
-  const PlusMinusIcon({
+class OneOverOther extends StatelessWidget {
+  const OneOverOther({
+    @required this.one,
+    @required this.other,
+    this.backgroundColor,
+    this.iconColor,
     Key key,
   }) : super(key: key);
+
+  final Widget one;
+  final Widget other;
+  final Color backgroundColor;
+  final Color iconColor;
 
   @override
   Widget build(BuildContext context) {
     double size = 16;
+
+    Color backgroundC = (backgroundColor == null) ? Theme.of(context).cardColor : backgroundColor;
+    Color iconC = (iconColor == null) ? Colors.white.withOpacity(0.75) : iconColor;
 
     return Container(
       height: size,
@@ -240,7 +261,7 @@ class PlusMinusIcon extends StatelessWidget {
               fit: BoxFit.contain,
               child: Icon(
                 FontAwesomeIcons.percentage,
-                color: Colors.white.withOpacity(0.75),
+                color: iconC,
               ),
             ),
           ),
@@ -260,10 +281,13 @@ class PlusMinusIcon extends StatelessWidget {
                     ),
                     child: ClipOval(
                       child: Container(
-                        color: Theme.of(context).cardColor,
-                        child: Icon(
-                          FontAwesomeIcons.plus,
-                          color: Colors.white.withOpacity(0.75),
+                        color: backgroundC,
+                        child: Container(
+                          padding: EdgeInsets.all(4),
+                          child: FittedBox(
+                            fit: BoxFit.contain,
+                            child: one,
+                          ),
                         ),
                       ),
                     ),
@@ -288,10 +312,13 @@ class PlusMinusIcon extends StatelessWidget {
                     ),
                     child: ClipOval(
                       child: Container(
-                        color: Theme.of(context).cardColor,
-                        child: Icon(
-                          FontAwesomeIcons.minus,
-                          color: Colors.white.withOpacity(0.75),
+                        color: backgroundC,
+                        child: Container(
+                          padding: EdgeInsets.all(4),
+                          child: FittedBox(
+                            fit: BoxFit.contain,
+                            child: other,
+                          ),
                         ),
                       ),
                     ),
