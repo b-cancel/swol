@@ -1,14 +1,15 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 
-Function infoPopUpFunction(
+infoPopUpFunction(
   BuildContext context, 
   {
     @required title,
     subtitle: "",
     @required body,
   }){
-  return (){
+    print("------------------------------------------INFO POP UP");
+
     //unfocus so whatever was focused before doesnt annoying scroll us back
     FocusScope.of(context).unfocus();
 
@@ -97,7 +98,6 @@ Function infoPopUpFunction(
       },
     );
     */
-  };
 }
 
 class HeaderWithInfo extends StatelessWidget {

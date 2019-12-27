@@ -13,79 +13,65 @@ import 'package:swol/sharedWidgets/informationDisplay.dart';
 import 'package:swol/excerciseAddition/popUps/bodies/nameBody.dart';
 
 //widgets
-Function excerciseNamePopUp(BuildContext context){
-  return (){
-    return infoPopUpFunction(
-      context, 
-      title: "Excercise Name",
-      subtitle: "Choose a unique name",
-      body: ExcerciseNamePopUpBody(),
-    );
-  };
+excerciseNamePopUp(BuildContext context){
+  infoPopUpFunction(
+    context, 
+    title: "Excercise Name",
+    subtitle: "Choose a unique name",
+    body: ExcerciseNamePopUpBody(),
+  );
 }
 
-Function excerciseNotePopUp(BuildContext context){
-  return (){
-    return infoPopUpFunction(
-      context, 
-      title: "Excercise Note",
-      subtitle: "Details",
-      body: ExcerciseNotePopUpBody(),
-    );
-  };
+excerciseNotePopUp(BuildContext context){
+  infoPopUpFunction(
+    context, 
+    title: "Excercise Note",
+    subtitle: "Details",
+    body: ExcerciseNotePopUpBody(),
+  );
 }
 
-Function referenceLinkPopUp(BuildContext context){
-  return (){
-    return infoPopUpFunction(
-      context, 
-      title: "Reference Link",
-      subtitle: "Copy and paste",
-      body: ReferenceLinkPopUpBody(),
-    );
-  };
+referenceLinkPopUp(BuildContext context){
+  infoPopUpFunction(
+    context, 
+    title: "Reference Link",
+    subtitle: "Copy and paste",
+    body: ReferenceLinkPopUpBody(),
+  );
 }
 
-Function recoveryTimePopUp(BuildContext context){
-  return (){
-    return infoPopUpFunction(
-      context, 
-      title: "Recovery Time",
-      subtitle: "Not sure? Keep the default",
-      body: RecoveryTimePopUpBody(),
-    );
-  };
+recoveryTimePopUp(BuildContext context){
+  infoPopUpFunction(
+    context, 
+    title: "Recovery Time",
+    subtitle: "Not sure? Keep the default",
+    body: RecoveryTimePopUpBody(),
+  );
 }
 
-Function repTargetPopUp(BuildContext context){
-  return (){
-    return infoPopUpFunction(
-      context, 
-      title: "Rep Target",
-      subtitle: "Not sure? Keep the default",
-      body: RepTargetPopUpBody(),
-    );
-  };
+repTargetPopUp(BuildContext context){
+  infoPopUpFunction(
+    context, 
+    title: "Rep Target",
+    subtitle: "Not sure? Keep the default",
+    body: RepTargetPopUpBody(),
+  );
 }
 
-Function setTargetPopUp(BuildContext context){
-  return (){
-    return infoPopUpFunction(
-      context, 
-      title: "Set Target",
-      subtitle: "Not sure? Keep the default",
-      body: SetTargetPopUpBody(),
-    );
-  };
+setTargetPopUp(BuildContext context){
+  infoPopUpFunction(
+    context, 
+    title: "Set Target",
+    subtitle: "Not sure? Keep the default",
+    body: SetTargetPopUpBody(),
+  );
 }
 
-Function predictionFormulasPopUp(BuildContext context){
-  return (){
-    return infoPopUpFunction(
-      context, 
-      title: "Prediction Formulas",
-      subtitle: "Not sure? Keep the default",
-      body: PredictionFormulasPopUpBody(),
-    );
-  };
+predictionFormulasPopUp(BuildContext context){
+  infoPopUpFunction(
+    context, 
+    title: "Prediction Formulas",
+    subtitle: "Not sure? Keep the default",
+    body: PredictionFormulasPopUpBody(),
+  );
 }
