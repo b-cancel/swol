@@ -5,10 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:swol/excerciseAddition/popUps/toLearnPage.dart';
 import 'package:swol/learn/sections/experiment.dart';
 
-//title: "Prediction Formulas",
-//subtitle: "Not sure? Keep the default",
-class PredictionFormulasPopUp extends StatelessWidget {
-  const PredictionFormulasPopUp({
+class PredictionFormulasPopUpBody extends StatelessWidget {
+  const PredictionFormulasPopUpBody({
     Key key,
   }) : super(key: key);
 

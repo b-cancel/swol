@@ -2,6 +2,7 @@ import 'package:bot_toast/bot_toast.dart';
 import 'package:direct_select_flutter/direct_select_item.dart';
 import 'package:direct_select_flutter/direct_select_list.dart';
 import 'package:flutter/material.dart';
+import 'package:swol/excerciseAddition/popUps/popUpFunctions.dart';
 import 'package:swol/other/functions/helper.dart';
 import 'package:swol/sharedWidgets/informationDisplay.dart';
 
@@ -35,10 +36,7 @@ class FunctionSelection extends StatelessWidget {
                 Container(
                   child: new HeaderWithInfo(
                     title: "Prediction Formula",
-                    popUpFunction: infoPopUpFunction(
-                      context, 
-                      PredictionFormulasPopUp(),
-                    ),
+                    popUpFunction: () => predictionFormulasPopUp(context),
                   ),
                 ),
                 //TODO: switch to the easy drop down after fixing issue

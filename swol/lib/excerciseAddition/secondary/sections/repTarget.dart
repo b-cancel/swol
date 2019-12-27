@@ -1,5 +1,6 @@
 //flutter
 import 'package:flutter/material.dart';
+import 'package:swol/excerciseAddition/popUps/popUpFunctions.dart';
 
 //internal from addition
 import 'package:swol/excerciseAddition/secondary/trainingTypeHelpers.dart';
@@ -38,10 +39,7 @@ class RepTargetCard extends StatelessWidget {
             ),
             child: new HeaderWithInfo(
               title: "Rep Target",
-              popUpFunction: infoPopUpFunction(
-                context, 
-                RepTargetPopUp(),
-              ),
+              popUpFunction: () => repTargetPopUp(context),
             ),
           ),
           Container(

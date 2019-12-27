@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 
-//title: "Reference Link",
-//subtitle: "Copy and paste",
-class ReferenceLinkPopUp extends StatelessWidget {
-  const ReferenceLinkPopUp({
+class ReferenceLinkPopUpBody extends StatelessWidget {
+  const ReferenceLinkPopUpBody({
     Key key,
   }) : super(key: key);
 
@@ -38,8 +36,6 @@ class ReferenceLinkPopUp extends StatelessWidget {
   }
 }
 
-//title: "Excercise Note",
-//subtitle: "Details",
 class ExcerciseNotePopUpBody extends StatelessWidget {
   const ExcerciseNotePopUpBody({
     Key key,

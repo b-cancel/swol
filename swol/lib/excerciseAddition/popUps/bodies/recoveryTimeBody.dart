@@ -6,10 +6,8 @@ import 'package:swol/excerciseAddition/popUps/toLearnPage.dart';
 import 'package:swol/sharedWidgets/trainingTypes/trainingTypes.dart';
 import 'package:swol/learn/shared.dart';
 
-//title: "Recovery Time",
-//subtitle: "Not sure? Keep the default",
-class RecoveryTimePopUp extends StatelessWidget {
-  const RecoveryTimePopUp({
+class RecoveryTimePopUpBody extends StatelessWidget {
+  const RecoveryTimePopUpBody({
     Key key,
   }) : super(key: key);
 

@@ -1,5 +1,6 @@
 //flutter
 import 'package:flutter/material.dart';
+import 'package:swol/excerciseAddition/popUps/popUpFunctions.dart';
 
 //internal from addition
 import 'package:swol/excerciseAddition/secondary/trainingTypeHelpers.dart';
@@ -38,10 +39,7 @@ class RecoveryTimeCard extends StatelessWidget {
             Container(
               child: HeaderWithInfo(
                 title: "Recovery Time",
-                popUpFunction: infoPopUpFunction(
-                  context, 
-                  RecoveryTimePopUp(),
-                ), 
+                popUpFunction: () => recoveryTimePopUp(context),
               ),
             ),
             RecoveryTimeWidget(
