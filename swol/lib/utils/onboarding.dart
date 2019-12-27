@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:feature_discovery/feature_discovery.dart';
 
+//NOTE: alot of containers below must have color transparent to functions
+
 //enums
 enum AFeature {
   //permission
@@ -71,6 +73,7 @@ class OnBoardingText extends StatelessWidget {
   OnBoardingText({
     @required this.text,
     this.isLeft: true,
+    @required this.isTop,
     this.onTapNext,
     this.onTapPrev,
     @required this.showDone,
@@ -78,6 +81,7 @@ class OnBoardingText extends StatelessWidget {
 
   final String text;
   final bool isLeft;
+  final bool isTop;
   final Function onTapNext;
   final Function onTapPrev;
   final bool showDone;
@@ -92,7 +96,7 @@ class OnBoardingText extends StatelessWidget {
       child: GestureDetector(
         onTap: () => secondaryOnTapNext(),
         child: Container(
-          color: Colors.green,
+          color: Colors.transparent,
           child: Text(""),
         ),
       ),
@@ -110,7 +114,7 @@ class OnBoardingText extends StatelessWidget {
           GestureDetector(
             onTap: () => secondaryOnTapNext(),
             child: Container(
-              color: Colors.pink,
+              color: Colors.transparent,
               alignment: isLeft ? Alignment.centerLeft : Alignment.centerRight,
               child: Text(
                 text,
@@ -133,7 +137,6 @@ class OnBoardingText extends StatelessWidget {
                 : GestureDetector(
                   onTap: () => onTapPrev(),
                   child: Container(
-                    color: Colors.yellow,
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
                         vertical: 8,
@@ -155,13 +158,12 @@ class OnBoardingText extends StatelessWidget {
                                 vertical: 8,
                               ),
                               decoration: BoxDecoration(
-                                //color: Colors.blue,
                                 borderRadius: BorderRadius.only(
                                   topLeft: Radius.circular(12),
                                   bottomLeft: Radius.circular(12),
                                 ),
                                 border: Border.all(
-                                  color: Colors.green.withOpacity(0.5),
+                                  color: isTop ? Theme.of(context).primaryColor : Theme.of(context).primaryColorDark,
                                   width: 2,
                                 )
                               ),
@@ -181,7 +183,6 @@ class OnBoardingText extends StatelessWidget {
                 GestureDetector(
                   onTap: (onTapNext == null) ? (){} : () => onTapNext(),
                   child: Container(
-                    color: Colors.orange,
                     child: Padding(
                       padding: EdgeInsets.only(
                         left: (onTapPrev == null) ? 0 : 16,
@@ -191,7 +192,6 @@ class OnBoardingText extends StatelessWidget {
                       ),
                       child: Center(
                         child: Container(
-                          color: Colors.red,
                           child: Text(
                             showDone ? "Done" : "Next",
                             style: TextStyle(
@@ -235,7 +235,7 @@ class OnBoardingImage extends StatelessWidget {
       onTap: (onTap == null) ? (){} : () => onTap(),
       //NOTE: invisible container required to make tap target large
       child: Container(
-        color: Colors.grey,
+        color: Colors.transparent,
         child: FittedBox(
           fit: BoxFit.contain,
           child: Container(
@@ -315,6 +315,7 @@ class FeatureWrapper extends StatelessWidget {
     Widget textWidget = OnBoardingText(
       text: text,
       isLeft: left,
+      isTop: top,
       onTapNext: () => FeatureDiscovery.dismiss(context),
       onTapPrev: (prevFeature == null) ? null : (){
         continueForward.value = false;
