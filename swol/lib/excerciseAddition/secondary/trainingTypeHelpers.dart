@@ -1,8 +1,15 @@
-import 'package:awesome_dialog/awesome_dialog.dart';
+//flutter
 import 'package:flutter/material.dart';
+
+//plugins
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:swol/excerciseAddition/informationPopUps.dart';
+
+//internal from addition
+import 'package:swol/excerciseAddition/popUps/toLearnPage.dart';
 import 'package:swol/excerciseAddition/secondary/tiny.dart';
+
+//internal from shared
 import 'package:swol/sharedWidgets/excerciseListTile/oneRepMaxChip.dart';
 import 'package:swol/sharedWidgets/trainingTypes/trainingTypes.dart';
 
@@ -317,7 +324,7 @@ makeTrainingTypePopUp({
                 showStrength: showStrength,
                 highlightField: highlightfield,
               ),
-              new LearnPageSuggestion(
+              LearnPageSuggestion(
                 bottomPadding: false,
               ),
             ],
@@ -325,57 +332,5 @@ makeTrainingTypePopUp({
         ),
       ),
     ).show();
-
-    /*
-    //now show dialog
-    showDialog(
-      context: context,
-      builder: (BuildContext context){
-        return SimpleDialog(
-          contentPadding: EdgeInsets.all(0),
-          titlePadding: EdgeInsets.all(0),
-          title: Container(
-            width: MediaQuery.of(context).size.width,
-            color: Theme.of(context).primaryColor,
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Row(
-                children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.only(
-                      right: 8,
-                    ),
-                    child: Icon(
-                      Icons.info,
-                      color: Colors.white,
-                    ),
-                  ),
-                  new 
-                ],
-              ),
-            ),
-          ),
-          children: <Widget>[
-            Container(
-              color: Colors.white,
-              width: MediaQuery.of(context).size.width,
-              child: Column(
-                children: <Widget>[
-                  ScrollableTrainingTypes(
-                    lightMode: true,
-                    showEndurance: showEndurance,
-                    showHypertrophy: showHypertrophy,
-                    showStrength: showStrength,
-                    highlightField: highlightfield,
-                  ),
-                  new LearnPageSuggestion(),
-                ],
-              ),
-            ),
-          ],
-        );
-      }
-    );
-    */
   };
 }

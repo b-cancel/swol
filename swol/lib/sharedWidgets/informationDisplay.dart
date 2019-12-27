@@ -1,9 +1,92 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 
-Function popUpWidgetToFunction(BuildContext context, Widget popUp){
+Function infoPopUpFunction(
+  BuildContext context, 
+  {
+    @required title,
+    subtitle: "",
+    @required body,
+  }){
   return (){
     //unfocus so whatever was focused before doesnt annoying scroll us back
     FocusScope.of(context).unfocus();
+
+    //show awesome dialog
+    AwesomeDialog(
+      context: context,
+      dismissOnTouchOutside: true,
+      animType: AnimType.SCALE,
+      dialogType: DialogType.INFO,
+      isDense: false, //is dense true is slightly larger
+      body: Theme(
+        data: ThemeData.dark(),
+        child: Container(
+          width: MediaQuery.of(context).size.width,
+          child: body,
+        ),
+      ),
+    ).show();
+
+    /*
+    Theme(
+      data: ThemeData.light(),
+      child: SimpleDialog(
+        title: Row(
+          mainAxisSize: MainAxisSize.max,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Padding(
+              padding: EdgeInsets.only(
+                right: 4,
+              ),
+              child: Icon(
+                Icons.info,
+                color: Colors.blue,
+              ),
+            ),
+            Expanded(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    child: Text(title),
+                  ),
+                  (subtitle == "") ? Container()
+                  : Container(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      subtitle,
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.black,
+                        fontWeight: FontWeight.normal,
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
+            Transform.translate(
+              offset: Offset(0, -12),
+              child: IconButton(
+                onPressed: (){
+                  Navigator.pop(context);
+                },
+                icon: Icon(Icons.close),
+              ),
+            )
+          ],
+        ),
+        children: <Widget>[
+          Container(
+            width: MediaQuery.of(context).size.width,
+            child: child,
+          ),
+        ],
+      ),
+    );
 
     //now show dialog
     showDialog<void>(
@@ -13,6 +96,7 @@ Function popUpWidgetToFunction(BuildContext context, Widget popUp){
         return popUp; 
       },
     );
+    */
   };
 }
 
@@ -51,6 +135,7 @@ class HeaderWithInfo extends StatelessWidget {
   }
 }
 
+/*
 class MyInfoDialog extends StatelessWidget {
   const MyInfoDialog({
     @required this.title,
@@ -125,3 +210,4 @@ class MyInfoDialog extends StatelessWidget {
     );
   }
 }
+*/

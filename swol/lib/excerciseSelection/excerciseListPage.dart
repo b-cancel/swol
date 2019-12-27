@@ -82,7 +82,7 @@ class _ExcerciseSelectState extends State<ExcerciseSelect> {
   void initState() { 
     //create function
     Function afterConfirm = (){
-      if(widget.shownInitialControls == false || true){ //TODO: remove and true
+      if(widget.shownInitialControls == false){
         OnBoarding.discoverSwolLogo(context);
       }
     };

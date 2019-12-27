@@ -2,7 +2,6 @@
 import 'package:flutter/material.dart';
 
 //internal from addition
-import 'package:swol/excerciseAddition/informationPopUps.dart';
 import 'package:swol/excerciseAddition/secondary/trainingTypeHelpers.dart';
 
 //internal from shared
@@ -39,7 +38,7 @@ class RepTargetCard extends StatelessWidget {
             ),
             child: new HeaderWithInfo(
               title: "Rep Target",
-              popUpFunction: popUpWidgetToFunction(
+              popUpFunction: infoPopUpFunction(
                 context, 
                 RepTargetPopUp(),
               ),
@@ -50,70 +49,13 @@ class RepTargetCard extends StatelessWidget {
               padding: const EdgeInsets.only(
                 left: 16.0,
               ),
-              child: AnimatedRecoveryTimeInfo(
-                changeDuration: changeDuration,
-                grownWidth: sliderWidth, 
-                textHeight: 16, 
-                textMaxWidth: 28,
-                selectedDuration: repTargetDuration,
-                bigTickNumber: 25,
-                ranges: [
-                  Range(
-                    name: "Strength Training",
-                    onTap: makeTrainingTypePopUp(
-                      context: context,
-                      title: "Strength Training",
-                      showStrength: true,
-                      highlightfield: 3,
-                      iconID: FitIcons.Strength,
-                    ),
-                    left: new SliderToolTipButton(
-                      buttonText: "1",
-                    ),
-                    right: SliderToolTipButton(
-                      buttonText: "6",
-                    ),
-                    startSeconds: (1*5),
-                    endSeconds: (6*5),
-                  ),
-                  Range(
-                    name: "Hypertrophy Training",
-                    onTap: makeTrainingTypePopUp(
-                      context: context,
-                      title: "Hypertrophy Training",
-                      showHypertrophy: true,
-                      highlightfield: 3,
-                      iconID: FitIcons.Hypertrophy,
-                    ),
-                    left: SliderToolTipButton(
-                      buttonText: "7",
-                    ),
-                    right: SliderToolTipButton(
-                      buttonText: "12",
-                    ),
-                    startSeconds: (7*5),
-                    endSeconds: (12*5),
-                  ),
-                  Range(
-                    name: "Endurance Training",
-                    onTap: makeTrainingTypePopUp(
-                      context: context,
-                      title: "Endurance Training",
-                      showEndurance: true,
-                      highlightfield: 3,
-                      iconID: FitIcons.Endurance,
-                    ),
-                    left: SliderToolTipButton(
-                      buttonText: "13",
-                    ),
-                    right: SliderToolTipButton(
-                      buttonText: "35",
-                      tooltipText: "Any More, and we won't be able to estimate your 1 Rep Max",
-                    ),
-                    startSeconds: (13*5),
-                    endSeconds: (35*5),
-                  )
-                ],
+              child: Theme(
+                data: ThemeData.light(),
+                child: AnimRepTargetInfoWhite(
+                  changeDuration: changeDuration, 
+                  sliderWidth: sliderWidth, 
+                  repTargetDuration: repTargetDuration,
+                ),
               ),
             ),
           ),
@@ -136,6 +78,88 @@ class RepTargetCard extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class AnimRepTargetInfoWhite extends StatelessWidget {
+  const AnimRepTargetInfoWhite({
+    Key key,
+    @required this.changeDuration,
+    @required this.sliderWidth,
+    @required this.repTargetDuration,
+  }) : super(key: key);
+
+  final Duration changeDuration;
+  final double sliderWidth;
+  final ValueNotifier<Duration> repTargetDuration;
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedRecoveryTimeInfo(
+      changeDuration: changeDuration,
+      grownWidth: sliderWidth, 
+      textHeight: 16, 
+      textMaxWidth: 28,
+      selectedDuration: repTargetDuration,
+      bigTickNumber: 25,
+      ranges: [
+        Range(
+          name: "Strength Training",
+          onTap: makeTrainingTypePopUp(
+            context: context,
+            title: "Strength Training",
+            showStrength: true,
+            highlightfield: 3,
+            iconID: FitIcons.Strength,
+          ),
+          left: new SliderToolTipButton(
+            buttonText: "1",
+          ),
+          right: SliderToolTipButton(
+            buttonText: "6",
+          ),
+          startSeconds: (1*5),
+          endSeconds: (6*5),
+        ),
+        Range(
+          name: "Hypertrophy Training",
+          onTap: makeTrainingTypePopUp(
+            context: context,
+            title: "Hypertrophy Training",
+            showHypertrophy: true,
+            highlightfield: 3,
+            iconID: FitIcons.Hypertrophy,
+          ),
+          left: SliderToolTipButton(
+            buttonText: "7",
+          ),
+          right: SliderToolTipButton(
+            buttonText: "12",
+          ),
+          startSeconds: (7*5),
+          endSeconds: (12*5),
+        ),
+        Range(
+          name: "Endurance Training",
+          onTap: makeTrainingTypePopUp(
+            context: context,
+            title: "Endurance Training",
+            showEndurance: true,
+            highlightfield: 3,
+            iconID: FitIcons.Endurance,
+          ),
+          left: SliderToolTipButton(
+            buttonText: "13",
+          ),
+          right: SliderToolTipButton(
+            buttonText: "35",
+            tooltipText: "Any More, and we won't be able to estimate your 1 Rep Max",
+          ),
+          startSeconds: (13*5),
+          endSeconds: (35*5),
+        )
+      ],
     );
   }
 }

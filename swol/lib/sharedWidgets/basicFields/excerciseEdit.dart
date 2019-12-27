@@ -1,8 +1,8 @@
 //flutter
 import 'package:flutter/material.dart';
+import 'package:swol/excerciseAddition/popUps/popUpFunctions.dart';
 
 //internal
-import 'package:swol/excerciseAddition/informationPopUps.dart';
 import 'package:swol/sharedWidgets/basicFields/clearableTextField.dart';
 import 'package:swol/sharedWidgets/basicFields/referenceLink.dart';
 import 'package:swol/sharedWidgets/informationDisplay.dart';
@@ -37,10 +37,7 @@ class BasicEditor extends StatelessWidget {
       children: <Widget>[
         HeaderWithInfo(
           title: "Name",
-          popUpFunction: popUpWidgetToFunction(
-            context, 
-            ExcerciseNamePopUp(),
-          ),
+          popUpFunction: () => excerciseNamePopUp(context),
         ),
         TextFieldWithClearButton(
           editOneAtAtTime: editOneAtAtTime,
@@ -56,10 +53,7 @@ class BasicEditor extends StatelessWidget {
         ),
         HeaderWithInfo(
           title: "Notes",
-          popUpFunction: popUpWidgetToFunction(
-            context, 
-            ExcerciseNotePopUp(),
-          ),
+          popUpFunction: () => excerciseNotePopUp(context),
         ),
         TextFieldWithClearButton(
           editOneAtAtTime: editOneAtAtTime,
@@ -72,10 +66,7 @@ class BasicEditor extends StatelessWidget {
         Container(
           child: HeaderWithInfo(
             title: "Reference Link",
-            popUpFunction: popUpWidgetToFunction(
-              context, 
-              ReferenceLinkPopUp(),
-            ),
+            popUpFunction: () => referenceLinkPopUp(context),
           ),
         ),
         ReferenceLinkBox(
