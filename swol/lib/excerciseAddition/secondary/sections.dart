@@ -37,10 +37,14 @@ class FunctionSelection extends StatelessWidget {
                 Container(
                   child: new HeaderWithInfo(
                     title: "Prediction Formula",
-                    popUp: new PredictionFormulasPopUp(),
+                    popUpFunction: popUpWidgetToFunction(
+                      context, 
+                      PredictionFormulasPopUp(),
+                    ),
                   ),
                 ),
-                EasyFunctionDropDown(
+                //TODO: switch to the easy drop down after fixing issue
+                FunctionDropDown(
                   functionIndex: functionIndex,
                   functionString: functionString,
                 ),
@@ -82,7 +86,10 @@ class RepTargetCard extends StatelessWidget {
             ),
             child: new HeaderWithInfo(
               title: "Rep Target",
-              popUp: new RepTargetPopUp(),
+              popUpFunction: popUpWidgetToFunction(
+                context, 
+                RepTargetPopUp(),
+              ),
             ),
           ),
           Container(
@@ -201,7 +208,10 @@ class SetTargetCard extends StatelessWidget {
             child: Container(
               child: new HeaderWithInfo(
                 title: "Set Target",
-                popUp: new SetTargetPopUp(),
+                popUpFunction: popUpWidgetToFunction(
+                  context, 
+                  SetTargetPopUp(),
+                ),
               ),
             ),
           ),
@@ -267,7 +277,10 @@ class RecoveryTimeCard extends StatelessWidget {
             Container(
               child: HeaderWithInfo(
                 title: "Recovery Time",
-                popUp: SetBreakPopUp(),
+                popUpFunction: popUpWidgetToFunction(
+                  context, 
+                  SetBreakPopUp(),
+                ), 
               ),
             ),
             RecoveryTimeWidget(

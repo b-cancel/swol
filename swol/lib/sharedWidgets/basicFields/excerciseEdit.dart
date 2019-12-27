@@ -37,7 +37,10 @@ class BasicEditor extends StatelessWidget {
       children: <Widget>[
         HeaderWithInfo(
           title: "Name",
-          popUp: ExcerciseNamePopUp(),
+          popUpFunction: popUpWidgetToFunction(
+            context, 
+            ExcerciseNamePopUp(),
+          ),
         ),
         TextFieldWithClearButton(
           editOneAtAtTime: editOneAtAtTime,
@@ -53,7 +56,10 @@ class BasicEditor extends StatelessWidget {
         ),
         HeaderWithInfo(
           title: "Notes",
-          popUp: ExcerciseNotePopUp(),
+          popUpFunction: popUpWidgetToFunction(
+            context, 
+            ExcerciseNotePopUp(),
+          ),
         ),
         TextFieldWithClearButton(
           editOneAtAtTime: editOneAtAtTime,
@@ -66,7 +72,10 @@ class BasicEditor extends StatelessWidget {
         Container(
           child: HeaderWithInfo(
             title: "Reference Link",
-            popUp: new ReferenceLinkPopUp(),
+            popUpFunction: popUpWidgetToFunction(
+              context, 
+              ReferenceLinkPopUp(),
+            ),
           ),
         ),
         ReferenceLinkBox(

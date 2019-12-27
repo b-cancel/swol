@@ -1,14 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:awesome_dialog/awesome_dialog.dart';
+
+Function popUpWidgetToFunction(BuildContext context, Widget popUp){
+  return (){
+    //unfocus so whatever was focused before doesnt annoying scroll us back
+    FocusScope.of(context).unfocus();
+
+    //now show dialog
+    showDialog<void>(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return popUp; 
+      },
+    );
+  };
+}
 
 class HeaderWithInfo extends StatelessWidget {
   const HeaderWithInfo({
     Key key,
     @required this.title,
-    @required this.popUp,
+    @required this.popUpFunction,
   }) : super(key: key);
 
   final String title;
-  final Widget popUp;
+  final Function popUpFunction;
 
   @override
   Widget build(BuildContext context) {
@@ -25,19 +42,7 @@ class HeaderWithInfo extends StatelessWidget {
         Transform.translate(
           offset: Offset(12, 0),
           child: IconButton(
-            onPressed: (){
-              //unfocus so whatever was focused before doesnt annoying scroll us back
-              FocusScope.of(context).unfocus();
-
-              //now show dialog
-              showDialog<void>(
-                context: context,
-                barrierDismissible: true,
-                builder: (BuildContext context) {
-                  return popUp; 
-                },
-              );
-            },
+            onPressed: () => popUpFunction(),
             icon: Icon(Icons.info),
             color: Theme.of(context).accentColor,
           ),
