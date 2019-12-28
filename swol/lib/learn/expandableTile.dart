@@ -16,7 +16,7 @@ class ExpandableTile extends StatefulWidget {
     @required this.headerIcon,
     @required this.headerText,
     @required this.expandedChild,
-    this.theOnlyException: false,
+    this.theOnlyException: true,
     this.size,
   }) : super(key: key);
 
@@ -116,25 +116,25 @@ class TileHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: isOpen.value ? Theme.of(context).accentColor :  Theme.of(context).cardColor,
+    return AnimatedContainer(
+      duration: Duration(milliseconds: 300),
+      margin: EdgeInsets.only(
+        left: isOpen.value ? 0 : 12,
+        right: isOpen.value ? 0 : 12,
+        top: isOpen.value ? 0 : 8,
+        bottom: isOpen.value ? 0 : 12,
+      ),
+      decoration: BoxDecoration(
+        color: isOpen.value ? Theme.of(context).accentColor :  Theme.of(context).cardColor,
+        borderRadius: BorderRadius.all(
+          Radius.circular(isOpen.value ? 0 : 12),
+        ),
+      ),
       child: Material(
         color: Colors.transparent,
         child: InkWell(
           onTap: openOrClose,
           child: Container(
-            /*
-            decoration: BoxDecoration(
-              border: Border(
-                bottom: BorderSide(
-                  width: 2,
-                  color: (widget.isOpen.value) 
-                  ? Theme.of(context).accentColor
-                  : Colors.transparent,
-                ),
-              ),
-            ),
-            */
             child: Row(
               children: <Widget>[
                 Expanded(
@@ -222,6 +222,9 @@ class TileOpened extends StatelessWidget {
               child: Container(
                 key: UniqueKey(),
                 color: Theme.of(context).primaryColor,
+                padding: EdgeInsets.only(
+                  bottom: 24,
+                ),
                 child: child,
               ),
             ),
