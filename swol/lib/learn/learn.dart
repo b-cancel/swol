@@ -154,7 +154,7 @@ class _LearnExcerciseState extends State<LearnExcercise> {
               isOpen: introductionIsOpen,
               headerIcon: FontAwesomeIcons.solidLightbulb, 
               headerText: "Introduction", 
-              thisExpanded: IntroductionBody(),
+              expandedChild: IntroductionBody(),
             ),
             ExpandableTile(
               autoScrollController: autoScrollController,
@@ -162,7 +162,7 @@ class _LearnExcerciseState extends State<LearnExcercise> {
               isOpen: definitionIsOpen,
               headerIcon: Icons.chrome_reader_mode, 
               headerText: "Definitions", 
-              thisExpanded: DefinitionBody(),
+              expandedChild: DefinitionBody(),
             ),
             ExpandableTile(
               autoScrollController: autoScrollController,
@@ -171,7 +171,7 @@ class _LearnExcerciseState extends State<LearnExcercise> {
               headerIcon: FontAwesomeIcons.dumbbell, 
               size: 18,
               headerText: "Training", 
-              thisExpanded: TrainingBody(),
+              expandedChild: TrainingBody(),
             ),
             ExpandableTile(
               autoScrollController: autoScrollController,
@@ -179,7 +179,7 @@ class _LearnExcerciseState extends State<LearnExcercise> {
               isOpen: precautionIsOpen,
               headerIcon: Icons.warning, 
               headerText: "Precautions", 
-              thisExpanded: PrecautionsBody(),
+              expandedChild: PrecautionsBody(),
             ),
             ExpandableTile(
               autoScrollController: autoScrollController,
@@ -188,7 +188,7 @@ class _LearnExcerciseState extends State<LearnExcercise> {
               headerIcon: FontAwesomeIcons.trophy, 
               size: 20,
               headerText: "1 Rep Max", 
-              thisExpanded: OneRepMaxBody(),
+              expandedChild: OneRepMaxBody(),
             ),
             ExpandableTile(
               autoScrollController: autoScrollController,
@@ -196,7 +196,7 @@ class _LearnExcerciseState extends State<LearnExcercise> {
               isOpen: experimentIsOpen,
               headerIcon: FontAwesomeIcons.flask, 
               headerText: "Experiment",
-              thisExpanded: ExperimentBody(),
+              expandedChild: ExperimentBody(),
             ),
             ExpandableTile(
               autoScrollController: autoScrollController,
@@ -204,7 +204,8 @@ class _LearnExcerciseState extends State<LearnExcercise> {
               isOpen: researchIsOpen,
               headerIcon: FontAwesomeIcons.book, 
               headerText: "Research",
-              thisExpanded: ResearchBody(),
+              expandedChild: ResearchBody(),
+              theOnlyException: true,
             ),
             SliverFillRemaining(
               hasScrollBody: false,

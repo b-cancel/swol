@@ -248,7 +248,7 @@ class _ExcerciseListState extends State<ExcerciseList> {
                     Card(
                       margin: EdgeInsets.all(0),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(25.0),
+                        borderRadius: BorderRadius.circular(24.0),
                       ),
                       clipBehavior: Clip.antiAlias,
                       child: ListView.builder(

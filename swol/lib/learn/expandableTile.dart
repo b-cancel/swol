@@ -5,6 +5,8 @@ import 'dart:math' as math;
 
 import 'package:scroll_to_index/scroll_to_index.dart';
 
+//NOTE: the left indent inside of a drop down doesn't look right
+
 class ExpandableTile extends StatefulWidget {
   const ExpandableTile({
     Key key,
@@ -13,7 +15,8 @@ class ExpandableTile extends StatefulWidget {
     @required this.isOpen,
     @required this.headerIcon,
     @required this.headerText,
-    @required this.thisExpanded,
+    @required this.expandedChild,
+    this.theOnlyException: false,
     this.size,
   }) : super(key: key);
 
@@ -22,8 +25,10 @@ class ExpandableTile extends StatefulWidget {
   final ValueNotifier<bool> isOpen;
   final IconData headerIcon;
   final String headerText;
-  final Widget thisExpanded;
+  final Widget expandedChild;
   final double size;
+  final bool theOnlyException;
+  //style options
 
   @override
   _ExpandableTileState createState() => _ExpandableTileState();
@@ -32,20 +37,6 @@ class ExpandableTile extends StatefulWidget {
 class _ExpandableTileState extends State<ExpandableTile> {
   @override
   Widget build(BuildContext context) {
-    //Widget to switch between
-    Widget _opened = Container(
-      key: UniqueKey(),
-      color: Theme.of(context).primaryColor,
-      width: MediaQuery.of(context).size.width,
-      child: widget.thisExpanded,
-    );
-
-    Widget _closed = Container(
-      key: UniqueKey(),
-      height: 0,
-      width: MediaQuery.of(context).size.width,
-    );
-
     //eventhough it looks kinda ugly when no sections are open
     //not letting the user do this messes with usability
     openOrClose(){
@@ -62,65 +53,12 @@ class _ExpandableTileState extends State<ExpandableTile> {
         header: AnimatedBuilder(
           animation: widget.isOpen,
           builder: (context, child){
-            return Container(
-              color: Theme.of(context).cardColor,
-              child: Material(
-                color: Colors.transparent,
-                child: InkWell(
-                  onTap: openOrClose,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      border: Border(
-                        bottom: BorderSide(
-                          width: 2,
-                          color: (widget.isOpen.value) 
-                          ? Theme.of(context).accentColor
-                          : Colors.transparent,
-                        ),
-                      ),
-                    ),
-                    child: Row(
-                      children: <Widget>[
-                        Expanded(
-                          child: Container(
-                            padding: EdgeInsets.all(16),
-                            child: Row(
-                              children: <Widget>[
-                                Container(
-                                  alignment: Alignment.centerLeft,
-                                  width: 22 + 8.0,
-                                  child: Icon(
-                                    widget.headerIcon,
-                                    size: (widget.size == null) ? 24 : widget.size,
-                                    color: (widget.isOpen.value)
-                                    ? Theme.of(context).accentColor
-                                    : Colors.white,
-                                  ),
-                                ),
-                                Text(
-                                  widget.headerText,
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: (widget.isOpen.value)
-                                    ? Theme.of(context).accentColor
-                                    : Colors.white,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        IconButton(
-                          onPressed: openOrClose,
-                          icon: RotatingIcon(
-                            isOpen: widget.isOpen,
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-              ),
+            return TileHeader(
+              headerIcon: widget.headerIcon,
+              headerText: widget.headerText,
+              size: widget.size,
+              openOrClose: () => openOrClose(),
+              isOpen: widget.isOpen,
             );
           },
         ),
@@ -140,13 +78,175 @@ class _ExpandableTileState extends State<ExpandableTile> {
                       ).animate(animation),
                     );
                   },
-                  child: (widget.isOpen.value) ? _opened : _closed,
+                  child: (widget.isOpen.value) 
+                  ? TileOpened(
+                    child: widget.expandedChild,
+                    theOnlyException: widget.theOnlyException,
+                  )
+                  : Container(
+                    key: UniqueKey(),
+                    height: 0,
+                    width: MediaQuery.of(context).size.width,
+                  ),
                 );
               },
             ),
           ]),
         ),
       ),
+    );
+  }
+}
+
+class TileHeader extends StatelessWidget {
+  const TileHeader({
+    @required this.isOpen,
+    @required this.openOrClose,
+    @required this.headerIcon,
+    @required this.headerText,
+    @required this.size,
+    Key key,
+  }) : super(key: key);
+
+  final ValueNotifier<bool> isOpen;
+  final Function openOrClose;
+  final IconData headerIcon;
+  final String headerText;
+  final double size;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: isOpen.value ? Theme.of(context).accentColor :  Theme.of(context).cardColor,
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: openOrClose,
+          child: Container(
+            /*
+            decoration: BoxDecoration(
+              border: Border(
+                bottom: BorderSide(
+                  width: 2,
+                  color: (widget.isOpen.value) 
+                  ? Theme.of(context).accentColor
+                  : Colors.transparent,
+                ),
+              ),
+            ),
+            */
+            child: Row(
+              children: <Widget>[
+                Expanded(
+                  child: Container(
+                    padding: EdgeInsets.all(16),
+                    child: Row(
+                      children: <Widget>[
+                        Container(
+                          alignment: Alignment.centerLeft,
+                          width: 22 + 8.0,
+                          child: Icon(
+                            headerIcon,
+                            size: (size == null) ? 24 : size,
+                            color: (isOpen.value)
+                            ? Theme.of(context).primaryColorDark
+                            : Colors.white,
+                          ),
+                        ),
+                        Text(
+                          headerText,
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: (isOpen.value)
+                            ? Theme.of(context).primaryColorDark
+                            : Colors.white,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                IconButton(
+                  onPressed: openOrClose,
+                  icon: RotatingIcon(
+                    isOpen: isOpen,
+                  ),
+                )
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class TileOpened extends StatelessWidget {
+  const TileOpened({
+    @required this.child,
+    @required this.theOnlyException,
+    Key key,
+  }) : super(key: key);
+
+  final Widget child;
+  final bool theOnlyException;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: <Widget>[
+        Stack(
+          children: <Widget>[
+            Positioned.fill(
+              child: Column(
+                children: <Widget>[
+                  Expanded(
+                    child: Container(
+                      color: Theme.of(context).accentColor,
+                    ),
+                  ),
+                  Expanded(
+                    child: Container(
+                      color: Theme.of(context).primaryColorDark,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Card(
+              margin: EdgeInsets.all(0),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(24.0),
+              ),
+              clipBehavior: Clip.antiAlias,
+              child: Container(
+                key: UniqueKey(),
+                color: Theme.of(context).primaryColor,
+                child: child,
+              ),
+            ),
+          ],
+        ),
+        Stack(
+          children: <Widget>[
+            Positioned.fill(
+              child: Container(
+                color: theOnlyException ? Theme.of(context).primaryColor : Theme.of(context).cardColor,
+              ),
+            ),
+            Container(
+              height: 128,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(12.0),
+                  bottomRight:  Radius.circular(12.0),
+                ),
+                color: Theme.of(context).primaryColorDark,
+              ),
+            ),
+          ],
+        )
+      ],
     );
   }
 }
@@ -204,7 +304,7 @@ class _RotatingIconState extends State<RotatingIcon> {
         child: Icon(
           Icons.keyboard_arrow_down,
           color: (widget.isOpen.value)
-          ? Theme.of(context).accentColor
+          ? Theme.of(context).primaryColorDark
           : Colors.white,
         ),
       ),
