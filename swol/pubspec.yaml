@@ -23,6 +23,9 @@ dependencies:
   auto_animated: ^1.2.3
   flutter_sidekick: ^0.1.3
 
+  #inidicate that a list is a list
+  flutter_staggered_animations: "^0.1.2"
+
   #info pop up
   awesome_dialog: ^0.1.0
 

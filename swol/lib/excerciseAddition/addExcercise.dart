@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 //plugins
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:direct_select_flutter/direct_select_container.dart';
+import 'package:swol/excerciseAddition/popUps/popUpFunctions.dart';
 
 //internal from addition
 import 'package:swol/excerciseAddition/secondary/sections/predictionFunction.dart';
@@ -14,9 +16,12 @@ import 'package:swol/excerciseAddition/secondary/save.dart';
 
 //internal other
 import 'package:swol/excerciseSelection/secondary/addNewHero.dart';
+import 'package:swol/sharedWidgets/basicFields/clearableTextField.dart';
 import 'package:swol/sharedWidgets/basicFields/excerciseEdit.dart';
 import 'package:swol/excercise/excerciseStructure.dart';
 import 'package:swol/other/functions/helper.dart';
+import 'package:swol/sharedWidgets/basicFields/referenceLink.dart';
+import 'package:swol/sharedWidgets/informationDisplay.dart';
 
 //TODO: when the user comes in here for the first time automatically open the question mark pop up
 //TODO: this pop up should morph graphfully from the question mark into the pop up
@@ -82,6 +87,8 @@ class AddExcercise extends StatelessWidget {
     )
   );
 
+  final FocusNode noteFocusNode = FocusNode();
+
   //build
   @override
   Widget build(BuildContext context) {
@@ -103,6 +110,146 @@ class AddExcercise extends StatelessWidget {
 
     //how long it takes to shift focus to a different section
     Duration changeDuration = Duration(milliseconds: 250);
+
+    //each section
+    List<Widget> sections = [
+      BasicCard(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            HeaderWithInfo(
+              title: "Name",
+              popUpFunction: () => excerciseNamePopUp(context),
+            ),
+            TextFieldWithClearButton(
+              editOneAtAtTime: false,
+              valueToUpdate: name,
+              hint: "Required*", 
+              error: (nameError.value) ? "Name Is Required" : null, 
+              //auto focus field
+              autofocus: true,
+              //we need to keep track above to determine whether we can active the button
+              present: namePresent, 
+              //so next focuses on the note
+              otherFocusNode: noteFocusNode,
+            ),
+          ],
+        ),
+      ),
+      BasicCard(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            HeaderWithInfo(
+              title: "Notes",
+              popUpFunction: () => excerciseNotePopUp(context),
+            ),
+            TextFieldWithClearButton(
+              editOneAtAtTime: false,
+              valueToUpdate: note,
+              hint: "Details", 
+              error: null, 
+              //so we can link up both fields
+              focusNode: noteFocusNode,
+            ),
+          ],
+        ),
+      ),
+      BasicCard(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Container(
+              child: HeaderWithInfo(
+                title: "Reference Link",
+                popUpFunction: () => referenceLinkPopUp(context),
+              ),
+            ),
+            ReferenceLinkBox(
+              url: url,
+              editOneAtAtTime: false,
+            ),
+          ],
+        ),
+      ),
+      /*
+      Card(
+        margin: EdgeInsets.all(8),
+        child: Padding(
+          padding: EdgeInsets.only(
+            top: 8,
+            left: 16,
+            right: 16,
+            bottom: 16,
+          ),
+          child: Theme(
+            data: ThemeData.light(),
+            child: BasicEditor(
+              namePresent: namePresent,
+              nameError: nameError,
+              name: name,
+              note: note,
+              url: url,
+            ),
+          ),
+        ),
+      ),
+      */
+
+      /*
+      Theme(
+      data: ThemeData.dark(),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: <Widget>[
+          
+          
+          
+        ],
+      ),
+    )
+      */
+      Theme(
+        data: ThemeData.light(),
+        child: RecoveryTimeCard(
+          changeDuration: changeDuration, 
+          sliderWidth: sliderWidth, 
+          //value notifier below
+          recoveryPeriod: recoveryPeriod, 
+        ),
+      ),
+      Theme(
+        data: ThemeData.light(),
+        child: SetTargetCard(
+          setTarget: setTarget,
+        ),
+      ),
+      Theme(
+        data: ThemeData.light(),
+        child: RepTargetCard(
+          changeDuration: changeDuration, 
+          sliderWidth: sliderWidth, 
+          repTargetDuration: repTargetDuration, 
+          repTarget: repTarget,
+        ),
+      ),
+      Theme(
+        data: ThemeData.light(),
+        child: FunctionSelection(
+          functionIndex: functionIndex, 
+          functionString: functionString,
+        ),
+      ),
+      //TODO: actually use this space by adding a appearing tool tip that gives you suggestions
+      //TODO: its not a tool tip in the traditional sense since it doesnt go away
+      //TODO; it also changes depending on all the values selected so far
+      /*
+      Container(
+        height: 56.0 + 16,
+      ),
+      */
+    ];
 
     //build
     return WillPopScope(
@@ -170,95 +317,58 @@ class AddExcercise extends StatelessWidget {
             children: <Widget>[
               Container(
                 color: Theme.of(context).scaffoldBackgroundColor,
-                child: ListView(
-                  shrinkWrap: true,
-                  padding: EdgeInsets.symmetric(
-                    vertical: 16,
+                child: AnimationLimiter(
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    padding: EdgeInsets.symmetric(
+                      vertical: 16,
+                    ),
+                    itemCount: sections.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return AnimationConfiguration.staggeredList(
+                        position: index,
+                        //500 (page slide in) + 250 (save button show)
+                        delay: Duration(
+                          //after the page slides in
+                          milliseconds: 500,
+                        ),
+                        duration: Duration(
+                          milliseconds: 350,
+                        ),
+                        child: SlideAnimation(
+                          verticalOffset: 50.0,
+                          child: FadeInAnimation(
+                            child: sections[index],
+                          ),
+                        ),
+                      );
+                    },
                   ),
-                  children: <Widget>[
-                    Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: <Widget>[
-                        Card(
-                          margin: EdgeInsets.all(8),
-                          child: Padding(
-                            padding: EdgeInsets.only(
-                              top: 8,
-                              left: 16,
-                              right: 16,
-                              bottom: 16,
-                            ),
-                            child: Theme(
-                              data: ThemeData.light(),
-                              child: BasicEditor(
-                                namePresent: namePresent,
-                                nameError: nameError,
-                                name: name,
-                                note: note,
-                                url: url,
-                              ),
-                            ),
-                          ),
-                        ),
-                        Theme(
-                          data: ThemeData.light(),
-                          child: RecoveryTimeCard(
-                            changeDuration: changeDuration, 
-                            sliderWidth: sliderWidth, 
-                            //value notifier below
-                            recoveryPeriod: recoveryPeriod, 
-                          ),
-                        ),
-                        Theme(
-                          data: ThemeData.light(),
-                          child: SetTargetCard(
-                            setTarget: setTarget,
-                          ),
-                        ),
-                        Theme(
-                          data: ThemeData.light(),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              RepTargetCard(
-                                changeDuration: changeDuration, 
-                                sliderWidth: sliderWidth, 
-                                repTargetDuration: repTargetDuration, 
-                                repTarget: repTarget,
-                              ),
-                              FunctionSelection(
-                                functionIndex: functionIndex, 
-                                functionString: functionString,
-                              ),
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
-                    Container(
-                      height: 56.0 + 16,
-                    ),
-                  ],
                 ),
               ),
-              Positioned(
-                bottom: 0,
-                child: Padding(
-                  padding: EdgeInsets.all(16),
-                  child: FloatingActionButton(
-                    backgroundColor: Theme.of(context).accentColor,
-                    onPressed: (){
-                      print("go to explain page");
-                    },
-                    tooltip: "What is all this stuff? (o_O)",
-                    child: Icon(FontAwesomeIcons.question),
-                  ),
-                ),
-              )
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+class BasicCard extends StatelessWidget {
+  const BasicCard({
+    Key key,
+    @required this.child,
+  }) : super(key: key);
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      margin: EdgeInsets.all(8),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: child,
       ),
     );
   }
