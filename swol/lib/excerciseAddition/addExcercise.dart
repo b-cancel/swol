@@ -113,103 +113,28 @@ class AddExcercise extends StatelessWidget {
 
     //each section
     List<Widget> sections = [
-      BasicCard(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            HeaderWithInfo(
-              title: "Name",
-              popUpFunction: () => excerciseNamePopUp(context),
-            ),
-            TextFieldWithClearButton(
-              editOneAtAtTime: false,
-              valueToUpdate: name,
-              hint: "Required*", 
-              error: (nameError.value) ? "Name Is Required" : null, 
-              //auto focus field
-              autofocus: true,
-              //we need to keep track above to determine whether we can active the button
-              present: namePresent, 
-              //so next focuses on the note
-              otherFocusNode: noteFocusNode,
-            ),
-          ],
-        ),
-      ),
-      BasicCard(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            HeaderWithInfo(
-              title: "Notes",
-              popUpFunction: () => excerciseNotePopUp(context),
-            ),
-            TextFieldWithClearButton(
-              editOneAtAtTime: false,
-              valueToUpdate: note,
-              hint: "Details", 
-              error: null, 
-              //so we can link up both fields
-              focusNode: noteFocusNode,
-            ),
-          ],
-        ),
-      ),
-      BasicCard(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Container(
-              child: HeaderWithInfo(
-                title: "Reference Link",
-                popUpFunction: () => referenceLinkPopUp(context),
-              ),
-            ),
-            ReferenceLinkBox(
-              url: url,
-              editOneAtAtTime: false,
-            ),
-          ],
-        ),
-      ),
-      /*
-      Card(
-        margin: EdgeInsets.all(8),
-        child: Padding(
-          padding: EdgeInsets.only(
-            top: 8,
-            left: 16,
-            right: 16,
-            bottom: 16,
-          ),
-          child: Theme(
-            data: ThemeData.light(),
-            child: BasicEditor(
-              namePresent: namePresent,
-              nameError: nameError,
-              name: name,
-              note: note,
-              url: url,
-            ),
-          ),
-        ),
-      ),
-      */
-
-      /*
       Theme(
-      data: ThemeData.dark(),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: <Widget>[
-          
-          
-          
-        ],
+        data: ThemeData.light(),
+        child: NameCard(
+          name: name, 
+          nameError: nameError, 
+          namePresent: namePresent, 
+          noteFocusNode: noteFocusNode,
+        ),
       ),
-    )
-      */
+      Theme(
+        data: ThemeData.light(),
+        child: NotesCard(
+          note: note, 
+          noteFocusNode: noteFocusNode,
+        ),
+      ),
+      Theme(
+        data: ThemeData.light(),
+        child: LinkCard(
+          url: url,
+        ),
+      ),
       Theme(
         data: ThemeData.light(),
         child: RecoveryTimeCard(
@@ -354,6 +279,112 @@ class AddExcercise extends StatelessWidget {
   }
 }
 
+class NameCard extends StatelessWidget {
+  const NameCard({
+    Key key,
+    @required this.name,
+    @required this.nameError,
+    @required this.namePresent,
+    @required this.noteFocusNode,
+  }) : super(key: key);
+
+  final ValueNotifier<String> name;
+  final ValueNotifier<bool> nameError;
+  final ValueNotifier<bool> namePresent;
+  final FocusNode noteFocusNode;
+
+  @override
+  Widget build(BuildContext context) {
+    return BasicCard(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          HeaderWithInfo(
+            title: "Name",
+            popUpFunction: () => excerciseNamePopUp(context),
+          ),
+          TextFieldWithClearButton(
+            editOneAtAtTime: false,
+            valueToUpdate: name,
+            hint: "Required*", 
+            error: (nameError.value) ? "Name Is Required" : null, 
+            //auto focus field
+            autofocus: true,
+            //we need to keep track above to determine whether we can active the button
+            present: namePresent, 
+            //so next focuses on the note
+            otherFocusNode: noteFocusNode,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class NotesCard extends StatelessWidget {
+  const NotesCard({
+    Key key,
+    @required this.note,
+    @required this.noteFocusNode,
+  }) : super(key: key);
+
+  final ValueNotifier<String> note;
+  final FocusNode noteFocusNode;
+
+  @override
+  Widget build(BuildContext context) {
+    return BasicCard(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          HeaderWithInfo(
+            title: "Notes",
+            popUpFunction: () => excerciseNotePopUp(context),
+          ),
+          TextFieldWithClearButton(
+            editOneAtAtTime: false,
+            valueToUpdate: note,
+            hint: "Details", 
+            error: null, 
+            //so we can link up both fields
+            focusNode: noteFocusNode,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class LinkCard extends StatelessWidget {
+  const LinkCard({
+    Key key,
+    @required this.url,
+  }) : super(key: key);
+
+  final ValueNotifier<String> url;
+
+  @override
+  Widget build(BuildContext context) {
+    return BasicCard(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          Container(
+            child: HeaderWithInfo(
+              title: "Reference Link",
+              popUpFunction: () => referenceLinkPopUp(context),
+            ),
+          ),
+          ReferenceLinkBox(
+            url: url,
+            editOneAtAtTime: false,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 class BasicCard extends StatelessWidget {
   const BasicCard({
     Key key,
@@ -364,11 +395,14 @@ class BasicCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      margin: EdgeInsets.all(8),
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: child,
+    return Theme(
+      data: ThemeData.dark(),
+      child: Card(
+        margin: EdgeInsets.all(8),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: child,
+        ),
       ),
     );
   }
