@@ -1,4 +1,6 @@
 //flutter
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 
 //plugin
@@ -161,92 +163,95 @@ class _LearnExcerciseState extends State<LearnExcercise> {
             ),
           ], 
         ),
-        body: CustomScrollView(
-          key: listKey,
-          controller: autoScrollController,
-          slivers: [
-            ExpandableTile(
-              autoScrollController: autoScrollController,
-              index: 0,
-              isOpen: introductionIsOpen,
-              headerIcon: FontAwesomeIcons.solidLightbulb, 
-              headerText: "Introduction", 
-              expandedChild: IntroductionBody(),
-            ),
-            ExpandableTile(
-              autoScrollController: autoScrollController,
-              index: 1,
-              isOpen: definitionIsOpen,
-              headerIcon: Icons.chrome_reader_mode, 
-              headerText: "Definitions", 
-              expandedChild: DefinitionBody(),
-            ),
-            ExpandableTile(
-              autoScrollController: autoScrollController,
-              index: 2,
-              isOpen: trainingIsOpen,
-              headerIcon: FontAwesomeIcons.dumbbell, 
-              size: 18,
-              headerText: "Training", 
-              //TODO: fix weird spacing below table... problem may lie in "trainingTypes.dart"
-              expandedChild: TrainingBody(),
-            ),
-            ExpandableTile(
-              autoScrollController: autoScrollController,
-              index: 3,
-              isOpen: precautionIsOpen,
-              headerIcon: Icons.warning, 
-              headerText: "Precautions", 
-              //TODO: highlight important words
-              expandedChild: PrecautionsBody(),
-            ),
-            ExpandableTile(
-              autoScrollController: autoScrollController,
-              index: 4,
-              isOpen: oneRepMaxIsOpen,
-              headerIcon: FontAwesomeIcons.trophy, 
-              size: 20,
-              headerText: "1 Rep Max", 
-              expandedChild: OneRepMaxBody(),
-            ),
-            ExpandableTile(
-              autoScrollController: autoScrollController,
-              index: 5,
-              isOpen: experimentIsOpen,
-              headerIcon: FontAwesomeIcons.flask, 
-              headerText: "Experiment",
-              //TODO: highlight important words
-              expandedChild: ExperimentBody(),
-            ),
-            ExpandableTile(
-              autoScrollController: autoScrollController,
-              index: 6,
-              isOpen: researchIsOpen,
-              headerIcon: FontAwesomeIcons.book, 
-              headerText: "Research",
-              expandedChild: ResearchBody(),
-              theOnlyException: true,
-            ),
-            SliverFillRemaining(
-              hasScrollBody: false,
-              fillOverscroll: false,
-              child: Center(
-                child: Padding(
-                  padding: EdgeInsets.all(16),
-                  child: Container(
-                    height: 56,
-                    //basically fit height
-                    width: 406 / (250/56),
-                    child: Image(
-                      //image dimesions: 250 x 406
-                      image: new AssetImage("assets/littleBrain.png"),
-                      color: theSemiWhite,
+        body: DefaultTextStyle(
+          style: TextStyle(
+            fontSize: 16,
+          ),
+          child: CustomScrollView(
+            key: listKey,
+            controller: autoScrollController,
+            slivers: [
+              ExpandableTile(
+                autoScrollController: autoScrollController,
+                index: 0,
+                isOpen: introductionIsOpen,
+                headerIcon: FontAwesomeIcons.solidLightbulb, 
+                headerText: "Introduction", 
+                expandedChild: IntroductionBody(),
+              ),
+              ExpandableTile(
+                autoScrollController: autoScrollController,
+                index: 1,
+                isOpen: definitionIsOpen,
+                headerIcon: Icons.chrome_reader_mode, 
+                headerText: "Definitions", 
+                expandedChild: DefinitionBody(),
+              ),
+              ExpandableTile(
+                autoScrollController: autoScrollController,
+                index: 2,
+                isOpen: trainingIsOpen,
+                headerIcon: FontAwesomeIcons.dumbbell, 
+                size: 18,
+                headerText: "Training", 
+                //TODO: fix weird spacing below table... problem may lie in "trainingTypes.dart"
+                expandedChild: TrainingBody(),
+              ),
+              ExpandableTile(
+                autoScrollController: autoScrollController,
+                index: 3,
+                isOpen: precautionIsOpen,
+                headerIcon: Icons.warning, 
+                headerText: "Precautions",
+                expandedChild: PrecautionsBody(),
+              ),
+              ExpandableTile(
+                autoScrollController: autoScrollController,
+                index: 4,
+                isOpen: oneRepMaxIsOpen,
+                headerIcon: FontAwesomeIcons.trophy, 
+                size: 20,
+                headerText: "1 Rep Max", 
+                expandedChild: OneRepMaxBody(),
+              ),
+              ExpandableTile(
+                autoScrollController: autoScrollController,
+                index: 5,
+                isOpen: experimentIsOpen,
+                headerIcon: FontAwesomeIcons.flask, 
+                headerText: "Experiment",
+                expandedChild: ExperimentBody(),
+              ),
+              ExpandableTile(
+                autoScrollController: autoScrollController,
+                index: 6,
+                isOpen: researchIsOpen,
+                headerIcon: FontAwesomeIcons.book, 
+                headerText: "Research",
+                expandedChild: ResearchBody(),
+                theOnlyException: true,
+              ),
+              SliverFillRemaining(
+                hasScrollBody: false,
+                fillOverscroll: false,
+                child: Center(
+                  child: Padding(
+                    padding: EdgeInsets.all(16),
+                    child: Container(
+                      height: 56,
+                      //basically fit height
+                      width: 406 / (250/56),
+                      child: Image(
+                        //image dimesions: 250 x 406
+                        image: new AssetImage("assets/littleBrain.png"),
+                        color: theSemiWhite,
+                      ),
                     ),
                   ),
                 ),
-              ),
-            )
-          ],
+              )
+            ],
+          ),
         ),
       ),
     );

@@ -13,9 +13,17 @@ class IntroductionBody extends StatelessWidget {
     return Column(
       children: <Widget>[
         SectionDescription(
-          child: Text(
-            "Swol is an app that helps beginners get into weightlifting as quick as possible.",
-          ),
+          children: [
+            TextSpan(
+              text: "Swol is an app that helps beginners ",
+            ),
+            TextSpan(
+              text: "get into weightlifting as quick as possible",
+              style: TextStyle(
+                fontWeight: FontWeight.w900,
+              )
+            ),
+          ],
         ),
         Container(
           padding: EdgeInsets.only(
@@ -33,8 +41,13 @@ class IntroductionBody extends StatelessWidget {
                     style: defaultStyle,
                     children: [
                       TextSpan(
-                        text: " It does not focus on tracking progress; it focuses on creating a habit. "
-                        +" What matters is that you do the best that you can now; the results will come on their own." + newLine,
+                        style: TextStyle(
+                          fontWeight: FontWeight.w900,
+                        ),
+                        text:  tab + "It does not focus on tracking progress; it focuses on creating a habit.\t"
+                      ),
+                      TextSpan(
+                        text: " What matters is that you do the best that you can now; the results will come on their own." + newLine,
                       ),
                     ]
                   ),
@@ -51,10 +64,10 @@ class IntroductionBody extends StatelessWidget {
                         style: TextStyle(
                           fontWeight: FontWeight.w900,
                         ),
-                        text: "\twe have many suggestions\t"
+                        text: "\twe have many suggestions but\t"
                       ),
                       TextSpan(
-                        text: " but it's your responsibility to stay safe. "
+                        text: " it's your responsibility to stay safe. "
                         +"We are not liable for any harm that you may cause yourself or others. "
                       ),
                       TextSpan(

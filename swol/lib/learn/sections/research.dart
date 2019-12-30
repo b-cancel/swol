@@ -11,9 +11,17 @@ class ResearchBody extends StatelessWidget {
     return Column(
       children: <Widget>[
         SectionDescription(
-          child: Text(
-            "Here are some topics that you can look into, to help you get even more out of your workouts",
-          ),
+          children: [
+            TextSpan(
+              text: "Here are some topics that you can look into, to help you ",
+            ),
+            TextSpan(
+              text: "get even more out of your workouts",
+              style: TextStyle(
+                fontWeight: FontWeight.w900,
+              )
+            ),
+          ],
         ),
         Padding(
           padding: const EdgeInsets.symmetric(
@@ -26,6 +34,9 @@ class ResearchBody extends StatelessWidget {
                 items: [
                   RichText(
                     text: TextSpan(
+                      style: TextStyle(
+                        fontSize: 16,
+                      ),
                       children: [
                         TextSpan(
                           text: "Concentric Stage (positive reps): ",
@@ -41,6 +52,9 @@ class ResearchBody extends StatelessWidget {
                   ),
                   RichText(
                     text: TextSpan(
+                      style: TextStyle(
+                        fontSize: 16,
+                      ),
                       children: [
                         TextSpan(
                           text: "Isometric Stage (holds): ",
@@ -56,6 +70,9 @@ class ResearchBody extends StatelessWidget {
                   ),
                   RichText(
                     text: TextSpan(
+                      style: TextStyle(
+                        fontSize: 16,
+                      ),
                       children: [
                         TextSpan(
                           text: "Eccentric Stage (negative reps): ",
@@ -74,9 +91,24 @@ class ResearchBody extends StatelessWidget {
               ResearchCard(
                 title: "How does each energy system work? How can you use your knowledge of each to improve your workouts?", 
                 items: [
-                  Text("Anaerobic System"),
-                  Text("Glycolytic System"),
-                  Text("Aerobic System"),
+                  Text(
+                    "Anaerobic System",
+                    style: TextStyle(
+                      fontSize: 16,
+                    ),
+                  ),
+                  Text(
+                    "Glycolytic System",
+                    style: TextStyle(
+                      fontSize: 16,
+                    ),
+                  ),
+                  Text(
+                    "Aerobic System",
+                    style: TextStyle(
+                      fontSize: 16,
+                    ),
+                  ),
                 ],
                 lessBottomPadding: true,
               ),
@@ -132,6 +164,7 @@ class ResearchCard extends StatelessWidget {
                     title,
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
+                      fontSize: 16,
                       color: Theme.of(context).primaryColor,
                     ),
                   ),

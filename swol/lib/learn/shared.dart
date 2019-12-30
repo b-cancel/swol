@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 class SectionDescription extends StatelessWidget {
   const SectionDescription({
     Key key,
-    @required this.child,
+    @required this.children,
   }) : super(key: key);
 
-  final Widget child;
+  final List<TextSpan> children;
 
   @override
   Widget build(BuildContext context) {
@@ -21,13 +21,15 @@ class SectionDescription extends StatelessWidget {
         children: <Widget>[
           Container(
             padding: EdgeInsets.all(16),
-            child: DefaultTextStyle(
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
-              child: child,
+            width: MediaQuery.of(context).size.width,
+            child: RichText(
+              text: TextSpan(
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.white,
+                ),
+                children: children,
+              )
             ),
           ),
           Padding(

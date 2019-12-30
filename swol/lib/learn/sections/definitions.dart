@@ -10,7 +10,20 @@ class DefinitionBody extends StatelessWidget {
     return Column(
       children: <Widget>[
         SectionDescription(
-          child: Text("Some definitions to clarify what is being referred to throughout the app"),
+          children: [
+            TextSpan(
+              text: "Some definitions to ",
+            ),
+            TextSpan(
+              text: "clarify what is being referred to",
+              style: TextStyle(
+                fontWeight: FontWeight.w900,
+              )
+            ),
+            TextSpan(
+              text: " throughout the app",
+            ),
+          ],
         ),
         Padding(
           padding: const EdgeInsets.only(
@@ -233,6 +246,7 @@ class DefinitionBody extends StatelessWidget {
                     ),
                   ),
                 ],
+                lessBottomPadding: true,
                 extra: null,
               ),
             ],
@@ -249,17 +263,19 @@ class ADefinition extends StatelessWidget {
     this.word,
     this.definition,
     this.extra,
+    this.lessBottomPadding: false,
   });
 
   final String word;
   final List<TextSpan> definition;
   final List<TextSpan> extra;
+  final bool lessBottomPadding;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(
-        bottom: 16.0,
+      padding: EdgeInsets.only(
+        bottom: lessBottomPadding ? 8 : 16.0,
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -314,7 +330,9 @@ class DefinitionOfWord extends StatelessWidget {
               ),
             ),
           ),
-          (extra == null) ? Container()
+          (extra == null) ? Container(
+            height: 8,
+          )
           : Column(
             children: <Widget>[
               Padding(
@@ -329,7 +347,8 @@ class DefinitionOfWord extends StatelessWidget {
               ),
               Padding(
                 padding: EdgeInsets.only(
-                  top: 8,
+                  top: 4,
+                  bottom: 8,
                 ),
                 child: RichText(
                   text: TextSpan(

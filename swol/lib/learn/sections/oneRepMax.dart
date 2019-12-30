@@ -7,6 +7,20 @@ class OneRepMaxBody extends StatelessWidget {
     TextStyle boldStyle = TextStyle(
       fontWeight: FontWeight.bold,
     );
+    
+    /*
+    children: [
+            TextSpan(
+              text: "There are many reasons you may want to workout\nBut ",
+            ),
+            TextSpan(
+              text: " you should have 1 Primary Goal ",
+              style: TextStyle(
+                fontWeight: FontWeight.w900,
+              )
+            ),
+          ],
+    */
 
     return Container(
       padding: EdgeInsets.only(
