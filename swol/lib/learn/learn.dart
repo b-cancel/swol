@@ -211,7 +211,7 @@ class _LearnExcerciseState extends State<LearnExcercise> {
                 isOpen: oneRepMaxIsOpen,
                 headerIcon: FontAwesomeIcons.trophy, 
                 size: 20,
-                headerText: "1 Rep Max", 
+                headerText: "One Rep Max", 
                 expandedChild: OneRepMaxBody(),
               ),
               ExpandableTile(
@@ -219,7 +219,7 @@ class _LearnExcerciseState extends State<LearnExcercise> {
                 index: 5,
                 isOpen: experimentIsOpen,
                 headerIcon: FontAwesomeIcons.flask, 
-                headerText: "Experiment",
+                headerText: "The Experiment",
                 expandedChild: ExperimentBody(),
               ),
               ExpandableTile(
@@ -227,7 +227,7 @@ class _LearnExcerciseState extends State<LearnExcercise> {
                 index: 6,
                 isOpen: researchIsOpen,
                 headerIcon: FontAwesomeIcons.book, 
-                headerText: "Research",
+                headerText: "Further Research",
                 expandedChild: ResearchBody(),
                 theOnlyException: true,
               ),
