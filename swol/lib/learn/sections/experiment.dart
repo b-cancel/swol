@@ -228,6 +228,7 @@ class ExperimentBody extends StatelessWidget {
             ),
             child: FunctionCardTable(
               context: context,
+              otherDark: true,
             ),
           ),
         ],
@@ -240,10 +241,12 @@ class FunctionCardTable extends StatelessWidget {
   FunctionCardTable({
     @required this.context,
     this.isDark: true,
+    this.otherDark: false,
   });
 
   final BuildContext context;
   final bool isDark;
+  final bool otherDark;
 
   List<Widget> buildFields(List<String> items){
     List<Widget> buildFields = new List<Widget>();
@@ -252,8 +255,8 @@ class FunctionCardTable extends StatelessWidget {
       Color fieldColor;
       if(i == 0) fieldColor = (isDark) ? Theme.of(context).accentColor : Colors.blue;
       else{
-        if(i%2==0) fieldColor = Theme.of(context).cardColor;
-        else fieldColor = Theme.of(context).primaryColor.withOpacity(0.5);
+        if(i%2==0) fieldColor = otherDark ? Theme.of(context).scaffoldBackgroundColor : Theme.of(context).cardColor;
+        else fieldColor = Theme.of(context).primaryColor;
       }
 
       buildFields.add(

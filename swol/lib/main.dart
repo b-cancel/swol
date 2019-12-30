@@ -84,6 +84,8 @@ class GrabSystemPrefs extends StatelessWidget {
           //get bool value
           bool permissionGiven = OnBoarding.setgetValue(prefs, StoredBools.TermsAgreed);
           bool shownInitialControls = OnBoarding.setgetValue(prefs, StoredBools.InitialControlsShown);
+          bool shownIntroduction = OnBoarding.setgetValue(prefs, StoredBools.IntroductionShown);
+          //TODO: do below
           bool shownSearchButton = OnBoarding.setgetValue(prefs, StoredBools.SearchButtonShown);
           bool shownCalculator = OnBoarding.setgetValue(prefs, StoredBools.CalculatorShown);
           bool shownSettings = OnBoarding.setgetValue(prefs, StoredBools.SettingsShown);
@@ -101,6 +103,8 @@ class GrabSystemPrefs extends StatelessWidget {
             child: GrabFileData(
               permissionGiven: permissionGiven,
               shownInitialControls: shownInitialControls,
+              shownIntroduction: shownIntroduction,
+
               shownSearchBar: shownSearchButton,
               shownCalculator: shownCalculator,
               shownSettings: shownSettings,
@@ -122,6 +126,8 @@ class GrabFileData extends StatefulWidget {
   GrabFileData({
     @required this.permissionGiven,
     @required this.shownInitialControls,
+    @required this.shownIntroduction,
+
     @required this.shownSearchBar,
     @required this.shownCalculator,
     @required this.shownSettings,
@@ -129,6 +135,8 @@ class GrabFileData extends StatefulWidget {
 
   final bool permissionGiven;
   final bool shownInitialControls;
+  final bool shownIntroduction;
+
   final bool shownSearchBar;
   final bool shownCalculator;
   final bool shownSettings;
@@ -156,6 +164,8 @@ class _GrabFileDataState extends State<GrabFileData> {
           return ExcerciseSelect(
             permissionGiven: widget.permissionGiven,
             shownInitialControls: widget.shownInitialControls,
+            shownIntroduction: widget.shownIntroduction,
+
             shownSearchBar: widget.shownSearchBar,
             shownCalculator: widget.shownCalculator,
             shownSettings: widget.shownSettings,

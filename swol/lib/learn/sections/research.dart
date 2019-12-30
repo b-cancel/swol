@@ -134,7 +134,7 @@ class ResearchCard extends StatelessWidget {
                   ),
                 ),
                 Container(
-                  color: Theme.of(context).cardColor,
+                  color: Theme.of(context).scaffoldBackgroundColor,
                   width: MediaQuery.of(context).size.width,
                   padding: EdgeInsets.symmetric(
                     horizontal: 16,

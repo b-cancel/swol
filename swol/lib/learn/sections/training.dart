@@ -10,7 +10,7 @@ class TrainingBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Theme.of(context).primaryColor,
+      color: Theme.of(context).cardColor,
       width: MediaQuery.of(context).size.width,
       child: Column(
         children: <Widget>[
@@ -138,9 +138,9 @@ class TrainingBody extends StatelessWidget {
           ),
           Theme(
             data: ThemeData.dark().copyWith(
-              primaryColor: Theme.of(context).cardColor,
-              primaryColorDark: Theme.of(context).primaryColor,
-              cardColor: Theme.of(context).primaryColor.withOpacity(0.5),
+              primaryColor: Theme.of(context).primaryColor,
+              primaryColorDark: Theme.of(context).cardColor,
+              cardColor: Theme.of(context).scaffoldBackgroundColor,
             ),
             child: AllTrainingTypes(),
           ),

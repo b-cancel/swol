@@ -46,6 +46,8 @@ The tricky part is the animation: looks like a push not a pop or replace.
 class ExcerciseSelect extends StatefulWidget {
   final bool permissionGiven;
   final bool shownInitialControls;
+  final bool shownIntroduction;
+
   final bool shownSearchBar;
   final bool shownCalculator;
   final bool shownSettings;
@@ -53,6 +55,8 @@ class ExcerciseSelect extends StatefulWidget {
   ExcerciseSelect({
     @required this.permissionGiven,
     @required this.shownInitialControls,
+    @required this.shownIntroduction,
+
     @required this.shownSearchBar,
     @required this.shownCalculator,
     @required this.shownSettings,
@@ -67,6 +71,8 @@ class _ExcerciseSelectState extends State<ExcerciseSelect> {
   final ValueNotifier<bool> onTop = new ValueNotifier(true);
   final ValueNotifier<bool> navSpread = new ValueNotifier(false);
 
+  ValueNotifier<bool> shownIntroductionVN;
+
   updateOnTopValue(){
     ScrollPosition position = autoScrollController.position;
     double currentOffset = autoScrollController.offset;
@@ -80,6 +86,11 @@ class _ExcerciseSelectState extends State<ExcerciseSelect> {
 
   @override
   void initState() { 
+    //since this variable is read in only once 
+    //but may be changed throughout the running of the program 
+    //we use a value notifier so updating the value locally is enough
+    shownIntroductionVN = new ValueNotifier<bool>(widget.shownIntroduction);
+
     //create function
     Function afterConfirm = (){
       if(widget.shownInitialControls == false){
@@ -150,6 +161,7 @@ class _ExcerciseSelectState extends State<ExcerciseSelect> {
           AnimatedTitleAction(
             navSpread: navSpread, 
             screenWidth: screenWidth,
+            shownIntroductionVN: shownIntroductionVN,
           ),
         ],
       ),

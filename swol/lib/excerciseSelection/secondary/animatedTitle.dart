@@ -18,10 +18,12 @@ class AnimatedTitleAction extends StatelessWidget {
     Key key,
     @required this.navSpread,
     @required this.screenWidth,
+    @required this.shownIntroductionVN,
   }) : super(key: key);
 
   final ValueNotifier<bool> navSpread;
   final double screenWidth;
+  final ValueNotifier<bool> shownIntroductionVN;
 
   @override
   Widget build(BuildContext context) {
@@ -53,6 +55,7 @@ class AnimatedTitleAction extends StatelessWidget {
                     type: PageTransitionType.rightToLeft, 
                     child: LearnExcercise(
                       navSpread: navSpread,
+                      shownIntroductionVN: shownIntroductionVN,
                     ),
                   ),
                 );

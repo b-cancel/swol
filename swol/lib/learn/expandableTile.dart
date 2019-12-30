@@ -1,9 +1,15 @@
-import 'package:flutter_sticky_header/flutter_sticky_header.dart';
-import 'package:animator/animator.dart';
+//flutter
 import 'package:flutter/material.dart';
+
+//dart
 import 'dart:math' as math;
 
+//plugins
+import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
+import 'package:flutter_icons/flutter_icons.dart';
+import 'package:animator/animator.dart';
+import 'package:shimmer/shimmer.dart';
 
 //NOTE: the left indent inside of a drop down doesn't look right
 
@@ -221,7 +227,7 @@ class TileOpened extends StatelessWidget {
               clipBehavior: Clip.antiAlias,
               child: Container(
                 key: UniqueKey(),
-                color: Theme.of(context).primaryColor,
+                color: Theme.of(context).cardColor,
                 padding: EdgeInsets.only(
                   bottom: 24,
                 ),
@@ -245,6 +251,18 @@ class TileOpened extends StatelessWidget {
                   bottomRight:  Radius.circular(12.0),
                 ),
                 color: Theme.of(context).primaryColorDark,
+              ),
+              child: Center(
+                child: Shimmer.fromColors(
+                  direction: ShimmerDirection.ltr,
+                  baseColor: Theme.of(context).primaryColor,
+                  highlightColor: Theme.of(context).cardColor,
+                  child: Icon(
+                    MaterialCommunityIcons.getIconData("chevron-double-down"),
+                    size: 36,
+                    color: Theme.of(context).primaryColor,
+                  ),
+                ),
               ),
             ),
           ],

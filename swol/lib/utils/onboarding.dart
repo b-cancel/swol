@@ -9,13 +9,17 @@ import 'package:feature_discovery/feature_discovery.dart';
 
 //enums
 enum AFeature {
-  //permission
-  SwolLogo, LearnPage, AddExcercise, SearchExcercise, //initial controls
+  SwolLogo, 
+  LearnPage, 
+  AddExcercise, 
+  SearchExcercise,
 }
 
 enum StoredBools {
-  TermsAgreed, //permission
-  InitialControlsShown, //inital controls
+  TermsAgreed, 
+  InitialControlsShown, 
+  IntroductionShown,
+  //TODO: do or eliminate variables below
   SearchButtonShown,
   CalculatorShown, 
   SettingsShown,

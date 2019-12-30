@@ -12,7 +12,6 @@ class ExcerciseNamePopUpBody extends StatelessWidget {
       padding: EdgeInsets.only(
         left: 32,
         right: 32,
-        bottom: 16,
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -127,7 +126,7 @@ class ExcerciseNamePopUpBody extends StatelessWidget {
                 )
               ],
             ),
-          )
+          ),
         ],
       ),
     );

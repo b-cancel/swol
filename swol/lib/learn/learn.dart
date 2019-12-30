@@ -14,6 +14,7 @@ import 'package:swol/learn/sections/oneRepMax.dart';
 import 'package:swol/learn/sections/precautions.dart';
 import 'package:swol/learn/sections/research.dart';
 import 'package:swol/learn/sections/training.dart';
+import 'package:swol/utils/onboarding.dart';
 
 //https://pub.dev/packages/expandable
 //https://stackoverflow.com/questions/54986328/how-to-make-expandable-card
@@ -23,9 +24,11 @@ import 'package:swol/learn/sections/training.dart';
 class LearnExcercise extends StatefulWidget {
   LearnExcercise({
     @required this.navSpread,
+    @required this.shownIntroductionVN,
   });
 
   final ValueNotifier navSpread;
+  final ValueNotifier<bool> shownIntroductionVN;
 
   @override
   _LearnExcerciseState createState() => _LearnExcerciseState();
@@ -38,7 +41,10 @@ class _LearnExcerciseState extends State<LearnExcercise> {
   //is opens
   List<ValueNotifier<bool>> allIsOpens = new List<ValueNotifier<bool>>();
 
-  ValueNotifier<bool> introductionIsOpen = new ValueNotifier(true);
+  //my be automatically open to show the user what this section of the app is about
+  ValueNotifier<bool> introductionIsOpen;
+
+  //automatically closed
   ValueNotifier<bool> definitionIsOpen = new ValueNotifier(false);
   ValueNotifier<bool> trainingIsOpen = new ValueNotifier(false);
   ValueNotifier<bool> precautionIsOpen = new ValueNotifier(false);
@@ -46,10 +52,19 @@ class _LearnExcerciseState extends State<LearnExcercise> {
   ValueNotifier<bool> experimentIsOpen = new ValueNotifier(false);
   ValueNotifier<bool> researchIsOpen = new ValueNotifier(false);
 
-  maybeCloseOthers(ValueNotifier<bool> notifier){
-    if(notifier.value){
+  maybeCloseOthers(ValueNotifier<bool> isOpen){
+    //the user has tapped something
+    //so they will have seen how the drop down works
+
+    //update locally
+    widget.shownIntroductionVN.value = true;
+    //update globally
+    OnBoarding.boolSet(StoredBools.IntroductionShown);
+
+    //a section is being opened
+    if(isOpen.value){
       //close others
-      closeOthers(notifier);
+      closeOthers(isOpen);
 
       //scroll to other
       //autoScrollController.
@@ -62,7 +77,7 @@ class _LearnExcerciseState extends State<LearnExcercise> {
         (){
           //scroll to index
           autoScrollController.scrollToIndex(
-            allIsOpens.indexOf(notifier), 
+            allIsOpens.indexOf(isOpen), 
             preferPosition: AutoScrollPosition.begin,
           );
         }
@@ -85,6 +100,8 @@ class _LearnExcerciseState extends State<LearnExcercise> {
   void initState() {
     //super init
     super.initState();
+
+    introductionIsOpen = new ValueNotifier(widget.shownIntroductionVN.value == false);
 
     //make controller list
     allIsOpens = new List<ValueNotifier<bool>>();
@@ -209,17 +226,18 @@ class _LearnExcerciseState extends State<LearnExcercise> {
             ),
             SliverFillRemaining(
               hasScrollBody: false,
+              fillOverscroll: false,
               child: Center(
                 child: Padding(
                   padding: EdgeInsets.all(16),
                   child: Container(
                     height: 56,
-                    child: FittedBox(
-                      fit: BoxFit.fitHeight,
-                      child: Image(
-                        image: new AssetImage("assets/littleBrain.png"),
-                        color: theSemiWhite,
-                      ),
+                    //basically fit height
+                    width: 406 / (250/56),
+                    child: Image(
+                      //image dimesions: 250 x 406
+                      image: new AssetImage("assets/littleBrain.png"),
+                      color: theSemiWhite,
                     ),
                   ),
                 ),
