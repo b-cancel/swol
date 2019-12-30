@@ -201,40 +201,42 @@ class TileOpened extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        Stack(
-          children: <Widget>[
-            Positioned.fill(
-              child: Column(
-                children: <Widget>[
-                  Expanded(
-                    child: Container(
-                      color: Theme.of(context).accentColor,
+        Container(
+          child: Stack(
+            children: <Widget>[
+              Positioned.fill(
+                child: Column(
+                  children: <Widget>[
+                    Expanded(
+                      child: Container(
+                        color: Theme.of(context).accentColor,
+                      ),
                     ),
-                  ),
-                  Expanded(
-                    child: Container(
-                      color: Theme.of(context).primaryColorDark,
+                    Expanded(
+                      child: Container(
+                        color: Theme.of(context).primaryColorDark,
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            ),
-            Card(
-              margin: EdgeInsets.all(0),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(24.0),
-              ),
-              clipBehavior: Clip.antiAlias,
-              child: Container(
-                key: UniqueKey(),
-                color: Theme.of(context).cardColor,
-                padding: EdgeInsets.only(
-                  bottom: 24,
+                  ],
                 ),
-                child: child,
               ),
-            ),
-          ],
+              Card(
+                margin: EdgeInsets.all(0),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(24.0),
+                ),
+                clipBehavior: Clip.antiAlias,
+                child: Container(
+                  key: UniqueKey(),
+                  color: Theme.of(context).cardColor,
+                  padding: EdgeInsets.only(
+                    bottom: 24,
+                  ),
+                  child: child,
+                ),
+              ),
+            ],
+          ),
         ),
         Stack(
           children: <Widget>[

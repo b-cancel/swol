@@ -188,6 +188,7 @@ class _LearnExcerciseState extends State<LearnExcercise> {
               headerIcon: FontAwesomeIcons.dumbbell, 
               size: 18,
               headerText: "Training", 
+              //TODO: fix weird spacing below table... problem may lie in "trainingTypes.dart"
               expandedChild: TrainingBody(),
             ),
             ExpandableTile(
@@ -196,6 +197,7 @@ class _LearnExcerciseState extends State<LearnExcercise> {
               isOpen: precautionIsOpen,
               headerIcon: Icons.warning, 
               headerText: "Precautions", 
+              //TODO: highlight important words
               expandedChild: PrecautionsBody(),
             ),
             ExpandableTile(
@@ -213,6 +215,7 @@ class _LearnExcerciseState extends State<LearnExcercise> {
               isOpen: experimentIsOpen,
               headerIcon: FontAwesomeIcons.flask, 
               headerText: "Experiment",
+              //TODO: highlight important words
               expandedChild: ExperimentBody(),
             ),
             ExpandableTile(

@@ -13,6 +13,7 @@ class SectionDescription extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(
+        top: 8,
         bottom: 16.0,
       ),
       child: Column(
@@ -52,61 +53,73 @@ class SectionDescription extends StatelessWidget {
 class ListItem extends StatelessWidget {
   ListItem({
     this.content,
-    this.circleColor = Colors.white,
-    this.circleSize = 12.0,
+    this.rightPadding: 8,
+
     this.circleText = "",
     this.circleTextColor = Colors.black,
-    this.circleTextSize = 12.0,
-    this.bottomSpacing = 16.0,
-    this.circlePadding = 4,
+    this.circleTextSize = 14.0,
+
+    this.circleColor = Colors.white,
+    this.circlePadding = 2,
+    
+    this.bottomSpacing = 12.0,
   });
 
   final Widget content;
-
-  final Color circleColor;
-  final double circleSize;
+  final double rightPadding;
 
   final String circleText;
   final Color circleTextColor;
   final double circleTextSize;
 
-  final double bottomSpacing;
-
+  final Color circleColor;
   final double circlePadding;
+
+  final double bottomSpacing;
 
   @override
   Widget build(BuildContext context) {
-    return new Container(
-      child: new Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          new Container(
-            alignment: Alignment.center,
-            width: circleTextSize,
-            margin: EdgeInsets.only(right: circleTextSize),
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: circleColor,
-            ),
-            child: Padding(
-              padding: EdgeInsets.all(circlePadding),
-              child: new Text(
-                circleText,
-                style: TextStyle(
-                  color: circleTextColor,
-                  fontSize: circleTextSize,
-                  fontWeight: FontWeight.bold,
+    return Container(
+      margin: EdgeInsets.only(bottom: bottomSpacing),
+      child: IntrinsicHeight(
+        child: new Row(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            Container(
+              padding: EdgeInsets.only(right: rightPadding),
+              alignment: Alignment.topLeft,
+              child: Container(
+                width: (circlePadding * 2) + circleTextSize,
+                height: (circlePadding * 2) + circleTextSize,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: circleColor,
+                ),
+                child: Padding(
+                  padding: EdgeInsets.all(circlePadding),
+                  child: Center(
+                    child: new Text(
+                      circleText,
+                      style: TextStyle(
+                        color: circleTextColor,
+                        fontSize: circleTextSize,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
                 ),
               ),
             ),
-          ),
-          new Expanded(
-            child: new Container(
-              margin: EdgeInsets.only(bottom: bottomSpacing),
-              child: content,
+            new Expanded(
+              child: Padding(
+                padding: EdgeInsets.only(
+                  top: circleText == "" ? 0 : circlePadding,
+                ),
+                child: content,
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

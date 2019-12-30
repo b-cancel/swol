@@ -22,8 +22,6 @@ class AllTrainingTypes extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(" with init focus: " + sectionWithInitialFocus.toString());
-
     List<int> sections = new List<int>();
     for(int i = 0; i < 3; i++){
       //adjust the section being added
@@ -238,26 +236,21 @@ class _TrainingTypeSectionsState extends State<TrainingTypeSections> {
       child: IntrinsicHeight(
         child: Row(
           children: <Widget>[
-            Padding(
-              padding: EdgeInsets.symmetric(
-                vertical: 0,
-              ),
-              child: Container(
-                height: 256.0 + (widget.plus24 ? 24 : 0),
-                child: PersistentCardTable(
-                  lightMode: widget.lightMode,
-                  items: [
-                    "Training Type",
-                    "Weight Heaviness",
-                    "Recovery Time",
-                    "Rep Targets",
-                    "Set Targets",
-                    "Primary Goal",
-                    "Increase Muscle",
-                    "Risk To",
-                  ],
-                  highlightField: widget.highlightField,
-                ),
+            Container(
+              height: 256.0 + (widget.plus24 ? 24 : 0), //TODO: why do we need this?
+              child: PersistentCardTable(
+                lightMode: widget.lightMode,
+                items: [
+                  "Training Type",
+                  "Weight Heaviness",
+                  "Recovery Time",
+                  "Rep Targets",
+                  "Set Targets",
+                  "Primary Goal",
+                  "Increase Muscle",
+                  "Risk To",
+                ],
+                highlightField: widget.highlightField,
               ),
             ),
             Expanded(
@@ -267,7 +260,7 @@ class _TrainingTypeSectionsState extends State<TrainingTypeSections> {
                   children: <Widget>[
                     Padding(
                       padding: EdgeInsets.symmetric(
-                        vertical: 16,
+                        vertical: 16, //TODO: why do we need this?
                       ),
                       child: mainCarousel,
                     ),

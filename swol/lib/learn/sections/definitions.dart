@@ -292,7 +292,7 @@ class DefinitionOfWord extends StatelessWidget {
     return Container(
       padding: EdgeInsets.all(8),
       decoration: BoxDecoration(
-        color: Theme.of(context).cardColor,
+        color: Theme.of(context).scaffoldBackgroundColor,
         borderRadius: new BorderRadius.only(
           topLeft:  const  Radius.circular(12.0),
           bottomLeft: const  Radius.circular(12.0),

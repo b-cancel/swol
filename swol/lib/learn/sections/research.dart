@@ -78,6 +78,7 @@ class ResearchBody extends StatelessWidget {
                   Text("Glycolytic System"),
                   Text("Aerobic System"),
                 ],
+                lessBottomPadding: true,
               ),
             ],
           ),
@@ -92,10 +93,12 @@ class ResearchCard extends StatelessWidget {
     Key key,
     @required this.title,
     @required this.items,
+    this.lessBottomPadding: false,
   }) : super(key: key);
 
   final String title;
   final List<Widget> items;
+  final bool lessBottomPadding;
 
   @override
   Widget build(BuildContext context) {
@@ -112,8 +115,8 @@ class ResearchCard extends StatelessWidget {
     }
 
     return Padding(
-      padding: const EdgeInsets.only(
-        bottom: 16.0,
+      padding: EdgeInsets.only(
+        bottom: lessBottomPadding ? 8 : 16.0,
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(25),

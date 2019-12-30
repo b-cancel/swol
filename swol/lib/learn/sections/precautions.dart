@@ -20,75 +20,82 @@ class PrecautionsBody extends StatelessWidget {
             + "Below are some of the most common precautions you can take",
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: DefaultTextStyle(
-            style: TextStyle(
-              fontSize: 16,
+        Container(
+          padding: EdgeInsets.only(
+            top: 8,
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 16.0,
             ),
-            child: Column(
-              children: <Widget>[
-                ListItem(
-                  circleColor: Theme.of(context).accentColor,
-                  content: Text(
-                    "use a spotter",
+            child: DefaultTextStyle(
+              style: TextStyle(
+                fontSize: 16,
+              ),
+              child: Column(
+                children: <Widget>[
+                  ListItem(
+                    circleColor: Theme.of(context).accentColor,
+                    content: Text(
+                      "use a spotter",
+                    ),
                   ),
-                ),
-                ListItem(
-                  circleColor: Theme.of(context).accentColor,
-                  content: Text(
-                    "stay away from extremes like, 1 Rep Sets with tons of weight, and 20+ Rep Sets",
+                  ListItem(
+                    circleColor: Theme.of(context).accentColor,
+                    content: Text(
+                      "stay away from extremes like, 1 Rep Sets with tons of weight, and 20+ Rep Sets",
+                    ),
                   ),
-                ),
-                ListItem(
-                  circleColor: Theme.of(context).accentColor,
-                  content: Text(
-                    "don't exercise until failure, instead stop before it",
+                  ListItem(
+                    circleColor: Theme.of(context).accentColor,
+                    content: Text(
+                      "don't exercise until failure, instead stop before it",
+                    ),
                   ),
-                ),
-                ListItem(
-                  circleColor: Theme.of(context).accentColor,
-                  content: Text(
-                    "use the joints full range of motion as long as doing so doesn't cause overextension",
+                  ListItem(
+                    circleColor: Theme.of(context).accentColor,
+                    content: Text(
+                      "use the joints full range of motion as long as doing so doesn't cause overextension",
+                    ),
                   ),
-                ),
-                ListItem(
-                  circleColor: Theme.of(context).accentColor,
-                  content: Text(
-                    "avoid locking your joints when the force can cause them to bend in the incorrect direction ",
+                  ListItem(
+                    circleColor: Theme.of(context).accentColor,
+                    content: Text(
+                      "avoid locking your joints when the force can cause them to bend in the incorrect direction ",
+                    ),
                   ),
-                ),
-                ListItem(
-                  circleColor: Theme.of(context).accentColor,
-                  content: Text(
-                    "if you suspect you are injured, do not continue, go to a doctor",
+                  ListItem(
+                    circleColor: Theme.of(context).accentColor,
+                    content: Text(
+                      "if you suspect you are injured, do not continue, go to a doctor",
+                    ),
                   ),
-                ),
-                ListItem(
-                  circleColor: Theme.of(context).accentColor,
-                  content: Text(
-                    "maintain good form at all times",
+                  ListItem(
+                    circleColor: Theme.of(context).accentColor,
+                    content: Text(
+                      "maintain good form at all times",
+                    ),
                   ),
-                ),
-                ListItem(
-                  circleColor: Theme.of(context).accentColor,
-                  content: Text(
-                    "take the appropriate break between sets",
+                  ListItem(
+                    circleColor: Theme.of(context).accentColor,
+                    content: Text(
+                      "take the appropriate break between sets",
+                    ),
                   ),
-                ),
-                ListItem(
-                  circleColor: Theme.of(context).accentColor,
-                  content: Text(
-                    "drink the right amount of water",
+                  ListItem(
+                    circleColor: Theme.of(context).accentColor,
+                    content: Text(
+                      "drink the right amount of water",
+                    ),
                   ),
-                ),
-                ListItem(
-                  circleColor: Theme.of(context).accentColor,
-                  content: Text(
-                    "eat the right amount and kind of food",
+                  ListItem(
+                    circleColor: Theme.of(context).accentColor,
+                    content: Text(
+                      "eat the right amount and kind of food",
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
