@@ -113,6 +113,7 @@ class _SuggestionState extends State<Suggestion> {
       extra += ExcerciseData.getExcercises().value[widget.excerciseID].lastReps.toString();
     }
 
+    //TODO: 
     return Stack(
       children: <Widget>[
         Container(

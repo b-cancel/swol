@@ -5,13 +5,15 @@
 import 'dart:math' as math;
 
 //flutter
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
 //internal: tabs
 import 'package:swol/excerciseAction/tabs/record/setRecord.dart';
 import 'package:swol/excerciseAction/tabs/recovery/recovery.dart';
 import 'package:swol/excerciseAction/tabs/suggest/suggest.dart';
+
+//plugin
+import 'package:carousel_slider/carousel_slider.dart';
 
 /// A vertical tab widget for flutter
 class VerticalTabs extends StatefulWidget {
