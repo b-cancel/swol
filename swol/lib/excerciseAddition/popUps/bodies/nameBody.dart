@@ -106,21 +106,18 @@ class ExcerciseNamePopUpBody extends StatelessWidget {
                 ListItem(
                   circleColor: Colors.blue,
                   circleText: "1",
-                  circleTextSize: 18,
                   circleTextColor: Colors.white,
                   content: Text("Previous Set"),
                 ),
                 ListItem(
                   circleColor: Colors.blue,
                   circleText: "2",
-                  circleTextSize: 18,
                   circleTextColor: Colors.white,
                   content: Text("Ability Formula"),
                 ),
                 ListItem(
                   circleColor: Colors.blue,
                   circleText: "3",
-                  circleTextSize: 18,
                   circleTextColor: Colors.white,
                   content: Text("Rep Target"),
                 )

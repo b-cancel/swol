@@ -59,10 +59,10 @@ class ListItem extends StatelessWidget {
 
     this.circleText = "",
     this.circleTextColor = Colors.black,
-    this.circleTextSize = 14.0,
 
     this.circleColor = Colors.white,
     this.circlePadding = 2,
+    this.circleSize,
     
     this.bottomSpacing = 12.0,
   });
@@ -72,15 +72,22 @@ class ListItem extends StatelessWidget {
 
   final String circleText;
   final Color circleTextColor;
-  final double circleTextSize;
 
   final Color circleColor;
   final double circlePadding;
+  final double circleSize;
 
   final double bottomSpacing;
 
   @override
   Widget build(BuildContext context) {
+    double actualCircleSize;
+    if(circleSize != null) actualCircleSize = circleSize;
+    else{
+      if(circleText == "") actualCircleSize = 12;
+      else actualCircleSize = 18;
+    }
+
     return Container(
       margin: EdgeInsets.only(bottom: bottomSpacing),
       child: IntrinsicHeight(
@@ -91,20 +98,20 @@ class ListItem extends StatelessWidget {
               padding: EdgeInsets.only(right: rightPadding),
               alignment: Alignment.topLeft,
               child: Container(
-                width: (circlePadding * 2) + circleTextSize,
-                height: (circlePadding * 2) + circleTextSize,
+                width: (circlePadding * 2) + actualCircleSize,
+                height: (circlePadding * 2) + actualCircleSize,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   color: circleColor,
                 ),
                 child: Padding(
                   padding: EdgeInsets.all(circlePadding),
-                  child: Center(
+                  child: FittedBox(
+                    fit: BoxFit.contain,
                     child: new Text(
                       circleText,
                       style: TextStyle(
                         color: circleTextColor,
-                        fontSize: circleTextSize,
                         fontWeight: FontWeight.bold,
                       ),
                     ),

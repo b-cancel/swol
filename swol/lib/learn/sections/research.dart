@@ -140,7 +140,6 @@ class ResearchCard extends StatelessWidget {
         ListItem(
           circleColor: Theme.of(context).accentColor,
           circleText: (i + 1).toString(),
-          circleTextSize: 18,
           content: items[i],
         ),
       );

@@ -35,8 +35,6 @@ class RecoveryTimePopUpBody extends StatelessWidget {
                 circleColor: Colors.blue,
                 circleText: "1",
                 circleTextColor: Colors.white,
-                circleTextSize: 18,
-                circlePadding: 0,
                 content: RichText(
                   text: TextSpan(
                     style: TextStyle(
@@ -63,8 +61,6 @@ class RecoveryTimePopUpBody extends StatelessWidget {
                 circleColor: Colors.blue,
                 circleText: "2",
                 circleTextColor: Colors.white,
-                circleTextSize: 18,
-                circlePadding: 0,
                 content: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[

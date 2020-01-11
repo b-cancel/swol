@@ -37,7 +37,6 @@ class ExperimentBody extends StatelessWidget {
                 ListItem(
                   circleColor: Theme.of(context).accentColor,
                   circleText: "1",
-                  circleTextSize: 18,
                   content: Text(
                     "The "
                     + "ABILITY"
@@ -51,7 +50,6 @@ class ExperimentBody extends StatelessWidget {
                 ListItem(
                   circleColor: Theme.of(context).accentColor,
                   circleText: "2",
-                  circleTextSize: 18,
                   content: Text(
                     "The "
                     + "ABILITY"
@@ -63,7 +61,6 @@ class ExperimentBody extends StatelessWidget {
                 ListItem(
                   circleColor: Theme.of(context).accentColor,
                   circleText: "3",
-                  circleTextSize: 18,
                   content: Text(
                     "Additionally, the "
                     + "ABILITY"
@@ -76,7 +73,6 @@ class ExperimentBody extends StatelessWidget {
                 ListItem(
                   circleColor: Theme.of(context).accentColor,
                   circleText: "4",
-                  circleTextSize: 18,
                   content: Text(
                     "Furthermore, because you need "
                     + "different amounts of control"
@@ -87,7 +83,6 @@ class ExperimentBody extends StatelessWidget {
                 ListItem(
                   circleColor: Theme.of(context).accentColor,
                   circleText: "5",
-                  circleTextSize: 18,
                   content: Text(
                     "We believe that "
                     + "what ABILITY formula each exercise uses, indicates "
@@ -98,7 +93,6 @@ class ExperimentBody extends StatelessWidget {
                 ListItem(
                   circleColor: Theme.of(context).accentColor,
                   circleText: "6",
-                  circleTextSize: 18,
                   content: Text(
                     "So as you continue to train, the "
                     + "ABILITY formulas that each exercise uses should change to reflect an overall increase in the control"
@@ -132,7 +126,6 @@ class ExperimentBody extends StatelessWidget {
                 ListItem(
                   circleColor: Theme.of(context).accentColor,
                   circleText: "1",
-                  circleTextSize: 18,
                   content: Text(
                     "your previous set ",
                   ),
@@ -140,7 +133,6 @@ class ExperimentBody extends StatelessWidget {
                 ListItem(
                   circleColor: Theme.of(context).accentColor,
                   circleText: "2",
-                  circleTextSize: 18,
                   content: Text(
                     "your prefered or suggested ability formula",
                   ),
@@ -148,7 +140,6 @@ class ExperimentBody extends StatelessWidget {
                 ListItem(
                   circleColor: Theme.of(context).accentColor,
                   circleText: "3",
-                  circleTextSize: 18,
                   content: Text(
                     "and your rep target",
                   ),

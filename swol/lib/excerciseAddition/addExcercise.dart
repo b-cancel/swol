@@ -355,13 +355,38 @@ class NotesCard extends StatelessWidget {
   }
 }
 
-class LinkCard extends StatelessWidget {
+class LinkCard extends StatefulWidget {
   const LinkCard({
     Key key,
     @required this.url,
   }) : super(key: key);
 
   final ValueNotifier<String> url;
+
+  @override
+  _LinkCardState createState() => _LinkCardState();
+}
+
+class _LinkCardState extends State<LinkCard> {
+  updateState(){
+    if(mounted){
+      setState(() {
+        
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    widget.url.addListener(updateState);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    widget.url.removeListener(updateState);
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -376,7 +401,7 @@ class LinkCard extends StatelessWidget {
             ),
           ),
           ReferenceLinkBox(
-            url: url,
+            url: widget.url,
             editOneAtAtTime: false,
           ),
         ],

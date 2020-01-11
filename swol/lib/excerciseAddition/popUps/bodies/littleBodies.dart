@@ -83,21 +83,18 @@ class ExcerciseNotePopUpBody extends StatelessWidget {
                 ListItem(
                   circleColor: Colors.blue,
                   circleText: "1",
-                  circleTextSize: 18,
                   circleTextColor: Colors.white,
                   content: Text("Grip Type"),
                 ),
                 ListItem(
                   circleColor: Colors.blue,
                   circleText: "2",
-                  circleTextSize: 18,
                   circleTextColor: Colors.white,
                   content: Text("Hold Duration"),
                 ),
                 ListItem(
                   circleColor: Colors.blue,
                   circleText: "3",
-                  circleTextSize: 18,
                   circleTextColor: Colors.white,
                   content: Text("Muscles To Focus On"),
                 ),
