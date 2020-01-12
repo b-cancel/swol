@@ -172,7 +172,7 @@ class _ExcerciseNotesState extends State<ExcerciseNotes> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).cardColor,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
         leading: BackFromExcercise(),
         title: Text("Notes"),

@@ -132,8 +132,8 @@ class _AddExcerciseState extends State<AddExcercise> {
     )
   );
 
+  final FocusNode nameFocusNode = FocusNode();
   final FocusNode noteFocusNode = FocusNode();
-
 
   @override
   void initState() {
@@ -169,6 +169,7 @@ class _AddExcerciseState extends State<AddExcercise> {
           name: name, 
           nameError: nameError, 
           namePresent: namePresent, 
+          nameFocusNode: nameFocusNode,
           noteFocusNode: noteFocusNode,
         ),
       ),
@@ -267,6 +268,7 @@ class _AddExcerciseState extends State<AddExcercise> {
                           child: SaveButton(
                             navSpread: widget.navSpread, 
                             showSaveButton: showSaveButton, 
+                            nameFocusNode: nameFocusNode,
                             nameError: nameError,
                             //transition duration
                             showSaveDuration: widget.showSaveDuration,
@@ -332,12 +334,14 @@ class NameCard extends StatefulWidget {
     @required this.name,
     @required this.nameError,
     @required this.namePresent,
+    @required this.nameFocusNode,
     @required this.noteFocusNode,
   }) : super(key: key);
 
   final ValueNotifier<String> name;
   final ValueNotifier<bool> nameError;
   final ValueNotifier<bool> namePresent;
+  final FocusNode nameFocusNode;
   final FocusNode noteFocusNode;
 
   @override
@@ -376,6 +380,7 @@ class _NameCardState extends State<NameCard> {
           TextFieldWithClearButton(
             editOneAtAtTime: false,
             valueToUpdate: widget.name,
+            focusNode: widget.nameFocusNode,
             hint: "Required*", 
             error: (widget.nameError.value) ? "Name Is Required" : null, 
             //auto focus field

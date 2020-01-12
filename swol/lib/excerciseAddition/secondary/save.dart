@@ -8,6 +8,7 @@ class SaveButton extends StatefulWidget {
     Key key,
     @required this.showSaveButton,
     @required this.namePresent,
+    @required this.nameFocusNode,
     @required this.name,
     @required this.url,
     @required this.note,
@@ -22,6 +23,7 @@ class SaveButton extends StatefulWidget {
 
   final ValueNotifier<bool> showSaveButton;
   final ValueNotifier<bool> namePresent;
+  final FocusNode nameFocusNode;
   final ValueNotifier<String> name;
   final ValueNotifier<String> url;
   final ValueNotifier<String> note;
@@ -110,7 +112,11 @@ class _SaveButtonState extends State<SaveButton> {
               Navigator.pop(context);
             }
             else{
+              //show the error if needed
               widget.nameError.value = true;
+
+              //focus on the field so the user notices the error
+              FocusScope.of(context).requestFocus(widget.nameFocusNode);
             }
           },
           child: Text(

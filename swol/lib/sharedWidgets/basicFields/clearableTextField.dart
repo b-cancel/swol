@@ -333,6 +333,7 @@ class _TextFieldWithClearButtonState extends State<TextFieldWithClearButton> {
                         focusNode: focusNodeVN.value,
                         maxLines: (widget.otherFocusNode == null) ? null : 1,
                         minLines: 1,
+                        scrollPadding: EdgeInsets.only(top: 56),
                         keyboardType: TextInputType.text,
                         textInputAction: textInputAction,
                         decoration: InputDecoration(
