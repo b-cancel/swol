@@ -1,11 +1,10 @@
 //flutter
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 //plugins
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:direct_select_flutter/direct_select_container.dart';
-import 'package:swol/excerciseAddition/popUps/popUpFunctions.dart';
+import 'package:swol/excerciseAddition/addExcerciseBasicCards.dart';
 
 //internal from addition
 import 'package:swol/excerciseAddition/secondary/sections/predictionFunction.dart';
@@ -16,12 +15,8 @@ import 'package:swol/excerciseAddition/secondary/save.dart';
 
 //internal other
 import 'package:swol/excerciseSelection/secondary/addNewHero.dart';
-import 'package:swol/sharedWidgets/basicFields/clearableTextField.dart';
-import 'package:swol/sharedWidgets/basicFields/excerciseEdit.dart';
 import 'package:swol/excercise/excerciseStructure.dart';
 import 'package:swol/other/functions/helper.dart';
-import 'package:swol/sharedWidgets/basicFields/referenceLink.dart';
-import 'package:swol/sharedWidgets/informationDisplay.dart';
 
 /*
 TODO 
@@ -44,7 +39,6 @@ When 1 mismatch
 "To make them all match change the XXX value to be within YYY Training Range"
 */
 
-
 //TODO: when we have animated "to learn section" hyperlinks 
 //TODO: whenever exiting this page NOT manually we should save all of the data in a file
 //TODO: so whenever we open up this page we automatically ask the user if they would like to load up the previous data
@@ -62,7 +56,7 @@ when tapping
 //NOTE: we should not rebuild this whole widget
 //there is simply too much to rebuild
 //instead rebuild the subwidgets
-class AddExcercise extends StatefulWidget {
+class AddExcercise extends StatelessWidget {
   AddExcercise({
     Key key,
     @required this.navSpread,
@@ -93,25 +87,17 @@ class AddExcercise extends StatefulWidget {
 
   final Duration sectionTransitionDuration;
 
-  @override
-  _AddExcerciseState createState() => _AddExcerciseState();
-}
-
-class _AddExcerciseState extends State<AddExcercise> {
+  //-------------------------extra variables
   final ValueNotifier<bool> showSaveButton = new ValueNotifier(false);
-
   final ValueNotifier<bool> namePresent = new ValueNotifier(false);
-
   final ValueNotifier<bool> nameError = new ValueNotifier(false);
 
+  //-------------------------excercise variables-------------------------
   final ValueNotifier<String> name = new ValueNotifier("");
-
   final ValueNotifier<String> note = new ValueNotifier("");
-
   final ValueNotifier<String> url = new ValueNotifier("");
 
   final ValueNotifier<int> functionIndex = new ValueNotifier(AnExcercise.defaultFunctionID);
-
   final ValueNotifier<String> functionString = new ValueNotifier(
     Functions.functions[AnExcercise.defaultFunctionID],
   );
@@ -127,35 +113,15 @@ class _AddExcerciseState extends State<AddExcercise> {
   final ValueNotifier<int> repTarget = new ValueNotifier(
     AnExcercise.defaultRepTarget,
   );
-
   final ValueNotifier<Duration> repTargetDuration = new ValueNotifier(
     Duration(
       seconds: AnExcercise.defaultRepTarget * 5,
     )
   );
 
+  //-------------------------Focus Nodes-------------------------
   final FocusNode nameFocusNode = FocusNode();
   final FocusNode noteFocusNode = FocusNode();
-
-  @override
-  void initState() {
-    //NOTE: we could instead
-    //let the button animate in after the add excercise page slides in
-    Future.delayed(
-      widget.showPageDuration 
-      + widget.delayBeforeSaveShow, (){
-      showSaveButton.value = true;
-    });
-
-    //super init
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    //super dispose 
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -167,7 +133,7 @@ class _AddExcerciseState extends State<AddExcercise> {
     List<Widget> sections = [
       Theme(
         data: ThemeData.light(),
-        child: NameCard(
+        child: NameCard(//
           name: name, 
           nameError: nameError, 
           namePresent: namePresent, 
@@ -191,7 +157,7 @@ class _AddExcerciseState extends State<AddExcercise> {
       Theme(
         data: ThemeData.light(),
         child: RecoveryTimeCard(
-          changeDuration: widget.sectionTransitionDuration, 
+          changeDuration: sectionTransitionDuration, 
           sliderWidth: sliderWidth, 
           //value notifier below
           recoveryPeriod: recoveryPeriod, 
@@ -206,7 +172,7 @@ class _AddExcerciseState extends State<AddExcercise> {
       Theme(
         data: ThemeData.light(),
         child: RepTargetCard(
-          changeDuration: widget.sectionTransitionDuration, 
+          changeDuration: sectionTransitionDuration, 
           sliderWidth: sliderWidth, 
           repTargetDuration: repTargetDuration, 
           repTarget: repTarget,
@@ -233,7 +199,7 @@ class _AddExcerciseState extends State<AddExcercise> {
     return WillPopScope(
       onWillPop: ()async{
         FocusScope.of(context).unfocus();
-        widget.navSpread.value = false;
+        navSpread.value = false;
         return true; //can still pop
       },
       child: Scaffold(
@@ -255,37 +221,36 @@ class _AddExcerciseState extends State<AddExcercise> {
                       right: 0,
                       child: AddNewHero(
                         inAppBar: true,
-                        navSpread: widget.navSpread,
-                        shownSaveVN: widget.shownSaveVN,
+                        navSpread: navSpread,
+                        shownSaveVN: shownSaveVN,
                       ),
                     ),
                     Positioned(
                       right: 0,
-                      bottom: 0,
                       top: 0,
-                      child: Center(
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                            right: 8.0,
-                          ),
-                          child: SaveButton(
-                            navSpread: widget.navSpread, 
-                            showSaveButton: showSaveButton, 
-                            nameFocusNode: nameFocusNode,
-                            nameError: nameError,
-                            shownSaveVN: widget.shownSaveVN,
-                            //transition duration
-                            showSaveDuration: widget.showSaveDuration,
-                            //variables
-                            namePresent: namePresent, 
-                            name: name, 
-                            url: url, 
-                            note: note, 
-                            functionIndex: functionIndex, 
-                            repTarget: repTarget, 
-                            recoveryPeriod: recoveryPeriod, 
-                            setTarget: setTarget, 
-                          ),
+                      bottom: 0,
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                          right: 8.0,
+                        ),
+                        child: SaveButton(
+                          navSpread: navSpread, 
+                          delay: showPageDuration + delayBeforeSaveShow,
+                          showSaveButton: showSaveButton, 
+                          nameFocusNode: nameFocusNode,
+                          nameError: nameError,
+                          shownSaveVN: shownSaveVN,
+                          //transition duration
+                          showSaveDuration: showSaveDuration,
+                          //variables
+                          namePresent: namePresent, 
+                          name: name, 
+                          url: url, 
+                          note: note, 
+                          functionIndex: functionIndex, 
+                          repTarget: repTarget, 
+                          recoveryPeriod: recoveryPeriod, 
+                          setTarget: setTarget, 
                         ),
                       ),
                     ),
@@ -311,8 +276,8 @@ class _AddExcerciseState extends State<AddExcercise> {
                       return AnimationConfiguration.staggeredList(
                         position: index,
                         //500 (page slide in) + 250 (save button show)
-                        delay: (widget.showPageDuration + widget.delayBeforeListShow),
-                        duration: widget.showListDuration,
+                        delay: (showPageDuration + delayBeforeListShow),
+                        duration: showListDuration,
                         child: SlideAnimation(
                           verticalOffset: 50.0,
                           child: FadeInAnimation(
@@ -326,186 +291,6 @@ class _AddExcerciseState extends State<AddExcercise> {
               ),
             ],
           ),
-        ),
-      ),
-    );
-  }
-}
-
-class NameCard extends StatefulWidget {
-  const NameCard({
-    Key key,
-    @required this.name,
-    @required this.nameError,
-    @required this.namePresent,
-    @required this.nameFocusNode,
-    @required this.noteFocusNode,
-  }) : super(key: key);
-
-  final ValueNotifier<String> name;
-  final ValueNotifier<bool> nameError;
-  final ValueNotifier<bool> namePresent;
-  final FocusNode nameFocusNode;
-  final FocusNode noteFocusNode;
-
-  @override
-  _NameCardState createState() => _NameCardState();
-}
-
-class _NameCardState extends State<NameCard> {
-  updateState(){
-    if(mounted) setState(() {});
-  }
-
-  @override
-  void initState() {
-    widget.nameError.addListener(updateState);
-
-    super.initState();
-  }
-
-  @override
-  void dispose() { 
-    widget.nameError.removeListener(updateState);
-
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return BasicCard(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          HeaderWithInfo(
-            title: "Name",
-            popUpFunction: () => excerciseNamePopUp(context),
-          ),
-          TextFieldWithClearButton(
-            editOneAtAtTime: false,
-            valueToUpdate: widget.name,
-            focusNode: widget.nameFocusNode,
-            hint: "Required*", 
-            error: (widget.nameError.value) ? "Name Is Required" : null, 
-            //auto focus field
-            autofocus: true,
-            //we need to keep track above to determine whether we can active the button
-            present: widget.namePresent, 
-            //so next focuses on the note
-            otherFocusNode: widget.noteFocusNode,
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class NotesCard extends StatelessWidget {
-  const NotesCard({
-    Key key,
-    @required this.note,
-    @required this.noteFocusNode,
-  }) : super(key: key);
-
-  final ValueNotifier<String> note;
-  final FocusNode noteFocusNode;
-
-  @override
-  Widget build(BuildContext context) {
-    return BasicCard(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          HeaderWithInfo(
-            title: "Notes",
-            popUpFunction: () => excerciseNotePopUp(context),
-          ),
-          TextFieldWithClearButton(
-            editOneAtAtTime: false,
-            valueToUpdate: note,
-            hint: "Details", 
-            error: null, 
-            //so we can link up both fields
-            focusNode: noteFocusNode,
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class LinkCard extends StatefulWidget {
-  const LinkCard({
-    Key key,
-    @required this.url,
-  }) : super(key: key);
-
-  final ValueNotifier<String> url;
-
-  @override
-  _LinkCardState createState() => _LinkCardState();
-}
-
-class _LinkCardState extends State<LinkCard> {
-  updateState(){
-    if(mounted){
-      setState(() {
-        
-      });
-    }
-  }
-
-  @override
-  void initState() {
-    widget.url.addListener(updateState);
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    widget.url.removeListener(updateState);
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return BasicCard(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          Container(
-            child: HeaderWithInfo(
-              title: "Reference Link",
-              popUpFunction: () => referenceLinkPopUp(context),
-            ),
-          ),
-          ReferenceLinkBox(
-            url: widget.url,
-            editOneAtAtTime: false,
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class BasicCard extends StatelessWidget {
-  const BasicCard({
-    Key key,
-    @required this.child,
-  }) : super(key: key);
-
-  final Widget child;
-
-  @override
-  Widget build(BuildContext context) {
-    return Theme(
-      data: ThemeData.dark(),
-      child: Card(
-        margin: EdgeInsets.all(8),
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: child,
         ),
       ),
     );

@@ -7,7 +7,9 @@ import 'package:swol/utils/onboarding.dart';
 class SaveButton extends StatefulWidget {
   const SaveButton({
     Key key,
+    @required this.delay,
     @required this.showSaveButton,
+    
     @required this.namePresent,
     @required this.nameFocusNode,
     @required this.shownSaveVN,
@@ -23,7 +25,9 @@ class SaveButton extends StatefulWidget {
     @required this.showSaveDuration,
   }) : super(key: key);
 
+  final Duration delay;
   final ValueNotifier<bool> showSaveButton;
+
   final ValueNotifier<bool> namePresent;
   final FocusNode nameFocusNode;
   final ValueNotifier<bool> shownSaveVN;
@@ -51,14 +55,30 @@ class _SaveButtonState extends State<SaveButton> {
   
   @override
   void initState() {
-    //start onbaording if needed
-    if(widget.shownSaveVN.value == false || true){
-      OnBoarding.discoverSaveExcercise(context);
-    }
-
     //add listeners
     widget.showSaveButton.addListener(updateState);
     widget.namePresent.addListener(updateState);
+
+    //start onbaording if needed
+    if(widget.shownSaveVN.value == false){
+      //NOTE: this will eventually request the focus of name
+      OnBoarding.discoverSaveExcercise(context);
+
+      //the user already knows where the save button is
+      widget.showSaveButton.value = true;
+    }
+    else{
+      //autofocus on the name as soon as possible
+      WidgetsBinding.instance.addPostFrameCallback((_){
+        FocusScope.of(context).requestFocus(widget.nameFocusNode);
+      });
+
+      //remind the user of the save button location
+      Future.delayed(
+        widget.delay, (){
+        widget.showSaveButton.value = true;
+      });
+    }
 
     //super init
     super.initState();
@@ -89,9 +109,9 @@ class _SaveButtonState extends State<SaveButton> {
           ),
         ),
       ),
-      text: "After naming the excercise\n"
-      + "the button will become active\n"
-      + "and you can save it here",
+      text: "Only after naming the excercise\n"
+      + "will the button become active\n"
+      + "and allow you to save",
       child: AnimatedContainer(
         duration: widget.showSaveDuration,
         curve: Curves.easeInOut,
@@ -157,11 +177,14 @@ class _SaveButtonState extends State<SaveButton> {
       //only 1 thing
       doneInsteadOfNext: true,
       nextFeature: (){
-        print("next feature");
+        //change variable globally
         OnBoarding.saveShown();
+
+        //change variable locally
         widget.shownSaveVN.value = true;
-        //TODO: onboarding set to true
-        //TODO: local set to true
+
+        //request focus
+        FocusScope.of(context).requestFocus(widget.nameFocusNode);
       },
     );
   }

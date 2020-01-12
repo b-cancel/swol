@@ -16,8 +16,8 @@ openSnackBar(
     shouldIconPulse: false,
     isDismissible: true,
     dismissDirection: FlushbarDismissDirection.VERTICAL,
-    backgroundColor: Theme.of(context).cardColor,
-    borderColor: Theme.of(context).primaryColorDark,
+    backgroundColor: Theme.of(context).primaryColorDark,
+    borderColor: color,
     icon: Icon(
       icon,
       size: 28.0,
