@@ -5,6 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flushbar/flushbar.dart';
 
 //standard UI
+//used by 1. name when only 1 is editable at a time to tell users then need a name (should barely ever happen)
+//used by 2. one rep max chip (chips stacking no big deal)
+//used by 3. used by reference link to tell the user the link navigation didnt work
 openSnackBar(
   BuildContext context, 
   String message, 
@@ -16,8 +19,8 @@ openSnackBar(
     shouldIconPulse: false,
     isDismissible: true,
     dismissDirection: FlushbarDismissDirection.VERTICAL,
-    backgroundColor: Theme.of(context).primaryColorDark,
-    borderColor: color,
+    backgroundColor: Theme.of(context).cardColor,
+    borderColor: Theme.of(context).primaryColor,
     icon: Icon(
       icon,
       size: 28.0,
