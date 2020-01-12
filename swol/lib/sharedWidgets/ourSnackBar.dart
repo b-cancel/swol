@@ -16,6 +16,8 @@ openSnackBar(
     shouldIconPulse: false,
     isDismissible: true,
     dismissDirection: FlushbarDismissDirection.VERTICAL,
+    backgroundColor: Theme.of(context).cardColor,
+    borderColor: Theme.of(context).primaryColorDark,
     icon: Icon(
       icon,
       size: 28.0,
@@ -24,8 +26,9 @@ openSnackBar(
     onTap: (_){
       Navigator.of(context).pop();
     },
+    borderRadius: 16,
     duration: Duration(seconds: 3),
-    leftBarIndicatorColor: color,
+    leftBarIndicatorColor: Colors.transparent, //color,
     flushbarPosition: FlushbarPosition.BOTTOM,
     flushbarStyle: FlushbarStyle.FLOATING,
     margin: EdgeInsets.all(16), 

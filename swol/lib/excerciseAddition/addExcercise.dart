@@ -23,9 +23,27 @@ import 'package:swol/other/functions/helper.dart';
 import 'package:swol/sharedWidgets/basicFields/referenceLink.dart';
 import 'package:swol/sharedWidgets/informationDisplay.dart';
 
-//TODO: when the user comes in here for the first time automatically open the question mark pop up
-//TODO: this pop up should morph graphfully from the question mark into the pop up
-//TODO: ofcourse this should be openable afterwards but only comes up automatically the first time
+/*
+TODO 
+
+at all times we are trying to help the user
+every user is going to get the best results by focusing on 1 of the 3 types of training 
+so we help them do that
+
+When any mismatch
+"In order to get the fastest results, you should use the suggested"
+"Eecovery Time, Set target, and Rep target"
+"for ONE type of training"
+
+When all mismatch
+"To Get Strong use Strength Training"
+"To Get Big use Hypertrophy Training"
+"To Get Agile use Endurance Training"
+
+When 1 mismatch
+"To make them all match change the XXX value to be within YYY Training Range"
+*/
+
 
 //TODO: when we have animated "to learn section" hyperlinks 
 //TODO: whenever exiting this page NOT manually we should save all of the data in a file
@@ -41,46 +59,73 @@ when tapping
 */
 
 //main widget
-class AddExcercise extends StatelessWidget {
+//NOTE: we should not rebuild this whole widget
+//there is simply too much to rebuild
+//instead rebuild the subwidgets
+class AddExcercise extends StatefulWidget {
   AddExcercise({
     Key key,
     @required this.navSpread,
+
+    //NOTE: 200 ms above the norm so they can see the sweat animation
+    this.showPageDuration: const Duration(milliseconds: 500),
+    this.showListDuration: const Duration(milliseconds: 350),
+    this.showSaveDuration: const Duration(milliseconds: 350),
+
+    //this delay plays AFTER the page completely shows
+    this.delayBeforeListShow: const Duration(milliseconds: 250),
+    this.delayBeforeSaveShow: const Duration(milliseconds: 450),
+
+    this.sectionTransitionDuration: const Duration(milliseconds: 250),
   }) : super(key: key);
 
   final ValueNotifier<bool> navSpread;
 
-  //-----all the variables used below but not passed
+  final Duration showPageDuration;
+  final Duration showListDuration;
+  final Duration showSaveDuration;
+
+  //this delay plays AFTER the page completely shows
+  final Duration delayBeforeListShow;
+  final Duration delayBeforeSaveShow;
+
+  final Duration sectionTransitionDuration;
+
+  @override
+  _AddExcerciseState createState() => _AddExcerciseState();
+}
+
+class _AddExcerciseState extends State<AddExcercise> {
   final ValueNotifier<bool> showSaveButton = new ValueNotifier(false);
 
-  //basics
   final ValueNotifier<bool> namePresent = new ValueNotifier(false);
+
   final ValueNotifier<bool> nameError = new ValueNotifier(false);
+
   final ValueNotifier<String> name = new ValueNotifier("");
+
   final ValueNotifier<String> note = new ValueNotifier("");
+
   final ValueNotifier<String> url = new ValueNotifier("");
 
-  //function select
   final ValueNotifier<int> functionIndex = new ValueNotifier(AnExcercise.defaultFunctionID);
+
   final ValueNotifier<String> functionString = new ValueNotifier(
     Functions.functions[AnExcercise.defaultFunctionID],
   );
 
-  //recovery period select
   final ValueNotifier<Duration> recoveryPeriod = new ValueNotifier(
     AnExcercise.defaultRecovery,
   );
 
-  //set target select
   final ValueNotifier<int> setTarget = new ValueNotifier(
     AnExcercise.defaultSetTarget,
   );
 
-  //rep target select
   final ValueNotifier<int> repTarget = new ValueNotifier(
     AnExcercise.defaultRepTarget,
   );
 
-  //updated the above
   final ValueNotifier<Duration> repTargetDuration = new ValueNotifier(
     Duration(
       seconds: AnExcercise.defaultRepTarget * 5,
@@ -89,27 +134,32 @@ class AddExcercise extends StatelessWidget {
 
   final FocusNode noteFocusNode = FocusNode();
 
-  //build
+
   @override
-  Widget build(BuildContext context) {
+  void initState() {
+    //NOTE: we could instead
     //let the button animate in after the add excercise page slides in
-    Future.delayed(Duration(milliseconds: 500), (){
+    Future.delayed(
+      widget.showPageDuration 
+      + widget.delayBeforeSaveShow, (){
       showSaveButton.value = true;
     });
 
-    //update duration so our ticks update
-    repTarget.addListener((){
-      repTargetDuration.value = Duration(
-        seconds: repTarget.value * 5,
-      );
-    });
+    //super init
+    super.initState();
+  }
 
+  @override
+  void dispose() {
+    //super dispose 
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     //for slider hatch mark
     double totalWidth = MediaQuery.of(context).size.width;
     double sliderWidth = totalWidth - (16.0 * 2) - (8 * 2);
-
-    //how long it takes to shift focus to a different section
-    Duration changeDuration = Duration(milliseconds: 250);
 
     //each section
     List<Widget> sections = [
@@ -138,7 +188,7 @@ class AddExcercise extends StatelessWidget {
       Theme(
         data: ThemeData.light(),
         child: RecoveryTimeCard(
-          changeDuration: changeDuration, 
+          changeDuration: widget.sectionTransitionDuration, 
           sliderWidth: sliderWidth, 
           //value notifier below
           recoveryPeriod: recoveryPeriod, 
@@ -153,7 +203,7 @@ class AddExcercise extends StatelessWidget {
       Theme(
         data: ThemeData.light(),
         child: RepTargetCard(
-          changeDuration: changeDuration, 
+          changeDuration: widget.sectionTransitionDuration, 
           sliderWidth: sliderWidth, 
           repTargetDuration: repTargetDuration, 
           repTarget: repTarget,
@@ -180,7 +230,7 @@ class AddExcercise extends StatelessWidget {
     return WillPopScope(
       onWillPop: ()async{
         FocusScope.of(context).unfocus();
-        navSpread.value = false;
+        widget.navSpread.value = false;
         return true; //can still pop
       },
       child: Scaffold(
@@ -202,7 +252,7 @@ class AddExcercise extends StatelessWidget {
                       right: 0,
                       child: AddNewHero(
                         inAppBar: true,
-                        navSpread: navSpread,
+                        navSpread: widget.navSpread,
                       ),
                     ),
                     Positioned(
@@ -215,9 +265,11 @@ class AddExcercise extends StatelessWidget {
                             right: 8.0,
                           ),
                           child: SaveButton(
-                            navSpread: navSpread, 
+                            navSpread: widget.navSpread, 
                             showSaveButton: showSaveButton, 
                             nameError: nameError,
+                            //transition duration
+                            showSaveDuration: widget.showSaveDuration,
                             //variables
                             namePresent: namePresent, 
                             name: name, 
@@ -253,13 +305,8 @@ class AddExcercise extends StatelessWidget {
                       return AnimationConfiguration.staggeredList(
                         position: index,
                         //500 (page slide in) + 250 (save button show)
-                        delay: Duration(
-                          //after the page slides in
-                          milliseconds: 500,
-                        ),
-                        duration: Duration(
-                          milliseconds: 350,
-                        ),
+                        delay: (widget.showPageDuration + widget.delayBeforeListShow),
+                        duration: widget.showListDuration,
                         child: SlideAnimation(
                           verticalOffset: 50.0,
                           child: FadeInAnimation(
@@ -279,7 +326,7 @@ class AddExcercise extends StatelessWidget {
   }
 }
 
-class NameCard extends StatelessWidget {
+class NameCard extends StatefulWidget {
   const NameCard({
     Key key,
     @required this.name,
@@ -294,6 +341,29 @@ class NameCard extends StatelessWidget {
   final FocusNode noteFocusNode;
 
   @override
+  _NameCardState createState() => _NameCardState();
+}
+
+class _NameCardState extends State<NameCard> {
+  updateState(){
+    if(mounted) setState(() {});
+  }
+
+  @override
+  void initState() {
+    widget.nameError.addListener(updateState);
+
+    super.initState();
+  }
+
+  @override
+  void dispose() { 
+    widget.nameError.removeListener(updateState);
+
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BasicCard(
       child: Column(
@@ -305,15 +375,15 @@ class NameCard extends StatelessWidget {
           ),
           TextFieldWithClearButton(
             editOneAtAtTime: false,
-            valueToUpdate: name,
+            valueToUpdate: widget.name,
             hint: "Required*", 
-            error: (nameError.value) ? "Name Is Required" : null, 
+            error: (widget.nameError.value) ? "Name Is Required" : null, 
             //auto focus field
             autofocus: true,
             //we need to keep track above to determine whether we can active the button
-            present: namePresent, 
+            present: widget.namePresent, 
             //so next focuses on the note
-            otherFocusNode: noteFocusNode,
+            otherFocusNode: widget.noteFocusNode,
           ),
         ],
       ),

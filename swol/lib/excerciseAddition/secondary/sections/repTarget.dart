@@ -10,7 +10,7 @@ import 'package:swol/sharedWidgets/informationDisplay.dart';
 import 'package:swol/sharedWidgets/mySlider.dart';
 import 'package:swol/sharedWidgets/timeHelper.dart';
 
-class RepTargetCard extends StatelessWidget {
+class RepTargetCard extends StatefulWidget {
   const RepTargetCard({
     Key key,
     @required this.changeDuration,
@@ -23,6 +23,34 @@ class RepTargetCard extends StatelessWidget {
   final double sliderWidth;
   final ValueNotifier<Duration> repTargetDuration;
   final ValueNotifier<int> repTarget;
+
+  @override
+  _RepTargetCardState createState() => _RepTargetCardState();
+}
+
+class _RepTargetCardState extends State<RepTargetCard> {
+  repTargetUpdate(){
+    widget.repTargetDuration.value = Duration(
+      seconds: widget.repTarget.value * 5,
+    );
+  }
+
+  @override
+  void initState() {
+    //handle listeners that will then make it possible to give tips all throghout
+    widget.repTarget.addListener(repTargetUpdate);
+
+    //super init
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    widget.repTarget.removeListener(repTargetUpdate);
+
+    //super dispose 
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,9 +80,9 @@ class RepTargetCard extends StatelessWidget {
                 child: Theme(
                   data: ThemeData.light(),
                   child: AnimRepTargetInfoWhite(
-                    changeDuration: changeDuration, 
-                    sliderWidth: sliderWidth, 
-                    repTargetDuration: repTargetDuration,
+                    changeDuration: widget.changeDuration, 
+                    sliderWidth: widget.sliderWidth, 
+                    repTargetDuration: widget.repTargetDuration,
                   ),
                 ),
               ),
@@ -73,7 +101,7 @@ class RepTargetCard extends StatelessWidget {
               ),
             ),
             CustomSlider(
-              value: repTarget,
+              value: widget.repTarget,
               lastTick: 35,
             ),
           ],

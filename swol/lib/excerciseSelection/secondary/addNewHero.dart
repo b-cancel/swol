@@ -62,6 +62,8 @@ class AddNewHeroHelper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Duration transitionDuration = Duration(milliseconds: 500);
+
     //determine on tap function
     Function onTap;
     if(percentToAppBar == 0 || percentToAppBar == 1){
@@ -78,10 +80,11 @@ class AddNewHeroHelper extends StatelessWidget {
           Navigator.push(
             context, 
             PageTransition(
-              duration: Duration(milliseconds: 500),
+              duration: transitionDuration,
               type: PageTransitionType.downToUp, 
               child: AddExcercise(
                 navSpread: navSpread,
+                showPageDuration: transitionDuration,
               ),
             ),
           );

@@ -55,11 +55,8 @@ dependencies:
   highlighter_coachmark: ^0.0.3 #import 'package:highlighter_coachmark/highlighter_coachmark.dart';
 
   #swiper
-  flutter_banner_swiper: ^0.1.4
   flutter_swiper: ^1.1.6 #100rated
   carousel_slider: ^1.3.1 #100rated
-  simple_coverflow: ^0.0.8
-  swipe_stack: ^1.0.0
 
   #flutter_local_notifications: ^0.8.4+3
 

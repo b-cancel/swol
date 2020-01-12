@@ -17,6 +17,7 @@ class SaveButton extends StatefulWidget {
     @required this.setTarget,
     @required this.navSpread,
     @required this.nameError,
+    @required this.showSaveDuration,
   }) : super(key: key);
 
   final ValueNotifier<bool> showSaveButton;
@@ -30,6 +31,7 @@ class SaveButton extends StatefulWidget {
   final ValueNotifier<int> setTarget;
   final ValueNotifier<bool> navSpread;
   final ValueNotifier<bool> nameError;
+  final Duration showSaveDuration;
 
   @override
   _SaveButtonState createState() => _SaveButtonState();
@@ -38,24 +40,33 @@ class SaveButton extends StatefulWidget {
 class _SaveButtonState extends State<SaveButton> {
 
   //so it can be added and removed from listeners
-  manualSetState(){
+  updateState(){
     if(mounted) setState(() {});
   }
   
   @override
   void initState() {
     //add listeners
-    widget.showSaveButton.addListener(manualSetState);
-    widget.namePresent.addListener(manualSetState);
+    widget.showSaveButton.addListener(updateState);
+    widget.namePresent.addListener(updateState);
 
     //super init
     super.initState();
   }
 
   @override
+  void dispose() {
+    widget.showSaveButton.removeListener(updateState);
+    widget.namePresent.removeListener(updateState);
+
+    //super dispose
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return AnimatedContainer(
-      duration: Duration(milliseconds: 250),
+      duration: widget.showSaveDuration,
       curve: Curves.easeInOut,
       constraints: BoxConstraints(
         //no limit vs limit
@@ -69,6 +80,8 @@ class _SaveButtonState extends State<SaveButton> {
           ? Theme.of(context).accentColor 
           : Colors.grey,
           onPressed: ()async{
+            print("tapping save button");
+
             if(widget.namePresent.value){
               //remove keyboard
               FocusScope.of(context).unfocus();
@@ -98,7 +111,6 @@ class _SaveButtonState extends State<SaveButton> {
             }
             else{
               widget.nameError.value = true;
-              setState(() {});
             }
           },
           child: Text(

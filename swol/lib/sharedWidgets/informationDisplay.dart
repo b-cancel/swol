@@ -17,7 +17,22 @@ infoPopUpFunction(
       context: context,
       dismissOnTouchOutside: true,
       animType: AnimType.SCALE,
-      dialogType: DialogType.INFO,
+      customHeader: ClipOval(
+      child: Container(
+        color: Colors.white,
+          //NOTE: 28 is the max
+          padding: EdgeInsets.all(0),
+          child: FittedBox(
+            fit: BoxFit.fill,
+            child: Icon(
+              Icons.info,
+              color: Colors.blue,
+              //NOTE: not actual size but will take to max size
+              size: 128,
+            ),
+          ),
+        ),
+      ),
       isDense: isDense, //is dense true is slightly larger
       body: Column(
         mainAxisSize: MainAxisSize.min,
