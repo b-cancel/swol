@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:direct_select_flutter/direct_select_container.dart';
 import 'package:swol/excerciseAddition/addExcerciseBasicCards.dart';
+import 'package:swol/excerciseAddition/addExcerciseTip.dart';
 
 //internal from addition
 import 'package:swol/excerciseAddition/secondary/sections/predictionFunction.dart';
@@ -254,6 +255,11 @@ class AddExcercise extends StatelessWidget {
                         ),
                       ),
                     ),
+                    TipGenerator(
+                      recoveryPeriod: recoveryPeriod,
+                      setTarget: setTarget,
+                      repTarget: repTarget,
+                    )
                   ],
                 ),
               ),
