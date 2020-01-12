@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 //plugins
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:direct_select_flutter/direct_select_container.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:swol/excerciseAddition/addExcerciseBasicCards.dart';
 import 'package:swol/excerciseAddition/addExcerciseTip.dart';
 
@@ -18,27 +19,6 @@ import 'package:swol/excerciseAddition/secondary/save.dart';
 import 'package:swol/excerciseSelection/secondary/addNewHero.dart';
 import 'package:swol/excercise/excerciseStructure.dart';
 import 'package:swol/other/functions/helper.dart';
-
-/*
-TODO 
-
-at all times we are trying to help the user
-every user is going to get the best results by focusing on 1 of the 3 types of training 
-so we help them do that
-
-When any mismatch
-"In order to get the fastest results, you should use the suggested"
-"Eecovery Time, Set target, and Rep target"
-"for ONE type of training"
-
-When all mismatch
-"To Get Strong use Strength Training"
-"To Get Big use Hypertrophy Training"
-"To Get Agile use Endurance Training"
-
-When 1 mismatch
-"To make them all match change the XXX value to be within YYY Training Range"
-*/
 
 //TODO: when we have animated "to learn section" hyperlinks 
 //TODO: whenever exiting this page NOT manually we should save all of the data in a file
@@ -186,14 +166,39 @@ class AddExcercise extends StatelessWidget {
           functionString: functionString,
         ),
       ),
-      //TODO: actually use this space by adding a appearing tool tip that gives you suggestions
-      //TODO: its not a tool tip in the traditional sense since it doesnt go away
-      //TODO; it also changes depending on all the values selected so far
-      /*
       Container(
         height: 56.0 + 16,
+        width: MediaQuery.of(context).size.width,
+        //color: Colors.red,
+        padding: EdgeInsets.symmetric(
+          horizontal: 16,
+        ),
+        child: Opacity(
+          opacity: 0,
+          child: Row(
+            children: <Widget>[
+              Padding(
+                padding: EdgeInsets.only(
+                  right: 8.0,
+                ),
+                child: Icon(
+                  FontAwesomeIcons.solidLightbulb,
+                  color: Theme.of(context).primaryColorDark,
+                ),
+              ),
+              Expanded(
+                child: Text(
+                  "Recovery Time, Set Target, and Rep Target\n"
+                  + "should have matching training types",
+                  style: TextStyle(
+                    color: Theme.of(context).primaryColorDark,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
-      */
     ];
 
     //build

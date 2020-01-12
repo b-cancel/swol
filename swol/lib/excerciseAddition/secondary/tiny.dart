@@ -31,19 +31,31 @@ class _PillState extends State<Pill> {
     active = widget.actives.contains(widget.setTarget.value);
   }
 
+  updateState(){
+    if(mounted){
+      setTargetToActive();
+      setState(() {});
+    }
+  }
+
   @override
   void initState() {
     //init
     setTargetToActive();
 
     //by update
-    widget.setTarget.addListener((){
-      setTargetToActive();
-      setState(() {});
-    });
+    widget.setTarget.addListener(updateState);
 
-    //super
+    //super init
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    widget.setTarget.removeListener(updateState);
+
+    //super dispose
+    super.dispose();
   }
 
   @override
@@ -158,6 +170,13 @@ class Tick extends StatefulWidget {
 class _TickState extends State<Tick> {
   bool tickActive;
 
+  updateState(){
+    if(mounted){
+      setTargetToTickActive();
+      setState(() {});
+    }
+  }
+
   setTargetToTickActive(){
     tickActive = (widget.setTarget.value == widget.value);
   }
@@ -168,13 +187,18 @@ class _TickState extends State<Tick> {
     setTargetToTickActive();
 
     //update
-    widget.setTarget.addListener((){
-      setTargetToTickActive();
-      setState(() {});
-    });
+    widget.setTarget.addListener(updateState);
 
     //super init
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    widget.setTarget.removeListener(updateState);
+
+    //super dispose
+    super.dispose();
   }
 
   @override

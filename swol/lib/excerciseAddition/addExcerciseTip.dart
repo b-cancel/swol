@@ -2,6 +2,25 @@ import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+/*
+at all times we are trying to help the user
+every user is going to get the best results by focusing on 1 of the 3 types of training 
+so we help them do that
+
+When any mismatch
+"In order to get the fastest results, you should use the suggested"
+"Eecovery Time, Set target, and Rep target"
+"for ONE type of training"
+
+When all mismatch (ideally)
+"To Get Strong use Strength Training"
+"To Get Big use Hypertrophy Training"
+"To Get Agile use Endurance Training"
+
+When 1 mismatch (ideally)
+"To make them all match change the XXX value to be within YYY Training Range"
+*/
+
 class TipGenerator extends StatefulWidget {
   TipGenerator({
     @required this.recoveryPeriod,
@@ -19,7 +38,10 @@ class TipGenerator extends StatefulWidget {
 }
 
 class _TipGeneratorState extends State<TipGenerator> {
+  String flushBarMessage;
+
   showFlushBar(String message){
+    flushBarMessage = message;
     Flushbar(
       message: message,
       //icon pulsing is very distracting
@@ -43,6 +65,14 @@ class _TipGeneratorState extends State<TipGenerator> {
       flushbarPosition: FlushbarPosition.BOTTOM,
       flushbarStyle: FlushbarStyle.FLOATING,
     )..show(context);
+  }
+
+  hideFlushBar(){
+    //hide the message         
+    Navigator.of(context).pop();
+
+    //clear the message so we don't accidentally pop the page
+    flushBarMessage = null;
   }
 
   updateTip(){
@@ -82,21 +112,21 @@ class _TipGeneratorState extends State<TipGenerator> {
 
     //show tip if needed
     if(endurance == 3 || hypertrophy == 3 || strength == 3){
-      String trainingSelected;
-      if(endurance == 3) trainingSelected = "Endurance";
-      else if(hypertrophy == 3) trainingSelected = "Hypertrohpy";
-      else trainingSelected = "Strength";
-
-      //show flushbar
-      showFlushBar(trainingSelected + " Training Selected");
+      //a message was shown
+      if(flushBarMessage != null) hideFlushBar();
     }
     else{
-      showFlushBar("MISMATCH");
+      if(flushBarMessage == null){
+        showFlushBar(
+          "Recovery Time, Set Target, and Rep Target\n"
+          + "should have matching training types"
+        );
+      }
     }
   }
 
   @override
-  void initState() { 
+  void initState() {
     widget.recoveryPeriod.addListener(updateTip);
     widget.setTarget.addListener(updateTip);
     widget.repTarget.addListener(updateTip);
