@@ -66,6 +66,7 @@ class AddExcercise extends StatefulWidget {
   AddExcercise({
     Key key,
     @required this.navSpread,
+    @required this.shownSaveVN,
 
     //NOTE: 200 ms above the norm so they can see the sweat animation
     this.showPageDuration: const Duration(milliseconds: 500),
@@ -80,6 +81,7 @@ class AddExcercise extends StatefulWidget {
   }) : super(key: key);
 
   final ValueNotifier<bool> navSpread;
+  final ValueNotifier<bool> shownSaveVN;
 
   final Duration showPageDuration;
   final Duration showListDuration;
@@ -254,6 +256,7 @@ class _AddExcerciseState extends State<AddExcercise> {
                       child: AddNewHero(
                         inAppBar: true,
                         navSpread: widget.navSpread,
+                        shownSaveVN: widget.shownSaveVN,
                       ),
                     ),
                     Positioned(
@@ -270,6 +273,7 @@ class _AddExcerciseState extends State<AddExcercise> {
                             showSaveButton: showSaveButton, 
                             nameFocusNode: nameFocusNode,
                             nameError: nameError,
+                            shownSaveVN: widget.shownSaveVN,
                             //transition duration
                             showSaveDuration: widget.showSaveDuration,
                             //variables

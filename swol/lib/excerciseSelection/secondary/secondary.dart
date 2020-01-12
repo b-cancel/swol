@@ -16,10 +16,12 @@ class AddExcerciseButton extends StatelessWidget {
     Key key,
     @required this.navSpread,
     @required this.screenWidth,
+    @required this.shownSaveVN,
   }) : super(key: key);
 
   final ValueNotifier<bool> navSpread;
   final double screenWidth;
+  final ValueNotifier<bool> shownSaveVN;
 
   @override
   Widget build(BuildContext context) {
@@ -40,6 +42,7 @@ class AddExcerciseButton extends StatelessWidget {
           child: AddNewHero(
             inAppBar: false,
             navSpread: navSpread,
+            shownSaveVN: shownSaveVN,
           ),
           top: false,
           left: true,

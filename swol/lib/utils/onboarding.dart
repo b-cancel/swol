@@ -12,6 +12,7 @@ enum AFeature {
   SwolLogo, 
   LearnPage, 
   AddExcercise, 
+  SaveExcercise,
   SearchExcercise,
 }
 
@@ -21,7 +22,7 @@ enum StoredBools {
   IntroductionShown,
   //TODO: do or eliminate variables below
   SearchButtonShown,
-  CalculatorShown, 
+  SaveShown, 
   SettingsShown,
 }
 
@@ -38,8 +39,9 @@ class OnBoarding{
 
   static givePermission() => boolSet(StoredBools.TermsAgreed);
   static initialControlsShown() => boolSet(StoredBools.InitialControlsShown);
+  static saveShown() => boolSet(StoredBools.SaveShown);
+  //TODO: finish below
   static searchButtonShown() => boolSet(StoredBools.SearchButtonShown);
-  static calculatorShown() => boolSet(StoredBools.CalculatorShown);
   static settingsShown() => boolSet(StoredBools.SettingsShown);
 
   static boolSet(StoredBools storedBool) async{
@@ -61,9 +63,11 @@ class OnBoarding{
     discoverSet(context, AFeature.AddExcercise);
   }
 
-  static discoverSearchExcercise(BuildContext context){
-    discoverSet(context, AFeature.SearchExcercise);
+  static discoverSaveExcercise(BuildContext context){
+    discoverSet(context, AFeature.SaveExcercise);
   }
+
+  //TODO: finish 2 below
 
   //utility function because Feature discovery seems to prefer sets
   static discoverSet(BuildContext context, AFeature featureName){
@@ -190,14 +194,14 @@ class OnBoardingText extends StatelessWidget {
                     child: Padding(
                       padding: EdgeInsets.only(
                         left: (onTapPrev == null) ? 0 : 16,
-                        right: 16,
+                        right: 0,
                         top: 16,
                         bottom: 16,
                       ),
                       child: Center(
                         child: Container(
                           child: Text(
-                            showDone ? "Done" : "Next",
+                            showDone ? "Got It!" : "Next",
                             style: TextStyle(
                               fontSize: 14,
                             ),

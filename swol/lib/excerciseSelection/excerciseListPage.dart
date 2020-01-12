@@ -47,18 +47,18 @@ class ExcerciseSelect extends StatefulWidget {
   final bool permissionGiven;
   final bool shownInitialControls;
   final bool shownIntroduction;
-
+  final bool shownSave;
+  //TODO: do below
   final bool shownSearchBar;
-  final bool shownCalculator;
   final bool shownSettings;
 
   ExcerciseSelect({
     @required this.permissionGiven,
     @required this.shownInitialControls,
     @required this.shownIntroduction,
-
+    @required this.shownSave,
+    //TODO: do below
     @required this.shownSearchBar,
-    @required this.shownCalculator,
     @required this.shownSettings,
   });
 
@@ -72,6 +72,7 @@ class _ExcerciseSelectState extends State<ExcerciseSelect> {
   final ValueNotifier<bool> navSpread = new ValueNotifier(false);
 
   ValueNotifier<bool> shownIntroductionVN;
+  ValueNotifier<bool> shownSaveVN;
 
   updateOnTopValue(){
     ScrollPosition position = autoScrollController.position;
@@ -90,6 +91,7 @@ class _ExcerciseSelectState extends State<ExcerciseSelect> {
     //but may be changed throughout the running of the program 
     //we use a value notifier so updating the value locally is enough
     shownIntroductionVN = new ValueNotifier<bool>(widget.shownIntroduction);
+    shownSaveVN = new ValueNotifier<bool>(widget.shownSave);
 
     //create function
     Function afterConfirm = (){
@@ -184,6 +186,7 @@ class _ExcerciseSelectState extends State<ExcerciseSelect> {
             AddExcerciseButton(
               navSpread: navSpread,
               screenWidth: screenWidth,
+              shownSaveVN: shownSaveVN,
             ),
           ],
         ),
