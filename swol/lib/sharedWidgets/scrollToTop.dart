@@ -23,15 +23,20 @@ class ScrollToTopButton extends StatefulWidget {
 }
 
 class _ScrollToTopButtonState extends State<ScrollToTopButton> {
+  updateState(){
+    if(mounted) setState((){});
+  }
+
   @override
   void initState() {
-    //whenever on top changes we update the button
-    widget.onTop.addListener((){
-      setState(() {
-        
-      });
-    });
+    widget.onTop.addListener(updateState);
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    widget.onTop.removeListener(updateState);
+    super.dispose();
   }
 
   @override

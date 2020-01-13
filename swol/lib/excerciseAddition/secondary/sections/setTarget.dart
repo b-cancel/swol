@@ -45,8 +45,10 @@ class SetTargetCard extends StatelessWidget {
                 left: 16,
                 right: 16,
               ),
-              child: TrainingTypeIndicator(
+              child: SetTargetToTrainingTypeIndicator(
                 setTarget: setTarget,
+                wholeWidth: MediaQuery.of(context).size.width,
+                oneSidePadding: 16 + 8.0,
               ),
             ),
             Padding(

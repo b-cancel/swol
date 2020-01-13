@@ -49,6 +49,114 @@ class _TextFieldWithClearButtonState extends State<TextFieldWithClearButton> {
     );
   }
 
+  showHideClearButton(){
+    present.value = (ctrl.text != "");
+
+    //update temp value
+    tempValueToUpdate.value = ctrl.text;
+
+    //if we are allowed to edit everything at once then automatically update the value
+    if(widget.editOneAtAtTime == false){
+      widget.valueToUpdate.value = tempValueToUpdate.value;
+    }
+
+    //reflect changes in UI
+    if(mounted) setState(() {});
+  }
+
+  focusSwitch(){
+    WidgetsBinding.instance.addPostFrameCallback((_){
+      if(focusNodeVN.value.hasFocus == false){
+        isEditing.value = false;
+      }
+    });
+  }
+
+  isEditingUpdate(){
+    //TODO--------------------------------------------------OPTIMIZE BELOW
+    if(widget.editOneAtAtTime == false){
+      //no longer editing so SAVE
+      if(isEditing.value == false){
+        //make sure not empty and if empty correct
+        if(widget.otherFocusNode != null){ //name must be not empty
+          if(tempValueToUpdate.value == ""){
+            //auto undo (will also update tempValueToUpdate)
+            ctrl.text = widget.valueToUpdate.value;
+            
+            //let the user know their action is invalid
+            showSnackBar();
+          }
+        }
+
+        //release focus
+        if(widget.editOneAtAtTime){
+          //NOTE: we shouldn't need this
+          //BUT we haven't got only the one button to be active at a time
+          //so we have this as a back up as an intermediate
+          //between the worst and best UX
+          if(focusNodeVN.value.hasFocus){
+            FocusScope.of(context).unfocus();
+          }
+        }
+        else FocusScope.of(context).unfocus();
+
+        //update actual value (will only trigger update if different)
+        widget.valueToUpdate.value = tempValueToUpdate.value;
+      }
+
+      //show check or edit
+      setState(() {});
+    }
+    else{
+      //-------------------------------------------------- BELOW
+      if(isEditing.value){
+        //autofocus on the field
+        WidgetsBinding.instance.addPostFrameCallback((_){
+          FocusScope.of(context).requestFocus(focusNodeVN.value);
+        });
+      }
+      else{//no longer editing so SAVE OR UNDO?
+        //make sure not empty and if empty correct (IF SAVE (we are currently focused))
+        //undo (IF UNDO (we are currently NOT focused))
+        if(focusNodeVN.value.hasFocus){
+          if(widget.otherFocusNode != null){ //name must be not empty
+            if(tempValueToUpdate.value == ""){
+              //auto undo (will also update tempValueToUpdate)
+              ctrl.text = widget.valueToUpdate.value;
+              
+              //let the user know their action is invalid
+              showSnackBar();
+            }
+          }
+
+          //release focus
+          if(widget.editOneAtAtTime){
+            //NOTE: we shouldn't need this
+            //BUT we haven't got only the one button to be active at a time
+            //so we have this as a back up as an intermediate
+            //between the worst and best UX
+            if(focusNodeVN.value.hasFocus){
+              FocusScope.of(context).unfocus();
+            }
+          }
+          else FocusScope.of(context).unfocus();
+        }
+        else{
+          //auto undo (will also update tempValueToUpdate)
+          ctrl.text = widget.valueToUpdate.value;
+        }
+
+        //update actual value (will only trigger update if different)
+        widget.valueToUpdate.value = tempValueToUpdate.value;
+      }
+
+      //show check or edit
+      setState(() {});
+      //-------------------------------------------------- ABOVE
+    }
+    //TODO--------------------------------------------------OPTIMIZE ABOVE
+  }
+
   //init
   @override
   void initState() {
@@ -67,17 +175,7 @@ class _TextFieldWithClearButtonState extends State<TextFieldWithClearButton> {
     tempValueToUpdate = new ValueNotifier(ctrl.text);
 
     //handle showing or hiding clear button
-    ctrl.addListener((){
-      present.value = (ctrl.text != "");
-      //update temp value
-      tempValueToUpdate.value = ctrl.text;
-      //if we are allowed to edit everything at once then automatically update the value
-      if(widget.editOneAtAtTime == false){
-        widget.valueToUpdate.value = tempValueToUpdate.value;
-      }
-      //reflect changes in UI
-      setState(() {});
-    });
+    ctrl.addListener(showHideClearButton);
 
     //handle present passed or not
     if(widget.present == null){
@@ -109,104 +207,23 @@ class _TextFieldWithClearButtonState extends State<TextFieldWithClearButton> {
       //we revert back to our old value
       //and we change is editing
       WidgetsBinding.instance.addPostFrameCallback((_){
-        focusNodeVN.value.addListener((){
-          WidgetsBinding.instance.addPostFrameCallback((_){
-            if(focusNodeVN.value.hasFocus == false){
-              isEditing.value = false;
-            }
-          });
-        });
+        focusNodeVN.value.addListener(focusSwitch);
       });
     }
 
     //if editing value changes then update
-    isEditing.addListener((){
-      //TODO--------------------------------------------------OPTIMIZE BELOW
-      if(widget.editOneAtAtTime == false){
-        //no longer editing so SAVE
-        if(isEditing.value == false){
-          //make sure not empty and if empty correct
-          if(widget.otherFocusNode != null){ //name must be not empty
-            if(tempValueToUpdate.value == ""){
-              //auto undo (will also update tempValueToUpdate)
-              ctrl.text = widget.valueToUpdate.value;
-              
-              //let the user know their action is invalid
-              showSnackBar();
-            }
-          }
-
-          //release focus
-          if(widget.editOneAtAtTime){
-            //NOTE: we shouldn't need this
-            //BUT we haven't got only the one button to be active at a time
-            //so we have this as a back up as an intermediate
-            //between the worst and best UX
-            if(focusNodeVN.value.hasFocus){
-              FocusScope.of(context).unfocus();
-            }
-          }
-          else FocusScope.of(context).unfocus();
-
-          //update actual value (will only trigger update if different)
-          widget.valueToUpdate.value = tempValueToUpdate.value;
-        }
-
-        //show check or edit
-        setState(() {});
-      }
-      else{
-        //-------------------------------------------------- BELOW
-        if(isEditing.value){
-          //autofocus on the field
-          WidgetsBinding.instance.addPostFrameCallback((_){
-            FocusScope.of(context).requestFocus(focusNodeVN.value);
-          });
-        }
-        else{//no longer editing so SAVE OR UNDO?
-          //make sure not empty and if empty correct (IF SAVE (we are currently focused))
-          //undo (IF UNDO (we are currently NOT focused))
-          if(focusNodeVN.value.hasFocus){
-            if(widget.otherFocusNode != null){ //name must be not empty
-              if(tempValueToUpdate.value == ""){
-                //auto undo (will also update tempValueToUpdate)
-                ctrl.text = widget.valueToUpdate.value;
-                
-                //let the user know their action is invalid
-                showSnackBar();
-              }
-            }
-
-            //release focus
-            if(widget.editOneAtAtTime){
-              //NOTE: we shouldn't need this
-              //BUT we haven't got only the one button to be active at a time
-              //so we have this as a back up as an intermediate
-              //between the worst and best UX
-              if(focusNodeVN.value.hasFocus){
-                FocusScope.of(context).unfocus();
-              }
-            }
-            else FocusScope.of(context).unfocus();
-          }
-          else{
-            //auto undo (will also update tempValueToUpdate)
-            ctrl.text = widget.valueToUpdate.value;
-          }
-
-          //update actual value (will only trigger update if different)
-          widget.valueToUpdate.value = tempValueToUpdate.value;
-        }
-
-        //show check or edit
-        setState(() {});
-        //-------------------------------------------------- ABOVE
-      }
-      //TODO--------------------------------------------------OPTIMIZE ABOVE
-    });
+    isEditing.addListener(isEditingUpdate);
 
     //super init
     super.initState();
+  }
+
+  @override
+  void dispose() { 
+    ctrl.removeListener(showHideClearButton);
+    focusNodeVN.value.removeListener(focusSwitch);
+    isEditing.removeListener(isEditingUpdate);
+    super.dispose();
   }
 
   //build

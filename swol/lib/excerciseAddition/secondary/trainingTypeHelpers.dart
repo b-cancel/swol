@@ -13,18 +13,22 @@ import 'package:swol/excerciseAddition/secondary/tiny.dart';
 import 'package:swol/sharedWidgets/excerciseListTile/oneRepMaxChip.dart';
 import 'package:swol/sharedWidgets/trainingTypes/trainingTypes.dart';
 
-class TrainingTypeIndicator extends StatefulWidget {
-  TrainingTypeIndicator({
+class SetTargetToTrainingTypeIndicator extends StatefulWidget {
+  SetTargetToTrainingTypeIndicator({
     @required this.setTarget,
+    @required this.wholeWidth,
+    @required this.oneSidePadding,
   });
 
   final ValueNotifier<int> setTarget;
+  final double wholeWidth;
+  final double oneSidePadding;
 
   @override
-  _TrainingTypeIndicatorState createState() => _TrainingTypeIndicatorState();
+  _SetTargetToTrainingTypeIndicatorState createState() => _SetTargetToTrainingTypeIndicatorState();
 }
 
-class _TrainingTypeIndicatorState extends State<TrainingTypeIndicator> {
+class _SetTargetToTrainingTypeIndicatorState extends State<SetTargetToTrainingTypeIndicator> {
   int section;
   ScrollController controller = new ScrollController();
 
@@ -37,7 +41,7 @@ class _TrainingTypeIndicatorState extends State<TrainingTypeIndicator> {
 
     WidgetsBinding.instance.addPostFrameCallback((_){
       controller.animateTo(
-        (((MediaQuery.of(context).size.width-48)/4) * section),
+        (((widget.wholeWidth - (2 * widget.oneSidePadding))/4) * section),
         duration: Duration(milliseconds: 250),
         curve: Curves.easeInOut,
       );
@@ -50,12 +54,18 @@ class _TrainingTypeIndicatorState extends State<TrainingTypeIndicator> {
     setTargetToSection();
 
     //listener
-    widget.setTarget.addListener((){
-      setTargetToSection();
-    });
+    widget.setTarget.addListener(setTargetToSection);
 
     //super init
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    widget.setTarget.removeListener(setTargetToSection);
+
+    //super dispose
+    super.dispose();
   }
 
   @override

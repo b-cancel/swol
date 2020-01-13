@@ -32,30 +32,41 @@ class _SearchExcerciseState extends State<SearchExcercise> {
   final ValueNotifier<bool> onTop = new ValueNotifier(true);
   AutoScrollController autoScrollController;
 
+  performQuery(){
+    query(search.text);
+  }
+
+  onTopUpdate(){
+    ScrollPosition position = autoScrollController.position;
+    double currentOffset = autoScrollController.offset;
+
+    //Determine whether we are on the top of the scroll area
+    if (currentOffset <= position.minScrollExtent) {
+      onTop.value = true;
+    }
+    else onTop.value = false;
+  }
+
   //init
   @override
   void initState() {
     //query inits
-    search.addListener((){
-      query(search.text);
-    });
+    search.addListener(performQuery);
 
     //scroll inits
     //auto scroll controller
     autoScrollController = new AutoScrollController();
-    autoScrollController.addListener((){
-      ScrollPosition position = autoScrollController.position;
-      double currentOffset = autoScrollController.offset;
-
-      //Determine whether we are on the top of the scroll area
-      if (currentOffset <= position.minScrollExtent) {
-        onTop.value = true;
-      }
-      else onTop.value = false;
-    });
+    autoScrollController.addListener(onTopUpdate);
 
     //super init
     super.initState();
+  }
+
+  @override
+  void dispose() { 
+    search.removeListener(performQuery);
+    autoScrollController.removeListener(onTopUpdate);
+    super.dispose();
   }
 
   query(String searchString) async{

@@ -47,6 +47,29 @@ class _SuggestionState extends State<Suggestion> {
   //TODO: remove test code
   ValueNotifier<bool> firstTime = new ValueNotifier(false);
 
+  updateFunctionIndex(){
+    functionValue = Functions.functions[functionIndex.value];
+
+    ExcerciseData.updateExcercise(
+      widget.excerciseID,
+      predictionID: functionIndex.value,
+    );
+  }
+
+  updateRepTarget(){
+    ExcerciseData.updateExcercise(
+      widget.excerciseID,
+      repTarget: repTarget.value,
+    );
+
+    //TODO: might not need this
+    setState(() {});
+  }
+
+  testFirstTime(){
+    if(mounted) setState(() {});
+  }
+
   @override
   void initState() { 
     //super init
@@ -59,14 +82,7 @@ class _SuggestionState extends State<Suggestion> {
     functionValue = Functions.functions[functionIndex.value];
 
     //when the value changes we update it
-    functionIndex.addListener((){
-      functionValue = Functions.functions[functionIndex.value];
-
-      ExcerciseData.updateExcercise(
-        widget.excerciseID,
-        predictionID: functionIndex.value,
-      );
-    });
+    functionIndex.addListener(updateFunctionIndex);
 
     //set set target stuff initially
     repTarget = new ValueNotifier(
@@ -74,23 +90,21 @@ class _SuggestionState extends State<Suggestion> {
     );
 
     //when value changes we update it
-    repTarget.addListener((){
-      ExcerciseData.updateExcercise(
-        widget.excerciseID,
-        repTarget: repTarget.value,
-      );
-
-      //TODO: might not need this
-      setState(() {});
-    });
+    repTarget.addListener(updateRepTarget);
 
     //TODO: remove test code
     //listen to test look
-    firstTime.addListener((){
-      setState(() {
-        
-      });
-    });    
+    firstTime.addListener(testFirstTime);    
+  }
+
+  @override
+  void dispose() { 
+    functionIndex.removeListener(updateFunctionIndex);
+    repTarget.removeListener(updateRepTarget);
+    firstTime.removeListener(testFirstTime);
+
+    //super dispose
+    super.dispose();
   }
 
   @override

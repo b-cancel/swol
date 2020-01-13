@@ -25,14 +25,20 @@ class ReferenceLinkBox extends StatefulWidget {
 class _ReferenceLinkBoxState extends State<ReferenceLinkBox> {
   ValueNotifier<bool> isEditing = new ValueNotifier(false);
 
+  updateState(){
+    if(mounted) setState(() {});
+  }
+
   @override
   void initState() { 
     super.initState();
-    
-    //reload on certain ocassion
-    isEditing.addListener((){
-      setState(() {});
-    });
+    isEditing.addListener(updateState);
+  }
+
+  @override
+  void dispose() { 
+    isEditing.removeListener(updateState);
+    super.dispose();
   }
 
   showWarning(String message){

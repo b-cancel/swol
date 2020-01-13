@@ -98,6 +98,14 @@ class _LearnExcerciseState extends State<LearnExcercise> {
     }
   }
 
+  introductionUpdate() => maybeCloseOthers(introductionIsOpen);
+  definitionUpdate() => maybeCloseOthers(definitionIsOpen);
+  trainingUpdate() => maybeCloseOthers(trainingIsOpen);
+  precautionUpdate() => maybeCloseOthers(precautionIsOpen);
+  oneRepMaxUpdate() => maybeCloseOthers(oneRepMaxIsOpen);
+  experimentUpdate() => maybeCloseOthers(experimentIsOpen);
+  researchUpdate() => maybeCloseOthers(researchIsOpen);
+
   @override
   void initState() {
     //super init
@@ -118,13 +126,28 @@ class _LearnExcerciseState extends State<LearnExcercise> {
     ]);
 
     //make listeners
-    introductionIsOpen.addListener(() => maybeCloseOthers(introductionIsOpen));
-    definitionIsOpen.addListener(() => maybeCloseOthers(definitionIsOpen));
-    trainingIsOpen.addListener(() => maybeCloseOthers(trainingIsOpen));
-    precautionIsOpen.addListener(() => maybeCloseOthers(precautionIsOpen));
-    oneRepMaxIsOpen.addListener(() => maybeCloseOthers(oneRepMaxIsOpen));
-    experimentIsOpen.addListener(() => maybeCloseOthers(experimentIsOpen));
-    researchIsOpen.addListener(() => maybeCloseOthers(researchIsOpen));
+    introductionIsOpen.addListener(introductionUpdate);
+    definitionIsOpen.addListener(definitionUpdate);
+    trainingIsOpen.addListener(trainingUpdate);
+    precautionIsOpen.addListener(precautionUpdate);
+    oneRepMaxIsOpen.addListener(oneRepMaxUpdate);
+    experimentIsOpen.addListener(experimentUpdate);
+    researchIsOpen.addListener(researchUpdate);
+  }
+
+  @override
+  void dispose() { 
+    //remove listeners
+    introductionIsOpen.removeListener(introductionUpdate);
+    definitionIsOpen.removeListener(definitionUpdate);
+    trainingIsOpen.removeListener(trainingUpdate);
+    precautionIsOpen.removeListener(precautionUpdate);
+    oneRepMaxIsOpen.removeListener(oneRepMaxUpdate);
+    experimentIsOpen.removeListener(experimentUpdate);
+    researchIsOpen.removeListener(researchUpdate);
+    
+    //super dispose
+    super.dispose();
   }
 
   @override

@@ -144,6 +144,20 @@ class _ExcerciseNotesState extends State<ExcerciseNotes> {
   ValueNotifier<String> note = new ValueNotifier("");
   ValueNotifier<String> url = new ValueNotifier("");
 
+  //listener function
+  updateName(){
+    //NOTE: name will only be set if its NOT EMTPY
+    ExcerciseData.updateExcercise(widget.excerciseID, name: name.value);
+  }
+
+  updateNote(){
+    ExcerciseData.updateExcercise(widget.excerciseID, note: note.value);
+  }
+
+  updateUrl(){
+    ExcerciseData.updateExcercise(widget.excerciseID, url: url.value);
+  }
+
   @override
   void initState() { 
     //super init
@@ -154,19 +168,19 @@ class _ExcerciseNotesState extends State<ExcerciseNotes> {
     note.value = ExcerciseData.getExcercises().value[widget.excerciseID].note;
     url.value = ExcerciseData.getExcercises().value[widget.excerciseID].url;
 
-    name.addListener((){
-      //NOTE: name will only be set if its NOT EMTPY
-      ExcerciseData.updateExcercise(widget.excerciseID, name: name.value);
-    });
+    name.addListener(updateName);
+    note.addListener(updateNote);
+    url.addListener(updateUrl);
+  }
 
-    note.addListener((){
-      ExcerciseData.updateExcercise(widget.excerciseID, note: note.value);
-    });
-
-    //if values change properly update
-    url.addListener((){
-      ExcerciseData.updateExcercise(widget.excerciseID, url: url.value);
-    });
+  @override
+  void dispose() { 
+    name.removeListener(updateName);
+    note.removeListener(updateNote);
+    url.removeListener(updateUrl);
+    
+    //super dispose
+    super.dispose();
   }
 
   @override

@@ -274,7 +274,7 @@ class TileOpened extends StatelessWidget {
   }
 }
 
-class RotatingIcon extends StatefulWidget {
+class RotatingIcon extends StatelessWidget {
   RotatingIcon({
     this.duration: const Duration(milliseconds: 300),
     @required this.isOpen,
@@ -283,21 +283,8 @@ class RotatingIcon extends StatefulWidget {
   final Duration duration;
   final ValueNotifier<bool> isOpen;
 
-  @override
-  _RotatingIconState createState() => _RotatingIconState();
-}
-
-class _RotatingIconState extends State<RotatingIcon> {
   double tweenBeginning;
   double fractionOfDuration = 1;
-
-  void translate() {
-    widget.isOpen.addListener((){
-      setState(() {
-        
-      });
-    });
-  }
 
   final double normalRotation = 0;
   final double otherRotation = (-math.pi / 4) * 4;
@@ -306,7 +293,7 @@ class _RotatingIconState extends State<RotatingIcon> {
   Widget build(BuildContext context) {
     return Animator<double>(
       resetAnimationOnRebuild: true,
-      tween: widget.isOpen.value
+      tween: isOpen.value
         ? Tween<double>(
             begin: tweenBeginning ?? normalRotation, 
             end: otherRotation,
@@ -316,7 +303,7 @@ class _RotatingIconState extends State<RotatingIcon> {
             end: normalRotation,
         ),
       duration: Duration(
-        milliseconds: ((widget.duration.inMilliseconds * fractionOfDuration).toInt()),
+        milliseconds: ((duration.inMilliseconds * fractionOfDuration).toInt()),
       ),
       customListener: (animator) {
         tweenBeginning = animator.animation.value;
@@ -326,7 +313,7 @@ class _RotatingIconState extends State<RotatingIcon> {
         angle: anim.value,
         child: Icon(
           Icons.keyboard_arrow_down,
-          color: (widget.isOpen.value)
+          color: (isOpen.value)
           ? Theme.of(context).primaryColorDark
           : Colors.white,
         ),
