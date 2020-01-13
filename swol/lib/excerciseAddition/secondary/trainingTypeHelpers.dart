@@ -115,6 +115,7 @@ class _SetTargetToTrainingTypeIndicatorState extends State<SetTargetToTrainingTy
       ),
       child: Container(
         height: 108, //manually set
+        width: totalSliderWidth,
         child: Stack(
           children: <Widget>[
             ListView(
@@ -137,8 +138,7 @@ class _SetTargetToTrainingTypeIndicatorState extends State<SetTargetToTrainingTy
                       ),
                     ),
                     Positioned(
-                      //IDK why we need this...
-                      right: 48.0 + 4,
+                      right: 4,
                       top: 0,
                       bottom: 0,
                       child: Center(
@@ -207,54 +207,60 @@ class ThePills extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        Pill(
-          setTarget: setTarget,
-          actives: [4,5,6], 
-          sectionSize: totalScreenWidth/4,
-          name: "Strength Training",
-          onTap: makeTrainingTypePopUp(
-            context: context,
-            title: "Strength Training",
-            showStrength: true,
-            highlightfield: 4,
-            iconID: FitIcons.Strength,
+    //total screenwidth is the right size (1/4 of it is a section)
+    return Container(
+      //seven sections in between since there are 9 clicks
+      width: (totalScreenWidth/4) * 8,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          Pill(
+            setTarget: setTarget,
+            actives: [4,5,6], 
+            sectionSize: totalScreenWidth/4,
+            name: "Strength Training",
+            onTap: makeTrainingTypePopUp(
+              context: context,
+              title: "Strength Training",
+              showStrength: true,
+              highlightfield: 4,
+              iconID: FitIcons.Strength,
+            ),
+            leftMultiplier: 2.75,
+            rightMultiplier: 2.75,
           ),
-          leftMultiplier: 2.5,
-          rightMultiplier: 2.5,
-        ),
-        Pill(
-          setTarget: setTarget,
-          actives: [3,4,5], 
-          sectionSize: totalScreenWidth/4,
-          name: "Hypertrophy Training",
-          onTap: makeTrainingTypePopUp(
-            context: context,
-            title: "Hypertrophy Training",
-            showHypertrophy: true,
-            highlightfield: 4,
-            iconID: FitIcons.Hypertrophy,
+          Pill(
+            setTarget: setTarget,
+            actives: [3,4,5], 
+            sectionSize: totalScreenWidth/4,
+            name: "Hypertrophy Training",
+            onTap: makeTrainingTypePopUp(
+              context: context,
+              title: "Hypertrophy Training",
+              showHypertrophy: true,
+              highlightfield: 4,
+              iconID: FitIcons.Hypertrophy,
+            ),
+            leftMultiplier: 1.75,
+            rightMultiplier: 3.75,
           ),
-          leftMultiplier: 1.5,
-          rightMultiplier: 3.5,
-        ),
-        Pill(
-          setTarget: setTarget,
-          actives: [1,2,3], //+1
-          sectionSize: totalScreenWidth/4,
-          name: "Endurance Training",
-          onTap: makeTrainingTypePopUp(
-            context: context,
-            title: "Endurance Training",
-            showEndurance: true,
-            highlightfield: 4,
-            iconID: FitIcons.Endurance,
+          Pill(
+            setTarget: setTarget,
+            actives: [1,2,3], //+1
+            sectionSize: totalScreenWidth/4,
+            name: "Endurance Training",
+            onTap: makeTrainingTypePopUp(
+              context: context,
+              title: "Endurance Training",
+              showEndurance: true,
+              highlightfield: 4,
+              iconID: FitIcons.Endurance,
+            ),
+            leftMultiplier: 0,
+            rightMultiplier: 5.75,
           ),
-          leftMultiplier: 0,
-          rightMultiplier: 5.5,
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

@@ -72,7 +72,7 @@ class _PillState extends State<Pill> {
         rightMultiplier: widget.rightMultiplier,
         active: active,
       ),
-      );
+    );
   }
 }
 
@@ -100,59 +100,84 @@ class DarkPills extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Radius leftRadius = Radius.circular(leftMultiplier == 0 ? 0 : 24);
+    Radius rightRadius = Radius.circular(rightMultiplier == 0 ? 0 : 24);
+    BorderSide borderSide = BorderSide(
+      width: 2,
+      color: Theme.of(context).primaryColor,
+    );
+
     return Container(
       padding: EdgeInsets.symmetric(
         vertical: 4,
       ),
       child: Row(
+        mainAxisSize: MainAxisSize.max,
         children: <Widget>[
           Container(
             width: leftMultiplier * sectionSize,
           ),
-          ClipRRect(
-            borderRadius: BorderRadius.circular(24),
-            child: AnimatedContainer(
-              duration: Duration(milliseconds: 250),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(24),
-                border: Border.all(
-                  width: 2,
-                  color: Theme.of(context).primaryColor,
-                ),
-                color: active ? Theme.of(context).accentColor : Theme.of(context).primaryColor,
+          Expanded(
+            child: ClipRRect(
+              borderRadius: BorderRadius.only(
+                topLeft: leftRadius,
+                bottomLeft: leftRadius,
+                topRight: rightRadius,
+                bottomRight: rightRadius,
               ),
-              child: Material(
-                color: Colors.transparent,
-                child: InkWell(
-                  onTap: onTap,
-                  child: Container(
-                    padding: EdgeInsets.all(4),
-                    width: (sectionSize * 3),
-                    height: 24,
-                    child: FittedBox(
-                      fit: BoxFit.contain,
-                      child: Center(
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                right: 4.0,
+              child: AnimatedContainer(
+                duration: Duration(milliseconds: 250),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                    topLeft: leftRadius,
+                    bottomLeft: leftRadius,
+                    topRight: rightRadius,
+                    bottomRight: rightRadius,
+                  ),
+                  border: Border(
+                    //TODO: understand why making LEFT the way it should be
+                    //TODO: (first borderSide is actually BorderSide.none)
+                    //TODO: breaks stuff (and logically so the same would happen with RIGHT)
+                    left: leftMultiplier == 0 ? borderSide : borderSide,
+                    right: rightMultiplier == 0 ? BorderSide.none : borderSide,
+                    //defaults
+                    top: borderSide,
+                    bottom: borderSide,
+                  ),
+                  color: active ? Theme.of(context).accentColor : Theme.of(context).primaryColor,
+                ),
+                child: Material(
+                  color: Colors.transparent,
+                  child: InkWell(
+                    onTap: onTap,
+                    child: Container(
+                      padding: EdgeInsets.all(4),
+                      height: 24,
+                      child: FittedBox(
+                        fit: BoxFit.contain,
+                        child: Center(
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                  right: 4.0,
+                                ),
+                                child: Icon(
+                                  Icons.info,
+                                  size: 16,
+                                  color: active ? Theme.of(context).primaryColor : Colors.white,
+                                ),
                               ),
-                              child: Icon(
-                                Icons.info,
-                                size: 16,
-                                color: active ? Theme.of(context).primaryColor : Colors.white,
+                              Text(
+                                name,
+                                style: TextStyle(
+                                  color: active ? Theme.of(context).primaryColor : Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
-                            ),
-                            Text(
-                              name,
-                              style: TextStyle(
-                                color: active ? Theme.of(context).primaryColor : Colors.white,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
                     ),
