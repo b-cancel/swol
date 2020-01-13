@@ -1,5 +1,4 @@
 //flutter
-import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 
 //plugins
@@ -12,6 +11,7 @@ import 'package:swol/excerciseAddition/secondary/tiny.dart';
 
 //internal from shared
 import 'package:swol/sharedWidgets/excerciseListTile/oneRepMaxChip.dart';
+import 'package:swol/sharedWidgets/ourToolTip.dart';
 import 'package:swol/sharedWidgets/trainingTypes/trainingTypes.dart';
 
 class SetTargetToTrainingTypeIndicator extends StatefulWidget {
@@ -138,7 +138,7 @@ class _SetTargetToTrainingTypeIndicatorState extends State<SetTargetToTrainingTy
                     ),
                     Positioned(
                       //IDK why we need this...
-                      right: 48.0 + 8,
+                      right: 48.0 + 4,
                       top: 0,
                       bottom: 0,
                       child: Center(
@@ -165,36 +165,30 @@ class NoMoreThan6Sets extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: (){
-        BotToast.showAttachedWidget(
-          attachedBuilder: (_) => Card(
-            color: Colors.grey,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text("You shouldn't need to do any more than 6 sets")
-            ),
-          ),
-          duration: Duration(seconds: 3),
-          targetContext: context,
-          onlyOne: true,
-          preferDirection: PreferDirection.leftCenter,
+        showToolTip(
+          context, 
+          "Any More than 6 sets\nmight do you more harm than good",
         );
       },
-      child: Container(
-        width: 36,
-        height: 36,
-        decoration: BoxDecoration(
-          border: Border.all(
+      child: Padding(
+        padding: const EdgeInsets.all(4.0),
+        child: Container(
+          width: 36,
+          height: 36,
+          decoration: BoxDecoration(
+            border: Border.all(
+              color: Theme.of(context).primaryColorDark,
+              width: 2,
+            )
+          ),
+          padding: EdgeInsets.symmetric(
+            horizontal: 4,
+            vertical: 4,
+          ),
+          child: Icon(
+            Icons.warning,
             color: Theme.of(context).primaryColorDark,
-            width: 2,
-          )
-        ),
-        padding: EdgeInsets.symmetric(
-          horizontal: 4,
-          vertical: 4,
-        ),
-        child: Icon(
-          Icons.warning,
-          color: Theme.of(context).primaryColorDark,
+          ),
         ),
       ),
     );

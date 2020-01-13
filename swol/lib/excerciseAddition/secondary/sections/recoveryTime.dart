@@ -221,7 +221,7 @@ class AnimRecoveryTimeInfoToWhiteTheme extends StatelessWidget {
           ),
           right: SliderTipButton(
             buttonText: "4:55",
-            tipText: "Any More, and your muscles would have cooled off",
+            tipText: "Any More, will require you to\nwarm up again",
           ),
           startSeconds: 185,
           endSeconds: 295,

@@ -50,7 +50,7 @@ openSnackBar(
   //show snackbar
   Scaffold.of(context).showSnackBar(
     SnackBar(
-      backgroundColor: Theme.of(context).cardColor,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       behavior: SnackBarBehavior.floating,
       //show "forever" if needed
       duration: showForever ? Duration(hours: 1) : Duration(seconds: 4),

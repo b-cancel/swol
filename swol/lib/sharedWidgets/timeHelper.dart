@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:swol/sharedWidgets/ourToolTip.dart';
 
 class TickGenerator extends StatefulWidget {
   TickGenerator({
@@ -122,7 +123,7 @@ class SliderTipButton extends StatelessWidget {
               right: 8.0,
             ),
             child: Icon(
-              Icons.info,
+              Icons.warning,
               color: Theme.of(context).primaryColorDark,
             ),
           ),
@@ -133,11 +134,8 @@ class SliderTipButton extends StatelessWidget {
     
     if(tipText == null) return mainButton;
     else{
-      //TODO: remove this... instead use the other tooltip thingy
-      return Tooltip(
-        message: tipText,
-        waitDuration: Duration(milliseconds: 100),
-        preferBelow: false,
+      return InkWell(
+        onTap: () => showToolTip(context, tipText),
         child: mainButton,
       );
     }
