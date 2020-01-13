@@ -35,7 +35,7 @@ referenceLinkPopUp(BuildContext context){
   infoPopUpFunction(
     context, 
     title: "Reference Link",
-    subtitle: "Copy and paste",
+    subtitle: "Copy then Paste",
     body: ReferenceLinkPopUpBody(),
   );
 }

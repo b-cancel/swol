@@ -27,7 +27,7 @@ class ReferenceLinkPopUpBody extends StatelessWidget {
           Container(
             alignment: Alignment.centerLeft,
             child: Text(
-              "Link a video or image of the proper form, or anything else that might help you excercise safetly",
+              "Link a video or image of the proper form, or anything else that might help you excercise safely and correctly",
             ),
           ),
         ],

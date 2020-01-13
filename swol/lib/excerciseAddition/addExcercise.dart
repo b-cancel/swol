@@ -49,7 +49,7 @@ class AddExcercise extends StatelessWidget {
     this.showSaveDuration: const Duration(milliseconds: 350),
 
     //this delay plays AFTER the page completely shows
-    this.delayBeforeListShow: const Duration(milliseconds: 250),
+    this.delayBetweenListItems: const Duration(milliseconds: 500),
     this.delayBeforeSaveShow: const Duration(milliseconds: 450),
 
     this.sectionTransitionDuration: const Duration(milliseconds: 250),
@@ -63,7 +63,7 @@ class AddExcercise extends StatelessWidget {
   final Duration showSaveDuration;
 
   //this delay plays AFTER the page completely shows
-  final Duration delayBeforeListShow;
+  final Duration delayBetweenListItems;
   final Duration delayBeforeSaveShow;
 
   final Duration sectionTransitionDuration;
@@ -287,7 +287,7 @@ class AddExcercise extends StatelessWidget {
                       return AnimationConfiguration.staggeredList(
                         position: index,
                         //500 (page slide in) + 250 (save button show)
-                        delay: (showPageDuration + delayBeforeListShow),
+                        delay: (delayBetweenListItems),
                         duration: showListDuration,
                         child: SlideAnimation(
                           verticalOffset: 50.0,

@@ -160,11 +160,11 @@ class AnimRecoveryTimeInfoToWhiteTheme extends StatelessWidget {
             highlightfield: 2,
             iconID: FitIcons.Endurance,
           ),
-          left: new SliderToolTipButton(
+          left: new SliderTipButton(
             buttonText: "15s",
-            tooltipText: "Any Less, wouldn't be enough",
+            tipText: "Any Less, wouldn't be enough",
           ),
-          right: SliderToolTipButton(
+          right: SliderTipButton(
             buttonText: "1m",
           ),
           startSeconds: 15,
@@ -179,10 +179,10 @@ class AnimRecoveryTimeInfoToWhiteTheme extends StatelessWidget {
             highlightfield: 2,
             iconID: FitIcons.Hypertrophy,
           ),
-          left: SliderToolTipButton(
+          left: SliderTipButton(
             buttonText: "1:05",
           ),
-          right: SliderToolTipButton(
+          right: SliderTipButton(
             buttonText: "2m",
           ),
           startSeconds: 65,
@@ -198,10 +198,10 @@ class AnimRecoveryTimeInfoToWhiteTheme extends StatelessWidget {
             highlightfield: 2,
             iconID: FitIcons.HypAndStr,
           ),
-          left: SliderToolTipButton(
+          left: SliderTipButton(
             buttonText: "2:05",
           ),
-          right: SliderToolTipButton(
+          right: SliderTipButton(
             buttonText: "3m",
           ),
           startSeconds: 125,
@@ -216,12 +216,12 @@ class AnimRecoveryTimeInfoToWhiteTheme extends StatelessWidget {
             highlightfield: 2,
             iconID: FitIcons.Strength,
           ),
-          left: SliderToolTipButton(
+          left: SliderTipButton(
             buttonText: "3:05",
           ),
-          right: SliderToolTipButton(
+          right: SliderTipButton(
             buttonText: "4:55",
-            tooltipText: "Any More, and your muscles would have cooled off",
+            tipText: "Any More, and your muscles would have cooled off",
           ),
           startSeconds: 185,
           endSeconds: 295,

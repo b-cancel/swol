@@ -90,33 +90,33 @@ class _TickGeneratorState extends State<TickGenerator> {
   }
 }
 
-class SliderToolTipButton extends StatelessWidget {
-  const SliderToolTipButton({
+class SliderTipButton extends StatelessWidget {
+  const SliderTipButton({
     @required this.buttonText,
-    this.tooltipText,
+    this.tipText,
     Key key,
   }) : super(key: key);
 
   final String buttonText;
-  final String tooltipText;
+  final String tipText;
 
   @override
   Widget build(BuildContext context) {
     Widget mainButton = Container(
       decoration: BoxDecoration(
         border: Border.all(
-          color: (tooltipText == null) ? Colors.transparent : Theme.of(context).primaryColorDark,
+          color: (tipText == null) ? Colors.transparent : Theme.of(context).primaryColorDark,
           width: 2,
         )
       ),
       padding: EdgeInsets.symmetric(
-        horizontal: (tooltipText == null) ? 0 : 4,
+        horizontal: (tipText == null) ? 0 : 4,
         vertical: 4,
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          (tooltipText == null) ? Container()
+          (tipText == null) ? Container()
           : Padding(
             padding: const EdgeInsets.only(
               right: 8.0,
@@ -131,10 +131,11 @@ class SliderToolTipButton extends StatelessWidget {
       ),
     );
     
-    if(tooltipText == null) return mainButton;
+    if(tipText == null) return mainButton;
     else{
+      //TODO: remove this... instead use the other tooltip thingy
       return Tooltip(
-        message: tooltipText,
+        message: tipText,
         waitDuration: Duration(milliseconds: 100),
         preferBelow: false,
         child: mainButton,

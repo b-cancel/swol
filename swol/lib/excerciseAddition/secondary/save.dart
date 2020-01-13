@@ -159,6 +159,7 @@ class _SaveButtonState extends State<SaveButton> {
                 widget.nameError.value = true;
 
                 //focus on the field so the user notices the error
+                FocusScope.of(context).unfocus();
                 FocusScope.of(context).requestFocus(widget.nameFocusNode);
               }
             },

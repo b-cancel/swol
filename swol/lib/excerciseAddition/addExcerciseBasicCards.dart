@@ -125,11 +125,7 @@ class LinkCard extends StatefulWidget {
 
 class _LinkCardState extends State<LinkCard> {
   updateState(){
-    if(mounted){
-      setState(() {
-        
-      });
-    }
+    if(mounted) setState(() {});
   }
 
   @override

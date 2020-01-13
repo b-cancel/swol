@@ -31,7 +31,7 @@ class ExcerciseTileSubtitle extends StatelessWidget {
       lastWeight.toString(),
       style: BOLD,
     );
-    String tooltipMessage = "Your 1 Rep Max";
+    String snackbarMessage = "Your 1 Rep Max";
 
     //only calculate the 1 rep max and all its related values if you must
     if(lastReps != 1){
@@ -54,19 +54,19 @@ class ExcerciseTileSubtitle extends StatelessWidget {
       double standardDevaition = oneRepMaxValues[2];
 
       if(standardDevaition.toInt() == 0){
-        tooltipMessage = "\"Without a doubt\" this is your 1 Rep Max";
+        snackbarMessage = "\"Without a doubt\" this is your 1 Rep Max";
         //NOTE: we keep default valueBorderColor
       }
       else{ //we aren't sure about our result
         //NOTE: updating 
         //1. oneRepMaxWidget
-        //2. tooltipMessage
+        //2. snackBarMessage
         //3. valueBorderColor
 
         //make that clear by 
         //1. showing the devaition
         //2. but also by highligting the GUESS in an appropiate color
-        //3. and add an appropiate tooltip with 
+        //3. and add an appropiate snackbar with 
         //    a. sureness string
         //    b. suggestions to improve
         double mean = oneRepMaxValues[1];
@@ -106,11 +106,11 @@ class ExcerciseTileSubtitle extends StatelessWidget {
         }
 
         //let the user know how far the guess is
-        tooltipMessage = "We are \"" + surenessString + "\" this is your one rep max";
+        snackbarMessage = "We are \"" + surenessString + "\" this is your one rep max";
         
         //ONLY discourage anything above 15 
         //since anything below is going to produce pretty good results
-        tooltipMessage += (lessThanReps <= 15) ? ""
+        snackbarMessage += (lessThanReps <= 15) ? ""
         : "\nDo less than " + lessThanReps.toString() + " reps for a more accurate guess";
 
         //we are here because we have some level of uncertainty so we need to display that
@@ -165,12 +165,12 @@ class ExcerciseTileSubtitle extends StatelessWidget {
       onTap: (){
         openSnackBar(
           context, 
-          tooltipMessage, 
+          snackbarMessage, 
           Colors.blue, 
           Icons.info_outline,
         );
       },
-      //NOTE: this is just extra padding to make it easier to click the tooltip
+      //NOTE: this is just extra padding to make it easier to click the chip
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[

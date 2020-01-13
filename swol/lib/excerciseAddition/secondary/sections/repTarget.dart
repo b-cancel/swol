@@ -142,10 +142,10 @@ class AnimRepTargetInfoWhite extends StatelessWidget {
             highlightfield: 3,
             iconID: FitIcons.Strength,
           ),
-          left: new SliderToolTipButton(
+          left: new SliderTipButton(
             buttonText: "1",
           ),
-          right: SliderToolTipButton(
+          right: SliderTipButton(
             buttonText: "6",
           ),
           startSeconds: (1*5),
@@ -160,10 +160,10 @@ class AnimRepTargetInfoWhite extends StatelessWidget {
             highlightfield: 3,
             iconID: FitIcons.Hypertrophy,
           ),
-          left: SliderToolTipButton(
+          left: SliderTipButton(
             buttonText: "7",
           ),
-          right: SliderToolTipButton(
+          right: SliderTipButton(
             buttonText: "12",
           ),
           startSeconds: (7*5),
@@ -178,12 +178,12 @@ class AnimRepTargetInfoWhite extends StatelessWidget {
             highlightfield: 3,
             iconID: FitIcons.Endurance,
           ),
-          left: SliderToolTipButton(
+          left: SliderTipButton(
             buttonText: "13",
           ),
-          right: SliderToolTipButton(
+          right: SliderTipButton(
             buttonText: "35",
-            tooltipText: "Any More, and we won't be able to estimate your 1 Rep Max",
+            tipText: "Any More, and we won't be able to estimate your 1 Rep Max",
           ),
           startSeconds: (13*5),
           endSeconds: (35*5),
