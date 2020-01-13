@@ -1,12 +1,13 @@
 //flutter
 import 'package:flutter/material.dart';
-import 'package:swol/excerciseAddition/popUps/popUpFunctions.dart';
 
 //internal from addition
 import 'package:swol/excerciseAddition/secondary/trainingTypeHelpers.dart';
+import 'package:swol/excerciseAddition/popUps/popUpFunctions.dart';
 
 //internal from shared
 import 'package:swol/sharedWidgets/informationDisplay.dart';
+import 'package:swol/sharedWidgets/sliderTipButton.dart';
 import 'package:swol/sharedWidgets/timeHelper.dart';
 import 'package:swol/sharedWidgets/timePicker.dart';
 
@@ -14,12 +15,10 @@ class RecoveryTimeCard extends StatelessWidget {
   const RecoveryTimeCard({
     Key key,
     @required this.changeDuration,
-    @required this.sliderWidth,
     @required this.recoveryPeriod,
   }) : super(key: key);
 
   final Duration changeDuration;
-  final double sliderWidth;
   final ValueNotifier<Duration> recoveryPeriod;
 
   @override
@@ -45,10 +44,7 @@ class RecoveryTimeCard extends StatelessWidget {
                 ),
               ),
               RecoveryTimeWidget(
-                changeDuration: changeDuration, 
-                sliderWidth: sliderWidth, 
-                textHeight: 16, 
-                textMaxWidth: 28, 
+                changeDuration: changeDuration,
                 recoveryPeriod: recoveryPeriod, 
               ),
             ],
@@ -59,21 +55,20 @@ class RecoveryTimeCard extends StatelessWidget {
   }
 }
 
+/*
+sliderWidth: sliderWidth, 
+                textHeight: 16, 
+                textMaxWidth: 28, 
+*/
 class RecoveryTimeWidget extends StatelessWidget {
   const RecoveryTimeWidget({
     Key key,
     @required this.changeDuration,
-    @required this.sliderWidth,
-    @required this.textHeight,
-    @required this.textMaxWidth,
     @required this.recoveryPeriod,
     this.darkTheme: true,
   }) : super(key: key);
 
   final Duration changeDuration;
-  final double sliderWidth;
-  final double textHeight;
-  final double textMaxWidth;
   final ValueNotifier<Duration> recoveryPeriod;
   final bool darkTheme;
 
@@ -82,6 +77,7 @@ class RecoveryTimeWidget extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
+        //
         FittedBox(
           fit: BoxFit.contain,
           child: Center(
@@ -90,9 +86,6 @@ class RecoveryTimeWidget extends StatelessWidget {
               data: ThemeData.light(),
               child: AnimRecoveryTimeInfoToWhiteTheme(
                 changeDuration: changeDuration, 
-                sliderWidth: sliderWidth, 
-                textHeight: textHeight, 
-                textMaxWidth: textMaxWidth, 
                 recoveryPeriod: recoveryPeriod, 
                 darkTheme: darkTheme,
               ),
@@ -127,17 +120,11 @@ class AnimRecoveryTimeInfoToWhiteTheme extends StatelessWidget {
   const AnimRecoveryTimeInfoToWhiteTheme({
     Key key,
     @required this.changeDuration,
-    @required this.sliderWidth,
-    @required this.textHeight,
-    @required this.textMaxWidth,
     @required this.recoveryPeriod,
     @required this.darkTheme,
   }) : super(key: key);
 
   final Duration changeDuration;
-  final double sliderWidth;
-  final double textHeight;
-  final double textMaxWidth;
   final ValueNotifier<Duration> recoveryPeriod;
   final bool darkTheme;
 
@@ -145,9 +132,6 @@ class AnimRecoveryTimeInfoToWhiteTheme extends StatelessWidget {
   Widget build(BuildContext context) {
     return AnimatedRecoveryTimeInfo(
       changeDuration: changeDuration,
-      grownWidth: sliderWidth, 
-      textHeight: textHeight, 
-      textMaxWidth: textMaxWidth,
       selectedDuration: recoveryPeriod,
       darkTheme: darkTheme,
       ranges: [

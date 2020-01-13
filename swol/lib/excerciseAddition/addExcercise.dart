@@ -138,9 +138,7 @@ class AddExcercise extends StatelessWidget {
       Theme(
         data: ThemeData.light(),
         child: RecoveryTimeCard(
-          changeDuration: sectionTransitionDuration, 
-          sliderWidth: sliderWidth, 
-          //value notifier below
+          changeDuration: sectionTransitionDuration,
           recoveryPeriod: recoveryPeriod, 
         ),
       ),
@@ -154,7 +152,6 @@ class AddExcercise extends StatelessWidget {
         data: ThemeData.light(),
         child: RepTargetCard(
           changeDuration: sectionTransitionDuration, 
-          sliderWidth: sliderWidth, 
           repTargetDuration: repTargetDuration, 
           repTarget: repTarget,
         ),

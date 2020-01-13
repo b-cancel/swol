@@ -1,147 +1,10 @@
+//flutter
 import 'package:flutter/material.dart';
-import 'package:swol/sharedWidgets/ourToolTip.dart';
 
-class TickGenerator extends StatefulWidget {
-  TickGenerator({
-    @required this.startTick,
-    @required this.endTick,
-    @required this.bigTickNumber,
-    this.selectedDuration,
-    this.darkTheme,
-  });
+//plugin
+import 'package:carousel_slider/carousel_slider.dart';
 
-  final int startTick;
-  final int endTick;
-  final int bigTickNumber;
-  final ValueNotifier<Duration> selectedDuration;
-  final bool darkTheme;
-
-  @override
-  _TickGeneratorState createState() => _TickGeneratorState();
-}
-
-class _TickGeneratorState extends State<TickGenerator> {
-  maybeSetState(){
-    if(mounted){
-      setState(() {});
-    }
-  }
-
-  @override
-  void initState() {
-    widget.selectedDuration.addListener(maybeSetState);
-
-    //super init
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    widget.selectedDuration.removeListener(maybeSetState);
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    double tickWidth = 3;
-
-    Widget spacer = Expanded(
-      child: Container(),
-    );
-
-    int selected = widget.selectedDuration.value.inSeconds;
-
-    //generate ticks
-    List<Widget> ticks = new List<Widget>();
-    int tickCount = ((widget.endTick - widget.startTick) ~/ 5) + 1;
-    for(int i = 0; i < tickCount; i++){
-      int thisTick = widget.startTick + (i * 5);
-      bool highlight = (thisTick == selected);
-      bool bigTick = ((thisTick % widget.bigTickNumber) == 0);
-
-      //add tick
-      ticks.add(
-        Container(
-          width: 0,
-          child: OverflowBox(
-            minWidth: tickWidth,
-            maxWidth: tickWidth,
-            child: Container(
-              height: (bigTick) ? 16 : 8,
-              width: tickWidth,
-              color: (highlight) 
-              ? Theme.of(context).accentColor
-              : (widget.darkTheme) ? Theme.of(context).backgroundColor : Colors.grey.withOpacity(0.5),
-            ),
-          ),
-        ),
-      );
-
-      //add trailing spacer
-      ticks.add(spacer);
-    }
-
-    //remove trailing spacer
-    ticks.removeLast();
-
-    //build
-    return Row(
-      children: ticks,
-    );
-  }
-}
-
-class SliderTipButton extends StatelessWidget {
-  const SliderTipButton({
-    @required this.buttonText,
-    this.tipText,
-    Key key,
-  }) : super(key: key);
-
-  final String buttonText;
-  final String tipText;
-
-  @override
-  Widget build(BuildContext context) {
-    Widget mainButton = Container(
-      decoration: BoxDecoration(
-        border: Border.all(
-          color: (tipText == null) ? Colors.transparent : Theme.of(context).primaryColorDark,
-          width: 2,
-        )
-      ),
-      padding: EdgeInsets.symmetric(
-        horizontal: (tipText == null) ? 0 : 4,
-        vertical: 4,
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          (tipText == null) ? Container()
-          : Padding(
-            padding: const EdgeInsets.only(
-              right: 8.0,
-            ),
-            child: Icon(
-              Icons.warning,
-              color: Theme.of(context).primaryColorDark,
-            ),
-          ),
-          Text(buttonText)
-        ],
-      ),
-    );
-    
-    if(tipText == null) return mainButton;
-    else{
-      return InkWell(
-        onTap: () => showToolTip(context, tipText),
-        child: mainButton,
-      );
-    }
-  }
-}
-
+//struct
 class Range{
   final String name;
   final Widget left;
@@ -160,13 +23,21 @@ class Range{
   });
 }
 
+//TODO: complete the update of the below
+//guides the users and instructs them all at once with minimal UI
+//used 2 times, both in add excercise... 
+//1. recovery time info
+//2. rep target info
+//in change recovery time... recovery time info
+
+//the slide width is as large as its going to be... so perhaps consider passing it
+//TODO: check that slider width is accurate
+//set first to the width of the phone (which is roughly how large it should be)
+//then make sure its contained within the box its in (of untold or told width)
 class AnimatedRecoveryTimeInfo extends StatefulWidget {
   AnimatedRecoveryTimeInfo({
     Key key,
     @required this.changeDuration,
-    @required this.grownWidth,
-    @required this.textHeight,
-    @required this.textMaxWidth,
     @required this.selectedDuration,
     @required this.ranges,
     this.bigTickNumber: 30,
@@ -174,9 +45,6 @@ class AnimatedRecoveryTimeInfo extends StatefulWidget {
   }) : super(key: key);
 
   final Duration changeDuration;
-  final double grownWidth;
-  final double textHeight;
-  final double textMaxWidth;
   final ValueNotifier<Duration> selectedDuration;
   final List<Range> ranges;
   final int bigTickNumber;
@@ -187,9 +55,15 @@ class AnimatedRecoveryTimeInfo extends StatefulWidget {
 }
 
 class _AnimatedRecoveryTimeInfoState extends State<AnimatedRecoveryTimeInfo> {
+  var carousel;
   int sectionGrown;
 
+  //textHeight: 16
+  //textMaxWidth: 28
+
+/*
   setSectionGrown(){
+    /*
     for(int i = 0; i < widget.ranges.length; i++){
       if(i == (widget.ranges.length - 1)) sectionGrown = i;
       else{
@@ -200,13 +74,22 @@ class _AnimatedRecoveryTimeInfoState extends State<AnimatedRecoveryTimeInfo> {
         }
       }
     }
+
+    
+    carousel.animateToPage(
+      sectionGrown, 
+      duration: Duration(milliseconds: 250), 
+      curve: Curves.easeInOut,
+    );
+    */
   }
 
   @override
   void initState() {
     //set initial section grown
-    setSectionGrown();
+    //setSectionGrown();
 
+    /*
     //listen to changes to update section grown
     widget.selectedDuration.addListener((){
       setSectionGrown();
@@ -214,50 +97,43 @@ class _AnimatedRecoveryTimeInfoState extends State<AnimatedRecoveryTimeInfo> {
         setState(() {});
       }
     });
+    */
     
     super.initState();
   }
+  */
 
   @override
   Widget build(BuildContext context) {
+    /*
     //create
     List<Widget> nameSections = new List<Widget>();
     List<Widget> tickSections = new List<Widget>();
     List<Widget> endSections = new List<Widget>();
-    for(int i = 0; i < widget.ranges.length; i++){
+    for(int i = 0; i < .length; i++){
       //add name section
       nameSections.add(
-        ANameSection(
-          changeDuration: widget.changeDuration, 
-          grownWidth: widget.grownWidth,
-          sectionGrown: sectionGrown,
-          //-----
-          sectionID: i, 
-          sectionName: widget.ranges[i].name,
-          sectionTap: widget.ranges[sectionGrown].onTap,
-        ),
+        
       );
 
       //add tick section
       tickSections.add(
-        AnimatedContainer(
-          duration: widget.changeDuration,
+        Container(
           height: 16,
-          width: (sectionGrown == i) ? widget.grownWidth : 0,
-          child: (sectionGrown == i) ? TickGenerator(
+          width: widget.grownWidth,
+          child: TickGenerator(
             startTick: widget.ranges[i].startSeconds,
             endTick: widget.ranges[i].endSeconds,
             selectedDuration: widget.selectedDuration,
             bigTickNumber: widget.bigTickNumber,
             darkTheme: widget.darkTheme,
-          ) : Container(),
+          ),
         ),
       );
 
       //add range section
-      Widget left = AnimatedContainer(
-        duration: widget.changeDuration,         
-        width: (sectionGrown == i) ? MediaQuery.of(context).size.width - 48: 0,
+      Widget left = Container(       
+        width: MediaQuery.of(context).size.width - 48,
         alignment: Alignment.centerLeft,
         child: Opacity(
           opacity: (sectionGrown == i) ? 1 : 0,
@@ -265,9 +141,8 @@ class _AnimatedRecoveryTimeInfoState extends State<AnimatedRecoveryTimeInfo> {
         )
       );
 
-      Widget right = AnimatedContainer(
-        duration: widget.changeDuration,         
-        width: (sectionGrown == i) ? MediaQuery.of(context).size.width - 48: 0,
+      Widget right = Container(       
+        width: MediaQuery.of(context).size.width - 48,
         alignment: Alignment.centerRight,
         child: Opacity(
           opacity: (sectionGrown == i) ? 1 : 0,
@@ -297,25 +172,63 @@ class _AnimatedRecoveryTimeInfoState extends State<AnimatedRecoveryTimeInfo> {
         );
       }
     }
+    */
+
+    int index = -1; //added to before return so that starts at 0
+    carousel = CarouselSlider(
+      initialPage: 1,
+      height: 400.0,
+      items: widget.ranges.map((range) {
+        return Builder(
+          builder: (BuildContext context) {
+            index++; //starts at 0
+
+            return Container(
+              color: Colors.red,
+              height: 16,
+              child: Container(),
+            );
+
+            /*
+            return Stack(
+              children: <Widget>[
+                //---Name Sections
+                (widget.darkTheme == false) ? Container()
+                : Padding(
+                  padding: EdgeInsets.only(
+                    top: 24.0,
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      ANameSection(
+                        grownWidth: widget.grownWidth,
+                        sectionName: range.name,
+                        sectionTap: widget.ranges[sectionGrown].onTap,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            );
+            */
+          },
+        );
+      }).toList(),
+    );
 
     //build
     return Theme(
       data: ThemeData.dark(),
-      child: Stack(
-        children: <Widget>[
-          //---Name Sections
-          (widget.darkTheme == false) 
-          ? Container()
-          : Padding(
-            padding: EdgeInsets.only(
-              top: 24.0,
-            ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: nameSections,
-            ),
-          ),
+      child: Container(),
+      
+      
+      //carousel,
+      
+      
+      /*
+      
           //---Tick Sections
           Padding(
             padding: const EdgeInsets.only(
@@ -345,6 +258,7 @@ class _AnimatedRecoveryTimeInfoState extends State<AnimatedRecoveryTimeInfo> {
           ),
         ],
       ),
+      */
     );
   }
 }
@@ -352,27 +266,19 @@ class _AnimatedRecoveryTimeInfoState extends State<AnimatedRecoveryTimeInfo> {
 class ANameSection extends StatelessWidget {
   const ANameSection({
     Key key,
-    @required this.changeDuration,
-    @required this.sectionGrown,
-    @required this.sectionID,
     @required this.grownWidth,
     @required this.sectionName,
     @required this.sectionTap,
   }) : super(key: key);
 
-  final Duration changeDuration;
-  final int sectionGrown;
-  final int sectionID;
   final double grownWidth;
   final String sectionName;
   final Function sectionTap;
 
   @override
   Widget build(BuildContext context) {
-    bool selected = (sectionGrown == sectionID);
-    return AnimatedContainer(
-      duration: changeDuration,
-      width:  selected ? grownWidth : 0,
+    return Container(
+      width: grownWidth,
       child: Center(
         child: Material(
           color: Colors.transparent,

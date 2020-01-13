@@ -1,26 +1,25 @@
 //flutter
 import 'package:flutter/material.dart';
-import 'package:swol/excerciseAddition/popUps/popUpFunctions.dart';
 
 //internal from addition
 import 'package:swol/excerciseAddition/secondary/trainingTypeHelpers.dart';
+import 'package:swol/excerciseAddition/popUps/popUpFunctions.dart';
 
 //internal from shared
 import 'package:swol/sharedWidgets/informationDisplay.dart';
 import 'package:swol/sharedWidgets/mySlider.dart';
+import 'package:swol/sharedWidgets/sliderTipButton.dart';
 import 'package:swol/sharedWidgets/timeHelper.dart';
 
 class RepTargetCard extends StatefulWidget {
   const RepTargetCard({
     Key key,
     @required this.changeDuration,
-    @required this.sliderWidth,
     @required this.repTargetDuration,
     @required this.repTarget,
   }) : super(key: key);
 
   final Duration changeDuration;
-  final double sliderWidth;
   final ValueNotifier<Duration> repTargetDuration;
   final ValueNotifier<int> repTarget;
 
@@ -81,7 +80,6 @@ class _RepTargetCardState extends State<RepTargetCard> {
                   data: ThemeData.light(),
                   child: AnimRepTargetInfoWhite(
                     changeDuration: widget.changeDuration, 
-                    sliderWidth: widget.sliderWidth, 
                     repTargetDuration: widget.repTargetDuration,
                   ),
                 ),
@@ -115,21 +113,16 @@ class AnimRepTargetInfoWhite extends StatelessWidget {
   const AnimRepTargetInfoWhite({
     Key key,
     @required this.changeDuration,
-    @required this.sliderWidth,
     @required this.repTargetDuration,
   }) : super(key: key);
 
   final Duration changeDuration;
-  final double sliderWidth;
   final ValueNotifier<Duration> repTargetDuration;
 
   @override
   Widget build(BuildContext context) {
     return AnimatedRecoveryTimeInfo(
       changeDuration: changeDuration,
-      grownWidth: sliderWidth, 
-      textHeight: 16, 
-      textMaxWidth: 28,
       selectedDuration: repTargetDuration,
       bigTickNumber: 25,
       ranges: [
