@@ -35,9 +35,6 @@ dependencies:
   #info pop up
   awesome_dialog: ^0.1.0
 
-  #better snackbar
-  flushbar: ^1.9.1
-
   #toast
   bot_toast: ^2.2.0
 

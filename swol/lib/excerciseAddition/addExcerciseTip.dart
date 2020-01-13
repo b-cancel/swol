@@ -1,6 +1,11 @@
-import 'package:flushbar/flushbar.dart';
+//flutter
 import 'package:flutter/material.dart';
+
+//plugin
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
+//internal
+import 'package:swol/sharedWidgets/ourSnackBar.dart';
 
 /*
 at all times we are trying to help the user
@@ -42,37 +47,19 @@ class _TipGeneratorState extends State<TipGenerator> {
 
   showFlushBar(String message){
     flushBarMessage = message;
-    Flushbar(
-      message: message,
-      //icon pulsing is very distracting
-      shouldIconPulse: false,
-      //it should always show up after the user change some setting
-      leftBarIndicatorColor: Colors.transparent,
-      isDismissible: false, 
-      duration: null,
-      //color that are just distracting enough
-      backgroundColor: Theme.of(context).primaryColorDark,
-      borderColor: Theme.of(context).scaffoldBackgroundColor,
-      //other
-      icon: Icon(
-        FontAwesomeIcons.solidLightbulb,
-        size: 28.0,
-        color: Colors.yellow,
-      ),
-      borderRadius: 16,
-      margin: EdgeInsets.all(16), 
-      //flushbar default styling
-      flushbarPosition: FlushbarPosition.BOTTOM,
-      flushbarStyle: FlushbarStyle.FLOATING,
-    )..show(context);
+    openSnackBar(
+      context, 
+      message, 
+      Colors.yellow, 
+      FontAwesomeIcons.solidLightbulb,
+      dismissible: false,
+      showForever: true,
+    );
   }
 
   hideFlushBar(){
-    //hide the message         
-    Navigator.of(context).pop();
-
-    //clear the message so we don't accidentally pop the page
     flushBarMessage = null;
+    Scaffold.of(context).hideCurrentSnackBar();
   }
 
   updateTip(){
