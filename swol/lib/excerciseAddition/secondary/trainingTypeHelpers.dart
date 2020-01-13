@@ -1,4 +1,5 @@
 //flutter
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 
 //plugins
@@ -135,39 +136,65 @@ class _SetTargetToTrainingTypeIndicatorState extends State<SetTargetToTrainingTy
                         totalScreenWidth: totalScreenWidth,
                       ),
                     ),
+                    Positioned(
+                      //IDK why we need this...
+                      right: 48.0 + 8,
+                      top: 0,
+                      bottom: 0,
+                      child: Center(
+                        child: NoMoreThan6Sets(),
+                      ),
+                    ),
                   ],
                 ),
               ],
             ),
-            Positioned(
-              right: 0,
-              top: 0,
-              bottom: 0,
-              child: Center(
-                child: Tooltip(
-                  message: "You shouldn't do anymore than 6 sets",
-                  waitDuration: Duration(milliseconds: 100),
-                  preferBelow: false,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: Theme.of(context).primaryColorDark,
-                        width: 2,
-                      )
-                    ),
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 4,
-                      vertical: 4,
-                    ),
-                    child: Icon(
-                      Icons.warning,
-                      color: Theme.of(context).primaryColorDark,
-                    ),
-                  ),
-                ),
-              ),
-            )
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class NoMoreThan6Sets extends StatelessWidget {
+  const NoMoreThan6Sets({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: (){
+        BotToast.showAttachedWidget(
+          attachedBuilder: (_) => Card(
+            color: Colors.grey,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text("You shouldn't need to do any more than 6 sets")
+            ),
+          ),
+          duration: Duration(seconds: 3),
+          targetContext: context,
+          onlyOne: true,
+          preferDirection: PreferDirection.leftCenter,
+        );
+      },
+      child: Container(
+        width: 36,
+        height: 36,
+        decoration: BoxDecoration(
+          border: Border.all(
+            color: Theme.of(context).primaryColorDark,
+            width: 2,
+          )
+        ),
+        padding: EdgeInsets.symmetric(
+          horizontal: 4,
+          vertical: 4,
+        ),
+        child: Icon(
+          Icons.warning,
+          color: Theme.of(context).primaryColorDark,
         ),
       ),
     );
