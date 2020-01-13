@@ -182,7 +182,7 @@ class ThePills extends StatelessWidget {
           setTarget: setTarget,
           actives: [4,5,6], 
           sectionSize: totalScreenWidth/4,
-          name: "Train Strength",
+          name: "Strength Training",
           onTap: makeTrainingTypePopUp(
             context: context,
             title: "Strength Training",
@@ -197,7 +197,7 @@ class ThePills extends StatelessWidget {
           setTarget: setTarget,
           actives: [3,4,5], 
           sectionSize: totalScreenWidth/4,
-          name: "Train Hypertrophy",
+          name: "Hypertrophy Training",
           onTap: makeTrainingTypePopUp(
             context: context,
             title: "Hypertrophy Training",
@@ -212,7 +212,7 @@ class ThePills extends StatelessWidget {
           setTarget: setTarget,
           actives: [1,2,3], //+1
           sectionSize: totalScreenWidth/4,
-          name: "Train Endurance",
+          name: "Endurance Training",
           onTap: makeTrainingTypePopUp(
             context: context,
             title: "Endurance Training",

@@ -128,12 +128,31 @@ class DarkPills extends StatelessWidget {
                   child: Container(
                     padding: EdgeInsets.all(4),
                     width: (sectionSize * 3),
-                    child: Center(
-                      child: Text(
-                        name,
-                        style: TextStyle(
-                          color: active  ? Theme.of(context).primaryColor : Colors.white,
-                          fontWeight: FontWeight.bold,
+                    height: 24,
+                    child: FittedBox(
+                      fit: BoxFit.contain,
+                      child: Center(
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                right: 4.0,
+                              ),
+                              child: Icon(
+                                Icons.info,
+                                size: 16,
+                                color: active ? Theme.of(context).primaryColor : Colors.white,
+                              ),
+                            ),
+                            Text(
+                              name,
+                              style: TextStyle(
+                                color: active ? Theme.of(context).primaryColor : Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
