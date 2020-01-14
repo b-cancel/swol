@@ -105,6 +105,8 @@ class _AnimatedRecoveryTimeInfoState extends State<AnimatedRecoveryTimeInfo> {
 
   @override
   Widget build(BuildContext context) {
+    double thisWidth = MediaQuery.of(context).size.width;
+    double chosenHeight = 250.0; //TODO: set actual value
     /*
     //create
     List<Widget> nameSections = new List<Widget>();
@@ -174,22 +176,22 @@ class _AnimatedRecoveryTimeInfoState extends State<AnimatedRecoveryTimeInfo> {
     }
     */
 
-    int index = -1; //added to before return so that starts at 0
     carousel = CarouselSlider(
-      initialPage: 1,
-      height: 400.0,
-      items: widget.ranges.map((range) {
+      //TODO: correct this to be as small as possible
+      height: chosenHeight, //overrides aspect ratio
+      //we don't want to have a hint at the other sections
+      //hinting would require too much space
+      //and the current UI expresses that there are other sections already
+      viewportFraction: 1.0,
+      //not needed since we control the carousel with the controller
+      enableInfiniteScroll: false,
+      //user should never be able to scroll this themeselves
+      //scrollPhysics: NeverScrollableScrollPhysics(), //TODO: uncomment
+      //-----unrefined
+      //initialPage: 1,
+      items: widget.ranges.map((aRange) {
         return Builder(
           builder: (BuildContext context) {
-            index++; //starts at 0
-
-            return Container(
-              color: Colors.red,
-              height: 16,
-              child: Container(),
-            );
-
-            /*
             return Stack(
               children: <Widget>[
                 //---Name Sections
@@ -198,21 +200,14 @@ class _AnimatedRecoveryTimeInfoState extends State<AnimatedRecoveryTimeInfo> {
                   padding: EdgeInsets.only(
                     top: 24.0,
                   ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      ANameSection(
-                        grownWidth: widget.grownWidth,
-                        sectionName: range.name,
-                        sectionTap: widget.ranges[sectionGrown].onTap,
-                      ),
-                    ],
+                  child: ANameSection(
+                    sectionName: aRange.name,
+                    sectionTap: aRange.onTap,
                   ),
                 ),
               ],
             );
-            */
+            
           },
         );
       }).toList(),
@@ -221,7 +216,11 @@ class _AnimatedRecoveryTimeInfoState extends State<AnimatedRecoveryTimeInfo> {
     //build
     return Theme(
       data: ThemeData.dark(),
-      child: Container(),
+      child: Container(
+        width: MediaQuery.of(context).size.width,
+        height: chosenHeight,
+        child: carousel,
+      ),
       
       
       //carousel,
@@ -266,51 +265,59 @@ class _AnimatedRecoveryTimeInfoState extends State<AnimatedRecoveryTimeInfo> {
 class ANameSection extends StatelessWidget {
   const ANameSection({
     Key key,
-    @required this.grownWidth,
     @required this.sectionName,
     @required this.sectionTap,
   }) : super(key: key);
 
-  final double grownWidth;
   final String sectionName;
   final Function sectionTap;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: grownWidth,
-      child: Center(
-        child: Material(
-          color: Colors.transparent,
-          child: InkWell(
-            onTap: sectionTap,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.only(
-                      right: 8,
-                    ),
-                    child: Icon(
-                      Icons.info,
-                      color: Theme.of(context).accentColor,
-                    ),
-                  ),
-                  Text(
-                    sectionName,
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 1,
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
+    Widget content = Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          Padding(
+            padding: EdgeInsets.only(
+              right: 8,
+            ),
+            child: Icon(
+              Icons.info,
+              size: 16,
             ),
           ),
+          Text(
+            sectionName,
+            overflow: TextOverflow.ellipsis,
+            maxLines: 1,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ],
+      ),
+    );
+
+    return Container(
+      child: RaisedButton(
+        shape: RoundedRectangleBorder(
+          borderRadius: new BorderRadius.circular(24.0),
+          side: BorderSide(color: Colors.white),
         ),
+        padding: EdgeInsets.all(0),
+        //everything transparent
+        color: Colors.transparent,
+        splashColor: Colors.transparent,
+        disabledColor: Colors.transparent,
+        focusColor: Colors.transparent,
+        hoverColor: Colors.transparent,
+        //only when touched
+        highlightColor: Theme.of(context).accentColor,
+        colorBrightness: Brightness.dark,
+        onPressed: sectionTap,
+        child: content,
       ),
     );
   }
