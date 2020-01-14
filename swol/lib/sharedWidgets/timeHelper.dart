@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 //plugin
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:swol/sharedWidgets/tickGenerator.dart';
 
 //struct
 class Range{
@@ -108,25 +109,8 @@ class _AnimatedRecoveryTimeInfoState extends State<AnimatedRecoveryTimeInfo> {
     double thisWidth = MediaQuery.of(context).size.width;
     //36 for the button, 24 for the ticks
     double chosenHeight = 36.0 + 24;
-    /*
 
-      //add tick section
-      tickSections.add(
-        Container(
-          height: 16,
-          width: widget.grownWidth,
-          child: TickGenerator(
-            startTick: widget.ranges[i].startSeconds,
-            endTick: widget.ranges[i].endSeconds,
-            selectedDuration: widget.selectedDuration,
-            bigTickNumber: widget.bigTickNumber,
-            darkTheme: widget.darkTheme,
-          ),
-        ),
-      );
-    }
-    */
-
+    //create carousel seperately so we can control it
     carousel = CarouselSlider(
       //TODO: correct this to be as small as possible
       height: chosenHeight, //overrides aspect ratio
@@ -143,10 +127,6 @@ class _AnimatedRecoveryTimeInfoState extends State<AnimatedRecoveryTimeInfo> {
       items: widget.ranges.map((aRange) {
         return Builder(
           builder: (BuildContext context) {
-      //i != (widget.ranges.length-1)
-      //right below left
-
-            //build stuff
             return Stack(
               children: <Widget>[
                 //---Name Sections
@@ -192,9 +172,23 @@ class _AnimatedRecoveryTimeInfoState extends State<AnimatedRecoveryTimeInfo> {
                     ),
                   ),
                 ),
+                //---Tick Sections
+                Positioned(
+                  top: 0,
+                  child: Container(
+                    height: 16,
+                    width: thisWidth,
+                    child: TickGenerator(
+                      startTick: aRange.startSeconds,
+                      endTick: aRange.endSeconds,
+                      selectedDuration: widget.selectedDuration,
+                      bigTickNumber: widget.bigTickNumber,
+                      darkTheme: widget.darkTheme,
+                    ),
+                  ),
+                ),
               ],
             );
-            
           },
         );
       }).toList(),
@@ -208,26 +202,6 @@ class _AnimatedRecoveryTimeInfoState extends State<AnimatedRecoveryTimeInfo> {
         height: chosenHeight,
         child: carousel,
       ),
-      
-      
-      //carousel,
-      
-      
-      /*
-      
-          //---Tick Sections
-          Padding(
-            padding: const EdgeInsets.only(
-              bottom: 24.0,
-            ),
-            child: Row(
-              children: tickSections,
-            ),
-          ),
-          
-        ],
-      ),
-      */
     );
   }
 }
@@ -247,7 +221,10 @@ class ANameSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Widget content = Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.symmetric(
+        vertical: 0.0,
+        horizontal: 8,
+      ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
@@ -274,8 +251,7 @@ class ANameSection extends StatelessWidget {
 
     return Container(
       width: width,
-      color: Colors.pink,
-      height: 36,
+      height: 32,
       alignment: Alignment.topCenter,
       child: RaisedButton(
         shape: RoundedRectangleBorder(

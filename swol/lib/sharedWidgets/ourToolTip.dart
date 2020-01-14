@@ -26,7 +26,7 @@ class OurToolTip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: Colors.grey,
+      color: Theme.of(context).scaffoldBackgroundColor,
       child: Row(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.center,
