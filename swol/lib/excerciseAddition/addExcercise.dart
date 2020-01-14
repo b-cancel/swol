@@ -100,6 +100,8 @@ class AddExcercise extends StatelessWidget {
     )
   );
 
+  final ValueNotifier<bool> tipIsShowing = new ValueNotifier(false);
+
   //-------------------------Focus Nodes-------------------------
   final FocusNode nameFocusNode = FocusNode();
   final FocusNode noteFocusNode = FocusNode();
@@ -163,38 +165,8 @@ class AddExcercise extends StatelessWidget {
           functionString: functionString,
         ),
       ),
-      Container(
-        height: 56.0 + 16,
-        width: MediaQuery.of(context).size.width,
-        //color: Colors.red,
-        padding: EdgeInsets.symmetric(
-          horizontal: 16,
-        ),
-        child: Opacity(
-          opacity: 0,
-          child: Row(
-            children: <Widget>[
-              Padding(
-                padding: EdgeInsets.only(
-                  right: 8.0,
-                ),
-                child: Icon(
-                  FontAwesomeIcons.solidLightbulb,
-                  color: Theme.of(context).primaryColorDark,
-                ),
-              ),
-              Expanded(
-                child: Text(
-                  "Recovery Time, Set Target, and Rep Target\n"
-                  + "should have matching training types",
-                  style: TextStyle(
-                    color: Theme.of(context).primaryColorDark,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
+      TipSpacing(
+        tipIsShowing: tipIsShowing,
       ),
     ];
 
@@ -258,6 +230,7 @@ class AddExcercise extends StatelessWidget {
                       ),
                     ),
                     TipGenerator(
+                      tipIsShowing: tipIsShowing,
                       recoveryPeriod: recoveryPeriod,
                       setTarget: setTarget,
                       repTarget: repTarget,
@@ -301,6 +274,44 @@ class AddExcercise extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+class TipSpacing extends StatefulWidget {
+  const TipSpacing({
+    @required this.tipIsShowing,
+    Key key,
+  }) : super(key: key);
+
+  final ValueNotifier<bool> tipIsShowing;
+
+  @override
+  _TipSpacingState createState() => _TipSpacingState();
+}
+
+class _TipSpacingState extends State<TipSpacing> {
+  updateState(){
+    if(mounted) setState(() {});
+  }
+
+  @override
+  void initState() { 
+    widget.tipIsShowing.addListener(updateState);
+    super.initState();
+  }
+
+  @override
+  void dispose() { 
+    widget.tipIsShowing.removeListener(updateState);
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: widget.tipIsShowing.value ? 56.0 + 16 + 8 : 0,
+      width: MediaQuery.of(context).size.width,
     );
   }
 }

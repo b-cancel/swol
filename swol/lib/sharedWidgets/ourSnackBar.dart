@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 //used by 3. used by reference link to tell the user the link navigation didnt work
 openSnackBar(
   BuildContext context, 
-  String message, 
   Color color, 
   IconData icon,
   {
@@ -15,6 +14,9 @@ openSnackBar(
     bool quickDismissBeforeShow: false,
     bool dismissible: true,
     bool showForever: false,
+    //main
+    String message: "", 
+    ValueNotifier<String> updatingMessage,
   }
 ){
   //dismiss if desired
@@ -38,11 +40,12 @@ openSnackBar(
           color: color,
         ),
       ),
-      Text(
-        message,
+      DefaultTextStyle(
         style: TextStyle(
           color: Colors.white,
         ),
+        child: updatingMessage == null ? Text(message)
+        : UpdatingText(updatingText: updatingMessage),
       ),
     ]
   );
@@ -71,4 +74,38 @@ openSnackBar(
       ),
     ),
   );
+}
+
+class UpdatingText extends StatefulWidget {
+  UpdatingText({
+    @required this.updatingText,
+  }); 
+
+  final ValueNotifier<String> updatingText;
+
+  @override
+  _UpdatingTextState createState() => _UpdatingTextState();
+}
+
+class _UpdatingTextState extends State<UpdatingText> {
+  updateState(){
+    if(mounted) setState(() {});
+  }
+
+  @override
+  void initState() { 
+    super.initState();
+    widget.updatingText.addListener(updateState);
+  }
+
+  @override
+  void dispose() { 
+    widget.updatingText.addListener(updateState);
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(widget.updatingText.value);
+  }
 }

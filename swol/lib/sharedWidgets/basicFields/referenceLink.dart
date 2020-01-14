@@ -44,9 +44,9 @@ class _ReferenceLinkBoxState extends State<ReferenceLinkBox> {
   showWarning(String message){
     openSnackBar(
       context, 
-      message, 
       Colors.yellow, 
       Icons.warning,
+      message: message, 
     );
   }
 

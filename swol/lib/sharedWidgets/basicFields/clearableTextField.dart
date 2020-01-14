@@ -43,9 +43,9 @@ class _TextFieldWithClearButtonState extends State<TextFieldWithClearButton> {
   showSnackBar(){
     openSnackBar(
       context, 
-      "A Name Is Required", 
       Colors.red, 
       Icons.error_outline,
+      message: "A Name Is Required", 
     );
   }
 

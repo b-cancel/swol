@@ -165,9 +165,9 @@ class ExcerciseTileSubtitle extends StatelessWidget {
       onTap: (){
         openSnackBar(
           context, 
-          snackbarMessage, 
           Colors.blue, 
           Icons.info_outline,
+          message: snackbarMessage,
         );
       },
       //NOTE: this is just extra padding to make it easier to click the chip

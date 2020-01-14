@@ -28,12 +28,14 @@ When 1 mismatch (ideally)
 
 class TipGenerator extends StatefulWidget {
   TipGenerator({
+    @required this.tipIsShowing,
     @required this.recoveryPeriod,
     @required this.setTarget,
     @required this.repTarget,
     Key key,
   }) : super(key: key);
 
+  final ValueNotifier<bool> tipIsShowing;
   final ValueNotifier<Duration> recoveryPeriod;
   final ValueNotifier<int> setTarget;
   final ValueNotifier<int> repTarget;
@@ -43,22 +45,29 @@ class TipGenerator extends StatefulWidget {
 }
 
 class _TipGeneratorState extends State<TipGenerator> {
-  String flushBarMessage;
+  ValueNotifier<String> updateableTipMessage;
 
-  showFlushBar(String message){
-    flushBarMessage = message;
+  showTheTip(String message){
+    updateableTipMessage.value = message;
+    widget.tipIsShowing.value = true;
     openSnackBar(
       context, 
-      message, 
       Colors.yellow, 
       FontAwesomeIcons.solidLightbulb,
+      message: message,
       dismissible: false,
       showForever: true,
     );
   }
 
-  hideFlushBar(){
-    flushBarMessage = null;
+  updateTheTip(String message){
+    print("updating the tip");
+    updateableTipMessage.value = message;
+  }
+
+  hideTheTip(){
+    updateableTipMessage.value = "";
+    widget.tipIsShowing.value = false;
     Scaffold.of(context).hideCurrentSnackBar();
   }
 
@@ -100,20 +109,22 @@ class _TipGeneratorState extends State<TipGenerator> {
     //show tip if needed
     if(endurance == 3 || hypertrophy == 3 || strength == 3){
       //a message was shown
-      if(flushBarMessage != null) hideFlushBar();
+      if(updateableTipMessage.value != "") hideTheTip();
     }
     else{
-      if(flushBarMessage == null){
-        showFlushBar(
-          "Recovery Time, Set Target, and Rep Target\n"
-          + "should have matching training types"
-        );
-      }
+      String tipText = "Recovery Time, Set Target, and Rep Target\n"
+      + "should have matching training types";
+
+      if(updateableTipMessage.value == "") showTheTip(tipText);
+      else updateTheTip(tipText + DateTime.now().toString());
     }
   }
 
   @override
   void initState() {
+    updateableTipMessage = new ValueNotifier("");
+
+    //handle listeners
     widget.recoveryPeriod.addListener(updateTip);
     widget.setTarget.addListener(updateTip);
     widget.repTarget.addListener(updateTip);
