@@ -106,17 +106,9 @@ class _AnimatedRecoveryTimeInfoState extends State<AnimatedRecoveryTimeInfo> {
   @override
   Widget build(BuildContext context) {
     double thisWidth = MediaQuery.of(context).size.width;
-    double chosenHeight = 250.0; //TODO: set actual value
+    //36 for the button, 24 for the ticks
+    double chosenHeight = 36.0 + 24;
     /*
-    //create
-    List<Widget> nameSections = new List<Widget>();
-    List<Widget> tickSections = new List<Widget>();
-    List<Widget> endSections = new List<Widget>();
-    for(int i = 0; i < .length; i++){
-      //add name section
-      nameSections.add(
-        
-      );
 
       //add tick section
       tickSections.add(
@@ -132,47 +124,6 @@ class _AnimatedRecoveryTimeInfoState extends State<AnimatedRecoveryTimeInfo> {
           ),
         ),
       );
-
-      //add range section
-      Widget left = Container(       
-        width: MediaQuery.of(context).size.width - 48,
-        alignment: Alignment.centerLeft,
-        child: Opacity(
-          opacity: (sectionGrown == i) ? 1 : 0,
-          child: widget.ranges[i].left,
-        )
-      );
-
-      Widget right = Container(       
-        width: MediaQuery.of(context).size.width - 48,
-        alignment: Alignment.centerRight,
-        child: Opacity(
-          opacity: (sectionGrown == i) ? 1 : 0,
-          child: widget.ranges[i].right,
-        ),
-      );
-
-      //usually left OVER right
-      if(i != (widget.ranges.length-1)){
-        endSections.add(
-          Stack(
-            children: <Widget>[
-              right,
-              left,
-            ],
-          ),
-        );
-      }
-      else{
-        endSections.add(
-          Stack(
-            children: <Widget>[
-              left,
-              right,
-            ],
-          ),
-        );
-      }
     }
     */
 
@@ -192,6 +143,10 @@ class _AnimatedRecoveryTimeInfoState extends State<AnimatedRecoveryTimeInfo> {
       items: widget.ranges.map((aRange) {
         return Builder(
           builder: (BuildContext context) {
+      //i != (widget.ranges.length-1)
+      //right below left
+
+            //build stuff
             return Stack(
               children: <Widget>[
                 //---Name Sections
@@ -201,8 +156,40 @@ class _AnimatedRecoveryTimeInfoState extends State<AnimatedRecoveryTimeInfo> {
                     top: 24.0,
                   ),
                   child: ANameSection(
+                    width: thisWidth,
                     sectionName: aRange.name,
                     sectionTap: aRange.onTap,
+                  ),
+                ),
+                //---End Sections
+                (widget.darkTheme == false) 
+                ? Container()
+                : DefaultTextStyle(
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                      top: 24.0,
+                    ),
+                    child: Stack(
+                      children: <Widget>[
+                        Positioned(
+                          top: 0,
+                          left: 0,
+                          child: Container(
+                            child: aRange.left,
+                          ),
+                        ),
+                        Positioned(
+                          top: 0,
+                          right: 0,
+                          child: Container(
+                            child: aRange.right,
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ],
@@ -237,24 +224,7 @@ class _AnimatedRecoveryTimeInfoState extends State<AnimatedRecoveryTimeInfo> {
               children: tickSections,
             ),
           ),
-          //---End Sections
-          (widget.darkTheme == false) 
-          ? Container()
-          : DefaultTextStyle(
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-            ),
-            child: Padding(
-              padding: EdgeInsets.only(
-                top: 24,
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.max,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: endSections,
-              ),
-            ),
-          ),
+          
         ],
       ),
       */
@@ -265,10 +235,12 @@ class _AnimatedRecoveryTimeInfoState extends State<AnimatedRecoveryTimeInfo> {
 class ANameSection extends StatelessWidget {
   const ANameSection({
     Key key,
+    @required this.width,
     @required this.sectionName,
     @required this.sectionTap,
   }) : super(key: key);
 
+  final double width;
   final String sectionName;
   final Function sectionTap;
 
@@ -301,6 +273,10 @@ class ANameSection extends StatelessWidget {
     );
 
     return Container(
+      width: width,
+      color: Colors.pink,
+      height: 36,
+      alignment: Alignment.topCenter,
       child: RaisedButton(
         shape: RoundedRectangleBorder(
           borderRadius: new BorderRadius.circular(24.0),

@@ -34,11 +34,12 @@ class SliderTipButton extends StatelessWidget {
           (tipText == null) ? Container()
           : Padding(
             padding: const EdgeInsets.only(
-              right: 8.0,
+              right: 4.0,
             ),
             child: Icon(
               Icons.warning,
               color: Theme.of(context).primaryColorDark,
+              size: 16,
             ),
           ),
           Text(buttonText)
