@@ -29,8 +29,8 @@ class Range{
 //1. recovery time info
 //2. rep target info
 //in change recovery time... recovery time info
-class AnimatedRecoveryTimeInfo extends StatefulWidget {
-  AnimatedRecoveryTimeInfo({
+class AnimatedTrainingInfo extends StatefulWidget {
+  AnimatedTrainingInfo({
     Key key,
     @required this.changeDuration,
     @required this.selectedDuration,
@@ -46,10 +46,10 @@ class AnimatedRecoveryTimeInfo extends StatefulWidget {
   final bool darkTheme;
 
   @override
-  _AnimatedRecoveryTimeInfoState createState() => _AnimatedRecoveryTimeInfoState();
+  _AnimatedTrainingInfoState createState() => _AnimatedTrainingInfoState();
 }
 
-class _AnimatedRecoveryTimeInfoState extends State<AnimatedRecoveryTimeInfo> {
+class _AnimatedTrainingInfoState extends State<AnimatedTrainingInfo> {
   var carousel;
   int sectionGrown;
 
@@ -106,7 +106,6 @@ class _AnimatedRecoveryTimeInfoState extends State<AnimatedRecoveryTimeInfo> {
 
     //create carousel seperately so we can control it
     carousel = CarouselSlider(
-      //TODO: correct this to be as small as possible
       height: chosenHeight, //overrides aspect ratio
       //we don't want to have a hint at the other sections
       //hinting would require too much space
@@ -188,12 +187,15 @@ class _AnimatedRecoveryTimeInfoState extends State<AnimatedRecoveryTimeInfo> {
     );
 
     //build
-    return Theme(
-      data: ThemeData.dark(),
-      child: Container(
-        width: MediaQuery.of(context).size.width,
-        height: chosenHeight,
-        child: carousel,
+    return FittedBox(
+      fit: BoxFit.contain,
+      child: Theme(
+        data: ThemeData.dark(),
+        child: Container(
+          width: MediaQuery.of(context).size.width,
+          height: chosenHeight,
+          child: carousel,
+        ),
       ),
     );
   }

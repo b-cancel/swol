@@ -43,6 +43,7 @@ class RecoveryTimeCard extends StatelessWidget {
                   popUpFunction: () => recoveryTimePopUp(context),
                 ),
               ),
+              //edit this?
               RecoveryTimeWidget(
                 changeDuration: changeDuration,
                 recoveryPeriod: recoveryPeriod, 
@@ -55,11 +56,6 @@ class RecoveryTimeCard extends StatelessWidget {
   }
 }
 
-/*
-sliderWidth: sliderWidth, 
-                textHeight: 16, 
-                textMaxWidth: 28, 
-*/
 class RecoveryTimeWidget extends StatelessWidget {
   const RecoveryTimeWidget({
     Key key,
@@ -77,19 +73,13 @@ class RecoveryTimeWidget extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
-        //
-        FittedBox(
-          fit: BoxFit.contain,
-          child: Center(
-            child: Theme(
-              //light so that our pop ups work properly
-              data: ThemeData.light(),
-              child: AnimRecoveryTimeInfoToWhiteTheme(
-                changeDuration: changeDuration, 
-                recoveryPeriod: recoveryPeriod, 
-                darkTheme: darkTheme,
-              ),
-            ),
+        Theme(
+          //light so that our pop ups work properly
+          data: ThemeData.light(),
+          child: AnimRecoveryTimeInfoToWhiteTheme(
+            changeDuration: changeDuration, 
+            recoveryPeriod: recoveryPeriod, 
+            darkTheme: darkTheme,
           ),
         ),
         Padding(
@@ -116,6 +106,7 @@ class RecoveryTimeWidget extends StatelessWidget {
   }
 }
 
+//todo here
 class AnimRecoveryTimeInfoToWhiteTheme extends StatelessWidget {
   const AnimRecoveryTimeInfoToWhiteTheme({
     Key key,
@@ -130,7 +121,7 @@ class AnimRecoveryTimeInfoToWhiteTheme extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedRecoveryTimeInfo(
+    return AnimatedTrainingInfo(
       changeDuration: changeDuration,
       selectedDuration: recoveryPeriod,
       darkTheme: darkTheme,

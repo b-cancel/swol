@@ -65,39 +65,33 @@ class _RepTargetCardState extends State<RepTargetCard> {
                 top: 8,
                 left: 16,
                 right: 16,
+                bottom: 16,
               ),
-              child: new HeaderWithInfo(
-                title: "Rep Target",
-                popUpFunction: () => repTargetPopUp(context),
-              ),
-            ),
-            Container(
-              child: Padding(
-                padding: const EdgeInsets.only(
-                  left: 16.0,
-                ),
-                child: Theme(
-                  data: ThemeData.light(),
-                  child: AnimRepTargetInfoWhite(
-                    changeDuration: widget.changeDuration, 
-                    repTargetDuration: widget.repTargetDuration,
+              child: Column(
+                children: <Widget>[
+                  HeaderWithInfo(
+                    title: "Rep Target",
+                    popUpFunction: () => repTargetPopUp(context),
                   ),
-                ),
+                  Theme(
+                    data: ThemeData.light(),
+                    child: AnimRepTargetInfoWhite(
+                      changeDuration: widget.changeDuration, 
+                      repTargetDuration: widget.repTargetDuration,
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(top: 8),
+                    child: Container(
+                      color: Colors.black, //line color
+                      height: 2,
+                      width: MediaQuery.of(context).size.width,
+                    ),
+                  ),
+                ],
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(
-                bottom: 16.0,
-                left: 16,
-                right: 16,
-                top: 8,
-              ),
-              child: Container(
-                color: Colors.black, //line color
-                height: 2,
-                width: MediaQuery.of(context).size.width,
-              ),
-            ),
+            //slide must be full width without the 16 horizontal padding
             CustomSlider(
               value: widget.repTarget,
               lastTick: 35,
@@ -109,6 +103,7 @@ class _RepTargetCardState extends State<RepTargetCard> {
   }
 }
 
+//used by rep target (BoxFit.contained) and within white theme
 class AnimRepTargetInfoWhite extends StatelessWidget {
   const AnimRepTargetInfoWhite({
     Key key,
@@ -121,7 +116,7 @@ class AnimRepTargetInfoWhite extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedRecoveryTimeInfo(
+    return AnimatedTrainingInfo(
       changeDuration: changeDuration,
       selectedDuration: repTargetDuration,
       bigTickNumber: 25,
