@@ -24,17 +24,11 @@ class Range{
   });
 }
 
-//TODO: complete the update of the below
 //guides the users and instructs them all at once with minimal UI
 //used 2 times, both in add excercise... 
 //1. recovery time info
 //2. rep target info
 //in change recovery time... recovery time info
-
-//the slide width is as large as its going to be... so perhaps consider passing it
-//TODO: check that slider width is accurate
-//set first to the width of the phone (which is roughly how large it should be)
-//then make sure its contained within the box its in (of untold or told width)
 class AnimatedRecoveryTimeInfo extends StatefulWidget {
   AnimatedRecoveryTimeInfo({
     Key key,
@@ -59,12 +53,7 @@ class _AnimatedRecoveryTimeInfoState extends State<AnimatedRecoveryTimeInfo> {
   var carousel;
   int sectionGrown;
 
-  //textHeight: 16
-  //textMaxWidth: 28
-
-/*
-  setSectionGrown(){
-    /*
+  setSectionGrown({bool jump: false}){
     for(int i = 0; i < widget.ranges.length; i++){
       if(i == (widget.ranges.length - 1)) sectionGrown = i;
       else{
@@ -76,33 +65,38 @@ class _AnimatedRecoveryTimeInfoState extends State<AnimatedRecoveryTimeInfo> {
       }
     }
 
+    if(jump) carousel.jumpToPage(sectionGrown);
+    else{
+      carousel.animateToPage(
+        sectionGrown, 
+        duration: Duration(milliseconds: 250), 
+        curve: Curves.easeInOut,
+      );
+    }
     
-    carousel.animateToPage(
-      sectionGrown, 
-      duration: Duration(milliseconds: 250), 
-      curve: Curves.easeInOut,
-    );
-    */
   }
 
   @override
   void initState() {
     //set initial section grown
-    //setSectionGrown();
-
-    /*
-    //listen to changes to update section grown
-    widget.selectedDuration.addListener((){
-      setSectionGrown();
-      if(mounted){
-        setState(() {});
-      }
+    WidgetsBinding.instance.addPostFrameCallback((_){
+      setSectionGrown(jump: true);
     });
-    */
+
+    //listen to changes to update section grown
+    widget.selectedDuration.addListener(setSectionGrown);
     
+    //super init
     super.initState();
   }
-  */
+
+  @override
+  void dispose() {
+    widget.selectedDuration.removeListener(setSectionGrown);
+
+    //super dispose
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -121,9 +115,8 @@ class _AnimatedRecoveryTimeInfoState extends State<AnimatedRecoveryTimeInfo> {
       //not needed since we control the carousel with the controller
       enableInfiniteScroll: false,
       //user should never be able to scroll this themeselves
-      //scrollPhysics: NeverScrollableScrollPhysics(), //TODO: uncomment
+      scrollPhysics: NeverScrollableScrollPhysics(),
       //-----unrefined
-      //initialPage: 1,
       items: widget.ranges.map((aRange) {
         return Builder(
           builder: (BuildContext context) {
