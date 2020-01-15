@@ -20,9 +20,9 @@ enum StoredBools {
   TermsAgreed, 
   InitialControlsShown, 
   IntroductionShown,
+  SaveShown, 
   //TODO: do or eliminate variables below
   SearchButtonShown,
-  SaveShown, 
   SettingsShown,
 }
 

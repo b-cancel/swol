@@ -20,23 +20,20 @@ import 'package:swol/excerciseSelection/secondary/addNewHero.dart';
 import 'package:swol/excercise/excerciseStructure.dart';
 import 'package:swol/other/functions/helper.dart';
 
-//TODO: when we have animated "to learn section" hyperlinks 
-//TODO: whenever exiting this page NOT manually we should save all of the data in a file
-//TODO: so whenever we open up this page we automatically ask the user if they would like to load up the previous data
-//TODO: or perhaps we could yolo it and load it up cuz it really isnt that much hassle to clear out the fields anyways
-//TODO: once the data is loaded in so that we are restoring an add workout session... 
-//TODO:   after having traveled away into the learn section we wipe the file ofcourse
+//TODO *IMPROVEMENT*: remove strange extra padding on top of name
+//TODO *IMPROVEMENT*: swiping left and right on the 3 settings make the value go up and down
+//TODO *IMPROVEMENT*: improve the set target UI that looks funky but idk why
+//TODO *IMPROVEMENT*: make the set target training type buttons match the others more
+//TODO *IMPROVEMENT*: prediction formula special hold and let go to select UI
 
-/*
-when tapping 
-1. all header jazz
-2. all training type pop ups
-*/
+//when we have animated "to learn section" hyperlinks 
+//TODO *IMPROVEMENT*: whenever exiting this page NOT manually we should save all of the data in a file
+//TODO *IMPROVEMENT*: so whenever we open up this page we automatically ask the user if they would like to load up the previous data
+//or perhaps we could yolo it and load it up cuz it really isnt that much hassle to clear out the fields anyways
+//once the data is loaded in so that we are restoring an add workout session... 
+//after having traveled away into the learn section we wipe the file ofcourse
 
 //main widget
-//NOTE: we should not rebuild this whole widget
-//there is simply too much to rebuild
-//instead rebuild the subwidgets
 class AddExcercise extends StatelessWidget {
   AddExcercise({
     Key key,
@@ -241,6 +238,7 @@ class AddExcercise extends StatelessWidget {
             ),
           ),
         ),
+        //TODO: the widget below isn't doing anything unless I use that one plugin
         body: DirectSelectContainer(
           child: Stack(
             children: <Widget>[
