@@ -60,8 +60,6 @@ class _TimePickerState extends State<TimePicker> {
     Color delimeterColor = (widget.darkTheme) ? Colors.white : Colors.black;
     Color textColor = (widget.darkTheme) ? Theme.of(context).primaryTextTheme.title.color : Colors.black;
 
-    print("selected " +  secondOptions.indexOf(minutesSeconds[1]).toString());
-
     //build
     return Picker(
       hideHeader: true,

@@ -65,11 +65,9 @@ class AnimatedTitleAction extends StatelessWidget {
             top: true,
             left: false,
             prevFeature: (){
-              print("to swol logo");
               OnBoarding.discoverSwolLogo(context);
             },
             nextFeature: (){
-              print("to add excercise");
               OnBoarding.discoverAddExcercise(context);
             },
           ),

@@ -58,7 +58,6 @@ class _AnimatedMiniNormalTimerState extends State<AnimatedMiniNormalTimer> with 
 
   startOrReStart({bool restart: false}){
     Duration timePassed = DateTime.now().difference(widget.excerciseReference.tempStartTime);
-    print("timer says time passed is: " + timePassed.toString());
 
     if(restart){
       //remove listeners
