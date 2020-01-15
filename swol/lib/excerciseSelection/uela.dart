@@ -2,11 +2,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-//packages
-import 'package:swol/sharedWidgets/excerciseListTile/triangleAngle.dart';
-import 'package:swol/utils/onboarding.dart';
-
 //internal
+import 'package:swol/sharedWidgets/excerciseListTile/triangleAngle.dart';
+import 'package:swol/sharedWidgets/playOnceGif.dart';
+import 'package:swol/utils/onboarding.dart';
 import 'package:swol/utils/vibrate.dart';
 
 class UELA extends StatefulWidget {
@@ -109,8 +108,11 @@ class _UELAState extends State<UELA> {
                   padding: EdgeInsets.only(
                     top: 8,
                   ),
-                  child: Image.asset(
-                    "assets/popUpGifs/agree.gif",
+                  child: PlayGifOnce(
+                    assetName: "assets/popUpGifs/agree.gif",
+                    runTimeMS: 2370,
+                    frameCount: 70,
+                    colorWhite: false,
                   ),
                 ),
                 Positioned.fill(

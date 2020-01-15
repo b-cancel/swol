@@ -1,9 +1,15 @@
+//flutter
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:swol/excercise/defaultDateTimes.dart';
-import 'package:swol/excercise/excerciseData.dart';
+
+//internal
 import 'package:swol/excerciseAction/notes/excerciseMessages.dart';
 import 'package:swol/sharedWidgets/basicFields/excerciseEdit.dart';
+import 'package:swol/excercise/defaultDateTimes.dart';
+import 'package:swol/excercise/excerciseData.dart';
+import 'package:swol/sharedWidgets/playOnceGif.dart';
+
+//plugin
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class BigAction extends StatelessWidget {
   BigAction({
@@ -58,22 +64,25 @@ class BigAction extends StatelessWidget {
             ),
             child: Container(
               height: 140,
-              child: Image.asset(
-                "assets/popUpGifs/delete.gif",
-                color: Colors.white,
+              child: PlayGifOnce(
+                assetName: "assets/popUpGifs/delete.gif",
+                runTimeMS: 6120,
+                frameCount: 98,
               ),
             ),
           )
           : Padding(
-            padding: const EdgeInsets.only(
+            padding: const EdgeInsets.only( 
               top: 24.0,
               bottom: 24,
             ),
             child: Container(
               height: 140,
-              child: Image.asset(
-                "assets/popUpGifs/hide.gif",
-                color: Colors.white,
+              child: PlayGifOnce(
+                assetName: "assets/popUpGifs/hide.gif",
+                runTimeMS: 3660,
+                //remove last frame cuz its gross
+                frameCount: 32 - 1,
               ),
             ),
           ),

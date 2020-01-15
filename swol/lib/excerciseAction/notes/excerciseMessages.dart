@@ -32,32 +32,6 @@ class ConfirmActionMessage extends StatelessWidget {
             Radius.circular(12.0)
           ),
         ),
-        /*
-        titlePadding: EdgeInsets.all(0),
-        title: Container(
-          padding: EdgeInsets.all(16),
-          color: buttonColor,
-          child: Row(
-            children: <Widget>[
-              Padding(
-                padding: EdgeInsets.only(
-                  right: iconSpace,
-                ),
-                child: Icon(
-                  icon,
-                  color: Colors.white,
-                ),
-              ),
-              Text(
-                actionString + " Excercise?",
-                style: TextStyle(
-                  color: Colors.white,
-                ),
-              ),
-            ],
-          ),
-        ),
-        */
         contentPadding: EdgeInsets.all(0),
         content: Column(
           mainAxisSize: MainAxisSize.min,
