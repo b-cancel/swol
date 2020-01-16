@@ -29,6 +29,26 @@ class VerticalTabs extends StatefulWidget {
   _VerticalTabsState createState() => _VerticalTabsState();
 }
 
+//TODO: when at suggest page we only show IF
+//1. we have atleast 1 set FINISHED so far
+//2. BUT what to do if we already recorded our set and started the timer?
+//TODO: handle important edge case above
+
+//NOTE: if you have already recorded your set and started the timer
+//I BELEIVE
+//seeing the done button in the suggest page should show finished set X
+//and seeing the done button in the timer page should show finished set X + 1
+//ofcourse clicking them also has very different actions
+
+//from the "recovery page" you consider the set you just recorded
+//on purpose or accidently 
+//(although it should be hard to be an accident cuz you need to type before going to next)
+
+//from the "suggest page" you dont consider the set you just recorded
+//I beleive that because of the way things are setup 
+//I shouldn't have to worry about reseting the temp variable but 
+//TODO: confirm the immediately above
+
 class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMixin {
   //so that we can call the functions on the carousel
   var carousel;
@@ -165,43 +185,18 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
     return Stack(
       children: <Widget>[
         carousel,
-        //TODO: add the done button
-        DoneButton(
-          showDoneButton: showDoneButton,
-          setsFinishedSoFar: setsFinishedSoFar,
-        )
-        /*
-        DoneButton(
-                            allSetsComplete: allSetsComplete,
-                            useRaisedButton: flipped,
-                          ),
-        */
+        Positioned(
+          bottom: 0,
+          left: 0,
+          child: DoneButton(
+            showDoneButton: showDoneButton,
+            setsFinishedSoFar: setsFinishedSoFar,
+          ),
+        ),
       ],
     );
   }
 }
-
-//TODO: when at suggest page we only show IF
-//1. we have atleast 1 set FINISHED so far
-//2. BUT what to do if we already recorded our set and started the timer?
-//TODO: handle important edge case above
-
-//NOTE: if you have already recorded your set and started the timer
-//I BELEIVE
-//seeing the done button in the suggest page should show finished set X
-//and seeing the done button in the timer page should show finished set X + 1
-//ofcourse clicking them also has very different actions
-
-//from the "recovery page" you consider the set you just recorded
-//on purpose or accidently 
-//(although it should be hard to be an accident cuz you need to type before going to next)
-
-//from the "suggest page" you dont consider the set you just recorded
-//I beleive that because of the way things are setup 
-//I shouldn't have to worry about reseting the temp variable but 
-//TODO: confirm the immediately above
-
-
 
 //TODO: handle animation
 //button animates in and out as we scroll through the pages
@@ -213,7 +208,9 @@ class DoneButton extends StatefulWidget {
     @required this.setsFinishedSoFar,
   });
 
+  //triggers an animation
   final ValueNotifier<bool> showDoneButton;
+  //doesn't trigger anything, more of a pass by reference
   final ValueNotifier<int> setsFinishedSoFar;
 
   @override
@@ -221,10 +218,63 @@ class DoneButton extends StatefulWidget {
 }
 
 class _DoneButtonState extends State<DoneButton> {
+  /*
+  Breif Explanations of all the hacks I'm planing to use to get the desired effect
+  the desired is a liquid like button that comes from the left edge
+
+  everything will essentially look like its in a column
+  and everything will be except the bottom buttons
+  1. corner of button       \
+  2. button                  BUTTON)
+  3. other corner of button /
+  4. bottom nav bar             BACK|NEXT
+
+  1 and 2 will be created by 
+  a. having a background container 
+    that is always the same colorthe color of the button
+  b. but on top of them will be a container the color of the background with a rounded edge
+    for 1 the rounded edge is on the bottom left
+    for 2 the rounded edge is on the top left
+    - in both cases the card ammount of rounded when opened and 0 when closed
+
+  the button will also be an animated container
+  1. its width will adjust from full width to 0
+    full when opened, 0 when closed
+  2. and its right (top and bottom) corners will also be less or more rounded
+    the card ammount of rounded when opened
+    and the most ammount rounded possible when closed
+  */
+
+  updateState(){
+    if(mounted) setState(() {});
+  }
+
+  @override
+  void initState() { 
+    super.initState();
+    widget.showDoneButton.addListener(updateState);
+  }
+
+  @override
+  void dispose() { 
+    widget.showDoneButton.removeListener(updateState);
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      
+    return Padding(
+      padding: EdgeInsets.only(
+        //TODO: update to be the actual height of the bottom buttons
+        bottom: 56, 
+      ),
+      child: Container(
+        height: 24,
+        width: MediaQuery.of(context).size.width,
+        color: widget.showDoneButton.value ? Colors.pink : Colors.transparent,
+        
+        child: Container(),
+      ),
     );
   }
 }
