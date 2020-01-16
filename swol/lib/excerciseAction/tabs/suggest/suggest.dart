@@ -21,12 +21,10 @@ import 'package:swol/other/functions/helper.dart';
 class Suggestion extends StatefulWidget {
   Suggestion({
     @required this.excerciseID,
-    @required this.allSetsComplete,
     @required this.recordSet,
   });
 
   final int excerciseID;
-  final Function allSetsComplete;
   final Function recordSet;
 
   @override
@@ -142,7 +140,6 @@ class _SuggestionState extends State<Suggestion> {
                 ),
               ),
               BottomButtons(
-                allSetsComplete: widget.allSetsComplete,
                 forwardAction: widget.recordSet,
                 forwardActionWidget: RichText(
                   text: TextSpan(

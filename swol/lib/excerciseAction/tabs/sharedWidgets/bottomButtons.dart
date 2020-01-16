@@ -10,13 +10,11 @@ import 'package:flutter/material.dart';
 //3. and similarly after it mega ends
 class BottomButtons extends StatelessWidget {
   BottomButtons({
-    this.allSetsComplete,
     @required this.forwardAction,
     @required this.forwardActionWidget,
     this.backAction,
   });
 
-  final Function allSetsComplete;
   final Function forwardAction;
   final Widget forwardActionWidget;
   final Function backAction;

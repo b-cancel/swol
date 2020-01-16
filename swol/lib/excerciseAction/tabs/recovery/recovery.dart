@@ -7,13 +7,11 @@ import 'package:swol/excerciseAction/tabs/sharedWidgets/bottomButtons.dart';
 class Recovery extends StatefulWidget {
   Recovery({
     @required this.excerciseID,
-    @required this.allSetsComplete,
     @required this.backToRecordSet,
     @required this.nextSet,
   });
 
   final int excerciseID;
-  final Function allSetsComplete;
   final Function backToRecordSet;
   final Function nextSet;
 
@@ -115,7 +113,6 @@ class _RecoveryState extends State<Recovery> with SingleTickerProviderStateMixin
             */
           ),
           BottomButtons(
-            allSetsComplete: widget.allSetsComplete,
             forwardAction: (){
               //move onto the next set
               widget.nextSet();

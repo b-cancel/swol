@@ -33,14 +33,47 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
   //so that we can call the functions on the carousel
   var carousel;
 
-  //used to so that we can show or hide the done button
-  ValueNotifier<int> selectedTab;
+  //for done button
+  ValueNotifier<bool> showDoneButton;
+  ValueNotifier<int> setsFinishedSoFar;
 
-  allSetsComplete(){
-    print("fill all sets complete function");
-  }
+  //NOTE: this function will always run on init
+  //this is so that we can go to a different page if need be
+  //but also to initally show the done button if need be
+  toPage(int pageID, {bool instant: false}){ //0 -> 2
+    if(pageID == 0 || pageID == 2){
+      if(pageID == 0){
+        //TODO: before show it properly update the set finished to so far
+        //how to do so is discussed above
+        setsFinishedSoFar.value = 2;
 
-  toPage(int pageID, {bool instant: false}){ //0->2
+        //TODO: going to the suggest page doesn't always show the button
+        showDoneButton.value = true;
+      }
+      else{
+        //TODO: before show it properly update the set finished to so far
+        //how to do so is discussed above
+        setsFinishedSoFar.value = 3;
+
+        //going to recovery page will for sure show it
+        showDoneButton.value = true;
+      }
+    } 
+    else{
+      //in the record set page that option goes away
+
+      //primarily so the user can go back to the suggestion page
+      //or go initially into the suggestion page
+      //and get the button to animate into the screen
+      //and call their attention
+
+      //NOTE: that we don't need to update the sets finished so far
+      //we only update that if we are showing the button
+      showDoneButton.value = false; //will hide it
+    }
+
+    //go the proper page (note: you may already be in it)
+    //TODO: confirm the "arleady being in it" doesn't cause any problems
     if(instant) carousel.jumpToPage(pageID);
     else{
       carousel.animateToPage(
@@ -54,7 +87,12 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
   //init
   @override
   void initState() {
-    selectedTab = new ValueNotifier<int>(0);
+    //NOTE: starts as false because we always want the button to animate in
+    showDoneButton = new ValueNotifier<bool>(false);
+
+    //TODO: properly read in the value
+    //NOTE: we might need to go the init page first (Reuse the logic)
+    setsFinishedSoFar = new ValueNotifier<int>(1);
 
     //carousel
     carousel = CarouselSlider(
@@ -68,32 +106,53 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
       items: [
         Suggestion(
           excerciseID: widget.excerciseID,
-          allSetsComplete: allSetsComplete,
           recordSet: () => toPage(1),
         ),
         SetRecord(
           excerciseID: widget.excerciseID,
+          //TODO: going back should not reset what they already typed
+          //note: try to stop them from typing dumb stuff but if they do then restore the dumb stuff
+          //TODO: do so when the user holds the button AND when they click it
           backToSuggestion: () => toPage(0),
+          //TODO: dont allow the user to move onto the set break until they have valid set
+          //1. numbers only (obvi)
+          //2. whole numbers (kinda obvi)
+          //3. for the weight less thatb 4 digits (nobody can nothing 9,999 pounds)
+          //4. for the reps less than 3 digits (nobody can nothing 999 times)
+          //5. weight CAN BE 0, but suggest that if its body weight excercise they record that
+          //6. reps can't be 0
+          //TODO: if they try to move onto the set break explain the above
+          //- can use a pop up
+          //- can use a snackbar
+          //- can use a attached toast
+          //- can just trigger the error or something like it on the field
+          //- ideally just make it impossible for the user to do something dumb
           setBreak: () => toPage(2),
         ),
         Recovery( 
           excerciseID: widget.excerciseID,
-          allSetsComplete: allSetsComplete,
-          //TODO: hold the back button should also do the same as below
-          //TODO: toast that the timer will not reset no matter what
+          //NOTE: although at some point I thought the back button should trigger this too
+          //that's silly the back button is a "short cut" since its only on android
+          //and shortcuts should be for actions that happen often
+          //and the user will only go back to fix their set if they mistaped
+          //which ofcourse is rare in comparison to perhaps going to their next workout
+          //and reviewing form or doing a super set or whatever else
+          //TODO: tell the user timer will not reset no matter what
+          //TODO: do so when the user holds the button AND when they click it
           backToRecordSet: () => toPage(1),
+          //TODO: there are like a million and 1 things that have to happen here (HARD)
           nextSet: () => toPage(0),
         ),
       ],
     );
 
-    //TODO: select the first tab based on how far we are into the workout
-    //for now this functionality is test our randomly
+    //TODO: select the first tab based on how far we are into the workout (HARD)
+    //TODO: remove the random picker test code below
     var rng = new math.Random();
-    selectedTab.value = (rng.nextInt(3)).clamp(0, 2);
 
+    //travel to the page that has initial focus
     WidgetsBinding.instance.addPostFrameCallback((_){
-      toPage(selectedTab.value, instant: true);
+      toPage((rng.nextInt(3)).clamp(0, 2), instant: true);
     });
 
     //super init
@@ -107,6 +166,10 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
       children: <Widget>[
         carousel,
         //TODO: add the done button
+        DoneButton(
+          showDoneButton: showDoneButton,
+          setsFinishedSoFar: setsFinishedSoFar,
+        )
         /*
         DoneButton(
                             allSetsComplete: allSetsComplete,
@@ -146,11 +209,11 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
 //you know that its there (cuz its kind of easy to forget)
 class DoneButton extends StatefulWidget {
   DoneButton({
-    @required this.showButton,
+    @required this.showDoneButton,
     @required this.setsFinishedSoFar,
   });
 
-  final ValueNotifier<bool> showButton;
+  final ValueNotifier<bool> showDoneButton;
   final ValueNotifier<int> setsFinishedSoFar;
 
   @override
