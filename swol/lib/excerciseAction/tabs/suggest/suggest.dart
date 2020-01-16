@@ -34,9 +34,6 @@ class Suggestion extends StatefulWidget {
 }
 
 class _SuggestionState extends State<Suggestion> {
-  //TODO: remove test code
-  bool flippedTesting = false;
-
   //function select
   ValueNotifier<int> functionIndex;
   String functionValue;
@@ -138,7 +135,6 @@ class _SuggestionState extends State<Suggestion> {
               Expanded(
                 child: FlatButton(
                   onPressed: (){
-                    flippedTesting = !flippedTesting;
                     firstTime.value = !firstTime.value;
                     //state will be set after
                   },
@@ -148,11 +144,10 @@ class _SuggestionState extends State<Suggestion> {
               BottomButtons(
                 allSetsComplete: widget.allSetsComplete,
                 forwardAction: widget.recordSet,
-                flipped: flippedTesting,
                 forwardActionWidget: RichText(
                   text: TextSpan(
                     style: TextStyle(
-                      color: flippedTesting ? Colors.white : Theme.of(context).primaryColorDark,
+                      color: Theme.of(context).primaryColorDark,
                     ),
                     children: [
                       TextSpan(

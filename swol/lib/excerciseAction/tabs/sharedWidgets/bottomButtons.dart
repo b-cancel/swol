@@ -1,29 +1,28 @@
 import 'package:flutter/material.dart';
 
+//TODO: the next button should not light up until you have met the requirements
+//sometimes these are automatically met
+//sometimes not so much
+//in this case another function should run
+//TODO: the function might also vary... 
+//1. since trying to go the next set before the timer ends 
+//2. should perhaps trigger different that doing so after it ends
+//3. and similarly after it mega ends
 class BottomButtons extends StatelessWidget {
   BottomButtons({
     this.allSetsComplete,
     @required this.forwardAction,
     @required this.forwardActionWidget,
     this.backAction,
-    this.flipped: false,
   });
 
   final Function allSetsComplete;
   final Function forwardAction;
   final Widget forwardActionWidget;
   final Function backAction;
-  final bool flipped;
 
   @override
   Widget build(BuildContext context) {
-    /*
-    DoneButton(
-                        allSetsComplete: allSetsComplete,
-                        useRaisedButton: flipped,
-                      ),
-    */
-
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
@@ -43,14 +42,12 @@ class Buttons extends StatelessWidget {
     @required this.forwardAction,
     @required this.forwardActionWidget,
     this.backAction,
-    this.flipped: false,
   });
 
   final Function allSetsComplete;
   final Function forwardAction;
   final Widget forwardActionWidget;
   final Function backAction;
-  final bool flipped;
 
   @override
   Widget build(BuildContext context) {
@@ -127,7 +124,7 @@ class Buttons extends StatelessWidget {
             onPressed: () => backAction(),
             child: Text("Back"),
           ),
-          (flipped) 
+          (flipped) //NOTE: this isnt a thing anymore
           ? OutlineButton(
             highlightedBorderColor: Theme.of(context).accentColor,
             onPressed: () => allSetsComplete(),
