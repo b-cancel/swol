@@ -1,6 +1,3 @@
-//MODIFICATION OF PLUGIN FOUND HERE
-//https://pub.dev/packages/vertical_tabs#-readme-tab-
-
 //dart
 import 'dart:math' as math;
 
@@ -11,6 +8,9 @@ import 'package:flutter/material.dart';
 import 'package:swol/excerciseAction/tabs/record/setRecord.dart';
 import 'package:swol/excerciseAction/tabs/recovery/recovery.dart';
 import 'package:swol/excerciseAction/tabs/suggest/suggest.dart';
+
+//internal other
+import 'package:swol/excerciseAction/doneButton.dart';
 
 //plugin
 import 'package:carousel_slider/carousel_slider.dart';
@@ -61,44 +61,76 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
   //this is so that we can go to a different page if need be
   //but also to initally show the done button if need be
   toPage(int pageID, {bool instant: false}){ //0 -> 2
-    if(pageID == 0 || pageID == 2){
-      if(pageID == 0){
-        //TODO: before show it properly update the set finished to so far
-        //how to do so is discussed above
-        setsFinishedSoFar.value = 2;
-
-        //TODO: going to the suggest page doesn't always show the button
-        showDoneButton.value = true;
+    if(instant){
+      //NOTE: this relies on the CURRENT FACT
+      //that although we are leaving the possiblity to jump to any page
+      //the done button starts off as hidden
+      //and WE ONLY WANT it to animate in for the FIRST and LAST page
+      //TODO: cover edge case that occurs if we call delayed
+      //and before delayed ends we change page and shouldn't have it open
+      //or possible should but should really wait for the future.delayed
+      //that switching to that page would have triggered
+      bool buttonShouldShow = true;
+      if(pageID == 2){  
+        //TODO: decide to not show the button if the necessary conditions are not met
+        //NOTE: this might not even be possible but that's a problem for later
       }
-      else{
-        //TODO: before show it properly update the set finished to so far
-        //how to do so is discussed above
-        setsFinishedSoFar.value = 3;
 
-        //going to recovery page will for sure show it
-        showDoneButton.value = true;
+      if(buttonShouldShow){
+        Future.delayed(
+          //NOTE: should be equal to ONLY 
+          //how long transitioning into this page takes
+          //doesn't need to be equal to how long it takes to change pages
+          //since once you are on the vertical tabs the animation will show
+          //and therefor we don't have to wait for the transition to show it
+          Duration(milliseconds: 300),
+          () => showDoneButton.value = true,
+        );
       }
-    } 
-    else{
-      //in the record set page that option goes away
 
-      //primarily so the user can go back to the suggestion page
-      //or go initially into the suggestion page
-      //and get the button to animate into the screen
-      //and call their attention
-
-      //NOTE: that we don't need to update the sets finished so far
-      //we only update that if we are showing the button
-      showDoneButton.value = false; //will hide it
+      //jump the right page
+      if(pageID != 0){ //we actually have to jump
+        carousel.jumpToPage(pageID);
+      }
+      //ELSE: we are already on that page (avoid potential errors)
     }
-
-    //go the proper page (note: you may already be in it)
-    //TODO: confirm the "arleady being in it" doesn't cause any problems
-    if(instant) carousel.jumpToPage(pageID);
     else{
+      //determine wether to show or hide the page
+      if(pageID == 0 || pageID == 2){
+        if(pageID == 0){
+          //TODO: before show it properly update the set finished to so far
+          //how to do so is discussed above
+          setsFinishedSoFar.value = 2;
+
+          //TODO: going to the suggest page doesn't always show the button
+          showDoneButton.value = true;
+        }
+        else{
+          //TODO: before show it properly update the set finished to so far
+          //how to do so is discussed above
+          setsFinishedSoFar.value = 3;
+
+          //going to recovery page will for sure show it
+          showDoneButton.value = true;
+        }
+      } 
+      else{
+        //in the record set page that option goes away
+
+        //primarily so the user can go back to the suggestion page
+        //or go initially into the suggestion page
+        //and get the button to animate into the screen
+        //and call their attention
+
+        //NOTE: that we don't need to update the sets finished so far
+        //we only update that if we are showing the button
+        showDoneButton.value = false; //will hide it
+      }
+
+      //animated to right page
       carousel.animateToPage(
         pageID, 
-        duration: Duration(milliseconds: 250), 
+        duration: Duration(milliseconds: 300), 
         curve: Curves.easeInOut,
       );
     }
@@ -194,87 +226,6 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
           ),
         ),
       ],
-    );
-  }
-}
-
-//TODO: handle animation
-//button animates in and out as we scroll through the pages
-//and it animates in initially so that what ever page you start up on
-//you know that its there (cuz its kind of easy to forget)
-class DoneButton extends StatefulWidget {
-  DoneButton({
-    @required this.showDoneButton,
-    @required this.setsFinishedSoFar,
-  });
-
-  //triggers an animation
-  final ValueNotifier<bool> showDoneButton;
-  //doesn't trigger anything, more of a pass by reference
-  final ValueNotifier<int> setsFinishedSoFar;
-
-  @override
-  _DoneButtonState createState() => _DoneButtonState();
-}
-
-class _DoneButtonState extends State<DoneButton> {
-  /*
-  Breif Explanations of all the hacks I'm planing to use to get the desired effect
-  the desired is a liquid like button that comes from the left edge
-
-  everything will essentially look like its in a column
-  and everything will be except the bottom buttons
-  1. corner of button       \
-  2. button                  BUTTON)
-  3. other corner of button /
-  4. bottom nav bar             BACK|NEXT
-
-  1 and 2 will be created by 
-  a. having a background container 
-    that is always the same colorthe color of the button
-  b. but on top of them will be a container the color of the background with a rounded edge
-    for 1 the rounded edge is on the bottom left
-    for 2 the rounded edge is on the top left
-    - in both cases the card ammount of rounded when opened and 0 when closed
-
-  the button will also be an animated container
-  1. its width will adjust from full width to 0
-    full when opened, 0 when closed
-  2. and its right (top and bottom) corners will also be less or more rounded
-    the card ammount of rounded when opened
-    and the most ammount rounded possible when closed
-  */
-
-  updateState(){
-    if(mounted) setState(() {});
-  }
-
-  @override
-  void initState() { 
-    super.initState();
-    widget.showDoneButton.addListener(updateState);
-  }
-
-  @override
-  void dispose() { 
-    widget.showDoneButton.removeListener(updateState);
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(
-        //TODO: update to be the actual height of the bottom buttons
-        bottom: 56, 
-      ),
-      child: Container(
-        height: 24,
-        width: MediaQuery.of(context).size.width,
-        color: widget.showDoneButton.value ? Colors.pink : Colors.transparent,
-        
-        child: Container(),
-      ),
     );
   }
 }
