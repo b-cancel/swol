@@ -95,7 +95,7 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
       //ELSE: we are already on that page (avoid potential errors)
     }
     else{
-      //determine wether to show or hide the page
+      //determine wether to show or hide the page 
       if(pageID == 0 || pageID == 2){
         if(pageID == 0){
           //TODO: before show it properly update the set finished to so far
