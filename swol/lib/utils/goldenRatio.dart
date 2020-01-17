@@ -1,4 +1,8 @@
 //Golden Ratio naturally looks nice so I'm using it wherever I can
+//TODO: apply it for ratio of extended banner
+//TODO: apply for stuff in main vertical pages
+//TODO: apply for add excercise page
+//TODO: actively search for where else to apply it
 
 const double goldenRatio = 1.61803398875;
 
