@@ -9,6 +9,7 @@ import 'package:swol/excerciseAction/tabs/sharedWidgets/bottomButtons.dart';
 import 'package:swol/excerciseAction/tabs/suggest/calibration.dart';
 import 'package:swol/excerciseAction/tabs/suggest/suggestion.dart';
 import 'package:swol/other/functions/helper.dart';
+import 'package:swol/utils/goldenRatio.dart';
 
 //TODO: implement this
 //FLIPPED used when the user arrived directly to the suggest page
@@ -20,10 +21,12 @@ import 'package:swol/other/functions/helper.dart';
 
 class Suggestion extends StatefulWidget {
   Suggestion({
+    @required this.statusBarHeight,
     @required this.excerciseID,
     @required this.recordSet,
   });
 
+  final double statusBarHeight;
   final int excerciseID;
   final Function recordSet;
 
@@ -122,11 +125,35 @@ class _SuggestionState extends State<Suggestion> {
       extra += ExcerciseData.getExcercises().value[widget.excerciseID].lastReps.toString();
     }
 
-    Widget child = (firstTime.value) ? calibration : suggestion;
+    Widget child = (firstTime.value) ? calibration
+    : Container(
+      decoration: BoxDecoration(
+        color: Theme.of(context).cardColor,
+        borderRadius: BorderRadius.only(
+          bottomLeft: Radius.circular(24),
+          bottomRight: Radius.circular(24),
+        ),
+      ),
+      padding: EdgeInsets.all(16),
+      child: GestureDetector(
+        onTap: (){
+          firstTime.value = !firstTime.value;
+          //state will be set after
+        },
+        child: suggestion,
+      ),
+    );
 
-    //TODO: 
+    double fullHeight = MediaQuery.of(context).size.height;
+    double spaceToRedistribute = fullHeight - widget.statusBarHeight;
+    //NOTE: 56 is the appbar height (constant since I didn't edit that bit)
+    //NOTE: 48 is the padding between bottom buttons and our card
+    //NOTE: 64 is the height of the bottom buttons
+    spaceToRedistribute -= (56 + 48 + 64);
+    List<double> bigToSmall = measurementToGoldenRatio(spaceToRedistribute);
+
     return Container(
-      width: MediaQuery.of(context).size.width,
+      width: fullHeight,
       child: Column(
         mainAxisSize: MainAxisSize.max,
         children: <Widget>[
@@ -135,25 +162,28 @@ class _SuggestionState extends State<Suggestion> {
               mainAxisSize: MainAxisSize.max,
               children: <Widget>[
                 Expanded(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).cardColor,
-                      borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(24),
-                        bottomRight: Radius.circular(24),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.max,
+                    children: <Widget>[
+                      Container(
+                        color: Colors.blue,
+                        height: bigToSmall[1],
+                        width: MediaQuery.of(context).size.width,
                       ),
-                    ),
-                    padding: EdgeInsets.all(16),
-                    child: GestureDetector(
-                      onTap: (){
-                        firstTime.value = !firstTime.value;
-                        //state will be set after
-                      },
-                      child: child,
-                    ),
-                  ),
+                      Container(
+                        height: 0,
+                        color: Colors.red,
+                        width: MediaQuery.of(context).size.width,
+                      ),
+                      Container(
+                        color: Colors.green,
+                        height: bigToSmall[0],
+                        width: MediaQuery.of(context).size.width,
+                      ),
+                    ],
+                  )
                 ),
-                BottomButtonPadding()
+                BottomButtonPadding(),
               ],
             ),
           ),
@@ -208,19 +238,19 @@ class BottomButtonPadding extends StatelessWidget {
 
 /*
 Positioned(
-          child: Center(
-            child: RaisedButton(
-              onPressed: (){
-                //give the item a random lastWeight [5->75] and random lastReps [1->35]
-                var rnd = new Random();
-                ExcerciseData.updateExcercise(
-                  widget.excerciseID,
-                  lastWeight: rnd.nextInt(70) + 5,
-                  lastReps: rnd.nextInt(34) + 1,
-                );
-              },
-              child: Text("generate random weight and reps " + extra),
-            ),
-          ),
-        ),
+  child: Center(
+    child: RaisedButton(
+      onPressed: (){
+        //give the item a random lastWeight [5->75] and random lastReps [1->35]
+        var rnd = new Random();
+        ExcerciseData.updateExcercise(
+          widget.excerciseID,
+          lastWeight: rnd.nextInt(70) + 5,
+          lastReps: rnd.nextInt(34) + 1,
+        );
+      },
+      child: Text("generate random weight and reps " + extra),
+    ),
+  ),
+),
 */

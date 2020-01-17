@@ -19,12 +19,14 @@ class VerticalTabs extends StatefulWidget {
   final double maxHeight;
   final Duration transitionDuration;
   final Duration delayTillShowDoneButton;
+  final double statusBarHeight;
 
   VerticalTabs({
     @required this.excerciseID,
     @required this.maxHeight,
     @required this.transitionDuration,
     this.delayTillShowDoneButton: const Duration(milliseconds: 200),
+    @required this.statusBarHeight,
   });
 
   @override
@@ -159,6 +161,7 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
       height: widget.maxHeight,
       items: [
         Suggestion(
+          statusBarHeight: widget.statusBarHeight,
           excerciseID: widget.excerciseID,
           recordSet: () => toPage(1),
         ),

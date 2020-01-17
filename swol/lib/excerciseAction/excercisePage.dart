@@ -52,6 +52,8 @@ class _ExcercisePageState extends State<ExcercisePage> {
       name = indexToExcercises[widget.excerciseID].name;
     }
 
+    double statusBarHeight = MediaQuery.of(context).padding.top;
+
     //build
     return WillPopScope(
       onWillPop: ()async{
@@ -109,6 +111,7 @@ class _ExcercisePageState extends State<ExcercisePage> {
           excerciseID: widget.excerciseID,
           maxHeight: MediaQuery.of(context).size.height,
           transitionDuration: widget.transitionDuration,
+          statusBarHeight: statusBarHeight,
         ),
       ),
     );
