@@ -148,9 +148,10 @@ class TileHeader extends StatelessWidget {
                     padding: EdgeInsets.all(16),
                     child: Row(
                       children: <Widget>[
-                        Container(
-                          alignment: Alignment.centerLeft,
-                          width: 22 + 8.0,
+                        Padding(
+                          padding: const EdgeInsets.only(
+                            right: 12.0,
+                          ),
                           child: Icon(
                             headerIcon,
                             size: (size == null) ? 24 : size,

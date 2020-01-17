@@ -175,6 +175,7 @@ class _ExcerciseSelectState extends State<ExcerciseSelect> {
             //and the search button under certain conditions
             ExcerciseList(
               autoScrollController: autoScrollController,
+              statusBarHeight: statusBarHeight,
               navSpread: navSpread,
               onTop: onTop,
             ),

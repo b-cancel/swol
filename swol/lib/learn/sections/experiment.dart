@@ -211,12 +211,12 @@ class ExperimentBody extends StatelessWidget {
                 ),
                 Container(
                   padding: EdgeInsets.only(
-                    top: 16,
+                    top: 24,
                     bottom: 8,
                   ),
                   child: Padding(
                     padding: EdgeInsets.symmetric(
-                      horizontal: 16,
+                      horizontal: 0,
                     ),
                     child: FunctionCardTable(
                       context: context,

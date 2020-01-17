@@ -11,11 +11,13 @@ import 'package:swol/sharedWidgets/excerciseListTile/excerciseTile.dart';
 class ExcerciseList extends StatefulWidget {
   ExcerciseList({
     @required this.autoScrollController,
+    @required this.statusBarHeight,
     @required this.navSpread,
     @required this.onTop,
   });
 
   final AutoScrollController autoScrollController;
+  final double statusBarHeight;
   final ValueNotifier<bool> navSpread;
   final ValueNotifier<bool> onTop;
 
@@ -316,6 +318,7 @@ class _ExcerciseListState extends State<ExcerciseList> {
         newWorkoutSection: newWorkoutSection, 
         hiddenWorkoutSection: hiddenWorkoutSection, 
         inprogressWorkoutSection: inprogressWorkoutSection,
+        statusBarHeight: widget.statusBarHeight,
       ),
     );
 

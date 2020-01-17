@@ -9,6 +9,7 @@ import 'package:swol/excercise/excerciseStructure.dart';
 import 'package:swol/excerciseSearch/searchExcercise.dart';
 import 'package:swol/excerciseSelection/secondary/addNewHero.dart';
 import 'package:swol/excerciseSelection/secondary/persistentHeaderDelegate.dart';
+import 'package:swol/utils/goldenRatio.dart';
 import 'package:swol/utils/onboarding.dart';
 
 class AddExcerciseButton extends StatelessWidget {
@@ -119,12 +120,14 @@ class HeaderForOneHandedUse extends StatelessWidget {
   const HeaderForOneHandedUse({
     Key key,
     @required this.listOfGroupOfExcercises,
+    @required this.statusBarHeight,
     @required this.newWorkoutSection,
     @required this.hiddenWorkoutSection,
     @required this.inprogressWorkoutSection,
   }) : super(key: key);
 
   final List<List<AnExcercise>> listOfGroupOfExcercises;
+  final double statusBarHeight;
   final bool newWorkoutSection;
   final bool hiddenWorkoutSection;
   final bool inprogressWorkoutSection;
@@ -136,7 +139,12 @@ class HeaderForOneHandedUse extends StatelessWidget {
       floating: false,
       delegate: PersistentHeaderDelegate(
         semiClosedHeight: 60,
-        openHeight: MediaQuery.of(context).size.height / 3,
+        //we get the smallest of the 2 golden ratio stuff produced
+        //and then we subtract the status bar height
+        //since it SEEMS like it belong to the top thingy and therefore should be excluded
+        openHeight: measurementToGoldenRatio(
+          MediaQuery.of(context).size.height,
+        )[1] - statusBarHeight,
         closedHeight: 0,
         workoutCount: listOfGroupOfExcercises.length 
         //exclude new workouts
