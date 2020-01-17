@@ -3,6 +3,7 @@ import 'package:swol/excercise/excerciseData.dart';
 import 'package:swol/excerciseAction/tabs/recovery/secondary/breath.dart';
 import 'package:swol/excerciseAction/tabs/recovery/timer/liquidTime.dart';
 import 'package:swol/excerciseAction/tabs/sharedWidgets/bottomButtons.dart';
+import 'package:swol/excerciseAction/tabs/suggest/suggest.dart';
 
 class Recovery extends StatefulWidget {
   Recovery({
@@ -80,10 +81,46 @@ class _RecoveryState extends State<Recovery> with SingleTickerProviderStateMixin
         mainAxisSize: MainAxisSize.max,
         children: <Widget>[
           Expanded(
-            child: Container(
-              color: Theme.of(context).primaryColorDark,
-              child: Container(),
-            )
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              children: <Widget>[
+                Expanded(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).cardColor,
+                      borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(24),
+                        bottomRight: Radius.circular(24),
+                      ),
+                    ),
+                    //NOTE: how this is 0
+                    padding: EdgeInsets.symmetric(
+                      vertical: 16,
+                    ),
+                    child: Container(
+                      alignment: Alignment.center,
+                      color: Colors.green,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          LiquidTime(
+                            changeableTimerDuration: recoveryDuration,
+                            timerStart: timerStart,
+                            showIcon: false,
+                          ),
+                          ToBreath(),
+                        ],
+                      ),
+                    )
+                  ),
+                ),
+                BottomButtonPadding()
+              ],
+            ),
+
+            /*
+            
+            */
             
             
             /*Column(

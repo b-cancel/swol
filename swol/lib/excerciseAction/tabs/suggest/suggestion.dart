@@ -18,100 +18,97 @@ class SuggestionBody extends StatelessWidget {
       fontWeight: FontWeight.bold,
     );
 
-    return Padding(
-      padding: EdgeInsets.only(top:16),
-        child: Column(
-          mainAxisSize: MainAxisSize.max,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisAlignment: MainAxisAlignment.start,
+    return Column(
+      mainAxisSize: MainAxisSize.max,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: <Widget>[
+        Expanded(
+          child: SetDisplay(
+            weight: lastWeight.toString(),
+            reps: lastReps.toString(),
+            isLast: true,
+          ),
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
-            Expanded(
-              child: SetDisplay(
-                weight: lastWeight.toString(),
-                reps: lastReps.toString(),
-                isLast: true,
-              ),
+            new MyArrow(
+              color: (true) ? Colors.white : Theme.of(context).accentColor,
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: <Widget>[
-                new MyArrow(
-                  color: (true) ? Colors.white : Theme.of(context).accentColor,
-                ),
-                new MyArrow(
-                  color: (true) ? Colors.white : Theme.of(context).accentColor,
-                ),
-              ],
-            ),
-            Container(
-              color: Colors.red,
-              width: MediaQuery.of(context).size.width,
-              child: IntrinsicHeight(
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text(
-                      "f",
-                      style: bigStyle,
-                    ),
-                    Text(
-                      "(",
-                      style: bigStyle,
-                    ),
-                    IntrinsicWidth(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: <Widget>[
-                          SettingButton(
-                            onPressed: (){
-                              print("change rep target");
-                            }, 
-                            icon: Icons.repeat, 
-                            name: "Rep Target", 
-                            value: "9",
-                          ),
-                          SettingButton(
-                            onPressed: (){
-                              print("change prediction formula");
-                            }, 
-                            icon: Icons.functions, 
-                            name: "Prediction Formula", 
-                            value: "Almazan",
-                          ),
-                        ],
-                      ),
-                    ),
-                    Text(
-                      "}",
-                      style: bigStyle,
-                    ),
-                  ],
-                ),
-              )
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: <Widget>[
-                new MyArrow(
-                  color: (false) ? Colors.white : Theme.of(context).accentColor,
-                ),
-                new MyArrow(
-                  color: (false) ? Colors.white : Theme.of(context).accentColor,
-                ),
-              ],
-            ),
-            Expanded(
-              child: SetDisplay(
-                weight: (lastWeight * (2/3)).toInt().toString(),
-                reps: (lastWeight * (3/2)).toInt().toString(),
-                isLast: false,
-              ),
+            new MyArrow(
+              color: (true) ? Colors.white : Theme.of(context).accentColor,
             ),
           ],
         ),
+        Container(
+          color: Colors.red,
+          width: MediaQuery.of(context).size.width,
+          child: IntrinsicHeight(
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  "f",
+                  style: bigStyle,
+                ),
+                Text(
+                  "(",
+                  style: bigStyle,
+                ),
+                IntrinsicWidth(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: <Widget>[
+                      SettingButton(
+                        onPressed: (){
+                          print("change rep target");
+                        }, 
+                        icon: Icons.repeat, 
+                        name: "Rep Target", 
+                        value: "9",
+                      ),
+                      SettingButton(
+                        onPressed: (){
+                          print("change prediction formula");
+                        }, 
+                        icon: Icons.functions, 
+                        name: "Prediction Formula", 
+                        value: "Almazan",
+                      ),
+                    ],
+                  ),
+                ),
+                Text(
+                  "}",
+                  style: bigStyle,
+                ),
+              ],
+            ),
+          )
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: <Widget>[
+            new MyArrow(
+              color: (false) ? Colors.white : Theme.of(context).accentColor,
+            ),
+            new MyArrow(
+              color: (false) ? Colors.white : Theme.of(context).accentColor,
+            ),
+          ],
+        ),
+        Expanded(
+          child: SetDisplay(
+            weight: (lastWeight * (2/3)).toInt().toString(),
+            reps: (lastWeight * (3/2)).toInt().toString(),
+            isLast: false,
+          ),
+        ),
+      ],
     );
   }
 }

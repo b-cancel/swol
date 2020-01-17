@@ -10,10 +10,12 @@ class ExcercisePage extends StatefulWidget {
   ExcercisePage({
     @required this.excerciseID,
     @required this.navSpread,
+    @required this.transitionDuration,
   });
 
   final int excerciseID;
   final ValueNotifier<bool> navSpread;
+  final Duration transitionDuration;
 
   @override
   _ExcercisePageState createState() => _ExcercisePageState();
@@ -61,6 +63,7 @@ class _ExcercisePageState extends State<ExcercisePage> {
         return true; 
       },
       child: Scaffold(
+        backgroundColor: Theme.of(context).primaryColorDark,
         appBar: AppBar(
           leading: BackFromExcercise(
             navSpread: widget.navSpread,
@@ -105,6 +108,7 @@ class _ExcercisePageState extends State<ExcercisePage> {
         body: VerticalTabs(
           excerciseID: widget.excerciseID,
           maxHeight: MediaQuery.of(context).size.height,
+          transitionDuration: widget.transitionDuration,
         ),
       ),
     );

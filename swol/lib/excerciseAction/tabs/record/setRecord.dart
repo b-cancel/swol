@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:swol/excerciseAction/tabs/sharedWidgets/bottomButtons.dart';
+import 'package:swol/excerciseAction/tabs/suggest/suggest.dart';
 
 class SetRecord extends StatelessWidget {
   SetRecord({
@@ -17,13 +18,32 @@ class SetRecord extends StatelessWidget {
     return Container(
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height,
-      color: Colors.red,
       child: Column(
         mainAxisSize: MainAxisSize.max,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
           Expanded(
-            child: Container(),
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              children: <Widget>[
+                Expanded(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).cardColor,
+                      borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(24),
+                        bottomRight: Radius.circular(24),
+                      ),
+                    ),
+                    padding: EdgeInsets.all(16),
+                    child: Container(
+                      color: Colors.red,
+                    ),
+                  ),
+                ),
+                BottomButtonPadding(),
+              ],
+            ),
           ),
           BottomButtons(
             forwardAction: setBreak,

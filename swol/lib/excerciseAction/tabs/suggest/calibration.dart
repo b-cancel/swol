@@ -8,143 +8,140 @@ class CalibrationBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double stepFontSize = 18;
-    return Container(
-      padding: EdgeInsets.all(16),
-      child: Column(
-        mainAxisSize: MainAxisSize.max,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: <Widget>[
-          FittedBox(
-            fit: BoxFit.contain,
-            child: Padding(
-              padding: EdgeInsets.only(
-                bottom: 0.0,
-              ),
-              child: DefaultTextStyle(
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                ),
-                child: Text("Calibration Set")
-              ),
+    return Column(
+      mainAxisSize: MainAxisSize.max,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: <Widget>[
+        FittedBox(
+          fit: BoxFit.contain,
+          child: Padding(
+            padding: EdgeInsets.only(
+              bottom: 0.0,
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(
-              bottom: 16.0,
-              left: 8,
-            ),
-            child: Text(
-              "Without a previous set, we can't give you suggestions",
+            child: DefaultTextStyle(
               style: TextStyle(
-                fontSize: 18,
+                fontWeight: FontWeight.bold,
               ),
+              child: Text("Calibration Set")
             ),
           ),
-          new CalibrationStep(
-            number: 1,
-            content: RichText(
-              text: TextSpan(
-                style: TextStyle(
-                  fontSize: stepFontSize,
+        ),
+        Padding(
+          padding: const EdgeInsets.only(
+            bottom: 16.0,
+            left: 8,
+          ),
+          child: Text(
+            "Without a previous set, we can't give you suggestions",
+            style: TextStyle(
+              fontSize: 18,
+            ),
+          ),
+        ),
+        new CalibrationStep(
+          number: 1,
+          content: RichText(
+            text: TextSpan(
+              style: TextStyle(
+                fontSize: stepFontSize,
+              ),
+              children: [
+                TextSpan(
+                  text: "Pick ",
                 ),
-                children: [
-                  TextSpan(
-                    text: "Pick ",
+                TextSpan(
+                  text: "any",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
                   ),
-                  TextSpan(
-                    text: "any",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  TextSpan(
-                    text: " weight you ",
-                  ),
-                  TextSpan(
-                    text: "know",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  TextSpan(
-                    text: " you can lift for ",
-                  ),
-                  TextSpan(
-                    text: "around",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  TextSpan(
-                    text: " 10 reps",
-                  ),
-                ]
-              ),
-            ),
-          ),
-          new CalibrationStep(
-            number: 2,
-            content: RichText(
-              text: TextSpan(
-                style: TextStyle(
-                  fontSize: stepFontSize,
                 ),
-                children: [
-                  TextSpan(
-                    text: "Do as many reps as ",
-                  ),
-                  TextSpan(
-                    text: "possible",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  TextSpan(
-                    text: " with ",
-                  ),
-                  TextSpan(
-                    text: "good",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  TextSpan(
-                    text: " form",
-                  ),
-                ]
-              ),
-            ),
-          ),
-          new CalibrationStep(
-            number: 3,
-            content: RichText(
-              text: TextSpan(
-                style: TextStyle(
-                  fontSize: stepFontSize,
+                TextSpan(
+                  text: " weight you ",
                 ),
-                children: [
-                  TextSpan(
-                    text: "Record the weight you used and your ",
+                TextSpan(
+                  text: "know",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
                   ),
-                  TextSpan(
-                    text: "maximum reps",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
+                ),
+                TextSpan(
+                  text: " you can lift for ",
+                ),
+                TextSpan(
+                  text: "around",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
                   ),
-                  TextSpan(
-                    text: " so we can begin giving you suggestions",
-                  ),
-                ]
-              ),
+                ),
+                TextSpan(
+                  text: " 10 reps",
+                ),
+              ]
             ),
           ),
-          Expanded(
-            child: Container(),
-          )
-        ],
-      ),
+        ),
+        new CalibrationStep(
+          number: 2,
+          content: RichText(
+            text: TextSpan(
+              style: TextStyle(
+                fontSize: stepFontSize,
+              ),
+              children: [
+                TextSpan(
+                  text: "Do as many reps as ",
+                ),
+                TextSpan(
+                  text: "possible",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                TextSpan(
+                  text: " with ",
+                ),
+                TextSpan(
+                  text: "good",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                TextSpan(
+                  text: " form",
+                ),
+              ]
+            ),
+          ),
+        ),
+        new CalibrationStep(
+          number: 3,
+          content: RichText(
+            text: TextSpan(
+              style: TextStyle(
+                fontSize: stepFontSize,
+              ),
+              children: [
+                TextSpan(
+                  text: "Record the weight you used and your ",
+                ),
+                TextSpan(
+                  text: "maximum reps",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                TextSpan(
+                  text: " so we can begin giving you suggestions",
+                ),
+              ]
+            ),
+          ),
+        ),
+        Expanded(
+          child: Container(),
+        )
+      ],
     );
   }
 }

@@ -1,4 +1,9 @@
+//flutter
 import 'package:flutter/material.dart';
+
+//internal
+import 'package:swol/excerciseAction/tabs/sharedWidgets/backButton.dart';
+import 'package:swol/excerciseAction/tabs/sharedWidgets/nextButton.dart';
 
 //TODO: the next button should not light up until you have met the requirements
 //sometimes these are automatically met
@@ -27,90 +32,67 @@ class BottomButtons extends StatelessWidget {
         Buttons(
           forwardAction: forwardAction,
           forwardActionWidget: forwardActionWidget,
+          backAction: backAction,
         ),
-        CardPeek()
+        CardTop()
       ],
+    );
+  }
+}
+
+class CardTop extends StatelessWidget {
+  const CardTop({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 24,
+      width: MediaQuery.of(context).size.width,
+      decoration: BoxDecoration(
+        color: Theme.of(context).cardColor,
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(24),
+        ),
+      ),
     );
   }
 }
 
 class Buttons extends StatelessWidget {
   const Buttons({
-    this.allSetsComplete,
     @required this.forwardAction,
     @required this.forwardActionWidget,
     this.backAction,
   });
 
-  final Function allSetsComplete;
   final Function forwardAction;
   final Widget forwardActionWidget;
   final Function backAction;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Theme.of(context).primaryColorDark,
+    double extraVerticalPadding = 8;
+
+    return IntrinsicHeight(
       child: Row(
         mainAxisSize: MainAxisSize.max,
-        crossAxisAlignment: CrossAxisAlignment.end,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
           Expanded(
-            child: BottomLeftCurve(
-              otherColor: Theme.of(context).accentColor,
-              backgroundColor: Theme.of(context).primaryColorDark,
+            //TODO: should also probably pass something that links to the next buttons activity
+            //because this is the back button but it also hold a peice of the next button
+            //that ofcourse will change colors when PROPERLY active
+            child: BottomBackButton(
+              backAction: backAction,
+              verticalPadding: extraVerticalPadding,
             ),
           ),
-          Container(
-            decoration: BoxDecoration(
-              color: Theme.of(context).cardColor,
-              borderRadius: BorderRadius.only(
-                topRight: Radius.circular(12),
-                topLeft: Radius.circular(12),
-              ),
-            ),
-            child: ClipRRect(
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(12),
-                topRight: Radius.circular(12),
-              ),
-              child: RaisedButton(
-                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                shape: RoundedRectangleBorder(
-                  borderRadius: new BorderRadius.circular(0.0),
-                ),
-                color: Theme.of(context).accentColor,
-                onPressed: () => forwardAction(),
-                padding: EdgeInsets.only(
-                  right: 8,
-                ),
-                child: Row(
-                  children: <Widget>[
-                    Transform.translate(
-                      offset: Offset(0, 3),
-                      child: Icon(
-                        Icons.arrow_drop_down,
-                        color: Theme.of(context).primaryColorDark,
-                      ),
-                    ),
-                    forwardActionWidget,
-                  ],
-                ),
-              ),
-            ),
-            /*
-            width: 128,
-            child: Container(
-              //curve + height of button
-              height: (other ? 24 : 12) + 24.0,
-            ),
-            */
-            
-            /*InkWell(
-              onTap: () => forwardAction(),
-              child: forwardActionWidget,
-            ),
-            */
+          BottomNextButton(
+            forwardAction: forwardAction, 
+            forwardActionWidget: forwardActionWidget,
+            verticalPadding: extraVerticalPadding,
           ),
           
           /*
@@ -135,101 +117,6 @@ class Buttons extends StatelessWidget {
           ),
           */
         ],
-      ),
-    );
-  }
-}
-
-class BottomLeftCurve extends StatelessWidget {
-  const BottomLeftCurve({
-    @required this.backgroundColor,
-    @required this.otherColor,
-    Key key,
-  }) : super(key: key);
-
-  final Color backgroundColor;
-  final Color otherColor;
-
-  @override
-  Widget build(BuildContext context) {
-    return Stack(
-      children: <Widget>[
-        Stack(
-          children: <Widget>[
-            Container(
-              color: otherColor,
-              height: 36,
-            ),
-            Container(
-              decoration: BoxDecoration(
-                color: backgroundColor,
-                borderRadius: BorderRadius.only(
-                  bottomRight: Radius.circular(12),
-                ),
-              ),
-              height: 36,
-            ),
-          ],
-        ),
-        Positioned(
-          right: 0,
-          top: 0,
-          bottom: 0,
-          child: Container(
-            alignment: Alignment.center,
-            child: Padding(
-              padding: const EdgeInsets.only(
-                right: 4.0,
-                left: 16,
-              ),
-              child: Row(
-                children: <Widget>[
-                  Text(
-                    "Back",
-                    style: TextStyle(
-                      color: Colors.white,
-                    ),
-                  ),
-                  Transform.translate(
-                    offset: Offset(0, -3),
-                    child: Icon(Icons.arrow_drop_up),
-                  ),
-                ],
-              ),
-            ),
-          )
-          
-          /*
-          Container(
-            child: Text(
-              "hi",
-              style: TextStyle(
-                color: Colors.white,
-              ),
-            ),
-          ),
-          */
-        ),
-      ],
-    );
-  }
-}
-
-class CardPeek extends StatelessWidget {
-  const CardPeek({
-    Key key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 24,
-      width: MediaQuery.of(context).size.width,
-      decoration: BoxDecoration(
-        color: Theme.of(context).cardColor,
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(24),
-        ),
       ),
     );
   }

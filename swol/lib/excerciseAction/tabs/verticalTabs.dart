@@ -7,10 +7,8 @@ import 'package:flutter/material.dart';
 //internal: tabs
 import 'package:swol/excerciseAction/tabs/record/setRecord.dart';
 import 'package:swol/excerciseAction/tabs/recovery/recovery.dart';
+import 'package:swol/excerciseAction/tabs/sharedWidgets/doneButton.dart';
 import 'package:swol/excerciseAction/tabs/suggest/suggest.dart';
-
-//internal other
-import 'package:swol/excerciseAction/doneButton.dart';
 
 //plugin
 import 'package:carousel_slider/carousel_slider.dart';
@@ -19,10 +17,14 @@ import 'package:carousel_slider/carousel_slider.dart';
 class VerticalTabs extends StatefulWidget {
   final int excerciseID;
   final double maxHeight;
+  final Duration transitionDuration;
+  final Duration delayTillShowDoneButton;
 
   VerticalTabs({
     @required this.excerciseID,
     @required this.maxHeight,
+    @required this.transitionDuration,
+    this.delayTillShowDoneButton: const Duration(milliseconds: 200),
   });
 
   @override
@@ -83,7 +85,7 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
           //doesn't need to be equal to how long it takes to change pages
           //since once you are on the vertical tabs the animation will show
           //and therefor we don't have to wait for the transition to show it
-          Duration(milliseconds: 300),
+          widget.transitionDuration + widget.delayTillShowDoneButton,
           () => showDoneButton.value = true,
         );
       }
@@ -216,15 +218,19 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
   Widget build(BuildContext context) {
     return Stack(
       children: <Widget>[
-        carousel,
+        //had to be at the bottom to get the curves with the hack ive been using
         Positioned(
           bottom: 0,
           left: 0,
           child: DoneButton(
             showDoneButton: showDoneButton,
             setsFinishedSoFar: setsFinishedSoFar,
+            animationCurve: Curves.bounceInOut,
           ),
         ),
+        //the parts that overlap the back button should be clear
+        //only color in like the background for curves
+        carousel,
       ],
     );
   }

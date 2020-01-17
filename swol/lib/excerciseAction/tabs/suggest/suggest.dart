@@ -122,51 +122,92 @@ class _SuggestionState extends State<Suggestion> {
       extra += ExcerciseData.getExcercises().value[widget.excerciseID].lastReps.toString();
     }
 
+    Widget child = (firstTime.value) ? calibration : suggestion;
+
     //TODO: 
-    return Stack(
-      children: <Widget>[
-        Container(
-          width: MediaQuery.of(context).size.width,
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            children: <Widget>[
-              Expanded(
-                child: FlatButton(
-                  onPressed: (){
-                    firstTime.value = !firstTime.value;
-                    //state will be set after
-                  },
-                  child: (firstTime.value) ? calibration : suggestion,
-                ),
-              ),
-              BottomButtons(
-                forwardAction: widget.recordSet,
-                forwardActionWidget: RichText(
-                  text: TextSpan(
-                    style: TextStyle(
-                      color: Theme.of(context).primaryColorDark,
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      child: Column(
+        mainAxisSize: MainAxisSize.max,
+        children: <Widget>[
+          Expanded(
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              children: <Widget>[
+                Expanded(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).cardColor,
+                      borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(24),
+                        bottomRight: Radius.circular(24),
+                      ),
                     ),
-                    children: [
-                      TextSpan(
-                        text: "Record ",
-                      ),
-                      TextSpan(
-                        text: "Set 1",
-                        style: TextStyle(
-                          fontWeight: FontWeight.w900,
-                        ),
-                      ),
-                      TextSpan(
-                        text: "/3",
-                      ),
-                    ],
+                    padding: EdgeInsets.all(16),
+                    child: GestureDetector(
+                      onTap: (){
+                        firstTime.value = !firstTime.value;
+                        //state will be set after
+                      },
+                      child: child,
+                    ),
                   ),
                 ),
-              ),
-            ],
+                BottomButtonPadding()
+              ],
+            ),
           ),
-        ),
-        Positioned(
+          BottomButtons(
+            forwardAction: widget.recordSet,
+            forwardActionWidget: RichText(
+              text: TextSpan(
+                style: TextStyle(
+                  color: Theme.of(context).primaryColorDark,
+                ),
+                children: [
+                  TextSpan(
+                    text: "Record ",
+                  ),
+                  TextSpan(
+                    text: "Set 1",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w900,
+                    ),
+                  ),
+                  TextSpan(
+                    text: "/3",
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class BottomButtonPadding extends StatelessWidget {
+  const BottomButtonPadding({
+    this.withDoneButton: true,
+    Key key,
+  }) : super(key: key);
+
+  final bool withDoneButton;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      //24 (p1) is for 24 away from the RIGHT BOTTOM buttons
+      //24 (p2) is for 24 cuz of the curve
+      height: 24.0 + ((withDoneButton) ? 24 : 0),
+      width: MediaQuery.of(context).size.width,
+    );
+  }
+}
+
+/*
+Positioned(
           child: Center(
             child: RaisedButton(
               onPressed: (){
@@ -182,7 +223,4 @@ class _SuggestionState extends State<Suggestion> {
             ),
           ),
         ),
-      ],
-    );
-  }
-}
+*/

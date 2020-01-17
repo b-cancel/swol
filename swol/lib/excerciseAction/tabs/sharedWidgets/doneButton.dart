@@ -3,13 +3,18 @@
 //and it animates in initially so that what ever page you start up on
 //you know that its there (cuz its kind of easy to forget)
 import 'package:flutter/material.dart';
+import 'package:vector_math/vector_math_64.dart' as vect;
 
 class DoneButton extends StatelessWidget {
   DoneButton({
+    this.showOrHideDuration: const Duration(milliseconds: 300),
+    @required this.animationCurve,
     @required this.showDoneButton,
     @required this.setsFinishedSoFar,
   });
 
+  final Curve animationCurve;
+  final Duration showOrHideDuration;
   //triggers an animation
   final ValueNotifier<bool> showDoneButton;
   //doesn't trigger anything, more of a pass by reference
@@ -60,14 +65,20 @@ class DoneButton extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             DoneButtonCorner(
+              animationCurve: animationCurve,
+              showOrHideDuration: showOrHideDuration,
               showDoneButton: showDoneButton,
               isTop: true,
             ),
             DoneButtonButton(
+              animationCurve: animationCurve,
+              showOrHideDuration: showOrHideDuration,
               showDoneButton: showDoneButton,
               setsFinishedSoFar: setsFinishedSoFar,
             ),
             DoneButtonCorner(
+              animationCurve: animationCurve,
+              showOrHideDuration: showOrHideDuration,
               showDoneButton: showDoneButton,
               isTop: false,
             ),
@@ -80,10 +91,14 @@ class DoneButton extends StatelessWidget {
 
 class DoneButtonButton extends StatefulWidget {
   DoneButtonButton({
+    @required this.animationCurve,
+    @required this.showOrHideDuration,
     @required this.showDoneButton,
     @required this.setsFinishedSoFar,
   });
 
+  final Curve animationCurve;
+  final Duration showOrHideDuration;
   //triggers an animation
   final ValueNotifier<bool> showDoneButton;
   //doesn't trigger anything, more of a pass by reference
@@ -120,7 +135,16 @@ class _DoneButtonButtonState extends State<DoneButtonButton> {
     );
 
     return AnimatedContainer(
-      duration: Duration(milliseconds: 300),
+      curve: widget.animationCurve,
+      duration: widget.showOrHideDuration,
+      transform: Matrix4.translation(
+        vect.Vector3(
+          (widget.showDoneButton.value) ? 0
+          : -MediaQuery.of(context).size.width,
+          0,
+          0
+        ),  
+      ),
       decoration: new BoxDecoration(
         color: Theme.of(context).cardColor,
         borderRadius: new BorderRadius.only(
@@ -166,10 +190,14 @@ class _DoneButtonButtonState extends State<DoneButtonButton> {
 
 class DoneButtonCorner extends StatefulWidget {
   DoneButtonCorner({
+    @required this.animationCurve,
+    @required this.showOrHideDuration,
     @required this.showDoneButton,
     @required this.isTop,
   });
 
+  final Curve animationCurve;
+  final Duration showOrHideDuration;
   final ValueNotifier<bool> showDoneButton;
   final bool isTop;
 
@@ -214,7 +242,8 @@ class _DoneButtonCornerState extends State<DoneButtonCorner> {
           AnimatedContainer(
             height: 24,
             width: 24,
-            duration: Duration(milliseconds: 300),
+            curve: widget.animationCurve,
+            duration: widget.showOrHideDuration,
             decoration: new BoxDecoration(
               color: Theme.of(context).primaryColorDark,
               borderRadius: new BorderRadius.only(
