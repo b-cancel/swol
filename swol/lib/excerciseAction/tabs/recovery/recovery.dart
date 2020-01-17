@@ -74,58 +74,16 @@ class _RecoveryState extends State<Recovery> with SingleTickerProviderStateMixin
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Theme.of(context).primaryColorDark,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisSize: MainAxisSize.max,
-        children: <Widget>[
-          Expanded(
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
-              children: <Widget>[
-                Expanded(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).cardColor,
-                      borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(24),
-                        bottomRight: Radius.circular(24),
-                      ),
-                    ),
-                    //NOTE: how this is 0
-                    padding: EdgeInsets.symmetric(
-                      vertical: 16,
-                    ),
-                    child: Container(
-                      alignment: Alignment.center,
-                      color: Colors.green,
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          LiquidTime(
-                            changeableTimerDuration: recoveryDuration,
-                            timerStart: timerStart,
-                            showIcon: false,
-                          ),
-                          ToBreath(),
-                        ],
-                      ),
-                    )
-                  ),
-                ),
-                BottomButtonPadding()
-              ],
-            ),
-
-            /*
-            
-            */
-            
-            
-            /*Column(
-              children: <Widget>[
-                Container(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisSize: MainAxisSize.max,
+      children: <Widget>[
+        Expanded(
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            children: <Widget>[
+              Expanded(
+                child: Container(
                   decoration: BoxDecoration(
                     color: Theme.of(context).cardColor,
                     borderRadius: BorderRadius.only(
@@ -133,44 +91,83 @@ class _RecoveryState extends State<Recovery> with SingleTickerProviderStateMixin
                       bottomRight: Radius.circular(24),
                     ),
                   ),
-                  padding: EdgeInsets.only(
-                    top: 16,
+                  //NOTE: how this is 0
+                  padding: EdgeInsets.symmetric(
+                    vertical: 16,
                   ),
-                  child: LiquidTime(
-                    changeableTimerDuration: recoveryDuration,
-                    timerStart: timerStart,
-                    showIcon: false,
+                  child: Container(
+                    alignment: Alignment.center,
+                    color: Colors.green,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        LiquidTime(
+                          changeableTimerDuration: recoveryDuration,
+                          timerStart: timerStart,
+                          showIcon: false,
+                        ),
+                        ToBreath(),
+                      ],
+                    ),
+                  )
+                ),
+              ),
+              BottomButtonPadding()
+            ],
+          ),
+
+          /*
+          
+          */
+          
+          
+          /*Column(
+            children: <Widget>[
+              Container(
+                decoration: BoxDecoration(
+                  color: Theme.of(context).cardColor,
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(24),
+                    bottomRight: Radius.circular(24),
                   ),
                 ),
-                Expanded(
-                  child: ToBreath(),
-                )
-              ],
-            )
-            */
-          ),
-          BottomButtons(
-            forwardAction: (){
-              //move onto the next set
-              widget.nextSet();
-
-              //zero out the tempStartTimer
-              ExcerciseData.updateExcercise(
-                widget.excerciseID,
-                tempStartTimeCanBeNull: true,
-                tempStartTime: null,
-              );
-            },
-            forwardActionWidget: Text(
-              "Next Set",
-              style: TextStyle(
-                color: Theme.of(context).primaryColorDark,
+                padding: EdgeInsets.only(
+                  top: 16,
+                ),
+                child: LiquidTime(
+                  changeableTimerDuration: recoveryDuration,
+                  timerStart: timerStart,
+                  showIcon: false,
+                ),
               ),
-            ),
-            backAction: widget.backToRecordSet,
+              Expanded(
+                child: ToBreath(),
+              )
+            ],
           )
-        ],
-      ),
+          */
+        ),
+        BottomButtons(
+          forwardAction: (){
+            //move onto the next set
+            widget.nextSet();
+
+            //zero out the tempStartTimer
+            ExcerciseData.updateExcercise(
+              widget.excerciseID,
+              tempStartTimeCanBeNull: true,
+              tempStartTime: null,
+            );
+          },
+          forwardActionWidget: Text(
+            "Next Set",
+            style: TextStyle(
+              color: Theme.of(context).primaryColorDark,
+            ),
+          ),
+          backAction: widget.backToRecordSet,
+        )
+      ],
     );
   }
 }
