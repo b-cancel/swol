@@ -290,8 +290,6 @@ class FunctionSettings extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
-    print("width: " + width.toString());
-
     return Stack(
       children: <Widget>[
         Container(
@@ -407,58 +405,10 @@ class FunctionSettings extends StatelessWidget {
                   ],
                 ),
                 Expanded(
-                  child: Container(
-                    width: MediaQuery.of(context).size.width,
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).cardColor,
-                      borderRadius: BorderRadius.only(
-                        bottomRight: arrowRadius,
-                        bottomLeft: arrowRadius,
-                      ),
-                    ),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        Container(
-                          padding: EdgeInsets.only(
-                            top: 8,
-                            left: 16,
-                            right: 16,
-                            bottom: 16,
-                          ),
-                          child: Column(
-                            children: <Widget>[
-                              HeaderWithInfo(
-                                title: "Rep Target",
-                                popUpFunction: () => repTargetPopUp(context),
-                                subtle: true,
-                              ),
-                              Theme(
-                                data: ThemeData.light(),
-                                child: AnimRepTargetInfoWhite(
-                                  changeDuration: Duration(milliseconds: 300), 
-                                  repTargetDuration: new ValueNotifier<Duration>(
-                                    Duration(milliseconds: 300),
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.only(top: 4),
-                                child: Container(
-                                  color: Colors.black, //line color
-                                  height: 2,
-                                  width: MediaQuery.of(context).size.width,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        //slide must be full width without the 16 horizontal padding
-                        CustomSlider(
-                          value: new ValueNotifier<int>(1),
-                          lastTick: 35,
-                        ),
-                      ],
+                  child: Theme(
+                    data: ThemeData.light(),
+                    child: RepTargetChanger(
+                      arrowRadius: arrowRadius,
                     ),
                   ),
                 ),
@@ -534,6 +484,99 @@ class FunctionSettings extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+}
+
+class RepTargetChanger extends StatelessWidget {
+  const RepTargetChanger({
+    Key key,
+    @required this.arrowRadius,
+  }) : super(key: key);
+
+  final Radius arrowRadius;
+
+  @override
+  Widget build(BuildContext context) {
+    Function funcWithWhiteContext = () => repTargetPopUp(context);
+    return Theme(
+      data: ThemeData.dark(),
+      child: RepTargetChangerDark(
+        arrowRadius: arrowRadius, 
+        funcWithWhiteContext: funcWithWhiteContext,
+      ),
+    );
+  }
+}
+
+class RepTargetChangerDark extends StatelessWidget {
+  const RepTargetChangerDark({
+    Key key,
+    @required this.arrowRadius,
+    @required this.funcWithWhiteContext,
+  }) : super(key: key);
+
+  final Radius arrowRadius;
+  final Function funcWithWhiteContext;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      decoration: BoxDecoration(
+        color: Theme.of(context).cardColor,
+        borderRadius: BorderRadius.only(
+          bottomRight: arrowRadius,
+          bottomLeft: arrowRadius,
+        ),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: 24,
+            ),
+            child: Container(
+              padding: EdgeInsets.only(
+                top: 0,
+                bottom: 16,
+              ),
+              child: Column(
+                children: <Widget>[
+                  HeaderWithInfo(
+                    title: "Rep Target",
+                    popUpFunction: () => funcWithWhiteContext(),
+                    subtle: true,
+                  ),
+                  Theme(
+                    data: ThemeData.light(),
+                    child: AnimRepTargetInfoWhite(
+                      changeDuration: Duration(milliseconds: 300), 
+                      repTargetDuration: new ValueNotifier<Duration>(
+                        Duration(milliseconds: 300),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(top: 4),
+                    child: Container(
+                      color: Colors.black, //line color
+                      height: 2,
+                      width: MediaQuery.of(context).size.width,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          //slide must be full width without the 16 horizontal padding
+          CustomSlider(
+            value: new ValueNotifier<int>(1),
+            lastTick: 35,
+          ),
+        ],
+      ),
     );
   }
 }
