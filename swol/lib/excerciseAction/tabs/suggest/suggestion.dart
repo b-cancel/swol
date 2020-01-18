@@ -315,157 +315,207 @@ class FunctionSettings extends StatelessWidget {
         ),
         Container(
           height: height,
-          padding: EdgeInsets.symmetric(
-            horizontal: 24,
-          ),
-          child: Container(
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
-              children: <Widget>[
-                Stack(
-                  children: <Widget>[
-                    TextOnBlack(
-                      text: "using your Last Set, Prediction Formula,",
-                    ),
-                    Positioned(
-                      left: 0,
-                      bottom: 0,
-                      child: Corner(
-                        cardRadius: cardRadius,
-                        isLeft: true,
-                      ),
-                    ),
-                    Positioned(
-                      right: 0,
-                      bottom: 0,
-                      child: Corner(
-                        cardRadius: cardRadius,
-                      ),
-                    ),
-                  ],
-                ),
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).cardColor,
-                    borderRadius: BorderRadius.only(
-                      bottomRight: cardRadius,
-                      bottomLeft: cardRadius,
-                    ),
-                  ),
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 24,
-                    ),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            children: <Widget>[
+               Container(
+                 child: Stack(
+                   children: <Widget>[
+                     Stack(
                       children: <Widget>[
-                        Container(
-                          child: new HeaderWithInfo(
-                            title: "Prediction Formula",
-                            popUpFunction: () => predictionFormulasPopUp(context),
-                            subtle: true,
+                        TextOnBlack(
+                          text: "using your Last Set, Prediction Formula,",
+                        ),
+                        Positioned(
+                          left: 0,
+                          bottom: 0,
+                          child: Corner(
+                            cardRadius: arrowRadius,
+                            isLeft: true,
                           ),
                         ),
-                        //TODO: switch to the easy drop down after fixing issue
-                        FunctionDropDown(
-                          functionIndex: functionIndex,
-                          functionString: functionString,
+                        Positioned(
+                          right: 0,
+                          bottom: 0,
+                          child: Corner(
+                            cardRadius: arrowRadius,
+                          ),
                         ),
                       ],
                     ),
-                  /*
-                    child: FunctionDropDown(
-                      functionIndex: functionIndex,
-                      functionString: functionString,
+                    Positioned.fill(
+                      child: Container(
+                        child: Row(
+                          children: <Widget>[
+                            Container(
+                              color: Theme.of(context).primaryColorDark,
+                              width: 24,
+                            ),
+                            Expanded(
+                              child: Container(),
+                            ),
+                            Container(
+                              color: Theme.of(context).primaryColorDark,
+                              width: 24,
+                            )
+                          ],
+                        ),
+                      ),
+                    )
+                    /*
+                    Positioned.fill(
+                      child: IntrinsicHeight(
+                        child: Row(
+                          mainAxisSize: MainAxisSize.max,
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: <Widget>[
+                            Container(
+                              color: Theme.of(context).cardColor,
+                            ),
+                          ],
+                        ),
+                      ),
+                    )
+
+                    */
+                   ],
+              ),
+               ),
+              Expanded(
+                child: Container(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 24,
+                  ),
+                  child: Container(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.max,
+                      children: <Widget>[
+                        Container(
+                          width: MediaQuery.of(context).size.width,
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).cardColor,
+                            borderRadius: BorderRadius.only(
+                              bottomRight: cardRadius,
+                              bottomLeft: cardRadius,
+                            ),
+                          ),
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 24,
+                            ),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: <Widget>[
+                                Container(
+                                  child: new HeaderWithInfo(
+                                    title: "Prediction Formula",
+                                    popUpFunction: () => predictionFormulasPopUp(context),
+                                    subtle: true,
+                                  ),
+                                ),
+                                //TODO: switch to the easy drop down after fixing issue
+                                FunctionDropDown(
+                                  functionIndex: functionIndex,
+                                  functionString: functionString,
+                                ),
+                              ],
+                            ),
+                          /*
+                            child: FunctionDropDown(
+                              functionIndex: functionIndex,
+                              functionString: functionString,
+                            ),
+                            */
+                          ),
+                        ),
+                        Stack(
+                          children: <Widget>[
+                            TextOnBlack(
+                              text: "and Rep Target",
+                            ),
+                            Positioned(
+                              left: 0,
+                              bottom: 0,
+                              child: Corner(
+                                cardRadius: cardRadius,
+                                isLeft: true,
+                              ),
+                            ),
+                            Positioned(
+                              right: 0,
+                              bottom: 0,
+                              child: Corner(
+                                cardRadius: cardRadius,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Expanded(
+                          child: Theme(
+                            data: ThemeData.light(),
+                            child: RepTargetChanger(
+                              arrowRadius: arrowRadius,
+                            ),
+                          ),
+                        ),
+                        TextOnBlack(
+                          text: "we calculated you Goal Set to be",
+                        ),
+                      ],
+                    ),
+                    
+                    /*
+                    DefaultTextStyle(
+                      style: TextStyle(
+                        color: Colors.white.withOpacity(1),
+                        fontSize: 64,
+                        fontWeight: FontWeight.w300,
+                      ),
+                      child: IntrinsicHeight(
+                        child: Row(
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: <Widget>[
+                            Container(
+                              color: Colors.pink,
+                              padding: const EdgeInsets.only(
+                                right: 4.0,
+                              ),
+                              width: 32,
+                              child: FittedBox(
+                                fit: BoxFit.fitHeight,
+                                child: Text(
+                                  "f",
+                                  style: TextStyle(
+                                    fontSize: 128,
+                                    fontWeight: FontWeight.w200,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Text("{"),
+                            Expanded(
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 8,
+                                ),
+                                child: FunctionDropDown(
+                                  functionIndex: functionIndex,
+                                  functionString: functionString,
+                                ),
+                              ),
+                            ),
+                            Text("}"),
+                          ],
+                        ),
+                      ),
                     ),
                     */
                   ),
                 ),
-                Stack(
-                  children: <Widget>[
-                    TextOnBlack(
-                      text: "and Rep Target",
-                    ),
-                    Positioned(
-                      left: 0,
-                      bottom: 0,
-                      child: Corner(
-                        cardRadius: cardRadius,
-                        isLeft: true,
-                      ),
-                    ),
-                    Positioned(
-                      right: 0,
-                      bottom: 0,
-                      child: Corner(
-                        cardRadius: cardRadius,
-                      ),
-                    ),
-                  ],
-                ),
-                Expanded(
-                  child: Theme(
-                    data: ThemeData.light(),
-                    child: RepTargetChanger(
-                      arrowRadius: arrowRadius,
-                    ),
-                  ),
-                ),
-                TextOnBlack(
-                  text: "we calculated you Goal Set to be",
-                ),
-              ],
-            ),
-            
-            /*
-            DefaultTextStyle(
-              style: TextStyle(
-                color: Colors.white.withOpacity(1),
-                fontSize: 64,
-                fontWeight: FontWeight.w300,
               ),
-              child: IntrinsicHeight(
-                child: Row(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: <Widget>[
-                    Container(
-                      color: Colors.pink,
-                      padding: const EdgeInsets.only(
-                        right: 4.0,
-                      ),
-                      width: 32,
-                      child: FittedBox(
-                        fit: BoxFit.fitHeight,
-                        child: Text(
-                          "f",
-                          style: TextStyle(
-                            fontSize: 128,
-                            fontWeight: FontWeight.w200,
-                          ),
-                        ),
-                      ),
-                    ),
-                    Text("{"),
-                    Expanded(
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 8,
-                        ),
-                        child: FunctionDropDown(
-                          functionIndex: functionIndex,
-                          functionString: functionString,
-                        ),
-                      ),
-                    ),
-                    Text("}"),
-                  ],
-                ),
-              ),
-            ),
-            */
+            ],
           ),
         ),
         Positioned(
