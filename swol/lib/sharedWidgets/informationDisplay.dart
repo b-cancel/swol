@@ -74,10 +74,12 @@ class HeaderWithInfo extends StatelessWidget {
     Key key,
     @required this.title,
     @required this.popUpFunction,
+    this.subtle: false,
   }) : super(key: key);
 
   final String title;
   final Function popUpFunction;
+  final bool subtle;
 
   @override
   Widget build(BuildContext context) {
@@ -96,7 +98,7 @@ class HeaderWithInfo extends StatelessWidget {
           child: IconButton(
             onPressed: () => popUpFunction(),
             icon: Icon(Icons.info),
-            color: Theme.of(context).accentColor,
+            color: subtle ? Theme.of(context).primaryColor :  Theme.of(context).accentColor,
           ),
         )
       ],

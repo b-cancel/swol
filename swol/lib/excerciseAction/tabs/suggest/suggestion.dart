@@ -37,15 +37,15 @@ class SuggestionSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //calculate golden ratios
-    List<double> bigToSmall = measurementToGoldenRatio(
-      rawSpaceToRedistribute,
-    );
+    List<double> bigToSmall = [
+      rawSpaceToRedistribute * (2/3),
+      rawSpaceToRedistribute * (1/3),
+    ];
 
-    List<double> secondBigToSmall = measurementToGoldenRatio(
-      bigToSmall[1],
-    );
-
-    double largerSpace = rawSpaceToRedistribute - (secondBigToSmall[0] * 2);
+    List<double> secondBigToSmall = [
+      bigToSmall[1] * (2/3),
+      bigToSmall[1] * (1/3),
+    ];
 
     //GOAL
     //super small
@@ -53,6 +53,7 @@ class SuggestionSection extends StatelessWidget {
     //semi small
     
     //card radius
+    Radius arrowRadius = Radius.circular(48);
     Radius cardRadius = Radius.circular(24);
 
     return Container(
@@ -64,28 +65,30 @@ class SuggestionSection extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
           Container(
-            height: secondBigToSmall[0],
+            height: secondBigToSmall[1],
             child: Container(
               width: MediaQuery.of(context).size.width,
               decoration: BoxDecoration(
                 color: Theme.of(context).cardColor,
                 borderRadius: BorderRadius.only(
-                  bottomLeft: cardRadius,
-                  bottomRight: cardRadius,
+                  bottomLeft: arrowRadius,
+                  bottomRight: arrowRadius,
                 ),
               ),
               padding: EdgeInsets.all(16),
               child: ShowSet(
+                lastWeight: 9999, 
+                lastReps: 888,
                 isLast: true,
-                lastWeight: 9, 
-                lastReps: 8,
               ),
             ),
           ),
           FunctionSettings(
-            height: largerSpace,
+            height: bigToSmall[0],
             functionIndex: functionIndex, 
             functionString: functionString,
+            arrowRadius: arrowRadius,
+            cardRadius: cardRadius,
           ),
           //-----Most Important Part 
           //1. tells the user what to next
@@ -103,8 +106,8 @@ class SuggestionSection extends StatelessWidget {
               width: MediaQuery.of(context).size.width,
               padding: EdgeInsets.all(16),
               child: ShowSet(
-                lastWeight: 1111, 
-                lastReps: 222,
+                lastWeight: 160, 
+                lastReps: 8,
               ),
               
               /*Column(
@@ -173,77 +176,96 @@ class ShowSet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return IntrinsicHeight(
-      child: Row(
-        mainAxisSize: MainAxisSize.max,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          Container(
-            child: FittedBox(
-              fit: BoxFit.contain,
-              child: DefaultTextStyle(
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: <Widget>[
-                    Text(isLast ? "Last" : "Goal"),
-                    Text("Set"),
-                  ],
-                ),
-              ),
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(
-              vertical: 4,
-              horizontal: 8,
-            ),
-            child: Container(
-              height: MediaQuery.of(context).size.height,
-              width: 4,
-              color: Colors.white,
-            ),
-          ),
-          Expanded(
-            child: FittedBox(
-              fit: BoxFit.contain,
-              alignment: Alignment.centerLeft,
-              child: IntrinsicHeight(
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: <Widget>[
-                    Text(lastWeight.toString()),
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        right: 1.0,
+    return Padding(
+      padding: EdgeInsets.symmetric(
+        horizontal: isLast ? 16 : 0,
+      ),
+      child: IntrinsicHeight(
+        child: Row(
+          mainAxisSize: MainAxisSize.max,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            Container(
+              child: FittedBox(
+                fit: BoxFit.contain,
+                child: DefaultTextStyle(
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: <Widget>[
+                      Text(
+                        (isLast ? "Last" : "Goal") 
+                        + (isLast ? " Set" : "")
                       ),
-                      child: Icon(
-                        FontAwesomeIcons.times,
-                        size: 6,
-                      ),
-                    ),
-                    Text(lastReps.toString()),
-                    Container(
-                      alignment: Alignment.topLeft,
-                      padding: EdgeInsets.only(
-                        top: 2,
-                      ),
-                      child: Icon(
-                        Icons.repeat,
-                        size: 6,
-                      ),
-                    ),
-                  ],
+                      isLast ? Container() : Text("Set"),
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
+            Padding(
+              padding: EdgeInsets.symmetric(
+                vertical: 4,
+                horizontal: 8,
+              ),
+              child: Container(
+                height: MediaQuery.of(context).size.height,
+                width: 4,
+                color: Colors.white,
+              ),
+            ),
+            Expanded(
+              child: FittedBox(
+                fit: BoxFit.contain,
+                alignment: Alignment.centerLeft,
+                child: IntrinsicHeight(
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: <Widget>[
+                      Text(lastWeight.toString()),
+                      Container(
+                        alignment: Alignment.topLeft,
+                        padding: EdgeInsets.only(
+                          top: 2,
+                          right: 4,
+                        ),
+                        child: Icon(
+                          FontAwesomeIcons.dumbbell,
+                          size: 6,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(
+                          right: 1.0,
+                        ),
+                        child: Icon(
+                          FontAwesomeIcons.times,
+                          size: 6,
+                        ),
+                      ),
+                      Text(lastReps.toString()),
+                      Container(
+                        alignment: Alignment.topLeft,
+                        padding: EdgeInsets.only(
+                          top: 2,
+                        ),
+                        child: Icon(
+                          Icons.repeat,
+                          size: 6,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -255,71 +277,252 @@ class FunctionSettings extends StatelessWidget {
     @required this.height,
     @required this.functionIndex,
     @required this.functionString,
+    @required this.arrowRadius,
+    @required this.cardRadius,
   }) : super(key: key);
 
   final double height;
   final ValueNotifier<int> functionIndex;
   final ValueNotifier<String> functionString;
+  final Radius arrowRadius;
+  final Radius cardRadius;
 
   @override
   Widget build(BuildContext context) {
-    //card radius
-    Radius cardRadius = Radius.circular(24);
+    double width = MediaQuery.of(context).size.width;
+    print("width: " + width.toString());
 
-    //build
     return Stack(
       children: <Widget>[
         Container(
           height: height,
+          width: MediaQuery.of(context).size.width,
+          padding: EdgeInsets.symmetric(
+            vertical: 24,
+          ),
+          child: Container(
+            padding: EdgeInsets.only(
+              bottom: 24,
+            ),
+            child: Container(
+            ),
+          ),
           /*
           padding: EdgeInsets.symmetric(
             horizontal: 24,
           ),
-          child: DefaultTextStyle(
-            style: TextStyle(
-              color: Colors.white.withOpacity(1),
-              fontSize: 64,
-              fontWeight: FontWeight.w300,
-            ),
-            child: Row(
+          child: 
+          ),
+          */
+        ),
+        Container(
+          height: height,
+          padding: EdgeInsets.symmetric(
+            horizontal: 24,
+          ),
+          child: Container(
+            child: Column(
               mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.only(
-                    right: 4.0,
-                  ),
-                  child: Text(
-                    "f",
-                    style: TextStyle(
-                      fontSize: 82,
-                      fontWeight: FontWeight.w200,
+                Stack(
+                  children: <Widget>[
+                    TextOnBlack(
+                      text: "using your Last Set, Prediction Formula,",
+                    ),
+                    Positioned(
+                      left: 0,
+                      bottom: 0,
+                      child: Corner(
+                        cardRadius: cardRadius,
+                        isLeft: true,
+                      ),
+                    ),
+                    Positioned(
+                      right: 0,
+                      bottom: 0,
+                      child: Corner(
+                        cardRadius: cardRadius,
+                      ),
+                    ),
+                  ],
+                ),
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).cardColor,
+                    borderRadius: BorderRadius.only(
+                      bottomRight: cardRadius,
+                      bottomLeft: cardRadius,
                     ),
                   ),
-                ),
-                Text("{"),
-                Expanded(
                   child: Padding(
                     padding: EdgeInsets.symmetric(
-                      horizontal: 8,
+                      horizontal: 24,
                     ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        Container(
+                          child: new HeaderWithInfo(
+                            title: "Prediction Formula",
+                            popUpFunction: () => predictionFormulasPopUp(context),
+                            subtle: true,
+                          ),
+                        ),
+                        //TODO: switch to the easy drop down after fixing issue
+                        FunctionDropDown(
+                          functionIndex: functionIndex,
+                          functionString: functionString,
+                        ),
+                      ],
+                    ),
+                  /*
                     child: FunctionDropDown(
                       functionIndex: functionIndex,
                       functionString: functionString,
                     ),
+                    */
                   ),
                 ),
-                Text("}"),
+                Stack(
+                  children: <Widget>[
+                    TextOnBlack(
+                      text: "and Rep Target",
+                    ),
+                    Positioned(
+                      left: 0,
+                      bottom: 0,
+                      child: Corner(
+                        cardRadius: cardRadius,
+                        isLeft: true,
+                      ),
+                    ),
+                    Positioned(
+                      right: 0,
+                      bottom: 0,
+                      child: Corner(
+                        cardRadius: cardRadius,
+                      ),
+                    ),
+                  ],
+                ),
+                Expanded(
+                  child: Container(
+                    width: MediaQuery.of(context).size.width,
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).cardColor,
+                      borderRadius: BorderRadius.only(
+                        bottomRight: arrowRadius,
+                        bottomLeft: arrowRadius,
+                      ),
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        Container(
+                          padding: EdgeInsets.only(
+                            top: 8,
+                            left: 16,
+                            right: 16,
+                            bottom: 16,
+                          ),
+                          child: Column(
+                            children: <Widget>[
+                              HeaderWithInfo(
+                                title: "Rep Target",
+                                popUpFunction: () => repTargetPopUp(context),
+                                subtle: true,
+                              ),
+                              Theme(
+                                data: ThemeData.light(),
+                                child: AnimRepTargetInfoWhite(
+                                  changeDuration: Duration(milliseconds: 300), 
+                                  repTargetDuration: new ValueNotifier<Duration>(
+                                    Duration(milliseconds: 300),
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(top: 4),
+                                child: Container(
+                                  color: Colors.black, //line color
+                                  height: 2,
+                                  width: MediaQuery.of(context).size.width,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        //slide must be full width without the 16 horizontal padding
+                        CustomSlider(
+                          value: new ValueNotifier<int>(1),
+                          lastTick: 35,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                TextOnBlack(
+                  text: "we calculated you Goal Set to be",
+                ),
               ],
             ),
+            
+            /*
+            DefaultTextStyle(
+              style: TextStyle(
+                color: Colors.white.withOpacity(1),
+                fontSize: 64,
+                fontWeight: FontWeight.w300,
+              ),
+              child: IntrinsicHeight(
+                child: Row(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget>[
+                    Container(
+                      color: Colors.pink,
+                      padding: const EdgeInsets.only(
+                        right: 4.0,
+                      ),
+                      width: 32,
+                      child: FittedBox(
+                        fit: BoxFit.fitHeight,
+                        child: Text(
+                          "f",
+                          style: TextStyle(
+                            fontSize: 128,
+                            fontWeight: FontWeight.w200,
+                          ),
+                        ),
+                      ),
+                    ),
+                    Text("{"),
+                    Expanded(
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 8,
+                        ),
+                        child: FunctionDropDown(
+                          functionIndex: functionIndex,
+                          functionString: functionString,
+                        ),
+                      ),
+                    ),
+                    Text("}"),
+                  ],
+                ),
+              ),
+            ),
+            */
           ),
-          */
         ),
         Positioned(
           left: 0,
           bottom: 0,
           child: Corner(
-            cardRadius: cardRadius,
+            cardRadius: arrowRadius,
             isLeft: true,
           ),
         ),
@@ -327,10 +530,38 @@ class FunctionSettings extends StatelessWidget {
           right: 0,
           bottom: 0,
           child: Corner(
-            cardRadius: cardRadius,
+            cardRadius: arrowRadius,
           ),
         ),
       ],
+    );
+  }
+}
+
+class TextOnBlack extends StatelessWidget {
+  const TextOnBlack({
+    Key key,
+    @required this.text,
+  }) : super(key: key);
+
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      padding: EdgeInsets.symmetric(
+        //minimum is 8
+        vertical: 12,
+      ),
+      alignment: Alignment.center,
+      child: Text(
+        text,
+        style: TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 14,
+        ),
+      ),
     );
   }
 }
@@ -348,19 +579,33 @@ class Corner extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Widget cardColored = Container(
-      height: 24,
-      width: 24,
-      color: Theme.of(context).cardColor,
+      height: 48,
+      width: 48,
+      decoration: BoxDecoration(
+        color: Theme.of(context).cardColor,
+        borderRadius: BorderRadius.only(
+          //right
+          topLeft: isLeft ? Radius.zero : cardRadius,
+
+          //left
+          topRight: isLeft ? cardRadius : Radius.zero,
+        ),
+      ),
     );
     
     Widget backColored = Container(
-      height: 36,
-      width: 36,
+      height: 56,
+      width: 56,
       decoration: BoxDecoration(
         color: Theme.of(context).primaryColorDark,
         borderRadius: BorderRadius.only(
-          bottomRight: cardRadius,
-          bottomLeft: cardRadius,
+          //right
+          bottomRight: isLeft ? Radius.zero : cardRadius,
+          topLeft: isLeft ? Radius.zero : cardRadius,
+
+          //left
+          bottomLeft: isLeft ? cardRadius : Radius.zero,
+          topRight: isLeft ? cardRadius : Radius.zero,
         ),
       ),
     );
@@ -400,8 +645,8 @@ class Corner extends StatelessWidget {
     }
 
     return Container(
-      height: 36,
-      width: 36,
+      height: 56,
+      width: 56,
       child: child,
     );
   }
