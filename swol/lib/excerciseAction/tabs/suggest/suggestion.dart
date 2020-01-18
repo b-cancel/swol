@@ -28,11 +28,6 @@ class SuggestionSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    TextStyle bigStyle = TextStyle(
-      fontSize: 64,
-      fontWeight: FontWeight.bold,
-    );
-
     //calculate golden ratio
     List<double> bigToSmall = measurementToGoldenRatio(
       rawSpaceToRedistribute,
@@ -73,8 +68,7 @@ class SuggestionSection extends StatelessWidget {
             ),
           ),
           FunctionChanger(
-            secondBigToSmall: secondBigToSmall, 
-            bigStyle: bigStyle, 
+            secondBigToSmall: secondBigToSmall,
             functionIndex: functionIndex, 
             functionString: functionString,
           ),
@@ -110,13 +104,11 @@ class FunctionChanger extends StatelessWidget {
   const FunctionChanger({
     Key key,
     @required this.secondBigToSmall,
-    @required this.bigStyle,
     @required this.functionIndex,
     @required this.functionString,
   }) : super(key: key);
 
   final List<double> secondBigToSmall;
-  final TextStyle bigStyle;
   final ValueNotifier<int> functionIndex;
   final ValueNotifier<String> functionString;
 
@@ -125,10 +117,14 @@ class FunctionChanger extends StatelessWidget {
     return Container(
       height: secondBigToSmall[1],
       padding: EdgeInsets.symmetric(
-        horizontal: 16,
+        horizontal: 24,
       ),
       child: DefaultTextStyle(
-        style: bigStyle,
+        style: TextStyle(
+          color: Colors.white.withOpacity(1),
+          fontSize: 64,
+          fontWeight: FontWeight.w300,
+        ),
         child: Row(
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.center,
@@ -141,89 +137,24 @@ class FunctionChanger extends StatelessWidget {
                 "f",
                 style: TextStyle(
                   fontSize: 82,
-                  fontWeight: FontWeight.w400,
+                  fontWeight: FontWeight.w200,
                 ),
               ),
             ),
             Text("{"),
             Expanded(
-              child: FunctionDropDown(
-                functionIndex: functionIndex,
-                functionString: functionString,
+              child: Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: 8,
+                ),
+                child: FunctionDropDown(
+                  functionIndex: functionIndex,
+                  functionString: functionString,
+                ),
               ),
             ),
             Text("}"),
           ],
-        ),
-      ),
-    );
-  }
-}
-
-class SettingButton extends StatelessWidget {
-  const SettingButton({
-    Key key,
-    @required this.onPressed,
-    @required this.icon,
-    @required this.name,
-    @required this.value,
-  }) : super(key: key);
-
-  final Function onPressed;
-  final IconData icon;
-  final String name;
-  final String value;
-
-  @override
-  Widget build(BuildContext context) {
-    return FlatButton(
-      onPressed: onPressed,
-      child: Row(
-        mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Padding(
-                padding: EdgeInsets.only(
-                  right: 8,
-                ),
-                child: Icon(
-                  icon,
-                ),
-              ),
-              Text(name + ": " + value),
-            ],
-          ),
-          Icon(
-            Icons.edit,
-          )
-        ],
-      ),
-    );
-  }
-}
-
-class MyArrow extends StatelessWidget {
-  const MyArrow({
-    this.color,
-    Key key,
-  }) : super(key: key);
-
-  final Color color;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(16),
-      child: Center(
-        child: Transform.rotate(
-          angle: 0, //math.pi / 2,
-          child: Icon(
-            Icons.arrow_downward,
-            color: color,
-          )
         ),
       ),
     );
@@ -258,7 +189,7 @@ class LastSetDisplay extends StatelessWidget {
                     child: Row(
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
                         LastSetText(),
                         TextSeparator(),
@@ -268,7 +199,7 @@ class LastSetDisplay extends StatelessWidget {
                             alignment: Alignment.topLeft,
                             child: Padding(
                               padding: EdgeInsets.only(
-                                right: 116,
+                                right: 96,
                               ),
                               child: Row(
                                 mainAxisSize: MainAxisSize.min,
@@ -282,13 +213,10 @@ class LastSetDisplay extends StatelessWidget {
                                   ),
                                   Padding(
                                     padding: EdgeInsets.only(
-                                      top: 16,
-                                      left: 4,
-                                      right: 16,
+                                      top: 36,
                                     ),
                                     child: Icon(
-                                      FontAwesomeIcons.dumbbell,
-                                      size: 42,
+                                      FontAwesomeIcons.times,
                                     ),
                                   ),
                                   Text(
@@ -299,25 +227,11 @@ class LastSetDisplay extends StatelessWidget {
                                   ),
                                   Padding(
                                     padding: EdgeInsets.only(
-                                      top: 16,
+                                      top: 16.0,
                                     ),
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: <Widget>[
-                                        Text(
-                                          "MAX",
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 32,
-                                          ),
-                                        ),
-                                        Text(
-                                          "Reps",
-                                          style: TextStyle(
-                                            fontSize: 22,
-                                          ),
-                                        ),
-                                      ],
+                                    child: Icon(
+                                      Icons.repeat, 
+                                      size: 32,
                                     ),
                                   ),
                                 ],
