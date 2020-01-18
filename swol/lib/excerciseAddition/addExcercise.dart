@@ -75,7 +75,9 @@ class AddExcercise extends StatelessWidget {
   final ValueNotifier<String> note = new ValueNotifier("");
   final ValueNotifier<String> url = new ValueNotifier("");
 
-  final ValueNotifier<int> functionIndex = new ValueNotifier(AnExcercise.defaultFunctionID);
+  final ValueNotifier<int> functionIndex = new ValueNotifier(
+    AnExcercise.defaultFunctionID,
+  );
   final ValueNotifier<String> functionString = new ValueNotifier(
     Functions.functions[AnExcercise.defaultFunctionID],
   );
