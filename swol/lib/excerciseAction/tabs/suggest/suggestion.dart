@@ -403,29 +403,13 @@ class FunctionSettings extends StatelessWidget {
                             padding: EdgeInsets.symmetric(
                               horizontal: 24,
                             ),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: <Widget>[
-                                Container(
-                                  child: new HeaderWithInfo(
-                                    title: "Prediction Formula",
-                                    popUpFunction: () => predictionFormulasPopUp(context),
-                                    subtle: true,
-                                  ),
-                                ),
-                                //TODO: switch to the easy drop down after fixing issue
-                                FunctionDropDown(
-                                  functionIndex: functionIndex,
-                                  functionString: functionString,
-                                ),
-                              ],
+                            child: Theme(
+                              data: ThemeData.light(),
+                              child: FunctionChanger(
+                                functionIndex: functionIndex, 
+                                functionString: functionString,
+                              ),
                             ),
-                          /*
-                            child: FunctionDropDown(
-                              functionIndex: functionIndex,
-                              functionString: functionString,
-                            ),
-                            */
                           ),
                         ),
                         Stack(
@@ -534,6 +518,41 @@ class FunctionSettings extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+}
+
+class FunctionChanger extends StatelessWidget {
+  const FunctionChanger({
+    Key key,
+    @required this.functionIndex,
+    @required this.functionString,
+  }) : super(key: key);
+
+  final ValueNotifier<int> functionIndex;
+  final ValueNotifier<String> functionString;
+
+  @override
+  Widget build(BuildContext context) {
+    return Theme(
+      data: ThemeData.dark(),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          Container(
+            child: new HeaderWithInfo(
+              title: "Prediction Formula",
+              popUpFunction: () => predictionFormulasPopUp(context),
+              subtle: true,
+            ),
+          ),
+          //TODO: switch to the easy drop down after fixing issue
+          FunctionDropDown(
+            functionIndex: functionIndex,
+            functionString: functionString,
+          ),
+        ],
+      ),
     );
   }
 }
