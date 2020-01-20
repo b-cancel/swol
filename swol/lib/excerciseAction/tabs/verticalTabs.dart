@@ -12,6 +12,7 @@ import 'package:swol/excerciseAction/tabs/suggest/suggest.dart';
 
 //plugin
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter_sidekick/flutter_sidekick.dart';
 
 /// A vertical tab widget for flutter
 class VerticalTabs extends StatefulWidget {
@@ -54,12 +55,125 @@ class VerticalTabs extends StatefulWidget {
 //TODO: confirm the immediately above
 
 class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMixin {
-  //so that we can call the functions on the carousel
-  var carousel;
-
   //for done button
   ValueNotifier<bool> showDoneButton;
   ValueNotifier<int> setsFinishedSoFar;
+
+  //so that we can call the functions on the carousel
+  var carousel;
+
+  //for the hero widget
+  SidekickController controller;
+  ValueNotifier<int> calculatedWeight;
+  ValueNotifier<int> calculatedReps;
+  Widget calculatedGoalSet;
+
+  //init
+  @override
+  void initState() {
+    //NOTE: starts as false because we always want the button to animate in
+    showDoneButton = new ValueNotifier<bool>(false);
+
+    //TODO: properly read in the value
+    //NOTE: we might need to go the init page first (Reuse the logic)
+    setsFinishedSoFar = new ValueNotifier<int>(1);
+
+    //carousel
+    carousel = CarouselSlider(
+      //NOTE: DO NOT SET INITIAL PAGE: this breaks
+      //we are instead jumping to our desired page on start up
+      viewportFraction: 1.0,
+      //TODO: when we are done with debuging we can uncomment this
+      //scrollPhysics: NeverScrollableScrollPhysics(),
+      scrollDirection: Axis.vertical,
+      height: widget.maxHeight,
+      items: [
+        Suggestion(
+          statusBarHeight: widget.statusBarHeight,
+          excerciseID: widget.excerciseID,
+          recordSet: () => toPage(1),
+        ),
+        SetRecord(
+          statusBarHeight: widget.statusBarHeight,
+          excerciseID: widget.excerciseID,
+          //TODO: going back should not reset what they already typed
+          //note: try to stop them from typing dumb stuff but if they do then restore the dumb stuff
+          //TODO: do so when the user holds the button AND when they click it
+          backToSuggestion: () => toPage(0),
+          //TODO: dont allow the user to move onto the set break until they have valid set
+          //1. numbers only (obvi)
+          //2. whole numbers (kinda obvi)
+          //3. for the weight less thatb 4 digits (nobody can nothing 9,999 pounds)
+          //4. for the reps less than 3 digits (nobody can nothing 999 times)
+          //5. weight CAN BE 0, but suggest that if its body weight excercise they record that
+          //6. reps can't be 0
+          //TODO: if they try to move onto the set break explain the above
+          //- can use a pop up
+          //- can use a snackbar
+          //- can use a attached toast
+          //- can just trigger the error or something like it on the field
+          //- ideally just make it impossible for the user to do something dumb
+          setBreak: () => toPage(2),
+        ),
+        Recovery( 
+          excerciseID: widget.excerciseID,
+          //NOTE: although at some point I thought the back button should trigger this too
+          //that's silly the back button is a "short cut" since its only on android
+          //and shortcuts should be for actions that happen often
+          //and the user will only go back to fix their set if they mistaped
+          //which ofcourse is rare in comparison to perhaps going to their next workout
+          //and reviewing form or doing a super set or whatever else
+          //TODO: tell the user timer will not reset no matter what
+          //TODO: do so when the user holds the button AND when they click it
+          backToRecordSet: () => toPage(1),
+          //TODO: there are like a million and 1 things that have to happen here (HARD)
+          nextSet: () => toPage(0),
+        ),
+      ],
+    );
+
+    //TODO: select the first tab based on how far we are into the workout (HARD)
+    //TODO: remove the random picker test code below
+    var rng = new math.Random();
+
+    //travel to the page that has initial focus
+    WidgetsBinding.instance.addPostFrameCallback((_){
+      toPage((rng.nextInt(3)).clamp(0, 2), instant: true);
+    });
+
+    //handle goal set caluclation and display
+    controller = SidekickController(
+      vsync: this, 
+      duration: Duration(milliseconds: 1500),
+    );
+    calculatedWeight = new ValueNotifier<int>(160);
+    calculatedReps = new ValueNotifier<int>(15);
+
+    //super init
+    super.initState();
+  }
+
+  //build
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: <Widget>[
+        //had to be at the bottom to get the curves with the hack ive been using
+        Positioned(
+          bottom: 0,
+          left: 0,
+          child: DoneButton(
+            showDoneButton: showDoneButton,
+            setsFinishedSoFar: setsFinishedSoFar,
+            animationCurve: Curves.bounceInOut,
+          ),
+        ),
+        //the parts that overlap the back button should be clear
+        //only color in like the background for curves
+        carousel,
+      ],
+    );
+  }
 
   //NOTE: this function will always run on init
   //this is so that we can go to a different page if need be
@@ -134,107 +248,9 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
       //animated to right page
       carousel.animateToPage(
         pageID, 
-        duration: Duration(milliseconds: 300), 
+        duration: Duration(milliseconds: 1500), 
         curve: Curves.easeInOut,
       );
     }
-  }
-
-  //init
-  @override
-  void initState() {
-    //NOTE: starts as false because we always want the button to animate in
-    showDoneButton = new ValueNotifier<bool>(false);
-
-    //TODO: properly read in the value
-    //NOTE: we might need to go the init page first (Reuse the logic)
-    setsFinishedSoFar = new ValueNotifier<int>(1);
-
-    //carousel
-    carousel = CarouselSlider(
-      //NOTE: DO NOT SET INITIAL PAGE: this breaks
-      //we are instead jumping to our desired page on start up
-      viewportFraction: 1.0,
-      //TODO: when we are done with debuging we can uncomment this
-      //scrollPhysics: NeverScrollableScrollPhysics(),
-      scrollDirection: Axis.vertical,
-      height: widget.maxHeight,
-      items: [
-        Suggestion(
-          statusBarHeight: widget.statusBarHeight,
-          excerciseID: widget.excerciseID,
-          recordSet: () => toPage(1),
-        ),
-        SetRecord(
-          excerciseID: widget.excerciseID,
-          //TODO: going back should not reset what they already typed
-          //note: try to stop them from typing dumb stuff but if they do then restore the dumb stuff
-          //TODO: do so when the user holds the button AND when they click it
-          backToSuggestion: () => toPage(0),
-          //TODO: dont allow the user to move onto the set break until they have valid set
-          //1. numbers only (obvi)
-          //2. whole numbers (kinda obvi)
-          //3. for the weight less thatb 4 digits (nobody can nothing 9,999 pounds)
-          //4. for the reps less than 3 digits (nobody can nothing 999 times)
-          //5. weight CAN BE 0, but suggest that if its body weight excercise they record that
-          //6. reps can't be 0
-          //TODO: if they try to move onto the set break explain the above
-          //- can use a pop up
-          //- can use a snackbar
-          //- can use a attached toast
-          //- can just trigger the error or something like it on the field
-          //- ideally just make it impossible for the user to do something dumb
-          setBreak: () => toPage(2),
-        ),
-        Recovery( 
-          excerciseID: widget.excerciseID,
-          //NOTE: although at some point I thought the back button should trigger this too
-          //that's silly the back button is a "short cut" since its only on android
-          //and shortcuts should be for actions that happen often
-          //and the user will only go back to fix their set if they mistaped
-          //which ofcourse is rare in comparison to perhaps going to their next workout
-          //and reviewing form or doing a super set or whatever else
-          //TODO: tell the user timer will not reset no matter what
-          //TODO: do so when the user holds the button AND when they click it
-          backToRecordSet: () => toPage(1),
-          //TODO: there are like a million and 1 things that have to happen here (HARD)
-          nextSet: () => toPage(0),
-        ),
-      ],
-    );
-
-    //TODO: select the first tab based on how far we are into the workout (HARD)
-    //TODO: remove the random picker test code below
-    var rng = new math.Random();
-
-    //travel to the page that has initial focus
-    WidgetsBinding.instance.addPostFrameCallback((_){
-      toPage((rng.nextInt(3)).clamp(0, 2), instant: true);
-    });
-
-    //super init
-    super.initState();
-  }
-
-  //build
-  @override
-  Widget build(BuildContext context) {
-    return Stack(
-      children: <Widget>[
-        //had to be at the bottom to get the curves with the hack ive been using
-        Positioned(
-          bottom: 0,
-          left: 0,
-          child: DoneButton(
-            showDoneButton: showDoneButton,
-            setsFinishedSoFar: setsFinishedSoFar,
-            animationCurve: Curves.bounceInOut,
-          ),
-        ),
-        //the parts that overlap the back button should be clear
-        //only color in like the background for curves
-        carousel,
-      ],
-    );
   }
 }

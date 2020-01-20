@@ -93,67 +93,25 @@ class SuggestionSection extends StatelessWidget {
           //-----Most Important Part 
           //1. tells the user what to next
           //2. lets the user change the rep target If needed
-          Container(
-            height: secondBigToSmall[0],
+          Hero(
+            tag: 'goalSet',
             child: Container(
-              decoration: BoxDecoration(
-                color: Theme.of(context).cardColor,
-                borderRadius: BorderRadius.only(
-                  bottomRight: cardRadius,
-                  bottomLeft: cardRadius,
+              height: secondBigToSmall[0],
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Theme.of(context).cardColor,
+                  borderRadius: BorderRadius.only(
+                    bottomRight: cardRadius,
+                    bottomLeft: cardRadius,
+                  ),
+                ),
+                width: MediaQuery.of(context).size.width,
+                padding: EdgeInsets.all(16),
+                child: ShowSet(
+                  lastWeight: 160, 
+                  lastReps: 8,
                 ),
               ),
-              width: MediaQuery.of(context).size.width,
-              padding: EdgeInsets.all(16),
-              child: ShowSet(
-                lastWeight: 160, 
-                lastReps: 8,
-              ),
-              
-              /*Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Container(
-                    padding: EdgeInsets.only(
-                      top: 8,
-                      left: 16,
-                      right: 16,
-                      bottom: 16,
-                    ),
-                    child: Column(
-                      children: <Widget>[
-                        HeaderWithInfo(
-                          title: "Rep Target",
-                          popUpFunction: () => repTargetPopUp(context),
-                        ),
-                        Theme(
-                          data: ThemeData.light(),
-                          child: AnimRepTargetInfoWhite(
-                            changeDuration: Duration(milliseconds: 300), 
-                            repTargetDuration: new ValueNotifier<Duration>(
-                              Duration(milliseconds: 300),
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(top: 8),
-                          child: Container(
-                            color: Colors.black, //line color
-                            height: 2,
-                            width: MediaQuery.of(context).size.width,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  //slide must be full width without the 16 horizontal padding
-                  CustomSlider(
-                    value: new ValueNotifier<int>(5),
-                    lastTick: 35,
-                  ),
-                ],
-              ),
-              */
             ),
           ),
         ],

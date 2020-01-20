@@ -21,6 +21,8 @@ dependencies:
     sdk: flutter
 
   auto_animated: ^1.2.3
+
+  #for the cross page view animation
   flutter_sidekick: ^0.1.3
 
   #used so that gifs only play once

@@ -119,80 +119,75 @@ class _SuggestionState extends State<Suggestion> {
     double fullHeight = MediaQuery.of(context).size.height;
     double appBarHeight = 56; //constant according to flutter docs
     double spaceToRedistribute = fullHeight - appBarHeight - widget.statusBarHeight ;
-
-    //buildy boi
-    return Container(
-      width: fullHeight,
-      child: Stack(
-        children: <Widget>[
-          Positioned(
-            bottom: 0,
-            left: 0,
-            right: 0,
-            child: BottomButtons(
-              forwardAction: widget.recordSet,
-              forwardActionWidget: RichText(
-                text: TextSpan(
-                  style: TextStyle(
-                    color: Theme.of(context).primaryColorDark,
-                  ),
-                  children: [
-                    TextSpan(
-                      text: "Record ",
-                    ),
-                    TextSpan(
-                      text: "Set 1",
-                      style: TextStyle(
-                        fontWeight: FontWeight.w900,
-                      ),
-                    ),
-                    TextSpan(
-                      text: "/3",
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-          Positioned(
-            top: 0,
-            child: firstTime.value ? CalibrationCard(
-              rawSpaceToRedistribute: spaceToRedistribute, 
-              removeDoneButtonSpacing: false,
-              removeBottomButtonSpacing: false,
-            ) : SuggestionSection(
-              lastWeight: 80, 
-              lastReps: 5,
-              //NOTE: 48 is the padding between bottom buttons and our card
-              //NOTE: 64 is the height of the bottom buttons
-              rawSpaceToRedistribute: spaceToRedistribute - 48 - 64, 
-            ),
-          )
-        ],
-      ),
-    );
-  }
-}
-
-/*
-Container(
-      decoration: BoxDecoration(
-        color: Theme.of(context).cardColor,
-        borderRadius: BorderRadius.only(
-          bottomLeft: Radius.circular(24),
-          bottomRight: Radius.circular(24),
-        ),
-      ),
-      padding: EdgeInsets.all(16),
-      child: GestureDetector(
+    /*
+    GestureDetector(
         onTap: (){
           firstTime.value = !firstTime.value;
           //state will be set after
         },
         child: suggestion,
       ),
+    */
+
+    //buildy boi
+    return GestureDetector(
+      onTap: (){
+        firstTime.value = !firstTime.value;
+        //state will be set after
+      },
+      child: Container(
+        width: fullHeight,
+        child: Stack(
+          children: <Widget>[
+            Positioned(
+              bottom: 0,
+              left: 0,
+              right: 0,
+              child: BottomButtons(
+                forwardAction: widget.recordSet,
+                forwardActionWidget: RichText(
+                  text: TextSpan(
+                    style: TextStyle(
+                      color: Theme.of(context).primaryColorDark,
+                    ),
+                    children: [
+                      TextSpan(
+                        text: "Record ",
+                      ),
+                      TextSpan(
+                        text: "Set 1",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w900,
+                        ),
+                      ),
+                      TextSpan(
+                        text: "/3",
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            Positioned(
+              top: 0,
+              child: firstTime.value ? CalibrationCard(
+                rawSpaceToRedistribute: spaceToRedistribute, 
+                removeDoneButtonSpacing: false,
+                removeBottomButtonSpacing: false,
+              ) : SuggestionSection(
+                lastWeight: 80, 
+                lastReps: 5,
+                //NOTE: 48 is the padding between bottom buttons and our card
+                //NOTE: 64 is the height of the bottom buttons
+                rawSpaceToRedistribute: spaceToRedistribute - 48 - 64, 
+              ),
+            )
+          ],
+        ),
+      ),
     );
-*/
+  }
+}
 
 
 /*

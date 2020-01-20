@@ -34,7 +34,9 @@ class BottomButtons extends StatelessWidget {
           forwardActionWidget: forwardActionWidget,
           backAction: backAction,
         ),
-        CardTop()
+        CardTop(
+          useAccentColor: (backAction == null),
+        )
       ],
     );
   }
@@ -42,8 +44,11 @@ class BottomButtons extends StatelessWidget {
 
 class CardTop extends StatelessWidget {
   const CardTop({
+    @required this.useAccentColor,
     Key key,
   }) : super(key: key);
+  
+  final bool useAccentColor;
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +56,7 @@ class CardTop extends StatelessWidget {
       height: 24,
       width: MediaQuery.of(context).size.width,
       decoration: BoxDecoration(
-        color: Theme.of(context).cardColor,
+        color: (useAccentColor ? Theme.of(context).accentColor :  Theme.of(context).cardColor),
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(24),
         ),
@@ -94,28 +99,6 @@ class Buttons extends StatelessWidget {
             forwardActionWidget: forwardActionWidget,
             verticalPadding: extraVerticalPadding,
           ),
-          
-          /*
-          allSetsComplete == null ? Container() : 
-          Expanded(
-            child: Container(),
-          ),
-          backAction == null ? Container() : FlatButton(
-            onPressed: () => backAction(),
-            child: Text("Back"),
-          ),
-          (flipped) //NOTE: this isnt a thing anymore
-          ? OutlineButton(
-            highlightedBorderColor: Theme.of(context).accentColor,
-            onPressed: () => allSetsComplete(),
-            child: forwardActionWidget,
-          )
-          : RaisedButton(
-            color: Theme.of(context).accentColor,
-            onPressed: () => forwardAction(),
-            child: forwardActionWidget,
-          ),
-          */
         ],
       ),
     );
