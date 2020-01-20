@@ -6,7 +6,7 @@ import 'package:swol/excerciseAction/tabs/suggest/calibration.dart';
 import 'package:swol/excerciseAction/tabs/suggest/suggestion.dart';
 import 'package:swol/utils/goldenRatio.dart';
 
-//TODO: use directionality widget to switch start direction "directionality"
+//TODO: use directionality widget to switch start direction "directionality" 
 
 class SetRecord extends StatelessWidget {
   SetRecord({
