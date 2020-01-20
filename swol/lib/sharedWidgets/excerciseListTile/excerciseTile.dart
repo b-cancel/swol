@@ -14,7 +14,7 @@ import 'package:swol/sharedWidgets/excerciseListTile/miniTimer.dart';
 import 'package:swol/sharedWidgets/excerciseListTile/oneRepMaxChip.dart';
 
 //widget
-class ExcerciseTile extends StatelessWidget {
+class ExcerciseTile extends StatelessWidget { 
   ExcerciseTile({
     @required this.excerciseID,
     this.tileInSearch: false,
@@ -59,7 +59,7 @@ class ExcerciseTile extends StatelessWidget {
           context, 
           PageTransition(
             duration: transitionDuration,
-            type: PageTransitionType.rightToLeft, 
+            type: PageTransitionType.upToDown, 
             //when transitioning to this page relaoding leading is always false
             //WILL SET reloading leading to true
             child: ExcercisePage(
