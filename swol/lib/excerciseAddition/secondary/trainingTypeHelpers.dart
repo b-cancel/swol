@@ -10,9 +10,9 @@ import 'package:swol/excerciseAddition/popUps/toLearnPage.dart';
 import 'package:swol/excerciseAddition/secondary/tiny.dart';
 
 //internal from shared
-import 'package:swol/sharedWidgets/excerciseListTile/oneRepMaxChip.dart';
 import 'package:swol/sharedWidgets/ourToolTip.dart';
-import 'package:swol/sharedWidgets/trainingTypes/trainingTypes.dart';
+import 'package:swol/sharedWidgets/thisOrThatIcon.dart';
+import 'package:swol/trainingTypes/trainingTypes.dart';
 
 class SetTargetToTrainingTypeIndicator extends StatefulWidget {
   SetTargetToTrainingTypeIndicator({
@@ -293,7 +293,7 @@ makeTrainingTypePopUp({
         );
       break;
       case FitIcons.Strength: header = Icon(FontAwesomeIcons.weightHanging, color: c); break;
-      default: header = OneOverOther(
+      default: header = ThisOrThatIcon(
         one: Transform.translate(
           offset: Offset(-3, 0),
           child: Icon(
@@ -370,4 +370,35 @@ makeTrainingTypePopUp({
       ),
     ).show();
   };
+}
+
+class ScrollableTrainingTypes extends StatelessWidget {
+  ScrollableTrainingTypes({
+    this.lightMode: false,
+    this.showStrength: true,
+    this.showHypertrophy: true,
+    this.showEndurance: true,
+    this.highlightField: -1,
+  });
+
+  final bool lightMode;
+  final bool showEndurance;
+  final bool showHypertrophy;
+  final bool showStrength;
+  final int highlightField;
+
+  @override
+  Widget build(BuildContext context) {
+    List<int> sections = new List<int>();
+    if(showEndurance) sections.add(0);
+    if(showHypertrophy) sections.add(1);
+    if(showStrength) sections.add(2);
+
+    return TrainingTypeSections(
+      lightMode: lightMode,
+      highlightField: highlightField,
+      sections: [sections],
+      sectionID: new ValueNotifier(0),
+    );
+  }
 }

@@ -4,13 +4,15 @@ import 'package:flutter/material.dart';
 //plugins
 import 'package:scroll_to_index/scroll_to_index.dart';
 import 'package:diacritic/diacritic.dart';
+
+//internal: excercise
 import 'package:swol/excercise/excerciseData.dart';
 import 'package:swol/excercise/excerciseStructure.dart';
-import 'package:swol/excerciseSearch/searchesData.dart';
-import 'package:swol/sharedWidgets/excerciseListTile/excerciseTile.dart';
-import 'package:swol/sharedWidgets/scrollToTop.dart';
 
-//internal
+//internal: other
+import 'package:swol/excerciseListTile/excerciseTile.dart';
+import 'package:swol/excerciseSearch/searchesData.dart';
+import 'package:swol/sharedWidgets/scrollToTop.dart';
 
 class SearchExcercise extends StatefulWidget {
   SearchExcercise({

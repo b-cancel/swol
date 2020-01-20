@@ -1,12 +1,10 @@
 //flutter
 import 'package:flutter/material.dart';
 
-//internal
-import 'package:swol/sharedWidgets/trainingTypes/cardTable.dart';
-
 //plugins
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:swol/trainingTypes/cardTable.dart';
 
 class AllTrainingTypes extends StatelessWidget {
   AllTrainingTypes({
@@ -31,37 +29,6 @@ class AllTrainingTypes extends StatelessWidget {
       if(sectionToAdd <= 2) sections.add(sectionToAdd);
       else sections.add(sectionToAdd - 3);
     }
-
-    return TrainingTypeSections(
-      lightMode: lightMode,
-      highlightField: highlightField,
-      sections: [sections],
-      sectionID: new ValueNotifier(0),
-    );
-  }
-}
-
-class ScrollableTrainingTypes extends StatelessWidget {
-  ScrollableTrainingTypes({
-    this.lightMode: false,
-    this.showStrength: true,
-    this.showHypertrophy: true,
-    this.showEndurance: true,
-    this.highlightField: -1,
-  });
-
-  final bool lightMode;
-  final bool showEndurance;
-  final bool showHypertrophy;
-  final bool showStrength;
-  final int highlightField;
-
-  @override
-  Widget build(BuildContext context) {
-    List<int> sections = new List<int>();
-    if(showEndurance) sections.add(0);
-    if(showHypertrophy) sections.add(1);
-    if(showStrength) sections.add(2);
 
     return TrainingTypeSections(
       lightMode: lightMode,

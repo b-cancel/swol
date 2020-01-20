@@ -8,10 +8,12 @@ import 'package:page_transition/page_transition.dart';
 import 'package:swol/excercise/excerciseData.dart';
 import 'package:swol/excercise/excerciseStructure.dart';
 
-//internal: link
+//internal: list tile
+import 'package:swol/excerciseListTile/excerciseLeading.dart';
+import 'package:swol/excerciseListTile/oneRepMaxChip.dart';
+
+//internal: other
 import 'package:swol/excerciseAction/excercisePage.dart';
-import 'package:swol/sharedWidgets/excerciseListTile/miniTimer.dart';
-import 'package:swol/sharedWidgets/excerciseListTile/oneRepMaxChip.dart';
 
 //widget
 class ExcerciseTile extends StatelessWidget { 
@@ -79,7 +81,8 @@ class ExcerciseTile extends StatelessWidget {
       ? Container(
         height: 0,
         width: 0,
-        //height: 30, //TODO: uncomment for equal spacing (I prefer it to be uneven)
+        //NOE: we can uncomment for equal spacing (I prefer it to be uneven)
+        //height: 30, 
       )
       //show 1 rep max stuffs
       : ExcerciseTileSubtitle(
@@ -90,50 +93,6 @@ class ExcerciseTile extends StatelessWidget {
       trailing: ExcerciseTileLeading(
         excerciseReference: thisExcercise,
         tileInSearch: tileInSearch,
-      ),
-    );
-  }
-}
-
-class MyChip extends StatelessWidget {
-  const MyChip({
-    Key key,
-    @required this.chipString,
-    this.inverse: false,
-  }) : super(key: key);
-
-  final String chipString;
-  final bool inverse;
-
-  @override
-  Widget build(BuildContext context) {
-    Color chipColor = (inverse) ? Theme.of(context).primaryColorDark : Theme.of(context).accentColor;
-    Color textColor = (inverse) ? Theme.of(context).accentColor : Theme.of(context).primaryColorDark;
-
-    return Container(
-      alignment: Alignment.topLeft,
-      child: Padding(
-        padding: EdgeInsets.only(
-          right: 4,
-        ),
-        child: Container(
-          padding: EdgeInsets.symmetric(
-            horizontal: 4,
-          ),
-          decoration: new BoxDecoration(
-            color: chipColor,
-            borderRadius: new BorderRadius.all(
-              Radius.circular(12.0),
-            ),
-          ),
-          child: Text(
-            chipString,
-            style: TextStyle(
-              color: textColor,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
       ),
     );
   }

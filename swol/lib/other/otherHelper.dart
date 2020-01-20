@@ -16,6 +16,10 @@ double lerpDouble(num a, num b, double t) {
   return a + (b - a) * t;
 }
 
+double timeToLerpValue(Duration timePassed, {Duration timeTotal: const Duration(minutes: 5)}){
+  return timePassed.inMicroseconds / timeTotal.inMicroseconds;
+}
+
 class StringFilter{
   static String onlyCharactersS2E(String string, int startInc, int endInc){
     String output = "";

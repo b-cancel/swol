@@ -1,10 +1,12 @@
 //flutter
 import 'package:flutter/material.dart';
-import 'package:swol/excerciseAddition/popUps/popUpFunctions.dart';
 
-//internal
-import 'package:swol/sharedWidgets/basicFields/clearableTextField.dart';
-import 'package:swol/sharedWidgets/basicFields/referenceLink.dart';
+//internal: basic fields
+import 'package:swol/basicFields/clearableTextField.dart';
+import 'package:swol/basicFields/referenceLink.dart';
+
+//internal: other
+import 'package:swol/excerciseAddition/popUps/popUpFunctions.dart';
 import 'package:swol/sharedWidgets/informationDisplay.dart';
 
 //editor of basic variables "name", "note", "url"

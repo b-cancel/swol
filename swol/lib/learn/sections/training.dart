@@ -1,7 +1,11 @@
+//flutter
 import 'package:flutter/material.dart';
-import 'package:swol/learn/shared.dart';
-import 'package:swol/sharedWidgets/trainingTypes/trainingTypes.dart';
 
+//internal
+import 'package:swol/trainingTypes/trainingTypes.dart';
+import 'package:swol/learn/shared.dart';
+
+//widget
 class TrainingBody extends StatelessWidget {
   const TrainingBody({
     Key key,

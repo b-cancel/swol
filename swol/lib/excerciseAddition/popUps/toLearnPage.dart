@@ -4,6 +4,16 @@ import 'package:flutter/material.dart';
 //plugin
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+//TODO: actually link up to the learn page
+
+//we don't need to do anything complex to get to the main page
+//all we have to do is pass to this widget the ammount of time we have to pop
+//every page should react accordingly to its pop
+
+//in the case of the add excercise page 
+//the pop OF THIS TYPE should cause settings to be saved for reloading later
+
+//the simply navigate to the learn page
 class LearnPageSuggestion extends StatelessWidget {
   const LearnPageSuggestion({
     Key key,

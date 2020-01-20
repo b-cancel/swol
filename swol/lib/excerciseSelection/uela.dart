@@ -2,9 +2,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-//internal
-import 'package:swol/sharedWidgets/excerciseListTile/triangleAngle.dart';
+//internal: shared
 import 'package:swol/sharedWidgets/playOnceGif.dart';
+import 'package:swol/sharedWidgets/triangleAngle.dart';
+
+//internal: utils
 import 'package:swol/utils/onboarding.dart';
 import 'package:swol/utils/vibrate.dart';
 

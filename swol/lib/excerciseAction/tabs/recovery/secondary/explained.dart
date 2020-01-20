@@ -2,8 +2,8 @@
 import 'package:flutter/material.dart';
 
 //internal
-import 'package:swol/sharedWidgets/trainingTypes/trainingTypes.dart';
 import 'package:swol/excerciseAddition/popUps/toLearnPage.dart';
+import 'package:swol/trainingTypes/trainingTypes.dart';
 
 //title: "Recovery Time",
 //subtitle: "Different training types require different recovery times",

@@ -1,7 +1,9 @@
 //flutter
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:swol/sharedWidgets/basicFields/buttonSpacer.dart';
+
+//internal
+import 'package:swol/basicFields/buttonSpacer.dart';
 import 'package:swol/sharedWidgets/ourSnackBar.dart';
 
 //plugin

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 //internal
 import 'package:swol/excerciseAddition/popUps/toLearnPage.dart';
-import 'package:swol/sharedWidgets/trainingTypes/trainingTypes.dart';
+import 'package:swol/trainingTypes/trainingTypes.dart';
 import 'package:swol/learn/shared.dart';
 
 class RecoveryTimePopUpBody extends StatelessWidget {

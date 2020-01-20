@@ -2,7 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:swol/other/functions/helper.dart';
 import 'package:swol/sharedWidgets/ourSnackBar.dart';
+import 'package:swol/sharedWidgets/thisOrThatIcon.dart';
 
+//given the 
+//1. last weight
+//2. last reps
+//3. prediction function
+//we 
+//1. calculate the 1 rep max or estimated 1 rep max
+//2. generate a message to show if the user taps the chipd
 class ExcerciseTileSubtitle extends StatelessWidget {
   ExcerciseTileSubtitle({
     @required this.lastWeight,
@@ -21,9 +29,6 @@ class ExcerciseTileSubtitle extends StatelessWidget {
     const TextStyle BOLD = const TextStyle(
       fontWeight: FontWeight.bold,
     );
-
-    //TODO: this relies of the user not being allowed to plugin 0 as their rep count
-    //TODO: the todo is to ensure this throughout the app
 
     //NOTE: contains defaults for when this set is indeed a one rep max
     bool isOneRepMaxEstimated = false; 
@@ -122,7 +127,7 @@ class ExcerciseTileSubtitle extends StatelessWidget {
               padding: const EdgeInsets.symmetric(
                 horizontal: 2.0,
               ),
-              child: OneOverOther(
+              child: ThisOrThatIcon(
                 one: Icon(
                   FontAwesomeIcons.plus,
                   color: Colors.white.withOpacity(0.75),
@@ -220,111 +225,6 @@ class ExcerciseTileSubtitle extends StatelessWidget {
                   child: oneRepMaxWidget,
                 ),
               ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-//-------------------------the icon I needed created programmatically for the giggles-------------------------
-
-class OneOverOther extends StatelessWidget {
-  const OneOverOther({
-    @required this.one,
-    @required this.other,
-    this.backgroundColor,
-    this.iconColor,
-    Key key,
-  }) : super(key: key);
-
-  final Widget one;
-  final Widget other;
-  final Color backgroundColor;
-  final Color iconColor;
-
-  @override
-  Widget build(BuildContext context) {
-    double size = 16;
-
-    Color backgroundC = (backgroundColor == null) ? Theme.of(context).cardColor : backgroundColor;
-    Color iconC = (iconColor == null) ? Colors.white.withOpacity(0.75) : iconColor;
-
-    return Container(
-      height: size,
-      width: size,
-      child: Stack(
-        children: <Widget>[
-          Positioned.fill(
-            child: FittedBox(
-              fit: BoxFit.contain,
-              child: Icon(
-                FontAwesomeIcons.percentage,
-                color: iconC,
-              ),
-            ),
-          ),
-          Positioned(
-            top: 0,
-            left: 0,
-            child: Container(
-              height: size/2,
-              width: size/2,
-              child: FittedBox(
-                fit: BoxFit.contain,
-                child: Padding(
-                  padding: const EdgeInsets.all(1.0),
-                  child: Padding(
-                    padding: const EdgeInsets.only(
-                      top: 4.0,
-                    ),
-                    child: ClipOval(
-                      child: Container(
-                        color: backgroundC,
-                        child: Container(
-                          padding: EdgeInsets.all(4),
-                          child: FittedBox(
-                            fit: BoxFit.contain,
-                            child: one,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ),
-          Positioned(
-            bottom: 0,
-            right: 0,
-            child: Container(
-              height: size/2,
-              width: size/2,
-              child: FittedBox(
-                fit: BoxFit.contain,
-                child: Padding(
-                  padding: const EdgeInsets.all(1.0),
-                  child: Padding(
-                    padding: const EdgeInsets.only(
-                      bottom: 4.0,
-                    ),
-                    child: ClipOval(
-                      child: Container(
-                        color: backgroundC,
-                        child: Container(
-                          padding: EdgeInsets.all(4),
-                          child: FittedBox(
-                            fit: BoxFit.contain,
-                            child: other,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
             ),
           ),
         ],

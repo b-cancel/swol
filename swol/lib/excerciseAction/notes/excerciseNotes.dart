@@ -1,11 +1,13 @@
 //flutter
 import 'package:flutter/material.dart';
+import 'package:swol/basicFields/excerciseEdit.dart';
 
-//internal
-import 'package:swol/excerciseAction/notes/excerciseMessages.dart';
-import 'package:swol/sharedWidgets/basicFields/excerciseEdit.dart';
+//internl: excercise
 import 'package:swol/excercise/defaultDateTimes.dart';
 import 'package:swol/excercise/excerciseData.dart';
+
+//internal: other
+import 'package:swol/excerciseAction/notes/excerciseMessages.dart';
 import 'package:swol/sharedWidgets/playOnceGif.dart';
 
 //plugin

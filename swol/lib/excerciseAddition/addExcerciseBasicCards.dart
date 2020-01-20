@@ -1,13 +1,13 @@
 //flutter
 import 'package:flutter/material.dart';
 
-//internal other
+//internal: other
 import 'package:swol/excerciseAddition/popUps/popUpFunctions.dart';
-
-//internal shared
-import 'package:swol/sharedWidgets/basicFields/clearableTextField.dart';
-import 'package:swol/sharedWidgets/basicFields/referenceLink.dart';
 import 'package:swol/sharedWidgets/informationDisplay.dart';
+
+//internal: basic fields
+import 'package:swol/basicFields/clearableTextField.dart';
+import 'package:swol/basicFields/referenceLink.dart';
 
 class NameCard extends StatefulWidget {
   const NameCard({

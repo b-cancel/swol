@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 //internal
 import 'package:swol/excerciseAddition/popUps/toLearnPage.dart';
-import 'package:swol/sharedWidgets/trainingTypes/trainingTypes.dart';
+import 'package:swol/trainingTypes/trainingTypes.dart';
 
 class SetTargetPopUpBody extends StatelessWidget {
   const SetTargetPopUpBody({

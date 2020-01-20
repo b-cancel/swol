@@ -1,14 +1,13 @@
 //flutter
 import 'package:flutter/material.dart';
 
-//internal structure
+//internal: excercise
 import 'package:swol/excercise/defaultDateTimes.dart';
 import 'package:swol/excercise/excerciseStructure.dart';
-import 'package:swol/other/durationFormat.dart';
 
-//internal widgets
-import 'package:swol/sharedWidgets/excerciseListTile/excerciseTile.dart';
-import 'package:swol/sharedWidgets/excerciseListTile/miniTimers/normalTimer.dart';
+//internal: other
+import 'package:swol/excerciseListTile/miniTimer.dart';
+import 'package:swol/other/durationFormat.dart';
 
 //tile might need reloading
 class ExcerciseTileLeading extends StatelessWidget {
@@ -19,11 +18,6 @@ class ExcerciseTileLeading extends StatelessWidget {
 
   final AnExcercise excerciseReference;
   final bool tileInSearch;
-
-  //reusable function
-  static double timeToLerpValue(Duration timePassed){
-    return timePassed.inMicroseconds / Duration(minutes: 5).inMicroseconds;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -106,24 +100,46 @@ class ListTileChipShell extends StatelessWidget {
   }
 }
 
-//from: https://stackoverflow.com/questions/49374893/flutter-inverted-clipoval/49396544
-class InvertedCircleClipper extends CustomClipper<Path> {
-  InvertedCircleClipper({
-    this.radiusPercent: 0.25,
-  });
+class MyChip extends StatelessWidget {
+  const MyChip({
+    Key key,
+    @required this.chipString,
+    this.inverse: false,
+  }) : super(key: key);
 
-  final double radiusPercent;
+  final String chipString;
+  final bool inverse;
 
   @override
-  Path getClip(Size size) {
-    return new Path()
-      ..addOval(new Rect.fromCircle(
-          center: new Offset(size.width / 2, size.height / 2),
-          radius: size.width * radiusPercent))
-      ..addRect(new Rect.fromLTWH(0.0, 0.0, size.width, size.height))
-      ..fillType = PathFillType.evenOdd;
+  Widget build(BuildContext context) {
+    Color chipColor = (inverse) ? Theme.of(context).primaryColorDark : Theme.of(context).accentColor;
+    Color textColor = (inverse) ? Theme.of(context).accentColor : Theme.of(context).primaryColorDark;
+
+    return Container(
+      alignment: Alignment.topLeft,
+      child: Padding(
+        padding: EdgeInsets.only(
+          right: 4,
+        ),
+        child: Container(
+          padding: EdgeInsets.symmetric(
+            horizontal: 4,
+          ),
+          decoration: new BoxDecoration(
+            color: chipColor,
+            borderRadius: new BorderRadius.all(
+              Radius.circular(12.0),
+            ),
+          ),
+          child: Text(
+            chipString,
+            style: TextStyle(
+              color: textColor,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+      ),
+    );
   }
-
-  @override
-  bool shouldReclip(CustomClipper<Path> oldClipper) => false;
 }

@@ -1,10 +1,19 @@
+//flutter
 import 'package:flutter/material.dart';
+
+//plugin
 import 'package:page_transition/page_transition.dart';
-import 'package:swol/excercise/excerciseData.dart';
+
+//internal: excercise
 import 'package:swol/excercise/excerciseStructure.dart';
+import 'package:swol/excercise/excerciseData.dart';
+
+//internal: action
 import 'package:swol/excerciseAction/notes/excerciseNotes.dart';
 import 'package:swol/excerciseAction/tabs/verticalTabs.dart';
-import 'package:swol/sharedWidgets/basicFields/excerciseEdit.dart';
+
+//internal: other
+import 'package:swol/basicFields/excerciseEdit.dart';
 
 class ExcercisePage extends StatefulWidget {
   ExcercisePage({

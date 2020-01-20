@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:swol/sharedWidgets/timePicker.dart';
-import 'package:swol/sharedWidgets/trainingTypes/trainingTypes.dart';
+import 'package:swol/trainingTypes/trainingTypes.dart';
 
 //allows user to change the time visually without actually changing it UNTIL they click confirm
 maybeChangeTime({
