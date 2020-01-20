@@ -177,15 +177,18 @@ class _AnimatedMiniNormalTimerState extends State<AnimatedMiniNormalTimer> with 
                     padding: const EdgeInsets.all(6),
                     child: AnimatedCircleWidget(
                       angles: angles, 
-                      ticks: ticks,  
-                      controller: controller, 
-                      excerciseReference: widget.excerciseReference,
+                      ticks: ticks,
                       //-----
                       circleSize: widget.circleSize,
                       circleToTicksPadding: widget.circleToTicksPadding,
                       tickWidth: widget.tickWidth,
                       ticksToProgressCirclePadding: widget.ticksToProgressCirclePadding,
                       littleCircleSize: littleCircleSize,
+                      //-----
+                      recoveryPeriod: widget.excerciseReference.recoveryPeriod,
+                      tempStartTime: widget.excerciseReference.tempStartTime,
+                      after5Mintes: controller.value == 1,
+                      distanceFromLast5MinuteInternal: controller.value,
                     ),
                   ),
                 ),
@@ -280,40 +283,47 @@ class AnimatedCircleWidget extends StatelessWidget {
     Key key,
     @required this.angles,
     @required this.ticks,
-    @required this.controller,
-    @required this.excerciseReference,
     //-----
     @required this.circleSize,
     @required this.circleToTicksPadding,
     @required this.tickWidth,
     @required this.ticksToProgressCirclePadding,
     @required this.littleCircleSize,
+    //-----
+    @required this.after5Mintes, //controller.value == 1
+    //between 0 and 1
+    @required this.distanceFromLast5MinuteInternal, //controller.value
+    @required this.tempStartTime,
+    @required this.recoveryPeriod,
   }) : super(key: key);
 
   final List<int> angles;
   final List<Widget> ticks;
-  final AnimationController controller;
-  final AnExcercise excerciseReference;
   //-----
   final double circleSize;
   final double circleToTicksPadding;
   final double tickWidth;
   final double ticksToProgressCirclePadding;
   final double littleCircleSize;
+  //-----
+  final bool after5Mintes;
+  final double distanceFromLast5MinuteInternal;
+  final DateTime tempStartTime;
+  final Duration recoveryPeriod;
 
   @override
   Widget build(BuildContext context) {
-    Color backgroundColor = controller.value == 1 ? Theme.of(context).cardColor : Theme.of(context).primaryColorDark;
-    DateTime timerStarted = excerciseReference.tempStartTime;
+    Color backgroundColor = after5Mintes ? Theme.of(context).cardColor : Theme.of(context).primaryColorDark;
+    DateTime timerStarted = tempStartTime;
     Duration timePassed = DateTime.now().difference(timerStarted);
-    bool thereIsStillTime = timePassed <= excerciseReference.recoveryPeriod;
+    bool thereIsStillTime = timePassed <= recoveryPeriod;
 
     //build
     return ClipOval(
       child: Container(
         width: circleSize,
         height: circleSize,
-        color: controller.value == 1 ? Colors.red : Colors.white,
+        color: after5Mintes ? Colors.red : Colors.white,
         padding: EdgeInsets.all(
           circleToTicksPadding,
         ),
@@ -332,7 +342,7 @@ class AnimatedCircleWidget extends StatelessWidget {
                     height: circleSize,
                     child: TriangleAngle(
                       start: 0,
-                      end: controller.value * 360,
+                      end: distanceFromLast5MinuteInternal * 360,
                       size: circleSize,
                       //thereIsStillTime ? Theme.of(context).accentColor : Colors.red,
                       color: thereIsStillTime ? Color.fromRGBO(greyValue, greyValue, greyValue, 1) : Colors.red,
@@ -342,7 +352,7 @@ class AnimatedCircleWidget extends StatelessWidget {
                 ),
               ),
               //-----
-              (controller.value == 1) ? Container() : ClipPath(
+              after5Mintes? Container() : ClipPath(
                 clipper: new InvertedCircleClipper(
                   radiusPercent: 0.40,
                 ),
@@ -362,9 +372,10 @@ class AnimatedCircleWidget extends StatelessWidget {
                     ),
                     child: ClipOval(
                       child: CircleProgress(
-                        excerciseReference: excerciseReference,
                         size: littleCircleSize,
-                        fullRed: controller.value == 1,
+                        fullRed: after5Mintes,
+                        tempStartTime: tempStartTime,
+                        recoveryPeriod: recoveryPeriod,
                       ),
                     ),
                   ),
@@ -489,14 +500,16 @@ class HighlightSlice extends StatelessWidget {
 
 class CircleProgress extends StatelessWidget {
   CircleProgress({
-    @required this.excerciseReference,
     @required this.size,
     @required this.fullRed,
+    @required this.tempStartTime,
+    @required this.recoveryPeriod,
   });
 
-  final AnExcercise excerciseReference;
   final double size;
   final bool fullRed;
+  final DateTime tempStartTime;
+  final Duration recoveryPeriod;
 
   @override
   Widget build(BuildContext context) {
@@ -509,12 +522,12 @@ class CircleProgress extends StatelessWidget {
     }
     else{
       //time calcs
-      DateTime timerStarted = excerciseReference.tempStartTime;
+      DateTime timerStarted = tempStartTime;
       Duration timePassed = DateTime.now().difference(timerStarted);
 
       //set basic variables
-      bool thereIsStillTime = timePassed <= excerciseReference.recoveryPeriod;
-      double timeSetAngle = (ExcerciseTileLeading.timeToLerpValue(excerciseReference.recoveryPeriod)).clamp(0.0, 1.0);
+      bool thereIsStillTime = timePassed <= recoveryPeriod;
+      double timeSetAngle = (ExcerciseTileLeading.timeToLerpValue(recoveryPeriod)).clamp(0.0, 1.0);
       double timePassedAngle = (ExcerciseTileLeading.timeToLerpValue(timePassed)).clamp(0.0, 1.0);
 
       //create angles

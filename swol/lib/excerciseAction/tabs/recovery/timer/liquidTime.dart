@@ -8,7 +8,6 @@ import 'package:liquid_progress_indicator/liquid_progress_indicator.dart';
 import 'package:swol/excerciseAction/tabs/recovery/secondary/explained.dart';
 import 'package:swol/excerciseAction/tabs/recovery/secondary/timeDisplay.dart';
 import 'package:swol/excerciseAction/tabs/recovery/timer/changeTime.dart';
-import 'package:swol/excerciseAction/tabs/recovery/timer/pulsingBackground.dart';
 import 'package:swol/excerciseAction/tabs/recovery/timer/superOverflow.dart';
 import 'package:swol/excerciseAction/tabs/recovery/timer/turnOffVibration.dart';
 import 'package:swol/utils/vibrate.dart';
@@ -424,9 +423,11 @@ class _LiquidTimeState extends State<LiquidTime> with TickerProviderStateMixin {
             child: ClipOval(
               child: Stack(
                 children: <Widget>[
+                  /*
                   PulsingBackground(
                     width: MediaQuery.of(context).size.width,
                   ),
+                  */
                   LiquidCircularProgressIndicator(
                     //animated values
                     value: 1 - progressValue,
