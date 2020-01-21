@@ -8,7 +8,11 @@ import 'package:swol/sharedWidgets/triangleAngle.dart';
 class WatchUI extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Container(
+      width: 56,
+      height: 56,
+      color: Colors.pink,
+    );
     /*
     List<int> angles = new List<int>();
     for(int i = 0; i < 10 ; i++) angles.add(36 * i);

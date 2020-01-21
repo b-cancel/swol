@@ -20,6 +20,16 @@ class CustomSlider extends StatelessWidget {
   final int lastTick;
   final bool hideTicks;
 
+  onChange(int handlerIndex, dynamic lowerValue, dynamic upperValue){
+    double val = lowerValue;
+    if(val.toInt() != value.value){
+      Vibrator.vibrate(
+        duration: Duration(milliseconds: 150),
+      );
+      value.value = val.toInt();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     //reusable tick widget
@@ -171,13 +181,16 @@ class CustomSlider extends StatelessWidget {
             ),
             //NOTE: hatch marks don't work unfortunately
             onDragging: (handlerIndex, lowerValue, upperValue) {
-              double val = lowerValue;
-              if(val.toInt() != value.value){
-                Vibrator.vibrate(
-                  duration: Duration(milliseconds: 150),
-                );
-                value.value = val.toInt();
-              }
+              onChange(handlerIndex, lowerValue, upperValue);
+            },
+            //NOTE: primarily so tapping activates the changes
+            //tapping the area runs onDragStarted and onDragCompleted
+            //but we only really need one
+            //and its a nice bonus that
+            //when ur dragging and you finish dragging
+            //you are made aware with a little vibration
+            onDragCompleted: (handlerIndex, lowerValue, upperValue) {
+              onChange(handlerIndex, lowerValue, upperValue);
             },
           ),
         ),
