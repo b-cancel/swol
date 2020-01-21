@@ -14,6 +14,7 @@ import 'package:swol/excerciseSelection/uela.dart';
 //internal: shared
 import 'package:swol/shared/methods/extensions/sharedPreferences.dart';
 import 'package:swol/shared/functions/onboarding.dart';
+import 'package:swol/shared/widgets/simple/themeSwitcher.dart';
 import 'package:swol/sharedWidgets/scrollToTop.dart';
 
 //Sections and how they are handled
@@ -164,6 +165,17 @@ class _ExcerciseSelectState extends State<ExcerciseSelect> {
               navSpread: navSpread,
               screenWidth: screenWidth,
             ),
+            Positioned(
+              top: 0,
+              right: 0,
+              left: 0,
+              child: RaisedButton(
+                onPressed: (){
+                  showThemeSwitcher(context);
+                },
+                child: Text("meep"),
+              ),
+            )
           ],
         ),
       ),

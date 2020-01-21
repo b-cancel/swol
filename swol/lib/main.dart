@@ -40,10 +40,10 @@ class App extends StatelessWidget {
     //main app build
     return BotToastInit(
       child: FeatureDiscovery(
-        child: MaterialApp(
+        child:  MaterialApp(
           title: 'SWOL',
           navigatorObservers: [BotToastNavigatorObserver()],//2.registered route observer
-          theme: ThemeData.dark(), //only until everything loads
+          theme: ThemeData.dark(),
           home: GrabSystemPrefs(),
         ),
       ),
@@ -70,19 +70,18 @@ class GrabSystemPrefs extends StatelessWidget {
           //grab and process system prefs
           SharedPreferences preferences = snapshot.data;
           SharedPrefsExt.init(preferences);
+          ThemeData initialTheme = (SharedPrefsExt.getIsDark().value) ? MyTheme.dark : MyTheme.light;
 
           //return app
           return ChangeNotifierProvider<ThemeChanger>(
             //NOTE: this will also setup the status and notifiaction bar colors
             //we don't wait for this though, because constructors can't be async
-            create: (_) => ThemeChanger(
-              (SharedPrefsExt.getIsDark().value) ? MyTheme.dark : MyTheme.light,
-            ), 
+            create: (_) => ThemeChanger(initialTheme), 
             child: GrabFileData(),
           );
         }
         else{ //to load just show the logo a bit longer
-          return new SplashScreen();
+          return SplashScreen();
         }
       }
     );
