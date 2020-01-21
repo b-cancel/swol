@@ -5,9 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
-//internal
-import 'package:swol/other/theme.dart';
-
+//logo for promo purposes
 class SwolLogo extends StatelessWidget {
   const SwolLogo({
     this.height,
@@ -33,7 +31,7 @@ class SwolLogo extends StatelessWidget {
                 child: Text(
                   "S W O L",
                   style: TextStyle(
-                    color: MyTheme.dark.accentColor,
+                    color: Theme.of(context).accentColor,
                   ),
                 ),
               ),

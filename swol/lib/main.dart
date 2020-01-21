@@ -3,19 +3,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 //plugins
-import 'package:feature_discovery/feature_discovery.dart';
-import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:feature_discovery/feature_discovery.dart';
 import 'package:bot_toast/bot_toast.dart';
+import 'package:provider/provider.dart';
 import 'package:async/async.dart';
 
-//internal
-import 'package:swol/excerciseSelection/excerciseListPage.dart';
+//internal: shared
+import 'package:swol/shared/methods/extensions/sharedPreferences.dart';
+import 'package:swol/shared/functions/theme.dart';
+
+//internal: selection
 import 'package:swol/excerciseSelection/secondary/decoration.dart';
-import 'package:swol/other/theme.dart';
+import 'package:swol/excerciseSelection/excerciseListPage.dart';
+
+//internal: other
 import 'package:swol/excercise/excerciseData.dart';
 import 'package:swol/excerciseSearch/searchesData.dart';
-import 'package:swol/shared/methods/extensions/sharedPreferences.dart';
+
 //app start
 void main() => runApp(App());
 
@@ -29,7 +34,7 @@ class App extends StatelessWidget {
       DeviceOrientation.portraitDown,
     ]); 
 
-    //initially this is going to be flat black
+    //app loading theme
     SystemChrome.setSystemUIOverlayStyle(ThemeChanger.allBlackStyle);
 
     //main app build
