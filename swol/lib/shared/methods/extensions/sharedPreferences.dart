@@ -44,19 +44,16 @@ class SharedPrefsExt {
 
     //interate through all enums to grab data or set it to its default
     List<ValueName> names = _nameToDefaultValue.keys.toList();
-    for(int i = 0; i < names.length; i++){
-      ValueName name = names[i];
-      _nameToValueNotifier[name] = _getOrSetToDefault(name);
-    }
+    for(int i = 0; i < names.length; i++) _getOrSetToDefault(names[i]);
   }
 
   //getters
-  static ValueNotifier<bool> getIsDark() => _nameToValueNotifier[ValueName.IsDark];
-  static ValueNotifier<int> getNextID() => _nameToValueNotifier[ValueName.NextID];
-  static ValueNotifier<bool> getTermAgreed() => _nameToValueNotifier[ValueName.TermsAgreed];
-  static ValueNotifier<bool> getInitialControlsShown() => _nameToValueNotifier[ValueName.InitialControlsShown];
-  static ValueNotifier<bool> getIntroductionShown() => _nameToValueNotifier[ValueName.IntroductionShown];
-  static ValueNotifier<bool> getSaveShown() => _nameToValueNotifier[ValueName.SaveShown];
+  static ValueNotifier getIsDark() => _nameToValueNotifier[ValueName.IsDark];
+  static ValueNotifier getNextID() => _nameToValueNotifier[ValueName.NextID];
+  static ValueNotifier getTermAgreed() => _nameToValueNotifier[ValueName.TermsAgreed];
+  static ValueNotifier getInitialControlsShown() => _nameToValueNotifier[ValueName.InitialControlsShown];
+  static ValueNotifier getIntroductionShown() => _nameToValueNotifier[ValueName.IntroductionShown];
+  static ValueNotifier getSaveShown() => _nameToValueNotifier[ValueName.SaveShown];
 
   //setters (must update local and global)
   static setIsDark(bool isDark) => _setLocalGlobal(ValueName.IsDark, isDark);
@@ -68,14 +65,7 @@ class SharedPrefsExt {
 
   //-------------------------private-------------------------
 
-  static _setLocalGlobal(ValueName name, dynamic value, {bool isBool: true}){
-    //update locally
-    _nameToValueNotifier[name].value = value;
-    //update globally
-    _set(isBool, name.toString(), value);
-  }
-
-  static ValueNotifier _getOrSetToDefault(ValueName name){
+  static _getOrSetToDefault(ValueName name){
     bool isBool = name != ValueName.NextID;
     String key = name.toString();
 
@@ -84,14 +74,21 @@ class SharedPrefsExt {
 
     //set the default if necesary
     if(value == null){
-      return ValueNotifier(
-        _set(
-          isBool, 
-          key, _nameToDefaultValue[value],
-        ),
+      value = _set(
+        isBool, 
+        key, _nameToDefaultValue[name],
       );
-    } //otherwise return the value
-    else return new ValueNotifier(value);
+    }
+
+    //save it in value notifier
+    _nameToValueNotifier[name] = ValueNotifier(value);
+  }
+
+  static _setLocalGlobal(ValueName name, dynamic value, {bool isBool: true}){
+    //update locally
+    _nameToValueNotifier[name].value = value;
+    //update globally
+    _set(isBool, name.toString(), value);
   }
 
   static dynamic _get(bool isBool, String key){
@@ -100,7 +97,11 @@ class SharedPrefsExt {
   }
 
   static dynamic _set(bool isBool, String key, dynamic value){
-    if(isBool) return _savedPreferences.setBool(key, value);
-    else return _savedPreferences.setInt(key, value);
+    //start the process of saving in shared preferences asynchronously
+    if(isBool) _savedPreferences.setBool(key, value);
+    else _savedPreferences.setInt(key, value);
+
+    //return the value we will be saving synchronously
+    return value;
   }
 }

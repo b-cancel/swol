@@ -63,7 +63,8 @@ class GrabSystemPrefs extends StatelessWidget {
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         if(snapshot.connectionState == ConnectionState.done){
           //grab and process system prefs
-          SharedPrefsExt.init(snapshot.data);
+          SharedPreferences preferences = snapshot.data;
+          SharedPrefsExt.init(preferences);
 
           //return app
           return ChangeNotifierProvider<ThemeChanger>(
