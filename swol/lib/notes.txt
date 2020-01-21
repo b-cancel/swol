@@ -1,8 +1,0 @@
-TEST 1 REP MAX CALCULATION WITH STD DEV
--give random 1. weight 2. reps button (to test 1 rep max calculation functionality)
-
-TEST SECTION TYPE
--button to set to some random but beleivable time range between 1 and 3 hours from now + or minus (so it shows up as a workout)
--button to set as inprogress and to disable this
--button to set as new
--button to set as hidden

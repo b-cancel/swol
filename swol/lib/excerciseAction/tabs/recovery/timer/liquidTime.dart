@@ -10,7 +10,7 @@ import 'package:swol/excerciseAction/tabs/recovery/secondary/timeDisplay.dart';
 import 'package:swol/excerciseAction/tabs/recovery/timer/changeTime.dart';
 import 'package:swol/excerciseAction/tabs/recovery/timer/superOverflow.dart';
 import 'package:swol/excerciseAction/tabs/recovery/timer/turnOffVibration.dart';
-import 'package:swol/utils/vibrate.dart';
+import 'package:swol/shared/functions/vibrate.dart';
 
 /*
 TODO: improve turning off the vibration
@@ -78,7 +78,7 @@ class _LiquidTimeState extends State<LiquidTime> with TickerProviderStateMixin {
 
   vibrateOnComplete(AnimationStatus status){
     if(status == AnimationStatus.completed){
-      Vibrator.startVibration();
+      Vibrator.startConstantVibration();
       //needed so that when the 10 minutes pass 1 last reload causes us to switch to the new UI
       updateState();
     }

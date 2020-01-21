@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:swol/utils/goldenRatio.dart';
+import 'package:swol/shared/functions/goldenRatio.dart';
 
 class CalibrationCard extends StatelessWidget {
   const CalibrationCard({

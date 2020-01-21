@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-//internal
-import 'package:swol/utils/vibrate.dart';
-
 //plugins
 import 'package:flutter_xlider/flutter_xlider.dart';
 import 'package:intl/intl.dart' as intl;
+
+//internal
+import 'package:swol/shared/functions/vibrate.dart';
 
 //NOTE: in both cases things start from 1
 class CustomSlider extends StatelessWidget {
@@ -23,7 +23,7 @@ class CustomSlider extends StatelessWidget {
   onChange(int handlerIndex, dynamic lowerValue, dynamic upperValue){
     double val = lowerValue;
     if(val.toInt() != value.value){
-      Vibrator.vibrate(
+      Vibrator.vibrateOnce(
         duration: Duration(milliseconds: 150),
       );
       value.value = val.toInt();

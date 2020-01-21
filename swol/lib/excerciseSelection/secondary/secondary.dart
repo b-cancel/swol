@@ -9,10 +9,10 @@ import 'package:swol/excercise/excerciseStructure.dart';
 import 'package:swol/excerciseSearch/searchExcercise.dart';
 import 'package:swol/excerciseSelection/secondary/addNewHero.dart';
 import 'package:swol/excerciseSelection/secondary/persistentHeaderDelegate.dart';
+import 'package:swol/shared/functions/goldenRatio.dart';
 import 'package:swol/shared/functions/onboarding.dart';
 import 'package:swol/shared/methods/extensions/sharedPreferences.dart';
 import 'package:swol/shared/widgets/simple/onboarding.dart';
-import 'package:swol/utils/goldenRatio.dart';
 
 class AddExcerciseButton extends StatelessWidget {
   const AddExcerciseButton({

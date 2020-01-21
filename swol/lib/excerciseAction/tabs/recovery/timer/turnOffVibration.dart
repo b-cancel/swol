@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 
 //internal
-import 'package:swol/utils/vibrate.dart';
+import 'package:swol/shared/functions/vibrate.dart';
 
 //build
 class VibrationSwitch extends StatelessWidget {
@@ -26,12 +26,12 @@ class VibrationSwitch extends StatelessWidget {
       left: 0,
       child: Container(
         child: Visibility(
-          visible: (Vibrator.isVibrating) ? true : false,
+          visible: (ConstantVibration.isVibrating) ? true : false,
           child: IconButton(
             padding: EdgeInsets.all(16),
             tooltip: 'Turn Off Vibration',
             onPressed: (){
-              Vibrator.stopVibration();
+              ConstantVibration.stopVibration();
               if(updateState != null) updateState();
             },
             icon: Icon(

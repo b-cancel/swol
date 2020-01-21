@@ -8,7 +8,7 @@ import 'package:swol/sharedWidgets/playOnceGif.dart';
 import 'package:swol/sharedWidgets/triangleAngle.dart';
 
 //internal: utils
-import 'package:swol/utils/vibrate.dart';
+import 'package:swol/shared/functions/vibrate.dart';
 
 class UELA extends StatefulWidget {
   UELA({
@@ -291,7 +291,7 @@ class _BasicCountDownState extends State<BasicCountDown> with SingleTickerProvid
   vibrateOnComplete(AnimationStatus status)async{
     if(status == AnimationStatus.completed){
       //vibrate to let the user know they are done
-      Vibrator.vibrate(); 
+      ConstantVibration.vibrate(); 
       //give permission
       SharedPrefsExt.setTermsAgreed(true);
       //pop the permission pop up

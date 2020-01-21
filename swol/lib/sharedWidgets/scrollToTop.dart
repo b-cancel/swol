@@ -6,7 +6,7 @@ import 'package:scroll_to_index/scroll_to_index.dart';
 import 'package:vector_math/vector_math_64.dart' as vect;
 
 //internal
-import 'package:swol/utils/vibrate.dart';
+import 'package:swol/shared/functions/vibrate.dart';
 
 class ScrollToTopButton extends StatefulWidget {
   const ScrollToTopButton({
@@ -61,7 +61,7 @@ class _ScrollToTopButtonState extends State<ScrollToTopButton> {
             heroTag: 'toTop',
             backgroundColor: Theme.of(context).primaryColorDark.withOpacity(0.5),
             onPressed: (){
-              Vibrator.vibrate();
+              Vibrator.vibrateOnce();
               //scrollToIndex -> too slow to find index
               //jumpTo -> happens instant but scrolling to top should have some animation
               //NOTE: I ended up going with jump since animate was not fully opening the prompt
