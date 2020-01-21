@@ -1,7 +1,4 @@
 //dart
-import 'package:swol/excerciseSelection/secondary/decoration.dart';
-import 'package:swol/shared/widgets/simple/onboarding.dart';
-import 'package:swol/utils/onboarding.dart';
 import 'package:vector_math/vector_math_64.dart' as vect;
 
 //flutter
@@ -12,6 +9,9 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:page_transition/page_transition.dart';
 
 //internal
+import 'package:swol/excerciseSelection/secondary/decoration.dart';
+import 'package:swol/shared/functions/onboarding.dart';
+import 'package:swol/shared/widgets/simple/onboarding.dart';
 import 'package:swol/learn/learn.dart';
 
 class AnimatedTitleAction extends StatelessWidget {
@@ -19,12 +19,10 @@ class AnimatedTitleAction extends StatelessWidget {
     Key key,
     @required this.navSpread,
     @required this.screenWidth,
-    @required this.shownIntroductionVN,
   }) : super(key: key);
 
   final ValueNotifier<bool> navSpread;
   final double screenWidth;
-  final ValueNotifier<bool> shownIntroductionVN;
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +54,6 @@ class AnimatedTitleAction extends StatelessWidget {
                     type: PageTransitionType.rightToLeft, 
                     child: LearnExcercise(
                       navSpread: navSpread,
-                      shownIntroductionVN: shownIntroductionVN,
                     ),
                   ),
                 );
@@ -117,7 +114,6 @@ class AnimatedTitle extends StatelessWidget {
             top: true,
             left: true,
             nextFeature: (){
-              print("to learn page");
               OnBoarding.discoverLearnPage(context);
             }
           ),

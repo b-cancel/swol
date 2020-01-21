@@ -16,12 +16,10 @@ class AddNewHero extends StatelessWidget {
     Key key,
     @required this.inAppBar,
     @required this.navSpread,
-    @required this.shownSaveVN,
   }) : super(key: key);
 
   final bool inAppBar;
   final ValueNotifier<bool> navSpread;
-  final ValueNotifier<bool> shownSaveVN;
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +38,6 @@ class AddNewHero extends StatelessWidget {
             return AddNewHeroHelper(
               percentToAppBar: animation.value,
               navSpread: navSpread,
-              shownSaveVN: shownSaveVN,
             );
           },
         );
@@ -48,7 +45,6 @@ class AddNewHero extends StatelessWidget {
       child: AddNewHeroHelper(
         percentToAppBar: (inAppBar) ? 1 : 0,
         navSpread: navSpread,
-        shownSaveVN: shownSaveVN,
       ),
     );
   }
@@ -59,12 +55,10 @@ class AddNewHeroHelper extends StatelessWidget {
     Key key,
     @required this.percentToAppBar,
     @required this.navSpread,
-    @required this.shownSaveVN,
   }) : super(key: key);
 
   final double percentToAppBar;
   final ValueNotifier<bool> navSpread;
-  final ValueNotifier<bool> shownSaveVN;
 
   @override
   Widget build(BuildContext context) {
@@ -91,7 +85,6 @@ class AddNewHeroHelper extends StatelessWidget {
               child: AddExcercise(
                 navSpread: navSpread,
                 showPageDuration: transitionDuration,
-                shownSaveVN: shownSaveVN,
               ),
             ),
           );

@@ -12,7 +12,6 @@ import 'package:swol/excerciseAddition/secondary/sections/repTarget.dart';
 import 'package:swol/other/functions/helper.dart';
 import 'package:swol/sharedWidgets/informationDisplay.dart';
 import 'package:swol/sharedWidgets/mySlider.dart';
-import 'package:swol/utils/goldenRatio.dart';
 
 //includes both calibration and the suggestion
 class SuggestionSection extends StatelessWidget {
@@ -247,7 +246,6 @@ class FunctionSettings extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
     return Stack(
       children: <Widget>[
         Container(

@@ -4,10 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:swol/excercise/defaultDateTimes.dart';
 import 'package:swol/excercise/excerciseData.dart';
 import 'package:swol/excercise/excerciseStructure.dart';
+import 'package:swol/shared/functions/onboarding.dart';
+import 'package:swol/shared/methods/extensions/sharedPreferences.dart';
 import 'package:swol/shared/widgets/simple/onboarding.dart';
 
 //internal: utils
-import 'package:swol/utils/onboarding.dart';
 
 class SaveButton extends StatefulWidget {
   const SaveButton({
@@ -17,7 +18,6 @@ class SaveButton extends StatefulWidget {
     
     @required this.namePresent,
     @required this.nameFocusNode,
-    @required this.shownSaveVN,
     @required this.name,
     @required this.url,
     @required this.note,
@@ -35,7 +35,6 @@ class SaveButton extends StatefulWidget {
 
   final ValueNotifier<bool> namePresent;
   final FocusNode nameFocusNode;
-  final ValueNotifier<bool> shownSaveVN;
   final ValueNotifier<String> name;
   final ValueNotifier<String> url;
   final ValueNotifier<String> note;
@@ -65,7 +64,7 @@ class _SaveButtonState extends State<SaveButton> {
     widget.namePresent.addListener(updateState);
 
     //start onbaording if needed
-    if(widget.shownSaveVN.value == false){
+    if(SharedPrefsExt.getSaveShown().value == false){
       //NOTE: this will eventually request the focus of name
       OnBoarding.discoverSaveExcercise(context);
 
@@ -183,13 +182,9 @@ class _SaveButtonState extends State<SaveButton> {
       //only 1 thing
       doneInsteadOfNext: true,
       nextFeature: (){
-        //change variable globally
-        OnBoarding.saveShown();
-
-        //change variable locally
-        widget.shownSaveVN.value = true;
-
-        //request focus
+        SharedPrefsExt.setSaveShown(true);
+        //request focus AFTER the feature has been shown
+        //so they keyboard doesn't pop up with the onboarding window
         FocusScope.of(context).requestFocus(widget.nameFocusNode);
       },
     );

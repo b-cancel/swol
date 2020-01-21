@@ -32,12 +32,13 @@ import 'package:swol/other/functions/helper.dart';
 //once the data is loaded in so that we are restoring an add workout session... 
 //after having traveled away into the learn section we wipe the file ofcourse
 
+//888-568-0296: USAA
+
 //main widget
 class AddExcercise extends StatelessWidget {
   AddExcercise({
     Key key,
     @required this.navSpread,
-    @required this.shownSaveVN,
 
     //NOTE: 200 ms above the norm so they can see the sweat animation
     this.showPageDuration: const Duration(milliseconds: 500),
@@ -52,7 +53,6 @@ class AddExcercise extends StatelessWidget {
   }) : super(key: key);
 
   final ValueNotifier<bool> navSpread;
-  final ValueNotifier<bool> shownSaveVN;
 
   final Duration showPageDuration;
   final Duration showListDuration;
@@ -107,8 +107,9 @@ class AddExcercise extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //for slider hatch mark
-    double totalWidth = MediaQuery.of(context).size.width;
-    double sliderWidth = totalWidth - (16.0 * 2) - (8 * 2);
+    //TODO: these where important at some point... why not now?
+    //double totalWidth = MediaQuery.of(context).size.width;
+    //double sliderWidth = totalWidth - (16.0 * 2) - (8 * 2);
 
     //each section
     List<Widget> sections = [
@@ -195,7 +196,6 @@ class AddExcercise extends StatelessWidget {
                       child: AddNewHero(
                         inAppBar: true,
                         navSpread: navSpread,
-                        shownSaveVN: shownSaveVN,
                       ),
                     ),
                     Positioned(
@@ -212,7 +212,6 @@ class AddExcercise extends StatelessWidget {
                           showSaveButton: showSaveButton, 
                           nameFocusNode: nameFocusNode,
                           nameError: nameError,
-                          shownSaveVN: shownSaveVN,
                           //transition duration
                           showSaveDuration: showSaveDuration,
                           //variables

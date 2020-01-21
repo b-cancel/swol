@@ -3,14 +3,18 @@ import 'package:flutter/material.dart';
 
 //plugin
 import 'package:scroll_to_index/scroll_to_index.dart';
-import 'package:swol/excerciseSelection/excerciseList.dart';
 
-//internal: basics
+
+//internal: excercise selection
+import 'package:swol/excerciseSelection/excerciseList.dart';
 import 'package:swol/excerciseSelection/secondary/animatedTitle.dart';
 import 'package:swol/excerciseSelection/secondary/secondary.dart';
 import 'package:swol/excerciseSelection/uela.dart';
+
+//internal: shared
+import 'package:swol/shared/methods/extensions/sharedPreferences.dart';
+import 'package:swol/shared/functions/onboarding.dart';
 import 'package:swol/sharedWidgets/scrollToTop.dart';
-import 'package:swol/utils/onboarding.dart';
 
 //Sections and how they are handled
 //New => newest additions on bottom
@@ -44,24 +48,6 @@ The tricky part is the animation: looks like a push not a pop or replace.
 
 //main widget
 class ExcerciseSelect extends StatefulWidget {
-  final bool permissionGiven;
-  final bool shownInitialControls;
-  final bool shownIntroduction;
-  final bool shownSave;
-  //TODO: do below
-  final bool shownSearchBar;
-  final bool shownSettings;
-
-  ExcerciseSelect({
-    @required this.permissionGiven,
-    @required this.shownInitialControls,
-    @required this.shownIntroduction,
-    @required this.shownSave,
-    //TODO: do below
-    @required this.shownSearchBar,
-    @required this.shownSettings,
-  });
-
   @override
   _ExcerciseSelectState createState() => _ExcerciseSelectState();
 }
@@ -70,9 +56,6 @@ class _ExcerciseSelectState extends State<ExcerciseSelect> {
   final AutoScrollController autoScrollController = new AutoScrollController();
   final ValueNotifier<bool> onTop = new ValueNotifier(true);
   final ValueNotifier<bool> navSpread = new ValueNotifier(false);
-
-  ValueNotifier<bool> shownIntroductionVN;
-  ValueNotifier<bool> shownSaveVN;
 
   updateOnTopValue(){
     ScrollPosition position = autoScrollController.position;
@@ -87,15 +70,9 @@ class _ExcerciseSelectState extends State<ExcerciseSelect> {
 
   @override
   void initState() { 
-    //since this variable is read in only once 
-    //but may be changed throughout the running of the program 
-    //we use a value notifier so updating the value locally is enough
-    shownIntroductionVN = new ValueNotifier<bool>(widget.shownIntroduction);
-    shownSaveVN = new ValueNotifier<bool>(widget.shownSave);
-
-    //create function
-    Function afterConfirm = (){
-      if(widget.shownInitialControls == false){
+    //create function to be called after the user accept the uela
+    Function maybeShowInitialControls = (){
+      if(SharedPrefsExt.getInitialControlsShown().value == false){
         OnBoarding.discoverSwolLogo(context);
       }
     };
@@ -103,18 +80,18 @@ class _ExcerciseSelectState extends State<ExcerciseSelect> {
     //ask for permission after the frame loads
     WidgetsBinding.instance.addPostFrameCallback((_){
       //pop up that comes up asking for permission
-      if(widget.permissionGiven == false){
+      if(SharedPrefsExt.getTermAgreed().value == false){
         showDialog(
           context: context,
           barrierDismissible: false,
           builder: (BuildContext context) {
             return UELA(
-              afterConfirm: () => afterConfirm(),
+              afterConfirm: () => maybeShowInitialControls(),
             );
           },
         );
       } 
-      else afterConfirm();
+      else maybeShowInitialControls();
     });
 
     //show or hide the to top button
@@ -163,7 +140,6 @@ class _ExcerciseSelectState extends State<ExcerciseSelect> {
           AnimatedTitleAction(
             navSpread: navSpread, 
             screenWidth: screenWidth,
-            shownIntroductionVN: shownIntroductionVN,
           ),
         ],
       ),
@@ -187,7 +163,6 @@ class _ExcerciseSelectState extends State<ExcerciseSelect> {
             AddExcerciseButton(
               navSpread: navSpread,
               screenWidth: screenWidth,
-              shownSaveVN: shownSaveVN,
             ),
           ],
         ),

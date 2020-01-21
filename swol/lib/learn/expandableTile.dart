@@ -281,12 +281,15 @@ class RotatingIcon extends StatelessWidget {
     @required this.isOpen,
   });
 
+  //passed params
   final Duration duration;
   final ValueNotifier<bool> isOpen;
 
-  double tweenBeginning;
-  double fractionOfDuration = 1;
+  //operating within
+  final ValueNotifier<double> tweenBeginning = new ValueNotifier<double>(-1);
+  final ValueNotifier<double> fractionOfDuration = new ValueNotifier<double>(1);
 
+  //"constants"
   final double normalRotation = 0;
   final double otherRotation = (-math.pi / 4) * 4;
 
@@ -296,19 +299,19 @@ class RotatingIcon extends StatelessWidget {
       resetAnimationOnRebuild: true,
       tween: isOpen.value
         ? Tween<double>(
-            begin: tweenBeginning ?? normalRotation, 
+            begin: tweenBeginning.value == -1 ? normalRotation : tweenBeginning.value, 
             end: otherRotation,
         )
         : Tween<double>(
-            begin: tweenBeginning ?? otherRotation, 
+            begin: tweenBeginning.value == -1 ? otherRotation : tweenBeginning.value, 
             end: normalRotation,
         ),
       duration: Duration(
-        milliseconds: ((duration.inMilliseconds * fractionOfDuration).toInt()),
+        milliseconds: ((duration.inMilliseconds * fractionOfDuration.value).toInt()),
       ),
       customListener: (animator) {
-        tweenBeginning = animator.animation.value;
-        fractionOfDuration = animator.controller.value;
+        tweenBeginning.value = animator.animation.value;
+        fractionOfDuration.value = animator.controller.value;
       },
       builder: (anim) => Transform.rotate(
         angle: anim.value,

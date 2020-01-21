@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
 
-//internal
+//internal: learn
 import 'package:swol/learn/expandableTile.dart';
 import 'package:swol/learn/sections/definitions.dart';
 import 'package:swol/learn/sections/experiment.dart';
@@ -16,21 +16,20 @@ import 'package:swol/learn/sections/oneRepMax.dart';
 import 'package:swol/learn/sections/precautions.dart';
 import 'package:swol/learn/sections/research.dart';
 import 'package:swol/learn/sections/training.dart';
-import 'package:swol/utils/onboarding.dart';
+
+//internal: other
+import 'package:swol/shared/methods/extensions/sharedPreferences.dart';
 
 //https://pub.dev/packages/expandable
 //https://stackoverflow.com/questions/54986328/how-to-make-expandable-card
-
 
 //build
 class LearnExcercise extends StatefulWidget {
   LearnExcercise({
     @required this.navSpread,
-    @required this.shownIntroductionVN,
   });
 
   final ValueNotifier navSpread;
-  final ValueNotifier<bool> shownIntroductionVN;
 
   @override
   _LearnExcerciseState createState() => _LearnExcerciseState();
@@ -57,11 +56,7 @@ class _LearnExcerciseState extends State<LearnExcercise> {
   maybeCloseOthers(ValueNotifier<bool> isOpen){
     //the user has tapped something
     //so they will have seen how the drop down works
-
-    //update locally
-    widget.shownIntroductionVN.value = true;
-    //update globally
-    OnBoarding.boolSet(StoredBools.IntroductionShown);
+    SharedPrefsExt.setIntroductionShown(true);
 
     //a section is being opened
     if(isOpen.value){
@@ -111,7 +106,9 @@ class _LearnExcerciseState extends State<LearnExcercise> {
     //super init
     super.initState();
 
-    introductionIsOpen = new ValueNotifier(widget.shownIntroductionVN.value == false);
+    introductionIsOpen = new ValueNotifier(
+      SharedPrefsExt.getIntroductionShown().value == false,
+    );
 
     //make controller list
     allIsOpens = new List<ValueNotifier<bool>>();
@@ -217,7 +214,6 @@ class _LearnExcerciseState extends State<LearnExcercise> {
                 headerIcon: FontAwesomeIcons.dumbbell, 
                 size: 18,
                 headerText: "Training", 
-                //TODO: fix weird spacing below table... problem may lie in "trainingTypes.dart"
                 expandedChild: TrainingBody(),
               ),
               ExpandableTile(

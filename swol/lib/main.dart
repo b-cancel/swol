@@ -4,9 +4,9 @@ import 'package:flutter/services.dart';
 
 //plugins
 import 'package:feature_discovery/feature_discovery.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:bot_toast/bot_toast.dart';
-import 'package:provider/provider.dart';
 import 'package:async/async.dart';
 
 //internal
@@ -15,8 +15,7 @@ import 'package:swol/excerciseSelection/secondary/decoration.dart';
 import 'package:swol/other/theme.dart';
 import 'package:swol/excercise/excerciseData.dart';
 import 'package:swol/excerciseSearch/searchesData.dart';
-import 'package:swol/utils/onboarding.dart';
-
+import 'package:swol/shared/methods/extensions/sharedPreferences.dart';
 //app start
 void main() => runApp(App());
 
@@ -64,51 +63,16 @@ class GrabSystemPrefs extends StatelessWidget {
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         if(snapshot.connectionState == ConnectionState.done){
           //grab and process system prefs
-          SharedPreferences prefs = snapshot.data;
-
-          //handle theme stuff
-          dynamic isDark = prefs.getBool("darkMode");
-          if(isDark == null){ //dark mode is the DEFAULT
-            prefs.setBool("darkMode", true);
-            isDark = true;
-          }
-
-          //handle workout stuff
-          dynamic nextID = prefs.getInt("nextID");
-          if(nextID == null){
-            prefs.setInt("nextID", 0);
-            nextID = 0;
-          }
-
-          
-
-          //get bool value
-          
-          bool permissionGiven = OnBoarding.setgetValue(prefs, StoredBools.TermsAgreed);
-          bool shownInitialControls = OnBoarding.setgetValue(prefs, StoredBools.InitialControlsShown);
-          bool shownIntroduction = OnBoarding.setgetValue(prefs, StoredBools.IntroductionShown);
-          bool shownSave = OnBoarding.setgetValue(prefs, StoredBools.SaveShown);
-          //TODO: do below
-          bool shownSearchButton = OnBoarding.setgetValue(prefs, StoredBools.SearchButtonShown);
-          bool shownSettings = OnBoarding.setgetValue(prefs, StoredBools.SettingsShown);
-          
+          SharedPrefsExt.init(snapshot.data);
 
           //return app
           return ChangeNotifierProvider<ThemeChanger>(
             //NOTE: this will also setup the status and notifiaction bar colors
             //we don't wait for this though, because constructors can't be async
             create: (_) => ThemeChanger(
-              (isDark) ? MyTheme.dark : MyTheme.light,
+              (SharedPrefsExt.getIsDark().value) ? MyTheme.dark : MyTheme.light,
             ), 
-            child: GrabFileData(
-              permissionGiven: permissionGiven,
-              shownInitialControls: shownInitialControls,
-              shownIntroduction: shownIntroduction,
-              shownSave: shownSave,
-              //TODO: do below
-              shownSearchBar: shownSearchButton,
-              shownSettings: shownSettings,
-            ),
+            child: GrabFileData(),
           );
         }
         else{ //to load just show the logo a bit longer
@@ -123,24 +87,6 @@ class GrabSystemPrefs extends StatelessWidget {
 //1. previous searches for search section
 //2. excercises for showing them in the list
 class GrabFileData extends StatefulWidget {
-  GrabFileData({
-    @required this.permissionGiven,
-    @required this.shownInitialControls,
-    @required this.shownIntroduction,
-    @required this.shownSave,
-    //TODO: do below
-    @required this.shownSearchBar,
-    @required this.shownSettings,
-  });
-
-  final bool permissionGiven;
-  final bool shownInitialControls;
-  final bool shownIntroduction;
-  final bool shownSave;
-  //TODO: do below
-  final bool shownSearchBar;
-  final bool shownSettings;
-
   @override
   _GrabFileDataState createState() => _GrabFileDataState();
 }
@@ -161,19 +107,9 @@ class _GrabFileDataState extends State<GrabFileData> {
       future: fetchData(),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         if(snapshot.connectionState == ConnectionState.done){
-          return ExcerciseSelect(
-            permissionGiven: widget.permissionGiven,
-            shownInitialControls: widget.shownInitialControls,
-            shownIntroduction: widget.shownIntroduction,
-            shownSave: widget.shownSave,
-            //TODO: do below
-            shownSearchBar: widget.shownSearchBar,
-            shownSettings: widget.shownSettings,
-          );
+          return ExcerciseSelect();
         }
-        else{
-          return SplashScreen();
-        }
+        else return SplashScreen();
       },
     );
   }
@@ -205,7 +141,9 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
           //NOTE: only 2 expands (the logo must always be centered)
-          Expand(),
+          Expanded(
+            child: Container(),
+          ),
           Padding(
             padding: const EdgeInsets.all(24.0),
             child: Image.asset(
@@ -241,19 +179,6 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
           ),
         ],
       ),
-    );
-  }
-}
-
-class Expand extends StatelessWidget {
-  const Expand({
-    Key key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Expanded(
-      child: Container(),
     );
   }
 }

@@ -3,9 +3,6 @@ import 'package:swol/excercise/excerciseData.dart';
 import 'package:swol/excerciseAction/tabs/recovery/secondary/breath.dart';
 import 'package:swol/excerciseAction/tabs/recovery/timer/liquidTime.dart';
 import 'package:swol/excerciseAction/tabs/sharedWidgets/bottomButtons.dart';
-import 'package:swol/excerciseAction/tabs/suggest/calibration.dart';
-import 'package:swol/excerciseAction/tabs/suggest/suggest.dart';
-import 'package:swol/main.dart';
 
 class Recovery extends StatefulWidget {
   Recovery({

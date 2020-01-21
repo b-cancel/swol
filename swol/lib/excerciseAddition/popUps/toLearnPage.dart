@@ -37,7 +37,6 @@ class LearnPageSuggestion extends StatelessWidget {
           child: LearnExcercise(
             //TODO: change these
             navSpread: new ValueNotifier(false),
-            shownIntroductionVN: new ValueNotifier(false),
           ),
         ),
       );

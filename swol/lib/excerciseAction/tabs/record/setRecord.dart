@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_icons/flutter_icons.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:swol/excerciseAction/tabs/sharedWidgets/bottomButtons.dart';
-import 'package:swol/excerciseAction/tabs/suggest/calibration.dart';
 import 'package:swol/excerciseAction/tabs/suggest/suggestion.dart';
-import 'package:swol/utils/goldenRatio.dart';
 
 //TODO: use directionality widget to switch start direction "directionality" 
 
@@ -85,28 +82,8 @@ class SetRecordCardBottom extends StatelessWidget {
     int weight = 9999;
     int reps = 888;
     
-    //calculate golden ratio for width
-    List<double> widthBigSmall = measurementToGoldenRatio(
-      MediaQuery.of(context).size.width,
-    );
-
-    List<double> widthSmallDivisionBigSmall = measurementToGoldenRatio(
-      widthBigSmall[1]
-    );
-
-    List<double> widthBigDivisionBigSmall = measurementToGoldenRatio(
-      widthBigSmall[0],
-    );
-
-    //calculate golden ratio for height
-    List<double> heightBigSmall = measurementToGoldenRatio(
-      spaceToRedistribute,
-    );
-    
     //card radius
     Radius cardRadius = Radius.circular(24);
-
-    double horizontalPadding = 24;
 
     //calculate golden ratios
     List<double> bigToSmall = [

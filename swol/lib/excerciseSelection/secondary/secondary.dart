@@ -9,21 +9,20 @@ import 'package:swol/excercise/excerciseStructure.dart';
 import 'package:swol/excerciseSearch/searchExcercise.dart';
 import 'package:swol/excerciseSelection/secondary/addNewHero.dart';
 import 'package:swol/excerciseSelection/secondary/persistentHeaderDelegate.dart';
+import 'package:swol/shared/functions/onboarding.dart';
+import 'package:swol/shared/methods/extensions/sharedPreferences.dart';
 import 'package:swol/shared/widgets/simple/onboarding.dart';
 import 'package:swol/utils/goldenRatio.dart';
-import 'package:swol/utils/onboarding.dart';
 
 class AddExcerciseButton extends StatelessWidget {
   const AddExcerciseButton({
     Key key,
     @required this.navSpread,
     @required this.screenWidth,
-    @required this.shownSaveVN,
   }) : super(key: key);
 
   final ValueNotifier<bool> navSpread;
   final double screenWidth;
-  final ValueNotifier<bool> shownSaveVN;
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +43,6 @@ class AddExcerciseButton extends StatelessWidget {
           child: AddNewHero(
             inAppBar: false,
             navSpread: navSpread,
-            shownSaveVN: shownSaveVN,
           ),
           top: false,
           left: true,
@@ -53,7 +51,7 @@ class AddExcerciseButton extends StatelessWidget {
           },
           doneInsteadOfNext: true,
           nextFeature: (){
-            OnBoarding.initialControlsShown();
+            SharedPrefsExt.setInitialControlsShown(true);
           },
         ),
       ),

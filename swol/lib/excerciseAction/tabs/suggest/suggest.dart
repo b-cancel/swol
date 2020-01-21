@@ -1,15 +1,14 @@
 //flutter
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 
-//internal
-import 'package:swol/excercise/excerciseData.dart';
+//internal: action
 import 'package:swol/excerciseAction/tabs/sharedWidgets/bottomButtons.dart';
 import 'package:swol/excerciseAction/tabs/suggest/calibration.dart';
 import 'package:swol/excerciseAction/tabs/suggest/suggestion.dart';
+
+//internal: other
+import 'package:swol/excercise/excerciseData.dart';
 import 'package:swol/other/functions/helper.dart';
-import 'package:swol/utils/goldenRatio.dart';
 
 //TODO: implement this
 //FLIPPED used when the user arrived directly to the suggest page
@@ -107,27 +106,9 @@ class _SuggestionState extends State<Suggestion> {
 
   @override
   Widget build(BuildContext context) {
-
-    int lastRecordedWeight = ExcerciseData.getExcercises().value[widget.excerciseID].lastWeight;
-    String extra = "";
-    if(lastRecordedWeight != null){
-      extra = "different than ";
-      extra += lastRecordedWeight.toString() + " x ";
-      extra += ExcerciseData.getExcercises().value[widget.excerciseID].lastReps.toString();
-    }
-
     double fullHeight = MediaQuery.of(context).size.height;
     double appBarHeight = 56; //constant according to flutter docs
     double spaceToRedistribute = fullHeight - appBarHeight - widget.statusBarHeight ;
-    /*
-    GestureDetector(
-        onTap: (){
-          firstTime.value = !firstTime.value;
-          //state will be set after
-        },
-        child: suggestion,
-      ),
-    */
 
     //buildy boi
     return GestureDetector(
@@ -188,23 +169,3 @@ class _SuggestionState extends State<Suggestion> {
     );
   }
 }
-
-
-/*
-Positioned(
-  child: Center(
-    child: RaisedButton(
-      onPressed: (){
-        //give the item a random lastWeight [5->75] and random lastReps [1->35]
-        var rnd = new Random();
-        ExcerciseData.updateExcercise(
-          widget.excerciseID,
-          lastWeight: rnd.nextInt(70) + 5,
-          lastReps: rnd.nextInt(34) + 1,
-        );
-      },
-      child: Text("generate random weight and reps " + extra),
-    ),
-  ),
-),
-*/

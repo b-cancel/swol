@@ -158,24 +158,24 @@ class _TipGeneratorState extends State<TipGenerator> {
     else repTargetID = TrainingID.Endurance;
 
     //find matches
-    bool recovery_SetTarget = trainingIDsEqual(
+    bool recoveryANDsetTarget = trainingIDsEqual(
       recoveryID,
       setTargetID,
     );
-    bool setTarget_RepTarget = trainingIDsEqual(
+    bool setTargetANDrepTarget = trainingIDsEqual(
       setTargetID,
       repTargetID,
     );
-    bool repTarget_Recovery = trainingIDsEqual(
+    bool repTargetANDrecovery = trainingIDsEqual(
       repTargetID,
       recoveryID,
     );
 
     //show tip if needed
     int matches = 0;
-    matches += (recovery_SetTarget) ? 1 : 0;
-    matches += (setTarget_RepTarget) ? 1 : 0;
-    matches += (repTarget_Recovery) ? 1 : 0;
+    matches += (recoveryANDsetTarget) ? 1 : 0;
+    matches += (setTargetANDrepTarget) ? 1 : 0;
+    matches += (repTargetANDrecovery) ? 1 : 0;
     if(matches == 3) hideTheTip();
     else{ //none of them are 3, so no 3 things are matching (at most 2)
       //NOTE: because set target can be 2 types of training at the same time
@@ -195,8 +195,8 @@ class _TipGeneratorState extends State<TipGenerator> {
         }
         else{ //2 match so point out the odd man out
           String settingToChange;
-          if(recovery_SetTarget) settingToChange = "Rep Target";
-          else if(setTarget_RepTarget) settingToChange = "Recovery Time";
+          if(recoveryANDsetTarget) settingToChange = "Rep Target";
+          else if(setTargetANDrepTarget) settingToChange = "Recovery Time";
           else settingToChange = "Set Target";
 
           tipText += "but " + settingToChange + " doesn't match the others";

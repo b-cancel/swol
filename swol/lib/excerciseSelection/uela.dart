@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 //internal: shared
+import 'package:swol/shared/methods/extensions/sharedPreferences.dart';
 import 'package:swol/sharedWidgets/playOnceGif.dart';
 import 'package:swol/sharedWidgets/triangleAngle.dart';
 
 //internal: utils
-import 'package:swol/utils/onboarding.dart';
 import 'package:swol/utils/vibrate.dart';
 
 class UELA extends StatefulWidget {
@@ -293,7 +293,7 @@ class _BasicCountDownState extends State<BasicCountDown> with SingleTickerProvid
       //vibrate to let the user know they are done
       Vibrator.vibrate(); 
       //give permission
-      await OnBoarding.givePermission();
+      SharedPrefsExt.setTermsAgreed(true);
       //pop the permission pop up
       Navigator.of(context).pop();
       //start showing basic features (if they haven't yet been shown)
