@@ -291,7 +291,7 @@ class _BasicCountDownState extends State<BasicCountDown> with SingleTickerProvid
   vibrateOnComplete(AnimationStatus status)async{
     if(status == AnimationStatus.completed){
       //vibrate to let the user know they are done
-      ConstantVibration.vibrate(); 
+      Vibrator.vibrateOnce(); 
       //give permission
       SharedPrefsExt.setTermsAgreed(true);
       //pop the permission pop up

@@ -10,9 +10,9 @@ import 'package:swol/excerciseAddition/popUps/toLearnPage.dart';
 import 'package:swol/excerciseAddition/secondary/tiny.dart';
 
 //internal from shared
-import 'package:swol/sharedWidgets/ourToolTip.dart';
-import 'package:swol/sharedWidgets/thisOrThatIcon.dart';
+import 'package:swol/shared/widgets/simple/oneOrTheOtherIcon.dart';
 import 'package:swol/trainingTypes/trainingTypes.dart';
+import 'package:swol/sharedWidgets/ourToolTip.dart';
 
 class SetTargetToTrainingTypeIndicator extends StatefulWidget {
   SetTargetToTrainingTypeIndicator({
@@ -293,7 +293,7 @@ makeTrainingTypePopUp({
         );
       break;
       case FitIcons.Strength: header = Icon(FontAwesomeIcons.weightHanging, color: c); break;
-      default: header = ThisOrThatIcon(
+      default: header = OneOrTheOtherIcon(
         one: Transform.translate(
           offset: Offset(-3, 0),
           child: Icon(
@@ -355,7 +355,6 @@ makeTrainingTypePopUp({
                 ),
               ),
               ScrollableTrainingTypes(
-                lightMode: true,
                 showEndurance: showEndurance,
                 showHypertrophy: showHypertrophy,
                 showStrength: showStrength,
@@ -372,14 +371,12 @@ makeTrainingTypePopUp({
 
 class ScrollableTrainingTypes extends StatelessWidget {
   ScrollableTrainingTypes({
-    this.lightMode: false,
     this.showStrength: true,
     this.showHypertrophy: true,
     this.showEndurance: true,
     this.highlightField: -1,
   });
 
-  final bool lightMode;
   final bool showEndurance;
   final bool showHypertrophy;
   final bool showStrength;
@@ -393,7 +390,7 @@ class ScrollableTrainingTypes extends StatelessWidget {
     if(showStrength) sections.add(2);
 
     return TrainingTypeSections(
-      lightMode: lightMode,
+      lightMode: true,
       highlightField: highlightField,
       sections: [sections],
       sectionID: new ValueNotifier(0),

@@ -1,8 +1,13 @@
+//flutter
 import 'package:flutter/material.dart';
+
+//plugin
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:swol/other/functions/helper.dart';
+
+//internal
+import 'package:swol/shared/widgets/simple/oneOrTheOtherIcon.dart';
 import 'package:swol/sharedWidgets/ourSnackBar.dart';
-import 'package:swol/sharedWidgets/thisOrThatIcon.dart';
+import 'package:swol/other/functions/helper.dart';
 
 //given the 
 //1. last weight
@@ -127,7 +132,7 @@ class ExcerciseTileSubtitle extends StatelessWidget {
               padding: const EdgeInsets.symmetric(
                 horizontal: 2.0,
               ),
-              child: ThisOrThatIcon(
+              child: OneOrTheOtherIcon(
                 one: Icon(
                   FontAwesomeIcons.plus,
                   color: Colors.white.withOpacity(0.75),

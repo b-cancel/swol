@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class ThisOrThatIcon extends StatelessWidget {
-  const ThisOrThatIcon({
+class OneOrTheOtherIcon extends StatelessWidget {
+  const OneOrTheOtherIcon({
     @required this.one,
     @required this.other,
     this.backgroundColor,

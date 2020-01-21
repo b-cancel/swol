@@ -26,12 +26,12 @@ class VibrationSwitch extends StatelessWidget {
       left: 0,
       child: Container(
         child: Visibility(
-          visible: (ConstantVibration.isVibrating) ? true : false,
+          visible: (Vibrator.isVibrating) ? true : false,
           child: IconButton(
             padding: EdgeInsets.all(16),
             tooltip: 'Turn Off Vibration',
             onPressed: (){
-              ConstantVibration.stopVibration();
+              Vibrator.stopVibration();
               if(updateState != null) updateState();
             },
             icon: Icon(
