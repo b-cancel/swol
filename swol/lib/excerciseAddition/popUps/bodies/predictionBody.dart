@@ -67,9 +67,7 @@ class PredictionFormulasPopUpBody extends StatelessWidget {
             ),
           ),
         ),
-        LearnPageSuggestion(
-          bottomPadding: false,
-        ),
+        LearnPageSuggestion(),
       ],
     );
   }

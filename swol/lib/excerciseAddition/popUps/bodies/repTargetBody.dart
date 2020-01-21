@@ -62,9 +62,7 @@ class RepTargetPopUpBody extends StatelessWidget {
               ),
             ),
         ),
-        LearnPageSuggestion(
-          bottomPadding: false,
-        ),
+        LearnPageSuggestion(),
       ],
     );
   }

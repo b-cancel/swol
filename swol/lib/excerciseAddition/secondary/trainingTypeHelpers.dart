@@ -361,9 +361,7 @@ makeTrainingTypePopUp({
                 showStrength: showStrength,
                 highlightField: highlightfield,
               ),
-              LearnPageSuggestion(
-                bottomPadding: false,
-              ),
+              LearnPageSuggestion(),
             ],
           ),
         ),

@@ -147,9 +147,7 @@ class RecoveryTimePopUpBody extends StatelessWidget {
               ),
             ),
         ),
-        LearnPageSuggestion(
-          bottomPadding: false,
-        ),
+        LearnPageSuggestion(),
       ],
     );
   }

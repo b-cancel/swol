@@ -62,9 +62,7 @@ class SetTargetPopUpBody extends StatelessWidget {
               ),
             ),
         ),
-        LearnPageSuggestion(
-          bottomPadding: false,
-        ),
+        LearnPageSuggestion(),
       ],
     );
   }
