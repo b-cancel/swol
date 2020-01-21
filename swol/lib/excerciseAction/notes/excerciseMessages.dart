@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:swol/shared/functions/theme.dart';
 
 class ConfirmActionMessage extends StatelessWidget {
   const ConfirmActionMessage({
@@ -25,7 +26,7 @@ class ConfirmActionMessage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Theme(
-      data: ThemeData.light(),
+      data: MyTheme.light,
       child: AlertDialog(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(

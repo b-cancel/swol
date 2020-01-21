@@ -1,6 +1,7 @@
 //flutter
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:swol/shared/functions/theme.dart';
 
 //internal: shared
 import 'package:swol/shared/methods/extensions/sharedPreferences.dart';
@@ -86,7 +87,7 @@ class _UELAState extends State<UELA> {
 
     //build
     return Theme(
-      data: ThemeData.light(),
+      data: MyTheme.light,
       child: AlertDialog(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(

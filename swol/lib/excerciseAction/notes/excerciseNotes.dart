@@ -8,6 +8,7 @@ import 'package:swol/excercise/excerciseData.dart';
 
 //internal: other
 import 'package:swol/excerciseAction/notes/excerciseMessages.dart';
+import 'package:swol/shared/functions/theme.dart';
 import 'package:swol/sharedWidgets/playOnceGif.dart';
 
 //plugin
@@ -222,7 +223,7 @@ class _ExcerciseNotesState extends State<ExcerciseNotes> {
               vertical: 8,
             ),
             child: Theme(
-              data: ThemeData.light(),
+              data: MyTheme.light,
               child: BasicEditor(
                 namePresent: namePresent,
                 nameError: nameError,
