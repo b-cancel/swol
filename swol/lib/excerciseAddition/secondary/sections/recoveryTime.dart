@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 //internal from addition
 import 'package:swol/excerciseAddition/secondary/trainingTypeHelpers.dart';
 import 'package:swol/excerciseAddition/popUps/popUpFunctions.dart';
+import 'package:swol/shared/functions/theme.dart';
 
 //internal from shared
 import 'package:swol/sharedWidgets/informationDisplay.dart';
@@ -75,7 +76,7 @@ class RecoveryTimeWidget extends StatelessWidget {
       children: <Widget>[
         Theme(
           //light so that our pop ups work properly
-          data: ThemeData.light(),
+          data: MyTheme.light,
           child: AnimRecoveryTimeInfoToWhiteTheme(
             changeDuration: changeDuration, 
             recoveryPeriod: recoveryPeriod, 

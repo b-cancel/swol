@@ -12,7 +12,9 @@ class MyTheme{
   //Color.fromARGB(255, 255, 255, 255); //A always set to 255
   //Color(0xAARRGGBB) //with a hex code //AA is always FF
   //setup for light theme
-  static ThemeData dark = ThemeData.dark();
+  static ThemeData dark = ThemeData.dark().copyWith(
+    accentColor: ThemeData.light().accentColor,
+  );
   static ThemeData light = ThemeData.light();
 }
 

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:swol/shared/functions/theme.dart';
 import 'package:swol/sharedWidgets/timePicker.dart';
 import 'package:swol/trainingTypes/trainingTypes.dart';
 
@@ -34,7 +35,7 @@ class ChangeRecoveryTimePopUp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Theme(
-      data: ThemeData.light(),
+      data: MyTheme.light,
       child: AlertDialog(
         contentPadding: EdgeInsets.all(0),
         title: Column(

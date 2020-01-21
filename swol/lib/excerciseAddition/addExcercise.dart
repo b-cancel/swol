@@ -18,6 +18,7 @@ import 'package:swol/excerciseAddition/secondary/save.dart';
 import 'package:swol/excerciseSelection/secondary/addNewHero.dart';
 import 'package:swol/excercise/excerciseStructure.dart';
 import 'package:swol/other/functions/helper.dart';
+import 'package:swol/shared/functions/theme.dart';
 
 //TODO *IMPROVEMENT*: remove strange extra padding on top of name
 //TODO *IMPROVEMENT*: swiping left and right on the 3 settings make the value go up and down
@@ -114,7 +115,7 @@ class AddExcercise extends StatelessWidget {
     //each section
     List<Widget> sections = [
       Theme(
-        data: ThemeData.light(),
+        data: MyTheme.light,
         child: NameCard(//
           name: name, 
           nameError: nameError, 
@@ -124,33 +125,33 @@ class AddExcercise extends StatelessWidget {
         ),
       ),
       Theme(
-        data: ThemeData.light(),
+        data: MyTheme.light,
         child: NotesCard(
           note: note, 
           noteFocusNode: noteFocusNode,
         ),
       ),
       Theme(
-        data: ThemeData.light(),
+        data: MyTheme.light,
         child: LinkCard(
           url: url,
         ),
       ),
       Theme(
-        data: ThemeData.light(),
+        data: MyTheme.light,
         child: RecoveryTimeCard(
           changeDuration: sectionTransitionDuration,
           recoveryPeriod: recoveryPeriod, 
         ),
       ),
       Theme(
-        data: ThemeData.light(),
+        data: MyTheme.light,
         child: SetTargetCard(
           setTarget: setTarget,
         ),
       ),
       Theme(
-        data: ThemeData.light(),
+        data: MyTheme.light,
         child: RepTargetCard(
           changeDuration: sectionTransitionDuration, 
           repTargetDuration: repTargetDuration, 
@@ -158,7 +159,7 @@ class AddExcercise extends StatelessWidget {
         ),
       ),
       Theme(
-        data: ThemeData.light(),
+        data: MyTheme.light,
         child: FunctionSelection(
           functionIndex: functionIndex, 
           functionString: functionString,

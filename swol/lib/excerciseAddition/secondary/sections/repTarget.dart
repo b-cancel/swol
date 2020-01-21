@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 //internal from addition
 import 'package:swol/excerciseAddition/secondary/trainingTypeHelpers.dart';
 import 'package:swol/excerciseAddition/popUps/popUpFunctions.dart';
+import 'package:swol/shared/functions/theme.dart';
 
 //internal from shared
 import 'package:swol/sharedWidgets/informationDisplay.dart';
@@ -74,7 +75,7 @@ class _RepTargetCardState extends State<RepTargetCard> {
                     popUpFunction: () => repTargetPopUp(context),
                   ),
                   Theme(
-                    data: ThemeData.light(),
+                    data: MyTheme.light,
                     child: AnimRepTargetInfoWhite(
                       changeDuration: widget.changeDuration, 
                       repTargetDuration: widget.repTargetDuration,

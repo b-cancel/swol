@@ -10,6 +10,7 @@ import 'package:swol/excerciseAddition/secondary/sections/predictionFunction.dar
 import 'package:swol/excercise/excerciseStructure.dart';
 import 'package:swol/excerciseAddition/secondary/sections/repTarget.dart';
 import 'package:swol/other/functions/helper.dart';
+import 'package:swol/shared/functions/theme.dart';
 import 'package:swol/sharedWidgets/informationDisplay.dart';
 import 'package:swol/sharedWidgets/mySlider.dart';
 
@@ -360,7 +361,7 @@ class FunctionSettings extends StatelessWidget {
                               horizontal: 24,
                             ),
                             child: Theme(
-                              data: ThemeData.light(),
+                              data: MyTheme.light,
                               child: FunctionChanger(
                                 functionIndex: functionIndex, 
                                 functionString: functionString,
@@ -392,7 +393,7 @@ class FunctionSettings extends StatelessWidget {
                         ),
                         Expanded(
                           child: Theme(
-                            data: ThemeData.light(),
+                            data: MyTheme.light,
                             child: RepTargetChanger(
                               arrowRadius: arrowRadius,
                             ),
@@ -575,7 +576,7 @@ class RepTargetChangerDark extends StatelessWidget {
                     subtle: true,
                   ),
                   Theme(
-                    data: ThemeData.light(),
+                    data: MyTheme.light,
                     child: AnimRepTargetInfoWhite(
                       changeDuration: Duration(milliseconds: 300), 
                       repTargetDuration: new ValueNotifier<Duration>(
