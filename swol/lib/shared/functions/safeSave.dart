@@ -6,18 +6,18 @@ import 'dart:io';
 //all the rest will be disposed off
 class SafeWrite{
   //keep track of the files current being written to
-  static Set<File> filesWeAreWritingTo = new Set<File>();
+  static Set<File> _filesWeAreWritingTo = new Set<File>();
 
   //keep track of the newest waiting data
-  static Map<File, String> fileToNextDataToBeWritten  = new Map<File, String>();
+  static Map<File, String> _fileToNextDataToBeWritten  = new Map<File, String>();
 
   //NOTE: this assumes that the file atleast exists
   static write(File file, String data){
     //If the file is already being written to
-    if(filesWeAreWritingTo.contains(file)){
+    if(_filesWeAreWritingTo.contains(file)){
       //save our data for writing after it completes
       //NOTE: may have overwritten old waiting data
-      fileToNextDataToBeWritten[file] = data;
+      _fileToNextDataToBeWritten[file] = data;
     }
     else _writeToFile(file, data);
   }
@@ -25,7 +25,7 @@ class SafeWrite{
   //write to file is a seperate function so we can easily recurse
   static _writeToFile(file, data) async {
     //mark this file as being written into
-    filesWeAreWritingTo.add(file);
+    _filesWeAreWritingTo.add(file);
 
     //write into it
     await file.writeAsString(
@@ -37,14 +37,14 @@ class SafeWrite{
     );
 
     //once finished check if something else was waiting
-    if(fileToNextDataToBeWritten.containsKey(file)){
+    if(_fileToNextDataToBeWritten.containsKey(file)){
       //grab data waiting
-      String data = fileToNextDataToBeWritten.remove(file);
+      String data = _fileToNextDataToBeWritten.remove(file);
       //NOTE: we keep the being written to flag on
       _writeToFile(file, data);
     }
     else{ //we finished writing to this file (for now)
-      filesWeAreWritingTo.remove(file);
+      _filesWeAreWritingTo.remove(file);
     }
   }
 }

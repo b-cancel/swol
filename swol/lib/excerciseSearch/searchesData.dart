@@ -3,8 +3,8 @@ import 'dart:convert';
 import 'dart:io';
 
 //internal
+import 'package:swol/shared/functions/safeSave.dart';
 import 'package:swol/other/otherHelper.dart';
-import 'package:swol/utils/safeSave.dart';
 
 class SearchesData{
   //-------------------------MAIN VARS-------------------------

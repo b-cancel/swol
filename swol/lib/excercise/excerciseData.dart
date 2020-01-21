@@ -8,8 +8,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 //internal
 import 'package:swol/excercise/excerciseStructure.dart';
+import 'package:swol/shared/functions/safeSave.dart';
 import 'package:swol/other/otherHelper.dart';
-import 'package:swol/utils/safeSave.dart';
 
 //class that 
 //1. grabs excercises from storage
