@@ -10,7 +10,6 @@ import 'package:provider/provider.dart';
 import 'package:async/async.dart';
 
 //internal
-import 'package:swol/excercise/excerciseStructure.dart';
 import 'package:swol/excerciseSelection/excerciseListPage.dart';
 import 'package:swol/excerciseSelection/secondary/decoration.dart';
 import 'package:swol/other/theme.dart';
@@ -81,7 +80,10 @@ class GrabSystemPrefs extends StatelessWidget {
             nextID = 0;
           }
 
+          
+
           //get bool value
+          
           bool permissionGiven = OnBoarding.setgetValue(prefs, StoredBools.TermsAgreed);
           bool shownInitialControls = OnBoarding.setgetValue(prefs, StoredBools.InitialControlsShown);
           bool shownIntroduction = OnBoarding.setgetValue(prefs, StoredBools.IntroductionShown);
@@ -89,9 +91,7 @@ class GrabSystemPrefs extends StatelessWidget {
           //TODO: do below
           bool shownSearchButton = OnBoarding.setgetValue(prefs, StoredBools.SearchButtonShown);
           bool shownSettings = OnBoarding.setgetValue(prefs, StoredBools.SettingsShown);
-
-          //set nextID to its usable version
-          AnExcercise.nextID = nextID;
+          
 
           //return app
           return ChangeNotifierProvider<ThemeChanger>(

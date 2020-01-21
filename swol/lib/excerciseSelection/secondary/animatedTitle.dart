@@ -1,5 +1,6 @@
 //dart
 import 'package:swol/excerciseSelection/secondary/decoration.dart';
+import 'package:swol/shared/widgets/simple/onboarding.dart';
 import 'package:swol/utils/onboarding.dart';
 import 'package:vector_math/vector_math_64.dart' as vect;
 

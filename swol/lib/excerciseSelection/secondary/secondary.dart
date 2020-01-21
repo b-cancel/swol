@@ -9,6 +9,7 @@ import 'package:swol/excercise/excerciseStructure.dart';
 import 'package:swol/excerciseSearch/searchExcercise.dart';
 import 'package:swol/excerciseSelection/secondary/addNewHero.dart';
 import 'package:swol/excerciseSelection/secondary/persistentHeaderDelegate.dart';
+import 'package:swol/shared/widgets/simple/onboarding.dart';
 import 'package:swol/utils/goldenRatio.dart';
 import 'package:swol/utils/onboarding.dart';
 

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:swol/excercise/defaultDateTimes.dart';
 import 'package:swol/excercise/excerciseData.dart';
 import 'package:swol/excercise/excerciseStructure.dart';
+import 'package:swol/shared/widgets/simple/onboarding.dart';
 
 //internal: utils
 import 'package:swol/utils/onboarding.dart';

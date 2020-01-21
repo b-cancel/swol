@@ -4,15 +4,14 @@ import 'package:flutter/material.dart';
 //plugins
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:direct_select_flutter/direct_select_container.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:swol/excerciseAddition/addExcerciseBasicCards.dart';
-import 'package:swol/excerciseAddition/addExcerciseTip.dart';
 
 //internal from addition
 import 'package:swol/excerciseAddition/secondary/sections/predictionFunction.dart';
 import 'package:swol/excerciseAddition/secondary/sections/recoveryTime.dart';
 import 'package:swol/excerciseAddition/secondary/sections/repTarget.dart';
 import 'package:swol/excerciseAddition/secondary/sections/setTarget.dart';
+import 'package:swol/excerciseAddition/addExcerciseBasicCards.dart';
+import 'package:swol/excerciseAddition/addExcerciseTip.dart';
 import 'package:swol/excerciseAddition/secondary/save.dart';
 
 //internal other
