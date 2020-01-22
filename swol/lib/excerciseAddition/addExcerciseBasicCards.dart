@@ -51,24 +51,14 @@ class _NameCardState extends State<NameCard> {
   @override
   Widget build(BuildContext context) {
     return BasicCard(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          NameHeader(),
-          TextFieldWithClearButton(
-            editOneAtAtTime: false,
-            valueToUpdate: widget.name,
-            focusNode: widget.nameFocusNode,
-            hint: "Required*", 
-            error: (widget.nameError.value) ? "Name Is Required" : null, 
-            //auto focus field (this is handled by the save button)
-            autofocus: false,
-            //we need to keep track above to determine whether we can active the button
-            present: widget.namePresent, 
-            //so next focuses on the note
-            otherFocusNode: widget.noteFocusNode,
-          ),
-        ],
+      child: NameField(
+        editOneAtATime: false,
+        valueToUpdate: widget.name,
+        focusNode: widget.nameFocusNode,
+        showError: widget.nameError,
+        autofocus: false,
+        namePresent: widget.namePresent,
+        otherFocusNode: widget.noteFocusNode,
       ),
     );
   }

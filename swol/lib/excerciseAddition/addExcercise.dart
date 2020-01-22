@@ -19,7 +19,6 @@ import 'package:swol/excerciseSelection/secondary/addNewHero.dart';
 import 'package:swol/excercise/excerciseStructure.dart';
 import 'package:swol/main.dart';
 import 'package:swol/other/functions/helper.dart';
-import 'package:swol/shared/functions/theme.dart';
 
 //TODO *IMPROVEMENT*: remove strange extra padding on top of name
 //TODO *IMPROVEMENT*: swiping left and right on the 3 settings make the value go up and down

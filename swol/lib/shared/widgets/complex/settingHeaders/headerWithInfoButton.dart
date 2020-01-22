@@ -1,5 +1,6 @@
 //flutter
 import 'package:flutter/material.dart';
+import 'package:swol/basicFields/clearableTextField.dart';
 import 'package:swol/shared/functions/theme.dart';
 
 //internal: pop up bodies
@@ -95,7 +96,7 @@ class _HeaderWithInfoDark extends StatelessWidget {
 
 //-------------------------shortcuts-------------------------
 
-class NameHeader extends StatelessWidget {
+class _NameHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Theme(
@@ -211,6 +212,51 @@ class RepTargetHeader extends StatelessWidget {
         body: RepTargetPopUpBody(),
         subtle: subtle,
       ),
+    );
+  }
+}
+
+//------------------------------Field
+
+class NameField extends StatelessWidget {
+  NameField({
+    @required this.editOneAtATime,
+    @required this.valueToUpdate,
+    @required this.focusNode,
+    @required this.showError,
+    @required this.autofocus,
+    @required this.namePresent,
+    @required this.otherFocusNode,
+  });
+
+  final bool editOneAtATime;
+  final ValueNotifier<String> valueToUpdate;
+  final FocusNode focusNode;
+  final ValueNotifier<bool> showError;
+  final bool autofocus;
+  final ValueNotifier<bool> namePresent;
+  final FocusNode otherFocusNode;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        _NameHeader(),
+        TextFieldWithClearButton(
+          editOneAtAtTime: editOneAtATime,
+          valueToUpdate: valueToUpdate,
+          focusNode: focusNode,
+          hint: "Required*", 
+          error: (showError.value) ? "Name Is Required" : null, 
+          //auto focus field (this is handled by the save button)
+          autofocus: autofocus,
+          //we need to keep track above to determine whether we can active the button
+          present: namePresent, 
+          //so next focuses on the note
+          otherFocusNode: otherFocusNode,
+        ),
+      ],
     );
   }
 }

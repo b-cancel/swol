@@ -39,17 +39,13 @@ class BasicEditor extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
-          NameHeader(),
-          TextFieldWithClearButton(
-            editOneAtAtTime: editOneAtAtTime,
+          NameField(
+            editOneAtATime: editOneAtAtTime,
             valueToUpdate: name,
-            hint: "Required*", 
-            error: (nameError.value) ? "Name Is Required" : null, 
-            //auto focus field
+            focusNode: null,
+            showError: nameError,
             autofocus: true,
-            //we need to keep track above to determine whether we can active the button
-            present: namePresent, 
-            //so next focuses on the note
+            namePresent: namePresent,
             otherFocusNode: noteFocusNode,
           ),
           NotesHeader(),
