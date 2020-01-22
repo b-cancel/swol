@@ -336,11 +336,14 @@ makeTrainingTypePopUp({
             ),
           ),
         ),
-        ScrollableTrainingTypes(
-          showEndurance: showEndurance,
-          showHypertrophy: showHypertrophy,
-          showStrength: showStrength,
-          highlightField: highlightfield,
+        Theme(
+          data: ThemeData.dark(),
+          child: ScrollableTrainingTypes(
+            showEndurance: showEndurance,
+            showHypertrophy: showHypertrophy,
+            showStrength: showStrength,
+            highlightField: highlightfield,
+          ),
         ),
         SuggestToLearnPage(),
       ],
