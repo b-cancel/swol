@@ -55,10 +55,7 @@ class _NameCardState extends State<NameCard> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          HeaderWithInfo(
-            title: "Name",
-            popUpFunction: () => excerciseNamePopUp(context),
-          ),
+          NameHeaderWithInfo(),
           TextFieldWithClearButton(
             editOneAtAtTime: false,
             valueToUpdate: widget.name,
@@ -94,10 +91,7 @@ class NotesCard extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          HeaderWithInfo(
-            title: "Notes",
-            popUpFunction: () => excerciseNotePopUp(context),
-          ),
+          NotesHeaderWithInfo(),
           TextFieldWithClearButton(
             editOneAtAtTime: false,
             valueToUpdate: note,
@@ -147,12 +141,7 @@ class _LinkCardState extends State<LinkCard> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          Container(
-            child: HeaderWithInfo(
-              title: "Reference Link",
-              popUpFunction: () => referenceLinkPopUp(context),
-            ),
-          ),
+          ReferenceLinkHeaderWithInfo(),
           ReferenceLinkBox(
             url: widget.url,
             editOneAtAtTime: false,

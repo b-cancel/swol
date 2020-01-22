@@ -8,9 +8,9 @@ import 'package:swol/shared/widgets/complex/learnPopUp/ourLearnPopUp.dart';
 infoPopUpFunction(
   BuildContext context, 
   {
-    @required title,
-    subtitle: "",
-    @required body,
+    @required String title,
+    String subtitle: "",
+    @required Widget body,
     isDense: false,
   }){
   showLearnPopUp(

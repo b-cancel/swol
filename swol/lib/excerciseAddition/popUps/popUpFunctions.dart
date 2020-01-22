@@ -13,32 +13,6 @@ import 'package:swol/shared/widgets/complex/learnPopUp/ourInformationPopUp.dart'
 import 'package:swol/excerciseAddition/popUps/bodies/nameBody.dart';
 
 //widgets
-excerciseNamePopUp(BuildContext context){
-  infoPopUpFunction(
-    context, 
-    title: "Excercise Name",
-    subtitle: "Choose a unique name",
-    body: ExcerciseNamePopUpBody(),
-  );
-}
-
-excerciseNotePopUp(BuildContext context){
-  infoPopUpFunction(
-    context, 
-    title: "Excercise Note",
-    subtitle: "Details",
-    body: ExcerciseNotePopUpBody(),
-  );
-}
-
-referenceLinkPopUp(BuildContext context){
-  infoPopUpFunction(
-    context, 
-    title: "Reference Link",
-    subtitle: "Copy then Paste",
-    body: ReferenceLinkPopUpBody(),
-  );
-}
 
 recoveryTimePopUp(BuildContext context){
   infoPopUpFunction(
