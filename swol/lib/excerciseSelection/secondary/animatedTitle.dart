@@ -9,9 +9,9 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:page_transition/page_transition.dart';
 
 //internal
+import 'package:swol/shared/widgets/complex/onBoarding/wrapper.dart';
 import 'package:swol/excerciseSelection/secondary/decoration.dart';
 import 'package:swol/shared/functions/onboarding.dart';
-import 'package:swol/shared/widgets/simple/onboarding.dart';
 import 'package:swol/learn/learn.dart';
 
 class AnimatedTitleAction extends StatelessWidget {

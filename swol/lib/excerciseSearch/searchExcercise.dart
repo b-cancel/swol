@@ -10,9 +10,9 @@ import 'package:swol/excercise/excerciseData.dart';
 import 'package:swol/excercise/excerciseStructure.dart';
 
 //internal: other
+import 'package:swol/shared/widgets/simple/scrollToTop.dart';
 import 'package:swol/excerciseListTile/excerciseTile.dart';
 import 'package:swol/excerciseSearch/searchesData.dart';
-import 'package:swol/sharedWidgets/scrollToTop.dart';
 
 class SearchExcercise extends StatefulWidget {
   SearchExcercise({

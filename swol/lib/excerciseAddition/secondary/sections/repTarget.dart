@@ -1,16 +1,19 @@
 //flutter
 import 'package:flutter/material.dart';
 
-//internal from addition
+//internal: addition
 import 'package:swol/excerciseAddition/secondary/trainingTypeHelpers.dart';
 import 'package:swol/excerciseAddition/popUps/popUpFunctions.dart';
 
-//internal from shared
+//internal: shared
+import 'package:swol/shared/widgets/complex/RangeInformation/animatedCarousel.dart';
+import 'package:swol/shared/widgets/complex/RangeInformation/struct.dart';
 import 'package:swol/shared/widgets/simple/ourSlider.dart';
 import 'package:swol/shared/functions/theme.dart';
+
+//internal: other
+import 'package:swol/shared/widgets/simple/sliderTipButton.dart';
 import 'package:swol/sharedWidgets/informationDisplay.dart';
-import 'package:swol/sharedWidgets/sliderTipButton.dart';
-import 'package:swol/sharedWidgets/timeHelper.dart';
 
 class RepTargetCard extends StatefulWidget {
   const RepTargetCard({
@@ -117,7 +120,7 @@ class AnimRepTargetInfoWhite extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedTrainingInfo(
+    return AnimatedRangeInformation(
       changeDuration: changeDuration,
       selectedDuration: repTargetDuration,
       bigTickNumber: 25,
@@ -131,10 +134,10 @@ class AnimRepTargetInfoWhite extends StatelessWidget {
             highlightfield: 3,
             iconID: FitIcons.Strength,
           ),
-          left: new SliderTipButton(
+          left: new SlideRangeExtent(
             buttonText: "1",
           ),
-          right: SliderTipButton(
+          right: SlideRangeExtent(
             buttonText: "6",
           ),
           startSeconds: (1*5),
@@ -149,10 +152,10 @@ class AnimRepTargetInfoWhite extends StatelessWidget {
             highlightfield: 3,
             iconID: FitIcons.Hypertrophy,
           ),
-          left: SliderTipButton(
+          left: SlideRangeExtent(
             buttonText: "7",
           ),
-          right: SliderTipButton(
+          right: SlideRangeExtent(
             buttonText: "12",
           ),
           startSeconds: (7*5),
@@ -167,10 +170,10 @@ class AnimRepTargetInfoWhite extends StatelessWidget {
             highlightfield: 3,
             iconID: FitIcons.Endurance,
           ),
-          left: SliderTipButton(
+          left: SlideRangeExtent(
             buttonText: "13",
           ),
-          right: SliderTipButton(
+          right: SlideRangeExtent(
             buttonText: "35",
             tipText: "Any More, and we will have trouble \nestimating your 1 Rep Max",
           ),

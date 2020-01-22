@@ -3,34 +3,19 @@ import 'package:flutter/material.dart';
 
 //plugin
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:swol/sharedWidgets/tickGenerator.dart';
 
-//struct
-class Range{
-  final String name;
-  final Widget left;
-  final Widget right;
-  final Function onTap;
-  final int startSeconds;
-  final int endSeconds;
-
-  Range({
-    @required this.name,
-    @required this.left,
-    @required this.right,
-    @required this.onTap,
-    @required this.startSeconds,
-    @required this.endSeconds,
-  });
-}
+//internal
+import 'package:swol/shared/widgets/complex/RangeInformation/trainingNameButton.dart';
+import 'package:swol/shared/widgets/complex/RangeInformation/struct.dart';
+import 'package:swol/shared/widgets/complex/RangeInformation/ticks.dart';
 
 //guides the users and instructs them all at once with minimal UI
 //used 2 times, both in add excercise... 
 //1. recovery time info
 //2. rep target info
 //in change recovery time... recovery time info
-class AnimatedTrainingInfo extends StatefulWidget {
-  AnimatedTrainingInfo({
+class AnimatedRangeInformation extends StatefulWidget {
+  AnimatedRangeInformation({
     Key key,
     @required this.changeDuration,
     @required this.selectedDuration,
@@ -46,10 +31,10 @@ class AnimatedTrainingInfo extends StatefulWidget {
   final bool darkTheme;
 
   @override
-  _AnimatedTrainingInfoState createState() => _AnimatedTrainingInfoState();
+  _AnimatedRangeInformationState createState() => _AnimatedRangeInformationState();
 }
 
-class _AnimatedTrainingInfoState extends State<AnimatedTrainingInfo> {
+class _AnimatedRangeInformationState extends State<AnimatedRangeInformation> {
   var carousel;
   int sectionGrown;
 
@@ -127,7 +112,7 @@ class _AnimatedTrainingInfoState extends State<AnimatedTrainingInfo> {
                   padding: EdgeInsets.only(
                     top: 24.0,
                   ),
-                  child: ANameSection(
+                  child: TrainingNameButton(
                     width: thisWidth,
                     sectionName: aRange.name,
                     sectionTap: aRange.onTap,
@@ -170,7 +155,7 @@ class _AnimatedTrainingInfoState extends State<AnimatedTrainingInfo> {
                   child: Container(
                     height: 16,
                     width: thisWidth,
-                    child: TickGenerator(
+                    child: RangeTicks(
                       startTick: aRange.startSeconds,
                       endTick: aRange.endSeconds,
                       selectedDuration: widget.selectedDuration,
@@ -196,75 +181,6 @@ class _AnimatedTrainingInfoState extends State<AnimatedTrainingInfo> {
           height: chosenHeight,
           child: carousel,
         ),
-      ),
-    );
-  }
-}
-
-class ANameSection extends StatelessWidget {
-  const ANameSection({
-    Key key,
-    @required this.width,
-    @required this.sectionName,
-    @required this.sectionTap,
-  }) : super(key: key);
-
-  final double width;
-  final String sectionName;
-  final Function sectionTap;
-
-  @override
-  Widget build(BuildContext context) {
-    Widget content = Padding(
-      padding: const EdgeInsets.symmetric(
-        vertical: 0.0,
-        horizontal: 8,
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          Padding(
-            padding: EdgeInsets.only(
-              right: 8,
-            ),
-            child: Icon(
-              Icons.info,
-              size: 16,
-            ),
-          ),
-          Text(
-            sectionName,
-            overflow: TextOverflow.ellipsis,
-            maxLines: 1,
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ],
-      ),
-    );
-
-    return Container(
-      width: width,
-      height: 32,
-      alignment: Alignment.topCenter,
-      child: RaisedButton(
-        shape: RoundedRectangleBorder(
-          borderRadius: new BorderRadius.circular(24.0),
-          side: BorderSide(color: Colors.white),
-        ),
-        padding: EdgeInsets.all(0),
-        //everything transparent
-        color: Colors.transparent,
-        splashColor: Colors.transparent,
-        disabledColor: Colors.transparent,
-        focusColor: Colors.transparent,
-        hoverColor: Colors.transparent,
-        //only when touched
-        highlightColor: Theme.of(context).accentColor,
-        colorBrightness: Brightness.dark,
-        onPressed: sectionTap,
-        child: content,
       ),
     );
   }

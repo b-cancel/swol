@@ -2,8 +2,8 @@
 import 'package:flutter/material.dart';
 
 //generate ticks
-class TickGenerator extends StatefulWidget {
-  TickGenerator({
+class RangeTicks extends StatefulWidget {
+  RangeTicks({
     @required this.startTick,
     @required this.endTick,
     @required this.bigTickNumber,
@@ -18,27 +18,23 @@ class TickGenerator extends StatefulWidget {
   final bool darkTheme;
 
   @override
-  _TickGeneratorState createState() => _TickGeneratorState();
+  _RangeTicksState createState() => _RangeTicksState();
 }
 
-class _TickGeneratorState extends State<TickGenerator> {
-  maybeSetState(){
-    if(mounted){
-      setState(() {});
-    }
+class _RangeTicksState extends State<RangeTicks> {
+  updateState(){
+    if(mounted) setState(() {});
   }
 
   @override
   void initState() {
-    widget.selectedDuration.addListener(maybeSetState);
-
-    //super init
+    widget.selectedDuration.addListener(updateState);
     super.initState();
   }
 
   @override
   void dispose() {
-    widget.selectedDuration.removeListener(maybeSetState);
+    widget.selectedDuration.removeListener(updateState);
     super.dispose();
   }
 

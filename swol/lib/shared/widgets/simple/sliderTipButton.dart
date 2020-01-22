@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:swol/shared/widgets/simple/ourToolTip.dart';
 
 //slider tip button
-class SliderTipButton extends StatelessWidget {
-  const SliderTipButton({
+class SlideRangeExtent extends StatelessWidget {
+  const SlideRangeExtent({
     @required this.buttonText,
     this.tipText,
     Key key,

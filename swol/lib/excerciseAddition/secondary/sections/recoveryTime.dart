@@ -1,16 +1,20 @@
 //flutter
 import 'package:flutter/material.dart';
 
-//internal from addition
+//internal: addition
 import 'package:swol/excerciseAddition/secondary/trainingTypeHelpers.dart';
 import 'package:swol/excerciseAddition/popUps/popUpFunctions.dart';
+
+//internal: shared
+import 'package:swol/shared/widgets/complex/RangeInformation/animatedCarousel.dart';
+import 'package:swol/shared/widgets/complex/RangeInformation/struct.dart';
+import 'package:swol/shared/widgets/complex/recoveryTime/minSecs.dart';
+import 'package:swol/shared/widgets/complex/recoveryTime/picker.dart';
+import 'package:swol/shared/widgets/simple/sliderTipButton.dart';
 import 'package:swol/shared/functions/theme.dart';
 
-//internal from shared
+//internal: other
 import 'package:swol/sharedWidgets/informationDisplay.dart';
-import 'package:swol/sharedWidgets/sliderTipButton.dart';
-import 'package:swol/sharedWidgets/timeHelper.dart';
-import 'package:swol/sharedWidgets/timePicker.dart';
 
 class RecoveryTimeCard extends StatelessWidget {
   const RecoveryTimeCard({
@@ -94,7 +98,7 @@ class RecoveryTimeWidget extends StatelessWidget {
             width: MediaQuery.of(context).size.width,
           ),
         ),
-        TimePicker(
+        RecoveryTimePicker(
           duration: recoveryPeriod,
           darkTheme: darkTheme,
         ),
@@ -122,7 +126,7 @@ class AnimRecoveryTimeInfoToWhiteTheme extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedTrainingInfo(
+    return AnimatedRangeInformation(
       changeDuration: changeDuration,
       selectedDuration: recoveryPeriod,
       darkTheme: darkTheme,
@@ -136,11 +140,11 @@ class AnimRecoveryTimeInfoToWhiteTheme extends StatelessWidget {
             highlightfield: 2,
             iconID: FitIcons.Endurance,
           ),
-          left: new SliderTipButton(
+          left: SlideRangeExtent(
             buttonText: "15s",
             tipText: "Any Less, wouldn't be enough",
           ),
-          right: SliderTipButton(
+          right: SlideRangeExtent(
             buttonText: "1m",
           ),
           startSeconds: 15,
@@ -155,10 +159,10 @@ class AnimRecoveryTimeInfoToWhiteTheme extends StatelessWidget {
             highlightfield: 2,
             iconID: FitIcons.Hypertrophy,
           ),
-          left: SliderTipButton(
+          left: SlideRangeExtent(
             buttonText: "1:05",
           ),
-          right: SliderTipButton(
+          right: SlideRangeExtent(
             buttonText: "2m",
           ),
           startSeconds: 65,
@@ -174,10 +178,10 @@ class AnimRecoveryTimeInfoToWhiteTheme extends StatelessWidget {
             highlightfield: 2,
             iconID: FitIcons.HypAndStr,
           ),
-          left: SliderTipButton(
+          left: SlideRangeExtent(
             buttonText: "2:05",
           ),
-          right: SliderTipButton(
+          right: SlideRangeExtent(
             buttonText: "3m",
           ),
           startSeconds: 125,
@@ -192,10 +196,10 @@ class AnimRecoveryTimeInfoToWhiteTheme extends StatelessWidget {
             highlightfield: 2,
             iconID: FitIcons.Strength,
           ),
-          left: SliderTipButton(
+          left: SlideRangeExtent(
             buttonText: "3:05",
           ),
-          right: SliderTipButton(
+          right: SlideRangeExtent(
             buttonText: "4:55",
             tipText: "Any More, will require you to\nwarm up again",
           ),

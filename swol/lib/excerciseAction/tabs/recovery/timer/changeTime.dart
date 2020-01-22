@@ -1,6 +1,12 @@
+//flutter
 import 'package:flutter/material.dart';
+
+//internal: time picker
+import 'package:swol/shared/widgets/complex/RecoveryTime/minSecs.dart';
+import 'package:swol/shared/widgets/complex/recoveryTime/picker.dart';
+
+//internal: other
 import 'package:swol/shared/functions/theme.dart';
-import 'package:swol/sharedWidgets/timePicker.dart';
 import 'package:swol/trainingTypes/trainingTypes.dart';
 
 //allows user to change the time visually without actually changing it UNTIL they click confirm
@@ -165,7 +171,7 @@ class _ChangeRecoveryTimeWidgetState extends State<ChangeRecoveryTimeWidget> {
             ),
             child: Column(
               children: <Widget>[
-                TimePicker(
+                RecoveryTimePicker(
                   duration: widget.recoveryPeriod,
                   darkTheme: false,
                 ),

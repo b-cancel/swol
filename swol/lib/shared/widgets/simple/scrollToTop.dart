@@ -8,6 +8,7 @@ import 'package:vector_math/vector_math_64.dart' as vect;
 //internal
 import 'package:swol/shared/functions/vibrate.dart';
 
+//widget
 class ScrollToTopButton extends StatefulWidget {
   const ScrollToTopButton({
     Key key,
