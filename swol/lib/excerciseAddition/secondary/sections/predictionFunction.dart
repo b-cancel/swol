@@ -8,7 +8,6 @@ import 'package:bot_toast/bot_toast.dart';
 
 //internal
 import 'package:swol/shared/widgets/simple/headerWithInfoButton.dart';
-import 'package:swol/excerciseAddition/popUps/popUpFunctions.dart';
 import 'package:swol/other/functions/helper.dart';
 
 //widget
@@ -41,13 +40,7 @@ class FunctionSelection extends StatelessWidget {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  Container(
-                    child: HeaderWithInfo(
-                      title: "Prediction Formula",
-                      popUpFunction: () => predictionFormulasPopUp(context),
-                    ),
-                  ),
-                  //TODO: switch to the easy drop down after fixing issue
+                  PredictionFormulaHeader(),
                   FunctionDropDown(
                     functionIndex: functionIndex,
                     functionString: functionString,

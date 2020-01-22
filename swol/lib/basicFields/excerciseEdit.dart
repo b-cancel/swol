@@ -1,13 +1,11 @@
 //flutter
 import 'package:flutter/material.dart';
 
-//internal: basic fields
+//internal: basic
 import 'package:swol/basicFields/clearableTextField.dart';
 import 'package:swol/basicFields/referenceLink.dart';
-import 'package:swol/excerciseAddition/popUps/bodies/nameBody.dart';
 
-//internal: other
-import 'package:swol/excerciseAddition/popUps/popUpFunctions.dart';
+//internal: shared
 import 'package:swol/shared/widgets/simple/headerWithInfoButton.dart';
 
 //editor of basic variables "name", "note", "url"
@@ -40,7 +38,7 @@ class BasicEditor extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
-          NameHeaderWithInfo(),
+          NameHeader(),
           TextFieldWithClearButton(
             editOneAtAtTime: editOneAtAtTime,
             valueToUpdate: name,
@@ -53,7 +51,7 @@ class BasicEditor extends StatelessWidget {
             //so next focuses on the note
             otherFocusNode: noteFocusNode,
           ),
-          NotesHeaderWithInfo(),
+          NotesHeader(),
           TextFieldWithClearButton(
             editOneAtAtTime: editOneAtAtTime,
             valueToUpdate: note,
@@ -62,7 +60,7 @@ class BasicEditor extends StatelessWidget {
             //so we can link up both fields
             focusNode: noteFocusNode,
           ),
-          ReferenceLinkHeaderWithInfo(),
+          ReferenceLinkHeader(),
           ReferenceLinkBox(
             url: url,
             editOneAtAtTime: editOneAtAtTime,

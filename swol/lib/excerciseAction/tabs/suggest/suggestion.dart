@@ -7,7 +7,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 //internal: addition
 import 'package:swol/excerciseAddition/secondary/sections/predictionFunction.dart';
 import 'package:swol/excerciseAddition/secondary/sections/repTarget.dart';
-import 'package:swol/excerciseAddition/popUps/popUpFunctions.dart';
 
 //internal: shared
 import 'package:swol/shared/widgets/simple/headerWithInfoButton.dart';
@@ -500,14 +499,9 @@ class FunctionChanger extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          Container(
-            child: HeaderWithInfo(
-              title: "Prediction Formula",
-              popUpFunction: () => predictionFormulasPopUp(context),
-              subtle: true,
-            ),
+          PredictionFormulaHeader(
+            subtle: true,
           ),
-          //TODO: switch to the easy drop down after fixing issue
           FunctionDropDown(
             functionIndex: functionIndex,
             functionString: functionString,
@@ -528,12 +522,10 @@ class RepTargetChanger extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Function funcWithWhiteContext = () => repTargetPopUp(context);
     return Theme(
       data: ThemeData.dark(),
       child: RepTargetChangerDark(
         arrowRadius: arrowRadius, 
-        funcWithWhiteContext: funcWithWhiteContext,
       ),
     );
   }
@@ -543,11 +535,9 @@ class RepTargetChangerDark extends StatelessWidget {
   const RepTargetChangerDark({
     Key key,
     @required this.arrowRadius,
-    @required this.funcWithWhiteContext,
   }) : super(key: key);
 
   final Radius arrowRadius;
-  final Function funcWithWhiteContext;
 
   @override
   Widget build(BuildContext context) {
@@ -574,9 +564,7 @@ class RepTargetChangerDark extends StatelessWidget {
               ),
               child: Column(
                 children: <Widget>[
-                  HeaderWithInfo(
-                    title: "Rep Target",
-                    popUpFunction: () => funcWithWhiteContext(),
+                  RepTargetHeader(
                     subtle: true,
                   ),
                   Theme(

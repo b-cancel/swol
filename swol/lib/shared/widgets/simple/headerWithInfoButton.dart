@@ -1,17 +1,26 @@
 //flutter
 import 'package:flutter/material.dart';
+
+//internal: addition
 import 'package:swol/excerciseAddition/popUps/bodies/littleBodies.dart';
 import 'package:swol/excerciseAddition/popUps/bodies/nameBody.dart';
+import 'package:swol/excerciseAddition/popUps/bodies/predictionBody.dart';
+import 'package:swol/excerciseAddition/popUps/bodies/recoveryTimeBody.dart';
+import 'package:swol/excerciseAddition/popUps/bodies/repTargetBody.dart';
+import 'package:swol/excerciseAddition/popUps/bodies/setTargetBody.dart';
+
+//internal: shared
 import 'package:swol/shared/widgets/complex/learnPopUp/ourInformationPopUp.dart';
 
 //widget
-class HeaderWithInfo extends StatelessWidget {
-  const HeaderWithInfo({
+class _HeaderWithInfo extends StatelessWidget {
+  const _HeaderWithInfo({
     Key key,
     @required this.header,
     @required this.title,
     @required this.subtitle,
     @required this.body,
+    this.isDense: false,
     this.subtle: false,
   }) : super(key: key);
 
@@ -19,6 +28,7 @@ class HeaderWithInfo extends StatelessWidget {
   final String title;
   final String subtitle;
   final Widget body;
+  final bool isDense;
   final bool subtle;
 
   @override
@@ -42,6 +52,7 @@ class HeaderWithInfo extends StatelessWidget {
                 title: title,
                 subtitle: subtitle,
                 body: body,
+                isDense: isDense,
               );
             },
             icon: Icon(Icons.info),
@@ -54,8 +65,9 @@ class HeaderWithInfo extends StatelessWidget {
 }
 
 //-------------------------shortcuts-------------------------
-class NameHeaderWithInfo extends StatelessWidget {
-  NameHeaderWithInfo({
+
+class NameHeader extends StatelessWidget {
+  NameHeader({
     this.subtle: false,
   });
 
@@ -63,7 +75,7 @@ class NameHeaderWithInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return HeaderWithInfo(
+    return _HeaderWithInfo(
       header: "Name",
       title: "Excercise Name",
       subtitle: "Choose a unique name",
@@ -73,8 +85,8 @@ class NameHeaderWithInfo extends StatelessWidget {
   }
 }
 
-class NotesHeaderWithInfo extends StatelessWidget {
-  NotesHeaderWithInfo({
+class NotesHeader extends StatelessWidget {
+  NotesHeader({
     this.subtle: false,
   });
 
@@ -82,7 +94,7 @@ class NotesHeaderWithInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return HeaderWithInfo(
+    return _HeaderWithInfo(
       header: "Notes",
       title: "Excercise Note",
       subtitle: "Details",
@@ -92,8 +104,8 @@ class NotesHeaderWithInfo extends StatelessWidget {
   }
 }
 
-class ReferenceLinkHeaderWithInfo extends StatelessWidget {
-  ReferenceLinkHeaderWithInfo({
+class ReferenceLinkHeader extends StatelessWidget {
+  ReferenceLinkHeader({
     this.subtle: false,
   });
 
@@ -101,12 +113,75 @@ class ReferenceLinkHeaderWithInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return HeaderWithInfo(
+    return _HeaderWithInfo(
       header: "Reference Link",
       title: "Reference Link",
       subtitle: "Copy then Paste",
       body: ReferenceLinkPopUpBody(),
       subtle: subtle,
+    );
+  }
+}
+
+class PredictionFormulaHeader extends StatelessWidget {
+  PredictionFormulaHeader({
+    this.subtle: false,
+  });
+
+  final bool subtle;
+
+  @override
+  Widget build(BuildContext context) {
+    return _HeaderWithInfo(
+      header: "Prediction Formula",
+      title: "Prediction Formulas",
+      subtitle: "Not sure? Keep the default",
+      body: PredictionFormulasPopUpBody(),
+      isDense: true,
+      subtle: subtle,
+    );
+  }
+}
+
+class RepTargetHeader extends StatelessWidget {
+  RepTargetHeader({
+    this.subtle: false,
+  });
+
+  final bool subtle;
+
+  @override
+  Widget build(BuildContext context) {
+    return _HeaderWithInfo(
+      header: "Rep Target",
+      title: "Rep Target",
+      subtitle: "Not sure? Keep the default",
+      body: RepTargetPopUpBody(),
+      subtle: subtle,
+    );
+  }
+}
+
+class SetTargetHeader extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return _HeaderWithInfo(
+      header: "Set Target",
+      title: "Set Target",
+      subtitle: "Not sure? Keep the default",
+      body: SetTargetPopUpBody(),
+    );
+  }
+}
+
+class RecoveryTimeHeader extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return _HeaderWithInfo(
+      header: "Recovery Time",
+      title: "Recovery Time",
+      subtitle: "Not sure? Keep the default",
+      body: RecoveryTimePopUpBody(),
     );
   }
 }

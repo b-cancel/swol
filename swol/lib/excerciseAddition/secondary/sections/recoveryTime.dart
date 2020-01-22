@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 
 //internal: addition
 import 'package:swol/excerciseAddition/secondary/trainingTypeHelpers.dart';
-import 'package:swol/excerciseAddition/popUps/popUpFunctions.dart';
 
 //internal: shared
 import 'package:swol/shared/widgets/complex/RangeInformation/animatedCarousel.dart';
@@ -41,13 +40,7 @@ class RecoveryTimeCard extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              Container(
-                child: HeaderWithInfo(
-                  title: "Recovery Time",
-                  popUpFunction: () => recoveryTimePopUp(context),
-                ),
-              ),
-              //edit this?
+              RecoveryTimeHeader(),
               RecoveryTimeWidget(
                 changeDuration: changeDuration,
                 recoveryPeriod: recoveryPeriod, 

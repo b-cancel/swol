@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 
 //internal from addition
 import 'package:swol/excerciseAddition/secondary/trainingTypeHelpers.dart';
-import 'package:swol/excerciseAddition/popUps/popUpFunctions.dart';
 
 //internal from shared
 import 'package:swol/shared/widgets/simple/headerWithInfoButton.dart';
@@ -32,12 +31,7 @@ class SetTargetCard extends StatelessWidget {
                 left: 16,
                 right: 16,
               ),
-              child: Container(
-                child: HeaderWithInfo(
-                  title: "Set Target",
-                  popUpFunction: () => setTargetPopUp(context),
-                ),
-              ),
+              child: SetTargetHeader(),
             ),
             Container(
               padding: EdgeInsets.only(
