@@ -363,12 +363,9 @@ class FunctionSettings extends StatelessWidget {
                             padding: EdgeInsets.symmetric(
                               horizontal: 24,
                             ),
-                            child: Theme(
-                              data: MyTheme.light,
-                              child: FunctionChanger(
-                                functionIndex: functionIndex, 
-                                functionString: functionString,
-                              ),
+                            child: FunctionChanger(
+                              functionIndex: functionIndex, 
+                              functionString: functionString,
                             ),
                           ),
                         ),
@@ -395,11 +392,8 @@ class FunctionSettings extends StatelessWidget {
                           ],
                         ),
                         Expanded(
-                          child: Theme(
-                            data: MyTheme.light,
-                            child: RepTargetChanger(
-                              arrowRadius: arrowRadius,
-                            ),
+                          child: RepTargetChanger(
+                            arrowRadius: arrowRadius,
                           ),
                         ),
                         TextOnBlack(
@@ -494,45 +488,23 @@ class FunctionChanger extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Theme(
-      data: ThemeData.dark(),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          PredictionFormulaHeader(
-            subtle: true,
-          ),
-          FunctionDropDown(
-            functionIndex: functionIndex,
-            functionString: functionString,
-          ),
-        ],
-      ),
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        PredictionFormulaHeader(
+          subtle: true,
+        ),
+        FunctionDropDown(
+          functionIndex: functionIndex,
+          functionString: functionString,
+        ),
+      ],
     );
   }
 }
 
 class RepTargetChanger extends StatelessWidget {
   const RepTargetChanger({
-    Key key,
-    @required this.arrowRadius,
-  }) : super(key: key);
-
-  final Radius arrowRadius;
-
-  @override
-  Widget build(BuildContext context) {
-    return Theme(
-      data: ThemeData.dark(),
-      child: RepTargetChangerDark(
-        arrowRadius: arrowRadius, 
-      ),
-    );
-  }
-}
-
-class RepTargetChangerDark extends StatelessWidget {
-  const RepTargetChangerDark({
     Key key,
     @required this.arrowRadius,
   }) : super(key: key);

@@ -53,48 +53,45 @@ class _RepTargetCardState extends State<RepTargetCard> {
 
   @override
   Widget build(BuildContext context) {
-    return Theme(
-      data: ThemeData.dark(),
-      child: Card(
-        margin: EdgeInsets.all(8),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Container(
-              padding: EdgeInsets.only(
-                top: 8,
-                left: 16,
-                right: 16,
-                bottom: 16,
-              ),
-              child: Column(
-                children: <Widget>[
-                  RepTargetHeader(),
-                  Theme(
-                    data: MyTheme.light,
-                    child: AnimRepTargetInfoWhite(
-                      changeDuration: widget.changeDuration, 
-                      repTargetDuration: widget.repTargetDuration,
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(top: 8),
-                    child: Container(
-                      color: Colors.black, //line color
-                      height: 2,
-                      width: MediaQuery.of(context).size.width,
-                    ),
-                  ),
-                ],
-              ),
+    return Card(
+      margin: EdgeInsets.all(8),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          Container(
+            padding: EdgeInsets.only(
+              top: 8,
+              left: 16,
+              right: 16,
+              bottom: 16,
             ),
-            //slide must be full width without the 16 horizontal padding
-            CustomSlider(
-              value: widget.repTarget,
-              lastTick: 35,
+            child: Column(
+              children: <Widget>[
+                RepTargetHeader(),
+                Theme(
+                  data: MyTheme.light,
+                  child: AnimRepTargetInfoWhite(
+                    changeDuration: widget.changeDuration, 
+                    repTargetDuration: widget.repTargetDuration,
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(top: 8),
+                  child: Container(
+                    color: Colors.black, //line color
+                    height: 2,
+                    width: MediaQuery.of(context).size.width,
+                  ),
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+          //slide must be full width without the 16 horizontal padding
+          CustomSlider(
+            value: widget.repTarget,
+            lastTick: 35,
+          ),
+        ],
       ),
     );
   }

@@ -19,52 +19,49 @@ class SetTargetCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Theme(
-      data: ThemeData.dark(),
-      child: Card(
-        margin: EdgeInsets.all(8),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Container(
-              padding: EdgeInsets.only(
-                //Top 16 padding address above
-                left: 16,
-                right: 16,
-              ),
-              child: SetTargetHeader(),
+    return Card(
+      margin: EdgeInsets.all(8),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          Container(
+            padding: EdgeInsets.only(
+              //Top 16 padding address above
+              left: 16,
+              right: 16,
             ),
-            Container(
-              padding: EdgeInsets.only(
-                //Top 16 padding address above
-                left: 16,
-                right: 16,
-              ),
-              child: SetTargetToTrainingTypeIndicator(
-                setTarget: setTarget,
-                wholeWidth: MediaQuery.of(context).size.width,
-                oneSidePadding: 16 + 8.0,
-              ),
+            child: SetTargetHeader(),
+          ),
+          Container(
+            padding: EdgeInsets.only(
+              //Top 16 padding address above
+              left: 16,
+              right: 16,
             ),
-            Padding(
-              padding: const EdgeInsets.only(
-                top: 8,
-                bottom: 16.0,
-                left: 16,
-                right: 16,
-              ),
-              child: Container(
-                color: Colors.black, //line color
-                height: 2,
-                width: MediaQuery.of(context).size.width,
-              ),
+            child: SetTargetToTrainingTypeIndicator(
+              setTarget: setTarget,
+              wholeWidth: MediaQuery.of(context).size.width,
+              oneSidePadding: 16 + 8.0,
             ),
-            CustomSlider(
-              value: setTarget,
-              lastTick: 9,
+          ),
+          Padding(
+            padding: const EdgeInsets.only(
+              top: 8,
+              bottom: 16.0,
+              left: 16,
+              right: 16,
             ),
-          ]
-        ),
+            child: Container(
+              color: Colors.black, //line color
+              height: 2,
+              width: MediaQuery.of(context).size.width,
+            ),
+          ),
+          CustomSlider(
+            value: setTarget,
+            lastTick: 9,
+          ),
+        ]
       ),
     );
   }

@@ -222,16 +222,13 @@ class _ExcerciseNotesState extends State<ExcerciseNotes> {
               horizontal: 16,
               vertical: 8,
             ),
-            child: Theme(
-              data: MyTheme.light,
-              child: BasicEditor(
-                namePresent: namePresent,
-                nameError: nameError,
-                name: name,
-                note: note,
-                url: url,
-                editOneAtAtTime: true,
-              ),
+            child: BasicEditor(
+              namePresent: namePresent,
+              nameError: nameError,
+              name: name,
+              note: note,
+              url: url,
+              editOneAtAtTime: true,
             ),
           ),
         ],

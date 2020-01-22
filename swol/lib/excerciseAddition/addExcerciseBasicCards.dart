@@ -161,19 +161,16 @@ class BasicCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Theme(
-      data: ThemeData.dark(),
-      child: Card(
-        margin: EdgeInsets.all(8),
-        child: Padding(
-          padding: const EdgeInsets.only(
-            left: 16.0,
-            right: 16,
-            bottom: 16,
-            top: 8,
-          ),
-          child: child,
+    return Card(
+      margin: EdgeInsets.all(8),
+      child: Padding(
+        padding: const EdgeInsets.only(
+          left: 16.0,
+          right: 16,
+          bottom: 16,
+          top: 8,
         ),
+        child: child,
       ),
     );
   }

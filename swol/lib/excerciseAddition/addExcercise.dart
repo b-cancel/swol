@@ -114,56 +114,35 @@ class AddExcercise extends StatelessWidget {
 
     //each section
     List<Widget> sections = [
-      Theme(
-        data: MyTheme.light,
-        child: NameCard(//
-          name: name, 
-          nameError: nameError, 
-          namePresent: namePresent, 
-          nameFocusNode: nameFocusNode,
-          noteFocusNode: noteFocusNode,
-        ),
+      NameCard(
+        name: name, 
+        nameError: nameError, 
+        namePresent: namePresent, 
+        nameFocusNode: nameFocusNode,
+        noteFocusNode: noteFocusNode,
       ),
-      Theme(
-        data: MyTheme.light,
-        child: NotesCard(
-          note: note, 
-          noteFocusNode: noteFocusNode,
-        ),
+      NotesCard(
+        note: note, 
+        noteFocusNode: noteFocusNode,
       ),
-      Theme(
-        data: MyTheme.light,
-        child: LinkCard(
-          url: url,
-        ),
+      LinkCard(
+        url: url,
       ),
-      Theme(
-        data: MyTheme.light,
-        child: RecoveryTimeCard(
-          changeDuration: sectionTransitionDuration,
-          recoveryPeriod: recoveryPeriod, 
-        ),
+      RecoveryTimeCard(
+        changeDuration: sectionTransitionDuration,
+        recoveryPeriod: recoveryPeriod, 
       ),
-      Theme(
-        data: MyTheme.light,
-        child: SetTargetCard(
-          setTarget: setTarget,
-        ),
+      SetTargetCard(
+        setTarget: setTarget,
       ),
-      Theme(
-        data: MyTheme.light,
-        child: RepTargetCard(
-          changeDuration: sectionTransitionDuration, 
-          repTargetDuration: repTargetDuration, 
-          repTarget: repTarget,
-        ),
+      RepTargetCard(
+        changeDuration: sectionTransitionDuration, 
+        repTargetDuration: repTargetDuration, 
+        repTarget: repTarget,
       ),
-      Theme(
-        data: MyTheme.light,
-        child: FunctionSelection(
-          functionIndex: functionIndex, 
-          functionString: functionString,
-        ),
+      FunctionSelection(
+        functionIndex: functionIndex, 
+        functionString: functionString,
       ),
       TipSpacing(
         tipIsShowing: tipIsShowing,
