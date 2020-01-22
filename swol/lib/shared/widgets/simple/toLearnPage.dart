@@ -7,6 +7,7 @@ import 'package:page_transition/page_transition.dart';
 
 //internal
 import 'package:swol/learn/learn.dart';
+import 'package:swol/main.dart';
 
 //TODO: actually link up to the learn page
 
@@ -23,17 +24,22 @@ class SuggestToLearnPage extends StatelessWidget {
     Key key,
   }) : super(key: key);
 
-  //TODO: wait a little bit between transitions so users know whats up
-  goToLearn(BuildContext context){
-    if(Navigator.of(context).canPop()){
-      Navigator.of(context).pop();
-      goToLearn(context);
+  goToLearn(){
+    BuildContext rootContext = GrabSystemPrefs.rootContext;
+    if(Navigator.canPop(rootContext)){
+      //pop with the animation
+      Navigator.pop(rootContext);
+
+      //let the user see the animation
+      Future.delayed(Duration(milliseconds: 300),(){
+        goToLearn();
+      });
     }
     else{
       //TODO: properly handle the below
       //navSpread.value = true;
       Navigator.push(
-        context, 
+        rootContext, 
         PageTransition(
           type: PageTransitionType.rightToLeft, 
           child: LearnExcercise(
@@ -50,7 +56,7 @@ class SuggestToLearnPage extends StatelessWidget {
     return Material(
       color: Colors.transparent,
       child: InkWell(
-        onTap: () => goToLearn(context),
+        onTap: () => goToLearn(),
         child: Container(
           padding: EdgeInsets.only(
             left: 24,

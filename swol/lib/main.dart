@@ -53,6 +53,8 @@ class App extends StatelessWidget {
 
 //grabbing system preferences
 class GrabSystemPrefs extends StatelessWidget {
+  static BuildContext rootContext;
+
   final AsyncMemoizer _memoizer = AsyncMemoizer();
 
   fetchData() {
@@ -63,6 +65,10 @@ class GrabSystemPrefs extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    //save root context for use later
+    rootContext = context;
+
+    //return
     return FutureBuilder(
       future: fetchData(),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -91,12 +97,7 @@ class GrabSystemPrefs extends StatelessWidget {
 //grabbing file data
 //1. previous searches for search section
 //2. excercises for showing them in the list
-class GrabFileData extends StatefulWidget {
-  @override
-  _GrabFileDataState createState() => _GrabFileDataState();
-}
-
-class _GrabFileDataState extends State<GrabFileData> {
+class GrabFileData extends StatelessWidget {
   final AsyncMemoizer _memoizer = AsyncMemoizer();
 
   fetchData() {
