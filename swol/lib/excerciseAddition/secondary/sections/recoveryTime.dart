@@ -1,5 +1,6 @@
 //flutter
 import 'package:flutter/material.dart';
+import 'package:swol/shared/functions/theme.dart';
 
 //internal
 import 'package:swol/shared/widgets/complex/settingHeaders/headerWithInfoButton.dart';
@@ -9,7 +10,6 @@ import 'package:swol/shared/widgets/complex/recoveryTime/minSecs.dart';
 import 'package:swol/shared/widgets/complex/recoveryTime/picker.dart';
 import 'package:swol/shared/widgets/simple/sliderTipButton.dart';
 import 'package:swol/shared/functions/trainingPopUps.dart';
-import 'package:swol/shared/functions/theme.dart';
 
 //widget
 class RecoveryTimeCard extends StatelessWidget {
@@ -69,7 +69,6 @@ class RecoveryTimeWidget extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
         Theme(
-          //light so that our pop ups work properly
           data: MyTheme.light,
           child: AnimRecoveryTimeInfoToWhiteTheme(
             changeDuration: changeDuration, 
@@ -101,7 +100,6 @@ class RecoveryTimeWidget extends StatelessWidget {
   }
 }
 
-//todo here
 class AnimRecoveryTimeInfoToWhiteTheme extends StatelessWidget {
   const AnimRecoveryTimeInfoToWhiteTheme({
     Key key,
