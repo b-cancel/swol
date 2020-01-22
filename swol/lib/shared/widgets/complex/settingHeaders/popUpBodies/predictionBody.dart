@@ -3,70 +3,70 @@ import 'package:flutter/material.dart';
 
 //internal
 import 'package:swol/shared/widgets/simple/toLearnPage.dart';
-import 'package:swol/trainingTypes/trainingTypes.dart';
+import 'package:swol/learn/sections/experiment.dart';
 
-//title: "Recovery Time",
-//subtitle: "Different training types require different recovery times",
-class ExplainFunctionality extends StatelessWidget {
-  const ExplainFunctionality({
+//widget
+class PredictionFormulasPopUpBody extends StatelessWidget {
+  const PredictionFormulasPopUpBody({
     Key key,
-    @required this.sectionWithInitialFocus,
   }) : super(key: key);
-
-  final int sectionWithInitialFocus;
 
   @override
   Widget build(BuildContext context) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Container(
           padding: EdgeInsets.symmetric(
-            horizontal: 16,
+            horizontal: 24,
           ),
+          alignment: Alignment.centerLeft,
           child: RichText(
             text: TextSpan(
               style: TextStyle(
                 color: Colors.black,
               ),
               children: [
-                TextSpan(text: "Wait until your body finishes\n"),
                 TextSpan(
-                  text: "Flushing",
+                  text: "Select the formula that you ",
+                ),
+                TextSpan(
+                  text: "beleive",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                   ),
                 ),
                 TextSpan(
-                  text: " the right ammount of ",
+                  text: " will predict your ",
                 ),
                 TextSpan(
-                  text: "Acid Build Up\n",
+                  text: "ability",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                   ),
                 ),
                 TextSpan(
-                  text: "for the type of training you are doing\n"
+                  text: " for this excercise\n"
                 ),
-                TextSpan(
-                  text: "Then move onto your next set"
-                )
-              ],
+              ]
             ),
           ),
         ),
         Theme(
           data: ThemeData.dark(),
-          child: Container(
-              color: Colors.white,
-              width: MediaQuery.of(context).size.width,
-              child: AllTrainingTypes(
-                lightMode: true,
-                highlightField: 2,
-                sectionWithInitialFocus: sectionWithInitialFocus,
+          child: Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: 16,
+            ),
+            child: Padding(
+              padding: const EdgeInsets.only(
+                bottom: 16.0,
+              ),
+              child: FunctionCardTable(
+                context: context,
+                isDark: false,
               ),
             ),
+          ),
         ),
         SuggestToLearnPage(),
       ],

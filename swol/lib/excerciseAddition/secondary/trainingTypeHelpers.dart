@@ -5,13 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 //internal: addition
-import 'package:swol/excerciseAddition/popUps/toLearnPage.dart';
 import 'package:swol/excerciseAddition/secondary/tiny.dart';
 
 //internal: shared
 import 'package:swol/shared/widgets/complex/learnPopUp/ourLearnPopUp.dart';
 import 'package:swol/shared/widgets/simple/oneOrTheOtherIcon.dart';
 import 'package:swol/shared/widgets/simple/ourToolTip.dart';
+import 'package:swol/shared/widgets/simple/toLearnPage.dart';
 import 'package:swol/trainingTypes/trainingTypes.dart';
 
 class SetTargetToTrainingTypeIndicator extends StatefulWidget {
@@ -342,7 +342,7 @@ makeTrainingTypePopUp({
           showStrength: showStrength,
           highlightField: highlightfield,
         ),
-        LearnPageSuggestion(),
+        SuggestToLearnPage(),
       ],
       isDense: true,
     );

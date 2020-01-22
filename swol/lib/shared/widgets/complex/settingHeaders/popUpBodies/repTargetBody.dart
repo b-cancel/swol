@@ -2,11 +2,11 @@
 import 'package:flutter/material.dart';
 
 //internal
-import 'package:swol/excerciseAddition/popUps/toLearnPage.dart';
+import 'package:swol/shared/widgets/simple/toLearnPage.dart';
 import 'package:swol/trainingTypes/trainingTypes.dart';
 
-class SetTargetPopUpBody extends StatelessWidget {
-  const SetTargetPopUpBody({
+class RepTargetPopUpBody extends StatelessWidget {
+  const RepTargetPopUpBody({
     Key key,
   }) : super(key: key);
 
@@ -30,7 +30,7 @@ class SetTargetPopUpBody extends StatelessWidget {
                   text: "Select a ",
                 ),
                 TextSpan(
-                  text: "set target",
+                  text: "rep target",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                   )
@@ -54,15 +54,15 @@ class SetTargetPopUpBody extends StatelessWidget {
         Theme(
           data: ThemeData.dark(),
           child: Container(
-              color: Colors.white,
-              width: MediaQuery.of(context).size.width,
-              child: AllTrainingTypes(
-                lightMode: true,
-                highlightField: 4,
-              ),
+            color: Colors.white,
+            width: MediaQuery.of(context).size.width,
+            child: AllTrainingTypes(
+              lightMode: true,
+              highlightField: 3,
             ),
+          ),
         ),
-        LearnPageSuggestion(),
+        SuggestToLearnPage(),
       ],
     );
   }

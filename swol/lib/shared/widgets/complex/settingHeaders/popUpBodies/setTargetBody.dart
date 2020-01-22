@@ -2,23 +2,24 @@
 import 'package:flutter/material.dart';
 
 //internal
-import 'package:swol/excerciseAddition/popUps/toLearnPage.dart';
-import 'package:swol/learn/sections/experiment.dart';
+import 'package:swol/shared/widgets/simple/toLearnPage.dart';
+import 'package:swol/trainingTypes/trainingTypes.dart';
 
-class PredictionFormulasPopUpBody extends StatelessWidget {
-  const PredictionFormulasPopUpBody({
+class SetTargetPopUpBody extends StatelessWidget {
+  const SetTargetPopUpBody({
     Key key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Column(
+      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
-        Container(
-          padding: EdgeInsets.symmetric(
+        Padding(
+          padding: const EdgeInsets.symmetric(
             horizontal: 24,
           ),
-          alignment: Alignment.centerLeft,
           child: RichText(
             text: TextSpan(
               style: TextStyle(
@@ -26,25 +27,25 @@ class PredictionFormulasPopUpBody extends StatelessWidget {
               ),
               children: [
                 TextSpan(
-                  text: "Select the formula that you ",
+                  text: "Select a ",
                 ),
                 TextSpan(
-                  text: "beleive",
+                  text: "set target",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
-                  ),
+                  )
                 ),
                 TextSpan(
-                  text: " will predict your ",
+                  text: " for the ",
                 ),
                 TextSpan(
-                  text: "ability",
+                  text: "training type",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
-                  ),
+                  )
                 ),
                 TextSpan(
-                  text: " for this excercise\n"
+                  text: " you are working towards"
                 ),
               ]
             ),
@@ -52,22 +53,16 @@ class PredictionFormulasPopUpBody extends StatelessWidget {
         ),
         Theme(
           data: ThemeData.dark(),
-          child: Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: 16,
-            ),
-            child: Padding(
-              padding: const EdgeInsets.only(
-                bottom: 16.0,
-              ),
-              child: FunctionCardTable(
-                context: context,
-                isDark: false,
+          child: Container(
+              color: Colors.white,
+              width: MediaQuery.of(context).size.width,
+              child: AllTrainingTypes(
+                lightMode: true,
+                highlightField: 4,
               ),
             ),
-          ),
         ),
-        LearnPageSuggestion(),
+        SuggestToLearnPage(),
       ],
     );
   }

@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 //plugin
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:page_transition/page_transition.dart';
+
+//internal
 import 'package:swol/learn/learn.dart';
 
 //TODO: actually link up to the learn page
@@ -16,8 +18,8 @@ import 'package:swol/learn/learn.dart';
 //the pop OF THIS TYPE should cause settings to be saved for reloading later
 
 //the simply navigate to the learn page
-class LearnPageSuggestion extends StatelessWidget {
-  const LearnPageSuggestion({
+class SuggestToLearnPage extends StatelessWidget {
+  const SuggestToLearnPage({
     Key key,
   }) : super(key: key);
 
@@ -45,9 +47,6 @@ class LearnPageSuggestion extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //TODO: keep poping until we can't pop no mo
-    //TODO: then push the learn page
-
     return Material(
       color: Colors.transparent,
       child: InkWell(

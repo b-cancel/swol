@@ -1,15 +1,15 @@
 //flutter
 import 'package:flutter/material.dart';
 
-//internal: addition
-import 'package:swol/excerciseAddition/popUps/bodies/littleBodies.dart';
-import 'package:swol/excerciseAddition/popUps/bodies/nameBody.dart';
-import 'package:swol/excerciseAddition/popUps/bodies/predictionBody.dart';
-import 'package:swol/excerciseAddition/popUps/bodies/recoveryTimeBody.dart';
-import 'package:swol/excerciseAddition/popUps/bodies/repTargetBody.dart';
-import 'package:swol/excerciseAddition/popUps/bodies/setTargetBody.dart';
+//internal: pop up bodies
+import 'package:swol/shared/widgets/complex/settingHeaders/popUpBodies/recoveryTimeBody.dart';
+import 'package:swol/shared/widgets/complex/settingHeaders/popUpBodies/predictionBody.dart';
+import 'package:swol/shared/widgets/complex/settingHeaders/popUpBodies/repTargetBody.dart';
+import 'package:swol/shared/widgets/complex/settingHeaders/popUpBodies/setTargetBody.dart';
+import 'package:swol/shared/widgets/complex/settingHeaders/popUpBodies/littleBodies.dart';
+import 'package:swol/shared/widgets/complex/settingHeaders/popUpBodies/nameBody.dart';
 
-//internal: shared
+//internal: info pop up
 import 'package:swol/shared/widgets/complex/settingHeaders/ourInformationPopUp.dart';
 
 //widget
