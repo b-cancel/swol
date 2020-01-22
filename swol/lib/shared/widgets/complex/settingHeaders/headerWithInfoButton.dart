@@ -1,5 +1,6 @@
 //flutter
 import 'package:flutter/material.dart';
+import 'package:swol/shared/functions/theme.dart';
 
 //internal: pop up bodies
 import 'package:swol/shared/widgets/complex/settingHeaders/popUpBodies/recoveryTimeBody.dart';
@@ -33,6 +34,42 @@ class _HeaderWithInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return Theme(
+      data: ThemeData.dark(),
+      child: _HeaderWithInfoDark(
+        header: header, 
+        subtle: subtle,
+        onPressed: (){
+          infoPopUpFunction(
+            //using white context
+            //assumed for the users within this class
+            context,
+            //vars
+            title: title,
+            subtitle: subtitle,
+            body: body,
+            isDense: isDense,
+          );
+        },
+      ),
+    );
+  }
+}
+
+class _HeaderWithInfoDark extends StatelessWidget {
+  const _HeaderWithInfoDark({
+    Key key,
+    @required this.header,
+    @required this.subtle,
+    @required this.onPressed,
+  }) : super(key: key);
+
+  final String header;
+  final bool subtle;
+  final Function onPressed;
+
+  @override
+  Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
@@ -46,15 +83,7 @@ class _HeaderWithInfo extends StatelessWidget {
         Transform.translate(
           offset: Offset(12, 0),
           child: IconButton(
-            onPressed: (){
-              infoPopUpFunction(
-                context,
-                title: title,
-                subtitle: subtitle,
-                body: body,
-                isDense: isDense,
-              );
-            },
+            onPressed: () => onPressed(),
             icon: Icon(Icons.info),
             color: subtle ? Theme.of(context).primaryColor :  Theme.of(context).accentColor,
           ),
@@ -69,11 +98,14 @@ class _HeaderWithInfo extends StatelessWidget {
 class NameHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return _HeaderWithInfo(
-      header: "Name",
-      title: "Excercise Name",
-      subtitle: "Choose a unique name",
-      body: ExcerciseNamePopUpBody(),
+    return Theme(
+      data: MyTheme.light,
+      child: _HeaderWithInfo(
+        header: "Name",
+        title: "Excercise Name",
+        subtitle: "Choose a unique name",
+        body: ExcerciseNamePopUpBody(),
+      ),
     );
   }
 }
@@ -81,11 +113,14 @@ class NameHeader extends StatelessWidget {
 class NotesHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return _HeaderWithInfo(
-      header: "Notes",
-      title: "Excercise Note",
-      subtitle: "Details",
-      body: ExcerciseNotePopUpBody(),
+    return Theme(
+      data: MyTheme.light,
+      child: _HeaderWithInfo(
+        header: "Notes",
+        title: "Excercise Note",
+        subtitle: "Details",
+        body: ExcerciseNotePopUpBody(),
+      ),
     );
   }
 }
@@ -93,11 +128,14 @@ class NotesHeader extends StatelessWidget {
 class ReferenceLinkHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return _HeaderWithInfo(
-      header: "Reference Link",
-      title: "Reference Link",
-      subtitle: "Copy then Paste",
-      body: ReferenceLinkPopUpBody(),
+    return Theme(
+      data: MyTheme.light,
+      child: _HeaderWithInfo(
+        header: "Reference Link",
+        title: "Reference Link",
+        subtitle: "Copy then Paste",
+        body: ReferenceLinkPopUpBody(),
+      ),
     );
   }
 }
@@ -105,11 +143,14 @@ class ReferenceLinkHeader extends StatelessWidget {
 class SetTargetHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return _HeaderWithInfo(
-      header: "Set Target",
-      title: "Set Target",
-      subtitle: "Not sure? Keep the default",
-      body: SetTargetPopUpBody(),
+    return Theme(
+      data: MyTheme.light,
+      child: _HeaderWithInfo(
+        header: "Set Target",
+        title: "Set Target",
+        subtitle: "Not sure? Keep the default",
+        body: SetTargetPopUpBody(),
+      ),
     );
   }
 }
@@ -117,11 +158,14 @@ class SetTargetHeader extends StatelessWidget {
 class RecoveryTimeHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return _HeaderWithInfo(
-      header: "Recovery Time",
-      title: "Recovery Time",
-      subtitle: "Not sure? Keep the default",
-      body: RecoveryTimePopUpBody(),
+    return Theme(
+      data: MyTheme.light,
+      child: _HeaderWithInfo(
+        header: "Recovery Time",
+        title: "Recovery Time",
+        subtitle: "Not sure? Keep the default",
+        body: RecoveryTimePopUpBody(),
+      ),
     );
   }
 }
@@ -135,13 +179,16 @@ class PredictionFormulaHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return _HeaderWithInfo(
-      header: "Prediction Formula",
-      title: "Prediction Formulas",
-      subtitle: "Not sure? Keep the default",
-      body: PredictionFormulasPopUpBody(),
-      isDense: true,
-      subtle: subtle,
+    return Theme(
+      data: MyTheme.light,
+      child: _HeaderWithInfo(
+        header: "Prediction Formula",
+        title: "Prediction Formulas",
+        subtitle: "Not sure? Keep the default",
+        body: PredictionFormulasPopUpBody(),
+        isDense: true,
+        subtle: subtle,
+      ),
     );
   }
 }
@@ -155,12 +202,15 @@ class RepTargetHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return _HeaderWithInfo(
-      header: "Rep Target",
-      title: "Rep Target",
-      subtitle: "Not sure? Keep the default",
-      body: RepTargetPopUpBody(),
-      subtle: subtle,
+    return Theme(
+      data: MyTheme.light,
+      child: _HeaderWithInfo(
+        header: "Rep Target",
+        title: "Rep Target",
+        subtitle: "Not sure? Keep the default",
+        body: RepTargetPopUpBody(),
+        subtle: subtle,
+      ),
     );
   }
 }
