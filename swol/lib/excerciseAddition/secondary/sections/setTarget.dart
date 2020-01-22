@@ -6,7 +6,7 @@ import 'package:swol/excerciseAddition/secondary/trainingTypeHelpers.dart';
 import 'package:swol/excerciseAddition/popUps/popUpFunctions.dart';
 
 //internal from shared
-import 'package:swol/sharedWidgets/informationDisplay.dart';
+import 'package:swol/shared/widgets/simple/headerWithInfoButton.dart';
 import 'package:swol/shared/widgets/simple/ourSlider.dart';
 
 class SetTargetCard extends StatelessWidget {
@@ -33,7 +33,7 @@ class SetTargetCard extends StatelessWidget {
                 right: 16,
               ),
               child: Container(
-                child: new HeaderWithInfo(
+                child: HeaderWithInfo(
                   title: "Set Target",
                   popUpFunction: () => setTargetPopUp(context),
                 ),

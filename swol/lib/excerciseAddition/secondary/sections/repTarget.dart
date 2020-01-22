@@ -8,13 +8,14 @@ import 'package:swol/excerciseAddition/popUps/popUpFunctions.dart';
 //internal: shared
 import 'package:swol/shared/widgets/complex/RangeInformation/animatedCarousel.dart';
 import 'package:swol/shared/widgets/complex/RangeInformation/struct.dart';
+import 'package:swol/shared/widgets/simple/headerWithInfoButton.dart';
+import 'package:swol/shared/widgets/simple/sliderTipButton.dart';
 import 'package:swol/shared/widgets/simple/ourSlider.dart';
-import 'package:swol/shared/functions/theme.dart';
 
 //internal: other
-import 'package:swol/shared/widgets/simple/sliderTipButton.dart';
-import 'package:swol/sharedWidgets/informationDisplay.dart';
+import 'package:swol/shared/functions/theme.dart';
 
+//widget
 class RepTargetCard extends StatefulWidget {
   const RepTargetCard({
     Key key,

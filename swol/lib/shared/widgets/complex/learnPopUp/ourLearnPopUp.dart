@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 
 //function
-showInformationPopUp(
+showLearnPopUp(
   BuildContext context,
   Widget header,
   List<Widget> children,

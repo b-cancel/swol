@@ -1,15 +1,15 @@
 //flutter
 import 'package:flutter/material.dart';
+
+//internal: addition
 import 'package:swol/excerciseAddition/popUps/bodies/littleBodies.dart';
 import 'package:swol/excerciseAddition/popUps/bodies/predictionBody.dart';
 import 'package:swol/excerciseAddition/popUps/bodies/recoveryTimeBody.dart';
 import 'package:swol/excerciseAddition/popUps/bodies/repTargetBody.dart';
 import 'package:swol/excerciseAddition/popUps/bodies/setTargetBody.dart';
 
-//internal shared
-import 'package:swol/sharedWidgets/informationDisplay.dart';
-
-//internal bodies
+//internal: other
+import 'package:swol/shared/widgets/complex/learnPopUp/ourInformationPopUp.dart';
 import 'package:swol/excerciseAddition/popUps/bodies/nameBody.dart';
 
 //widgets

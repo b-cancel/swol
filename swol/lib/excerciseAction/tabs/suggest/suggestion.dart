@@ -10,7 +10,7 @@ import 'package:swol/excerciseAddition/secondary/sections/repTarget.dart';
 import 'package:swol/excerciseAddition/popUps/popUpFunctions.dart';
 
 //internal: shared
-import 'package:swol/sharedWidgets/informationDisplay.dart';
+import 'package:swol/shared/widgets/simple/headerWithInfoButton.dart';
 import 'package:swol/shared/widgets/simple/ourSlider.dart';
 import 'package:swol/shared/functions/theme.dart';
 
@@ -501,7 +501,7 @@ class FunctionChanger extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           Container(
-            child: new HeaderWithInfo(
+            child: HeaderWithInfo(
               title: "Prediction Formula",
               popUpFunction: () => predictionFormulasPopUp(context),
               subtle: true,
