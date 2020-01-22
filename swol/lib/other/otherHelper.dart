@@ -16,7 +16,10 @@ double lerpDouble(num a, num b, double t) {
   return a + (b - a) * t;
 }
 
-double timeToLerpValue(Duration timePassed, {Duration timeTotal: const Duration(minutes: 5)}){
+double timeToLerpValue(
+  Duration timePassed, {
+    Duration timeTotal: const Duration(minutes: 5),
+}){
   return timePassed.inMicroseconds / timeTotal.inMicroseconds;
 }
 

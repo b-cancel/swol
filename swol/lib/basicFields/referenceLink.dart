@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 //internal
+import 'package:swol/shared/widgets/simple/ourSnackBar.dart';
 import 'package:swol/basicFields/buttonSpacer.dart';
-import 'package:swol/sharedWidgets/ourSnackBar.dart';
 
 //plugin
 import 'package:url_launcher/url_launcher.dart';

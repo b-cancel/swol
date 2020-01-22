@@ -5,14 +5,15 @@ import 'package:flutter/material.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-//internal from addition
+//internal: addition
 import 'package:swol/excerciseAddition/popUps/toLearnPage.dart';
 import 'package:swol/excerciseAddition/secondary/tiny.dart';
 
-//internal from shared
+//internal: shared
 import 'package:swol/shared/widgets/simple/oneOrTheOtherIcon.dart';
+import 'package:swol/shared/widgets/simple/ourInformationPopUp.dart';
+import 'package:swol/shared/widgets/simple/ourToolTip.dart';
 import 'package:swol/trainingTypes/trainingTypes.dart';
-import 'package:swol/sharedWidgets/ourToolTip.dart';
 
 class SetTargetToTrainingTypeIndicator extends StatefulWidget {
   SetTargetToTrainingTypeIndicator({
@@ -278,94 +279,74 @@ makeTrainingTypePopUp({
     int highlightfield: -1,
 }){
   return (){
-    //unfocus so whatever was focused before doesnt annoying scroll us back
-    FocusScope.of(context).unfocus();
-
-    Color c = Colors.white;
-
-    //create header "icon"
-    Widget header;
+    Color iconColor = Colors.white;
+    Widget headerIcon;
     switch(iconID){
-      case FitIcons.Endurance: header = Icon(FontAwesomeIcons.weight, color: c); break;
-      case FitIcons.Hypertrophy: header = Transform.translate(
+      case FitIcons.Endurance: 
+        headerIcon = Icon(FontAwesomeIcons.weight, color: iconColor); 
+      break;
+      case FitIcons.Hypertrophy: headerIcon = Transform.translate(
           offset: Offset(-3, 0),
-          child: Icon(FontAwesomeIcons.dumbbell, color: c),
+          child: Icon(FontAwesomeIcons.dumbbell, color: iconColor),
         );
       break;
-      case FitIcons.Strength: header = Icon(FontAwesomeIcons.weightHanging, color: c); break;
-      default: header = OneOrTheOtherIcon(
-        one: Transform.translate(
-          offset: Offset(-3, 0),
-          child: Icon(
-            FontAwesomeIcons.dumbbell,
-            color: c,
+      case FitIcons.Strength: 
+        headerIcon = Icon(FontAwesomeIcons.weightHanging, color: iconColor); 
+      break;
+      default: 
+        headerIcon = OneOrTheOtherIcon(
+          one: Transform.translate(
+            offset: Offset(-3, 0),
+            child: Icon(
+              FontAwesomeIcons.dumbbell,
+              color: iconColor,
+            ),
           ),
-        ),
-        other: Icon(
-          FontAwesomeIcons.weightHanging,
-          color: c,
-        ),
-        iconColor: c,
-        backgroundColor: Colors.blue,
-      );
+          other: Icon(
+            FontAwesomeIcons.weightHanging,
+            color: iconColor,
+          ),
+          iconColor: iconColor,
+          backgroundColor: Colors.blue,
+        );
       break;
     }
 
-    header = ClipOval(
-      child: Container(
-        color: Colors.blue,
-        //NOTE: 28 is the max
-        padding: EdgeInsets.all(24),
-        child: Container(
-          height: 56,
-          width: 56,
-          child: FittedBox(
-            fit: BoxFit.fill,
-            child: header,
-          ),
+    //show pop up
+    showInformationPopUp(
+      context,
+      Container(
+        width: 56,
+        height: 56,
+        child: FittedBox(
+          fit: BoxFit.fill,
+          child: headerIcon,
         ),
       ),
+      [
+        Padding(
+          padding: const EdgeInsets.only(
+            bottom: 16.0,
+          ),
+          child: Text(
+            title,
+            style: TextStyle(
+              color: Colors.black,
+              fontWeight: FontWeight.bold,
+              fontSize: 28,
+            ),
+          ),
+        ),
+        ScrollableTrainingTypes(
+          showEndurance: showEndurance,
+          showHypertrophy: showHypertrophy,
+          showStrength: showStrength,
+          highlightField: highlightfield,
+        ),
+        LearnPageSuggestion(),
+      ],
+      isDense: true,
     );
-
-    //show awesome dialog
-    AwesomeDialog(
-      context: context,
-      dismissOnTouchOutside: true,
-      animType: AnimType.SCALE,
-      customHeader: header,
-      isDense: true, //is dense true is slightly larger
-      body: Theme(
-        data: ThemeData.dark(),
-        child: Container(
-          color: Colors.white,
-          width: MediaQuery.of(context).size.width,
-          child: Column(
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.only(
-                  bottom: 16.0,
-                ),
-                child: Text(
-                  title,
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 28,
-                  ),
-                ),
-              ),
-              ScrollableTrainingTypes(
-                showEndurance: showEndurance,
-                showHypertrophy: showHypertrophy,
-                showStrength: showStrength,
-                highlightField: highlightfield,
-              ),
-              LearnPageSuggestion(),
-            ],
-          ),
-        ),
-      ),
-    ).show();
   };
 }
 

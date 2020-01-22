@@ -1,11 +1,9 @@
 //flutter
 import 'package:flutter/material.dart';
-
-//plugin
-import 'package:swol/sharedWidgets/ourSnackBar.dart';
+import 'package:swol/basicFields/buttonSpacer.dart';
 
 //internal
-import 'buttonSpacer.dart';
+import 'package:swol/shared/widgets/simple/ourSnackBar.dart';
 
 class TextFieldWithClearButton extends StatefulWidget {
   const TextFieldWithClearButton({

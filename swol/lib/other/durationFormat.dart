@@ -1,5 +1,4 @@
 class DurationFormat{
-
   static List<String> _indexToShort = [
     "y","m","w","d","h","m","s","milli","micro"
   ];

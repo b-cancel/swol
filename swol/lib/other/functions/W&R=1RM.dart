@@ -1,7 +1,7 @@
 import 'dart:math' as math;
 
 class To1RM{
-  //NOTE: some functions can fail but that's okay we always have back ups for those that do
+  //NOTE: some functions CAN FAIL but that's okay we always have back ups for those that do
   //at all weight ranges, the function that approximate the one failing the most
   //is the one to its right
   //BACKUP ORDER: brzycki, mcGlothinOrLander, almazan, epleyOrBaechle [non failing]

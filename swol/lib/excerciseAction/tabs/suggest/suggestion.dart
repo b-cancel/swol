@@ -3,16 +3,20 @@ import 'package:flutter/material.dart';
 
 //plugin
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
+//internal: addition
+import 'package:swol/excerciseAddition/secondary/sections/predictionFunction.dart';
+import 'package:swol/excerciseAddition/secondary/sections/repTarget.dart';
 import 'package:swol/excerciseAddition/popUps/popUpFunctions.dart';
 
-//internal
-import 'package:swol/excerciseAddition/secondary/sections/predictionFunction.dart';
-import 'package:swol/excercise/excerciseStructure.dart';
-import 'package:swol/excerciseAddition/secondary/sections/repTarget.dart';
-import 'package:swol/other/functions/helper.dart';
-import 'package:swol/shared/functions/theme.dart';
+//internal: shared
 import 'package:swol/sharedWidgets/informationDisplay.dart';
-import 'package:swol/sharedWidgets/mySlider.dart';
+import 'package:swol/shared/widgets/simple/ourSlider.dart';
+import 'package:swol/shared/functions/theme.dart';
+
+//internal: other
+import 'package:swol/excercise/excerciseStructure.dart';
+import 'package:swol/other/functions/helper.dart';
 
 //includes both calibration and the suggestion
 class SuggestionSection extends StatelessWidget {

@@ -80,7 +80,6 @@ class _RecoveryState extends State<Recovery> with SingleTickerProviderStateMixin
         crossAxisAlignment: CrossAxisAlignment.center,
         //everything including bottom button and spacing
         children: <Widget>[
-          
           Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[

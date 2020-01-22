@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 //plugin
 import 'package:bot_toast/bot_toast.dart';
 
+//function
 showToolTip(BuildContext context, String text){
   BotToast.showAttachedWidget(
     enableSafeArea: true,
@@ -15,6 +16,7 @@ showToolTip(BuildContext context, String text){
   );
 }
 
+//widget
 class OurToolTip extends StatelessWidget {
   const OurToolTip({
     Key key,
@@ -32,11 +34,8 @@ class OurToolTip extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           //NOTE: the reason we may need to take out the icon later...
-
-          //NOTE: we took out the icon because 
           //if the widget overflows the rest of the warning won't show
           //and ofcourse its more important that it shows than anything else
-          
           Padding(
             padding: const EdgeInsets.only(
               left: 8.0,
@@ -46,6 +45,7 @@ class OurToolTip extends StatelessWidget {
               size: 24,
             ),
           ),
+          //this is what's actually important
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(

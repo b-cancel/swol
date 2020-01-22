@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 //internal from addition
 import 'package:swol/excerciseAddition/secondary/trainingTypeHelpers.dart';
 import 'package:swol/excerciseAddition/popUps/popUpFunctions.dart';
-import 'package:swol/shared/functions/theme.dart';
 
 //internal from shared
+import 'package:swol/shared/widgets/simple/ourSlider.dart';
+import 'package:swol/shared/functions/theme.dart';
 import 'package:swol/sharedWidgets/informationDisplay.dart';
-import 'package:swol/sharedWidgets/mySlider.dart';
 import 'package:swol/sharedWidgets/sliderTipButton.dart';
 import 'package:swol/sharedWidgets/timeHelper.dart';
 

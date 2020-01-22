@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 //internal
-import 'package:swol/sharedWidgets/ourSnackBar.dart';
+import 'package:swol/shared/widgets/simple/ourSnackBar.dart';
 
 /*
 at all times we are trying to help the user

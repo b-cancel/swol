@@ -1,13 +1,13 @@
 //flutter
 import 'package:flutter/material.dart';
-import 'package:swol/excerciseAddition/popUps/popUpFunctions.dart';
 
 //internal from addition
 import 'package:swol/excerciseAddition/secondary/trainingTypeHelpers.dart';
+import 'package:swol/excerciseAddition/popUps/popUpFunctions.dart';
 
 //internal from shared
 import 'package:swol/sharedWidgets/informationDisplay.dart';
-import 'package:swol/sharedWidgets/mySlider.dart';
+import 'package:swol/shared/widgets/simple/ourSlider.dart';
 
 class SetTargetCard extends StatelessWidget {
   const SetTargetCard({
@@ -64,7 +64,7 @@ class SetTargetCard extends StatelessWidget {
                 width: MediaQuery.of(context).size.width,
               ),
             ),
-            new CustomSlider(
+            CustomSlider(
               value: setTarget,
               lastTick: 9,
             ),

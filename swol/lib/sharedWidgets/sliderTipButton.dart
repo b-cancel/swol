@@ -1,8 +1,8 @@
 //flutter
 import 'package:flutter/material.dart';
 
-//plugin
-import 'package:swol/sharedWidgets/ourToolTip.dart';
+//internal
+import 'package:swol/shared/widgets/simple/ourToolTip.dart';
 
 //slider tip button
 class SliderTipButton extends StatelessWidget {

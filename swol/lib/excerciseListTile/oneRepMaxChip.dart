@@ -6,7 +6,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 //internal
 import 'package:swol/shared/widgets/simple/oneOrTheOtherIcon.dart';
-import 'package:swol/sharedWidgets/ourSnackBar.dart';
+import 'package:swol/shared/widgets/simple/ourSnackBar.dart';
 import 'package:swol/other/functions/helper.dart';
 
 //given the 

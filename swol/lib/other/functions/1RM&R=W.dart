@@ -2,6 +2,10 @@ import 'dart:math' as math;
 //rep range: 1 - > 35
 
 class ToWeight{
+  //NOTE: some functions CAN FAIL but that's okay we always have back ups for those that do
+  //at all weight ranges, the function that approximate the one failing the most
+  //is the one to its right
+  //BACKUP ORDER: brzycki, mcGlothinOrLander, almazan, epleyOrBaechle [non failing]
   static double fromRepAnd1Rm(double reps, double max, int predictionID){
     switch(predictionID){
       case 0: return brzycki(reps, max); break;
