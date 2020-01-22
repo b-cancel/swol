@@ -67,12 +67,6 @@ class _HeaderWithInfo extends StatelessWidget {
 //-------------------------shortcuts-------------------------
 
 class NameHeader extends StatelessWidget {
-  NameHeader({
-    this.subtle: false,
-  });
-
-  final bool subtle;
-
   @override
   Widget build(BuildContext context) {
     return _HeaderWithInfo(
@@ -80,18 +74,11 @@ class NameHeader extends StatelessWidget {
       title: "Excercise Name",
       subtitle: "Choose a unique name",
       body: ExcerciseNamePopUpBody(),
-      subtle: subtle,
     );
   }
 }
 
 class NotesHeader extends StatelessWidget {
-  NotesHeader({
-    this.subtle: false,
-  });
-
-  final bool subtle;
-
   @override
   Widget build(BuildContext context) {
     return _HeaderWithInfo(
@@ -99,18 +86,11 @@ class NotesHeader extends StatelessWidget {
       title: "Excercise Note",
       subtitle: "Details",
       body: ExcerciseNotePopUpBody(),
-      subtle: subtle,
     );
   }
 }
 
 class ReferenceLinkHeader extends StatelessWidget {
-  ReferenceLinkHeader({
-    this.subtle: false,
-  });
-
-  final bool subtle;
-
   @override
   Widget build(BuildContext context) {
     return _HeaderWithInfo(
@@ -118,7 +98,30 @@ class ReferenceLinkHeader extends StatelessWidget {
       title: "Reference Link",
       subtitle: "Copy then Paste",
       body: ReferenceLinkPopUpBody(),
-      subtle: subtle,
+    );
+  }
+}
+
+class SetTargetHeader extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return _HeaderWithInfo(
+      header: "Set Target",
+      title: "Set Target",
+      subtitle: "Not sure? Keep the default",
+      body: SetTargetPopUpBody(),
+    );
+  }
+}
+
+class RecoveryTimeHeader extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return _HeaderWithInfo(
+      header: "Recovery Time",
+      title: "Recovery Time",
+      subtitle: "Not sure? Keep the default",
+      body: RecoveryTimePopUpBody(),
     );
   }
 }
@@ -158,30 +161,6 @@ class RepTargetHeader extends StatelessWidget {
       subtitle: "Not sure? Keep the default",
       body: RepTargetPopUpBody(),
       subtle: subtle,
-    );
-  }
-}
-
-class SetTargetHeader extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return _HeaderWithInfo(
-      header: "Set Target",
-      title: "Set Target",
-      subtitle: "Not sure? Keep the default",
-      body: SetTargetPopUpBody(),
-    );
-  }
-}
-
-class RecoveryTimeHeader extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return _HeaderWithInfo(
-      header: "Recovery Time",
-      title: "Recovery Time",
-      subtitle: "Not sure? Keep the default",
-      body: RecoveryTimePopUpBody(),
     );
   }
 }
