@@ -48,13 +48,9 @@ class BasicEditor extends StatelessWidget {
             namePresent: namePresent,
             otherFocusNode: noteFocusNode,
           ),
-          NotesHeader(),
-          TextFieldWithClearButton(
-            editOneAtAtTime: editOneAtAtTime,
+          NotesField(
+            editOneAtATime: editOneAtAtTime,
             valueToUpdate: note,
-            hint: "Details", 
-            error: null, 
-            //so we can link up both fields
             focusNode: noteFocusNode,
           ),
           ReferenceLinkHeader(),

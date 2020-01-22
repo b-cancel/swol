@@ -96,36 +96,6 @@ class _HeaderWithInfoDark extends StatelessWidget {
 
 //-------------------------shortcuts-------------------------
 
-class _NameHeader extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Theme(
-      data: MyTheme.light,
-      child: _HeaderWithInfo(
-        header: "Name",
-        title: "Excercise Name",
-        subtitle: "Choose a unique name",
-        body: ExcerciseNamePopUpBody(),
-      ),
-    );
-  }
-}
-
-class NotesHeader extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Theme(
-      data: MyTheme.light,
-      child: _HeaderWithInfo(
-        header: "Notes",
-        title: "Excercise Note",
-        subtitle: "Details",
-        body: ExcerciseNotePopUpBody(),
-      ),
-    );
-  }
-}
-
 class ReferenceLinkHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -242,7 +212,15 @@ class NameField extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
-        _NameHeader(),
+        Theme(
+          data: MyTheme.light,
+          child: _HeaderWithInfo(
+            header: "Name",
+            title: "Excercise Name",
+            subtitle: "Choose a unique name",
+            body: ExcerciseNamePopUpBody(),
+          ),
+        ),
         TextFieldWithClearButton(
           editOneAtAtTime: editOneAtATime,
           valueToUpdate: valueToUpdate,
@@ -255,6 +233,44 @@ class NameField extends StatelessWidget {
           present: namePresent, 
           //so next focuses on the note
           otherFocusNode: otherFocusNode,
+        ),
+      ],
+    );
+  }
+}
+
+class NotesField extends StatelessWidget {
+  NotesField({
+    @required this.editOneAtATime,
+    @required this.valueToUpdate,
+    @required this.focusNode,
+  });
+
+  final bool editOneAtATime;
+  final ValueNotifier<String> valueToUpdate;
+  final FocusNode focusNode;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        Theme(
+          data: MyTheme.light,
+          child: _HeaderWithInfo(
+            header: "Notes",
+            title: "Excercise Note",
+            subtitle: "Details",
+            body: ExcerciseNotePopUpBody(),
+          ),
+        ),
+        TextFieldWithClearButton(
+          editOneAtAtTime: editOneAtATime,
+          valueToUpdate: valueToUpdate,
+          hint: "Details", 
+          error: null, 
+          //so we can link up both fields
+          focusNode: focusNode,
         ),
       ],
     );

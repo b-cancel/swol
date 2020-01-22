@@ -77,19 +77,10 @@ class NotesCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BasicCard(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          NotesHeader(),
-          TextFieldWithClearButton(
-            editOneAtAtTime: false,
-            valueToUpdate: note,
-            hint: "Details", 
-            error: null, 
-            //so we can link up both fields
-            focusNode: noteFocusNode,
-          ),
-        ],
+      child: NotesField(
+        editOneAtATime: false,
+        valueToUpdate: note,
+        focusNode: noteFocusNode,
       ),
     );
   }
