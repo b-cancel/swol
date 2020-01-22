@@ -1,16 +1,14 @@
 //flutter
 import 'package:flutter/material.dart';
 
-//internal: addition
-import 'package:swol/excerciseAddition/secondary/trainingTypeHelpers.dart';
-
-//internal: shared
+//internal
+import 'package:swol/shared/widgets/complex/settingHeaders/headerWithInfoButton.dart';
 import 'package:swol/shared/widgets/complex/RangeInformation/animatedCarousel.dart';
 import 'package:swol/shared/widgets/complex/RangeInformation/struct.dart';
 import 'package:swol/shared/widgets/complex/recoveryTime/minSecs.dart';
 import 'package:swol/shared/widgets/complex/recoveryTime/picker.dart';
-import 'package:swol/shared/widgets/complex/settingHeaders/headerWithInfoButton.dart';
 import 'package:swol/shared/widgets/simple/sliderTipButton.dart';
+import 'package:swol/shared/functions/trainingPopUps.dart';
 import 'package:swol/shared/functions/theme.dart';
 
 //widget
@@ -125,13 +123,7 @@ class AnimRecoveryTimeInfoToWhiteTheme extends StatelessWidget {
       ranges: [
         Range(
           name: "Endurance Training",
-          onTap: makeTrainingTypePopUp(
-            context: context,
-            title: "Endurance Training",
-            showEndurance: true,
-            highlightfield: 2,
-            iconID: FitIcons.Endurance,
-          ),
+          onTap: makeEnduranceTrainingPopUp(context, 2),
           left: SlideRangeExtent(
             buttonText: "15s",
             tipText: "Any Less, wouldn't be enough",
@@ -144,13 +136,7 @@ class AnimRecoveryTimeInfoToWhiteTheme extends StatelessWidget {
         ),
         Range(
           name: "Hypertrophy Training",
-          onTap: makeTrainingTypePopUp(
-            context: context,
-            title: "Hypertrophy Training",
-            showHypertrophy: true,
-            highlightfield: 2,
-            iconID: FitIcons.Hypertrophy,
-          ),
+          onTap: makeHypertrophyTrainingPopUp(context, 2),
           left: SlideRangeExtent(
             buttonText: "1:05",
           ),
@@ -162,14 +148,7 @@ class AnimRecoveryTimeInfoToWhiteTheme extends StatelessWidget {
         ),
         Range(
           name: "Hypertrophy/Strength",
-          onTap: makeTrainingTypePopUp(
-            context: context,
-            title: "Hypertrophy/Strength",
-            showHypertrophy: true,
-            showStrength: true,
-            highlightfield: 2,
-            iconID: FitIcons.HypAndStr,
-          ),
+          onTap: makeHypertrophyStrengthTrainingPopUp(context, 2),
           left: SlideRangeExtent(
             buttonText: "2:05",
           ),
@@ -181,13 +160,7 @@ class AnimRecoveryTimeInfoToWhiteTheme extends StatelessWidget {
         ),
         Range(
           name: "Strength Training",
-          onTap: makeTrainingTypePopUp(
-            context: context,
-            title: "Strength Training",
-            showStrength: true,
-            highlightfield: 2,
-            iconID: FitIcons.Strength,
-          ),
+          onTap: makeStrengthTrainingPopUp(context, 2),
           left: SlideRangeExtent(
             buttonText: "3:05",
           ),

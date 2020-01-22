@@ -1,14 +1,12 @@
 //flutter
 import 'package:flutter/material.dart';
 
-//internal: addition
-import 'package:swol/excerciseAddition/secondary/trainingTypeHelpers.dart';
-
-//internal: shared
+//internal
 import 'package:swol/shared/widgets/complex/RangeInformation/animatedCarousel.dart';
 import 'package:swol/shared/widgets/complex/settingHeaders/headerWithInfoButton.dart';
 import 'package:swol/shared/widgets/complex/RangeInformation/struct.dart';
 import 'package:swol/shared/widgets/simple/sliderTipButton.dart';
+import 'package:swol/shared/functions/trainingPopUps.dart';
 import 'package:swol/shared/widgets/simple/ourSlider.dart';
 import 'package:swol/shared/functions/theme.dart';
 
@@ -122,13 +120,7 @@ class AnimRepTargetInfoWhite extends StatelessWidget {
       ranges: [
         Range(
           name: "Strength Training",
-          onTap: makeTrainingTypePopUp(
-            context: context,
-            title: "Strength Training",
-            showStrength: true,
-            highlightfield: 3,
-            iconID: FitIcons.Strength,
-          ),
+          onTap: makeStrengthTrainingPopUp(context, 3),
           left: new SlideRangeExtent(
             buttonText: "1",
           ),
@@ -140,13 +132,7 @@ class AnimRepTargetInfoWhite extends StatelessWidget {
         ),
         Range(
           name: "Hypertrophy Training",
-          onTap: makeTrainingTypePopUp(
-            context: context,
-            title: "Hypertrophy Training",
-            showHypertrophy: true,
-            highlightfield: 3,
-            iconID: FitIcons.Hypertrophy,
-          ),
+          onTap: makeHypertrophyTrainingPopUp(context, 3),
           left: SlideRangeExtent(
             buttonText: "7",
           ),
@@ -158,13 +144,7 @@ class AnimRepTargetInfoWhite extends StatelessWidget {
         ),
         Range(
           name: "Endurance Training",
-          onTap: makeTrainingTypePopUp(
-            context: context,
-            title: "Endurance Training",
-            showEndurance: true,
-            highlightfield: 3,
-            iconID: FitIcons.Endurance,
-          ),
+          onTap: makeEnduranceTrainingPopUp(context, 3),
           left: SlideRangeExtent(
             buttonText: "13",
           ),
