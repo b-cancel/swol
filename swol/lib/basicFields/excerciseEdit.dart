@@ -6,7 +6,7 @@ import 'package:swol/basicFields/clearableTextField.dart';
 import 'package:swol/basicFields/referenceLink.dart';
 
 //internal: shared
-import 'package:swol/shared/widgets/simple/headerWithInfoButton.dart';
+import 'package:swol/shared/widgets/complex/settingHeaders/headerWithInfoButton.dart';
 
 //editor of basic variables "name", "note", "url"
 class BasicEditor extends StatelessWidget {

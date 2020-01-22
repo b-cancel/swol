@@ -9,7 +9,7 @@ import 'package:swol/shared/widgets/complex/RangeInformation/animatedCarousel.da
 import 'package:swol/shared/widgets/complex/RangeInformation/struct.dart';
 import 'package:swol/shared/widgets/complex/recoveryTime/minSecs.dart';
 import 'package:swol/shared/widgets/complex/recoveryTime/picker.dart';
-import 'package:swol/shared/widgets/simple/headerWithInfoButton.dart';
+import 'package:swol/shared/widgets/complex/settingHeaders/headerWithInfoButton.dart';
 import 'package:swol/shared/widgets/simple/sliderTipButton.dart';
 import 'package:swol/shared/functions/theme.dart';
 

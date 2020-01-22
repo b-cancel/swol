@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:swol/excerciseAddition/secondary/trainingTypeHelpers.dart';
 
 //internal from shared
-import 'package:swol/shared/widgets/simple/headerWithInfoButton.dart';
+import 'package:swol/shared/widgets/complex/settingHeaders/headerWithInfoButton.dart';
 import 'package:swol/shared/widgets/simple/ourSlider.dart';
 
 class SetTargetCard extends StatelessWidget {

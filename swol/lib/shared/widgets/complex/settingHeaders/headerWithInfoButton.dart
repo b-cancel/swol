@@ -10,7 +10,7 @@ import 'package:swol/excerciseAddition/popUps/bodies/repTargetBody.dart';
 import 'package:swol/excerciseAddition/popUps/bodies/setTargetBody.dart';
 
 //internal: shared
-import 'package:swol/shared/widgets/complex/learnPopUp/ourInformationPopUp.dart';
+import 'package:swol/shared/widgets/complex/settingHeaders/ourInformationPopUp.dart';
 
 //widget
 class _HeaderWithInfo extends StatelessWidget {

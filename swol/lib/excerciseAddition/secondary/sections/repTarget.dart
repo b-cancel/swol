@@ -6,8 +6,8 @@ import 'package:swol/excerciseAddition/secondary/trainingTypeHelpers.dart';
 
 //internal: shared
 import 'package:swol/shared/widgets/complex/RangeInformation/animatedCarousel.dart';
+import 'package:swol/shared/widgets/complex/settingHeaders/headerWithInfoButton.dart';
 import 'package:swol/shared/widgets/complex/RangeInformation/struct.dart';
-import 'package:swol/shared/widgets/simple/headerWithInfoButton.dart';
 import 'package:swol/shared/widgets/simple/sliderTipButton.dart';
 import 'package:swol/shared/widgets/simple/ourSlider.dart';
 import 'package:swol/shared/functions/theme.dart';

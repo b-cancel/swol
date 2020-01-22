@@ -9,7 +9,7 @@ import 'package:swol/excerciseAddition/secondary/sections/predictionFunction.dar
 import 'package:swol/excerciseAddition/secondary/sections/repTarget.dart';
 
 //internal: shared
-import 'package:swol/shared/widgets/simple/headerWithInfoButton.dart';
+import 'package:swol/shared/widgets/complex/settingHeaders/headerWithInfoButton.dart';
 import 'package:swol/shared/widgets/simple/ourSlider.dart';
 import 'package:swol/shared/functions/theme.dart';
 
