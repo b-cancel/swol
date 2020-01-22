@@ -9,8 +9,6 @@ import 'package:page_transition/page_transition.dart';
 import 'package:swol/learn/learn.dart';
 import 'package:swol/main.dart';
 
-//TODO: actually link up to the learn page
-
 //we don't need to do anything complex to get to the main page
 //all we have to do is pass to this widget the ammount of time we have to pop
 //every page should react accordingly to its pop
@@ -20,10 +18,6 @@ import 'package:swol/main.dart';
 
 //the simply navigate to the learn page
 class SuggestToLearnPage extends StatelessWidget {
-  const SuggestToLearnPage({
-    Key key,
-  }) : super(key: key);
-
   goToLearn(){
     BuildContext rootContext = GrabSystemPrefs.rootContext;
     if(Navigator.canPop(rootContext)){
@@ -36,16 +30,12 @@ class SuggestToLearnPage extends StatelessWidget {
       });
     }
     else{
-      //TODO: properly handle the below
-      //navSpread.value = true;
+      App.navSpread.value = true;
       Navigator.push(
         rootContext, 
         PageTransition(
           type: PageTransitionType.rightToLeft, 
-          child: LearnExcercise(
-            //TODO: change these
-            navSpread: new ValueNotifier(false),
-          ),
+          child: LearnExcercise(),
         ),
       );
     }

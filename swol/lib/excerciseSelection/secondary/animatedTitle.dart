@@ -1,4 +1,5 @@
 //dart
+import 'package:swol/main.dart';
 import 'package:vector_math/vector_math_64.dart' as vect;
 
 //flutter
@@ -17,22 +18,20 @@ import 'package:swol/learn/learn.dart';
 class AnimatedTitleAction extends StatelessWidget {
   const AnimatedTitleAction({
     Key key,
-    @required this.navSpread,
     @required this.screenWidth,
   }) : super(key: key);
 
-  final ValueNotifier<bool> navSpread;
   final double screenWidth;
 
   @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
-      animation: navSpread,
+      animation: App.navSpread,
       builder: (context,child){
         return AnimatedContainer(
           transform: Matrix4.translation(
             vect.Vector3(
-              (navSpread.value == true) ? screenWidth/2 : 0,
+              (App.navSpread.value == true) ? screenWidth/2 : 0,
               0,
               0
             ),  
@@ -47,14 +46,12 @@ class AnimatedTitleAction extends StatelessWidget {
             + "\nbehind our app",
             child: IconButton(
               onPressed: (){
-                navSpread.value = true;
+                App.navSpread.value = true;
                 Navigator.push(
                   context, 
                   PageTransition(
                     type: PageTransitionType.rightToLeft, 
-                    child: LearnExcercise(
-                      navSpread: navSpread,
-                    ),
+                    child: LearnExcercise(),
                   ),
                 );
               },
@@ -78,25 +75,23 @@ class AnimatedTitleAction extends StatelessWidget {
 class AnimatedTitle extends StatelessWidget {
   const AnimatedTitle({
     Key key,
-    @required this.navSpread,
     @required this.screenWidth,
     @required this.statusBarHeight,
   }) : super(key: key);
 
-  final ValueNotifier<bool> navSpread;
   final double screenWidth;
   final double statusBarHeight;
 
   @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
-      animation: navSpread,
+      animation: App.navSpread,
       builder: (context, child){
         return AnimatedContainer(
           duration: Duration(milliseconds: 300),
           transform: Matrix4.translation(
             vect.Vector3(
-              (navSpread.value == true) ? -screenWidth/2 : 0,
+              (App.navSpread.value == true) ? -screenWidth/2 : 0,
               0,
               0,
             ),  

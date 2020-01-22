@@ -56,7 +56,6 @@ class ExcerciseSelect extends StatefulWidget {
 class _ExcerciseSelectState extends State<ExcerciseSelect> {
   final AutoScrollController autoScrollController = new AutoScrollController();
   final ValueNotifier<bool> onTop = new ValueNotifier(true);
-  final ValueNotifier<bool> navSpread = new ValueNotifier(false);
 
   updateOnTopValue(){
     ScrollPosition position = autoScrollController.position;
@@ -125,7 +124,6 @@ class _ExcerciseSelectState extends State<ExcerciseSelect> {
       appBar: AppBar(
         backgroundColor: Theme.of(context).primaryColorDark,
         title: AnimatedTitle(
-          navSpread: navSpread, 
           screenWidth: screenWidth, 
           statusBarHeight: statusBarHeight,
         ),
@@ -139,7 +137,6 @@ class _ExcerciseSelectState extends State<ExcerciseSelect> {
           )
           */
           AnimatedTitleAction(
-            navSpread: navSpread, 
             screenWidth: screenWidth,
           ),
         ],
@@ -153,7 +150,6 @@ class _ExcerciseSelectState extends State<ExcerciseSelect> {
             ExcerciseList(
               autoScrollController: autoScrollController,
               statusBarHeight: statusBarHeight,
-              navSpread: navSpread,
               onTop: onTop,
             ),
             ScrollToTopButton(
@@ -162,7 +158,6 @@ class _ExcerciseSelectState extends State<ExcerciseSelect> {
             ),
             //Add New Excercise Button
             AddExcerciseButton(
-              navSpread: navSpread,
               screenWidth: screenWidth,
             ),
             Positioned(

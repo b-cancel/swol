@@ -22,7 +22,10 @@ import 'package:swol/shared/widgets/simple/toLearnPage.dart';
 enum FitIcons {Endurance, Hypertrophy, HypAndStr, Strength}
 
 //short cuts
-Function makeEnduranceTrainingPopUp(BuildContext context, int highlightField){
+Function makeEnduranceTrainingPopUp(
+  BuildContext context, 
+  int highlightField,
+){
   return _makeTrainingTypePopUp(
     context: context,
     title: "Endurance Training",
@@ -32,7 +35,10 @@ Function makeEnduranceTrainingPopUp(BuildContext context, int highlightField){
   );
 }
 
-Function makeHypertrophyTrainingPopUp(BuildContext context, int highlightField){
+Function makeHypertrophyTrainingPopUp(
+  BuildContext context, 
+  int highlightField,
+){
   return _makeTrainingTypePopUp(
     context: context,
     title: "Hypertrophy Training",
@@ -42,7 +48,10 @@ Function makeHypertrophyTrainingPopUp(BuildContext context, int highlightField){
   );
 }
 
-Function makeHypertrophyStrengthTrainingPopUp(BuildContext context, int highlightField){
+Function makeHypertrophyStrengthTrainingPopUp(
+  BuildContext context, 
+  int highlightField,
+){
   return _makeTrainingTypePopUp(
     context: context,
     title: "Hypertrophy/Strength",
@@ -53,7 +62,10 @@ Function makeHypertrophyStrengthTrainingPopUp(BuildContext context, int highligh
   );
 }
 
-Function makeStrengthTrainingPopUp(BuildContext context, int highlightField){
+Function makeStrengthTrainingPopUp(
+  BuildContext context, 
+  int highlightField,
+){
   return _makeTrainingTypePopUp(
     context: context,
     title: "Strength Training",

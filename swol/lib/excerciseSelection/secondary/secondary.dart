@@ -11,6 +11,7 @@ import 'package:swol/excercise/excerciseStructure.dart';
 //internal: selection
 import 'package:swol/excerciseSelection/secondary/persistentHeaderDelegate.dart';
 import 'package:swol/excerciseSelection/secondary/addNewHero.dart';
+import 'package:swol/main.dart';
 
 //internal: shared
 import 'package:swol/shared/methods/extensions/sharedPreferences.dart';
@@ -21,11 +22,9 @@ import 'package:swol/shared/functions/onboarding.dart';
 class AddExcerciseButton extends StatelessWidget {
   const AddExcerciseButton({
     Key key,
-    @required this.navSpread,
     @required this.screenWidth,
   }) : super(key: key);
 
-  final ValueNotifier<bool> navSpread;
   final double screenWidth;
 
   @override
@@ -46,7 +45,6 @@ class AddExcerciseButton extends StatelessWidget {
           + "new excercise",
           child: AddNewHero(
             inAppBar: false,
-            navSpread: navSpread,
           ),
           top: false,
           left: true,
@@ -65,12 +63,10 @@ class AddExcerciseButton extends StatelessWidget {
 
 class SearchExcerciseButton extends StatelessWidget {
   const SearchExcerciseButton({
-    @required this.navSpread,
     @required this.screenWidth,
     Key key,
   }) : super(key: key);
   
-  final ValueNotifier<bool> navSpread;
   final double screenWidth;
 
   @override
@@ -97,14 +93,12 @@ class SearchExcerciseButton extends StatelessWidget {
           + "\nyour excercises",
           child: FloatingActionButton.extended(
             onPressed: (){
-              navSpread.value = true;
+              App.navSpread.value = true;
               Navigator.push(
                 context, 
                 PageTransition(
                   type: PageTransitionType.downToUp, 
-                  child: SearchExcercise(
-                    navSpread: navSpread,
-                  ),
+                  child: SearchExcercise(),
                 ),
               );
             },

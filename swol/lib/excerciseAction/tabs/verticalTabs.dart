@@ -115,7 +115,7 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
           //- ideally just make it impossible for the user to do something dumb
           setBreak: () => toPage(2),
         ),
-        Recovery( 
+        Recovery(
           excerciseID: widget.excerciseID,
           //NOTE: although at some point I thought the back button should trigger this too
           //that's silly the back button is a "short cut" since its only on android

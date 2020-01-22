@@ -8,6 +8,7 @@ import 'package:diacritic/diacritic.dart';
 //internal: excercise
 import 'package:swol/excercise/excerciseData.dart';
 import 'package:swol/excercise/excerciseStructure.dart';
+import 'package:swol/main.dart';
 
 //internal: other
 import 'package:swol/shared/widgets/simple/scrollToTop.dart';
@@ -15,12 +16,6 @@ import 'package:swol/excerciseListTile/excerciseTile.dart';
 import 'package:swol/excerciseSearch/searchesData.dart';
 
 class SearchExcercise extends StatefulWidget {
-  SearchExcercise({
-    @required this.navSpread,
-  });
-
-  final ValueNotifier<bool> navSpread;
-
   @override
   _SearchExcerciseState createState() => _SearchExcerciseState();
 }
@@ -278,7 +273,6 @@ class _SearchExcerciseState extends State<SearchExcercise> {
             return ExcerciseTile(
               excerciseID: ExcerciseData.getExcercises().value[queryResults[index]].id,
               tileInSearch: true,
-              navSpread: widget.navSpread,
             );
           },
         );
@@ -318,7 +312,7 @@ class _SearchExcerciseState extends State<SearchExcercise> {
     return WillPopScope(
       onWillPop: ()async{
         FocusScope.of(context).unfocus();
-        widget.navSpread.value = false;
+        App.navSpread.value = false;
         return true; //can still pop
       },
       child: Scaffold(
@@ -345,7 +339,7 @@ class _SearchExcerciseState extends State<SearchExcercise> {
                     children: <Widget>[
                       InkWell(
                         onTap: (){
-                          widget.navSpread.value= false;
+                          App.navSpread.value= false;
                           FocusScope.of(context).unfocus();
                           Navigator.pop(context);
                         },

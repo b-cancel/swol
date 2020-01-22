@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:swol/main.dart';
 import 'package:swol/shared/functions/theme.dart';
 
 class ConfirmActionMessage extends StatelessWidget {
@@ -11,7 +12,6 @@ class ConfirmActionMessage extends StatelessWidget {
     @required this.actionString,
     @required this.message,
     @required this.actionFunction,
-    @required this.navSpread,
   }) : super(key: key);
 
   final Color buttonColor;
@@ -21,7 +21,6 @@ class ConfirmActionMessage extends StatelessWidget {
   final String actionString;
   final Widget message;
   final Function actionFunction;
-  final ValueNotifier<bool> navSpread;
 
   @override
   Widget build(BuildContext context) {
@@ -103,7 +102,7 @@ class ConfirmActionMessage extends StatelessWidget {
               Navigator.of(context).pop();
 
               //show the changing nav bar
-              navSpread.value = false;
+              App.navSpread.value = false;
             },
             child: Text(
               "Yes, " + actionString,

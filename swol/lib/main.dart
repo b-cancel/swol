@@ -26,8 +26,14 @@ void main() => runApp(App());
 
 //required for loading pages to come up
 class App extends StatelessWidget {
+  //the cost of having a cool little animation that is trigger from EVERYWHERE
+  static ValueNotifier<bool> navSpread;
+
+  //build
   @override
   Widget build(BuildContext context) {
+    navSpread = new ValueNotifier<bool>(false);
+
     //its specifically designed for portrait mode
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,

@@ -5,8 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:swol/shared/widgets/simple/toLearnPage.dart';
 import 'package:swol/trainingTypes/trainingTypes.dart';
 
-//title: "Recovery Time",
-//subtitle: "Different training types require different recovery times",
+//widget
 class ExplainFunctionality extends StatelessWidget {
   const ExplainFunctionality({
     Key key,

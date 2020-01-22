@@ -14,18 +14,17 @@ import 'package:swol/excerciseListTile/oneRepMaxChip.dart';
 
 //internal: other
 import 'package:swol/excerciseAction/excercisePage.dart';
+import 'package:swol/main.dart';
 
 //widget
 class ExcerciseTile extends StatelessWidget { 
   ExcerciseTile({
     @required this.excerciseID,
     this.tileInSearch: false,
-    @required this.navSpread,
   });
 
   final int excerciseID;
   final bool tileInSearch;
-  final ValueNotifier<bool> navSpread;
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +54,7 @@ class ExcerciseTile extends StatelessWidget {
         }
 
         //travel to page
-        navSpread.value = true;
+        App.navSpread.value = true;
         Duration transitionDuration = Duration(milliseconds: 300);
         Navigator.push(
           context, 
@@ -66,7 +65,6 @@ class ExcerciseTile extends StatelessWidget {
             //WILL SET reloading leading to true
             child: ExcercisePage(
               excerciseID: excerciseID,
-              navSpread: navSpread,
               transitionDuration: transitionDuration,
             ),
           ),

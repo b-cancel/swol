@@ -17,6 +17,7 @@ import 'package:swol/excerciseAddition/secondary/save.dart';
 //internal other
 import 'package:swol/excerciseSelection/secondary/addNewHero.dart';
 import 'package:swol/excercise/excerciseStructure.dart';
+import 'package:swol/main.dart';
 import 'package:swol/other/functions/helper.dart';
 import 'package:swol/shared/functions/theme.dart';
 
@@ -39,7 +40,6 @@ import 'package:swol/shared/functions/theme.dart';
 class AddExcercise extends StatelessWidget {
   AddExcercise({
     Key key,
-    @required this.navSpread,
 
     //NOTE: 200 ms above the norm so they can see the sweat animation
     this.showPageDuration: const Duration(milliseconds: 500),
@@ -52,8 +52,6 @@ class AddExcercise extends StatelessWidget {
 
     this.sectionTransitionDuration: const Duration(milliseconds: 250),
   }) : super(key: key);
-
-  final ValueNotifier<bool> navSpread;
 
   final Duration showPageDuration;
   final Duration showListDuration;
@@ -153,7 +151,7 @@ class AddExcercise extends StatelessWidget {
     return WillPopScope(
       onWillPop: ()async{
         FocusScope.of(context).unfocus();
-        navSpread.value = false;
+        App.navSpread.value = false;
         return true; //can still pop
       },
       child: Scaffold(
@@ -175,7 +173,6 @@ class AddExcercise extends StatelessWidget {
                       right: 0,
                       child: AddNewHero(
                         inAppBar: true,
-                        navSpread: navSpread,
                       ),
                     ),
                     Positioned(
@@ -187,7 +184,6 @@ class AddExcercise extends StatelessWidget {
                           right: 8.0,
                         ),
                         child: SaveButton(
-                          navSpread: navSpread, 
                           delay: showPageDuration + delayBeforeSaveShow,
                           showSaveButton: showSaveButton, 
                           nameFocusNode: nameFocusNode,

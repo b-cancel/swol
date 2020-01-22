@@ -8,7 +8,6 @@ import 'package:swol/excercise/excerciseData.dart';
 
 //internal: other
 import 'package:swol/excerciseAction/notes/excerciseMessages.dart';
-import 'package:swol/shared/functions/theme.dart';
 import 'package:swol/sharedWidgets/playOnceGif.dart';
 
 //plugin
@@ -17,12 +16,10 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 class BigAction extends StatelessWidget {
   BigAction({
     @required this.excerciseID,
-    @required this.navSpread,
     @required this.delete,
   });
 
   final int excerciseID;
-  final ValueNotifier<bool> navSpread;
   final bool delete;
 
   //pop ups for archiving or deleting
@@ -96,7 +93,6 @@ class BigAction extends StatelessWidget {
             ? DeleteMessage(theName: theName) 
             : HideMessage(theName: theName), 
           actionFunction: actionFunction, 
-          navSpread: navSpread,
         ); 
       },
     );
@@ -138,11 +134,9 @@ class BigAction extends StatelessWidget {
 class ExcerciseNotes extends StatefulWidget {
   ExcerciseNotes({
     @required this.excerciseID,
-    @required this.navSpread,
   });
 
   final int excerciseID;
-  final ValueNotifier<bool> navSpread;
 
   @override
   _ExcerciseNotesState createState() => _ExcerciseNotesState();
@@ -205,12 +199,10 @@ class _ExcerciseNotesState extends State<ExcerciseNotes> {
         actions: [
           BigAction(
             excerciseID: widget.excerciseID,
-            navSpread: widget.navSpread,
             delete: false,
           ),
           BigAction(
             excerciseID: widget.excerciseID,
-            navSpread: widget.navSpread,
             delete: true,
           ),
         ],

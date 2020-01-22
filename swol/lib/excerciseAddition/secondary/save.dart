@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:swol/excercise/excerciseStructure.dart';
 import 'package:swol/excercise/defaultDateTimes.dart';
 import 'package:swol/excercise/excerciseData.dart';
+import 'package:swol/main.dart';
 
 //internal: shared
 import 'package:swol/shared/methods/extensions/sharedPreferences.dart';
@@ -27,7 +28,6 @@ class SaveButton extends StatefulWidget {
     @required this.repTarget,
     @required this.recoveryPeriod,
     @required this.setTarget,
-    @required this.navSpread,
     @required this.nameError,
     @required this.showSaveDuration,
   }) : super(key: key);
@@ -44,7 +44,6 @@ class SaveButton extends StatefulWidget {
   final ValueNotifier<int> repTarget;
   final ValueNotifier<Duration> recoveryPeriod;
   final ValueNotifier<int> setTarget;
-  final ValueNotifier<bool> navSpread;
   final ValueNotifier<bool> nameError;
   final Duration showSaveDuration;
 
@@ -157,7 +156,7 @@ class _SaveButtonState extends State<SaveButton> {
                 );
 
                 //exit pop up
-                widget.navSpread.value = false;
+                App.navSpread.value = false;
                 Navigator.pop(context);
               }
               else{

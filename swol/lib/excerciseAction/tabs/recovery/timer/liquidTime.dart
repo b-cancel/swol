@@ -112,6 +112,7 @@ class _LiquidTimeState extends State<LiquidTime> with TickerProviderStateMixin {
     );
   }
 
+  //TODO: confirm that going to learn from here doesn't break anything
   explainFunctionalityPopUp(int sectionWithInitialFocus){
     showDialog<void>(
       context: context,

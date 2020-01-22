@@ -9,17 +9,16 @@ import 'package:page_transition/page_transition.dart';
 
 //internal
 import 'package:swol/excerciseAddition/addExcercise.dart';
+import 'package:swol/main.dart';
 import 'package:swol/other/otherHelper.dart';
 
 class AddNewHero extends StatelessWidget {
   const AddNewHero({
     Key key,
     @required this.inAppBar,
-    @required this.navSpread,
   }) : super(key: key);
 
   final bool inAppBar;
-  final ValueNotifier<bool> navSpread;
 
   @override
   Widget build(BuildContext context) {
@@ -37,14 +36,12 @@ class AddNewHero extends StatelessWidget {
           builder: (context, child){
             return AddNewHeroHelper(
               percentToAppBar: animation.value,
-              navSpread: navSpread,
             );
           },
         );
       },
       child: AddNewHeroHelper(
         percentToAppBar: (inAppBar) ? 1 : 0,
-        navSpread: navSpread,
       ),
     );
   }
@@ -54,11 +51,9 @@ class AddNewHeroHelper extends StatelessWidget {
   const AddNewHeroHelper({
     Key key,
     @required this.percentToAppBar,
-    @required this.navSpread,
   }) : super(key: key);
 
   final double percentToAppBar;
-  final ValueNotifier<bool> navSpread;
 
   @override
   Widget build(BuildContext context) {
@@ -70,20 +65,19 @@ class AddNewHeroHelper extends StatelessWidget {
       if(percentToAppBar == 1){
         onTap = (){
           FocusScope.of(context).unfocus();
-          navSpread.value = false;
+          App.navSpread.value = false;
           Navigator.of(context).pop();
         };
       }
       else{
         onTap = (){
-          navSpread.value = true;
+          App.navSpread.value = true;
           Navigator.push(
             context, 
             PageTransition(
               duration: transitionDuration,
               type: PageTransitionType.downToUp, 
               child: AddExcercise(
-                navSpread: navSpread,
                 showPageDuration: transitionDuration,
               ),
             ),

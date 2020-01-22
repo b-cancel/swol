@@ -16,6 +16,7 @@ import 'package:swol/learn/sections/oneRepMax.dart';
 import 'package:swol/learn/sections/precautions.dart';
 import 'package:swol/learn/sections/research.dart';
 import 'package:swol/learn/sections/training.dart';
+import 'package:swol/main.dart';
 
 //internal: other
 import 'package:swol/shared/methods/extensions/sharedPreferences.dart';
@@ -25,12 +26,6 @@ import 'package:swol/shared/methods/extensions/sharedPreferences.dart';
 
 //build
 class LearnExcercise extends StatefulWidget {
-  LearnExcercise({
-    @required this.navSpread,
-  });
-
-  final ValueNotifier navSpread;
-
   @override
   _LearnExcerciseState createState() => _LearnExcerciseState();
 }
@@ -153,7 +148,7 @@ class _LearnExcerciseState extends State<LearnExcercise> {
 
     return WillPopScope(
       onWillPop: ()async{
-        widget.navSpread.value = false;
+        App.navSpread.value = false;
         return true; //can still pop
       },
       child: new Scaffold(
@@ -177,7 +172,7 @@ class _LearnExcerciseState extends State<LearnExcercise> {
             IconButton(
               icon: Icon(Icons.close),
               onPressed: (){
-                widget.navSpread.value = false;
+                App.navSpread.value = false;
                 Navigator.of(context).pop();
               },
             ),

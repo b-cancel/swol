@@ -14,16 +14,15 @@ import 'package:swol/excerciseAction/tabs/verticalTabs.dart';
 
 //internal: other
 import 'package:swol/basicFields/excerciseEdit.dart';
+import 'package:swol/main.dart';
 
 class ExcercisePage extends StatefulWidget {
   ExcercisePage({
     @required this.excerciseID,
-    @required this.navSpread,
     @required this.transitionDuration,
   });
 
   final int excerciseID;
-  final ValueNotifier<bool> navSpread;
   final Duration transitionDuration;
 
   @override
@@ -42,7 +41,6 @@ class _ExcercisePageState extends State<ExcercisePage> {
         type: PageTransitionType.rightToLeft, 
         child: ExcerciseNotes(
           excerciseID: widget.excerciseID,
-          navSpread: widget.navSpread,
         ),
       ),
     );
@@ -69,16 +67,14 @@ class _ExcercisePageState extends State<ExcercisePage> {
         //may have to unfocus
         FocusScope.of(context).unfocus();
         //animate the header
-        widget.navSpread.value = false;
+        App.navSpread.value = false;
         //can still pop
         return true; 
       },
       child: Scaffold(
         backgroundColor: Theme.of(context).primaryColorDark,
         appBar: AppBar(
-          leading: BackFromExcercise(
-            navSpread: widget.navSpread,
-          ),
+          leading: BackFromExcercise(),
           title: Material(
             color: Colors.transparent,
             child: InkWell(

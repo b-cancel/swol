@@ -22,13 +22,11 @@ class ExcerciseList extends StatefulWidget {
   ExcerciseList({
     @required this.autoScrollController,
     @required this.statusBarHeight,
-    @required this.navSpread,
     @required this.onTop,
   });
 
   final AutoScrollController autoScrollController;
   final double statusBarHeight;
-  final ValueNotifier<bool> navSpread;
   final ValueNotifier<bool> onTop;
 
   @override
@@ -272,7 +270,6 @@ class _ExcerciseListState extends State<ExcerciseList> {
                         itemBuilder: (context, index){
                           return ExcerciseTile(
                             excerciseID: thisGroup[index].id,
-                            navSpread: widget.navSpread,
                           );
                         },
                       ),
@@ -366,7 +363,6 @@ class _ExcerciseListState extends State<ExcerciseList> {
           slivers: finalWidgetList,
         ),
         SearchExcerciseButton(
-          navSpread: widget.navSpread,
           screenWidth: screenWidth,
         ),
       ],
