@@ -4,13 +4,13 @@ import 'package:flutter/material.dart';
 //plugins
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:direct_select_flutter/direct_select_container.dart';
+import 'package:swol/excerciseAddition/reloadingCard.dart';
 
 //internal from addition
 import 'package:swol/excerciseAddition/secondary/sections/predictionFunction.dart';
 import 'package:swol/excerciseAddition/secondary/sections/recoveryTime.dart';
 import 'package:swol/excerciseAddition/secondary/sections/repTarget.dart';
 import 'package:swol/excerciseAddition/secondary/sections/setTarget.dart';
-import 'package:swol/excerciseAddition/addExcerciseBasicCards.dart';
 import 'package:swol/excerciseAddition/addExcerciseTip.dart';
 import 'package:swol/excerciseAddition/secondary/save.dart';
 
@@ -19,6 +19,9 @@ import 'package:swol/excerciseSelection/secondary/addNewHero.dart';
 import 'package:swol/excercise/excerciseStructure.dart';
 import 'package:swol/main.dart';
 import 'package:swol/other/functions/helper.dart';
+import 'package:swol/shared/widgets/complex/fields/link.dart';
+import 'package:swol/shared/widgets/complex/fields/name.dart';
+import 'package:swol/shared/widgets/complex/fields/notes.dart';
 
 //TODO *IMPROVEMENT*: remove strange extra padding on top of name
 //TODO *IMPROVEMENT*: swiping left and right on the 3 settings make the value go up and down
@@ -111,19 +114,26 @@ class AddExcercise extends StatelessWidget {
 
     //each section
     List<Widget> sections = [
-      NameCard(
-        name: name, 
-        nameError: nameError, 
-        namePresent: namePresent, 
-        nameFocusNode: nameFocusNode,
-        noteFocusNode: noteFocusNode,
+      BasicCard(
+        notifier: nameError,
+        child: NameField(
+          nameToUpdate: name, 
+          showError: nameError, 
+          namePresent: namePresent, 
+          nameFocusNode: nameFocusNode,
+          noteFocusNode: noteFocusNode,
+          autofocus: false,
+        ),
       ),
-      NotesCard(
-        note: note, 
-        noteFocusNode: noteFocusNode,
+      BasicCard(
+        child: NotesField(
+          noteToUpdate: note,
+          noteFocusNode: noteFocusNode,
+        ),
       ),
-      LinkCard(
-        url: url,
+      BasicCard(
+        notifier: url,
+        child: ReferenceLink(url: url),
       ),
       RecoveryTimeCard(
         changeDuration: sectionTransitionDuration,

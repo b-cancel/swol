@@ -11,13 +11,13 @@ import 'package:swol/learn/shared.dart';
 class NotesField extends StatelessWidget {
   NotesField({
     this.editOneAtATime: false,
-    @required this.valueToUpdate,
-    this.focusNode,
+    @required this.noteToUpdate,
+    this.noteFocusNode,
   });
 
   final bool editOneAtATime;
-  final ValueNotifier<String> valueToUpdate;
-  final FocusNode focusNode;
+  final ValueNotifier<String> noteToUpdate;
+  final FocusNode noteFocusNode;
 
   @override
   Widget build(BuildContext context) {
@@ -35,11 +35,11 @@ class NotesField extends StatelessWidget {
         ),
         TextFieldWithClearButton(
           editOneAtAtTime: editOneAtATime,
-          valueToUpdate: valueToUpdate,
+          valueToUpdate: noteToUpdate,
           hint: "Details", 
           error: null, 
           //so we can link up both fields
-          focusNode: focusNode,
+          focusNode: noteFocusNode,
         ),
       ],
     );

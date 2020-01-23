@@ -39,16 +39,16 @@ class BasicEditor extends StatelessWidget {
         children: <Widget>[
           NameField(
             editOneAtATime: editOneAtAtTime,
-            valueToUpdate: name,
+            nameToUpdate: name,
             showError: nameError,
             autofocus: true,
             namePresent: namePresent,
-            otherFocusNode: noteFocusNode,
+            noteFocusNode: noteFocusNode,
           ),
           NotesField(
             editOneAtATime: editOneAtAtTime,
-            valueToUpdate: note,
-            focusNode: noteFocusNode,
+            noteToUpdate: note,
+            noteFocusNode: noteFocusNode,
           ),
           ReferenceLink(
             url: url,

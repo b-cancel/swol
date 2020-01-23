@@ -11,21 +11,21 @@ import 'package:swol/learn/shared.dart';
 class NameField extends StatelessWidget {
   NameField({
     this.editOneAtATime: false,
-    this.focusNode,
-    @required this.valueToUpdate,
+    this.nameFocusNode,
+    @required this.nameToUpdate,
     @required this.showError,
     @required this.autofocus,
     @required this.namePresent,
-    @required this.otherFocusNode,
+    @required this.noteFocusNode,
   });
 
   final bool editOneAtATime;
-  final FocusNode focusNode;
-  final ValueNotifier<String> valueToUpdate;
+  final FocusNode nameFocusNode;
+  final ValueNotifier<String> nameToUpdate;
   final ValueNotifier<bool> showError;
   final bool autofocus;
   final ValueNotifier<bool> namePresent;
-  final FocusNode otherFocusNode;
+  final FocusNode noteFocusNode;
 
   @override
   Widget build(BuildContext context) {
@@ -43,8 +43,8 @@ class NameField extends StatelessWidget {
         ),
         TextFieldWithClearButton(
           editOneAtAtTime: editOneAtATime,
-          valueToUpdate: valueToUpdate,
-          focusNode: focusNode,
+          valueToUpdate: nameToUpdate,
+          focusNode: nameFocusNode,
           hint: "Required*", 
           error: (showError.value) ? "Name Is Required" : null, 
           //auto focus field (this is handled by the save button)
@@ -52,7 +52,7 @@ class NameField extends StatelessWidget {
           //we need to keep track above to determine whether we can active the button
           present: namePresent, 
           //so next focuses on the note
-          otherFocusNode: otherFocusNode,
+          otherFocusNode: noteFocusNode,
         ),
       ],
     );
