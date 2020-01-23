@@ -24,6 +24,13 @@ import 'package:swol/shared/methods/extensions/sharedPreferences.dart';
 //https://pub.dev/packages/expandable
 //https://stackoverflow.com/questions/54986328/how-to-make-expandable-card
 
+//NOTE: it seems like it might work to use a solid height
+//and simply scroll to top while the widget is opening
+//but it doesn't work
+//1. jumpTo is jerky, doesnt land in the right spot and we don't know how long its going to take
+//2. animateTo doesn't even work at all
+//3. scrollToIndex doesnt work with solid heights
+
 //build
 class LearnExcercise extends StatefulWidget {
   @override

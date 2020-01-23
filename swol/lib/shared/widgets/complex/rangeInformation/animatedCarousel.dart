@@ -54,7 +54,7 @@ class _AnimatedRangeInformationState extends State<AnimatedRangeInformation> {
     else{
       carousel.animateToPage(
         sectionGrown, 
-        duration: Duration(milliseconds: 250), 
+        animationDuration: Duration(milliseconds: 250), 
         curve: Curves.easeInOut,
       );
     }

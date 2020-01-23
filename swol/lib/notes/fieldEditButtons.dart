@@ -30,7 +30,7 @@ class FieldEditButtons extends StatelessWidget {
           children: <Widget>[
             (twoButtons == false) ? Container()
             : _BigButton(
-              onPressed: onPressTop, 
+              onPressed: () => onPressTop(), 
               icon: topIcon, 
               buttonColor: buttonColor, 
               iconColor: iconColor,
@@ -39,7 +39,7 @@ class FieldEditButtons extends StatelessWidget {
             : _ButtonSpacer(isDark: darkButtons == false),
             _BigButton(
               onPressed: () => onPressBottom(),
-              icon: topIcon,  
+              icon: bottomIcon,  
               buttonColor: buttonColor, 
               iconColor: iconColor,
             ),
