@@ -29,29 +29,19 @@ class OneOrTwoButtons extends StatelessWidget {
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
             (twoButtons == false) ? Container()
-            : Expanded(
-              child: FlatButton(
-                onPressed: () => onPressTop(),
-                padding: EdgeInsets.all(0),
-                color: buttonColor,
-                child: Icon(
-                  topIcon,
-                  color: iconColor,
-                ),
-              ),
+            : _BigButton(
+              onPressed: onPressTop, 
+              icon: topIcon, 
+              buttonColor: buttonColor, 
+              iconColor: iconColor,
             ),
             (twoButtons == false) ? Container() 
             : _ButtonSpacer(isDark: darkButtons == false),
-            Expanded(
-              child: FlatButton(
-                padding: EdgeInsets.all(0),
-                color: buttonColor,
-                onPressed: () => onPressBottom(),
-                child: Icon(
-                  bottomIcon,
-                  color: iconColor,
-                ),
-              ),
+            _BigButton(
+              onPressed: () => onPressBottom(),
+              icon: topIcon,  
+              buttonColor: buttonColor, 
+              iconColor: iconColor,
             ),
           ],
         ),
@@ -60,28 +50,35 @@ class OneOrTwoButtons extends StatelessWidget {
   }
 }
 
-/*
-onPressed: (){
-              widget.url.value = "";
-              isEditing.value = false;
-            },
-            child: Container(
-              padding: EdgeInsets.all(0),
-              child: (widget.url.value == "") 
-              ? Container()
-              : Icon(Icons.close),
-            )
-*/
+class _BigButton extends StatelessWidget {
+  const _BigButton({
+    Key key,
+    @required this.onPressed,
+    @required this.buttonColor,
+    @required this.icon,
+    @required this.iconColor,
+  }) : super(key: key);
 
-/*
-  onPressed: (){
-            isEditing.value = !isEditing.value;
-          },
-          child: Icon(
-            (isEditing.value) ? Icons.check : Icons.edit,
-            color: Theme.of(context).primaryColorDark,
-          ),
-*/
+  final Function onPressed;
+  final Color buttonColor;
+  final IconData icon;
+  final Color iconColor;
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: FlatButton(
+        onPressed: () => onPressed(),
+        padding: EdgeInsets.all(0),
+        color: buttonColor,
+        child: Icon(
+          icon,
+          color: iconColor,
+        ),
+      ),
+    );
+  }
+}
 
 class _ButtonSpacer extends StatelessWidget {
   _ButtonSpacer({
