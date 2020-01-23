@@ -2,13 +2,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-//internal
-import 'package:swol/shared/widgets/simple/ourSnackBar.dart';
-import 'package:swol/basicFields/buttonSpacer.dart';
-
 //plugin
 import 'package:url_launcher/url_launcher.dart';
 
+//internal
+import 'package:swol/shared/widgets/simple/ourSnackBar.dart';
+import 'package:swol/notes/fieldEditButtons.dart';
+
+//widgets
 class ReferenceLinkBox extends StatefulWidget {
   const ReferenceLinkBox({
     Key key,
@@ -75,7 +76,7 @@ class _ReferenceLinkBoxState extends State<ReferenceLinkBox> {
     else{
       bool twoButtons = (widget.editOneAtAtTime);
 
-      confirmAndClearButton = OneOrTwoButtons(
+      confirmAndClearButton = FieldEditButtons(
         darkButtons: true,
         onPressTop: (){
           isEditing.value = false;

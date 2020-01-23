@@ -5,9 +5,9 @@ import 'package:swol/basicFields/excerciseEdit.dart';
 //internl: excercise
 import 'package:swol/excercise/defaultDateTimes.dart';
 import 'package:swol/excercise/excerciseData.dart';
+import 'package:swol/notes/excerciseMessages.dart';
 
 //internal: other
-import 'package:swol/excerciseAction/notes/excerciseMessages.dart';
 import 'package:swol/sharedWidgets/playOnceGif.dart';
 
 //plugin

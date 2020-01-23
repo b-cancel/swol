@@ -8,14 +8,13 @@ import 'package:page_transition/page_transition.dart';
 import 'package:swol/excercise/excerciseStructure.dart';
 import 'package:swol/excercise/excerciseData.dart';
 
-//internal: action
-import 'package:swol/excerciseAction/notes/excerciseNotes.dart';
+//internal
 import 'package:swol/excerciseAction/tabs/verticalTabs.dart';
-
-//internal: other
 import 'package:swol/basicFields/excerciseEdit.dart';
+import 'package:swol/notes/excerciseNotes.dart';
 import 'package:swol/main.dart';
 
+//widgets
 class ExcercisePage extends StatefulWidget {
   ExcercisePage({
     @required this.excerciseID,

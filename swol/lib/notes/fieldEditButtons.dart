@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class OneOrTwoButtons extends StatelessWidget {
-  OneOrTwoButtons({
+class FieldEditButtons extends StatelessWidget {
+  FieldEditButtons({
     @required this.darkButtons,
     @required this.onPressTop,
     @required this.topIcon,

@@ -1,6 +1,6 @@
 //flutter
 import 'package:flutter/material.dart';
-import 'package:swol/basicFields/buttonSpacer.dart';
+import 'package:swol/notes/fieldEditButtons.dart';
 
 //internal
 import 'package:swol/shared/widgets/simple/ourSnackBar.dart';
@@ -268,7 +268,7 @@ class _TextFieldWithClearButtonState extends State<TextFieldWithClearButton> {
       twoButtons = (tempValueToUpdate.value != widget.valueToUpdate.value);
     }
 
-    Widget allButtons = OneOrTwoButtons(
+    Widget allButtons = FieldEditButtons(
       darkButtons: false,
       onPressTop: (){
         //go back to what you had previously
