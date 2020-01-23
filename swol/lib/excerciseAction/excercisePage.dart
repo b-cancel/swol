@@ -11,8 +11,8 @@ import 'package:swol/excercise/excerciseData.dart';
 //internal
 import 'package:swol/excerciseAction/tabs/verticalTabs.dart';
 import 'package:swol/pages/notes/excerciseNotes.dart';
-import 'package:swol/basicFields/excerciseEdit.dart';
 import 'package:swol/main.dart';
+import 'package:swol/shared/widgets/simple/backButton.dart';
 
 //widgets
 class ExcercisePage extends StatefulWidget {

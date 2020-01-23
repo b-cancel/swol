@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 
 //internal
 import 'package:swol/shared/widgets/complex/fields/headers/fieldHeader.dart';
-import 'package:swol/basicFields/referenceLink.dart';
+import 'package:swol/shared/widgets/complex/fields/link/linkEditor.dart';
 import 'package:swol/shared/functions/theme.dart';
 
 //widgets
-class ReferenceLink extends StatelessWidget {
-  ReferenceLink({
+class LinkField extends StatelessWidget {
+  LinkField({
     this.editOneAtATime: false,
     @required this.url,
   });
@@ -30,9 +30,9 @@ class ReferenceLink extends StatelessWidget {
             body: _LinkPopUpBody(),
           ),
         ),
-        ReferenceLinkBox(
+        LinkEditor(
           url: url,
-          editOneAtAtTime: editOneAtATime,
+          editOneAtATime: editOneAtATime,
         ),
       ],
     );

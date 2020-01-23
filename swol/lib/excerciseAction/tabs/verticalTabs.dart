@@ -138,7 +138,9 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
 
     //travel to the page that has initial focus
     WidgetsBinding.instance.addPostFrameCallback((_){
-      toPage((rng.nextInt(3)).clamp(0, 2), instant: true);
+      WidgetsBinding.instance.addPostFrameCallback((_){
+        toPage((rng.nextInt(3)).clamp(0, 2), instant: true);
+      });
     });
 
     //handle goal set caluclation and display

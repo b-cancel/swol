@@ -31,51 +31,31 @@ class FieldEditButtons extends StatelessWidget {
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
             (twoButtons == false) ? Container()
-            : _BigButton(
-              onPressed: () => onPressTop(), 
-              icon: topIcon, 
-              buttonColor: buttonColor, 
-              iconColor: iconColor,
+            : Expanded(
+              child: FlatButton(
+                onPressed: () => onPressTop(),
+                padding: EdgeInsets.all(0),
+                color: buttonColor,
+                child: Icon(
+                  topIcon,  
+                  color: iconColor,
+                ),
+              ),
             ),
             (twoButtons == false) ? Container() 
             : _ButtonSpacer(isDark: darkButtons == false),
-            _BigButton(
-              onPressed: () => onPressBottom(),
-              icon: bottomIcon,  
-              buttonColor: buttonColor, 
-              iconColor: iconColor,
+            Expanded(
+              child: FlatButton(
+                onPressed: () => onPressBottom(),
+                padding: EdgeInsets.all(0),
+                color: buttonColor,
+                child: Icon(
+                  bottomIcon,  
+                  color: iconColor,
+                ),
+              ),
             ),
           ],
-        ),
-      ),
-    );
-  }
-}
-
-class _BigButton extends StatelessWidget {
-  const _BigButton({
-    Key key,
-    @required this.onPressed,
-    @required this.buttonColor,
-    @required this.icon,
-    @required this.iconColor,
-  }) : super(key: key);
-
-  final Function onPressed;
-  final Color buttonColor;
-  final IconData icon;
-  final Color iconColor;
-
-  @override
-  Widget build(BuildContext context) {
-    return Expanded(
-      child: FlatButton(
-        onPressed: () => onPressed(),
-        padding: EdgeInsets.all(0),
-        color: buttonColor,
-        child: Icon(
-          icon,
-          color: iconColor,
         ),
       ),
     );

@@ -10,6 +10,7 @@ import 'package:swol/excercise/excerciseData.dart';
 
 //internal: other
 import 'package:swol/pages/notes/excerciseMessages.dart';
+import 'package:swol/shared/widgets/simple/backButton.dart';
 import 'package:swol/sharedWidgets/playOnceGif.dart';
 import 'package:swol/basicFields/excerciseEdit.dart';
 

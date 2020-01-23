@@ -2,10 +2,9 @@
 import 'package:flutter/material.dart';
 
 //internal
-import 'package:swol/main.dart';
+import 'package:swol/shared/widgets/complex/fields/link/linkEditor.dart';
 import 'package:swol/shared/widgets/complex/fields/name.dart';
 import 'package:swol/shared/widgets/complex/fields/notes.dart';
-import 'package:swol/shared/widgets/complex/fields/link.dart';
 
 //editor of basic variables "name", "note", "url"
 class BasicEditor extends StatelessWidget {
@@ -50,37 +49,12 @@ class BasicEditor extends StatelessWidget {
             noteToUpdate: note,
             noteFocusNode: noteFocusNode,
           ),
-          ReferenceLink(
+          LinkEditor(
             url: url,
             editOneAtATime: editOneAtAtTime,
           ),
         ],
       ),
-    );
-  }
-}
-
-class BackFromExcercise extends StatelessWidget {
-  const BackFromExcercise({
-    Key key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return IconButton(
-      icon: Icon(Icons.chevron_left),
-      color: Theme.of(context).iconTheme.color,
-      tooltip: MaterialLocalizations.of(context).backButtonTooltip,
-      onPressed: () {
-        //close keyboard if perhaps typing next set
-        FocusScope.of(context).unfocus();
-
-        //navigator
-        App.navSpread.value = false;
-        
-        //to excercise do, or excercise list page
-        Navigator.of(context).pop();
-      },
     );
   }
 }
