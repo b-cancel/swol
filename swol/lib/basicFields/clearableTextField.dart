@@ -1,10 +1,11 @@
 //flutter
 import 'package:flutter/material.dart';
-import 'package:swol/notes/fieldEditButtons.dart';
 
 //internal
 import 'package:swol/shared/widgets/simple/ourSnackBar.dart';
+import 'package:swol/pages/notes/fieldEditButtons.dart';
 
+//widget
 class TextFieldWithClearButton extends StatefulWidget {
   const TextFieldWithClearButton({
     Key key,

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+//NOTE: eventhough this is only used for a shared widget
+//the shared widget uses it ONLY for the notes section
 class FieldEditButtons extends StatelessWidget {
   FieldEditButtons({
     @required this.darkButtons,

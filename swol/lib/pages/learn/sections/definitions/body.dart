@@ -1,10 +1,9 @@
 //flutter
 import 'package:flutter/material.dart';
 
-
 //internal
-import 'package:swol/learn/sections/definitions/definition.dart';
-import 'package:swol/learn/description.dart';
+import 'package:swol/pages/learn/sections/definitions/definition.dart';
+import 'package:swol/pages/learn/description.dart';
 
 //widget
 class DefinitionBody extends StatelessWidget {

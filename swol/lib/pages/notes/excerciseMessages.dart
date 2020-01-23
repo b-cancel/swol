@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:swol/main.dart';
 import 'package:swol/shared/functions/theme.dart';
 
+//TODO: standardize this formatting so all of our other pop ups with large actions can use it
+//TODO: also should be able to merge with the EULA widget 
 class ConfirmActionMessage extends StatelessWidget {
   const ConfirmActionMessage({
     Key key,

@@ -1,20 +1,119 @@
 //flutter
 import 'package:flutter/material.dart';
-import 'package:swol/basicFields/excerciseEdit.dart';
-
-//internl: excercise
-import 'package:swol/excercise/defaultDateTimes.dart';
-import 'package:swol/excercise/excerciseData.dart';
-import 'package:swol/notes/excerciseMessages.dart';
-
-//internal: other
-import 'package:swol/sharedWidgets/playOnceGif.dart';
 
 //plugin
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class BigAction extends StatelessWidget {
-  BigAction({
+//internl: excercise
+import 'package:swol/excercise/defaultDateTimes.dart';
+import 'package:swol/excercise/excerciseData.dart';
+
+//internal: other
+import 'package:swol/pages/notes/excerciseMessages.dart';
+import 'package:swol/sharedWidgets/playOnceGif.dart';
+import 'package:swol/basicFields/excerciseEdit.dart';
+
+//widget
+class ExcerciseNotes extends StatefulWidget {
+  ExcerciseNotes({
+    @required this.excerciseID,
+  });
+
+  final int excerciseID;
+
+  @override
+  _ExcerciseNotesState createState() => _ExcerciseNotesState();
+}
+
+class _ExcerciseNotesState extends State<ExcerciseNotes> {
+  //basics
+  ValueNotifier<bool> namePresent = new ValueNotifier(false);
+  ValueNotifier<bool> nameError = new ValueNotifier(false);
+  ValueNotifier<String> name = new ValueNotifier("");
+  ValueNotifier<String> note = new ValueNotifier("");
+  ValueNotifier<String> url = new ValueNotifier("");
+
+  //listener function
+  updateName(){
+    //NOTE: name will only be set if its NOT EMTPY
+    ExcerciseData.updateExcercise(widget.excerciseID, name: name.value);
+  }
+
+  updateNote(){
+    ExcerciseData.updateExcercise(widget.excerciseID, note: note.value);
+  }
+
+  updateUrl(){
+    ExcerciseData.updateExcercise(widget.excerciseID, url: url.value);
+  }
+
+  @override
+  void initState() { 
+    //super init
+    super.initState();
+
+    //set initial values of ValueNotifiers
+    name.value = ExcerciseData.getExcercises().value[widget.excerciseID].name;
+    note.value = ExcerciseData.getExcercises().value[widget.excerciseID].note;
+    url.value = ExcerciseData.getExcercises().value[widget.excerciseID].url;
+
+    name.addListener(updateName);
+    note.addListener(updateNote);
+    url.addListener(updateUrl);
+  }
+
+  @override
+  void dispose() { 
+    name.removeListener(updateName);
+    note.removeListener(updateNote);
+    url.removeListener(updateUrl);
+    
+    //super dispose
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      appBar: AppBar(
+        leading: BackFromExcercise(),
+        title: Text("Notes"),
+        actions: [
+          BigActionButton(
+            excerciseID: widget.excerciseID,
+            delete: false,
+          ),
+          BigActionButton(
+            excerciseID: widget.excerciseID,
+            delete: true,
+          ),
+        ],
+      ),
+      body: ListView(
+        children: <Widget>[
+          Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: 16,
+              vertical: 8,
+            ),
+            child: BasicEditor(
+              namePresent: namePresent,
+              nameError: nameError,
+              name: name,
+              note: note,
+              url: url,
+              editOneAtAtTime: true,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class BigActionButton extends StatelessWidget {
+  BigActionButton({
     @required this.excerciseID,
     @required this.delete,
   });
@@ -126,104 +225,6 @@ class BigAction extends StatelessWidget {
             ),
           ),
         ),
-      ),
-    );
-  }
-}
-
-class ExcerciseNotes extends StatefulWidget {
-  ExcerciseNotes({
-    @required this.excerciseID,
-  });
-
-  final int excerciseID;
-
-  @override
-  _ExcerciseNotesState createState() => _ExcerciseNotesState();
-}
-
-class _ExcerciseNotesState extends State<ExcerciseNotes> {
-  //basics
-  ValueNotifier<bool> namePresent = new ValueNotifier(false);
-  ValueNotifier<bool> nameError = new ValueNotifier(false);
-  ValueNotifier<String> name = new ValueNotifier("");
-  ValueNotifier<String> note = new ValueNotifier("");
-  ValueNotifier<String> url = new ValueNotifier("");
-
-  //listener function
-  updateName(){
-    //NOTE: name will only be set if its NOT EMTPY
-    ExcerciseData.updateExcercise(widget.excerciseID, name: name.value);
-  }
-
-  updateNote(){
-    ExcerciseData.updateExcercise(widget.excerciseID, note: note.value);
-  }
-
-  updateUrl(){
-    ExcerciseData.updateExcercise(widget.excerciseID, url: url.value);
-  }
-
-  @override
-  void initState() { 
-    //super init
-    super.initState();
-
-    //set initial values of ValueNotifiers
-    name.value = ExcerciseData.getExcercises().value[widget.excerciseID].name;
-    note.value = ExcerciseData.getExcercises().value[widget.excerciseID].note;
-    url.value = ExcerciseData.getExcercises().value[widget.excerciseID].url;
-
-    name.addListener(updateName);
-    note.addListener(updateNote);
-    url.addListener(updateUrl);
-  }
-
-  @override
-  void dispose() { 
-    name.removeListener(updateName);
-    note.removeListener(updateNote);
-    url.removeListener(updateUrl);
-    
-    //super dispose
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      appBar: AppBar(
-        leading: BackFromExcercise(),
-        title: Text("Notes"),
-        actions: [
-          BigAction(
-            excerciseID: widget.excerciseID,
-            delete: false,
-          ),
-          BigAction(
-            excerciseID: widget.excerciseID,
-            delete: true,
-          ),
-        ],
-      ),
-      body: ListView(
-        children: <Widget>[
-          Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: 16,
-              vertical: 8,
-            ),
-            child: BasicEditor(
-              namePresent: namePresent,
-              nameError: nameError,
-              name: name,
-              note: note,
-              url: url,
-              editOneAtAtTime: true,
-            ),
-          ),
-        ],
       ),
     );
   }

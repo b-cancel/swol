@@ -12,7 +12,7 @@ import 'package:page_transition/page_transition.dart';
 import 'package:swol/shared/widgets/complex/onBoarding/wrapper.dart';
 import 'package:swol/excerciseSelection/secondary/decoration.dart';
 import 'package:swol/shared/functions/onboarding.dart';
-import 'package:swol/learn/page.dart';
+import 'package:swol/pages/learn/page.dart';
 import 'package:swol/main.dart';
 
 class AnimatedTitleAction extends StatelessWidget {

@@ -7,7 +7,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 //internal
 import 'package:swol/shared/widgets/simple/ourSnackBar.dart';
-import 'package:swol/notes/fieldEditButtons.dart';
+import 'package:swol/pages/notes/fieldEditButtons.dart';
 
 //widgets
 class ReferenceLinkBox extends StatefulWidget {
@@ -88,24 +88,6 @@ class _ReferenceLinkBoxState extends State<ReferenceLinkBox> {
           isEditing.value = false;
         },
         bottomIcon: Icons.close,
-        /*
-        bottom: Expanded(
-          child: FlatButton(
-            padding: EdgeInsets.all(0),
-            color: Theme.of(context).primaryColor,
-            onPressed: (){
-              widget.url.value = "";
-              isEditing.value = false;
-            },
-            child: Container(
-              padding: EdgeInsets.all(0),
-              child: (widget.url.value == "") 
-              ? Container()
-              : Icon(Icons.close),
-            )
-          ),
-        ),
-        */
       );
     }
 

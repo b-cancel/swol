@@ -6,8 +6,8 @@ import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
 
 //internal
-import 'package:swol/learn/expandableTile/header.dart';
-import 'package:swol/learn/expandableTile/body.dart';
+import 'package:swol/pages/learn/expandableTile/header.dart';
+import 'package:swol/pages/learn/expandableTile/body.dart';
 
 //widget
 class ExpandableTile extends StatefulWidget {

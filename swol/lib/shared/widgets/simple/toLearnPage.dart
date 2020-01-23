@@ -6,7 +6,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:page_transition/page_transition.dart';
 
 //internal
-import 'package:swol/learn/page.dart';
+import 'package:swol/pages/learn/page.dart';
 import 'package:swol/main.dart';
 
 //we don't need to do anything complex to get to the main page

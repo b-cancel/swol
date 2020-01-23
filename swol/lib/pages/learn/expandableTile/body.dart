@@ -6,8 +6,8 @@ import 'package:flutter_icons/flutter_icons.dart';
 import 'package:shimmer/shimmer.dart';
 
 //widget
-class TileOpened extends StatelessWidget {
-  const TileOpened({
+class TileBody extends StatelessWidget {
+  const TileBody({
     @required this.child,
     @required this.theOnlyException,
     Key key,
