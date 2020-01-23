@@ -6,8 +6,9 @@ import 'package:direct_select_flutter/direct_select_item.dart';
 import 'package:direct_select_flutter/direct_select_list.dart';
 import 'package:bot_toast/bot_toast.dart';
 
+
 //internal
-import 'package:swol/shared/widgets/complex/settingHeaders/headerWithInfoButton.dart';
+import 'package:swol/shared/widgets/complex/fields/headers/headerWithInfoButton.dart';
 import 'package:swol/other/functions/helper.dart';
 
 //widget

@@ -1,12 +1,10 @@
 //flutter
 import 'package:flutter/material.dart';
 
-//internal: basic
-import 'package:swol/basicFields/clearableTextField.dart';
-import 'package:swol/basicFields/referenceLink.dart';
-
-//internal: shared
-import 'package:swol/shared/widgets/complex/settingHeaders/headerWithInfoButton.dart';
+//internal
+import 'package:swol/shared/widgets/complex/fields/name.dart';
+import 'package:swol/shared/widgets/complex/fields/notes.dart';
+import 'package:swol/shared/widgets/complex/fields/link.dart';
 
 //widget
 class NameCard extends StatefulWidget {
@@ -52,7 +50,6 @@ class _NameCardState extends State<NameCard> {
   Widget build(BuildContext context) {
     return BasicCard(
       child: NameField(
-        editOneAtATime: false,
         valueToUpdate: widget.name,
         focusNode: widget.nameFocusNode,
         showError: widget.nameError,
@@ -78,7 +75,6 @@ class NotesCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return BasicCard(
       child: NotesField(
-        editOneAtATime: false,
         valueToUpdate: note,
         focusNode: noteFocusNode,
       ),
@@ -118,16 +114,7 @@ class _LinkCardState extends State<LinkCard> {
   @override
   Widget build(BuildContext context) {
     return BasicCard(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          ReferenceLinkHeader(),
-          ReferenceLinkBox(
-            url: widget.url,
-            editOneAtAtTime: false,
-          ),
-        ],
-      ),
+      child: ReferenceLink(url: widget.url),
     );
   }
 }

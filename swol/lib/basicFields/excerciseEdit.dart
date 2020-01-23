@@ -1,13 +1,11 @@
 //flutter
 import 'package:flutter/material.dart';
 
-//internal: basic
-import 'package:swol/basicFields/clearableTextField.dart';
-import 'package:swol/basicFields/referenceLink.dart';
+//internal
 import 'package:swol/main.dart';
-
-//internal: shared
-import 'package:swol/shared/widgets/complex/settingHeaders/headerWithInfoButton.dart';
+import 'package:swol/shared/widgets/complex/fields/name.dart';
+import 'package:swol/shared/widgets/complex/fields/notes.dart';
+import 'package:swol/shared/widgets/complex/fields/link.dart';
 
 //editor of basic variables "name", "note", "url"
 class BasicEditor extends StatelessWidget {
@@ -42,7 +40,6 @@ class BasicEditor extends StatelessWidget {
           NameField(
             editOneAtATime: editOneAtAtTime,
             valueToUpdate: name,
-            focusNode: null,
             showError: nameError,
             autofocus: true,
             namePresent: namePresent,
@@ -53,10 +50,9 @@ class BasicEditor extends StatelessWidget {
             valueToUpdate: note,
             focusNode: noteFocusNode,
           ),
-          ReferenceLinkHeader(),
-          ReferenceLinkBox(
+          ReferenceLink(
             url: url,
-            editOneAtAtTime: editOneAtAtTime,
+            editOneAtATime: editOneAtAtTime,
           ),
         ],
       ),

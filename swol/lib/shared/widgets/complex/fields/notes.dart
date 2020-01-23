@@ -1,43 +1,53 @@
+//flutter
 import 'package:flutter/material.dart';
+
+//internal
+import 'package:swol/shared/widgets/complex/fields/headers/headerWithInfoButton.dart';
+import 'package:swol/basicFields/clearableTextField.dart';
+import 'package:swol/shared/functions/theme.dart';
 import 'package:swol/learn/shared.dart';
 
-class ReferenceLinkPopUpBody extends StatelessWidget {
-  const ReferenceLinkPopUpBody({
-    Key key,
-  }) : super(key: key);
+//widgets
+class NotesField extends StatelessWidget {
+  NotesField({
+    this.editOneAtATime: false,
+    @required this.valueToUpdate,
+    this.focusNode,
+  });
+
+  final bool editOneAtATime;
+  final ValueNotifier<String> valueToUpdate;
+  final FocusNode focusNode;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.only(
-        left: 32,
-        right: 32,
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Container(
-            alignment: Alignment.centerLeft,
-            child: Text(
-              "It's helpful to have an external resource at hand\n",
-            ),
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        Theme(
+          data: MyTheme.light,
+          child: HeaderWithInfo(
+            header: "Notes",
+            title: "Excercise Note",
+            subtitle: "Details",
+            body: _NotePopUpBody(),
           ),
-          Container(
-            alignment: Alignment.centerLeft,
-            child: Text(
-              "Link a video or image of the proper form, or anything else that might help you excercise safely and correctly",
-            ),
-          ),
-        ],
-      ),
+        ),
+        TextFieldWithClearButton(
+          editOneAtAtTime: editOneAtATime,
+          valueToUpdate: valueToUpdate,
+          hint: "Details", 
+          error: null, 
+          //so we can link up both fields
+          focusNode: focusNode,
+        ),
+      ],
     );
   }
 }
 
-class ExcerciseNotePopUpBody extends StatelessWidget {
-  const ExcerciseNotePopUpBody({
+class _NotePopUpBody extends StatelessWidget {
+  const _NotePopUpBody({
     Key key,
   }) : super(key: key);
 

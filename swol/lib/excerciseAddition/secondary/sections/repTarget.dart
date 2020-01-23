@@ -2,8 +2,8 @@
 import 'package:flutter/material.dart';
 
 //internal
+import 'package:swol/shared/widgets/complex/fields/headers/headerWithInfoButton.dart';
 import 'package:swol/shared/widgets/complex/RangeInformation/animatedCarousel.dart';
-import 'package:swol/shared/widgets/complex/settingHeaders/headerWithInfoButton.dart';
 import 'package:swol/shared/widgets/complex/RangeInformation/struct.dart';
 import 'package:swol/shared/widgets/simple/sliderTipButton.dart';
 import 'package:swol/shared/functions/trainingPopUps.dart';

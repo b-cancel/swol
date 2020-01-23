@@ -9,7 +9,7 @@ import 'package:swol/excerciseAddition/secondary/sections/predictionFunction.dar
 import 'package:swol/excerciseAddition/secondary/sections/repTarget.dart';
 
 //internal: shared
-import 'package:swol/shared/widgets/complex/settingHeaders/headerWithInfoButton.dart';
+import 'package:swol/shared/widgets/complex/fields/headers/headerWithInfoButton.dart';
 import 'package:swol/shared/widgets/simple/ourSlider.dart';
 import 'package:swol/shared/functions/theme.dart';
 
@@ -536,9 +536,7 @@ class RepTargetChanger extends StatelessWidget {
               ),
               child: Column(
                 children: <Widget>[
-                  RepTargetHeader(
-                    subtle: true,
-                  ),
+                  RepTargetHeader(subtle: true),
                   Theme(
                     data: MyTheme.light,
                     child: AnimRepTargetInfoWhite(

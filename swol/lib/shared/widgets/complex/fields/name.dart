@@ -1,8 +1,66 @@
+//flutter
 import 'package:flutter/material.dart';
+
+//internal
+import 'package:swol/shared/widgets/complex/fields/headers/headerWithInfoButton.dart';
+import 'package:swol/basicFields/clearableTextField.dart';
+import 'package:swol/shared/functions/theme.dart';
 import 'package:swol/learn/shared.dart';
 
-class ExcerciseNamePopUpBody extends StatelessWidget {
-  const ExcerciseNamePopUpBody({
+//widgets
+class NameField extends StatelessWidget {
+  NameField({
+    this.editOneAtATime: false,
+    this.focusNode,
+    @required this.valueToUpdate,
+    @required this.showError,
+    @required this.autofocus,
+    @required this.namePresent,
+    @required this.otherFocusNode,
+  });
+
+  final bool editOneAtATime;
+  final FocusNode focusNode;
+  final ValueNotifier<String> valueToUpdate;
+  final ValueNotifier<bool> showError;
+  final bool autofocus;
+  final ValueNotifier<bool> namePresent;
+  final FocusNode otherFocusNode;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        Theme(
+          data: MyTheme.light,
+          child: HeaderWithInfo(
+            header: "Name",
+            title: "Excercise Name",
+            subtitle: "Choose a unique name",
+            body: _NamePopUpBody(),
+          ),
+        ),
+        TextFieldWithClearButton(
+          editOneAtAtTime: editOneAtATime,
+          valueToUpdate: valueToUpdate,
+          focusNode: focusNode,
+          hint: "Required*", 
+          error: (showError.value) ? "Name Is Required" : null, 
+          //auto focus field (this is handled by the save button)
+          autofocus: autofocus,
+          //we need to keep track above to determine whether we can active the button
+          present: namePresent, 
+          //so next focuses on the note
+          otherFocusNode: otherFocusNode,
+        ),
+      ],
+    );
+  }
+}
+
+class _NamePopUpBody extends StatelessWidget {
+  const _NamePopUpBody({
     Key key,
   }) : super(key: key);
 
