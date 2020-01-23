@@ -35,7 +35,7 @@ class _TextFieldWithClearButtonState extends State<TextFieldWithClearButton> {
   ValueNotifier<String> tempValueToUpdate;
   TextEditingController ctrl = new TextEditingController();
   ValueNotifier<bool> isEditing;
-  final ValueNotifier<FocusNode> focusNodeVN = new ValueNotifier(new FocusNode());
+  ValueNotifier<FocusNode> focusNodeVN = new ValueNotifier(new FocusNode());
   ValueNotifier<bool> present;
 
   showSnackBar(){
@@ -299,20 +299,11 @@ class _TextFieldWithClearButtonState extends State<TextFieldWithClearButton> {
       ),
     );
 
-    Widget allButtons = IntrinsicWidth(
-      child: Container(
-        color: Theme.of(context).accentColor,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisSize: MainAxisSize.max,
-          children: <Widget>[
-            undoButton,
-            (twoButtons == false) ? Container() 
-            : ButtonSpacer(),
-            editToggle,
-          ],
-        ),
-      ),
+    Widget allButtons = OneOrTwoButtons(
+      backgroundColor: Theme.of(context).accentColor,
+      top: undoButton,
+      twoButtons: twoButtons,
+      bottom: editToggle,
     );
 
     //build

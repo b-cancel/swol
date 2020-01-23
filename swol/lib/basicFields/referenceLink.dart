@@ -110,20 +110,11 @@ class _ReferenceLinkBoxState extends State<ReferenceLinkBox> {
         ),
       );
 
-      confirmAndClearButton = IntrinsicWidth(
-        child: Container(
-          color: Theme.of(context).scaffoldBackgroundColor,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            mainAxisSize: MainAxisSize.max,
-            children: <Widget>[
-              confirmButton,
-              (twoButtons == false) ? Container() 
-              : ButtonSpacer(),
-              clearButton,
-            ],
-          ),
-        ),
+      confirmAndClearButton = OneOrTwoButtons(
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        top: confirmButton,
+        twoButtons: twoButtons,
+        bottom: clearButton,
       );
     }
 

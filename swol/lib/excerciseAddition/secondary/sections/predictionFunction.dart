@@ -8,7 +8,7 @@ import 'package:bot_toast/bot_toast.dart';
 
 
 //internal
-import 'package:swol/shared/widgets/complex/fields/headers/headerWithInfoButton.dart';
+import 'package:swol/shared/widgets/complex/fields/headers/fieldHeader.dart';
 import 'package:swol/other/functions/helper.dart';
 
 //widget
