@@ -8,8 +8,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:swol/excerciseAddition/secondary/trainingTypes.dart';
 
 //internal: shared
-import 'package:swol/shared/widgets/complex/learnPopUp/ourLearnPopUp.dart';
 import 'package:swol/shared/widgets/simple/oneOrTheOtherIcon.dart';
+import 'package:swol/shared/widgets/simple/ourLearnPopUp.dart';
 import 'package:swol/shared/widgets/simple/toLearnPage.dart';
 
 //TODO: combine this with the sliders

@@ -10,9 +10,11 @@ import 'package:swol/excercise/excerciseData.dart';
 
 //internal: other
 import 'package:swol/pages/notes/excerciseMessages.dart';
+import 'package:swol/shared/widgets/complex/fields/linkField/link.dart';
+import 'package:swol/shared/widgets/complex/fields/nameField.dart';
+import 'package:swol/shared/widgets/complex/fields/notesField.dart';
 import 'package:swol/shared/widgets/simple/backButton.dart';
 import 'package:swol/sharedWidgets/playOnceGif.dart';
-import 'package:swol/basicFields/excerciseEdit.dart';
 
 //widget
 class ExcerciseNotes extends StatefulWidget {
@@ -73,6 +75,8 @@ class _ExcerciseNotesState extends State<ExcerciseNotes> {
     super.dispose();
   }
 
+  final FocusNode noteFocusNode = FocusNode();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -98,14 +102,29 @@ class _ExcerciseNotesState extends State<ExcerciseNotes> {
               horizontal: 16,
               vertical: 8,
             ),
-            child: BasicEditor(
-              namePresent: namePresent,
-              nameError: nameError,
-              name: name,
-              note: note,
-              url: url,
-              editOneAtAtTime: true,
-            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                NameField(
+                  editOneAtATime: true,
+                  nameToUpdate: name,
+                  showError: nameError,
+                  autofocus: true,
+                  namePresent: namePresent,
+                  noteFocusNode: noteFocusNode,
+                ),
+                NotesField(
+                  editOneAtATime: true,
+                  noteToUpdate: note,
+                  noteFocusNode: noteFocusNode,
+                ),
+                LinkField(
+                  url: url,
+                  editOneAtATime: true,
+                ),
+              ],
+            ), 
           ),
         ],
       ),

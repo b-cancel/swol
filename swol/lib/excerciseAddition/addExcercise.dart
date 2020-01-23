@@ -15,9 +15,9 @@ import 'package:swol/excerciseAddition/addExcerciseTip.dart';
 import 'package:swol/excerciseAddition/secondary/save.dart';
 
 //internal: shared
-import 'package:swol/shared/widgets/complex/fields/link/link.dart';
-import 'package:swol/shared/widgets/complex/fields/name.dart';
-import 'package:swol/shared/widgets/complex/fields/notes.dart';
+import 'package:swol/shared/widgets/complex/fields/linkField/link.dart';
+import 'package:swol/shared/widgets/complex/fields/nameField.dart';
+import 'package:swol/shared/widgets/complex/fields/notesField.dart';
 
 //internal: other
 import 'package:swol/excerciseSelection/secondary/addNewHero.dart';

@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 
 //internal
-import 'package:swol/shared/widgets/complex/learnPopUp/ourLearnPopUp.dart';
+import 'package:swol/shared/widgets/simple/ourLearnPopUp.dart';
 
 //widget
 infoPopUpFunction(
