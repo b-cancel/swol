@@ -73,48 +73,38 @@ class _ReferenceLinkBoxState extends State<ReferenceLinkBox> {
       confirmAndClearButton = Container();
     }
     else{
-      Widget clearButton = Expanded(
-        child: FlatButton(
-          padding: EdgeInsets.all(0),
-          color: Theme.of(context).scaffoldBackgroundColor,
-          onPressed: (){
-            widget.url.value = "";
-            isEditing.value = false;
-          },
-          child: Container(
-            padding: EdgeInsets.all(0),
-            child: (widget.url.value == "") 
-            ? Container()
-            : Icon(Icons.close),
-          )
-        ),
-      );
-
       bool twoButtons = (widget.editOneAtAtTime);
 
-      //If we are doing the edit one at a time thing we also want to provide an aprove change button
-      Widget confirmButton = (twoButtons == false) ? Container()
-      : Expanded(
-        child: FlatButton(
-          padding: EdgeInsets.all(0),
-          color: Theme.of(context).scaffoldBackgroundColor,
-          onPressed: (){
-            isEditing.value = false;
-          },
-          child: Container(
-            padding: EdgeInsets.all(0),
-            child: (widget.url.value == "") 
-            ? Container()
-            : Icon(Icons.check),
-          )
-        ),
-      );
-
       confirmAndClearButton = OneOrTwoButtons(
-        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        top: confirmButton,
+        darkButtons: true,
+        onPressTop: (){
+          isEditing.value = false;
+        },
+        topIcon: Icons.check,
         twoButtons: twoButtons,
-        bottom: clearButton,
+        onPressBottom: (){
+          widget.url.value = "";
+          isEditing.value = false;
+        },
+        bottomIcon: Icons.close,
+        /*
+        bottom: Expanded(
+          child: FlatButton(
+            padding: EdgeInsets.all(0),
+            color: Theme.of(context).primaryColor,
+            onPressed: (){
+              widget.url.value = "";
+              isEditing.value = false;
+            },
+            child: Container(
+              padding: EdgeInsets.all(0),
+              child: (widget.url.value == "") 
+              ? Container()
+              : Icon(Icons.close),
+            )
+          ),
+        ),
+        */
       );
     }
 

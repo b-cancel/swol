@@ -2,30 +2,57 @@ import 'package:flutter/material.dart';
 
 class OneOrTwoButtons extends StatelessWidget {
   OneOrTwoButtons({
-    @required this.backgroundColor,
-    @required this.top,
+    @required this.darkButtons,
+    @required this.onPressTop,
+    @required this.topIcon,
     @required this.twoButtons,
-    @required this.bottom,
+    @required this.onPressBottom,
+    @required this.bottomIcon,
   });
 
-  final Color backgroundColor;
-  final Widget top;
+  final bool darkButtons;
+  final Function onPressTop;
+  final IconData topIcon;
   final bool twoButtons;
-  final Widget bottom;
+  final Function onPressBottom;
+  final IconData bottomIcon;
 
   @override
   Widget build(BuildContext context) {
+    Color buttonColor = darkButtons ? Theme.of(context).primaryColor : Theme.of(context).accentColor;
+    Color iconColor = darkButtons == false ? Theme.of(context).primaryColor : Colors.white;
     return IntrinsicWidth(
       child: Container(
-        color: backgroundColor,
+        color: buttonColor,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
-            top,
+            (twoButtons == false) ? Container()
+            : Expanded(
+              child: FlatButton(
+                onPressed: () => onPressTop(),
+                padding: EdgeInsets.all(0),
+                color: buttonColor,
+                child: Icon(
+                  topIcon,
+                  color: iconColor,
+                ),
+              ),
+            ),
             (twoButtons == false) ? Container() 
-            : _ButtonSpacer(),
-            bottom,
+            : _ButtonSpacer(isDark: darkButtons == false),
+            Expanded(
+              child: FlatButton(
+                padding: EdgeInsets.all(0),
+                color: buttonColor,
+                onPressed: () => onPressBottom(),
+                child: Icon(
+                  bottomIcon,
+                  color: iconColor,
+                ),
+              ),
+            ),
           ],
         ),
       ),
@@ -33,7 +60,36 @@ class OneOrTwoButtons extends StatelessWidget {
   }
 }
 
+/*
+onPressed: (){
+              widget.url.value = "";
+              isEditing.value = false;
+            },
+            child: Container(
+              padding: EdgeInsets.all(0),
+              child: (widget.url.value == "") 
+              ? Container()
+              : Icon(Icons.close),
+            )
+*/
+
+/*
+  onPressed: (){
+            isEditing.value = !isEditing.value;
+          },
+          child: Icon(
+            (isEditing.value) ? Icons.check : Icons.edit,
+            color: Theme.of(context).primaryColorDark,
+          ),
+*/
+
 class _ButtonSpacer extends StatelessWidget {
+  _ButtonSpacer({
+    @required this.isDark,
+  });
+
+  final bool isDark;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -42,7 +98,7 @@ class _ButtonSpacer extends StatelessWidget {
         horizontal: 8,
       ),
       child: Container(
-        color: Theme.of(context).primaryColorDark,
+        color: isDark ? Theme.of(context).primaryColorDark : Theme.of(context).cardColor,
         height: 2,
         child: Container(),
       ),

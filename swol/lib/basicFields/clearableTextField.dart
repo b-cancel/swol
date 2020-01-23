@@ -260,21 +260,6 @@ class _TextFieldWithClearButtonState extends State<TextFieldWithClearButton> {
       }
     }
 
-    //edit Toggle
-    Widget editToggle = Expanded(
-      child: FlatButton(
-        color: Theme.of(context).accentColor,
-        padding: EdgeInsets.all(0),
-        onPressed: (){
-          isEditing.value = !isEditing.value;
-        },
-        child: Icon(
-          (isEditing.value) ? Icons.check : Icons.edit,
-          color: Theme.of(context).primaryColorDark,
-        ),
-      ),
-    );
-
     bool twoButtons = (widget.editOneAtAtTime && isEditing.value);
 
     //NOTE: we know we could have two buttons but do we need them?
@@ -283,27 +268,18 @@ class _TextFieldWithClearButtonState extends State<TextFieldWithClearButton> {
       twoButtons = (tempValueToUpdate.value != widget.valueToUpdate.value);
     }
 
-    Widget undoButton = (twoButtons == false) ? Container()
-    : Expanded(
-      child: FlatButton(
-        color: Theme.of(context).accentColor,
-        padding: EdgeInsets.all(0),
-        onPressed: (){
-          //go back to what you had previously
-          ctrl.text = widget.valueToUpdate.value;
-        },
-        child: Icon(
-          Icons.undo,
-          color: Theme.of(context).primaryColorDark,
-        ),
-      ),
-    );
-
     Widget allButtons = OneOrTwoButtons(
-      backgroundColor: Theme.of(context).accentColor,
-      top: undoButton,
+      darkButtons: false,
+      onPressTop: (){
+        //go back to what you had previously
+        ctrl.text = widget.valueToUpdate.value;
+      },
+      topIcon: Icons.undo,
       twoButtons: twoButtons,
-      bottom: editToggle,
+      onPressBottom: (){
+        isEditing.value = !isEditing.value;
+      },
+      bottomIcon: (isEditing.value) ? Icons.check : Icons.edit,
     );
 
     //build
