@@ -7,7 +7,7 @@ import 'package:swol/shared/widgets/complex/fields/headers/popUpBodies/predictio
 import 'package:swol/shared/widgets/complex/fields/headers/popUpBodies/repTargetBody.dart';
 import 'package:swol/shared/widgets/complex/fields/headers/popUpBodies/setTargetBody.dart';
 import 'package:swol/shared/widgets/complex/fields/headers/ourInformationPopUp.dart';
-import 'package:swol/shared/functions/theme.dart';
+import 'package:swol/shared/methods/theme.dart';
 
 //widget
 class HeaderWithInfo extends StatelessWidget {

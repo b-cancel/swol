@@ -5,14 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 
 //internal: excercise
-import 'package:swol/excercise/excerciseStructure.dart';
-import 'package:swol/excercise/excerciseData.dart';
+import 'package:swol/shared/widgets/simple/backButton.dart';
+import 'package:swol/shared/methods/excerciseData.dart';
+import 'package:swol/shared/structs/anExcercise.dart';
 
 //internal
 import 'package:swol/excerciseAction/tabs/verticalTabs.dart';
 import 'package:swol/pages/notes/excerciseNotes.dart';
 import 'package:swol/main.dart';
-import 'package:swol/shared/widgets/simple/backButton.dart';
 
 //widgets
 class ExcercisePage extends StatefulWidget {

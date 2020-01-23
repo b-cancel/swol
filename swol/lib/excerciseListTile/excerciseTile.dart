@@ -4,13 +4,13 @@ import 'package:flutter/material.dart';
 //plugin
 import 'package:page_transition/page_transition.dart';
 
-//internal: basic
-import 'package:swol/excercise/excerciseData.dart';
-import 'package:swol/excercise/excerciseStructure.dart';
-
 //internal: list tile
 import 'package:swol/excerciseListTile/excerciseLeading.dart';
 import 'package:swol/excerciseListTile/oneRepMaxChip.dart';
+
+//internal: shared
+import 'package:swol/shared/methods/excerciseData.dart';
+import 'package:swol/shared/structs/anExcercise.dart';
 
 //internal: other
 import 'package:swol/excerciseAction/excercisePage.dart';

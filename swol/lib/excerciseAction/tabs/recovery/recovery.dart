@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:swol/excercise/excerciseData.dart';
 import 'package:swol/excerciseAction/tabs/recovery/secondary/breath.dart';
 import 'package:swol/excerciseAction/tabs/recovery/timer/liquidTime.dart';
 import 'package:swol/excerciseAction/tabs/sharedWidgets/bottomButtons.dart';
+import 'package:swol/shared/methods/excerciseData.dart';
 
 class Recovery extends StatefulWidget {
   Recovery({

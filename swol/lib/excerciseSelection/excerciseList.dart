@@ -5,19 +5,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
 
-//internal: excercise
-import 'package:swol/excercise/defaultDateTimes.dart';
-import 'package:swol/excercise/excerciseData.dart';
-import 'package:swol/excercise/excerciseStructure.dart';
-
 //internal: list tile
 import 'package:swol/excerciseListTile/excerciseLeading.dart';
 import 'package:swol/excerciseListTile/excerciseTile.dart';
+
+//internal: shared
+import 'package:swol/shared/functions/defaultDateTimes.dart';
+import 'package:swol/shared/methods/excerciseData.dart';
+import 'package:swol/shared/structs/anExcercise.dart';
 
 //internal: other
 import 'package:swol/excerciseSelection/secondary/secondary.dart';
 import 'package:swol/other/durationFormat.dart';
 
+//widget
 class ExcerciseList extends StatefulWidget {
   ExcerciseList({
     @required this.autoScrollController,

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:swol/excercise/excerciseStructure.dart';
+import 'package:swol/shared/structs/anExcercise.dart';
 
 //TODO: this isn't even close to finish, i jump all the guns
 

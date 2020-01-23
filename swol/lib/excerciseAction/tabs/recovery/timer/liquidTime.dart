@@ -10,7 +10,7 @@ import 'package:swol/excerciseAction/tabs/recovery/secondary/timeDisplay.dart';
 import 'package:swol/excerciseAction/tabs/recovery/timer/changeTime.dart';
 import 'package:swol/excerciseAction/tabs/recovery/timer/superOverflow.dart';
 import 'package:swol/excerciseAction/tabs/recovery/timer/turnOffVibration.dart';
-import 'package:swol/shared/functions/vibrate.dart';
+import 'package:swol/shared/methods/vibrate.dart';
 
 /*
 TODO: improve turning off the vibration

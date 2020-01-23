@@ -1,16 +1,17 @@
 //flutter
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:swol/shared/functions/theme.dart';
 
 //internal: shared
 import 'package:swol/shared/methods/extensions/sharedPreferences.dart';
-import 'package:swol/sharedWidgets/playOnceGif.dart';
-import 'package:swol/sharedWidgets/triangleAngle.dart';
+import 'package:swol/shared/methods/theme.dart';
+import 'package:swol/shared/methods/vibrate.dart';
 
 //internal: utils
-import 'package:swol/shared/functions/vibrate.dart';
+import 'package:swol/sharedWidgets/triangleAngle.dart';
+import 'package:swol/sharedWidgets/playOnceGif.dart';
 
+//widget
 class UELA extends StatefulWidget {
   UELA({
     @required this.afterConfirm,

@@ -18,10 +18,10 @@ import 'package:swol/excerciseAddition/secondary/save.dart';
 import 'package:swol/shared/widgets/complex/fields/linkField/link.dart';
 import 'package:swol/shared/widgets/complex/fields/nameField.dart';
 import 'package:swol/shared/widgets/complex/fields/notesField.dart';
+import 'package:swol/shared/structs/anExcercise.dart';
 
 //internal: other
 import 'package:swol/excerciseSelection/secondary/addNewHero.dart';
-import 'package:swol/excercise/excerciseStructure.dart';
 import 'package:swol/other/functions/helper.dart';
 import 'package:swol/main.dart';
 

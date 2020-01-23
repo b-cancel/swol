@@ -2,10 +2,10 @@
 import 'package:flutter/material.dart';
 
 //internal
-import 'package:swol/excercise/excerciseStructure.dart';
 import 'package:swol/excerciseTimer/displayUI/shakingAlarm.dart';
-import 'package:swol/other/otherHelper.dart';
 import 'package:swol/sharedWidgets/triangleAngle.dart';
+import 'package:swol/shared/structs/anExcercise.dart';
+import 'package:swol/other/otherHelper.dart';
 
 //widget
 class AnimatedCircleWidget extends StatelessWidget {

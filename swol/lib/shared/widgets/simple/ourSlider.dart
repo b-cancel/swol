@@ -5,7 +5,7 @@ import 'package:flutter_xlider/flutter_xlider.dart';
 import 'package:intl/intl.dart' as intl;
 
 //internal
-import 'package:swol/shared/functions/vibrate.dart';
+import 'package:swol/shared/methods/vibrate.dart';
 
 //NOTE: in both cases things start from 1
 class CustomSlider extends StatelessWidget {

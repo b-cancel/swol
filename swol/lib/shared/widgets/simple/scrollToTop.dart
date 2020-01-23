@@ -6,7 +6,7 @@ import 'package:scroll_to_index/scroll_to_index.dart';
 import 'package:vector_math/vector_math_64.dart' as vect;
 
 //internal
-import 'package:swol/shared/functions/vibrate.dart';
+import 'package:swol/shared/methods/vibrate.dart';
 
 //widget
 class ScrollToTopButton extends StatefulWidget {

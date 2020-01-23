@@ -1,9 +1,9 @@
 //flutter
 import 'package:flutter/material.dart';
 
-//internal: excercise
-import 'package:swol/excercise/defaultDateTimes.dart';
-import 'package:swol/excercise/excerciseStructure.dart';
+//internal: shared
+import 'package:swol/shared/functions/defaultDateTimes.dart';
+import 'package:swol/shared/structs/anExcercise.dart';
 
 //internal: other
 import 'package:swol/excerciseListTile/miniTimer.dart';

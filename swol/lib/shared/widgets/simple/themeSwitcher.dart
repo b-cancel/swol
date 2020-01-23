@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 //internal
-import 'package:swol/shared/functions/theme.dart';
+import 'package:swol/shared/methods/theme.dart';
 
 //show function
 void showThemeSwitcher(BuildContext context) {

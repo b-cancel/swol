@@ -2,8 +2,8 @@
 import 'package:flutter/material.dart';
 
 //internal
-import 'package:swol/excercise/excerciseStructure.dart';
 import 'package:swol/excerciseTimer/displayUI/display.dart';
+import 'package:swol/shared/structs/anExcercise.dart';
 import 'package:swol/other/otherHelper.dart';
 
 //NOTE: this wrapper exists so things update when desired

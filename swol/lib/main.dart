@@ -11,15 +11,16 @@ import 'package:async/async.dart';
 
 //internal: shared
 import 'package:swol/shared/methods/extensions/sharedPreferences.dart';
-import 'package:swol/shared/functions/theme.dart';
+import 'package:swol/shared/methods/excerciseData.dart';
+import 'package:swol/shared/methods/theme.dart';
 
 //internal: selection
 import 'package:swol/excerciseSelection/secondary/decoration.dart';
 import 'package:swol/excerciseSelection/excerciseListPage.dart';
 
 //internal: other
-import 'package:swol/excercise/excerciseData.dart';
 import 'package:swol/excerciseSearch/searchesData.dart';
+
 
 //app start
 void main() => runApp(App());

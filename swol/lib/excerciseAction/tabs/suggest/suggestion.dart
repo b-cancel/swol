@@ -11,10 +11,10 @@ import 'package:swol/excerciseAddition/secondary/sections/repTarget.dart';
 //internal: shared
 import 'package:swol/shared/widgets/complex/fields/headers/fieldHeader.dart';
 import 'package:swol/shared/widgets/simple/ourSlider.dart';
-import 'package:swol/shared/functions/theme.dart';
+import 'package:swol/shared/structs/anExcercise.dart';
+import 'package:swol/shared/methods/theme.dart';
 
 //internal: other
-import 'package:swol/excercise/excerciseStructure.dart';
 import 'package:swol/other/functions/helper.dart';
 
 //includes both calibration and the suggestion

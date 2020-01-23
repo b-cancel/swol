@@ -7,7 +7,7 @@ import 'package:swol/excerciseAction/tabs/suggest/calibration.dart';
 import 'package:swol/excerciseAction/tabs/suggest/suggestion.dart';
 
 //internal: other
-import 'package:swol/excercise/excerciseData.dart';
+import 'package:swol/shared/methods/excerciseData.dart';
 import 'package:swol/other/functions/helper.dart';
 
 //TODO: implement this

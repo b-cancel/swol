@@ -1,16 +1,14 @@
 //flutter
 import 'package:flutter/material.dart';
 
-//internal: excercise
-import 'package:swol/excercise/excerciseStructure.dart';
-import 'package:swol/excercise/defaultDateTimes.dart';
-import 'package:swol/excercise/excerciseData.dart';
-import 'package:swol/main.dart';
-
-//internal: shared
+//internal
 import 'package:swol/shared/methods/extensions/sharedPreferences.dart';
 import 'package:swol/shared/widgets/complex/onBoarding/wrapper.dart';
+import 'package:swol/shared/functions/defaultDateTimes.dart';
+import 'package:swol/shared/methods/excerciseData.dart';
 import 'package:swol/shared/functions/onboarding.dart';
+import 'package:swol/shared/structs/anExcercise.dart';
+import 'package:swol/main.dart';
 
 //widget
 class SaveButton extends StatefulWidget {

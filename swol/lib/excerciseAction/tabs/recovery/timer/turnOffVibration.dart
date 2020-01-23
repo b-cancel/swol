@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 
 //internal
-import 'package:swol/shared/functions/vibrate.dart';
+import 'package:swol/shared/methods/vibrate.dart';
 
 //build
 class VibrationSwitch extends StatelessWidget {

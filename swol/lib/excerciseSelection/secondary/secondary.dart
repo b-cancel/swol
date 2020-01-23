@@ -4,21 +4,22 @@ import 'package:flutter/material.dart';
 //plugin
 import 'package:page_transition/page_transition.dart';
 
-//internal
-import 'package:swol/excerciseSearch/searchExcercise.dart';
-import 'package:swol/excercise/excerciseStructure.dart';
-
 //internal: selection
 import 'package:swol/excerciseSelection/secondary/persistentHeaderDelegate.dart';
 import 'package:swol/excerciseSelection/secondary/addNewHero.dart';
-import 'package:swol/main.dart';
 
 //internal: shared
 import 'package:swol/shared/methods/extensions/sharedPreferences.dart';
+import 'package:swol/shared/structs/anExcercise.dart';
 import 'package:swol/shared/widgets/complex/onBoarding/wrapper.dart';
 import 'package:swol/shared/functions/goldenRatio.dart';
 import 'package:swol/shared/functions/onboarding.dart';
 
+//internal: other
+import 'package:swol/excerciseSearch/searchExcercise.dart';
+import 'package:swol/main.dart';
+
+//widget
 class AddExcerciseButton extends StatelessWidget {
   const AddExcerciseButton({
     Key key,
