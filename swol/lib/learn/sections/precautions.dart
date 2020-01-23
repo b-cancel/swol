@@ -2,8 +2,10 @@
 import 'package:flutter/material.dart';
 
 //internal
-import 'package:swol/learn/shared.dart';
+import 'package:swol/shared/widgets/simple/listItem.dart';
+import 'package:swol/learn/description.dart';
 
+//widget
 class PrecautionsBody extends StatelessWidget {
   const PrecautionsBody({
     Key key,

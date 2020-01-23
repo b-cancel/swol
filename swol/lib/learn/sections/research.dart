@@ -1,6 +1,11 @@
+//flutter
 import 'package:flutter/material.dart';
-import 'package:swol/learn/shared.dart';
 
+//internal
+import 'package:swol/shared/widgets/simple/listItem.dart';
+import 'package:swol/learn/description.dart';
+
+//widget
 class ResearchBody extends StatelessWidget {
   const ResearchBody({
     Key key,

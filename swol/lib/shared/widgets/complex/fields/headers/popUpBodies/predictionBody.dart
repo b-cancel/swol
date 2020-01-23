@@ -2,8 +2,8 @@
 import 'package:flutter/material.dart';
 
 //internal
+import 'package:swol/shared/widgets/simple/functionTable.dart';
 import 'package:swol/shared/widgets/simple/toLearnPage.dart';
-import 'package:swol/learn/sections/experiment.dart';
 
 //widget
 class PredictionFormulasPopUpBody extends StatelessWidget {

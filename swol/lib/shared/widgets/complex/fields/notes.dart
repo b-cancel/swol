@@ -1,11 +1,13 @@
 //flutter
 import 'package:flutter/material.dart';
 
-//internal
+//internal: shared
 import 'package:swol/shared/widgets/complex/fields/headers/fieldHeader.dart';
-import 'package:swol/basicFields/clearableTextField.dart';
 import 'package:swol/shared/functions/theme.dart';
-import 'package:swol/learn/shared.dart';
+import 'package:swol/shared/widgets/simple/listItem.dart';
+
+//internal: other
+import 'package:swol/basicFields/clearableTextField.dart';
 
 //widgets
 class NotesField extends StatelessWidget {

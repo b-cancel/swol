@@ -8,8 +8,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
 
 //internal: learn
-import 'package:swol/learn/expandableTile.dart';
-import 'package:swol/learn/sections/definitions.dart';
+import 'package:swol/learn/expandableTile/expandableTile.dart';
+import 'package:swol/learn/sections/definitions/body.dart';
 import 'package:swol/learn/sections/experiment.dart';
 import 'package:swol/learn/sections/introduction.dart';
 import 'package:swol/learn/sections/oneRepMax.dart';
