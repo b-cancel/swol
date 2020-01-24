@@ -2,9 +2,10 @@
 import 'package:flutter/material.dart';
 
 //internal
-import 'package:swol/shared/widgets/complex/fields/textField/undoAndEditToggle.dart';
-import 'package:swol/shared/widgets/complex/fields/textField/clearButton.dart';
+import 'package:swol/shared/widgets/complex/fields/fields/text/textField/undoAndEditToggle.dart';
 import 'package:swol/shared/widgets/simple/ourSnackBar.dart';
+import 'undoAndEditToggle.dart';
+import 'clearButton.dart';
 
 //widget
 class TextFieldWithClearButton extends StatefulWidget {

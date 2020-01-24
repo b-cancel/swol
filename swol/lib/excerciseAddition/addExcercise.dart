@@ -10,14 +10,14 @@ import 'package:swol/excerciseAddition/reloadingCard.dart';
 import 'package:swol/excerciseAddition/secondary/sections/predictionFunction.dart';
 import 'package:swol/excerciseAddition/secondary/sections/recoveryTime.dart';
 import 'package:swol/excerciseAddition/secondary/sections/repTarget.dart';
-import 'package:swol/excerciseAddition/secondary/sections/setTarget.dart';
 import 'package:swol/excerciseAddition/addExcerciseTip.dart';
 import 'package:swol/excerciseAddition/secondary/save.dart';
 
 //internal: shared
-import 'package:swol/shared/widgets/complex/fields/linkField/link.dart';
-import 'package:swol/shared/widgets/complex/fields/nameField.dart';
-import 'package:swol/shared/widgets/complex/fields/notesField.dart';
+import 'package:swol/shared/widgets/complex/fields/fields/setTarget/setTarget.dart';
+import 'package:swol/shared/widgets/complex/fields/fields/text/notesField.dart';
+import 'package:swol/shared/widgets/complex/fields/fields/linkField/link.dart';
+import 'package:swol/shared/widgets/complex/fields/fields/text/nameField.dart';
 import 'package:swol/shared/structs/anExcercise.dart';
 
 //internal: other

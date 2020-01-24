@@ -5,9 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 //internl: excercise
-import 'package:swol/shared/widgets/complex/fields/linkField/link.dart';
-import 'package:swol/shared/widgets/complex/fields/nameField.dart';
-import 'package:swol/shared/widgets/complex/fields/notesField.dart';
+import 'package:swol/shared/widgets/complex/fields/fields/linkField/link.dart';
+import 'package:swol/shared/widgets/complex/fields/fields/text/nameField.dart';
+import 'package:swol/shared/widgets/complex/fields/fields/text/notesField.dart';
 import 'package:swol/shared/functions/defaultDateTimes.dart';
 import 'package:swol/shared/widgets/simple/backButton.dart';
 import 'package:swol/shared/methods/excerciseData.dart';

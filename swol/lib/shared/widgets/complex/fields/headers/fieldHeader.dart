@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:swol/shared/widgets/complex/fields/headers/popUpBodies/recoveryTimeBody.dart';
 import 'package:swol/shared/widgets/complex/fields/headers/popUpBodies/predictionBody.dart';
 import 'package:swol/shared/widgets/complex/fields/headers/popUpBodies/repTargetBody.dart';
-import 'package:swol/shared/widgets/complex/fields/headers/popUpBodies/setTargetBody.dart';
 import 'package:swol/shared/widgets/complex/fields/headers/ourInformationPopUp.dart';
 import 'package:swol/shared/methods/theme.dart';
 
@@ -90,21 +89,6 @@ class _HeaderWithInfoDark extends StatelessWidget {
 }
 
 //-------------------------shortcuts-------------------------
-
-class SetTargetHeader extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Theme(
-      data: MyTheme.light,
-      child: HeaderWithInfo(
-        header: "Set Target",
-        title: "Set Target",
-        subtitle: "Not sure? Keep the default",
-        body: SetTargetPopUpBody(),
-      ),
-    );
-  }
-}
 
 class RecoveryTimeHeader extends StatelessWidget {
   @override

@@ -4,13 +4,11 @@ import 'package:flutter/material.dart';
 //plugin
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-//internal: addition
-import 'package:swol/excerciseAddition/secondary/trainingTypes.dart';
-
-//internal: shared
+//internal
 import 'package:swol/shared/widgets/simple/oneOrTheOtherIcon.dart';
 import 'package:swol/shared/widgets/simple/ourLearnPopUp.dart';
 import 'package:swol/shared/widgets/simple/toLearnPage.dart';
+import 'package:swol/trainingTypes/trainingTypes.dart';
 
 //TODO: combine this with the sliders
 //since they are technically used in more places than just add excercise
@@ -159,4 +157,33 @@ Function _makeTrainingTypePopUp({
       isDense: true,
     );
   };
+}
+
+class ScrollableTrainingTypes extends StatelessWidget {
+  ScrollableTrainingTypes({
+    this.showStrength: true,
+    this.showHypertrophy: true,
+    this.showEndurance: true,
+    this.highlightField: -1,
+  });
+
+  final bool showEndurance;
+  final bool showHypertrophy;
+  final bool showStrength;
+  final int highlightField;
+
+  @override
+  Widget build(BuildContext context) {
+    List<int> sections = new List<int>();
+    if(showEndurance) sections.add(0);
+    if(showHypertrophy) sections.add(1);
+    if(showStrength) sections.add(2);
+
+    return TrainingTypeSections(
+      lightMode: true,
+      highlightField: highlightField,
+      sections: [sections],
+      sectionID: new ValueNotifier(0),
+    );
+  }
 }

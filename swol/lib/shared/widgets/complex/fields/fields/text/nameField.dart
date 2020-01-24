@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 
 //internal
-import 'package:swol/shared/widgets/complex/fields/textField/clearableTextField.dart';
+import 'package:swol/shared/widgets/complex/fields/fields/text/textField/clearableTextField.dart';
 import 'package:swol/shared/widgets/complex/fields/headers/fieldHeader.dart';
 import 'package:swol/shared/widgets/simple/listItem.dart';
 import 'package:swol/shared/methods/theme.dart';
