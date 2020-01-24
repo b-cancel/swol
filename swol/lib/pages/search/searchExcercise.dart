@@ -12,7 +12,7 @@ import 'package:swol/shared/structs/anExcercise.dart';
 
 //internal: other
 import 'package:swol/excerciseListTile/excerciseTile.dart';
-import 'package:swol/excerciseSearch/searchesData.dart';
+import 'package:swol/pages/search/searchesData.dart';
 import 'package:swol/main.dart';
 
 //widget

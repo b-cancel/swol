@@ -19,8 +19,7 @@ import 'package:swol/excerciseSelection/secondary/decoration.dart';
 import 'package:swol/excerciseSelection/excerciseListPage.dart';
 
 //internal: other
-import 'package:swol/excerciseSearch/searchesData.dart';
-
+import 'package:swol/pages/search/searchesData.dart';
 
 //app start
 void main() => runApp(App());

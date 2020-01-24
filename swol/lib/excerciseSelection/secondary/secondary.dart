@@ -16,7 +16,7 @@ import 'package:swol/shared/functions/goldenRatio.dart';
 import 'package:swol/shared/functions/onboarding.dart';
 
 //internal: other
-import 'package:swol/excerciseSearch/searchExcercise.dart';
+import 'package:swol/pages/search/searchExcercise.dart';
 import 'package:swol/main.dart';
 
 //widget

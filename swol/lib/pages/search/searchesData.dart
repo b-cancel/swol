@@ -67,18 +67,19 @@ class SearchesData{
     //first time search
     if(matchingIndex == -1){
       searches.add(newSearch);
+      _updateSearchesFile();
     }
     else{ //not first time search
       //if this contact is NOT at the end
       //then it might need to be removed and readded at the end
       if(matchingIndex != (searches.length - 1)){
+        //adding at end, won't affect the operation below
+        searches.add(newSearch); 
+        //this also updates the search file
         removeFromSearchesAtIndex(matchingIndex);
-        searches.add(newSearch);
       }
+      //ELSE: no update required, new search already at end
     }
-
-    //update save file
-    _updateSearchesFile();
   }
 
   //-------------------------REMOVE-------------------------
