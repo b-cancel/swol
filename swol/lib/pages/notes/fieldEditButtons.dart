@@ -7,7 +7,7 @@ class FieldEditButtons extends StatelessWidget {
     @required this.darkButtons,
     @required this.onPressTop,
     @required this.topIcon,
-    @required this.twoButtons,
+    @required this.showTopButton,
     @required this.onPressBottom,
     @required this.bottomIcon,
   });
@@ -15,14 +15,14 @@ class FieldEditButtons extends StatelessWidget {
   final bool darkButtons;
   final Function onPressTop;
   final IconData topIcon;
-  final bool twoButtons;
+  final bool showTopButton;
   final Function onPressBottom;
   final IconData bottomIcon;
 
   @override
   Widget build(BuildContext context) {
     Color buttonColor = darkButtons ? Theme.of(context).primaryColor : Theme.of(context).accentColor;
-    Color iconColor = darkButtons == false ? Theme.of(context).primaryColor : Colors.white;
+    Color iconColor = (darkButtons == false) ? Theme.of(context).primaryColor : Colors.white;
     return IntrinsicWidth(
       child: Container(
         color: buttonColor,
@@ -30,20 +30,13 @@ class FieldEditButtons extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
-            (twoButtons == false) ? Container()
-            : Expanded(
-              child: FlatButton(
-                onPressed: () => onPressTop(),
-                padding: EdgeInsets.all(0),
-                color: buttonColor,
-                child: Icon(
-                  topIcon,  
-                  color: iconColor,
-                ),
-              ),
-            ),
-            (twoButtons == false) ? Container() 
-            : _ButtonSpacer(isDark: darkButtons == false),
+            (showTopButton) ? _TopButton(
+              onPressTop: onPressTop, 
+              buttonColor: buttonColor, 
+              topIcon: topIcon, 
+              iconColor: iconColor, 
+              darkButtons: darkButtons,
+            ) : Container(),
             Expanded(
               child: FlatButton(
                 onPressed: () => onPressBottom(),
@@ -57,6 +50,46 @@ class FieldEditButtons extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class _TopButton extends StatelessWidget {
+  const _TopButton({
+    Key key,
+    @required this.onPressTop,
+    @required this.buttonColor,
+    @required this.topIcon,
+    @required this.iconColor,
+    @required this.darkButtons,
+  }) : super(key: key);
+
+  final Function onPressTop;
+  final Color buttonColor;
+  final IconData topIcon;
+  final Color iconColor;
+  final bool darkButtons;
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Column(
+        mainAxisSize: MainAxisSize.max,
+        children: <Widget>[
+          Expanded(
+            child: FlatButton(
+              onPressed: () => onPressTop(),
+              padding: EdgeInsets.all(0),
+              color: buttonColor,
+              child: Icon(
+                topIcon,  
+                color: iconColor,
+              ),
+            ),
+          ),
+          _ButtonSpacer(isDark: darkButtons == false)
+        ],
       ),
     );
   }

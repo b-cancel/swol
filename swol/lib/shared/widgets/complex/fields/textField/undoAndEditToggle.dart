@@ -5,12 +5,12 @@ class EditOneAtATimeButtons extends StatelessWidget {
   const EditOneAtATimeButtons({
     Key key,
     @required this.undo,
-    @required this.twoButtons,
+    @required this.showTopButton,
     @required this.isEditing,
   }) : super(key: key);
 
   final Function undo;
-  final bool twoButtons;
+  final bool showTopButton;
   final ValueNotifier<bool> isEditing;
 
   @override
@@ -28,7 +28,7 @@ class EditOneAtATimeButtons extends StatelessWidget {
           darkButtons: false,
           onPressTop: () => undo(),
           topIcon: Icons.undo,
-          twoButtons: twoButtons,
+          showTopButton: showTopButton,
           onPressBottom: (){
             isEditing.value = !isEditing.value;
           },

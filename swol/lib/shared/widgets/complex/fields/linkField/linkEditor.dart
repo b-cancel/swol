@@ -150,7 +150,7 @@ class ConfirmOrClear extends StatelessWidget {
         isEditing.value = false;
       },
       topIcon: Icons.check,
-      twoButtons: editOneAtATime,
+      showTopButton: editOneAtATime,
       onPressBottom: (){
         url.value = "";
         isEditing.value = false;
