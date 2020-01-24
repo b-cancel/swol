@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_picker/flutter_picker.dart';
 
 //internal
-import 'package:swol/shared/widgets/complex/RecoveryTime/struct.dart';
+import 'package:swol/shared/structs/timePicker.dart';
 
 class RecoveryTimePicker extends StatefulWidget {
   RecoveryTimePicker({

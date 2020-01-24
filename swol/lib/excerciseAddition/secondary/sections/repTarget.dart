@@ -1,14 +1,14 @@
 //flutter
 import 'package:flutter/material.dart';
-import 'package:swol/shared/methods/theme.dart';
 
 //internal
 import 'package:swol/shared/widgets/complex/fields/headers/fieldHeader.dart';
 import 'package:swol/shared/widgets/complex/RangeInformation/animatedCarousel.dart';
-import 'package:swol/shared/widgets/complex/RangeInformation/struct.dart';
 import 'package:swol/shared/widgets/simple/sliderTipButton.dart';
 import 'package:swol/shared/functions/trainingPopUps.dart';
 import 'package:swol/shared/widgets/simple/ourSlider.dart';
+import 'package:swol/shared/methods/theme.dart';
+import 'package:swol/shared/structs/range.dart';
 
 //widget
 class RepTargetCard extends StatefulWidget {

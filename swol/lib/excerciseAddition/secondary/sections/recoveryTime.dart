@@ -1,10 +1,10 @@
 //flutter
 import 'package:flutter/material.dart';
+import 'package:swol/shared/structs/range.dart';
 
 //internal
 import 'package:swol/shared/widgets/complex/fields/headers/fieldHeader.dart';
 import 'package:swol/shared/widgets/complex/RangeInformation/animatedCarousel.dart';
-import 'package:swol/shared/widgets/complex/RangeInformation/struct.dart';
 import 'package:swol/shared/widgets/complex/recoveryTime/minSecs.dart';
 import 'package:swol/shared/widgets/complex/recoveryTime/picker.dart';
 import 'package:swol/shared/widgets/simple/sliderTipButton.dart';

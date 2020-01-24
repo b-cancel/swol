@@ -6,8 +6,8 @@ import 'package:carousel_slider/carousel_slider.dart';
 
 //internal
 import 'package:swol/shared/widgets/complex/RangeInformation/trainingNameButton.dart';
-import 'package:swol/shared/widgets/complex/RangeInformation/struct.dart';
 import 'package:swol/shared/widgets/complex/RangeInformation/ticks.dart';
+import 'package:swol/shared/structs/range.dart';
 
 //guides the users and instructs them all at once with minimal UI
 //used 2 times, both in add excercise... 

@@ -1,5 +1,7 @@
 //flutter
 import 'package:flutter/material.dart';
+import 'package:swol/shared/widgets/complex/fields/textField/clearButton.dart';
+import 'package:swol/shared/widgets/complex/fields/textField/undoAndEditToggle.dart';
 
 //internal
 import 'package:swol/shared/widgets/simple/ourSnackBar.dart';
@@ -66,7 +68,7 @@ class _TextFieldWithClearButtonState extends State<TextFieldWithClearButton> {
   focusSwitch(){
     WidgetsBinding.instance.addPostFrameCallback((_){
       if(focusNodeVN.value.hasFocus == false){
-        isEditing.value = false;
+        isEditing.value = false; //triggers the function below
       }
     });
   }
@@ -102,9 +104,6 @@ class _TextFieldWithClearButtonState extends State<TextFieldWithClearButton> {
         //update actual value (will only trigger update if different)
         widget.valueToUpdate.value = tempValueToUpdate.value;
       }
-
-      //show check or edit
-      setState(() {});
     }
     else{
       //-------------------------------------------------- BELOW
@@ -148,12 +147,12 @@ class _TextFieldWithClearButtonState extends State<TextFieldWithClearButton> {
         //update actual value (will only trigger update if different)
         widget.valueToUpdate.value = tempValueToUpdate.value;
       }
-
-      //show check or edit
-      setState(() {});
       //-------------------------------------------------- ABOVE
     }
     //TODO--------------------------------------------------OPTIMIZE ABOVE
+
+    //show check or edit
+    setState(() {});
   }
 
   //init
@@ -238,50 +237,8 @@ class _TextFieldWithClearButtonState extends State<TextFieldWithClearButton> {
       }
     }
 
-    //clearButton
-    Widget clearButton;
-    if(isEditing.value == false) clearButton = Container();
-    else{
-      if(present.value == false) clearButton = Container();
-      else{
-        clearButton = Transform.translate(
-          offset: Offset(8, 0),
-          child: IconButton(
-            onPressed: (){
-              ctrl.text = "";
-            },
-            color: Colors.grey, 
-            highlightColor: Colors.grey,
-            icon: Icon(
-              Icons.close,
-              color: Colors.grey,
-            ),
-          ),
-        );
-      }
-    }
-
-    bool twoButtons = (widget.editOneAtAtTime && isEditing.value);
-
-    //NOTE: we know we could have two buttons but do we need them?
-    //only show undo if it does anything
-    if(twoButtons){
-      twoButtons = (tempValueToUpdate.value != widget.valueToUpdate.value);
-    }
-
-    Widget allButtons = FieldEditButtons(
-      darkButtons: false,
-      onPressTop: (){
-        //go back to what you had previously
-        ctrl.text = widget.valueToUpdate.value;
-      },
-      topIcon: Icons.undo,
-      twoButtons: twoButtons,
-      onPressBottom: (){
-        isEditing.value = !isEditing.value;
-      },
-      bottomIcon: (isEditing.value) ? Icons.check : Icons.edit,
-    );
+    bool fieldEdited = (tempValueToUpdate.value != widget.valueToUpdate.value);
+    bool twoButtons = (widget.editOneAtAtTime && isEditing.value && fieldEdited);
 
     //build
     return Flexible(
@@ -289,19 +246,13 @@ class _TextFieldWithClearButtonState extends State<TextFieldWithClearButton> {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            (widget.editOneAtAtTime == false) ? Container()
-            : Padding(
-              padding: EdgeInsets.only(
-                right: 8,
-              ),
-              child: ClipRRect(
-                borderRadius: new BorderRadius.only(
-                  topLeft:  const  Radius.circular(16.0),
-                  bottomLeft: const  Radius.circular(16.0),
-                ),
-                child: allButtons,
-              ),
-            ),
+            (widget.editOneAtAtTime) ? EditOneAtATimeButtons(
+              undo: (){ //go back to what you had previously
+                ctrl.text = widget.valueToUpdate.value;
+              },
+              twoButtons: twoButtons, 
+              isEditing: isEditing,
+            ) : Container(),
             Flexible(
               child: Stack(
                 children: <Widget>[
@@ -351,7 +302,9 @@ class _TextFieldWithClearButtonState extends State<TextFieldWithClearButton> {
                     right: 0,
                     top: 0,
                     bottom: 0,
-                    child: clearButton,
+                    child: (isEditing.value && present.value) 
+                    ? ClearButton(ctrl: ctrl) 
+                    : Container(),
                   ),
                 ],
               ),
