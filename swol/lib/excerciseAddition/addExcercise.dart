@@ -4,20 +4,20 @@ import 'package:flutter/material.dart';
 //plugins
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:direct_select_flutter/direct_select_container.dart';
-import 'package:swol/excerciseAddition/reloadingCard.dart';
 
 //internal: addition
-import 'package:swol/excerciseAddition/secondary/sections/predictionFunction.dart';
 import 'package:swol/excerciseAddition/secondary/sections/recoveryTime.dart';
 import 'package:swol/excerciseAddition/secondary/sections/repTarget.dart';
-import 'package:swol/excerciseAddition/addExcerciseTip.dart';
-import 'package:swol/excerciseAddition/secondary/save.dart';
+import 'package:swol/excerciseAddition/matchTrainingTypeTip.dart';
+import 'package:swol/excerciseAddition/reloadingCard.dart';
+import 'package:swol/excerciseAddition/save.dart';
 
 //internal: shared
 import 'package:swol/shared/widgets/complex/fields/fields/setTarget/setTarget.dart';
 import 'package:swol/shared/widgets/complex/fields/fields/text/notesField.dart';
 import 'package:swol/shared/widgets/complex/fields/fields/linkField/link.dart';
 import 'package:swol/shared/widgets/complex/fields/fields/text/nameField.dart';
+import 'package:swol/shared/widgets/complex/fields/fields/function.dart';
 import 'package:swol/shared/structs/anExcercise.dart';
 
 //internal: other
@@ -109,11 +109,6 @@ class AddExcercise extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //for slider hatch mark
-    //TODO: these where important at some point... why not now?
-    //double totalWidth = MediaQuery.of(context).size.width;
-    //double sliderWidth = totalWidth - (16.0 * 2) - (8 * 2);
-
     //each section
     List<Widget> sections = [
       BasicCard(
@@ -149,9 +144,11 @@ class AddExcercise extends StatelessWidget {
         repTargetDuration: repTargetDuration, 
         repTarget: repTarget,
       ),
-      FunctionSelection(
-        functionIndex: functionIndex, 
-        functionString: functionString,
+      BasicCard(
+        child: PredictionField(
+          functionIndex: functionIndex, 
+          functionString: functionString,
+        ),
       ),
       TipSpacing(
         tipIsShowing: tipIsShowing,

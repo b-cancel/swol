@@ -1,61 +1,12 @@
-//flutter
-import 'package:flutter/material.dart';
-
-//plugin
-import 'package:direct_select_flutter/direct_select_item.dart';
-import 'package:direct_select_flutter/direct_select_list.dart';
-import 'package:bot_toast/bot_toast.dart';
-
-
-//internal
-import 'package:swol/shared/widgets/complex/fields/headers/fieldHeader.dart';
-import 'package:swol/other/functions/helper.dart';
-
-//widget
-class FunctionSelection extends StatelessWidget {
-  const FunctionSelection({
-    Key key,
-    @required this.functionIndex,
-    @required this.functionString,
-  }) : super(key: key);
-
-  final ValueNotifier<int> functionIndex;
-  final ValueNotifier<String> functionString;
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      margin: EdgeInsets.all(8),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          Container(
-            padding: EdgeInsets.only(
-              //Top 16 padding address above
-              left: 16,
-              right: 16,
-              bottom: 16,
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                PredictionFormulaHeader(),
-                FunctionDropDown(
-                  functionIndex: functionIndex,
-                  functionString: functionString,
-                ),
-              ],
-            ),
-          ),
-        ]
-      ),
-    );
-  }
-}
-
 //dropdown
 //TODO: holding it long enough to bring up the screen butnot long enough to select
 //TODO: fix that the above breaks everything
+import 'package:bot_toast/bot_toast.dart';
+import 'package:direct_select_flutter/direct_select_item.dart';
+import 'package:direct_select_flutter/direct_select_list.dart';
+import 'package:flutter/material.dart';
+import 'package:swol/other/functions/helper.dart';
+
 class EasyFunctionDropDown extends StatefulWidget {
   EasyFunctionDropDown({
     @required this.functionString,
@@ -169,45 +120,6 @@ class _EasyFunctionDropDownState extends State<EasyFunctionDropDown> {
           ),
         ),
       ],
-    );
-  }
-}
-
-class FunctionDropDown extends StatefulWidget {
-  FunctionDropDown({
-    @required this.functionString,
-    @required this.functionIndex,
-  });
-
-  final ValueNotifier<String> functionString;
-  final ValueNotifier<int> functionIndex;
-
-  @override
-  _FunctionDropDownState createState() => _FunctionDropDownState();
-}
-
-class _FunctionDropDownState extends State<FunctionDropDown> {
-  @override
-  Widget build(BuildContext context) {
-    return DropdownButton<String>(
-      value: widget.functionString.value,
-      icon: Icon(Icons.arrow_drop_down),
-      isExpanded: true,
-      iconSize: 24,
-      elevation: 16,
-      onChanged: (String newValue) {
-        setState(() {
-          widget.functionString.value = newValue;
-          widget.functionIndex.value = Functions.functionToIndex[widget.functionString.value];
-        });
-      },
-      items: Functions.functions.map<DropdownMenuItem<String>>((String value) {
-        return DropdownMenuItem<String>(
-          value: value,
-          child: Text(value),
-        );
-      })
-      .toList(),
     );
   }
 }

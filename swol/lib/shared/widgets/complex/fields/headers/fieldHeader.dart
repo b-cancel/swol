@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 
 //internal
 import 'package:swol/shared/widgets/complex/fields/headers/popUpBodies/recoveryTimeBody.dart';
-import 'package:swol/shared/widgets/complex/fields/headers/popUpBodies/predictionBody.dart';
 import 'package:swol/shared/widgets/complex/fields/headers/popUpBodies/repTargetBody.dart';
 import 'package:swol/shared/widgets/complex/fields/headers/ourInformationPopUp.dart';
 import 'package:swol/shared/methods/theme.dart';
@@ -100,29 +99,6 @@ class RecoveryTimeHeader extends StatelessWidget {
         title: "Recovery Time",
         subtitle: "Not sure? Keep the default",
         body: RecoveryTimePopUpBody(),
-      ),
-    );
-  }
-}
-
-class PredictionFormulaHeader extends StatelessWidget {
-  PredictionFormulaHeader({
-    this.subtle: false,
-  });
-
-  final bool subtle;
-
-  @override
-  Widget build(BuildContext context) {
-    return Theme(
-      data: MyTheme.light,
-      child: HeaderWithInfo(
-        header: "Prediction Formula",
-        title: "Prediction Formulas",
-        subtitle: "Not sure? Keep the default",
-        body: PredictionFormulasPopUpBody(),
-        isDense: true,
-        subtle: subtle,
       ),
     );
   }

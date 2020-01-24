@@ -52,7 +52,7 @@ class ThePillsDark extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Theme(
-      data: MyTheme.dark,
+      data: ThemeData.dark(),
       child: Container(
         //seven sections in between since there are 9 clicks
         width: (totalScreenWidth/4) * 8,

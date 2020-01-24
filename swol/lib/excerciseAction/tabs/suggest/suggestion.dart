@@ -5,11 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 //internal: addition
-import 'package:swol/excerciseAddition/secondary/sections/predictionFunction.dart';
 import 'package:swol/excerciseAddition/secondary/sections/repTarget.dart';
 
 //internal: shared
 import 'package:swol/shared/widgets/complex/fields/headers/fieldHeader.dart';
+import 'package:swol/shared/widgets/complex/fields/fields/function.dart';
 import 'package:swol/shared/widgets/simple/ourSlider.dart';
 import 'package:swol/shared/structs/anExcercise.dart';
 import 'package:swol/shared/methods/theme.dart';
@@ -363,9 +363,10 @@ class FunctionSettings extends StatelessWidget {
                             padding: EdgeInsets.symmetric(
                               horizontal: 24,
                             ),
-                            child: FunctionChanger(
+                            child: PredictionField(
                               functionIndex: functionIndex, 
                               functionString: functionString,
+                              subtle: true,
                             ),
                           ),
                         ),
@@ -470,33 +471,6 @@ class FunctionSettings extends StatelessWidget {
           child: Corner(
             cardRadius: arrowRadius,
           ),
-        ),
-      ],
-    );
-  }
-}
-
-class FunctionChanger extends StatelessWidget {
-  const FunctionChanger({
-    Key key,
-    @required this.functionIndex,
-    @required this.functionString,
-  }) : super(key: key);
-
-  final ValueNotifier<int> functionIndex;
-  final ValueNotifier<String> functionString;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: <Widget>[
-        PredictionFormulaHeader(
-          subtle: true,
-        ),
-        FunctionDropDown(
-          functionIndex: functionIndex,
-          functionString: functionString,
         ),
       ],
     );
