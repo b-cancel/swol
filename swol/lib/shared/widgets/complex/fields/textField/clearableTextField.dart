@@ -37,12 +37,6 @@ class TextFieldWithClearButton extends StatefulWidget {
 }
 
 class _TextFieldWithClearButtonState extends State<TextFieldWithClearButton> {
-  //initially synced with valueToUpdate which is synced up with ctrl
-  //always kept in sync with ctrl
-  //IF widget.editOneAtAtTime == false then also always keeps valueToUpdate in sync
-  ValueNotifier<String> tempValueToUpdate; 
-
-  //other
   TextEditingController ctrl = new TextEditingController();
   ValueNotifier<bool> isEditing;
   ValueNotifier<FocusNode> focusNodeVN = new ValueNotifier(new FocusNode());
@@ -63,7 +57,6 @@ class _TextFieldWithClearButtonState extends State<TextFieldWithClearButton> {
 
     //set the initial value of the fields
     ctrl.text = widget.valueToUpdate.value;
-    tempValueToUpdate = new ValueNotifier(ctrl.text);
 
     //handle showing or hiding clear button
     ctrl.addListener(showHideClearButton);
@@ -147,7 +140,7 @@ class _TextFieldWithClearButtonState extends State<TextFieldWithClearButton> {
               },
               showTopButton: (
                 isEditing.value 
-                && (tempValueToUpdate.value != widget.valueToUpdate.value)
+                && (ctrl.text != widget.valueToUpdate.value)
               ), 
               isEditing: isEditing,
             ) : Container(),
@@ -210,17 +203,17 @@ class _TextFieldWithClearButtonState extends State<TextFieldWithClearButton> {
   showHideClearButton(){
     present.value = (ctrl.text != "");
 
-    //update temp value
-    tempValueToUpdate.value = ctrl.text;
-
     //if we are allowed to edit everything at once then automatically update the value
     if(widget.editOneAtAtTime == false){
-      widget.valueToUpdate.value = tempValueToUpdate.value;
+      //immediately update the value because there is no undo option
+      widget.valueToUpdate.value = ctrl.text;
     }
 
     //reflect changes in UI
     if(mounted) setState(() {});
   }
+
+  //---------------------------------------------------
 
   //only used when (widget.editOneAtAtTime)
   //so that when switch focus, without saving directly, we simply put back the value that was there
@@ -234,8 +227,7 @@ class _TextFieldWithClearButtonState extends State<TextFieldWithClearButton> {
 
   makeSureNameIsntEmpty(){
     if(widget.isName){ //name must be not empty
-      if(tempValueToUpdate.value == ""){
-        //auto undo (will also update tempValueToUpdate)
+      if(ctrl.text == ""){ 
         ctrl.text = widget.valueToUpdate.value;
         
         //let the user know their action is invalid
@@ -272,10 +264,10 @@ class _TextFieldWithClearButtonState extends State<TextFieldWithClearButton> {
         makeSureNameIsntEmpty();
         removeFocusFromUs();
       } //we are undoing
-      else ctrl.text = widget.valueToUpdate.value; //(will also update tempValueToUpdate)
+      else ctrl.text = widget.valueToUpdate.value;
 
       //we are done editing so save (or save the undone value)
-      widget.valueToUpdate.value = tempValueToUpdate.value; //that will have been updated by ctrl.text
+      widget.valueToUpdate.value = ctrl.text; 
     }
 
     //show check or edit
