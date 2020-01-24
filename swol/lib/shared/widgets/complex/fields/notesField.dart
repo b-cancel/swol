@@ -34,6 +34,7 @@ class NotesField extends StatelessWidget {
           ),
         ),
         TextFieldWithClearButton(
+          isName: false,
           editOneAtAtTime: editOneAtATime,
           valueToUpdate: noteToUpdate,
           hint: "Details", 

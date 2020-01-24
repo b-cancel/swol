@@ -30,7 +30,6 @@ class ExcerciseNotes extends StatefulWidget {
 
 class _ExcerciseNotesState extends State<ExcerciseNotes> {
   //basics
-  ValueNotifier<bool> namePresent = new ValueNotifier(false);
   ValueNotifier<bool> nameError = new ValueNotifier(false);
   ValueNotifier<String> name = new ValueNotifier("");
   ValueNotifier<String> note = new ValueNotifier("");
@@ -111,8 +110,6 @@ class _ExcerciseNotesState extends State<ExcerciseNotes> {
                   nameToUpdate: name,
                   showError: nameError,
                   autofocus: true,
-                  namePresent: namePresent,
-                  noteFocusNode: noteFocusNode,
                 ),
                 NotesField(
                   editOneAtATime: true,

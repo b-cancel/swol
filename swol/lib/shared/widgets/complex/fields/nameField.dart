@@ -15,8 +15,8 @@ class NameField extends StatelessWidget {
     @required this.nameToUpdate,
     @required this.showError,
     @required this.autofocus,
-    @required this.namePresent,
-    @required this.noteFocusNode,
+    this.namePresent, //only needed when the save button is activated with this
+    this.noteFocusNode,
   });
 
   final bool editOneAtATime;
@@ -42,6 +42,7 @@ class NameField extends StatelessWidget {
           ),
         ),
         TextFieldWithClearButton(
+          isName: true,
           editOneAtAtTime: editOneAtATime,
           valueToUpdate: nameToUpdate,
           focusNode: nameFocusNode,
@@ -52,7 +53,7 @@ class NameField extends StatelessWidget {
           //we need to keep track above to determine whether we can active the button
           present: namePresent, 
           //so next focuses on the note
-          otherFocusNode: noteFocusNode,
+          noteFocusNode: noteFocusNode,
         ),
       ],
     );

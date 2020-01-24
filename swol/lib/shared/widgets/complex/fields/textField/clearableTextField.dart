@@ -1,34 +1,36 @@
 //flutter
 import 'package:flutter/material.dart';
-import 'package:swol/shared/widgets/complex/fields/textField/clearButton.dart';
-import 'package:swol/shared/widgets/complex/fields/textField/undoAndEditToggle.dart';
 
 //internal
+import 'package:swol/shared/widgets/complex/fields/textField/undoAndEditToggle.dart';
+import 'package:swol/shared/widgets/complex/fields/textField/clearButton.dart';
 import 'package:swol/shared/widgets/simple/ourSnackBar.dart';
-import 'package:swol/pages/notes/fieldEditButtons.dart';
 
 //widget
 class TextFieldWithClearButton extends StatefulWidget {
   const TextFieldWithClearButton({
     Key key,
+    @required this.isName,
     @required this.valueToUpdate,
     @required this.hint,
     @required this.error,
+    @required this.editOneAtAtTime,
     this.autofocus: false,
     this.focusNode, //If passed then use this
     this.present, //If passed then use this
-    this.otherFocusNode, //If passed then shift over on next
-    @required this.editOneAtAtTime,
+    this.noteFocusNode, //If passed then shift over on next
+    
   }) : super(key: key);
 
+  final bool isName;
   final ValueNotifier<String> valueToUpdate;
   final String hint;
   final String error;
+  final bool editOneAtAtTime;
   final bool autofocus;
   final FocusNode focusNode;
   final ValueNotifier<bool> present;
-  final FocusNode otherFocusNode;
-  final bool editOneAtAtTime;
+  final FocusNode noteFocusNode;
 
   @override
   _TextFieldWithClearButtonState createState() => _TextFieldWithClearButtonState();
@@ -74,7 +76,7 @@ class _TextFieldWithClearButtonState extends State<TextFieldWithClearButton> {
   }
 
   makeSureNameIsntEmpty(){
-    if(widget.otherFocusNode != null){ //name must be not empty
+    if(widget.isName){ //name must be not empty
       if(tempValueToUpdate.value == ""){
         //auto undo (will also update tempValueToUpdate)
         ctrl.text = widget.valueToUpdate.value;
@@ -85,7 +87,7 @@ class _TextFieldWithClearButtonState extends State<TextFieldWithClearButton> {
     }
   }
 
-  maybeRemoveFocusFromUs(){
+  removeFocusFromUs(){
     if(widget.editOneAtAtTime){
       //NOTE: we shouldn't need this
       //BUT we haven't got only the one button to be active at a time
@@ -100,34 +102,23 @@ class _TextFieldWithClearButtonState extends State<TextFieldWithClearButton> {
   }
 
   isEditingUpdate(){
-    if(widget.editOneAtAtTime == false){
-      if(isEditing.value == false){ //no longer editing so SAVE
-        makeSureNameIsntEmpty();
-        maybeRemoveFocusFromUs();
-        widget.valueToUpdate.value = tempValueToUpdate.value;
-      }
+    if(isEditing.value){ //we want to edit, request focus
+      WidgetsBinding.instance.addPostFrameCallback((_){
+        if(focusNodeVN.value.hasFocus == false){
+          FocusScope.of(context).requestFocus(focusNodeVN.value);
+        }
+      });
     }
     else{
-      if(isEditing.value){ //autofocus on the field
-        WidgetsBinding.instance.addPostFrameCallback((_){
-          FocusScope.of(context).requestFocus(focusNodeVN.value);
-        });
-      }
-      else{ //no longer editing so SAVE OR UNDO?
-        //TODO: figure out how i came to the conclusions below 
-        //save (IF we are currently focused)
-        //undo (IF we are currently NOT focused)
-        if(focusNodeVN.value.hasFocus){
-          makeSureNameIsntEmpty();
-          maybeRemoveFocusFromUs();
-        }
-        else{ //auto undo (will also update tempValueToUpdate)
-          ctrl.text = widget.valueToUpdate.value;
-        }
+      //we are saving
+      if(widget.editOneAtAtTime == false || focusNodeVN.value.hasFocus){
+        makeSureNameIsntEmpty();
+        removeFocusFromUs();
+      } //we are undoing
+      else ctrl.text = widget.valueToUpdate.value;
 
-        //update actual value (will only trigger update if different)
-        widget.valueToUpdate.value = tempValueToUpdate.value;
-      }
+      //we are done editing so save (or save the undone value)
+      widget.valueToUpdate.value = tempValueToUpdate.value;
     }
 
     //show check or edit
@@ -156,12 +147,9 @@ class _TextFieldWithClearButtonState extends State<TextFieldWithClearButton> {
 
     //handle present passed or not
     if(widget.present == null){
-      present = new ValueNotifier(false);
+      present = new ValueNotifier(ctrl.text != "");
     }
     else present = widget.present;
-
-    //set present based on ctrl
-    present.value = (ctrl.text != "");
 
     //handle autofocus
     //autofocus name
@@ -206,16 +194,25 @@ class _TextFieldWithClearButtonState extends State<TextFieldWithClearButton> {
   //build
   @override
   Widget build(BuildContext context) {
+    Function onEditingComplete = (){
+      if(widget.editOneAtAtTime == false){
+        if(widget.isName){
+          FocusScope.of(context).requestFocus(widget.noteFocusNode);
+        }
+        else FocusScope.of(context).unfocus();
+      }
+      else isEditing.value = false;
+    };
+
     //determine text input action
     TextInputAction textInputAction;
-    if(widget.otherFocusNode == null) textInputAction = TextInputAction.newline;
+    if(widget.isName == false) textInputAction = TextInputAction.newline;
     else{
       if(widget.editOneAtAtTime) textInputAction = TextInputAction.done;
-      else{
-        textInputAction = TextInputAction.next;
-      }
+      else textInputAction = TextInputAction.next;
     }
 
+    //show we should the undo button?
     bool fieldEdited = (tempValueToUpdate.value != widget.valueToUpdate.value);
     bool twoButtons = (widget.editOneAtAtTime && isEditing.value && fieldEdited);
 
@@ -244,9 +241,9 @@ class _TextFieldWithClearButtonState extends State<TextFieldWithClearButton> {
                         },
                         controller: ctrl,
                         focusNode: focusNodeVN.value,
-                        maxLines: (widget.otherFocusNode == null) ? null : 1,
+                        maxLines: (widget.isName) ? 1 : null,
                         minLines: 1,
-                        //so when we scroll the field into view we also include is title
+                        //so when we scroll the field into view we also include the field's title
                         scrollPadding: EdgeInsets.only(top: 56),
                         keyboardType: TextInputType.text,
                         textInputAction: textInputAction,
@@ -261,30 +258,15 @@ class _TextFieldWithClearButtonState extends State<TextFieldWithClearButton> {
                           //spacer so X doesn't cover the text
                           suffix: Container(
                             width: 36,
-                          )
+                          ),
                         ),
-                        onEditingComplete: (){
-                          if(widget.editOneAtAtTime == false){
-                            if(widget.otherFocusNode != null){
-                              FocusScope.of(context).requestFocus(widget.otherFocusNode);
-                            }
-                            else FocusScope.of(context).unfocus();
-                          }
-                          else{
-                            isEditing.value = false; //unfocuses automatically
-                          }
-                        },
+                        onEditingComplete: () => onEditingComplete(),
                       ),
                     ],
                   ),
-                  Positioned(
-                    right: 0,
-                    top: 0,
-                    bottom: 0,
-                    child: (isEditing.value && present.value) 
-                    ? ClearButton(ctrl: ctrl) 
-                    : Container(),
-                  ),
+                  (isEditing.value && present.value) 
+                  ? ClearButton(ctrl: ctrl) 
+                  : Container(),
                 ],
               ),
             ),
