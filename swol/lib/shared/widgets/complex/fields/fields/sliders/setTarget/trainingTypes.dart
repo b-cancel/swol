@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 
 //internal
-import 'package:swol/shared/widgets/complex/fields/fields/setTarget/pills.dart';
+import 'package:swol/shared/widgets/complex/fields/fields/sliders/setTarget/pills.dart';
 import 'package:swol/shared/widgets/simple/ourToolTip.dart';
 import 'package:swol/shared/methods/theme.dart';
 
@@ -102,49 +102,44 @@ class _SetTargetToTrainingTypeIndicatorState extends State<SetTargetToTrainingTy
       );
     }
 
-    return Padding(
-      padding: EdgeInsets.only(
-        bottom: 12,
-      ),
-      child: Container(
-        //NOTE: MUST BE manually set
-        height: 92 , 
-        width: totalSliderWidth,
-        child: Stack(
-          children: <Widget>[
-            ListView(
-              physics: NeverScrollableScrollPhysics(),
-              scrollDirection: Axis.horizontal,
-              controller: controller,
-              children: [
-                Stack(
-                  children: <Widget>[
-                    Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: ticksAndStuff,
+    return Container(
+      //NOTE: MUST BE manually set
+      height: 92 , 
+      width: totalSliderWidth,
+      child: Stack(
+        children: <Widget>[
+          ListView(
+            physics: NeverScrollableScrollPhysics(),
+            scrollDirection: Axis.horizontal,
+            controller: controller,
+            children: [
+              Stack(
+                children: <Widget>[
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: ticksAndStuff,
+                  ),
+                  Theme(
+                    //light so that our pop ups work properly
+                    data: MyTheme.light, 
+                    child: ThePills(
+                      setTarget: widget.setTarget, 
+                      totalScreenWidth: totalScreenWidth,
                     ),
-                    Theme(
-                      //light so that our pop ups work properly
-                      data: MyTheme.light, 
-                      child: ThePills(
-                        setTarget: widget.setTarget, 
-                        totalScreenWidth: totalScreenWidth,
-                      ),
+                  ),
+                  Positioned(
+                    right: 4,
+                    top: 0,
+                    bottom: 0,
+                    child: Center(
+                      child: NoMoreThan6Sets(),
                     ),
-                    Positioned(
-                      right: 4,
-                      top: 0,
-                      bottom: 0,
-                      child: Center(
-                        child: NoMoreThan6Sets(),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ],
-        ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }

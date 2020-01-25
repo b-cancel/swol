@@ -1,5 +1,6 @@
 //flutter
 import 'package:flutter/material.dart';
+import 'package:swol/shared/widgets/simple/ourSlider.dart';
 
 //used only by addition
 class BasicCard extends StatefulWidget {
@@ -54,20 +55,24 @@ class _BasicCardState extends State<BasicCard> {
   }
 }
 
-/*
 class SliderCard extends StatelessWidget {
   SliderCard({
-    @required this.value,
+    @required this.child,
   });
 
-  final ValueNotifier<int> value;
+  final Widget child;
 
   @override
   Widget build(BuildContext context) {
     return Card(
       margin: EdgeInsets.all(8),
-      child: 
+      child: Padding(
+        padding: const EdgeInsets.only(
+          top: 8, //8 is default spacing for add excercsie
+          bottom: 8,
+        ),
+        child: child,
+      ),
     );
   }
 }
-*/

@@ -12,11 +12,11 @@ import 'package:swol/excerciseAddition/reloadingCard.dart';
 import 'package:swol/excerciseAddition/save.dart';
 
 //internal: shared
-import 'package:swol/shared/widgets/complex/fields/fields/setTarget/setTarget.dart';
+import 'package:swol/shared/widgets/complex/fields/fields/sliders/setTarget/setTarget.dart';
+import 'package:swol/shared/widgets/complex/fields/fields/sliders/repTarget.dart';
 import 'package:swol/shared/widgets/complex/fields/fields/text/notesField.dart';
 import 'package:swol/shared/widgets/complex/fields/fields/linkField/link.dart';
 import 'package:swol/shared/widgets/complex/fields/fields/text/nameField.dart';
-import 'package:swol/shared/widgets/complex/fields/fields/repTarget.dart';
 import 'package:swol/shared/widgets/complex/fields/fields/function.dart';
 import 'package:swol/shared/structs/anExcercise.dart';
 
@@ -131,12 +131,17 @@ class AddExcercise extends StatelessWidget {
         changeDuration: sectionTransitionDuration,
         recoveryPeriod: recoveryPeriod, 
       ),
-      SetTargetCard(
-        setTarget: setTarget,
+      SliderCard(
+        child: SetTargetField(
+          setTarget: setTarget,
+        ),
       ),
-      RepTargetField(
-        changeDuration: sectionTransitionDuration,
-        repTarget: repTarget,
+      SliderCard(
+        child: RepTargetField(
+          changeDuration: sectionTransitionDuration,
+          repTarget: repTarget,
+          subtle: false,
+        ),
       ),
       BasicCard(
         child: PredictionField(

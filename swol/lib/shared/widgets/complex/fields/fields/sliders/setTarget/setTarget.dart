@@ -1,61 +1,35 @@
 //flutter
 import 'package:flutter/material.dart';
-import 'package:swol/shared/methods/theme.dart';
 
 //internal
-import 'package:swol/shared/widgets/complex/fields/fields/setTarget/trainingTypes.dart';
+import 'package:swol/shared/widgets/complex/fields/fields/sliders/setTarget/trainingTypes.dart';
+import 'package:swol/shared/widgets/complex/fields/fields/sliders/sliderField.dart';
 import 'package:swol/shared/widgets/complex/fields/headers/fieldHeader.dart';
-import 'package:swol/shared/widgets/simple/ourSlider.dart';
 import 'package:swol/shared/widgets/simple/toLearnPage.dart';
 import 'package:swol/trainingTypes/trainingTypes.dart';
+import 'package:swol/shared/methods/theme.dart';
 
 //widget
-class SetTargetCard extends StatelessWidget {
-  const SetTargetCard({
+class SetTargetField extends StatelessWidget {
+  const SetTargetField({
     Key key,
     @required this.setTarget,
+    this.subtle: false,
   }) : super(key: key);
 
   final ValueNotifier<int> setTarget;
+  final bool subtle;
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      margin: EdgeInsets.all(8),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          Container(
-            padding: EdgeInsets.symmetric(
-              horizontal: 16,
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                SetTargetHeader(),
-                SetTargetToTrainingTypeIndicator(
-                  setTarget: setTarget,
-                  wholeWidth: MediaQuery.of(context).size.width,
-                  oneSidePadding: 16 + 8.0,
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(
-                    bottom: 16.0,
-                  ),
-                  child: Container(
-                    color: Colors.black, //line color
-                    height: 2,
-                    width: MediaQuery.of(context).size.width,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          CustomSlider(
-            value: setTarget,
-            lastTick: 9,
-          ),
-        ]
+    return SliderField(
+      lastTick: 9,
+      value: setTarget,
+      header: SetTargetHeader(),
+      indicator: SetTargetToTrainingTypeIndicator(
+        setTarget: setTarget,
+        wholeWidth: MediaQuery.of(context).size.width,
+        oneSidePadding: 16 + 8.0,
       ),
     );
   }

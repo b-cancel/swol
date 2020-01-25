@@ -250,7 +250,7 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
       //animated to right page
       carousel.animateToPage(
         pageID, 
-        animationDuration: Duration(milliseconds: 1500), 
+        duration: Duration(milliseconds: 1500), 
         curve: Curves.easeInOut,
       );
     }

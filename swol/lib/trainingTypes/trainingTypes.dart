@@ -73,7 +73,7 @@ class _TrainingTypeSectionsState extends State<TrainingTypeSections> {
       else{
         mainCarousel.animateToPage(
           widget.sectionID.value,
-          animationDuration: Duration(milliseconds: 250), 
+          duration: Duration(milliseconds: 250), 
           curve: Curves.linear,
         );
       }

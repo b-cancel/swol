@@ -4,10 +4,8 @@ import 'package:flutter/material.dart';
 //plugin
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-//internal: addition
-import 'package:swol/shared/widgets/complex/fields/fields/repTarget.dart';
-
 //internal: shared
+import 'package:swol/shared/widgets/complex/fields/fields/sliders/repTarget.dart';
 import 'package:swol/shared/widgets/complex/fields/fields/function.dart';
 import 'package:swol/shared/structs/anExcercise.dart';
 
@@ -497,6 +495,7 @@ class RepTargetChanger extends StatelessWidget {
         //TODO: replace for the same value that all of add excercise has
         changeDuration: Duration(milliseconds: 300),
         repTarget: new ValueNotifier(1),
+        subtle: true,
       ),
     );
   }
