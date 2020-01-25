@@ -5,14 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 //internal: addition
-import 'package:swol/excerciseAddition/secondary/sections/repTarget.dart';
+import 'package:swol/shared/widgets/complex/fields/fields/repTarget.dart';
 
 //internal: shared
-import 'package:swol/shared/widgets/complex/fields/headers/fieldHeader.dart';
 import 'package:swol/shared/widgets/complex/fields/fields/function.dart';
-import 'package:swol/shared/widgets/simple/ourSlider.dart';
 import 'package:swol/shared/structs/anExcercise.dart';
-import 'package:swol/shared/methods/theme.dart';
 
 //internal: other
 import 'package:swol/other/functions/helper.dart';
@@ -496,48 +493,10 @@ class RepTargetChanger extends StatelessWidget {
           bottomLeft: arrowRadius,
         ),
       ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: 24,
-            ),
-            child: Container(
-              padding: EdgeInsets.only(
-                top: 0,
-                bottom: 16,
-              ),
-              child: Column(
-                children: <Widget>[
-                  RepTargetHeader(subtle: true),
-                  Theme(
-                    data: MyTheme.light,
-                    child: AnimRepTargetInfoWhite(
-                      changeDuration: Duration(milliseconds: 300), 
-                      repTargetDuration: new ValueNotifier<Duration>(
-                        Duration(milliseconds: 300),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(top: 4),
-                    child: Container(
-                      color: Colors.black, //line color
-                      height: 2,
-                      width: MediaQuery.of(context).size.width,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          //slide must be full width without the 16 horizontal padding
-          CustomSlider(
-            value: new ValueNotifier<int>(1),
-            lastTick: 35,
-          ),
-        ],
+      child: RepTargetField(
+        //TODO: replace for the same value that all of add excercise has
+        changeDuration: Duration(milliseconds: 300),
+        repTarget: new ValueNotifier(1),
       ),
     );
   }

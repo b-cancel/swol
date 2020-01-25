@@ -53,3 +53,21 @@ class _BasicCardState extends State<BasicCard> {
     );
   }
 }
+
+/*
+class SliderCard extends StatelessWidget {
+  SliderCard({
+    @required this.value,
+  });
+
+  final ValueNotifier<int> value;
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      margin: EdgeInsets.all(8),
+      child: 
+    );
+  }
+}
+*/

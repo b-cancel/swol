@@ -7,7 +7,6 @@ import 'package:direct_select_flutter/direct_select_container.dart';
 
 //internal: addition
 import 'package:swol/excerciseAddition/secondary/sections/recoveryTime.dart';
-import 'package:swol/excerciseAddition/secondary/sections/repTarget.dart';
 import 'package:swol/excerciseAddition/matchTrainingTypeTip.dart';
 import 'package:swol/excerciseAddition/reloadingCard.dart';
 import 'package:swol/excerciseAddition/save.dart';
@@ -17,6 +16,7 @@ import 'package:swol/shared/widgets/complex/fields/fields/setTarget/setTarget.da
 import 'package:swol/shared/widgets/complex/fields/fields/text/notesField.dart';
 import 'package:swol/shared/widgets/complex/fields/fields/linkField/link.dart';
 import 'package:swol/shared/widgets/complex/fields/fields/text/nameField.dart';
+import 'package:swol/shared/widgets/complex/fields/fields/repTarget.dart';
 import 'package:swol/shared/widgets/complex/fields/fields/function.dart';
 import 'package:swol/shared/structs/anExcercise.dart';
 
@@ -95,11 +95,6 @@ class AddExcercise extends StatelessWidget {
   final ValueNotifier<int> repTarget = new ValueNotifier(
     AnExcercise.defaultRepTarget,
   );
-  final ValueNotifier<Duration> repTargetDuration = new ValueNotifier(
-    Duration(
-      seconds: AnExcercise.defaultRepTarget * 5,
-    )
-  );
 
   final ValueNotifier<bool> tipIsShowing = new ValueNotifier(false);
 
@@ -139,9 +134,8 @@ class AddExcercise extends StatelessWidget {
       SetTargetCard(
         setTarget: setTarget,
       ),
-      RepTargetCard(
-        changeDuration: sectionTransitionDuration, 
-        repTargetDuration: repTargetDuration, 
+      RepTargetField(
+        changeDuration: sectionTransitionDuration,
         repTarget: repTarget,
       ),
       BasicCard(
