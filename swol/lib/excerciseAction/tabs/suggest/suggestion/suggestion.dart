@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 //plugin
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:swol/excerciseAction/tabs/suggest/suggestion/corners.dart';
 import 'package:swol/excerciseAction/tabs/suggest/suggestion/setDisplay.dart';
 import 'package:swol/shared/functions/goldenRatio.dart';
 
@@ -27,6 +28,10 @@ class SuggestionSection extends StatelessWidget {
   final int lastReps;
   final double rawSpaceToRedistribute;
 
+  //TODO: grab actual values from excercise reference
+  final ValueNotifier<int> repTarget = new ValueNotifier(
+    AnExcercise.defaultRepTarget,
+  );
   final ValueNotifier<int> functionIndex = new ValueNotifier(
     AnExcercise.defaultFunctionID,
   );
@@ -43,7 +48,6 @@ class SuggestionSection extends StatelessWidget {
     //return
     return Container(
       height: rawSpaceToRedistribute,
-      color: Colors.red,
       width: MediaQuery.of(context).size.width,
       child: Column(
         mainAxisSize: MainAxisSize.max,
@@ -57,6 +61,7 @@ class SuggestionSection extends StatelessWidget {
           ),
           Expanded(
             child: FunctionSettings(
+              repTarget: repTarget,
               functionIndex: functionIndex,
               functionString: functionString,
               arrowRadius: arrowRadius,
@@ -77,12 +82,14 @@ class SuggestionSection extends StatelessWidget {
 class FunctionSettings extends StatelessWidget {
   const FunctionSettings({
     Key key,
+    @required this.repTarget,
     @required this.functionIndex,
     @required this.functionString,
     @required this.arrowRadius,
     @required this.cardRadius,
   }) : super(key: key);
 
+  final ValueNotifier<int> repTarget;
   final ValueNotifier<int> functionIndex;
   final ValueNotifier<String> functionString;
   final Radius arrowRadius;
@@ -113,279 +120,102 @@ class FunctionSettings extends StatelessWidget {
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
             Expanded(
-              child: Container(),
+              child: Stack(
+                children: <Widget>[
+                  TextWithCorners(
+                   text: "using your Last Set",
+                   radius: arrowRadius
+                 ),
+                 Positioned.fill(
+                   child: Container(
+                     child: Row(
+                       children: <Widget>[
+                         Container(
+                           color: Theme.of(context).primaryColorDark,
+                           width: 24,
+                         ),
+                         Expanded(
+                           child: Container(),
+                         ),
+                         Container(
+                           color: Theme.of(context).primaryColorDark,
+                           width: 24,
+                         )
+                       ],
+                     ),
+                   ),
+                 ),
+               ],
+              ),
             ),
-            Container(
-              width: MediaQuery.of(context).size.width,
-              decoration: BoxDecoration(
-                color: Theme.of(context).cardColor,
-                borderRadius: BorderRadius.only(
-                  bottomRight: cardRadius,
-                  bottomLeft: cardRadius,
+            Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: 24.0,
+              ),
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                decoration: BoxDecoration(
+                  color: Theme.of(context).cardColor,
+                  borderRadius: BorderRadius.only(
+                    bottomRight: cardRadius,
+                    bottomLeft: cardRadius,
+                  ),
+                ),
+                child: Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 24,
+                  ),
+                  child: PredictionField(
+                    functionIndex: functionIndex, 
+                    functionString: functionString,
+                    subtle: true,
+                  ),
                 ),
               ),
+            ),
+            Expanded(
               child: Padding(
                 padding: EdgeInsets.symmetric(
                   horizontal: 24,
                 ),
-                child: PredictionField(
-                  functionIndex: functionIndex, 
-                  functionString: functionString,
+                child: TextWithCorners(
+                  text: "your selected Prediction Formula",
+                  radius: cardRadius,
+                ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: 24.0,
+              ),
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                decoration: BoxDecoration(
+                  color: Theme.of(context).cardColor,
+                  borderRadius: BorderRadius.only(
+                    bottomRight: arrowRadius,
+                    bottomLeft: arrowRadius,
+                  ),
+                ),
+                padding: EdgeInsets.only(
+                  bottom: 12,
+                ),
+                child: RepTargetField(
+                  changeDuration: Duration(milliseconds: 300),
+                  repTarget: repTarget,
                   subtle: true,
                 ),
               ),
             ),
             Expanded(
-              child: Container(),
+              child: TextWithCorners(
+                text: "and your Rep Target\nyour Goal Set should be",
+                radius: arrowRadius,
+              ),
             ),
-            
-            RepTargetChanger(
-              arrowRadius: arrowRadius,
-            ),
-            Expanded(
-              child: Container(),
-            ),
-            /*
-            //min height of ?
-            TextOnBlack(
-                        text: "we calculated you Goal Set to be",
-                      ),
-            */
           ],
         ),
       ],
-    );
-  }
-}
-
-/*
-             Container(
-               child: Stack(
-                 children: <Widget>[
-                   Stack(
-                    children: <Widget>[
-                      TextOnBlack(
-                        text: "using your Last Set, Prediction Formula,",
-                      ),
-                      Positioned(
-                        left: 0,
-                        bottom: 0,
-                        child: Corner(
-                          cardRadius: arrowRadius,
-                          isLeft: true,
-                        ),
-                      ),
-                      Positioned(
-                        right: 0,
-                        bottom: 0,
-                        child: Corner(
-                          cardRadius: arrowRadius,
-                        ),
-                      ),
-                    ],
-                  ),
-                  Positioned.fill(
-                    child: Container(
-                      child: Row(
-                        children: <Widget>[
-                          Container(
-                            color: Theme.of(context).primaryColorDark,
-                            width: 24,
-                          ),
-                          Expanded(
-                            child: Container(),
-                          ),
-                          Container(
-                            color: Theme.of(context).primaryColorDark,
-                            width: 24,
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            /*
-                Stack(
-                  children: <Widget>[
-                    TextOnBlack(
-                      text: "and Rep Target",
-                    ),
-                    Positioned(
-                      left: 0,
-                      bottom: 0,
-                      child: Corner(
-                        cardRadius: cardRadius,
-                        isLeft: true,
-                      ),
-                    ),
-                    Positioned(
-                      right: 0,
-                      bottom: 0,
-                      child: Corner(
-                        cardRadius: cardRadius,
-                      ),
-                    ),
-                  ],
-                ),
-                */
-
-class RepTargetChanger extends StatelessWidget {
-  const RepTargetChanger({
-    Key key,
-    @required this.arrowRadius,
-  }) : super(key: key);
-
-  final Radius arrowRadius;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      decoration: BoxDecoration(
-        color: Theme.of(context).cardColor,
-        borderRadius: BorderRadius.only(
-          bottomRight: arrowRadius,
-          bottomLeft: arrowRadius,
-        ),
-      ),
-      child: RepTargetField(
-        //TODO: replace for the same value that all of add excercise has
-        changeDuration: Duration(milliseconds: 300),
-        repTarget: new ValueNotifier(1),
-        subtle: true,
-      ),
-    );
-  }
-}
-
-class TextOnBlack extends StatelessWidget {
-  const TextOnBlack({
-    Key key,
-    @required this.text,
-  }) : super(key: key);
-
-  final String text;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      padding: EdgeInsets.symmetric(
-        //minimum is 8
-        vertical: 12,
-      ),
-      alignment: Alignment.center,
-      child: Text(
-        text,
-        style: TextStyle(
-          fontWeight: FontWeight.bold,
-          fontSize: 14,
-        ),
-      ),
-    );
-  }
-}
-
-class Corner extends StatelessWidget {
-  const Corner({
-    Key key,
-    @required this.cardRadius,
-    this.isLeft: false,
-  }) : super(key: key);
-
-  final Radius cardRadius;
-  final bool isLeft;
-
-  @override
-  Widget build(BuildContext context) {
-    Widget cardColored = Container(
-      height: 48,
-      width: 48,
-      decoration: BoxDecoration(
-        color: Theme.of(context).cardColor,
-        borderRadius: BorderRadius.only(
-          //right
-          topLeft: isLeft ? Radius.zero : cardRadius,
-
-          //left
-          topRight: isLeft ? cardRadius : Radius.zero,
-        ),
-      ),
-    );
-    
-    Widget backColored = Container(
-      height: 56,
-      width: 56,
-      decoration: BoxDecoration(
-        color: Theme.of(context).primaryColorDark,
-        borderRadius: BorderRadius.only(
-          //right
-          bottomRight: isLeft ? Radius.zero : cardRadius,
-          topLeft: isLeft ? Radius.zero : cardRadius,
-
-          //left
-          bottomLeft: isLeft ? cardRadius : Radius.zero,
-          topRight: isLeft ? cardRadius : Radius.zero,
-        ),
-      ),
-    );
-
-    Widget child;
-    if(isLeft){
-      child = Stack(
-        children: <Widget>[
-          Positioned(
-            left: 0,
-            bottom: 0,
-            child: cardColored,
-          ),
-          Positioned(
-            left: 0,
-            bottom: 0,
-            child: backColored,
-          ),
-        ],
-      );
-    }
-    else{
-      child = Stack(
-        children: <Widget>[
-          Positioned(
-            right: 0,
-            bottom: 0,
-            child: cardColored,
-          ),
-          Positioned(
-            right: 0,
-            bottom: 0,
-            child: backColored,
-          ),
-        ],
-      );
-    }
-
-    return Container(
-      height: 56,
-      width: 56,
-      child: child,
     );
   }
 }
