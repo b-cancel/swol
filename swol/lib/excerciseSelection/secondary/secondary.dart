@@ -140,7 +140,7 @@ class HeaderForOneHandedUse extends StatelessWidget {
         //we get the smallest of the 2 golden ratio stuff produced
         //and then we subtract the status bar height
         //since it SEEMS like it belong to the top thingy and therefore should be excluded
-        openHeight: measurementToGoldenRatio(
+        openHeight: measurementToGoldenRatioBS(
           MediaQuery.of(context).size.height,
         )[1] - statusBarHeight,
         closedHeight: 0,

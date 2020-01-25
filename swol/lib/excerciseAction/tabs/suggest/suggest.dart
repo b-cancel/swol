@@ -2,9 +2,9 @@
 import 'package:flutter/material.dart';
 
 //internal: action
+import 'package:swol/excerciseAction/tabs/suggest/suggestion/suggestion.dart';
 import 'package:swol/excerciseAction/tabs/sharedWidgets/bottomButtons.dart';
 import 'package:swol/excerciseAction/tabs/suggest/calibration.dart';
-import 'package:swol/excerciseAction/tabs/suggest/suggestion.dart';
 
 //internal: other
 import 'package:swol/shared/methods/excerciseData.dart';
@@ -108,7 +108,10 @@ class _SuggestionState extends State<Suggestion> {
   Widget build(BuildContext context) {
     double fullHeight = MediaQuery.of(context).size.height;
     double appBarHeight = 56; //constant according to flutter docs
-    double spaceToRedistribute = fullHeight - appBarHeight - widget.statusBarHeight ;
+    double bottomButtonsHeight = 64;
+    double backButtonHeight = 48;
+    double spaceToRedistribute = fullHeight - widget.statusBarHeight;
+    spaceToRedistribute -= (appBarHeight + bottomButtonsHeight);
 
     //buildy boi
     return GestureDetector(
@@ -153,14 +156,10 @@ class _SuggestionState extends State<Suggestion> {
               top: 0,
               child: firstTime.value ? CalibrationCard(
                 rawSpaceToRedistribute: spaceToRedistribute, 
-                removeDoneButtonSpacing: false,
-                removeBottomButtonSpacing: false,
               ) : SuggestionSection(
                 lastWeight: 80, 
                 lastReps: 5,
-                //NOTE: 48 is the padding between bottom buttons and our card
-                //NOTE: 64 is the height of the bottom buttons
-                rawSpaceToRedistribute: spaceToRedistribute - 48 - 64, 
+                rawSpaceToRedistribute: spaceToRedistribute - backButtonHeight, 
               ),
             )
           ],

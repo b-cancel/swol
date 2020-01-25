@@ -49,40 +49,44 @@ class DoneButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(
-        //TODO: update to be the actual height of the bottom buttons
-        //24 for card peek, 24 extra for black boxes
-        bottom: 24.0, 
-      ),
-      child: GestureDetector(
-        onTap: (){
-          //TODO: finish this well
-          Navigator.of(context).pop();
-        },
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            DoneButtonCorner(
-              animationCurve: animationCurve,
-              showOrHideDuration: showOrHideDuration,
-              showDoneButton: showDoneButton,
-              isTop: true,
-            ),
-            DoneButtonButton(
-              animationCurve: animationCurve,
-              showOrHideDuration: showOrHideDuration,
-              showDoneButton: showDoneButton,
-              setsFinishedSoFar: setsFinishedSoFar,
-            ),
-            DoneButtonCorner(
-              animationCurve: animationCurve,
-              showOrHideDuration: showOrHideDuration,
-              showDoneButton: showDoneButton,
-              isTop: false,
-            ),
-          ],
+    return Positioned(
+      bottom: 0,
+      left: 0,
+      child: Padding(
+        padding: EdgeInsets.only(
+          //TODO: update to be the actual height of the bottom buttons
+          //24 for card peek, 24 extra for black boxes
+          bottom: 24.0, 
+        ),
+        child: GestureDetector(
+          onTap: (){
+            //TODO: finish this well
+            Navigator.of(context).pop();
+          },
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              DoneButtonCorner(
+                animationCurve: animationCurve,
+                showOrHideDuration: showOrHideDuration,
+                showDoneButton: showDoneButton,
+                isTop: true,
+              ),
+              DoneButtonButton(
+                animationCurve: animationCurve,
+                showOrHideDuration: showOrHideDuration,
+                showDoneButton: showDoneButton,
+                setsFinishedSoFar: setsFinishedSoFar,
+              ),
+              DoneButtonCorner(
+                animationCurve: animationCurve,
+                showOrHideDuration: showOrHideDuration,
+                showDoneButton: showDoneButton,
+                isTop: false,
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -237,7 +241,14 @@ class _DoneButtonCornerState extends State<DoneButtonCorner> {
           Container(
             height: 24,
             width: 24,
-            color: Theme.of(context).cardColor,
+            decoration: new BoxDecoration(
+              color: Theme.of(context).cardColor,
+              borderRadius: new BorderRadius.only(
+                bottomRight: widget.isTop ? Radius.zero : goalRadius,
+                //
+                topRight: widget.isTop ? goalRadius : Radius.zero,
+              ),
+            ),
           ),
           AnimatedContainer(
             height: 24,
@@ -248,7 +259,10 @@ class _DoneButtonCornerState extends State<DoneButtonCorner> {
               color: Theme.of(context).primaryColorDark,
               borderRadius: new BorderRadius.only(
                 topLeft: widget.isTop ? Radius.zero : goalRadius,
+                bottomRight: widget.isTop ? Radius.zero : goalRadius,
+                //
                 bottomLeft: widget.isTop ? goalRadius : Radius.zero,
+                topRight: widget.isTop ? goalRadius : Radius.zero,
               ),
             ),
           ),

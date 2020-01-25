@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:swol/excerciseAction/tabs/sharedWidgets/bottomButtons.dart';
-import 'package:swol/excerciseAction/tabs/suggest/suggestion.dart';
+import 'package:swol/excerciseAction/tabs/suggest/suggestion/setDisplay.dart';
 
 //TODO: use directionality widget to switch start direction "directionality" 
 
@@ -167,9 +167,10 @@ class SetRecordCardBottom extends StatelessWidget {
                 ),
                 width: MediaQuery.of(context).size.width,
                 padding: EdgeInsets.all(16),
-                child: ShowSet(
-                  lastWeight: 160, 
-                  lastReps: 8,
+                child: SetDisplay(
+                  title: "Goal Set",
+                  lastWeight: 124,
+                  lastReps: 23,
                 ),
               ),
             ),

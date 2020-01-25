@@ -160,18 +160,12 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
   Widget build(BuildContext context) {
     return Stack(
       children: <Widget>[
-        //had to be at the bottom to get the curves with the hack ive been using
-        Positioned(
-          bottom: 0,
-          left: 0,
-          child: DoneButton(
-            showDoneButton: showDoneButton,
-            setsFinishedSoFar: setsFinishedSoFar,
-            animationCurve: Curves.bounceInOut,
-          ),
+        DoneButton(
+          showDoneButton: showDoneButton,
+          setsFinishedSoFar: setsFinishedSoFar,
+          animationCurve: Curves.bounceInOut,
         ),
-        //the parts that overlap the back button should be clear
-        //only color in like the background for curves
+        //on top so covers hacks done by me in button above
         carousel,
       ],
     );
