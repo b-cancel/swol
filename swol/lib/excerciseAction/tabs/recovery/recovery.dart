@@ -148,29 +148,3 @@ class _RecoveryState extends State<Recovery> with SingleTickerProviderStateMixin
     );
   }
 }
-
-/*Column(
-              children: <Widget>[
-                Container(
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).cardColor,
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(24),
-                      bottomRight: Radius.circular(24),
-                    ),
-                  ),
-                  padding: EdgeInsets.only(
-                    top: 16,
-                  ),
-                  child: LiquidTime(
-                    changeableTimerDuration: recoveryDuration,
-                    timerStart: timerStart,
-                    showIcon: false,
-                  ),
-                ),
-                Expanded(
-                  child: ToBreath(),
-                )
-              ],
-            )
-            */
