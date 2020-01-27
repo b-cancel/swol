@@ -116,6 +116,9 @@ class SuperOverflow extends StatelessWidget {
           ClipOval(
             child: Stack(
               children: <Widget>[
+                Container(
+                  color: Colors.red,
+                ),
                 /*
                 PulsingBackground(
                   width: MediaQuery.of(context).size.width,

@@ -424,6 +424,9 @@ class _LiquidTimeState extends State<LiquidTime> with TickerProviderStateMixin {
             child: ClipOval(
               child: Stack(
                 children: <Widget>[
+                  Container(
+                    color: Colors.red
+                  ),
                   /*
                   PulsingBackground(
                     width: MediaQuery.of(context).size.width,

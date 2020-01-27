@@ -49,10 +49,14 @@ class TextWithCorners extends StatelessWidget {
 class Corner extends StatelessWidget {
   const Corner({
     Key key,
+    this.cornerColor,
+    this.backgroundColor,
     @required this.cardRadius,
     this.isLeft: false,
   }) : super(key: key);
 
+  final Color cornerColor;
+  final Color backgroundColor;
   final Radius cardRadius;
   final bool isLeft;
 
@@ -62,7 +66,7 @@ class Corner extends StatelessWidget {
       height: 48,
       width: 48,
       decoration: BoxDecoration(
-        color: Theme.of(context).cardColor,
+        color: cornerColor ?? Theme.of(context).cardColor,
         borderRadius: BorderRadius.only(
           //right
           topLeft: isLeft ? Radius.zero : cardRadius,
@@ -77,7 +81,7 @@ class Corner extends StatelessWidget {
       height: 56,
       width: 56,
       decoration: BoxDecoration(
-        color: Theme.of(context).primaryColorDark,
+        color: backgroundColor ?? Theme.of(context).primaryColorDark,
         borderRadius: BorderRadius.only(
           //right
           bottomRight: isLeft ? Radius.zero : cardRadius,

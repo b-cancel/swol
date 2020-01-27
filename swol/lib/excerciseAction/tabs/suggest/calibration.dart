@@ -17,7 +17,7 @@ class CalibrationCard extends StatelessWidget {
     TextStyle defaultTextStyle = TextStyle(fontSize: 16);
 
     //to make title nice size
-    double feelsGoodWidth = MediaQuery.of(context).size.width - (16 * 0);
+    double feelsGoodWidth = MediaQuery.of(context).size.width;
     List<double> goldenWidth = measurementToGoldenRatioBS(feelsGoodWidth);
     List<double> goldenWidth2 = measurementToGoldenRatioBS(goldenWidth[1]);
 
@@ -27,150 +27,140 @@ class CalibrationCard extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
-        Row(
-          children: <Widget>[
-            Container(
-              width: goldenWidth[0],
-              child: FittedBox(
-                fit: BoxFit.contain,
-                child: Container(
-                  padding: EdgeInsets.only(
-                    bottom: 0.0,
-                  ),
-                  child: DefaultTextStyle(
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
-                    child: Text("Calibration Set")
-                  ),
-                ),
-              ),
-            ),
-            Expanded(
-              child: Container(),
-            ),
-          ],
+        NicelySizedHeader(
+          header: "Calibration Set",
         ),
         Padding(
-          padding: const EdgeInsets.only(
-            bottom: 24.0,
+          padding: EdgeInsets.symmetric(
+            horizontal: 16.0,
           ),
-          child: Row(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              Container(
-                width: goldenWidth[0] + goldenWidth2[0],
-                child: Text(
-                  "Without a previous set, we can't give you suggestions",
-                  style: TextStyle(
-                    fontSize: 20,
+              Padding(
+                padding: const EdgeInsets.only(
+                  bottom: 24.0,
+                ),
+                child: Row(
+                  children: <Widget>[
+                    Container(
+                      width: goldenWidth[0] + goldenWidth2[0],
+                      child: Text(
+                        "Without a previous set, we can't give you suggestions",
+                        style: TextStyle(
+                          fontSize: 20,
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: Container(),
+                    ),
+                  ],
+                ),
+              ),
+              ListItem(
+                circleText: "1",
+                circleSize: 36,
+                circleColor: Theme.of(context).accentColor,
+                content: RichText(
+                  text: TextSpan(
+                    style: defaultTextStyle,
+                    children: [
+                      TextSpan(
+                        text: "Pick ",
+                      ),
+                      TextSpan(
+                        text: "any",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      TextSpan(
+                        text: " weight you ",
+                      ),
+                      TextSpan(
+                        text: "know",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      TextSpan(
+                        text: " you can lift for ",
+                      ),
+                      TextSpan(
+                        text: "around",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      TextSpan(
+                        text: " 10 reps",
+                      ),
+                    ]
                   ),
                 ),
               ),
-              Expanded(
-                child: Container(),
+              ListItem(
+                circleText: "2",
+                circleSize: 36,
+                circleColor: Theme.of(context).accentColor,
+                content: RichText(
+                  text: TextSpan(
+                    style: defaultTextStyle,
+                    children: [
+                      TextSpan(
+                        text: "Do as many reps as ",
+                      ),
+                      TextSpan(
+                        text: "possible",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      TextSpan(
+                        text: " with ",
+                      ),
+                      TextSpan(
+                        text: "good",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      TextSpan(
+                        text: " form",
+                      ),
+                    ]
+                  ),
+                ),
+              ),
+              ListItem(
+                circleText: "3",
+                circleSize: 36,
+                circleColor: Theme.of(context).accentColor,
+                content: RichText(
+                  text: TextSpan(
+                    style: defaultTextStyle,
+                    children: [
+                      TextSpan(
+                        text: "Record the weight you used and your ",
+                      ),
+                      TextSpan(
+                        text: "maximum reps",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      TextSpan(
+                        text: " so we can begin giving you suggestions",
+                      ),
+                    ]
+                  ),
+                ),
               ),
             ],
           ),
         ),
-        ListItem(
-          circleText: "1",
-          circleSize: 36,
-          circleColor: Theme.of(context).accentColor,
-          content: RichText(
-            text: TextSpan(
-              style: defaultTextStyle,
-              children: [
-                TextSpan(
-                  text: "Pick ",
-                ),
-                TextSpan(
-                  text: "any",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                TextSpan(
-                  text: " weight you ",
-                ),
-                TextSpan(
-                  text: "know",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                TextSpan(
-                  text: " you can lift for ",
-                ),
-                TextSpan(
-                  text: "around",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                TextSpan(
-                  text: " 10 reps",
-                ),
-              ]
-            ),
-          ),
-        ),
-        ListItem(
-          circleText: "2",
-          circleSize: 36,
-          circleColor: Theme.of(context).accentColor,
-          content: RichText(
-            text: TextSpan(
-              style: defaultTextStyle,
-              children: [
-                TextSpan(
-                  text: "Do as many reps as ",
-                ),
-                TextSpan(
-                  text: "possible",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                TextSpan(
-                  text: " with ",
-                ),
-                TextSpan(
-                  text: "good",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                TextSpan(
-                  text: " form",
-                ),
-              ]
-            ),
-          ),
-        ),
-        ListItem(
-          circleText: "3",
-          circleSize: 36,
-          circleColor: Theme.of(context).accentColor,
-          content: RichText(
-            text: TextSpan(
-              style: defaultTextStyle,
-              children: [
-                TextSpan(
-                  text: "Record the weight you used and your ",
-                ),
-                TextSpan(
-                  text: "maximum reps",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                TextSpan(
-                  text: " so we can begin giving you suggestions",
-                ),
-              ]
-            ),
-          ),
-        ),
+        
       ]
     );
 
@@ -178,6 +168,51 @@ class CalibrationCard extends StatelessWidget {
     return GoldenRatioPosition(
       spaceToRedistribute: rawSpaceToRedistribute, 
       child: child,
+    );
+  }
+}
+
+class NicelySizedHeader extends StatelessWidget {
+  NicelySizedHeader({
+    @required this.header,
+  });
+
+  final String header;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: Colors.red,
+      child: Row(
+        mainAxisSize: MainAxisSize.max,
+        children: <Widget>[
+          Expanded(
+            flex: largeNumber,
+            child: Container(
+              color: Colors.green,
+              height: 16,
+            )
+            
+            
+            /*FittedBox(
+              fit: BoxFit.contain,
+              child: DefaultTextStyle(
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
+                child: Text(header)
+              ),
+            ),
+            */
+          ),
+          Flexible(
+            flex: smallNumber,
+            child: Container(
+              
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

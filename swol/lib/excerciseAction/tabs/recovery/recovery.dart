@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:swol/excerciseAction/tabs/recovery/secondary/breath.dart';
 import 'package:swol/excerciseAction/tabs/recovery/timer/liquidTime.dart';
 import 'package:swol/excerciseAction/tabs/sharedWidgets/bottomButtons.dart';
+import 'package:swol/excerciseAction/tabs/suggest/suggestion/corners.dart';
 import 'package:swol/shared/methods/excerciseData.dart';
 
 class Recovery extends StatefulWidget {
@@ -73,6 +74,34 @@ class _RecoveryState extends State<Recovery> with SingleTickerProviderStateMixin
 
   @override
   Widget build(BuildContext context) {
+    Radius cardRadius = Radius.circular(24);
+
+    Widget child = Column(
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        Container(
+          decoration: BoxDecoration(
+            color: Theme.of(context).cardColor,
+            borderRadius: BorderRadius.only(
+              bottomLeft: cardRadius,
+              bottomRight: cardRadius,
+            ),
+          ),
+          padding: EdgeInsets.only(
+            top: 16,
+          ),
+          child: Container(
+            alignment: Alignment.center,
+            child: LiquidTime(
+              changeableTimerDuration: recoveryDuration,
+              timerStart: timerStart,
+              showIcon: false,
+            ),
+          )
+        ),
+      ],
+    );
+
     return Container(
       child: Column(
         mainAxisSize: MainAxisSize.max,
@@ -80,30 +109,9 @@ class _RecoveryState extends State<Recovery> with SingleTickerProviderStateMixin
         crossAxisAlignment: CrossAxisAlignment.center,
         //everything including bottom button and spacing
         children: <Widget>[
-          Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Container(
-                decoration: BoxDecoration(
-                  color: Theme.of(context).cardColor,
-                  borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(24),
-                    bottomRight: Radius.circular(24),
-                  ),
-                ),
-                padding: EdgeInsets.only(
-                  top: 16,
-                ),
-                child: Container(
-                  alignment: Alignment.center,
-                  child: LiquidTime(
-                    changeableTimerDuration: recoveryDuration,
-                    timerStart: timerStart,
-                    showIcon: false,
-                  ),
-                )
-              ),
-            ],
+          PreviousCardCorners(
+            child: child, 
+            cardRadius: cardRadius,
           ),
           Expanded(
             child: Container(
@@ -145,6 +153,84 @@ class _RecoveryState extends State<Recovery> with SingleTickerProviderStateMixin
           )
         ],
       ),
+    );
+  }
+}
+
+class PreviousCardCorners extends StatelessWidget {
+  const PreviousCardCorners({
+    Key key,
+    @required this.child,
+    @required this.cardRadius,
+  }) : super(key: key);
+
+  final Widget child;
+  final Radius cardRadius;
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: <Widget>[
+        child,
+        Positioned(
+          top: 0,
+          left: 0,
+          child: Stack(
+            children: <Widget>[
+              Container(
+                height: 24,
+                width: 24,
+                decoration: BoxDecoration(
+                  color: Theme.of(context).accentColor,
+                  borderRadius: BorderRadius.only(
+                    bottomRight: cardRadius,
+                  ),
+                ),
+              ),
+              Container(
+                decoration: BoxDecoration(
+                  color: Theme.of(context).cardColor,
+                  borderRadius: BorderRadius.only(
+                    topLeft: cardRadius,
+                    bottomRight: cardRadius,
+                  ),
+                ),
+                height: 25,
+                width: 25,
+              ),
+            ],
+          ),
+        ),
+        Positioned(
+          top: 0,
+          right: 0,
+          child: Stack(
+            children: <Widget>[
+              Container(
+                height: 24,
+                width: 24,
+                decoration: BoxDecoration(
+                  color: Theme.of(context).accentColor,
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: cardRadius,
+                  ),
+                ),
+              ),
+              Container(
+                decoration: BoxDecoration(
+                  color: Theme.of(context).cardColor,
+                  borderRadius: BorderRadius.only(
+                    topRight: cardRadius,
+                    bottomLeft: cardRadius,
+                  ),
+                ),
+                height: 25,
+                width: 25,
+              ),
+            ],
+          ),
+        )
+      ],
     );
   }
 }

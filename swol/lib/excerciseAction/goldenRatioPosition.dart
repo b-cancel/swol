@@ -41,7 +41,9 @@ class GoldenRatioPosition extends StatelessWidget {
               maxHeight: spaceToRedistribute,
               minHeight: 0,
               child: Container(
-                padding: EdgeInsets.all(16),
+                padding: EdgeInsets.symmetric(
+                  vertical: 16,
+                ),
                 decoration: BoxDecoration(
                   color: Theme.of(context).cardColor,
                   borderRadius: BorderRadius.all(cardRadius),

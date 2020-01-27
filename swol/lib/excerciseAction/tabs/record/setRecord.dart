@@ -1,8 +1,26 @@
+//flutter
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
+//plugins
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:swol/excerciseAction/tabs/recovery/recovery.dart';
+
+//internal
 import 'package:swol/excerciseAction/tabs/sharedWidgets/bottomButtons.dart';
 import 'package:swol/excerciseAction/tabs/suggest/suggestion/setDisplay.dart';
+import 'package:swol/shared/functions/goldenRatio.dart';
+
+//TODO: because of the cursor, the tooltip menu, and other stuff 
+//TODO: we need to actually get close to guessing what the text size should be
+//TODO: for this we first switch to mono space font and do a test on each character get the size and width of each
+//TODO: and how this realtes or changes as font size does
+//TODO: so that then for any screen size AND quantity of characters we can guess the width
+//TODO: then to make up for the difference that are smaller we use fitted box
+//TODO: we also have to convert the whole thing into a list view that contains a container of the size of the max height
+//TODO: this will allow the keyboard to scroll the fields into position when they are being editing 
+//TODO: or preferably I think use Scrollable.ensureVisible
 
 //TODO: use directionality widget to switch start direction "directionality" 
 
@@ -79,59 +97,10 @@ class SetRecordCardBottom extends StatelessWidget {
       spaceToRedistribute -= 64;
     }
 
-    //the recorded set that will ofcourse in the final product change
-    int weight = 9999;
-    int reps = 888;
-    
     //card radius
     Radius cardRadius = Radius.circular(24);
 
-    //calculate golden ratios
-    List<double> bigToSmall = [
-      rawSpaceToRedistribute * (2/3),
-      rawSpaceToRedistribute * (1/3),
-    ];
-
-    List<double> secondBigToSmall = [
-      bigToSmall[1] * (2/3),
-      bigToSmall[1] * (1/3),
-    ];
-
-    //actual card data
-    Widget actualCard = Container(
-      padding: EdgeInsets.symmetric(
-        horizontal: 24,
-        vertical: 16,
-      ),
-      decoration: BoxDecoration(
-        color: Theme.of(context).cardColor,
-        borderRadius: BorderRadius.only(
-          topRight: cardRadius,
-          bottomRight: cardRadius,
-        ),
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text(
-            "Record Set",
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 48,
-            ),
-          ),
-          OutlineTextField(
-            weight: weight,
-          ),
-          OutlineTextField(
-            weight: reps,
-            isWeight: false,
-          ),
-        ],
-      ),
-    );
-
+    //return
     return Container(
       //The extra padding that just looked right
       height: spaceToRedistribute - 12,
@@ -140,314 +109,42 @@ class SetRecordCardBottom extends StatelessWidget {
         mainAxisSize: MainAxisSize.max,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Container(
-            color: Theme.of(context).cardColor,
-            child: Container(
-              decoration: BoxDecoration(
-                color: Theme.of(context).accentColor,
-                borderRadius: BorderRadius.only(
-                  bottomLeft: cardRadius,
-                  bottomRight: cardRadius,
-                ),
-              ),
-              width: MediaQuery.of(context).size.width,
-              height: 24,
-            ),
-          ),
-          Hero(
-            tag: 'goalSet',
-            child: Container(
-              decoration: BoxDecoration(
-                color: Theme.of(context).cardColor,
-                borderRadius: BorderRadius.only(
-                  bottomRight: cardRadius,
-                  bottomLeft: cardRadius,
-                ),
-              ),
-              width: MediaQuery.of(context).size.width,
-              child: SetDisplay(
-                title: "Goal Set",
-                lastWeight: 124,
-                lastReps: 23,
-              ),
-            ),
-          ),
-          Expanded(
-            child: Container(),
-          ),
-          Container(
-            color: Colors.blue,
-            width: MediaQuery.of(context).size.width,
-            height: 250,
-            child: FittedBox(
-              fit: BoxFit.contain,
+          PreviousCardCorners(
+            cardRadius: cardRadius,
+            child: Hero(
+              tag: 'goalSet',
               child: Container(
-                color: Colors.yellow,
-                height: 24,
-                width: 96,
-                child: TextField(
-                                textAlignVertical: TextAlignVertical.center,
-                                //only ever allow 1 line
-                                minLines: 1,
-                                maxLines: 1,
-                                expands: false,
-                                //only allow 3 characters because nobody can do 1,000 reps
-                                maxLength: 3,
-                                maxLengthEnforced: true,
-                                //keyboard stuff
-                                keyboardAppearance: Brightness.dark,
-                                keyboardType: TextInputType.numberWithOptions(
-                                  signed: false, 
-                                  decimal: false,
-                                ),
-                                textInputAction: TextInputAction.done,
-                                inputFormatters: [
-                                  WhitelistingTextInputFormatter.digitsOnly
-                                ],
-                                toolbarOptions: ToolbarOptions(
-                                  copy: true,
-                                  cut: true,
-                                  paste: true,
-                                  selectAll: true,
-                                ),
-                                //don't help user at all
-                                autocorrect: false,
-                                enableSuggestions: false,
-                                //decoration
-                                decoration: InputDecoration(
-                                  counterText: "", //small as possible
-                                  border: InputBorder.none,
-                                ),
-                              ),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).cardColor,
+                  borderRadius: BorderRadius.only(
+                    bottomRight: cardRadius,
+                    bottomLeft: cardRadius,
+                  ),
+                ),
+                width: MediaQuery.of(context).size.width,
+                child: SetDisplay(
+                  title: "Goal Set",
+                  lastWeight: 124,
+                  lastReps: 23,
+                ),
               ),
             ),
           ),
-          /*
-          Container(
-            width: MediaQuery.of(context).size.width,
-            decoration: BoxDecoration(
-              color: Theme.of(context).cardColor,
-              borderRadius: BorderRadius.only(
-                topLeft: cardRadius,
-                topRight: cardRadius,
-                bottomLeft: cardRadius,
-                bottomRight: cardRadius,
-              ),
-            ),
-            padding: EdgeInsets.symmetric(
-              vertical: 24,
-            ),
-            child: IntrinsicHeight(
-              child: Row(
-                mainAxisSize: MainAxisSize.max,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: <Widget>[
-                  Expanded(
-                    child: Container(
-                      color: Colors.red,
-                      padding: EdgeInsets.all(16),
-                      child: FittedBox(
-                        fit: BoxFit.contain,
-                        child: Text(
-                          "9",
-                          style: TextStyle(
-                            fontSize: 128,
-                            fontWeight: FontWeight.bold
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Column(
-                    mainAxisSize: MainAxisSize.max,
-                    children: <Widget>[
-                      Expanded(
-                        child: FittedBox(
-                          fit: BoxFit.contain,
-                          child: Padding(
-                            padding: EdgeInsets.only(
-                              right: 6.0,
-                            ),
-                            child: Icon(FontAwesomeIcons.dumbbell),
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        child: FittedBox(
-                          fit: BoxFit.contain,
-                          child: Icon(Icons.repeat),
-                        ),
-                      )
-                    ],
-                  ),
-                  Expanded(
-                    child: Container(
-                      color: Colors.blue,
-                      child: Center(
-                        child: Container(
-                          color: Colors.red,
-                          child: 
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          */
-          Expanded(
+          Flexible(
+            flex: smallNumber,
             child: Container(),
           ),
-          Expanded(
+          Container(
+            height: 250,
+            width: MediaQuery.of(context).size.width,
+            color: Colors.red,
+          ),
+          Flexible(
+            flex: largeNumber,
             child: Container(),
           ),
           //actualCard,
         ],
-      ),
-    );
-    
-    
-
-    
-    /*
-    //build
-    return Container(
-      height: spaceToRedistribute,
-      width: MediaQuery.of(context).size.width,
-      //child: actualCard,
-      
-      child: Column(
-        mainAxisSize: MainAxisSize.max,
-        children: <Widget>[
-          Container(
-            color: Theme.of(context).cardColor,
-            height: heightBigSmall[1] - 8,
-            width: MediaQuery.of(context).size.width,
-          ),
-          Container(
-            height: 16,
-            //color: Colors.red,
-            width: MediaQuery.of(context).size.width,
-            alignment: Alignment.center,
-            child: OverflowBox(
-              alignment: Alignment.center,
-              //NOTE: we are working from the center of our space
-              //the largest box we can have at that point without overflowing from up top
-              //is going to be double the size of the smaller portion
-              //this works but then whatever we fit into it we also need to account for atleast a 16 pixel padding on top and bottom
-              maxHeight: heightBigSmall[1] * 2,
-              minHeight: 0,
-              child: Container(
-                height: heightBigSmall[1] * 2,
-                child: Padding(
-                  padding: EdgeInsets.only(
-                    top: 16,
-                  ),
-                  child: Center(
-                    child: ConstrainedBox(
-                      constraints: BoxConstraints(
-                        maxHeight: heightBigSmall[1] * 2 - 16,
-                      ),
-                      child: actualCard,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ),
-          Container(
-            height: heightBigSmall[0] - 8,
-            width: MediaQuery.of(context).size.width,
-          ),
-        ],
-      ),
-      
-    );
-    */
-  }
-}
-
-class OutlineTextField extends StatelessWidget {
-  const OutlineTextField({
-    Key key,
-    @required this.weight,
-    this.isWeight: true,
-  }) : super(key: key);
-
-  final int weight;
-  final bool isWeight;
-
-  @override
-  Widget build(BuildContext context) {
-    double fontSize = 72;
-    double difference = 24;
-    double difference2 = 16;
-
-    return Container(
-      padding: EdgeInsets.only(
-        top: 8,
-      ),
-      child: IntrinsicHeight(
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Container(
-              decoration: new BoxDecoration(
-                border: new Border.all(
-                  color: Theme.of(context).primaryColorDark, 
-                  width: 4.0,
-                ),
-                borderRadius: new BorderRadius.circular(6.0),
-              ),
-              padding: EdgeInsets.all(4),
-              child: Text(
-                isWeight ? "9____" : "8___",
-                style: TextStyle(
-                  fontSize: fontSize + (isWeight ? difference2 : 0),
-                ),
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.only(
-                left: 8
-              ),
-              //color: Colors.red,
-              child: isWeight 
-              ? Container(
-                alignment: Alignment.bottomLeft,
-                padding: EdgeInsets.only(
-                  bottom: 8,
-                  right: 16,
-                ),
-                child: Icon(
-                  FontAwesomeIcons.dumbbell,
-                  size: fontSize - difference,
-                ),
-              )
-              : DefaultTextStyle(
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                ),
-                child: DefaultTextStyle(
-                  style: TextStyle(
-                    fontSize: fontSize - difference * 2,
-                  ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.max,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text("successfully"),
-                      Text("completed"),
-                      Text("lifts"),
-                    ],
-                  ),
-                ),
-              )
-            ),
-          ],
-        ),
       ),
     );
   }

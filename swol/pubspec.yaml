@@ -22,6 +22,9 @@ dependencies:
 
   auto_animated: ^1.2.3
 
+  #for monospaced font
+  google_fonts: ^0.3.3
+
   #for the cross page view animation
   flutter_sidekick: ^0.1.3
 

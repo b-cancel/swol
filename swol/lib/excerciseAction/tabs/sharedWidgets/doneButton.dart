@@ -1,10 +1,17 @@
-//TODO: handle animation
-//button animates in and out as we scroll through the pages
-//and it animates in initially so that what ever page you start up on
-//you know that its there (cuz its kind of easy to forget)
 import 'package:flutter/material.dart';
 import 'package:vector_math/vector_math_64.dart' as vect;
 
+//TODO: must hero up with the excercise tile if it has the "complete?" button
+
+//TODO: change the theme of the button depending on stuffs
+//1. if BEFORE set target keep background dark
+//2. if AFTER set target keep background light
+
+//TODO: from suggest page -> simply close everything off 
+//TODO: including all temp variables
+
+//TODO: from break page -> must do everything that clicking next set would
+//TODO: essentially make all the pop ups that would pop up... do so...
 class DoneButton extends StatelessWidget {
   DoneButton({
     this.showOrHideDuration: const Duration(milliseconds: 300),

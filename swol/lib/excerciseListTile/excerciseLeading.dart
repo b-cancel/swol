@@ -23,6 +23,8 @@ class ExcerciseTileLeading extends StatelessWidget {
   Widget build(BuildContext context) {
     //NOTE: timer takes precendence over regular inprogress
     if(excerciseReference.tempStartTime != null){
+      //TODO: both of these should hero with the actual timer
+      //TODO: whatever that ends up being
       Duration timePassed = DateTime.now().difference(excerciseReference.tempStartTime);
       if(timePassed > Duration(minutes: 5)){
         return AnimatedMiniNormalTimerAlternativeWrapper(
@@ -36,11 +38,19 @@ class ExcerciseTileLeading extends StatelessWidget {
       }
     }
     else if(LastTimeStamp.isInProgress(excerciseReference.lastTimeStamp)){
+      //TODO: this should show different things if you are BEFORE or PAST your set target
+      //TODO: if before you set target it should show "To Set X/Y?"
+      //TODO: if after your set target it should show "Complete Set X?"
+      //TODO: both of these should be heros
+      //TODO: and essentially show the user the button they need to press 
+      //TODO: to perform the action we THINK they will want
       return Container(
         child: Text("Finished?"),
       );
     }
     else{ //NOT in timer, NOT in progress => show in what section it is
+      //since we are starting off the excercise we don't need to worry about suggesting an action
+      //so we don't need to worry about anything being a hero
       if(tileInSearch){
         if(LastTimeStamp.isNew(excerciseReference.lastTimeStamp)){
           return ListTileChipShell(
