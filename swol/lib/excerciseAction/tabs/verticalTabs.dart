@@ -65,9 +65,6 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
   //init
   @override
   void initState() {
-    //NOTE: starts as false because we always want the button to animate in
-    showDoneButton = new ValueNotifier<bool>(true); //TODO: this depends on what page we should land on
-
     //TODO: properly read in the value
     //NOTE: we might need to go the init page first (Reuse the logic)
     setsFinishedSoFar = new ValueNotifier<int>(1);
@@ -75,15 +72,17 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
     //TODO: select the first tab based on how far we are into the workout (HARD)
     //TODO: remove the random picker test code below
     var rng = new math.Random();
+    int randomPage = (rng.nextInt(3)).clamp(0, 2);
+
+    //the done button must be initialy show in order for the hero transition to work properly
+    showDoneButton = new ValueNotifier<bool>(randomPage != 1); 
 
     //travel to the page that has initial focus
-    /*
     WidgetsBinding.instance.addPostFrameCallback((_){
       WidgetsBinding.instance.addPostFrameCallback((_){
-        toPage((rng.nextInt(3)).clamp(0, 2), instant: true);
+        toPage(randomPage, instant: true);
       });
     });
-    */
 
     pageViewController = PageController(
       keepPage: true,
@@ -177,32 +176,6 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
   //but also to initally show the done button if need be
   toPage(int pageID, {bool instant: false}){ //0 -> 2
     if(instant){
-      //NOTE: this relies on the CURRENT FACT
-      //that although we are leaving the possiblity to jump to any page
-      //the done button starts off as hidden
-      //and WE ONLY WANT it to animate in for the FIRST and LAST page
-      //TODO: cover edge case that occurs if we call delayed
-      //and before delayed ends we change page and shouldn't have it open
-      //or possible should but should really wait for the future.delayed
-      //that switching to that page would have triggered
-      bool buttonShouldShow = true;
-      if(pageID == 2){  
-        //TODO: decide to not show the button if the necessary conditions are not met
-        //NOTE: this might not even be possible but that's a problem for later
-      }
-
-      if(buttonShouldShow){
-        Future.delayed(
-          //NOTE: should be equal to ONLY 
-          //how long transitioning into this page takes
-          //doesn't need to be equal to how long it takes to change pages
-          //since once you are on the vertical tabs the animation will show
-          //and therefor we don't have to wait for the transition to show it
-          widget.transitionDuration + widget.delayTillShowDoneButton,
-          () => showDoneButton.value = true,
-        );
-      }
-
       //jump the right page
       if(pageID != 0){ //we actually have to jump
         pageViewController.jumpToPage(pageID);
