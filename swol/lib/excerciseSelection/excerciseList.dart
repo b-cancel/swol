@@ -44,7 +44,6 @@ class _ExcerciseListState extends State<ExcerciseList> {
   final Duration maxTimeBetweenExcercises = Duration(hours: 1, minutes: 30);
 
   updateState(){
-    print("-------------trying to update state");
     if(mounted) setState(() {});
   }
 

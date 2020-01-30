@@ -1,5 +1,6 @@
 //flutter
 import 'package:flutter/material.dart';
+import 'package:swol/excerciseListTile/titleHero.dart';
 
 //internal: shared
 import 'package:swol/shared/functions/defaultDateTimes.dart';
@@ -81,7 +82,10 @@ class ExcerciseTileLeading extends StatelessWidget {
           }
         }
       }
-      else return Icon(Icons.chevron_right);
+      else return ExcerciseBegin(
+        inAppBar: false,
+        excerciseIDTag: excerciseReference.id,
+      );
     }
   }
 }

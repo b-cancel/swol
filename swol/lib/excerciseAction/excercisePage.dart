@@ -101,7 +101,7 @@ class _ExcercisePageState extends State<ExcercisePage> {
                           top: 0,
                           bottom: 0,
                           child: BackFromExcercise(
-                            unSpread: true,
+                            excerciseIDTag:  indexToExcercises[widget.excerciseID].id,
                           ),
                         ),
                         Positioned(
@@ -128,16 +128,12 @@ class _ExcercisePageState extends State<ExcercisePage> {
             ),
           ),
         ),
-        body: Container(
-          color: Colors.red,
-        )
-        
-        /*VerticalTabs(
+        body: VerticalTabs(
           excerciseID: widget.excerciseID,
           maxHeight: MediaQuery.of(context).size.height,
           transitionDuration: widget.transitionDuration,
           statusBarHeight: statusBarHeight,
-        ),*/
+        ),
       ),
     );
   }

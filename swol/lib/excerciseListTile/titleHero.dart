@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:math' as math;
 import 'package:swol/other/otherHelper.dart';
 
 class ExcerciseTitleHero extends StatelessWidget {
@@ -98,79 +99,68 @@ class ExcerciseTitleHeroHelper extends StatelessWidget {
         ),
       ),
     );
+  }
+}
 
-/*
-Flexible(
-                      child: Padding(
-                        padding: EdgeInsets.only(
-                          right: lerpDouble(
-                            8,
-                            (NavigationToolbar.kMiddleSpacing * 2),
-                            percentToAppBar,
-                          ),
-                        ),
-                        child: Transform.rotate(
-                          angle: (-math.pi / 4) * (5 * percentToAppBar),
-                          child: (percentToAppBar == 0) 
-                          ? Icon(
-                            Icons.add,
-                            color: Color.lerp(
-                              Theme.of(context).primaryColorDark,
-                              Colors.white,
-                              percentToAppBar,
-                            ),
-                          )
-                          //NOTE: the close button must be turned to look like an add button
-                          : Transform.rotate(
-                            angle: (-math.pi / 4),
-                            child: Icon(
-                              Icons.close,
-                              color: Color.lerp(
-                                Theme.of(context).primaryColorDark,
-                                Colors.white,
-                                percentToAppBar,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    Flexible(
-                      child: Padding(
-                        padding: EdgeInsets.only(
-                          right: 8,
-                        ),
-                        child: DefaultTextStyle(
-                          style: TextStyle(
-                            decoration: TextDecoration.none,
-                            textBaseline: TextBaseline.alphabetic,
-                            fontWeight: FontWeight.w500,
-                          ),
-                          child: Text(
-                            "Add New",
-                            style: TextStyle.lerp(
-                            TextStyle(
-                              color: Theme.of(context).primaryColorDark,
-                              letterSpacing: 1,
-                              fontSize: 14,
-                            ),
-                            //NOTE: I have absolutely no idea why its isnt allowing me to jut use
-                            //Theme.of(context).primaryTextTheme.title
-                            //but after print it I realized what values are different
-                            //and can simply copy them over
-                            TextStyle(
-                              color: Colors.white,
-                              letterSpacing: 0,
-                              fontSize: 20,
-                            ),
-                            percentToAppBar,
-                          ),
-                          softWrap: false,
-                          overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                      ),
-                    ),
-    */
+class ExcerciseBegin extends StatelessWidget {
+  ExcerciseBegin({
+    @required this.inAppBar,
+    @required this.excerciseIDTag,
+  });
+
+  final bool inAppBar;
+  final int excerciseIDTag;
+
+  @override
+  Widget build(BuildContext context) {
+    String generatedTag = "excerciseBegin" + excerciseIDTag.toString();
+    return Hero(
+      tag: generatedTag,
+      flightShuttleBuilder: (
+        BuildContext flightContext,
+        Animation<double> animation,
+        HeroFlightDirection flightDirection,
+        BuildContext fromHeroContext,
+        BuildContext toHeroContext,
+      ) {
+        return AnimatedBuilder(
+          animation: animation,
+          builder: (context, child){
+            return ExcerciseTitleBeginHelper(
+              percentToAppBar: animation.value,
+            );
+          },
+        );
+      },
+      child: ExcerciseTitleBeginHelper(
+        percentToAppBar: (inAppBar) ? 1 : 0,
+      ),
+    );
+  }
+}
+
+class ExcerciseTitleBeginHelper extends StatelessWidget {
+  ExcerciseTitleBeginHelper({
+    @required this.percentToAppBar,
+  });
+
+  final double percentToAppBar;
+
+  @override
+  Widget build(BuildContext context) {
+    return Transform.rotate(
+      angle: (-math.pi / 4) * (4 * percentToAppBar),
+      child: Container(
+        decoration: new BoxDecoration(
+          color: Color.lerp(
+            Theme.of(context).cardColor, 
+            Theme.of(context).primaryColorDark, 
+            percentToAppBar,
+          ),
+          shape: BoxShape.circle,
+        ),
+        child: Icon(Icons.chevron_right),
+      ),
+    );
   }
 }

@@ -120,12 +120,12 @@ class AddNewHeroHelper extends StatelessWidget {
                         padding: EdgeInsets.only(
                           right: lerpDouble(
                             8,
-                            (NavigationToolbar.kMiddleSpacing * 2),
+                            NavigationToolbar.kMiddleSpacing,
                             percentToAppBar,
                           ),
                         ),
                         child: Transform.rotate(
-                          angle: (-math.pi / 4) * (5 * percentToAppBar),
+                          angle: (-math.pi / 4) * (percentToAppBar),
                           child: (percentToAppBar == 0) 
                           ? Icon(
                             Icons.add,

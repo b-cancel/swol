@@ -72,7 +72,7 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
   @override
   void initState() {
     //NOTE: starts as false because we always want the button to animate in
-    showDoneButton = new ValueNotifier<bool>(false);
+    showDoneButton = new ValueNotifier<bool>(true); //TODO: this depends on what page we should land on
 
     //TODO: properly read in the value
     //NOTE: we might need to go the init page first (Reuse the logic)
