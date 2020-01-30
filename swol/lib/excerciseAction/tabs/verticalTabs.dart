@@ -164,6 +164,7 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
     return Stack(
       children: <Widget>[
         DoneButton(
+          excerciseID: widget.excerciseID,
           showDoneButton: showDoneButton,
           setsFinishedSoFar: setsFinishedSoFar,
           animationCurve: Curves.bounceInOut,

@@ -129,6 +129,7 @@ class _RecoveryState extends State<Recovery> with SingleTickerProviderStateMixin
             ),
           ),
           BottomButtons(
+            excerciseID: widget.excerciseID,
             forwardAction: (){
               //move onto the next set
               widget.nextSet();

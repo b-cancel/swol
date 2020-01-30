@@ -6,15 +6,19 @@ class BottomNextButton extends StatelessWidget {
     @required this.forwardAction,
     @required this.forwardActionWidget,
     @required this.verticalPadding,
+    @required this.excerciseID,
+    @required this.wrapInHero,
   }) : super(key: key);
 
   final Function forwardAction;
   final Widget forwardActionWidget;
   final double verticalPadding;
+  final int excerciseID;
+  final bool wrapInHero;
 
   @override
   Widget build(BuildContext context) {
-    return RaisedButton(
+    Widget main =  RaisedButton(
       materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
@@ -45,5 +49,19 @@ class BottomNextButton extends StatelessWidget {
         ),
       ),
     );
+
+    if(wrapInHero){
+      return Hero(
+        tag: "excerciseContinue"+ excerciseID.toString(),
+        child: FittedBox(
+          fit: BoxFit.contain,
+          child: Material(
+            color: Colors.transparent,
+            child: main,
+          ),
+        ),
+      );
+    }
+    else return main;
   }
 }

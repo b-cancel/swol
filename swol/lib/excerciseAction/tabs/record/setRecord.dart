@@ -54,6 +54,7 @@ class SetRecord extends StatelessWidget {
             left: 0,
             right: 0,
             child: BottomButtons(
+              excerciseID: excerciseID,
               forwardAction: setBreak,
               forwardActionWidget: Text(
                 "Take Set Break",

@@ -82,11 +82,49 @@ class ExcerciseTileLeading extends StatelessWidget {
           }
         }
       }
-      else return ExcerciseBegin(
-        inAppBar: false,
-        excerciseIDTag: excerciseReference.id,
-      );
+      else{
+        bool isLastSet = false;
+        return Hero(
+          tag: "excercise" + (isLastSet ? "Complete" : "Continue") + excerciseReference.id.toString(),
+          child: FittedBox(
+            fit: BoxFit.contain,
+            child: Material(
+              color: Colors.transparent,
+              child: ContinueOrComplete(
+                afterLastSet: isLastSet,
+              ),
+            ),
+          ),
+        );
+      }
     }
+  }
+}
+
+class ContinueOrComplete extends StatelessWidget {
+  const ContinueOrComplete({
+    @required this.afterLastSet,
+    Key key,
+  }) : super(key: key);
+
+  final bool afterLastSet;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12),
+        color: Theme.of(context).accentColor,
+      ),
+      padding: EdgeInsets.all(8),
+      child: Text(
+        afterLastSet ? "Finished?" : "Next Set?",
+        style: TextStyle(
+          color: Theme.of(context).primaryColorDark,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+    );
   }
 }
 

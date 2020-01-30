@@ -23,11 +23,13 @@ import 'package:swol/excerciseAction/tabs/sharedWidgets/nextButton.dart';
 //same as suggest page, except that we don't care about how it affectsthe next page
 class BottomButtons extends StatelessWidget {
   BottomButtons({
+    @required this.excerciseID,
     @required this.forwardAction,
     @required this.forwardActionWidget,
     this.backAction,
   });
 
+  final int excerciseID;
   final Function forwardAction;
   final Widget forwardActionWidget;
   final Function backAction;
@@ -38,6 +40,7 @@ class BottomButtons extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
         Buttons(
+          excerciseID: excerciseID,
           forwardAction: forwardAction,
           forwardActionWidget: forwardActionWidget,
           backAction: backAction,
@@ -75,11 +78,13 @@ class CardTop extends StatelessWidget {
 
 class Buttons extends StatelessWidget {
   const Buttons({
+    @required this.excerciseID,
     @required this.forwardAction,
     @required this.forwardActionWidget,
     this.backAction,
   });
 
+  final int excerciseID;
   final Function forwardAction;
   final Widget forwardActionWidget;
   final Function backAction;
@@ -102,10 +107,23 @@ class Buttons extends StatelessWidget {
               verticalPadding: extraVerticalPadding,
             ),
           ),
-          BottomNextButton(
-            forwardAction: forwardAction, 
-            forwardActionWidget: forwardActionWidget,
-            verticalPadding: extraVerticalPadding,
+          Stack(
+            children: <Widget>[
+              BottomNextButton(
+                forwardAction: forwardAction, 
+                forwardActionWidget: forwardActionWidget,
+                verticalPadding: extraVerticalPadding,
+                excerciseID: excerciseID,
+                wrapInHero: false,
+              ),
+              BottomNextButton(
+                forwardAction: forwardAction, 
+                forwardActionWidget: forwardActionWidget,
+                verticalPadding: extraVerticalPadding,
+                excerciseID: excerciseID,
+                wrapInHero: true,
+              ),
+            ],
           ),
         ],
       ),

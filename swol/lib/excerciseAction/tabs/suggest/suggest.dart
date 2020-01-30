@@ -128,6 +128,7 @@ class _SuggestionState extends State<Suggestion> {
               left: 0,
               right: 0,
               child: BottomButtons(
+                excerciseID: widget.excerciseID,
                 forwardAction: widget.recordSet,
                 forwardActionWidget: RichText(
                   text: TextSpan(

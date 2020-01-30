@@ -14,12 +14,14 @@ import 'package:vector_math/vector_math_64.dart' as vect;
 //TODO: essentially make all the pop ups that would pop up... do so...
 class DoneButton extends StatelessWidget {
   DoneButton({
+    @required this.excerciseID,
     this.showOrHideDuration: const Duration(milliseconds: 300),
     @required this.animationCurve,
     @required this.showDoneButton,
     @required this.setsFinishedSoFar,
   });
 
+  final int excerciseID;
   final Curve animationCurve;
   final Duration showOrHideDuration;
   //triggers an animation
@@ -80,11 +82,25 @@ class DoneButton extends StatelessWidget {
                 showDoneButton: showDoneButton,
                 isTop: true,
               ),
-              DoneButtonButton(
-                animationCurve: animationCurve,
-                showOrHideDuration: showOrHideDuration,
-                showDoneButton: showDoneButton,
-                setsFinishedSoFar: setsFinishedSoFar,
+              Stack(
+                children: <Widget>[
+                  DoneButtonButton(
+                    excerciseID: excerciseID,
+                    animationCurve: animationCurve,
+                    showOrHideDuration: showOrHideDuration,
+                    showDoneButton: showDoneButton,
+                    setsFinishedSoFar: setsFinishedSoFar,
+                    wrapInHero: false,
+                  ),
+                  DoneButtonButton(
+                    excerciseID: excerciseID,
+                    animationCurve: animationCurve,
+                    showOrHideDuration: showOrHideDuration,
+                    showDoneButton: showDoneButton,
+                    setsFinishedSoFar: setsFinishedSoFar,
+                    wrapInHero: true,
+                  ),
+                ],
               ),
               DoneButtonCorner(
                 animationCurve: animationCurve,
@@ -102,18 +118,22 @@ class DoneButton extends StatelessWidget {
 
 class DoneButtonButton extends StatefulWidget {
   DoneButtonButton({
+    @required this.excerciseID,
     @required this.animationCurve,
     @required this.showOrHideDuration,
     @required this.showDoneButton,
     @required this.setsFinishedSoFar,
+    @required this.wrapInHero,
   });
 
+  final int excerciseID;
   final Curve animationCurve;
   final Duration showOrHideDuration;
   //triggers an animation
   final ValueNotifier<bool> showDoneButton;
   //doesn't trigger anything, more of a pass by reference
   final ValueNotifier<int> setsFinishedSoFar;
+  final bool wrapInHero;
 
   @override
   _DoneButtonButtonState createState() => _DoneButtonButtonState();
@@ -145,7 +165,7 @@ class _DoneButtonButtonState extends State<DoneButtonButton> {
       widget.showDoneButton.value ? 12 : 24,
     );
 
-    return AnimatedContainer(
+    Widget main = AnimatedContainer(
       curve: widget.animationCurve,
       duration: widget.showOrHideDuration,
       transform: Matrix4.translation(
@@ -196,6 +216,20 @@ class _DoneButtonButtonState extends State<DoneButtonButton> {
         ],
       ),
     );
+
+    if(widget.wrapInHero){
+      return Hero(
+        tag: "excerciseComplete"+ widget.excerciseID.toString(),
+        child: FittedBox(
+          fit: BoxFit.contain,
+          child: Material(
+            color: Colors.transparent,
+            child: main,
+          ),
+        ),
+      );
+    }
+    else return main;
   }
 }
 
