@@ -187,33 +187,36 @@ class _DoneButtonButtonState extends State<DoneButtonButton> {
         horizontal: 16,
         vertical: 8,
       ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          Icon(
-            Icons.arrow_left
-          ),
-          RichText(
-            text: TextSpan(
-              style: TextStyle(
-                color: Colors.white,
-              ),
-              children: [
-                TextSpan(
-                  text: widget.setsFinishedSoFar.value.toString() + " Sets",
-                  style: TextStyle(
-                    fontWeight: FontWeight.w900,
-                  ),
-                ),
-                TextSpan(
-                  text: " Complete",
-                  style: TextStyle(
-                  ),
-                ),
-              ],
+      child: Opacity(
+        opacity: widget.wrapInHero ? 1 : 0,
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Icon(
+              Icons.arrow_left
             ),
-          ),
-        ],
+            RichText(
+              text: TextSpan(
+                style: TextStyle(
+                  color: Colors.white,
+                ),
+                children: [
+                  TextSpan(
+                    text: widget.setsFinishedSoFar.value.toString() + " Sets",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w900,
+                    ),
+                  ),
+                  TextSpan(
+                    text: " Complete",
+                    style: TextStyle(
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
 

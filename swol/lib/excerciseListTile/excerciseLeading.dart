@@ -45,8 +45,18 @@ class ExcerciseTileLeading extends StatelessWidget {
       //TODO: both of these should be heros
       //TODO: and essentially show the user the button they need to press 
       //TODO: to perform the action we THINK they will want
-      return Container(
-        child: Text("Finished?"),
+      bool isLastSet = true;
+      return Hero(
+        tag: "excercise" + (isLastSet ? "Complete" : "Continue") + excerciseReference.id.toString(),
+        child: FittedBox(
+          fit: BoxFit.contain,
+          child: Material(
+            color: Colors.transparent,
+            child: ContinueOrComplete(
+              afterLastSet: isLastSet,
+            ),
+          ),
+        ),
       );
     }
     else{ //NOT in timer, NOT in progress => show in what section it is
@@ -82,21 +92,10 @@ class ExcerciseTileLeading extends StatelessWidget {
           }
         }
       }
-      else{
-        bool isLastSet = false;
-        return Hero(
-          tag: "excercise" + (isLastSet ? "Complete" : "Continue") + excerciseReference.id.toString(),
-          child: FittedBox(
-            fit: BoxFit.contain,
-            child: Material(
-              color: Colors.transparent,
-              child: ContinueOrComplete(
-                afterLastSet: isLastSet,
-              ),
-            ),
-          ),
-        );
-      }
+      else return ExcerciseBegin(
+        inAppBar: false,
+        excerciseIDTag: excerciseReference.id,
+      );
     }
   }
 }

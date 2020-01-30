@@ -35,17 +35,20 @@ class BottomNextButton extends StatelessWidget {
         padding: EdgeInsets.symmetric(
           vertical: verticalPadding,
         ),
-        child: Row(
-          children: <Widget>[
-            Transform.translate(
-              offset: Offset(0, 0),
-              child: Icon(
-                Icons.arrow_drop_down,
-                color: Theme.of(context).primaryColorDark,
+        child: Opacity(
+          opacity: wrapInHero ? 1 : 0,
+          child: Row(
+            children: <Widget>[
+              Transform.translate(
+                offset: Offset(0, 0),
+                child: Icon(
+                  Icons.arrow_drop_down,
+                  color: Theme.of(context).primaryColorDark,
+                ),
               ),
-            ),
-            forwardActionWidget,
-          ],
+              forwardActionWidget,
+            ],
+          ),
         ),
       ),
     );
