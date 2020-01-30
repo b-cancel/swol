@@ -5,10 +5,12 @@ class TextWithCorners extends StatelessWidget {
     Key key,
     @required this.text,
     @required this.radius,
+    this.useAccent: false,
   }) : super(key: key);
 
   final String text;
   final Radius radius;
+  final bool useAccent;
 
   @override
   Widget build(BuildContext context) {
@@ -30,6 +32,7 @@ class TextWithCorners extends StatelessWidget {
           left: 0,
           bottom: 0,
           child: Corner(
+            cornerColor: useAccent ? Theme.of(context).accentColor : Theme.of(context).cardColor,
             cardRadius: radius,
             isLeft: true,
           ),
@@ -39,6 +42,7 @@ class TextWithCorners extends StatelessWidget {
           bottom: 0,
           child: Corner(
             cardRadius: radius,
+            cornerColor: useAccent ? Theme.of(context).accentColor : Theme.of(context).cardColor,
           ),
         ),
       ],

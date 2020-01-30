@@ -69,6 +69,7 @@ class SuggestionSection extends StatelessWidget {
             ),
           ),
           SetDisplay(
+            useAccent: true,
             title: "Goal Set",
             lastWeight: 124,
             lastReps: 23,
@@ -209,6 +210,7 @@ class FunctionSettings extends StatelessWidget {
             ),
             Expanded(
               child: TextWithCorners(
+                useAccent: true,
                 text: "and your Rep Target\nyour Goal Set should be",
                 radius: arrowRadius,
               ),

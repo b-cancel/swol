@@ -44,6 +44,7 @@ class _ExcerciseListState extends State<ExcerciseList> {
   final Duration maxTimeBetweenExcercises = Duration(hours: 1, minutes: 30);
 
   updateState(){
+    print("-------------trying to update state");
     if(mounted) setState(() {});
   }
 
@@ -355,6 +356,8 @@ class _ExcerciseListState extends State<ExcerciseList> {
 
     //grab screen width so you can pass it through
     double screenWidth = MediaQuery.of(context).size.width;
+
+    print("------------rebuidling");
 
     //return
     return Stack(

@@ -87,9 +87,6 @@ class _RecoveryState extends State<Recovery> with SingleTickerProviderStateMixin
               bottomRight: cardRadius,
             ),
           ),
-          padding: EdgeInsets.only(
-            top: 16,
-          ),
           child: Container(
             alignment: Alignment.center,
             child: LiquidTime(
@@ -169,67 +166,81 @@ class PreviousCardCorners extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
+    return Column(
       children: <Widget>[
-        child,
-        Positioned(
-          top: 0,
-          left: 0,
-          child: Stack(
-            children: <Widget>[
-              Container(
-                height: 24,
-                width: 24,
-                decoration: BoxDecoration(
-                  color: Theme.of(context).accentColor,
-                  borderRadius: BorderRadius.only(
-                    bottomRight: cardRadius,
-                  ),
-                ),
-              ),
-              Container(
-                decoration: BoxDecoration(
-                  color: Theme.of(context).cardColor,
-                  borderRadius: BorderRadius.only(
-                    topLeft: cardRadius,
-                    bottomRight: cardRadius,
-                  ),
-                ),
-                height: 25,
-                width: 25,
-              ),
-            ],
-          ),
+        Container(
+          height: 16,
+          width: MediaQuery.of(context).size.width,
+          color: Theme.of(context).accentColor,
         ),
-        Positioned(
-          top: 0,
-          right: 0,
-          child: Stack(
-            children: <Widget>[
-              Container(
-                height: 24,
-                width: 24,
-                decoration: BoxDecoration(
-                  color: Theme.of(context).accentColor,
-                  borderRadius: BorderRadius.only(
-                    bottomLeft: cardRadius,
+        Stack(
+          children: <Widget>[
+            child,
+            Positioned(
+              top: 0,
+              left: 0,
+              child: Stack(
+                children: <Widget>[
+                  Container(
+                    height: 24,
+                    width: 24,
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).accentColor,
+                      borderRadius: BorderRadius.only(
+                        bottomRight: cardRadius,
+                      ),
+                    ),
                   ),
-                ),
-              ),
-              Container(
-                decoration: BoxDecoration(
-                  color: Theme.of(context).cardColor,
-                  borderRadius: BorderRadius.only(
-                    topRight: cardRadius,
-                    bottomLeft: cardRadius,
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).cardColor,
+                      borderRadius: BorderRadius.only(
+                        topLeft: cardRadius,
+                        bottomRight: cardRadius,
+                      ),
+                    ),
+                    height: 25,
+                    width: 25,
                   ),
-                ),
-                height: 25,
-                width: 25,
+                ],
               ),
-            ],
-          ),
-        )
+            ),
+            Positioned(
+              top: 0,
+              right: 0,
+              child: Stack(
+                children: <Widget>[
+                  Positioned(
+                    //NOTE: in order for smooth blend 
+                    //notice the difference alos between 24 and 25 size
+                    right: 0, 
+                    child: Container(
+                      height: 24,
+                      width: 24,
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).accentColor,
+                        borderRadius: BorderRadius.only(
+                          bottomLeft: cardRadius,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).cardColor,
+                      borderRadius: BorderRadius.only(
+                        topRight: cardRadius,
+                        bottomLeft: cardRadius,
+                      ),
+                    ),
+                    height: 25,
+                    width: 25,
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ],
     );
   }

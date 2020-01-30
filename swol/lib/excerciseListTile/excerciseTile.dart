@@ -7,6 +7,7 @@ import 'package:page_transition/page_transition.dart';
 //internal: list tile
 import 'package:swol/excerciseListTile/excerciseLeading.dart';
 import 'package:swol/excerciseListTile/oneRepMaxChip.dart';
+import 'package:swol/excerciseListTile/titleHero.dart';
 
 //internal: shared
 import 'package:swol/shared/methods/excerciseData.dart';
@@ -55,7 +56,7 @@ class ExcerciseTile extends StatelessWidget {
 
         //travel to page
         App.navSpread.value = true;
-        Duration transitionDuration = Duration(milliseconds: 300);
+        Duration transitionDuration = Duration(milliseconds: 3000);
         Navigator.push(
           context, 
           PageTransition(
@@ -70,7 +71,11 @@ class ExcerciseTile extends StatelessWidget {
           ),
         );
       },
-      title: Text(thisExcercise.name),
+      title: ExcerciseTitleHero(
+        inAppBar: false,
+        title: thisExcercise.name,
+        excerciseIDTag: thisExcercise.id,
+      ),
       //NOTE: this must output to null if there isn't a weight 
       //because otherwise it will yeild alot of wasted space
       subtitle: (thisExcercise.lastWeight == null) 

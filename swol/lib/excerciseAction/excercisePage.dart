@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 
 //plugin
 import 'package:page_transition/page_transition.dart';
+import 'package:swol/excerciseListTile/excerciseTile.dart';
+import 'package:swol/excerciseListTile/titleHero.dart';
 
 //internal: excercise
 import 'package:swol/shared/widgets/simple/backButton.dart';
@@ -46,11 +48,6 @@ class _ExcercisePageState extends State<ExcercisePage> {
   }
 
   @override
-  void initState() { 
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     String name = "";
     Map<int, AnExcercise> indexToExcercises = ExcerciseData.getExcercises().value;
@@ -60,9 +57,11 @@ class _ExcercisePageState extends State<ExcercisePage> {
 
     double statusBarHeight = MediaQuery.of(context).padding.top;
 
+    print("rebuilding-----------------------");
+
     //build
     return WillPopScope(
-      onWillPop: ()async{
+      onWillPop: () async{
         //may have to unfocus
         FocusScope.of(context).unfocus();
         //animate the header
@@ -72,51 +71,73 @@ class _ExcercisePageState extends State<ExcercisePage> {
       },
       child: Scaffold(
         backgroundColor: Theme.of(context).primaryColorDark,
-        appBar: AppBar(
-          leading: BackFromExcercise(),
-          title: Material(
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(kToolbarHeight),
+          child: Container(
+            width: MediaQuery.of(context).size.width,
             color: Colors.transparent,
-            child: InkWell(
-              onTap: (){
-                //NOTE: taping the name also goes to notes
-                //BECAUSE the assumed action the user wants to take 
-                //is to change the name
-                //and from notes you can change the name
-                toNotes(context);
-              },
-              child: Container(
-                width: MediaQuery.of(context).size.width,
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  name,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    fontSize: 18,
+            child: SafeArea(
+              child: Row(
+                mainAxisSize: MainAxisSize.max,
+                children: <Widget>[
+                  Expanded(
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: <Widget>[
+                        Positioned(
+                          left: 0,
+                          bottom: 0,
+                          top: 0,
+                          right: 0,
+                          child: ExcerciseTitleHero(
+                            inAppBar: true,
+                            title: name,
+                            onTap: () => toNotes(context),
+                            excerciseIDTag:  indexToExcercises[widget.excerciseID].id,
+                          ),
+                        ),
+                        Positioned(
+                          left: 0,
+                          top: 0,
+                          bottom: 0,
+                          child: BackFromExcercise(
+                            unSpread: true,
+                          ),
+                        ),
+                        Positioned(
+                          right: 0,
+                          top: 0,
+                          bottom: 0,
+                          child: Padding(
+                            padding: EdgeInsets.all(8),
+                            child: OutlineButton.icon(
+                              highlightedBorderColor: Theme.of(context).accentColor,
+                              onPressed: (){
+                                toNotes(context);
+                              },
+                              icon: Icon(Icons.edit),
+                              label: Text("Notes"),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
+                ],
               ),
             ),
           ),
-          actions: <Widget>[
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: OutlineButton.icon(
-                highlightedBorderColor: Theme.of(context).accentColor,
-                onPressed: (){
-                  toNotes(context);
-                },
-                icon: Icon(Icons.edit),
-                label: Text("Notes"),
-              ),
-            ),
-          ],
         ),
-        body: VerticalTabs(
+        body: Container(
+          color: Colors.red,
+        )
+        
+        /*VerticalTabs(
           excerciseID: widget.excerciseID,
           maxHeight: MediaQuery.of(context).size.height,
           transitionDuration: widget.transitionDuration,
           statusBarHeight: statusBarHeight,
-        ),
+        ),*/
       ),
     );
   }

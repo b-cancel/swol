@@ -40,16 +40,7 @@ class GoldenRatioPosition extends StatelessWidget {
             child: OverflowBox(
               maxHeight: spaceToRedistribute,
               minHeight: 0,
-              child: Container(
-                padding: EdgeInsets.symmetric(
-                  vertical: 16,
-                ),
-                decoration: BoxDecoration(
-                  color: Theme.of(context).cardColor,
-                  borderRadius: BorderRadius.all(cardRadius),
-                ),
-                child: child,
-              ),
+              child: child,
             ),
           ),
           Container(

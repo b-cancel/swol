@@ -137,15 +137,18 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
     var rng = new math.Random();
 
     //travel to the page that has initial focus
+    /*
     WidgetsBinding.instance.addPostFrameCallback((_){
       WidgetsBinding.instance.addPostFrameCallback((_){
         toPage((rng.nextInt(3)).clamp(0, 2), instant: true);
       });
     });
+    */
 
     //handle goal set caluclation and display
     controller = SidekickController(
       vsync: this, 
+      //TODO: set this to a reasonable setting
       duration: Duration(milliseconds: 1500),
     );
     calculatedWeight = new ValueNotifier<int>(160);

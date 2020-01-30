@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:swol/main.dart';
 
 class BackFromExcercise extends StatelessWidget {
-  const BackFromExcercise({
-    Key key,
-    this.unSpread: true,
-  }) : super(key: key);
+  BackFromExcercise({
+    this.unSpread: false,
+  });
 
   final bool unSpread;
 
@@ -18,6 +18,10 @@ class BackFromExcercise extends StatelessWidget {
         tooltip: MaterialLocalizations.of(context).backButtonTooltip,
         onPressed: () {
           FocusScope.of(context).unfocus();
+
+          //we only unspread from the page and not comming back from notes
+          if(unSpread) App.navSpread.value = false;
+        
           Navigator.of(context).pop();
         },
       ),

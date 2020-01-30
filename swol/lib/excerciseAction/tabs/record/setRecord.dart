@@ -9,6 +9,8 @@ import 'package:swol/excerciseAction/tabs/recovery/recovery.dart';
 
 //internal
 import 'package:swol/excerciseAction/tabs/sharedWidgets/bottomButtons.dart';
+import 'package:swol/excerciseAction/tabs/sharedWidgets/cardWithHeader.dart';
+import 'package:swol/excerciseAction/tabs/suggest/calibration.dart';
 import 'package:swol/excerciseAction/tabs/suggest/suggestion/setDisplay.dart';
 import 'package:swol/shared/functions/goldenRatio.dart';
 
@@ -100,6 +102,12 @@ class SetRecordCardBottom extends StatelessWidget {
     //card radius
     Radius cardRadius = Radius.circular(24);
 
+    Widget child = Container(
+      height: 250,
+      width: MediaQuery.of(context).size.width,
+      color: Colors.yellow,
+    );
+
     //return
     return Container(
       //The extra padding that just looked right
@@ -134,10 +142,10 @@ class SetRecordCardBottom extends StatelessWidget {
             flex: smallNumber,
             child: Container(),
           ),
-          Container(
-            height: 250,
-            width: MediaQuery.of(context).size.width,
-            color: Colors.red,
+          CardWithHeader(
+            header: "Record Set",
+            aLittleSmaller: true,
+            child: child,
           ),
           Flexible(
             flex: largeNumber,

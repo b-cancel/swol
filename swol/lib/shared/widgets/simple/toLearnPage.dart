@@ -19,7 +19,7 @@ import 'package:swol/main.dart';
 //the simply navigate to the learn page
 class SuggestToLearnPage extends StatelessWidget {
   goToLearn(){
-    BuildContext rootContext = GrabSystemPrefs.rootContext;
+    BuildContext rootContext = GrabSystemData.rootContext;
     if(Navigator.canPop(rootContext)){
       //pop with the animation
       Navigator.pop(rootContext);

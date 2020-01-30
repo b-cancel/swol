@@ -11,12 +11,14 @@ import 'package:swol/shared/functions/goldenRatio.dart';
 class SetDisplay extends StatelessWidget {
   const SetDisplay({
     Key key,
+    this.useAccent: false,
     @required this.title,
     @required this.lastWeight,
     @required this.lastReps,
     this.extraCurvy: false,
   }) : super(key: key);
 
+  final bool useAccent;
   final String title;
   final int lastWeight;
   final int lastReps;
@@ -28,10 +30,12 @@ class SetDisplay extends StatelessWidget {
     double curveValue = extraCurvy ? 48 : 24;
     double difference = 12;
 
+    Color stuffColor = useAccent ? Theme.of(context).primaryColorDark : Colors.white;
+
     return Container(
       width: MediaQuery.of(context).size.width,
       decoration: BoxDecoration(
-        color: Theme.of(context).cardColor,
+        color: useAccent ? Theme.of(context).accentColor : Theme.of(context).cardColor,
         borderRadius: BorderRadius.only(
           bottomLeft: Radius.circular(curveValue),
           bottomRight: Radius.circular(curveValue),
@@ -49,6 +53,7 @@ class SetDisplay extends StatelessWidget {
           child: DefaultTextStyle(
             style: TextStyle(
               fontSize: 24,
+              color: stuffColor,
             ),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -61,6 +66,7 @@ class SetDisplay extends StatelessWidget {
                       title,
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
+                        color: stuffColor,
                       ),
                     ),
                   ),
@@ -77,7 +83,7 @@ class SetDisplay extends StatelessWidget {
                         ),
                         child: Container(
                           height: 28,
-                          color: Colors.white,
+                          color: stuffColor,
                           width: 4,
                         ),
                       ),
@@ -91,6 +97,7 @@ class SetDisplay extends StatelessWidget {
                         child: Icon(
                           FontAwesomeIcons.dumbbell,
                           size: 12,
+                          color: stuffColor,
                         ),
                       ),
                       Padding(
@@ -100,6 +107,7 @@ class SetDisplay extends StatelessWidget {
                         child: Icon(
                           FontAwesomeIcons.times,
                           size: 12,
+                          color: stuffColor,
                         ),
                       ),
                       Text(lastReps.toString()),
@@ -111,6 +119,7 @@ class SetDisplay extends StatelessWidget {
                         child: Icon(
                           Icons.repeat,
                           size: 12,
+                          color: stuffColor,
                         ),
                       ),
                     ],

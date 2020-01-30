@@ -7,7 +7,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:provider/provider.dart';
-import 'package:async/async.dart';
 
 //internal: shared
 import 'package:swol/shared/methods/extensions/sharedPreferences.dart';
@@ -50,80 +49,53 @@ class App extends StatelessWidget {
           title: 'SWOL',
           navigatorObservers: [BotToastNavigatorObserver()],//2.registered route observer
           theme: ThemeData.dark(),
-          home: GrabSystemPrefs(),
+          home: GrabSystemData(),
         ),
       ),
     );
   }
 }
 
-//grabbing system preferences
-class GrabSystemPrefs extends StatelessWidget {
+//grabbing system data
+class GrabSystemData extends StatefulWidget {
   static BuildContext rootContext;
 
-  final AsyncMemoizer _memoizer = AsyncMemoizer();
-
-  fetchData() {
-    return this._memoizer.runOnce(() async {
-      return await SharedPreferences.getInstance();
-    });
-  }
-
   @override
-  Widget build(BuildContext context) {
-    //save root context for use later
-    rootContext = context;
-
-    //return
-    return FutureBuilder(
-      future: fetchData(),
-      builder: (BuildContext context, AsyncSnapshot snapshot) {
-        if(snapshot.connectionState == ConnectionState.done){
-          //grab and process system prefs
-          SharedPreferences preferences = snapshot.data;
-          SharedPrefsExt.init(preferences);
-          ThemeData initialTheme = (SharedPrefsExt.getIsDark().value) ? MyTheme.dark : MyTheme.light;
-
-          //return app
-          return ChangeNotifierProvider<ThemeChanger>(
-            //NOTE: this will also setup the status and notifiaction bar colors
-            //we don't wait for this though, because constructors can't be async
-            create: (_) => ThemeChanger(initialTheme), 
-            child: GrabFileData(),
-          );
-        }
-        else{ //to load just show the logo a bit longer
-          return SplashScreen();
-        }
-      }
-    );
-  }
+  _GrabSystemDataState createState() => _GrabSystemDataState();
 }
 
-//grabbing file data
-//1. previous searches for search section
-//2. excercises for showing them in the list
-class GrabFileData extends StatelessWidget {
-  final AsyncMemoizer _memoizer = AsyncMemoizer();
+class _GrabSystemDataState extends State<GrabSystemData> {
+  SharedPreferences preferences;
 
-  fetchData() {
-    return this._memoizer.runOnce(() async {
-      await SearchesData.searchesInit();
-      return await ExcerciseData.excercisesInit();
-    });
+  @override
+  void initState(){
+    GrabSystemData.rootContext = context;
+    asyncInit();
+    super.initState();
+  }
+
+  asyncInit()async{
+    await SearchesData.searchesInit();
+    await ExcerciseData.excercisesInit();
+    preferences = await SharedPreferences.getInstance();
+    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
-    return new FutureBuilder(
-      future: fetchData(),
-      builder: (BuildContext context, AsyncSnapshot snapshot) {
-        if(snapshot.connectionState == ConnectionState.done){
-          return ExcerciseSelect();
-        }
-        else return SplashScreen();
-      },
-    );
+    if(preferences == null) return SplashScreen();
+    else{
+        SharedPrefsExt.init(preferences);
+        ThemeData initialTheme = (SharedPrefsExt.getIsDark().value) ? MyTheme.dark : MyTheme.light;
+
+        //return app
+        return ChangeNotifierProvider<ThemeChanger>(
+          //NOTE: this will also setup the status and notifiaction bar colors
+          //we don't wait for this though, because constructors can't be async
+          create: (_) => ThemeChanger(initialTheme), 
+          child: ExcerciseSelect(),
+        );
+    }
   }
 }
 
