@@ -120,22 +120,20 @@ class SetRecordCardBottom extends StatelessWidget {
         children: <Widget>[
           PreviousCardCorners(
             cardRadius: cardRadius,
-            child: Hero(
-              tag: 'goalSet',
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Theme.of(context).cardColor,
-                  borderRadius: BorderRadius.only(
-                    bottomRight: cardRadius,
-                    bottomLeft: cardRadius,
-                  ),
+            child: Container(
+              decoration: BoxDecoration(
+                color: Theme.of(context).cardColor,
+                borderRadius: BorderRadius.only(
+                  bottomRight: cardRadius,
+                  bottomLeft: cardRadius,
                 ),
-                width: MediaQuery.of(context).size.width,
-                child: SetDisplay(
-                  title: "Goal Set",
-                  lastWeight: 124,
-                  lastReps: 23,
-                ),
+              ),
+              width: MediaQuery.of(context).size.width,
+              child: SetDisplay(
+                title: "Goal Set",
+                lastWeight: 124,
+                lastReps: 23,
+                isSource: false,
               ),
             ),
           ),

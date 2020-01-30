@@ -16,6 +16,7 @@ class SetDisplay extends StatelessWidget {
     @required this.lastWeight,
     @required this.lastReps,
     this.extraCurvy: false,
+    this.isSource,
   }) : super(key: key);
 
   final bool useAccent;
@@ -23,6 +24,7 @@ class SetDisplay extends StatelessWidget {
   final int lastWeight;
   final int lastReps;
   final bool extraCurvy;
+  final bool isSource;
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +34,7 @@ class SetDisplay extends StatelessWidget {
 
     Color stuffColor = useAccent ? Theme.of(context).primaryColorDark : Colors.white;
 
-    return Container(
+    Widget main = Container(
       width: MediaQuery.of(context).size.width,
       decoration: BoxDecoration(
         color: useAccent ? Theme.of(context).accentColor : Theme.of(context).cardColor,
@@ -131,5 +133,21 @@ class SetDisplay extends StatelessWidget {
         ),
       ),
     );
+
+    if(isSource == null) return main;
+    else{
+      if(isSource == true){
+        return Material(
+          color: Colors.transparent,
+          child: main,
+        );
+      }
+      else{
+        return Material(
+          color: Colors.transparent,
+          child: main,
+        ); 
+      }
+    }
   }
 }

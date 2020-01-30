@@ -58,6 +58,7 @@ class SuggestionSection extends StatelessWidget {
             title: "Last Set",
             lastWeight: 9999,
             lastReps: 888,
+            isSource: true,
           ),
           Expanded(
             child: FunctionSettings(

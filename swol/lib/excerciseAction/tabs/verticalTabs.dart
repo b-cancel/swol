@@ -10,9 +10,6 @@ import 'package:swol/excerciseAction/tabs/recovery/recovery.dart';
 import 'package:swol/excerciseAction/tabs/sharedWidgets/doneButton.dart';
 import 'package:swol/excerciseAction/tabs/suggest/suggest.dart';
 
-//plugin
-import 'package:flutter_sidekick/flutter_sidekick.dart';
-
 /// A vertical tab widget for flutter
 class VerticalTabs extends StatefulWidget {
   final int excerciseID;
@@ -59,7 +56,8 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
   ValueNotifier<int> setsFinishedSoFar;
 
   //for the hero widget
-  SidekickController controller;
+  PageController pageViewController;
+
   ValueNotifier<int> calculatedWeight;
   ValueNotifier<int> calculatedReps;
   Widget calculatedGoalSet;
@@ -87,12 +85,11 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
     });
     */
 
-    //handle goal set caluclation and display
-    controller = SidekickController(
-      vsync: this, 
-      //TODO: set this to a reasonable setting
-      duration: Duration(milliseconds: 1500),
+    pageViewController = PageController(
+      keepPage: true,
     );
+
+    //handle goal set caluclation and display
     calculatedWeight = new ValueNotifier<int>(160);
     calculatedReps = new ValueNotifier<int>(15);
 
@@ -100,9 +97,11 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
     super.initState();
   }
 
-  final PageController pageViewController = PageController(
-    keepPage: true,
-  );
+  @override
+  void dispose() { 
+    pageViewController.dispose();
+    super.dispose();
+  }
 
   //build
   @override
@@ -122,10 +121,12 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
           //scrollPhysics: NeverScrollableScrollPhysics(),
           scrollDirection: Axis.vertical,
           children: <Widget>[
-            Suggestion(
+            Suggestion( 
               statusBarHeight: widget.statusBarHeight,
               excerciseID: widget.excerciseID,
-              recordSet: () => toPage(1),
+              recordSet: (){
+                toPage(1);
+              },
             ),
             SetRecord(
               statusBarHeight: widget.statusBarHeight,
@@ -147,7 +148,9 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
               //- can use a attached toast
               //- can just trigger the error or something like it on the field
               //- ideally just make it impossible for the user to do something dumb
-              setBreak: () => toPage(2),
+              setBreak: (){
+                toPage(2);
+              },
             ),
             Recovery(
               excerciseID: widget.excerciseID,
