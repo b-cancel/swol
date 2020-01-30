@@ -130,10 +130,10 @@ class SetRecordCardBottom extends StatelessWidget {
               ),
               width: MediaQuery.of(context).size.width,
               child: SetDisplay(
+                useAccent: false,
                 title: "Goal Set",
                 lastWeight: 124,
                 lastReps: 23,
-                isSource: false,
               ),
             ),
           ),
@@ -150,7 +150,6 @@ class SetRecordCardBottom extends StatelessWidget {
             flex: largeNumber,
             child: Container(),
           ),
-          //actualCard,
         ],
       ),
     );

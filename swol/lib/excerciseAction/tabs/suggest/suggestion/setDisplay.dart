@@ -11,20 +11,18 @@ import 'package:swol/shared/functions/goldenRatio.dart';
 class SetDisplay extends StatelessWidget {
   const SetDisplay({
     Key key,
-    this.useAccent: false,
     @required this.title,
     @required this.lastWeight,
     @required this.lastReps,
     this.extraCurvy: false,
-    this.isSource,
+    @required this.useAccent,
   }) : super(key: key);
 
-  final bool useAccent;
   final String title;
   final int lastWeight;
   final int lastReps;
   final bool extraCurvy;
-  final bool isSource;
+  final bool useAccent;
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +32,8 @@ class SetDisplay extends StatelessWidget {
 
     Color stuffColor = useAccent ? Theme.of(context).primaryColorDark : Colors.white;
 
-    Widget main = Container(
+    return Container(
+      //duration: Duration(milliseconds: 1500),
       width: MediaQuery.of(context).size.width,
       decoration: BoxDecoration(
         color: useAccent ? Theme.of(context).accentColor : Theme.of(context).cardColor,
@@ -133,21 +132,5 @@ class SetDisplay extends StatelessWidget {
         ),
       ),
     );
-
-    if(isSource == null) return main;
-    else{
-      if(isSource == true){
-        return Material(
-          color: Colors.transparent,
-          child: main,
-        );
-      }
-      else{
-        return Material(
-          color: Colors.transparent,
-          child: main,
-        ); 
-      }
-    }
   }
 }

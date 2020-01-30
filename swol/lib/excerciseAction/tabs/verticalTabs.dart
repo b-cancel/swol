@@ -2,6 +2,7 @@
 import 'dart:math' as math;
 
 //flutter
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 //internal: tabs
@@ -9,6 +10,7 @@ import 'package:swol/excerciseAction/tabs/record/setRecord.dart';
 import 'package:swol/excerciseAction/tabs/recovery/recovery.dart';
 import 'package:swol/excerciseAction/tabs/sharedWidgets/doneButton.dart';
 import 'package:swol/excerciseAction/tabs/suggest/suggest.dart';
+import 'package:swol/excerciseAction/tabs/suggest/suggestion/setDisplay.dart';
 
 /// A vertical tab widget for flutter
 class VerticalTabs extends StatefulWidget {
@@ -51,16 +53,16 @@ class VerticalTabs extends StatefulWidget {
 //TODO: confirm the immediately above
 
 class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMixin {
+  ValueNotifier<int> controlAnimatedGoalSet;
+  ValueNotifier<int> calculatedWeight;
+  ValueNotifier<int> calculatedReps;
+
   //for done button
   ValueNotifier<bool> showDoneButton;
   ValueNotifier<int> setsFinishedSoFar;
 
   //for the hero widget
   PageController pageViewController;
-
-  ValueNotifier<int> calculatedWeight;
-  ValueNotifier<int> calculatedReps;
-  Widget calculatedGoalSet;
 
   //init
   @override
@@ -76,6 +78,8 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
 
     //the done button must be initialy show in order for the hero transition to work properly
     showDoneButton = new ValueNotifier<bool>(randomPage != 1); 
+    controlAnimatedGoalSet = new ValueNotifier<int>(randomPage);
+    controlAnimatedGoalSet.addListener(updateState);
 
     //travel to the page that has initial focus
     WidgetsBinding.instance.addPostFrameCallback((_){
@@ -98,13 +102,20 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
 
   @override
   void dispose() { 
+    controlAnimatedGoalSet.removeListener(updateState);
     pageViewController.dispose();
     super.dispose();
+  }
+
+  updateState(){
+    if(mounted) setState(() {});
   }
 
   //build
   @override
   Widget build(BuildContext context) {
+    bool useAccent = controlAnimatedGoalSet.value == 0;
+
     return Stack(
       children: <Widget>[
         DoneButton(
@@ -175,6 +186,10 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
   //this is so that we can go to a different page if need be
   //but also to initally show the done button if need be
   toPage(int pageID, {bool instant: false}){ //0 -> 2
+    //update position of goal set
+    controlAnimatedGoalSet.value = pageID;
+
+    //move to the next page
     if(instant){
       //jump the right page
       if(pageID != 0){ //we actually have to jump
@@ -184,7 +199,7 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
     }
     else{
       //determine wether to show or hide the page 
-      if(pageID == 0 || pageID == 2){
+      if(pageID != 1){
         if(pageID == 0){
           //TODO: before show it properly update the set finished to so far
           //how to do so is discussed above
@@ -218,7 +233,7 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
       //animated to right page
       pageViewController.animateToPage(
         pageID, 
-        duration: Duration(milliseconds: 1500), 
+        duration: Duration(milliseconds: 1300), 
         curve: Curves.easeInOut,
       );
     }

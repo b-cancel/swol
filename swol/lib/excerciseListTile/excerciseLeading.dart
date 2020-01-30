@@ -92,21 +92,7 @@ class ExcerciseTileLeading extends StatelessWidget {
           }
         }
       }
-      else{
-        bool isLastSet = true;
-      return Hero(
-        tag: "excercise" + (isLastSet ? "Complete" : "Continue") + excerciseReference.id.toString(),
-        child: FittedBox(
-          fit: BoxFit.contain,
-          child: Material(
-            color: Colors.transparent,
-            child: ContinueOrComplete(
-              afterLastSet: isLastSet,
-            ),
-          ),
-        ),
-      );
-      } return ExcerciseBegin(
+      else return ExcerciseBegin(
         inAppBar: false,
         excerciseIDTag: excerciseReference.id,
       );

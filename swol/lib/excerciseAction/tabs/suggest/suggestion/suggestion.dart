@@ -54,11 +54,11 @@ class SuggestionSection extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
           SetDisplay(
+            useAccent: false,
             extraCurvy: true,
             title: "Last Set",
             lastWeight: 9999,
             lastReps: 888,
-            isSource: true,
           ),
           Expanded(
             child: FunctionSettings(
