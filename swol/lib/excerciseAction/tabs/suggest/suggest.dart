@@ -73,7 +73,7 @@ class _SuggestionState extends State<Suggestion> {
     //super init
     super.initState();
 
-    AnExcercise thisExcercise = ExcerciseData.getExcercises().value[widget.excerciseID];
+    AnExcercise thisExcercise = ExcerciseData.getExcercises()[widget.excerciseID];
 
     //set function stuff initially
     functionIndex = new ValueNotifier(

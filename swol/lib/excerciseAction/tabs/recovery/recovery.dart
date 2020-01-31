@@ -39,7 +39,7 @@ class _RecoveryState extends State<Recovery> with SingleTickerProviderStateMixin
   //init
   @override
   void initState() {
-    AnExcercise thisExcercise = ExcerciseData.getExcercises().value[widget.excerciseID];
+    AnExcercise thisExcercise = ExcerciseData.getExcercises()[widget.excerciseID];
     DateTime currentTimerStart = thisExcercise.tempStartTime;
 
     //based on whether or not the timer has already started set the timerStart

@@ -27,7 +27,7 @@ class _SearchExcerciseState extends State<SearchExcercise> {
 
   //NOTE: since they don't change while we are searching 
   //we can grab them once and done
-  Map<int,AnExcercise> excercises = ExcerciseData.getExcercises().value;
+  Map<int, AnExcercise> excercises = ExcerciseData.getExcercises();
 
   //use the text field
   performQuery(){

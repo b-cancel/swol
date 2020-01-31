@@ -29,7 +29,7 @@ class ExcerciseTile extends StatelessWidget {
   Widget build(BuildContext context) {
     //NOTE: we are using thisExcercise directly below because everything is stateless
     //and therefore updates won't break anything
-    AnExcercise thisExcercise = ExcerciseData.getExcercises().value[excerciseID];
+    AnExcercise thisExcercise = ExcerciseData.getExcercises()[excerciseID];
 
     //return
     return ListTile(

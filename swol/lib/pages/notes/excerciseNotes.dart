@@ -56,7 +56,7 @@ class _ExcerciseNotesState extends State<ExcerciseNotes> {
     super.initState();
 
     //set initial values of ValueNotifiers
-    AnExcercise thisExcercise = ExcerciseData.getExcercises().value[widget.excerciseID];
+    AnExcercise thisExcercise = ExcerciseData.getExcercises()[widget.excerciseID];
     name.value = thisExcercise.name;
     note.value = thisExcercise.note;
     url.value = thisExcercise.url;
@@ -165,7 +165,7 @@ class BigActionButton extends StatelessWidget {
     }
 
     //grab the name of the excercise
-    String theName = ExcerciseData.getExcercises().value[excerciseID].name;
+    String theName = ExcerciseData.getExcercises()[excerciseID].name;
     theName = "\"" + theName + "\"";
 
     //show the dialog

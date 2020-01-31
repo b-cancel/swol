@@ -77,7 +77,7 @@ class _ExcerciseListState extends State<ExcerciseList> {
         int excerciseID = ExcerciseData.excercisesOrder.value[i];
 
         //easy to access vars
-        AnExcercise thisExcercise = ExcerciseData.getExcercises().value[excerciseID];
+        AnExcercise thisExcercise = ExcerciseData.getExcercises()[excerciseID];
         TimeStampType thisExcerciseType = LastTimeStamp.returnTimeStampType(thisExcercise.lastTimeStamp);
 
         //determine if we have any of the special section

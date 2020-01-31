@@ -47,7 +47,7 @@ class _ExcercisePageState extends State<ExcercisePage> {
   @override
   Widget build(BuildContext context) {
     String name = "";
-    AnExcercise thisExcercise = ExcerciseData.getExcercises().value[widget.excerciseID];
+    AnExcercise thisExcercise = ExcerciseData.getExcercises()[widget.excerciseID];
     name = thisExcercise.name;
 
     double statusBarHeight = MediaQuery.of(context).padding.top;
