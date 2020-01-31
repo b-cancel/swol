@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'dart:math' as math;
 import 'package:swol/other/otherHelper.dart';
 
 class ExcerciseTitleHero extends StatelessWidget {
@@ -97,69 +96,6 @@ class ExcerciseTitleHeroHelper extends StatelessWidget {
               ),
           ),
         ),
-      ),
-    );
-  }
-}
-
-class ExcerciseBegin extends StatelessWidget {
-  ExcerciseBegin({
-    @required this.inAppBar,
-    @required this.excerciseIDTag,
-  });
-
-  final bool inAppBar;
-  final int excerciseIDTag;
-
-  @override
-  Widget build(BuildContext context) {
-    String generatedTag = "excerciseBegin" + excerciseIDTag.toString();
-    return Hero(
-      tag: generatedTag,
-      flightShuttleBuilder: (
-        BuildContext flightContext,
-        Animation<double> animation,
-        HeroFlightDirection flightDirection,
-        BuildContext fromHeroContext,
-        BuildContext toHeroContext,
-      ) {
-        return AnimatedBuilder(
-          animation: animation,
-          builder: (context, child){
-            return ExcerciseTitleBeginHelper(
-              percentToAppBar: animation.value,
-            );
-          },
-        );
-      },
-      child: ExcerciseTitleBeginHelper(
-        percentToAppBar: (inAppBar) ? 1 : 0,
-      ),
-    );
-  }
-}
-
-class ExcerciseTitleBeginHelper extends StatelessWidget {
-  ExcerciseTitleBeginHelper({
-    @required this.percentToAppBar,
-  });
-
-  final double percentToAppBar;
-
-  @override
-  Widget build(BuildContext context) {
-    return Transform.rotate(
-      angle: (-math.pi / 4) * (4 * percentToAppBar),
-      child: Container(
-        decoration: new BoxDecoration(
-          color: Color.lerp(
-            Theme.of(context).cardColor, 
-            Theme.of(context).primaryColorDark, 
-            percentToAppBar,
-          ),
-          shape: BoxShape.circle,
-        ),
-        child: Icon(Icons.chevron_right),
       ),
     );
   }

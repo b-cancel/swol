@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 
 //plugin
 import 'package:page_transition/page_transition.dart';
-import 'package:swol/excerciseListTile/titleHero.dart';
 
 //internal: excercise
+import 'package:swol/shared/widgets/simple/heros/title.dart';
 import 'package:swol/shared/widgets/simple/backButton.dart';
 import 'package:swol/shared/methods/excerciseData.dart';
 import 'package:swol/shared/structs/anExcercise.dart';
@@ -19,11 +19,9 @@ import 'package:swol/main.dart';
 class ExcercisePage extends StatefulWidget {
   ExcercisePage({
     @required this.excerciseID,
-    @required this.transitionDuration,
   });
 
   final int excerciseID;
-  final Duration transitionDuration;
 
   @override
   _ExcercisePageState createState() => _ExcercisePageState();
@@ -128,7 +126,6 @@ class _ExcercisePageState extends State<ExcercisePage> {
         body: VerticalTabs(
           excerciseID: widget.excerciseID,
           maxHeight: MediaQuery.of(context).size.height,
-          transitionDuration: widget.transitionDuration,
           statusBarHeight: statusBarHeight,
         ),
       ),

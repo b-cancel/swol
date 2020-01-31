@@ -5,14 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
 
-//internal: list tile
-import 'package:swol/excerciseListTile/excerciseLeading.dart';
-import 'package:swol/excerciseListTile/excerciseTile.dart';
-
 //internal: shared
+import 'package:swol/shared/widgets/complex/excerciseListTile/excerciseTile.dart';
 import 'package:swol/shared/functions/defaultDateTimes.dart';
 import 'package:swol/shared/methods/excerciseData.dart';
 import 'package:swol/shared/structs/anExcercise.dart';
+import 'package:swol/shared/widgets/simple/chip.dart';
 
 //internal: other
 import 'package:swol/excerciseSelection/secondary/secondary.dart';

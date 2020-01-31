@@ -1,13 +1,14 @@
 //flutter
 import 'package:flutter/material.dart';
-import 'package:swol/excerciseListTile/titleHero.dart';
+import 'package:swol/shared/widgets/complex/excerciseListTile/miniTimer.dart';
 
 //internal: shared
+import 'package:swol/shared/widgets/simple/heros/leading.dart';
 import 'package:swol/shared/functions/defaultDateTimes.dart';
 import 'package:swol/shared/structs/anExcercise.dart';
+import 'package:swol/shared/widgets/simple/chip.dart';
 
 //internal: other
-import 'package:swol/excerciseListTile/miniTimer.dart';
 import 'package:swol/other/durationFormat.dart';
 
 //tile might need reloading
@@ -95,100 +96,5 @@ class ExcerciseTileLeading extends StatelessWidget {
         excerciseIDTag: excerciseReference.id,
       );
     }
-  }
-}
-
-class ContinueOrComplete extends StatelessWidget {
-  const ContinueOrComplete({
-    @required this.afterLastSet,
-    Key key,
-  }) : super(key: key);
-
-  final bool afterLastSet;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
-        color: Theme.of(context).accentColor,
-      ),
-      padding: EdgeInsets.all(8),
-      child: Text(
-        afterLastSet ? "Finished?" : "Next Set?",
-        style: TextStyle(
-          color: Theme.of(context).primaryColorDark,
-          fontWeight: FontWeight.bold,
-        ),
-      ),
-    );
-  }
-}
-
-class ListTileChipShell extends StatelessWidget {
-  const ListTileChipShell({
-    Key key,
-    @required this.chip,
-  }) : super(key: key);
-
-  final Widget chip;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.only(
-        top: 8,
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          chip,
-        ],
-      ),
-    );
-  }
-}
-
-class MyChip extends StatelessWidget {
-  const MyChip({
-    Key key,
-    @required this.chipString,
-    this.inverse: false,
-  }) : super(key: key);
-
-  final String chipString;
-  final bool inverse;
-
-  @override
-  Widget build(BuildContext context) {
-    Color chipColor = (inverse) ? Theme.of(context).primaryColorDark : Theme.of(context).accentColor;
-    Color textColor = (inverse) ? Theme.of(context).accentColor : Theme.of(context).primaryColorDark;
-
-    return Container(
-      alignment: Alignment.topLeft,
-      child: Padding(
-        padding: EdgeInsets.only(
-          right: 4,
-        ),
-        child: Container(
-          padding: EdgeInsets.symmetric(
-            horizontal: 4,
-          ),
-          decoration: new BoxDecoration(
-            color: chipColor,
-            borderRadius: new BorderRadius.all(
-              Radius.circular(12.0),
-            ),
-          ),
-          child: Text(
-            chipString,
-            style: TextStyle(
-              color: textColor,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
-      ),
-    );
   }
 }

@@ -10,20 +10,17 @@ import 'package:swol/excerciseAction/tabs/record/setRecord.dart';
 import 'package:swol/excerciseAction/tabs/recovery/recovery.dart';
 import 'package:swol/excerciseAction/tabs/sharedWidgets/doneButton.dart';
 import 'package:swol/excerciseAction/tabs/suggest/suggest.dart';
-import 'package:swol/excerciseAction/tabs/suggest/suggestion/setDisplay.dart';
 
 /// A vertical tab widget for flutter
 class VerticalTabs extends StatefulWidget {
   final int excerciseID;
   final double maxHeight;
-  final Duration transitionDuration;
   final Duration delayTillShowDoneButton;
   final double statusBarHeight;
 
   VerticalTabs({
     @required this.excerciseID,
     @required this.maxHeight,
-    @required this.transitionDuration,
     this.delayTillShowDoneButton: const Duration(milliseconds: 200),
     @required this.statusBarHeight,
   });

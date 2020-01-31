@@ -4,12 +4,10 @@ import 'package:flutter/material.dart';
 //plugin
 import 'package:page_transition/page_transition.dart';
 
-//internal: list tile
-import 'package:swol/excerciseListTile/excerciseLeading.dart';
-import 'package:swol/excerciseListTile/oneRepMaxChip.dart';
-import 'package:swol/excerciseListTile/titleHero.dart';
-
 //internal: shared
+import 'package:swol/shared/widgets/complex/excerciseListTile/excerciseLeading.dart';
+import 'package:swol/shared/widgets/complex/excerciseListTile/oneRepMaxChip.dart';
+import 'package:swol/shared/widgets/simple/heros/title.dart';
 import 'package:swol/shared/methods/excerciseData.dart';
 import 'package:swol/shared/structs/anExcercise.dart';
 
@@ -61,7 +59,6 @@ class ExcerciseTile extends StatelessWidget {
           //WILL SET reloading leading to true
           child: ExcercisePage(
             excerciseID: excerciseID,
-            transitionDuration: transitionDuration,
           ),
         );
 

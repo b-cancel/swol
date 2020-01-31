@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:swol/excerciseListTile/titleHero.dart';
+import 'package:swol/shared/widgets/simple/heros/leading.dart';
 import 'package:swol/main.dart';
 
 class BackFromExcercise extends StatelessWidget {

@@ -5,11 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:diacritic/diacritic.dart';
 
 //internal: shared
+import 'package:swol/shared/widgets/complex/excerciseListTile/excerciseTile.dart';
 import 'package:swol/shared/methods/excerciseData.dart';
 import 'package:swol/shared/structs/anExcercise.dart';
 
 //internal: other
-import 'package:swol/excerciseListTile/excerciseTile.dart';
 import 'package:swol/pages/search/searchesData.dart';
 import 'package:swol/pages/search/recents.dart';
 import 'package:swol/main.dart';
