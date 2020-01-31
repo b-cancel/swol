@@ -2,6 +2,14 @@ import 'dart:convert';
 import 'package:flutter/widgets.dart';
 import 'package:swol/other/functions/helper.dart';
 
+//TODO whenever we need to listen to something at any point
+//use a value notifier
+//for everything else provide a getter or setter that updates things properly without making us have to deal with boilerplate
+//ideally we should grab all the excercises ONCE, on the excercise list page init
+//afte that we should listen to changes in order and viola (Adding, removing, editing in ways that change order cause a rebuild in the list)
+//everything else only cause a reload in the relevant widgets... when its relevant
+//TODO: start off with listening to the recoveryperiod changing... and tempStartTime so that we can get the mini timer working
+//TODO: the above tells us we should update this... and not use the weird update excercise function ive been using
 class AnExcercise{
   //constants
   static const int defaultFunctionID = Functions.defaultFunctionIndex;
