@@ -46,26 +46,6 @@ class _AnimatedMiniNormalTimerState extends State<AnimatedMiniNormalTimer> with 
   //wrapper for update state
   updateStateAnim(AnimationStatus status) => updateState();
 
-  //handling of controller
-  startOrReStart({bool restart: false}){
-    Duration timePassed = DateTime.now().difference(widget.excerciseReference.tempStartTime);
-
-    if(restart){
-      //remove listeners
-      controller.removeListener(updateState);
-      controller.removeStatusListener(updateStateAnim);
-    }
-
-    //add listeners
-    controller.addListener(updateState);
-    controller.addStatusListener(updateStateAnim);
-
-    //start animation
-    controller.forward(
-      from: timeToLerpValue(timePassed),
-    );
-  }
-
   //init
   @override
   void initState() {
@@ -74,7 +54,17 @@ class _AnimatedMiniNormalTimerState extends State<AnimatedMiniNormalTimer> with 
       vsync: this,
       duration: maxDuration,
     );
-    startOrReStart();
+
+    //add listeners
+    controller.addListener(updateState);
+    controller.addStatusListener(updateStateAnim);
+
+    //start animation
+    //NOTICE: this value never really changes, once its started... its started...
+    Duration timePassed = DateTime.now().difference(widget.excerciseReference.tempStartTime);
+    controller.forward(
+      from: timeToLerpValue(timePassed),
+    );
 
     //super init
     super.initState();

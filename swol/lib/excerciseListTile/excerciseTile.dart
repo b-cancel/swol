@@ -18,7 +18,7 @@ import 'package:swol/excerciseAction/excercisePage.dart';
 import 'package:swol/main.dart';
 
 //widget
-class ExcerciseTile extends StatelessWidget { 
+class ExcerciseTile extends StatefulWidget { 
   ExcerciseTile({
     @required this.excerciseID,
     this.tileInSearch: false,
@@ -28,14 +28,19 @@ class ExcerciseTile extends StatelessWidget {
   final bool tileInSearch;
 
   @override
+  _ExcerciseTileState createState() => _ExcerciseTileState();
+}
+
+class _ExcerciseTileState extends State<ExcerciseTile> {
+  @override
   Widget build(BuildContext context) {
     
-    AnExcercise thisExcercise = ExcerciseData.getExcercises().value[excerciseID];
+    AnExcercise thisExcercise = ExcerciseData.getExcercises().value[widget.excerciseID];
     return ListTile(
       onTap: (){
         //TODO: remove all this testing code
         //-----
-        print("id:" + excerciseID.toString());
+        print("id:" + widget.excerciseID.toString());
         print("time stamp: " + thisExcercise.lastTimeStamp.toString());
         print("name: " +  thisExcercise.name.toString());
         print("url: " + thisExcercise.url.toString());
@@ -57,13 +62,13 @@ class ExcerciseTile extends StatelessWidget {
           //when transitioning to this page relaoding leading is always false
           //WILL SET reloading leading to true
           child: ExcercisePage(
-            excerciseID: excerciseID,
+            excerciseID: widget.excerciseID,
             transitionDuration: transitionDuration,
           ),
         );
 
         //push or replace depending on scenario
-        if(tileInSearch){
+        if(widget.tileInSearch){
           //close keyboard IF open
           FocusScope.of(context).unfocus();
           //push replacement, lets heros still work
@@ -95,7 +100,7 @@ class ExcerciseTile extends StatelessWidget {
       ),
       trailing: ExcerciseTileLeading(
         excerciseReference: thisExcercise,
-        tileInSearch: tileInSearch,
+        tileInSearch: widget.tileInSearch,
       ),
     );
   }

@@ -24,8 +24,6 @@ class ExcerciseTileLeading extends StatelessWidget {
   Widget build(BuildContext context) {
     //NOTE: timer takes precendence over regular inprogress
     if(excerciseReference.tempStartTime != null){
-      //TODO: both of these should hero with the actual timer
-      //TODO: whatever that ends up being
       Duration timePassed = DateTime.now().difference(excerciseReference.tempStartTime);
       if(timePassed > Duration(minutes: 5)){
         return AnimatedMiniNormalTimerAlternativeWrapper(

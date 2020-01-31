@@ -120,57 +120,6 @@ class AnimatedCircleWidget extends StatelessWidget {
   }
 }
 
-class HighlightSlice extends StatelessWidget {
-  HighlightSlice({
-    @required this.excerciseReference,
-    @required this.size,
-    @required this.angles,
-    @required this.controllerValue,
-  });
-
-  final AnExcercise excerciseReference;
-  final double size;
-  final List<int> angles;
-  final double controllerValue;
-
-  @override
-  Widget build(BuildContext context) {
-    if(controllerValue == 1) return Container();
-    else{
-      double sub = (36/4*3);
-      double angle = controllerValue * 360;
-      double start;
-      double end;
-      //0,45,90
-      for(int i = 0; i < angles.length; i++){
-        double thisAngle = angles[i].toDouble();
-        if(thisAngle > angle){ //false, even, etc...
-          bool isEven = (i%2 == 0);
-          start = angles[i-1].toDouble() + (isEven ? sub : 0);
-          end = angles[i].toDouble() - (isEven == false ? sub : 0);
-          break;
-        }
-      }
-
-      return Center(
-        child: ClipOval(
-          child: Container(
-            width: size,
-            height: size,
-            child: TriangleAngle(
-              start: start,
-              end: end,
-              size: size,
-              //thereIsStillTime ? Theme.of(context).accentColor : Colors.red,
-              color: Theme.of(context).primaryColorDark,
-            ),
-          ),
-        ),
-      );
-    }
-  }
-}
-
 class CircleProgress extends StatelessWidget {
   CircleProgress({
     @required this.size,
