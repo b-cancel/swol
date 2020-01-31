@@ -233,7 +233,7 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
       //animated to right page
       pageViewController.animateToPage(
         pageID, 
-        duration: Duration(milliseconds: 1300), 
+        duration: Duration(milliseconds: 300), 
         curve: Curves.easeInOut,
       );
     }

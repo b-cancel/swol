@@ -1,24 +1,41 @@
 import 'package:flutter/material.dart';
 import 'package:loading_indicator/loading_indicator.dart';
+import 'package:swol/excerciseTimer/displayUI/circles.dart';
 import 'package:swol/excerciseTimer/displayUI/shakingAlarm.dart';
+import 'package:swol/excerciseTimer/displayUI/timerButton.dart';
+import 'package:swol/shared/structs/anExcercise.dart';
 import 'dart:math' as math;
 
 import 'package:swol/sharedWidgets/triangleAngle.dart';
 
 class WatchUI extends StatelessWidget {
+  //NOTE: defaults is the mini version of the watch
+  WatchUI({
+    @required this.controller,
+    @required this.excerciseReference,
+    //NOTE: largest possible size seems to be 62
+    //56 feels good
+    //48 feels better
+    this.circleSize: 48, 
+    this.circleToTicksPadding: 3,
+    this.tickWidth: 4,
+    this.ticksToProgressCirclePadding: 4,
+  });
+
+  final AnimationController controller;
+  final AnExcercise excerciseReference;
+  final double circleSize;
+  final double circleToTicksPadding;
+  final double tickWidth;
+  final double ticksToProgressCirclePadding;
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 56,
-      height: 56,
-      color: Colors.pink,
-    );
-    /*
     List<int> angles = new List<int>();
     for(int i = 0; i < 10 ; i++) angles.add(36 * i);
     angles.add(360);
 
-    DateTime timerStarted = widget.excerciseReference.tempStartTime;
+    DateTime timerStarted = excerciseReference.tempStartTime;
     Duration timePassed = DateTime.now().difference(timerStarted);
 
     //72 degrees 1 minutes
@@ -29,7 +46,7 @@ class WatchUI extends StatelessWidget {
     double halfTick = 9; 
     List<Widget> ticks = new List<Widget>();
     Widget tick = TriangleAngle(
-      size: widget.circleSize - widget.circleToTicksPadding,
+      size: circleSize - circleToTicksPadding,
       start: 360.0 - halfTick,
       end: halfTick,
       color: controller.value == 1 ? Colors.red : Colors.white,
@@ -44,12 +61,12 @@ class WatchUI extends StatelessWidget {
       );
     }
 
-    double littleCircleSize = widget.circleSize 
-      - (widget.circleToTicksPadding * 2) 
-      - (widget.tickWidth * 2) 
-      - (widget.ticksToProgressCirclePadding * 2);
+    double littleCircleSize = circleSize 
+      - (circleToTicksPadding * 2) 
+      - (tickWidth * 2) 
+      - (ticksToProgressCirclePadding * 2);
 
-    bool thereIsStillTime = timePassed <= widget.excerciseReference.recoveryPeriod;
+    bool thereIsStillTime = timePassed <= excerciseReference.recoveryPeriod;
 
     //62 is max size
     return Stack(
@@ -88,14 +105,14 @@ class WatchUI extends StatelessWidget {
                       angles: angles, 
                       ticks: ticks,
                       //-----
-                      circleSize: widget.circleSize,
-                      circleToTicksPadding: widget.circleToTicksPadding,
-                      tickWidth: widget.tickWidth,
-                      ticksToProgressCirclePadding: widget.ticksToProgressCirclePadding,
+                      circleSize: circleSize,
+                      circleToTicksPadding: circleToTicksPadding,
+                      tickWidth: tickWidth,
+                      ticksToProgressCirclePadding: ticksToProgressCirclePadding,
                       littleCircleSize: littleCircleSize,
                       //-----
-                      recoveryPeriod: widget.excerciseReference.recoveryPeriod,
-                      tempStartTime: widget.excerciseReference.tempStartTime,
+                      recoveryPeriod: excerciseReference.recoveryPeriod,
+                      tempStartTime: excerciseReference.tempStartTime,
                       after5Mintes: controller.value == 1,
                       distanceFromLast5MinuteInternal: controller.value,
                     ),
@@ -103,11 +120,11 @@ class WatchUI extends StatelessWidget {
                 ),
               ),
               //-----timer stuff for timer
-              TimerButton(
+              WatchButtons(
                 isRight: true,
               ),
               //-----stopwatch stuff for stopwatch
-              thereIsStillTime ? Container() : TimerButton(
+              thereIsStillTime ? Container() : WatchButtons(
                 isRight: false,
               ),
               //-----shaking thingymajig for both
@@ -151,6 +168,5 @@ class WatchUI extends StatelessWidget {
         ),
       ],
     );
-    */
   }
 }

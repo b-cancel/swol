@@ -26,20 +26,9 @@ class AnimatedMiniNormalTimerAlternativeWrapper extends StatelessWidget {
 class AnimatedMiniNormalTimer extends StatefulWidget {
   AnimatedMiniNormalTimer({
     @required this.excerciseReference,
-    //NOTE: largest possible size seems to be 62
-    //56 feels good
-    //48 feels better
-    this.circleSize: 48, 
-    this.circleToTicksPadding: 3,
-    this.tickWidth: 4,
-    this.ticksToProgressCirclePadding: 4,
   });
 
   final AnExcercise excerciseReference;
-  final double circleSize;
-  final double circleToTicksPadding;
-  final double tickWidth;
-  final double ticksToProgressCirclePadding;
 
   @override
   _AnimatedMiniNormalTimerState createState() => _AnimatedMiniNormalTimerState();
@@ -53,8 +42,11 @@ class _AnimatedMiniNormalTimerState extends State<AnimatedMiniNormalTimer> with 
   updateState(){
     if(mounted) setState(() {});
   }
+
+  //wrapper for update state
   updateStateAnim(AnimationStatus status) => updateState();
 
+  //handling of controller
   startOrReStart({bool restart: false}){
     Duration timePassed = DateTime.now().difference(widget.excerciseReference.tempStartTime);
 
@@ -104,7 +96,8 @@ class _AnimatedMiniNormalTimerState extends State<AnimatedMiniNormalTimer> with 
   @override
   Widget build(BuildContext context) {
     return WatchUI(
-
+      controller: controller,
+      excerciseReference: widget.excerciseReference,
     );
   }
 }

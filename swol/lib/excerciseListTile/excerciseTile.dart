@@ -46,30 +46,30 @@ class ExcerciseTile extends StatelessWidget {
         print("recovery: " + thisExcercise.recoveryPeriod.toString());
         print("set target: " + thisExcercise.setTarget.toString());
 
-        //before traveling to the excercise
-        if(tileInSearch){
-          //close keyboard
-          FocusScope.of(context).unfocus();
-          //pop search page
-          Navigator.of(context).pop();
-        }
-
         //travel to page
         App.navSpread.value = true;
-        Duration transitionDuration = Duration(milliseconds: 3000);
-        Navigator.push(
-          context, 
-          PageTransition(
-            duration: transitionDuration,
-            type: PageTransitionType.upToDown, 
-            //when transitioning to this page relaoding leading is always false
-            //WILL SET reloading leading to true
-            child: ExcercisePage(
-              excerciseID: excerciseID,
-              transitionDuration: transitionDuration,
-            ),
+
+        //page transition
+        Duration transitionDuration = Duration(milliseconds: 300);
+        PageTransition page = PageTransition(
+          duration: transitionDuration,
+          type: PageTransitionType.upToDown, 
+          //when transitioning to this page relaoding leading is always false
+          //WILL SET reloading leading to true
+          child: ExcercisePage(
+            excerciseID: excerciseID,
+            transitionDuration: transitionDuration,
           ),
         );
+
+        //push or replace depending on scenario
+        if(tileInSearch){
+          //close keyboard IF open
+          FocusScope.of(context).unfocus();
+          //push replacement, lets heros still work
+          Navigator.of(context).pushReplacement(page);
+        }
+        else Navigator.push(context, page);
       },
       title: ExcerciseTitleHero(
         inAppBar: false,
