@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 
 //plugin
 import 'package:page_transition/page_transition.dart';
-import 'package:swol/excerciseListTile/excerciseTile.dart';
 import 'package:swol/excerciseListTile/titleHero.dart';
 
 //internal: excercise
@@ -50,10 +49,8 @@ class _ExcercisePageState extends State<ExcercisePage> {
   @override
   Widget build(BuildContext context) {
     String name = "";
-    Map<int, AnExcercise> indexToExcercises = ExcerciseData.getExcercises().value;
-    if(indexToExcercises.containsKey(widget.excerciseID)){
-      name = indexToExcercises[widget.excerciseID].name;
-    }
+    AnExcercise thisExcercise = ExcerciseData.getExcercises().value[widget.excerciseID];
+    name = thisExcercise.name;
 
     double statusBarHeight = MediaQuery.of(context).padding.top;
 
@@ -93,7 +90,7 @@ class _ExcercisePageState extends State<ExcercisePage> {
                             inAppBar: true,
                             title: name,
                             onTap: () => toNotes(context),
-                            excerciseIDTag:  indexToExcercises[widget.excerciseID].id,
+                            excerciseIDTag:  thisExcercise.id,
                           ),
                         ),
                         Positioned(
@@ -101,7 +98,7 @@ class _ExcercisePageState extends State<ExcercisePage> {
                           top: 0,
                           bottom: 0,
                           child: BackFromExcercise(
-                            excerciseIDTag:  indexToExcercises[widget.excerciseID].id,
+                            excerciseIDTag: thisExcercise.id,
                           ),
                         ),
                         Positioned(

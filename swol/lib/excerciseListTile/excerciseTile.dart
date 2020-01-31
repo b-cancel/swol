@@ -18,7 +18,7 @@ import 'package:swol/excerciseAction/excercisePage.dart';
 import 'package:swol/main.dart';
 
 //widget
-class ExcerciseTile extends StatefulWidget { 
+class ExcerciseTile extends StatelessWidget { 
   ExcerciseTile({
     @required this.excerciseID,
     this.tileInSearch: false,
@@ -28,19 +28,17 @@ class ExcerciseTile extends StatefulWidget {
   final bool tileInSearch;
 
   @override
-  _ExcerciseTileState createState() => _ExcerciseTileState();
-}
-
-class _ExcerciseTileState extends State<ExcerciseTile> {
-  @override
   Widget build(BuildContext context) {
-    
-    AnExcercise thisExcercise = ExcerciseData.getExcercises().value[widget.excerciseID];
+    //NOTE: we are using thisExcercise directly below because everything is stateless
+    //and therefore updates won't break anything
+    AnExcercise thisExcercise = ExcerciseData.getExcercises().value[excerciseID];
+
+    //return
     return ListTile(
       onTap: (){
         //TODO: remove all this testing code
         //-----
-        print("id:" + widget.excerciseID.toString());
+        print("id:" + excerciseID.toString());
         print("time stamp: " + thisExcercise.lastTimeStamp.toString());
         print("name: " +  thisExcercise.name.toString());
         print("url: " + thisExcercise.url.toString());
@@ -62,13 +60,13 @@ class _ExcerciseTileState extends State<ExcerciseTile> {
           //when transitioning to this page relaoding leading is always false
           //WILL SET reloading leading to true
           child: ExcercisePage(
-            excerciseID: widget.excerciseID,
+            excerciseID: excerciseID,
             transitionDuration: transitionDuration,
           ),
         );
 
         //push or replace depending on scenario
-        if(widget.tileInSearch){
+        if(tileInSearch){
           //close keyboard IF open
           FocusScope.of(context).unfocus();
           //push replacement, lets heros still work
@@ -100,7 +98,7 @@ class _ExcerciseTileState extends State<ExcerciseTile> {
       ),
       trailing: ExcerciseTileLeading(
         excerciseReference: thisExcercise,
-        tileInSearch: widget.tileInSearch,
+        tileInSearch: tileInSearch,
       ),
     );
   }

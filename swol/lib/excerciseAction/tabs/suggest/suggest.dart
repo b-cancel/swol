@@ -9,6 +9,7 @@ import 'package:swol/excerciseAction/tabs/suggest/calibration.dart';
 //internal: other
 import 'package:swol/shared/methods/excerciseData.dart';
 import 'package:swol/other/functions/helper.dart';
+import 'package:swol/shared/structs/anExcercise.dart';
 
 //TODO: implement this
 //FLIPPED used when the user arrived directly to the suggest page
@@ -72,9 +73,11 @@ class _SuggestionState extends State<Suggestion> {
     //super init
     super.initState();
 
+    AnExcercise thisExcercise = ExcerciseData.getExcercises().value[widget.excerciseID];
+
     //set function stuff initially
     functionIndex = new ValueNotifier(
-      ExcerciseData.getExcercises().value[widget.excerciseID].predictionID,
+      thisExcercise.predictionID,
     );
     functionValue = Functions.functions[functionIndex.value];
 
@@ -83,7 +86,7 @@ class _SuggestionState extends State<Suggestion> {
 
     //set set target stuff initially
     repTarget = new ValueNotifier(
-      ExcerciseData.getExcercises().value[widget.excerciseID].setTarget,
+      thisExcercise.setTarget,
     );
 
     //when value changes we update it

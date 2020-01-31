@@ -13,7 +13,7 @@ class SearchesData{
   static List<String> searches;
 
   //-------------------------USED EVERYWHERE-------------------------
-
+  
   static List<String> getRecentSearches(){
     return searches;
   }

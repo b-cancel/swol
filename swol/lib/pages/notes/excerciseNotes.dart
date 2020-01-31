@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 //plugin
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:swol/shared/structs/anExcercise.dart';
 
 //internl: excercise
 import 'package:swol/shared/widgets/complex/fields/fields/linkField/link.dart';
@@ -55,9 +56,10 @@ class _ExcerciseNotesState extends State<ExcerciseNotes> {
     super.initState();
 
     //set initial values of ValueNotifiers
-    name.value = ExcerciseData.getExcercises().value[widget.excerciseID].name;
-    note.value = ExcerciseData.getExcercises().value[widget.excerciseID].note;
-    url.value = ExcerciseData.getExcercises().value[widget.excerciseID].url;
+    AnExcercise thisExcercise = ExcerciseData.getExcercises().value[widget.excerciseID];
+    name.value = thisExcercise.name;
+    note.value = thisExcercise.note;
+    url.value = thisExcercise.url;
 
     name.addListener(updateName);
     note.addListener(updateNote);

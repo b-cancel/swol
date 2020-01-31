@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:swol/excerciseAction/tabs/recovery/secondary/breath.dart';
 import 'package:swol/excerciseAction/tabs/recovery/timer/liquidTime.dart';
 import 'package:swol/excerciseAction/tabs/sharedWidgets/bottomButtons.dart';
-import 'package:swol/excerciseAction/tabs/suggest/suggestion/corners.dart';
 import 'package:swol/shared/methods/excerciseData.dart';
+import 'package:swol/shared/structs/anExcercise.dart';
 
 class Recovery extends StatefulWidget {
   Recovery({
@@ -39,7 +39,8 @@ class _RecoveryState extends State<Recovery> with SingleTickerProviderStateMixin
   //init
   @override
   void initState() {
-    DateTime currentTimerStart = ExcerciseData.getExcercises().value[widget.excerciseID].tempStartTime;
+    AnExcercise thisExcercise = ExcerciseData.getExcercises().value[widget.excerciseID];
+    DateTime currentTimerStart = thisExcercise.tempStartTime;
 
     //based on whether or not the timer has already started set the timerStart
     if(currentTimerStart == null){
@@ -53,7 +54,7 @@ class _RecoveryState extends State<Recovery> with SingleTickerProviderStateMixin
     
     //set recovery duration init
     recoveryDuration = new ValueNotifier(
-      ExcerciseData.getExcercises().value[widget.excerciseID].recoveryPeriod,
+      thisExcercise.recoveryPeriod,
     );
 
     //if recovery duration changes we must update it
