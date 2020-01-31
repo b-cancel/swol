@@ -5,13 +5,11 @@ import 'dart:io';
 //flutter
 import 'package:flutter/material.dart';
 
-//plugin
-import 'package:shared_preferences/shared_preferences.dart';
-
 //internal
+import 'package:swol/shared/methods/extensions/sharedPreferences.dart';
+import 'package:swol/shared/structs/anExcercise.dart';
 import 'package:swol/shared/functions/safeSave.dart';
 import 'package:swol/other/otherHelper.dart';
-import 'package:swol/shared/structs/anExcercise.dart';
 
 //class that 
 //1. grabs excercises from storage
@@ -20,17 +18,22 @@ class ExcerciseData{
   static File _excerciseFile;
 
   //main struct we are maintaining (id -> excercise)
-  //this is the best action to take since this is the type of update we will be doing the most of usually
-  static ValueNotifier<Map<int, AnExcercise>> _excercises;
+  //NOTE: we could use hashset but its slower than a map for deletion 
+  //and accessing specific items
+  static Map<int, AnExcercise> _excercises; 
+  //NOTE: value notifier here is required since 
+  //we listen to order to determine whether we need to update the list
+  //NOTE: silly mistake but we need a list, hash set doesn't maintain order
+  //TODO: look into perhaps using "LinkedHashSet"
   static ValueNotifier<List<int>> excercisesOrder;
 
   //lets us control add and removing from the list with more precision
-  static ValueNotifier<Map<int, AnExcercise>> getExcercises(){
+  static Map<int,AnExcercise> getExcercises(){
     return _excercises;
   }
 
-  //we need to make sure that our structure only every has more than what storage has
-  static excercisesInit()async{
+  //we need to make sure that our structure only ever has more than what storage has
+  static excercisesInit() async{
     if(_excerciseFile == null){
       //get what the file reference should be
       _excerciseFile = await StringJson.nameToFileReference("excercises");
@@ -48,57 +51,54 @@ class ExcerciseData{
         //  - since this is its init function
         await _excerciseFile.writeAsString("[]");
       }
+
       //read in our data
       fileData = await _excerciseFile.readAsString();
-      _excercises = ValueNotifier(new Map<int, AnExcercise>());
+      _excercises = Map<int,AnExcercise>();
 
       //grab the contacts
       List<dynamic> map = json.decode(fileData);
       for(int i = 0; i < map.length; i++){
         await addExcercise(
           AnExcercise.fromJson(map[i]), 
-          updateOrder: false, //we update the order at the end
-          updateFile: false, //we got this data from the file
+          updateOrderAndFile: false, //we update the order at the end
         );
       }
       _updateOrder();
     }
   }
 
-  //TODO: im sure there is a better way of doing this
-  //1. heap
-  //2. retain map instead of build each time
-  //3. etc...
+  //when we are adding all the excercises in on init
+  //we dont care to update order until the end
+  //and we dont care to update the file since the info came from the file
   static addExcercise(AnExcercise theWorkout, {
-    bool updateOrder: true, 
-    bool updateFile: true,
+    bool updateOrderAndFile: true, 
   })async{
     //give it an ID (IF needed)
     if(theWorkout.id == null){
       theWorkout.id = AnExcercise.nextID;
       AnExcercise.nextID += 1;
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      prefs.setInt(
-        "nextID", 
-        AnExcercise.nextID,
-      );
+      SharedPrefsExt.setNextID(AnExcercise.nextID);
     }
 
     //add to workouts
-    _excercises.value[theWorkout.id] = theWorkout;
-    if(updateOrder) _updateOrder();
+    _excercises[theWorkout.id] = theWorkout;
 
-    //update file
-    _updateFile(updateFile);
+    //NOTE: since inprogress items are to be viewed above new items
+    //we do have to update order
+    if(updateOrderAndFile){
+      _updateOrder();
+      _updateFile();
+    }
   }
 
-  static deleteExcercise(int id, {bool updateFile: true}){
-    if(_excercises.value.containsKey(id)){
-      _excercises.value.remove(id);
+  static deleteExcercise(int id){
+    if(_excercises.containsKey(id)){
+      _excercises.remove(id);
       excercisesOrder.value.remove(id);
 
       //update file
-      _updateFile(updateFile);
+      _updateFile();
     }
     else print("EXCERCISE DOESN'T EXIST");
   }
@@ -136,76 +136,76 @@ class ExcerciseData{
   }){
     //update timestamp if desired
     if(lastTimeStamp != null){
-      _excercises.value[id].lastTimeStamp = lastTimeStamp;
+      _excercises[id].lastTimeStamp = lastTimeStamp;
       _updateOrder();
     }
 
     if(name != null){
       //TODO: figure out how this is working
       //It should cause things to reload but I'm not sure where its doing it
-      _excercises.value[id].name = name;
+      _excercises[id].name = name;
     }
 
     if(note != null){
-      _excercises.value[id].note = note;
+      _excercises[id].note = note;
     }
 
     if(url != null){
-      _excercises.value[id].url = url;
+      _excercises[id].url = url;
     }
 
     if(predictionID != null){
-      _excercises.value[id].predictionID = predictionID;
+      _excercises[id].predictionID = predictionID;
     }
 
     if(repTarget != null){
-      _excercises.value[id].repTarget = repTarget;
+      _excercises[id].repTarget = repTarget;
     }
 
     if(recoveryPeriod != null){
-      _excercises.value[id].recoveryPeriod = recoveryPeriod;
+      _excercises[id].recoveryPeriod = recoveryPeriod;
     }
 
     if(setTarget != null){
-      _excercises.value[id].setTarget = setTarget;
+      _excercises[id].setTarget = setTarget;
     }
 
     if(lastWeight != null){
-      _excercises.value[id].lastWeight = lastWeight;
+      _excercises[id].lastWeight = lastWeight;
     }
 
     if(lastReps != null){
-      _excercises.value[id].lastReps = lastReps;
+      _excercises[id].lastReps = lastReps;
     }
 
     if(tempWeight != null || tempWeightCanBeNull){
-      _excercises.value[id].tempWeight = tempWeight;
+      _excercises[id].tempWeight = tempWeight;
     }
 
     if(tempReps != null || tempRepsCanBeNull){
-      _excercises.value[id].tempReps = tempReps;
+      _excercises[id].tempReps = tempReps;
     }
 
     if(tempStartTime != null || tempStartTimeCanBeNull){
-      _excercises.value[id].tempStartTime = tempStartTime;
+      _excercises[id].tempStartTime = tempStartTime;
     }
 
     if(tempSetCount != null || tempSetCountCanBeNull){
-      _excercises.value[id].tempSetCount = tempSetCount;
+      _excercises[id].tempSetCount = tempSetCount;
     }
 
     //update file
-    _updateFile(updateFile);
+    _updateFile();
   }
 
   static _updateOrder(){
     //modify to then sort
     Map<DateTime, int> dateTimeToID = new Map<DateTime, int>();
-    List<int> keys = _excercises.value.keys.toList();
+    List<int> keys = _excercises.keys.toList();
     for(int i = 0; i < keys.length; i++){
       int keyIsID = keys[i];
-      AnExcercise workout = _excercises.value[keyIsID];
-      dateTimeToID[workout.lastTimeStamp] = keyIsID;
+      AnExcercise excercise = _excercises[keyIsID];
+      dateTimeToID[excercise.lastTimeStamp] = keyIsID;
     }
 
     //sort
@@ -232,14 +232,10 @@ class ExcerciseData{
   }
 
   //should never have to update from anywhere else
-  static _updateFile(bool updateFile) async {
-    if(updateFile){
-      //save all this in the file
-      String newFileData = AnExcercise.excercisesToString(_excercises.value.values.toList());
-
-      //write the data
-      SafeWrite.write(_excerciseFile, newFileData);
-    }
-    //ELSE we are probably just testing something
+  static _updateFile() async {
+    String newFileData = AnExcercise.excercisesToString(
+      _excercises.values.toList()
+    );
+    SafeWrite.write(_excerciseFile, newFileData);
   }
 }
