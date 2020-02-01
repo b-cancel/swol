@@ -106,7 +106,7 @@ class AddExcercise extends StatelessWidget {
   Widget build(BuildContext context) {
     //each section
     List<Widget> sections = [
-      BasicCard(
+      ReloadingCard(
         notifier: nameError,
         child: NameField(
           nameToUpdate: name, 
@@ -117,14 +117,13 @@ class AddExcercise extends StatelessWidget {
           autofocus: false,
         ),
       ),
-      BasicCard(
+      NonReloadingCard(
         child: NotesField(
           noteToUpdate: note,
           noteFocusNode: noteFocusNode,
         ),
       ),
-      BasicCard(
-        notifier: url,
+      NonReloadingCard(
         child: LinkField(url: url),
       ),
       RecoveryTimeCard(
@@ -143,7 +142,7 @@ class AddExcercise extends StatelessWidget {
           subtle: false,
         ),
       ),
-      BasicCard(
+      NonReloadingCard(
         child: PredictionField(
           functionIndex: functionIndex, 
           functionString: functionString,

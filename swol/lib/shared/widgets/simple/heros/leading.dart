@@ -14,29 +14,36 @@ class ExcerciseBegin extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String generatedTag = "excerciseBegin" + excercise.id.toString();
-    return Hero(
-      tag: generatedTag,
-      flightShuttleBuilder: (
-        BuildContext flightContext,
-        Animation<double> animation,
-        HeroFlightDirection flightDirection,
-        BuildContext fromHeroContext,
-        BuildContext toHeroContext,
-      ) {
-        return AnimatedBuilder(
-          animation: animation,
-          builder: (context, child){
-            return ExcerciseTitleBeginHelper(
-              percentToAppBar: animation.value,
-            );
-          },
-        );
-      },
-      child: ExcerciseTitleBeginHelper(
+    if(excercise == null){
+      return ExcerciseTitleBeginHelper(
         percentToAppBar: (inAppBar) ? 1 : 0,
-      ),
-    );
+      );
+    }
+    else{
+      String generatedTag = "excerciseBegin" + excercise.id.toString();
+      return Hero(
+        tag: generatedTag,
+        flightShuttleBuilder: (
+          BuildContext flightContext,
+          Animation<double> animation,
+          HeroFlightDirection flightDirection,
+          BuildContext fromHeroContext,
+          BuildContext toHeroContext,
+        ) {
+          return AnimatedBuilder(
+            animation: animation,
+            builder: (context, child){
+              return ExcerciseTitleBeginHelper(
+                percentToAppBar: animation.value,
+              );
+            },
+          );
+        },
+        child: ExcerciseTitleBeginHelper(
+          percentToAppBar: (inAppBar) ? 1 : 0,
+        ),
+      );
+    }
   }
 }
 
@@ -53,7 +60,8 @@ class ExcerciseTitleBeginHelper extends StatelessWidget {
       angle: (-math.pi / 4) * (4 * percentToAppBar),
       child: Container(
         decoration: new BoxDecoration(
-          color: Color.lerp(
+          color: (percentToAppBar == 0 || percentToAppBar == 1) ? Colors.transparent
+          : Color.lerp(
             Theme.of(context).cardColor, 
             Theme.of(context).primaryColorDark, 
             percentToAppBar,

@@ -35,12 +35,22 @@ class _LinkEditorState extends State<LinkEditor> {
   @override
   void initState() { 
     super.initState();
-    isEditing.addListener(updateState);
+    if(widget.editOneAtATime){
+      isEditing.addListener(updateState);
+    }
+    else{
+      widget.url.addListener(updateState);
+    }
   }
 
   @override
   void dispose() { 
-    isEditing.removeListener(updateState);
+    if(widget.editOneAtATime){
+      isEditing.addListener(updateState);
+    }
+    else{
+      widget.url.addListener(updateState);
+    }
     super.dispose();
   }
 
@@ -93,7 +103,7 @@ class _LinkEditorState extends State<LinkEditor> {
             ),
             //-------------------------
             //if we are in the position to edit the field
-            (showPasteButton) ? PasteButton(
+            (showPasteButton) ? _PasteButton(
               url: widget.url, 
               isEditing: isEditing,
               showWarning: showWarning,
@@ -196,8 +206,8 @@ class LaunchLinkButton extends StatelessWidget {
   }
 }
 
-class PasteButton extends StatelessWidget {
-  const PasteButton({
+class _PasteButton extends StatelessWidget {
+  const _PasteButton({
     Key key,
     @required this.url,
     @required this.isEditing,

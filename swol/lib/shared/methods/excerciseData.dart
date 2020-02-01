@@ -57,13 +57,17 @@ class ExcerciseData{
       _excercises = Map<int,AnExcercise>();
 
       //grab the contacts
+      int maxID = 0;
       List<dynamic> map = json.decode(fileData);
       for(int i = 0; i < map.length; i++){
+        AnExcercise thisExcercise = AnExcercise.fromJson(map[i]);
+        maxID = (thisExcercise.id > maxID) ? thisExcercise.id : maxID; 
         await addExcercise(
-          AnExcercise.fromJson(map[i]), 
+          thisExcercise, 
           updateOrderAndFile: false, //we update the order at the end
         );
       }
+      AnExcercise.nextID = maxID + 1;
       updateOrder();
     }
   }
@@ -78,7 +82,6 @@ class ExcerciseData{
     if(theWorkout.id == null){
       theWorkout.id = AnExcercise.nextID;
       AnExcercise.nextID += 1;
-      SharedPrefsExt.setNextID(AnExcercise.nextID);
     }
 
     //add to workouts

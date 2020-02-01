@@ -2,40 +2,51 @@
 import 'package:flutter/material.dart';
 
 //used only by addition
-class BasicCard extends StatefulWidget {
-  const BasicCard({
+class ReloadingCard extends StatefulWidget {
+  const ReloadingCard({
     Key key,
     @required this.child,
-    this.notifier,
+    @required this.notifier,
   }) : super(key: key);
 
   final Widget child;
   final ValueNotifier notifier;
 
   @override
-  _BasicCardState createState() => _BasicCardState();
+  _ReloadingCardState createState() => _ReloadingCardState();
 }
 
-class _BasicCardState extends State<BasicCard> {
-    updateState(){
+class _ReloadingCardState extends State<ReloadingCard> {
+  updateState(){
+    print("------------reloading");
     if(mounted) setState(() {});
   }
 
   @override
   void initState() {
-    if(widget.notifier != null){
-      widget.notifier.addListener(updateState);
-    }
+    widget.notifier.addListener(updateState);
     super.initState();
   }
 
   @override
   void dispose() {
-    if(widget.notifier != null){
-      widget.notifier.removeListener(updateState);
-    }
+    widget.notifier.removeListener(updateState);
     super.dispose();
   }
+
+  @override
+  Widget build(BuildContext context) {
+    return NonReloadingCard(child: widget.child);
+  }
+}
+
+class NonReloadingCard extends StatelessWidget {
+  const NonReloadingCard({
+    Key key,
+    @required this.child,
+  }) : super(key: key);
+
+  final Widget child;
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +59,7 @@ class _BasicCardState extends State<BasicCard> {
           bottom: 16,
           top: 8,
         ),
-        child: widget.child,
+        child: child,
       ),
     );
   }

@@ -20,7 +20,6 @@ class SharedPrefsExt {
   //TODO: always make sure each ValueName has a default
   static Map<ValueName, dynamic> _nameToDefaultValue = {
     ValueName.IsDark: true,
-    ValueName.NextID: 0,
     ValueName.TermsAgreed: false,
     //for onboarding
     ValueName.InitialControlsShown: false,
@@ -49,7 +48,6 @@ class SharedPrefsExt {
 
   //getters
   static ValueNotifier getIsDark() => _nameToValueNotifier[ValueName.IsDark];
-  static ValueNotifier getNextID() => _nameToValueNotifier[ValueName.NextID];
   static ValueNotifier getTermAgreed() => _nameToValueNotifier[ValueName.TermsAgreed];
   static ValueNotifier getInitialControlsShown() => _nameToValueNotifier[ValueName.InitialControlsShown];
   static ValueNotifier getIntroductionShown() => _nameToValueNotifier[ValueName.IntroductionShown];
@@ -57,7 +55,6 @@ class SharedPrefsExt {
 
   //setters (must update local and global)
   static setIsDark(bool isDark) => _setLocalGlobal(ValueName.IsDark, isDark);
-  static setNextID(int nextID) => _setLocalGlobal(ValueName.NextID, nextID, isBool: false);
   static setTermsAgreed(bool termsAgreed) => _setLocalGlobal(ValueName.TermsAgreed, termsAgreed);
   static setInitialControlsShown(bool initialControlsShown) => _setLocalGlobal(ValueName.InitialControlsShown, initialControlsShown);
   static setIntroductionShown(bool introductionShown) => _setLocalGlobal(ValueName.IntroductionShown, introductionShown);
