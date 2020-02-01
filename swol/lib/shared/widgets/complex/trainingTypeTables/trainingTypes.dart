@@ -61,7 +61,7 @@ class _TrainingTypeSectionsState extends State<TrainingTypeSections> {
   Widget enduranceCard;
   Widget hypertrophyCard;
   Widget strengthCard;
-  List<List<CardTable>> sectionsOfCards;
+  List<List<TheCardTable>> sectionsOfCards;
   List<Widget> carousels;
   var mainCarousel;
 
@@ -81,7 +81,7 @@ class _TrainingTypeSectionsState extends State<TrainingTypeSections> {
   @override
   void initState() {
     //create all default card
-    enduranceCard = CardTable(
+    enduranceCard = TheCardTable(
       items: [
         "Endurance ",
         "Light",
@@ -96,7 +96,7 @@ class _TrainingTypeSectionsState extends State<TrainingTypeSections> {
       icon: FontAwesomeIcons.weight,
     );
 
-    hypertrophyCard = CardTable(
+    hypertrophyCard = TheCardTable(
       items: [
         "\tHypertrophy",//NOTE: extra space for dumbell
         "Heavy",
@@ -111,7 +111,7 @@ class _TrainingTypeSectionsState extends State<TrainingTypeSections> {
       icon: FontAwesomeIcons.dumbbell,
     );
 
-    strengthCard = CardTable(
+    strengthCard = TheCardTable(
       items: [
         "Strength ",
         "Very Heavy",
@@ -127,10 +127,10 @@ class _TrainingTypeSectionsState extends State<TrainingTypeSections> {
     );
 
     //create section
-    sectionsOfCards = new List<List<CardTable>>();
+    sectionsOfCards = new List<List<TheCardTable>>();
     for(int i = 0; i < widget.sections.length; i++){
       List<int> aSection = widget.sections[i];
-      List<CardTable> aCardSection = new List<CardTable>();
+      List<TheCardTable> aCardSection = new List<TheCardTable>();
       for(int s = 0; s < aSection.length; s++){
         int cardType = aSection[s];
         switch(cardType){ //0,1,2
@@ -199,7 +199,8 @@ class _TrainingTypeSectionsState extends State<TrainingTypeSections> {
           children: <Widget>[
             Container(
               height: 256.0 + (widget.plus24 ? 24 : 0), //TODO: why do we need this?
-              child: PersistentCardTable(
+              child: TheCardTable(
+                persistent: true,
                 items: [
                   "Training Type",
                   "Weight Heaviness",
