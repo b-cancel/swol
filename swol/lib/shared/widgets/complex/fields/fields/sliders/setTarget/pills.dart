@@ -17,16 +17,16 @@ class ThePills extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Function strengthTraining = () => makeStrengthTrainingPopUp(context, 4);
-    Function hypertrophyTraining = () => makeHypertrophyTrainingPopUp(context, 4);
-    Function enduranceTraining = () => makeEnduranceTrainingPopUp(context, 4);
+    Function strengthTraining = makeStrengthTrainingPopUp(context, 4);
+    Function hypertrophyTraining = makeHypertrophyTrainingPopUp(context, 4);
+    Function enduranceTraining = makeEnduranceTrainingPopUp(context, 4);
 
     //total screenwidth is the right size (1/4 of it is a section)
     return ThePillsDark(
       totalScreenWidth: totalScreenWidth, 
-      setTarget: setTarget, strengthTraining: 
-      strengthTraining, hypertrophyTraining: 
-      hypertrophyTraining, 
+      setTarget: setTarget, 
+      strengthTraining: strengthTraining, 
+      hypertrophyTraining: hypertrophyTraining, 
       enduranceTraining: enduranceTraining,
     );
   }
@@ -63,7 +63,7 @@ class ThePillsDark extends StatelessWidget {
               actives: [4,5,6], 
               sectionSize: totalScreenWidth/4,
               name: "Strength Training",
-              onTap: strengthTraining,
+              openPopUp: strengthTraining,
               leftMultiplier: 2.75,
               rightMultiplier: 2.75,
               paddingTop: false,
@@ -73,7 +73,7 @@ class ThePillsDark extends StatelessWidget {
               actives: [3,4,5], 
               sectionSize: totalScreenWidth/4,
               name: "Hypertrophy Training",
-              onTap: hypertrophyTraining,
+              openPopUp: hypertrophyTraining,
               leftMultiplier: 1.75,
               rightMultiplier: 3.75,
             ),
@@ -82,7 +82,7 @@ class ThePillsDark extends StatelessWidget {
               actives: [1,2,3], //+1
               sectionSize: totalScreenWidth/4,
               name: "Endurance Training",
-              onTap: enduranceTraining,
+              openPopUp: enduranceTraining,
               leftMultiplier: 0,
               rightMultiplier: 5.75,
               paddingBottom: false,
@@ -101,7 +101,7 @@ class Pill extends StatefulWidget {
     @required this.setTarget,
     @required this.actives,
     @required this.name,
-    @required this.onTap,
+    @required this.openPopUp,
     @required this.leftMultiplier,
     @required this.rightMultiplier,
     this.paddingTop: true,
@@ -112,7 +112,7 @@ class Pill extends StatefulWidget {
   final ValueNotifier<int> setTarget;
   final List<int> actives;
   final String name;
-  final Function onTap;
+  final Function openPopUp;
   final double leftMultiplier;
   final double rightMultiplier;
   final bool paddingTop;
@@ -201,10 +201,7 @@ class _PillState extends State<Pill> {
                 child: Material(
                   color: Colors.transparent,
                   child: InkWell(
-                    onTap: (){
-                      print("hi");
-                      widget.onTap();
-                    },
+                    onTap: () => widget.openPopUp(),
                     child: Container(
                       padding: EdgeInsets.all(4),
                       height: 24,
