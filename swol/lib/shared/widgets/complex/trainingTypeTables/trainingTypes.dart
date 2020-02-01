@@ -13,11 +13,13 @@ class AllTrainingTypes extends StatelessWidget {
   AllTrainingTypes({
     this.highlightField: -1,
     this.sectionWithInitialFocus: 0,
+    this.shadowColor: Colors.white,
   });
 
   final int highlightField;
   //we assume this is between 0 and 2
   final int sectionWithInitialFocus;
+  final Color shadowColor;
 
   @override
   Widget build(BuildContext context) {
@@ -35,6 +37,7 @@ class AllTrainingTypes extends StatelessWidget {
       highlightField: highlightField,
       sections: [sections],
       sectionID: new ValueNotifier(0),
+      shadowColor: shadowColor,
     );
   }
 }
@@ -46,12 +49,14 @@ class TrainingTypeSections extends StatefulWidget {
     @required this.sections,
     @required this.sectionID,
     this.plus24: false,
+    this.shadowColor: Colors.white,
   }) : super(key: key);
 
   final int highlightField;
   final List<List<int>> sections; 
   final ValueNotifier<int> sectionID;
   final bool plus24;
+  final Color shadowColor;
 
   @override
   _TrainingTypeSectionsState createState() => _TrainingTypeSectionsState();
@@ -61,7 +66,7 @@ class _TrainingTypeSectionsState extends State<TrainingTypeSections> {
   Widget enduranceCard;
   Widget hypertrophyCard;
   Widget strengthCard;
-  List<List<TheCardTable>> sectionsOfCards;
+  List<List<CardTable>> sectionsOfCards;
   List<Widget> carousels;
   var mainCarousel;
 
@@ -78,10 +83,18 @@ class _TrainingTypeSectionsState extends State<TrainingTypeSections> {
     });
   }
 
+  double cardHeight;
+  double fullHeight;
+
   @override
   void initState() {
+    //todo... why the plus 24?... why even need solid height?
+    cardHeight = 256.0;
+    fullHeight = cardHeight + (widget.plus24 ? 24 : 0);
+
     //create all default card
-    enduranceCard = TheCardTable(
+    enduranceCard = CardTable(
+      height: cardHeight,
       items: [
         "Endurance ",
         "Light",
@@ -96,7 +109,8 @@ class _TrainingTypeSectionsState extends State<TrainingTypeSections> {
       icon: FontAwesomeIcons.weight,
     );
 
-    hypertrophyCard = TheCardTable(
+    hypertrophyCard = CardTable(
+      height: cardHeight,
       items: [
         "\tHypertrophy",//NOTE: extra space for dumbell
         "Heavy",
@@ -111,7 +125,8 @@ class _TrainingTypeSectionsState extends State<TrainingTypeSections> {
       icon: FontAwesomeIcons.dumbbell,
     );
 
-    strengthCard = TheCardTable(
+    strengthCard = CardTable(
+      height: cardHeight,
       items: [
         "Strength ",
         "Very Heavy",
@@ -127,10 +142,10 @@ class _TrainingTypeSectionsState extends State<TrainingTypeSections> {
     );
 
     //create section
-    sectionsOfCards = new List<List<TheCardTable>>();
+    sectionsOfCards = new List<List<CardTable>>();
     for(int i = 0; i < widget.sections.length; i++){
       List<int> aSection = widget.sections[i];
-      List<TheCardTable> aCardSection = new List<TheCardTable>();
+      List<CardTable> aCardSection = new List<CardTable>();
       for(int s = 0; s < aSection.length; s++){
         int cardType = aSection[s];
         switch(cardType){ //0,1,2
@@ -147,7 +162,7 @@ class _TrainingTypeSectionsState extends State<TrainingTypeSections> {
     for(int i = 0; i < sectionsOfCards.length; i++){
       carousels.add(
         CarouselSlider(
-          height: 256.0 + (widget.plus24 ? 24 : 0),
+          height: fullHeight,
           //so they can compare both
           enableInfiniteScroll: (sectionsOfCards[i].length > 1),
           enlargeCenterPage: true,
@@ -161,7 +176,7 @@ class _TrainingTypeSectionsState extends State<TrainingTypeSections> {
     //create main carousel
     mainCarousel = CarouselSlider(
       scrollPhysics: NeverScrollableScrollPhysics(),
-      height: 256.0 + (widget.plus24 ? 24 : 0),
+      height: fullHeight,
       //so they can compare both
       enableInfiniteScroll: (carousels.length > 1),
       enlargeCenterPage: true,
@@ -198,8 +213,9 @@ class _TrainingTypeSectionsState extends State<TrainingTypeSections> {
         child: Row(
           children: <Widget>[
             Container(
-              height: 256.0 + (widget.plus24 ? 24 : 0), //TODO: why do we need this?
-              child: TheCardTable(
+              height: fullHeight, 
+              child: CardTable(
+                height: cardHeight,
                 persistent: true,
                 items: [
                   "Training Type",
@@ -217,17 +233,12 @@ class _TrainingTypeSectionsState extends State<TrainingTypeSections> {
             Expanded(
               child: Stack(
                 children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.symmetric(
-                      vertical: 16, //TODO: why do we need this?
-                    ),
-                    child: mainCarousel,
-                  ),
+                  mainCarousel,
                   Positioned(
                     top: 0,
                     bottom: 0,
                     child: Container(
-                      width: 32,
+                      width: 32, //16 * 2 basically
                       decoration: BoxDecoration(
                         // Box decoration takes a gradient
                         gradient: LinearGradient(
@@ -238,8 +249,8 @@ class _TrainingTypeSectionsState extends State<TrainingTypeSections> {
                           // Add one stop for each color. Stops should increase from 0 to 1
                           stops: [0.1,1.0],
                           colors: [
-                            (true) ? Colors.white : Theme.of(context).primaryColorDark,
-                            (true) ? Colors.white.withOpacity(0) : Colors.transparent,
+                            widget.shadowColor,
+                            widget.shadowColor.withOpacity(0)
                           ],
                         ),
                       ),

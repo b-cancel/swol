@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 
-class TheCardTable extends StatelessWidget {
-  TheCardTable({
+class CardTable extends StatelessWidget {
+  CardTable({
+    @required this.height,
     @required this.items,
     this.highlightField,
     this.persistent: false,
     this.icon,
   });
 
+  final double height;
   final List<String> items;
   final int highlightField;
   final bool persistent;
@@ -95,7 +97,7 @@ class TheCardTable extends StatelessWidget {
           bottomLeft: persistent ? Radius.zero : cardRadius,
         ),
         child: Container(
-          height: 256, //TODO: figure out why this number
+          height: height,
           child: IntrinsicWidth(
             child: Column(
               mainAxisSize: MainAxisSize.min,

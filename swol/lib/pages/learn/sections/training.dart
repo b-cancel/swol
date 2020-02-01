@@ -171,7 +171,9 @@ class TrainingBody extends StatelessWidget {
                 ],
               ),
             ),
-            AllTrainingTypes(),
+            AllTrainingTypes(
+              shadowColor: Theme.of(context).cardColor,
+            ),
           ],
         ),
       ],
