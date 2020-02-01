@@ -10,16 +10,17 @@ import 'package:swol/excerciseAction/tabs/record/setRecord.dart';
 import 'package:swol/excerciseAction/tabs/recovery/recovery.dart';
 import 'package:swol/excerciseAction/tabs/sharedWidgets/doneButton.dart';
 import 'package:swol/excerciseAction/tabs/suggest/suggest.dart';
+import 'package:swol/shared/structs/anExcercise.dart';
 
 /// A vertical tab widget for flutter
 class VerticalTabs extends StatefulWidget {
-  final int excerciseID;
+  final AnExcercise excercise;
   final double maxHeight;
   final Duration delayTillShowDoneButton;
   final double statusBarHeight;
 
   VerticalTabs({
-    @required this.excerciseID,
+    @required this.excercise,
     @required this.maxHeight,
     this.delayTillShowDoneButton: const Duration(milliseconds: 200),
     @required this.statusBarHeight,
@@ -111,12 +112,10 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
   //build
   @override
   Widget build(BuildContext context) {
-    bool useAccent = controlAnimatedGoalSet.value == 0;
-
     return Stack(
       children: <Widget>[
         DoneButton(
-          excerciseID: widget.excerciseID,
+          excercise: widget.excercise,
           showDoneButton: showDoneButton,
           setsFinishedSoFar: setsFinishedSoFar,
           animationCurve: Curves.bounceInOut,
@@ -129,15 +128,15 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
           scrollDirection: Axis.vertical,
           children: <Widget>[
             Suggestion( 
+              excercise: widget.excercise,
               statusBarHeight: widget.statusBarHeight,
-              excerciseID: widget.excerciseID,
               recordSet: (){
                 toPage(1);
               },
             ),
             SetRecord(
+              excercise: widget.excercise,
               statusBarHeight: widget.statusBarHeight,
-              excerciseID: widget.excerciseID,
               //TODO: going back should not reset what they already typed
               //note: try to stop them from typing dumb stuff but if they do then restore the dumb stuff
               //TODO: do so when the user holds the button AND when they click it
@@ -160,7 +159,7 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
               },
             ),
             Recovery(
-              excerciseID: widget.excerciseID,
+              excercise: widget.excercise,
               //NOTE: although at some point I thought the back button should trigger this too
               //that's silly the back button is a "short cut" since its only on android
               //and shortcuts should be for actions that happen often

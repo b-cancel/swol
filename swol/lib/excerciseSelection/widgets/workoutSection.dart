@@ -116,7 +116,7 @@ class SectionBody extends StatelessWidget {
                 reverse: (sectionType != TimeStampType.Hidden),
                 itemBuilder: (context, index){
                   return ExcerciseTile(
-                    excerciseID: thisGroup[index].id,
+                    excercise: thisGroup[index],
                   );
                 },
               ),

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 
 //internal
 import 'package:swol/shared/functions/trainingPopUps.dart';
-import 'package:swol/shared/methods/theme.dart';
 
 //widgets
 class ThePills extends StatelessWidget {

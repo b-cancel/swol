@@ -1,18 +1,15 @@
 //flutter
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 //plugins
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:swol/excerciseAction/tabs/recovery/recovery.dart';
 
 //internal
-import 'package:swol/excerciseAction/tabs/sharedWidgets/bottomButtons.dart';
-import 'package:swol/excerciseAction/tabs/sharedWidgets/cardWithHeader.dart';
-import 'package:swol/excerciseAction/tabs/suggest/calibration.dart';
 import 'package:swol/excerciseAction/tabs/suggest/suggestion/setDisplay.dart';
+import 'package:swol/excerciseAction/tabs/sharedWidgets/cardWithHeader.dart';
+import 'package:swol/excerciseAction/tabs/sharedWidgets/bottomButtons.dart';
 import 'package:swol/shared/functions/goldenRatio.dart';
+import 'package:swol/shared/structs/anExcercise.dart';
 
 //TODO: because of the cursor, the tooltip menu, and other stuff 
 //TODO: we need to actually get close to guessing what the text size should be
@@ -28,13 +25,13 @@ import 'package:swol/shared/functions/goldenRatio.dart';
 
 class SetRecord extends StatelessWidget {
   SetRecord({
-    @required this.excerciseID,
+    @required this.excercise,
     @required this.backToSuggestion,
     @required this.setBreak,
     @required this.statusBarHeight,
   });
 
-  final int excerciseID;
+  final AnExcercise excercise;
   final Function backToSuggestion;
   final Function setBreak;
   final double statusBarHeight;
@@ -54,7 +51,7 @@ class SetRecord extends StatelessWidget {
             left: 0,
             right: 0,
             child: BottomButtons(
-              excerciseID: excerciseID,
+              excercise: excercise,
               forwardAction: setBreak,
               forwardActionWidget: Text(
                 "Take Set Break",

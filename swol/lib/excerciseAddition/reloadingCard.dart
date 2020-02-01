@@ -1,6 +1,5 @@
 //flutter
 import 'package:flutter/material.dart';
-import 'package:swol/shared/widgets/simple/ourSlider.dart';
 
 //used only by addition
 class BasicCard extends StatefulWidget {

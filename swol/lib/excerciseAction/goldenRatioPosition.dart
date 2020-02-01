@@ -17,9 +17,6 @@ class GoldenRatioPosition extends StatelessWidget {
   Widget build(BuildContext context) {
     //calculate golden ratio
     List<double> bigToSmall = measurementToGoldenRatioBS(spaceToRedistribute);
-    
-    //card radius
-    Radius cardRadius = Radius.circular(24);
 
     //return
     return Container(

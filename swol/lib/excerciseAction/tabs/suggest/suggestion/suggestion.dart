@@ -2,10 +2,8 @@
 import 'package:flutter/material.dart';
 
 //plugin
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:swol/excerciseAction/tabs/suggest/suggestion/corners.dart';
 import 'package:swol/excerciseAction/tabs/suggest/suggestion/setDisplay.dart';
-import 'package:swol/shared/functions/goldenRatio.dart';
+import 'package:swol/excerciseAction/tabs/suggest/suggestion/corners.dart';
 
 //internal: shared
 import 'package:swol/shared/widgets/complex/fields/fields/sliders/repTarget.dart';

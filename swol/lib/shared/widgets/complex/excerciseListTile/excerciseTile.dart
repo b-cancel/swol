@@ -8,7 +8,6 @@ import 'package:page_transition/page_transition.dart';
 import 'package:swol/shared/widgets/complex/excerciseListTile/excerciseLeading.dart';
 import 'package:swol/shared/widgets/complex/excerciseListTile/oneRepMaxChip.dart';
 import 'package:swol/shared/widgets/simple/heros/title.dart';
-import 'package:swol/shared/methods/excerciseData.dart';
 import 'package:swol/shared/structs/anExcercise.dart';
 
 //internal: other
@@ -18,34 +17,29 @@ import 'package:swol/main.dart';
 //widget
 class ExcerciseTile extends StatelessWidget { 
   ExcerciseTile({
-    @required this.excerciseID,
+    @required this.excercise,
     this.tileInSearch: false,
   });
 
-  final int excerciseID;
+  final AnExcercise excercise;
   final bool tileInSearch;
 
   @override
   Widget build(BuildContext context) {
-    //NOTE: we are using thisExcercise directly below because everything is stateless
-    //and therefore updates won't break anything
-    AnExcercise thisExcercise = ExcerciseData.getExcercises()[excerciseID];
-
-    //return
     return ListTile(
       onTap: (){
         //TODO: remove all this testing code
         //-----
-        print("id:" + excerciseID.toString());
-        print("time stamp: " + thisExcercise.lastTimeStamp.toString());
-        print("name: " +  thisExcercise.name.toString());
-        print("url: " + thisExcercise.url.toString());
-        print("note: " + thisExcercise.note.toString());
+        print("id:" + excercise.id.toString());
+        print("time stamp: " + excercise.lastTimeStamp.toString());
+        print("name: " +  excercise.name.toString());
+        print("url: " + excercise.url.toString());
+        print("note: " + excercise.note.toString());
         //-----
-        print("prediction ID: " + thisExcercise.predictionID.toString());
-        print("rep target: " + thisExcercise.repTarget.toString());
-        print("recovery: " + thisExcercise.recoveryPeriod.toString());
-        print("set target: " + thisExcercise.setTarget.toString());
+        print("prediction ID: " + excercise.predictionID.toString());
+        print("rep target: " + excercise.repTarget.toString());
+        print("recovery: " + excercise.recoveryPeriod.toString());
+        print("set target: " + excercise.setTarget.toString());
 
         //travel to page
         App.navSpread.value = true;
@@ -58,7 +52,7 @@ class ExcerciseTile extends StatelessWidget {
           //when transitioning to this page relaoding leading is always false
           //WILL SET reloading leading to true
           child: ExcercisePage(
-            excerciseID: excerciseID,
+            excercise: excercise,
           ),
         );
 
@@ -72,13 +66,12 @@ class ExcerciseTile extends StatelessWidget {
         else Navigator.push(context, page);
       },
       title: ExcerciseTitleHero(
+        excercise: excercise,
         inAppBar: false,
-        title: thisExcercise.name,
-        excerciseIDTag: thisExcercise.id,
       ),
       //NOTE: this must output to null if there isn't a weight 
       //because otherwise it will yeild alot of wasted space
-      subtitle: (thisExcercise.lastWeight == null) 
+      subtitle: (excercise.lastWeight == null) 
       //used so all tiles are the same height
       //and can properly show the mini timer
       ? Container(
@@ -89,12 +82,10 @@ class ExcerciseTile extends StatelessWidget {
       )
       //show 1 rep max stuffs
       : ExcerciseTileSubtitle(
-        lastWeight: thisExcercise.lastWeight,
-        lastReps: thisExcercise.lastReps,
-        functionID: thisExcercise.predictionID,
+        excercise: excercise,
       ),
       trailing: ExcerciseTileLeading(
-        excerciseReference: thisExcercise,
+        excercise: excercise,
         tileInSearch: tileInSearch,
       ),
     );

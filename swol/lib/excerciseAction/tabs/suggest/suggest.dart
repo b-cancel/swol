@@ -7,7 +7,6 @@ import 'package:swol/excerciseAction/tabs/sharedWidgets/bottomButtons.dart';
 import 'package:swol/excerciseAction/tabs/suggest/calibration.dart';
 
 //internal: other
-import 'package:swol/shared/methods/excerciseData.dart';
 import 'package:swol/other/functions/helper.dart';
 import 'package:swol/shared/structs/anExcercise.dart';
 
@@ -22,12 +21,12 @@ import 'package:swol/shared/structs/anExcercise.dart';
 class Suggestion extends StatefulWidget {
   Suggestion({
     @required this.statusBarHeight,
-    @required this.excerciseID,
+    @required this.excercise,
     @required this.recordSet,
   });
 
   final double statusBarHeight;
-  final int excerciseID;
+  final AnExcercise excercise;
   final Function recordSet;
 
   @override
@@ -47,18 +46,11 @@ class _SuggestionState extends State<Suggestion> {
 
   updateFunctionIndex(){
     functionValue = Functions.functions[functionIndex.value];
-
-    ExcerciseData.updateExcercise(
-      widget.excerciseID,
-      predictionID: functionIndex.value,
-    );
+    widget.excercise.predictionID = functionIndex.value;
   }
 
   updateRepTarget(){
-    ExcerciseData.updateExcercise(
-      widget.excerciseID,
-      repTarget: repTarget.value,
-    );
+    widget.excercise.repTarget = repTarget.value;
 
     //TODO: might not need this
     setState(() {});
@@ -72,12 +64,9 @@ class _SuggestionState extends State<Suggestion> {
   void initState() { 
     //super init
     super.initState();
-
-    AnExcercise thisExcercise = ExcerciseData.getExcercises()[widget.excerciseID];
-
     //set function stuff initially
     functionIndex = new ValueNotifier(
-      thisExcercise.predictionID,
+      widget.excercise.predictionID,
     );
     functionValue = Functions.functions[functionIndex.value];
 
@@ -86,7 +75,7 @@ class _SuggestionState extends State<Suggestion> {
 
     //set set target stuff initially
     repTarget = new ValueNotifier(
-      thisExcercise.setTarget,
+      widget.excercise.setTarget,
     );
 
     //when value changes we update it
@@ -131,7 +120,7 @@ class _SuggestionState extends State<Suggestion> {
               left: 0,
               right: 0,
               child: BottomButtons(
-                excerciseID: widget.excerciseID,
+                excercise: widget.excercise,
                 forwardAction: widget.recordSet,
                 forwardActionWidget: RichText(
                   text: TextSpan(

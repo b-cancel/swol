@@ -237,7 +237,7 @@ class SearchResults extends StatelessWidget {
       itemCount: queryResults.length,
       itemBuilder: (context, index){
         return ExcerciseTile(
-          excerciseID: excercises[queryResults[index]].id,
+          excercise: excercises[queryResults[index]],
           tileInSearch: true,
         );
       },

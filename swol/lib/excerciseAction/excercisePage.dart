@@ -7,7 +7,6 @@ import 'package:page_transition/page_transition.dart';
 //internal: excercise
 import 'package:swol/shared/widgets/simple/heros/title.dart';
 import 'package:swol/shared/widgets/simple/backButton.dart';
-import 'package:swol/shared/methods/excerciseData.dart';
 import 'package:swol/shared/structs/anExcercise.dart';
 
 //internal
@@ -18,10 +17,10 @@ import 'package:swol/main.dart';
 //widgets
 class ExcercisePage extends StatefulWidget {
   ExcercisePage({
-    @required this.excerciseID,
+    @required this.excercise,
   });
 
-  final int excerciseID;
+  final AnExcercise excercise;
 
   @override
   _ExcercisePageState createState() => _ExcercisePageState();
@@ -38,7 +37,7 @@ class _ExcercisePageState extends State<ExcercisePage> {
       PageTransition(
         type: PageTransitionType.rightToLeft, 
         child: ExcerciseNotes(
-          excerciseID: widget.excerciseID,
+          excercise: widget.excercise,
         ),
       ),
     );
@@ -46,15 +45,6 @@ class _ExcercisePageState extends State<ExcercisePage> {
 
   @override
   Widget build(BuildContext context) {
-    String name = "";
-    AnExcercise thisExcercise = ExcerciseData.getExcercises()[widget.excerciseID];
-    name = thisExcercise.name;
-
-    double statusBarHeight = MediaQuery.of(context).padding.top;
-
-    print("rebuilding-----------------------");
-
-    //build
     return WillPopScope(
       onWillPop: () async{
         //may have to unfocus
@@ -86,9 +76,8 @@ class _ExcercisePageState extends State<ExcercisePage> {
                           right: 0,
                           child: ExcerciseTitleHero(
                             inAppBar: true,
-                            title: name,
+                            excercise: widget.excercise,
                             onTap: () => toNotes(context),
-                            excerciseIDTag:  thisExcercise.id,
                           ),
                         ),
                         Positioned(
@@ -96,7 +85,7 @@ class _ExcercisePageState extends State<ExcercisePage> {
                           top: 0,
                           bottom: 0,
                           child: BackFromExcercise(
-                            excerciseIDTag: thisExcercise.id,
+                            excercise: widget.excercise,
                           ),
                         ),
                         Positioned(
@@ -124,9 +113,9 @@ class _ExcercisePageState extends State<ExcercisePage> {
           ),
         ),
         body: VerticalTabs(
-          excerciseID: widget.excerciseID,
+          excercise: widget.excercise,
           maxHeight: MediaQuery.of(context).size.height,
-          statusBarHeight: statusBarHeight,
+          statusBarHeight: MediaQuery.of(context).padding.top,
         ),
       ),
     );

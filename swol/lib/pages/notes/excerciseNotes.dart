@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 
 //plugin
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:swol/shared/structs/anExcercise.dart';
 
 //internl: excercise
 import 'package:swol/shared/widgets/complex/fields/fields/linkField/link.dart';
@@ -12,18 +11,19 @@ import 'package:swol/shared/widgets/complex/fields/fields/text/notesField.dart';
 import 'package:swol/shared/functions/defaultDateTimes.dart';
 import 'package:swol/shared/widgets/simple/backButton.dart';
 import 'package:swol/shared/methods/excerciseData.dart';
+import 'package:swol/shared/structs/anExcercise.dart';
+import 'package:swol/sharedWidgets/playOnceGif.dart';
 
 //internal: other
 import 'package:swol/pages/notes/excerciseMessages.dart';
-import 'package:swol/sharedWidgets/playOnceGif.dart';
 
 //widget
 class ExcerciseNotes extends StatefulWidget {
   ExcerciseNotes({
-    @required this.excerciseID,
+    @required this.excercise,
   });
 
-  final int excerciseID;
+  final AnExcercise excercise;
 
   @override
   _ExcerciseNotesState createState() => _ExcerciseNotesState();
@@ -36,31 +36,23 @@ class _ExcerciseNotesState extends State<ExcerciseNotes> {
   ValueNotifier<String> note = new ValueNotifier("");
   ValueNotifier<String> url = new ValueNotifier("");
 
-  //listener function
-  updateName(){
-    //NOTE: name will only be set if its NOT EMTPY
-    ExcerciseData.updateExcercise(widget.excerciseID, name: name.value);
-  }
+  //listener functions
+  updateName() => widget.excercise.name = name.value;
+  updateNote() => widget.excercise.note = note.value;
+  updateUrl() => widget.excercise.url = url.value;
 
-  updateNote(){
-    ExcerciseData.updateExcercise(widget.excerciseID, note: note.value);
-  }
-
-  updateUrl(){
-    ExcerciseData.updateExcercise(widget.excerciseID, url: url.value);
-  }
-
+  //init
   @override
   void initState() { 
     //super init
     super.initState();
 
     //set initial values of ValueNotifiers
-    AnExcercise thisExcercise = ExcerciseData.getExcercises()[widget.excerciseID];
-    name.value = thisExcercise.name;
-    note.value = thisExcercise.note;
-    url.value = thisExcercise.url;
+    name.value = widget.excercise.name;
+    note.value = widget.excercise.note;
+    url.value = widget.excercise.url;
 
+    //listen to changes
     name.addListener(updateName);
     note.addListener(updateNote);
     url.addListener(updateUrl);
@@ -68,6 +60,7 @@ class _ExcerciseNotesState extends State<ExcerciseNotes> {
 
   @override
   void dispose() { 
+    //remove listeners
     name.removeListener(updateName);
     note.removeListener(updateNote);
     url.removeListener(updateUrl);
@@ -87,11 +80,11 @@ class _ExcerciseNotesState extends State<ExcerciseNotes> {
         title: Text("Notes"),
         actions: [
           BigActionButton(
-            excerciseID: widget.excerciseID,
+            excercise: widget.excercise,
             delete: false,
           ),
           BigActionButton(
-            excerciseID: widget.excerciseID,
+            excercise: widget.excercise,
             delete: true,
           ),
         ],
@@ -133,42 +126,20 @@ class _ExcerciseNotesState extends State<ExcerciseNotes> {
 
 class BigActionButton extends StatelessWidget {
   BigActionButton({
-    @required this.excerciseID,
+    @required this.excercise,
     @required this.delete,
   });
 
-  final int excerciseID;
+  final AnExcercise excercise;
   final bool delete;
+
+  //functions
+  deleteFunc() => ExcerciseData.deleteExcercise(excercise.id);
+  hideFunc() => excercise.lastTimeStamp = LastTimeStamp.hiddenDateTime();
 
   //pop ups for archiving or deleting
   areyouSurePopUp(BuildContext context, {Color color, IconData icon}){
-    //create action function
-    Function actionFunction;
-    if(delete){
-      actionFunction = (){
-        ExcerciseData.deleteExcercise(excerciseID);
-      };
-    }
-    else{
-      actionFunction = (){
-        ExcerciseData.updateExcercise(
-          excerciseID, 
-          //set to hidden
-          lastTimeStamp: LastTimeStamp.hiddenDateTime(),
-          //wipe all temp vars
-          tempRepsCanBeNull: true,
-          tempSetCountCanBeNull: true,
-          tempStartTimeCanBeNull: true,
-          tempWeightCanBeNull: true,
-        );
-      };
-    }
-
-    //grab the name of the excercise
-    String theName = ExcerciseData.getExcercises()[excerciseID].name;
-    theName = "\"" + theName + "\"";
-
-    //show the dialog
+    String name = "\"" + excercise.name + "\"";
     showDialog<void>(
       context: context,
       barrierDismissible: true,
@@ -208,9 +179,12 @@ class BigActionButton extends StatelessWidget {
           icon: icon, 
           actionString: (delete) ? "Delete" : "Hide", 
           message: (delete) 
-            ? DeleteMessage(theName: theName) 
-            : HideMessage(theName: theName), 
-          actionFunction: actionFunction, 
+            ? DeleteMessage(theName: name) 
+            : HideMessage(theName: name), 
+          actionFunction: (){
+            if(delete) deleteFunc();
+            else hideFunc();
+          }, 
         ); 
       },
     );

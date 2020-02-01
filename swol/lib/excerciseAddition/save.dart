@@ -138,18 +138,18 @@ class _SaveButtonState extends State<SaveButton> {
                 await ExcerciseData.addExcercise(
                   AnExcercise(
                     //basic
-                    name: widget.name.value,
-                    url: widget.url.value,
-                    note: widget.note.value,
+                    widget.name.value,
+                    widget.url.value,
+                    widget.note.value,
 
                     //other
-                    predictionID: widget.functionIndex.value,
-                    repTarget: widget.repTarget.value,
-                    recoveryPeriod: widget.recoveryPeriod.value,
-                    setTarget: widget.setTarget.value,
+                    widget.functionIndex.value,
+                    widget.repTarget.value,
+                    widget.recoveryPeriod.value,
+                    widget.setTarget.value,
 
                     //---
-                    lastTimeStamp: LastTimeStamp.newDateTime(),
+                    LastTimeStamp.newDateTime(),
                   ),
                 );
 

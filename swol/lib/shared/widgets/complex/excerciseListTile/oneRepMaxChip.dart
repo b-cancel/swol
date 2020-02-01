@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 //plugin
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:swol/shared/structs/anExcercise.dart';
 
 //internal
 import 'package:swol/shared/widgets/simple/oneOrTheOtherIcon.dart';
@@ -18,14 +19,10 @@ import 'package:swol/other/functions/helper.dart';
 //2. generate a message to show if the user taps the chipd
 class ExcerciseTileSubtitle extends StatelessWidget {
   ExcerciseTileSubtitle({
-    @required this.lastWeight,
-    @required this.lastReps,
-    @required this.functionID,
+    @required this.excercise,
   });
 
-  final int lastWeight;
-  final int lastReps;
-  final int functionID;
+  final AnExcercise excercise;
 
   @override
   Widget build(BuildContext context) {
@@ -38,24 +35,24 @@ class ExcerciseTileSubtitle extends StatelessWidget {
     //NOTE: contains defaults for when this set is indeed a one rep max
     bool isOneRepMaxEstimated = false; 
     Widget oneRepMaxWidget = Text(
-      lastWeight.toString(),
+      excercise.lastWeight.toString(),
       style: BOLD,
     );
     String snackbarMessage = "Your 1 Rep Max";
 
     //only calculate the 1 rep max and all its related values if you must
-    if(lastReps != 1){
+    if(excercise.lastReps != 1){
       isOneRepMaxEstimated = true;
 
       //estimate one rep max
       List oneRepMaxValues = Functions.getOneRepMaxValues(
-        lastWeight, 
-        lastReps,
+        excercise.lastWeight, 
+        excercise.lastReps,
       );
 
       //update onRepMaxWidget
       oneRepMaxWidget = Text(
-        oneRepMaxValues[0][functionID].toInt().toString(),
+        oneRepMaxValues[0][excercise.predictionID].toInt().toString(),
         style: BOLD,
       );
 

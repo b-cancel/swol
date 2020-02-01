@@ -14,30 +14,30 @@ import 'package:swol/other/durationFormat.dart';
 //tile might need reloading
 class ExcerciseTileLeading extends StatelessWidget {
   ExcerciseTileLeading({
-    @required this.excerciseReference,
+    @required this.excercise,
     @required this.tileInSearch,
   });
 
-  final AnExcercise excerciseReference;
+  final AnExcercise excercise;
   final bool tileInSearch;
 
   @override
   Widget build(BuildContext context) {
     //NOTE: timer takes precendence over regular inprogress
-    if(excerciseReference.tempStartTime != null){
-      Duration timePassed = DateTime.now().difference(excerciseReference.tempStartTime);
+    if(excercise.tempStartTime != null){
+      Duration timePassed = DateTime.now().difference(excercise.tempStartTime);
       if(timePassed > Duration(minutes: 5)){
         return AnimatedMiniNormalTimerAlternativeWrapper(
-          excerciseReference: excerciseReference,
+          excerciseReference: excercise,
         );
       }
       else{
         return AnimatedMiniNormalTimer(
-          excerciseReference: excerciseReference,
+          excerciseReference: excercise,
         );
       }
     }
-    else if(LastTimeStamp.isInProgress(excerciseReference.lastTimeStamp)){
+    else if(LastTimeStamp.isInProgress(excercise.lastTimeStamp)){
       //TODO: this should show different things if you are BEFORE or PAST your set target
       //TODO: if before you set target it should show "To Set X/Y?"
       //TODO: if after your set target it should show "Complete Set X?"
@@ -46,7 +46,7 @@ class ExcerciseTileLeading extends StatelessWidget {
       //TODO: to perform the action we THINK they will want
       bool isLastSet = true;
       return Hero(
-        tag: "excercise" + (isLastSet ? "Complete" : "Continue") + excerciseReference.id.toString(),
+        tag: "excercise" + (isLastSet ? "Complete" : "Continue") + excercise.id.toString(),
         child: FittedBox(
           fit: BoxFit.contain,
           child: Material(
@@ -62,7 +62,7 @@ class ExcerciseTileLeading extends StatelessWidget {
       //since we are starting off the excercise we don't need to worry about suggesting an action
       //so we don't need to worry about anything being a hero
       if(tileInSearch){
-        if(LastTimeStamp.isNew(excerciseReference.lastTimeStamp)){
+        if(LastTimeStamp.isNew(excercise.lastTimeStamp)){
           return ListTileChipShell(
             chip: MyChip(
               chipString: 'NEW',
@@ -70,7 +70,7 @@ class ExcerciseTileLeading extends StatelessWidget {
           );
         }
         else{
-          if(LastTimeStamp.isHidden(excerciseReference.lastTimeStamp)){
+          if(LastTimeStamp.isHidden(excercise.lastTimeStamp)){
             return ListTileChipShell(
               chip: MyChip(
                 chipString: 'HIDDEN',
@@ -80,7 +80,7 @@ class ExcerciseTileLeading extends StatelessWidget {
           else{
             return Text(
               DurationFormat.format(
-                DateTime.now().difference(excerciseReference.lastTimeStamp),
+                DateTime.now().difference(excercise.lastTimeStamp),
                 showMinutes: false,
                 showSeconds: false,
                 showMilliseconds: false,
@@ -93,7 +93,7 @@ class ExcerciseTileLeading extends StatelessWidget {
       }
       else return ExcerciseBegin(
         inAppBar: false,
-        excerciseIDTag: excerciseReference.id,
+        excercise: excercise,
       );
     }
   }

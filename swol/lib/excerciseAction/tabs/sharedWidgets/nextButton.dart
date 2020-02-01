@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:swol/shared/structs/anExcercise.dart';
 
 class BottomNextButton extends StatelessWidget {
   const BottomNextButton({
@@ -6,14 +7,14 @@ class BottomNextButton extends StatelessWidget {
     @required this.forwardAction,
     @required this.forwardActionWidget,
     @required this.verticalPadding,
-    @required this.excerciseID,
+    @required this.excercise,
     @required this.wrapInHero,
   }) : super(key: key);
 
   final Function forwardAction;
   final Widget forwardActionWidget;
   final double verticalPadding;
-  final int excerciseID;
+  final AnExcercise excercise;
   final bool wrapInHero;
 
   @override
@@ -55,7 +56,7 @@ class BottomNextButton extends StatelessWidget {
 
     if(wrapInHero){
       return Hero(
-        tag: "excerciseContinue"+ excerciseID.toString(),
+        tag: "excerciseContinue"+ excercise.id.toString(),
         child: FittedBox(
           fit: BoxFit.contain,
           child: Material(

@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
 
+import 'package:swol/shared/structs/anExcercise.dart';
+
 class ExcerciseBegin extends StatelessWidget {
   ExcerciseBegin({
     @required this.inAppBar,
-    @required this.excerciseIDTag,
+    @required this.excercise,
   });
 
   final bool inAppBar;
-  final int excerciseIDTag;
+  final AnExcercise excercise;
 
   @override
   Widget build(BuildContext context) {
-    String generatedTag = "excerciseBegin" + excerciseIDTag.toString();
+    String generatedTag = "excerciseBegin" + excercise.id.toString();
     return Hero(
       tag: generatedTag,
       flightShuttleBuilder: (

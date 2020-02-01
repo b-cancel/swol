@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:swol/shared/structs/anExcercise.dart';
 import 'package:vector_math/vector_math_64.dart' as vect;
-
-//TODO: must hero up with the excercise tile if it has the "complete?" button
 
 //TODO: change the theme of the button depending on stuffs
 //1. if BEFORE set target keep background dark
@@ -14,14 +13,14 @@ import 'package:vector_math/vector_math_64.dart' as vect;
 //TODO: essentially make all the pop ups that would pop up... do so...
 class DoneButton extends StatelessWidget {
   DoneButton({
-    @required this.excerciseID,
+    @required this.excercise,
     this.showOrHideDuration: const Duration(milliseconds: 300),
     @required this.animationCurve,
     @required this.showDoneButton,
     @required this.setsFinishedSoFar,
   });
 
-  final int excerciseID;
+  final AnExcercise excercise;
   final Curve animationCurve;
   final Duration showOrHideDuration;
   //triggers an animation
@@ -85,7 +84,7 @@ class DoneButton extends StatelessWidget {
               Stack(
                 children: <Widget>[
                   DoneButtonButton(
-                    excerciseID: excerciseID,
+                    excercise: excercise,
                     animationCurve: animationCurve,
                     showOrHideDuration: showOrHideDuration,
                     showDoneButton: showDoneButton,
@@ -93,7 +92,7 @@ class DoneButton extends StatelessWidget {
                     wrapInHero: false,
                   ),
                   DoneButtonButton(
-                    excerciseID: excerciseID,
+                    excercise: excercise,
                     animationCurve: animationCurve,
                     showOrHideDuration: showOrHideDuration,
                     showDoneButton: showDoneButton,
@@ -118,7 +117,7 @@ class DoneButton extends StatelessWidget {
 
 class DoneButtonButton extends StatefulWidget {
   DoneButtonButton({
-    @required this.excerciseID,
+    @required this.excercise,
     @required this.animationCurve,
     @required this.showOrHideDuration,
     @required this.showDoneButton,
@@ -126,7 +125,7 @@ class DoneButtonButton extends StatefulWidget {
     @required this.wrapInHero,
   });
 
-  final int excerciseID;
+  final AnExcercise excercise;
   final Curve animationCurve;
   final Duration showOrHideDuration;
   //triggers an animation
@@ -222,7 +221,7 @@ class _DoneButtonButtonState extends State<DoneButtonButton> {
 
     if(widget.wrapInHero){
       return Hero(
-        tag: "excerciseComplete"+ widget.excerciseID.toString(),
+        tag: "excerciseComplete"+ widget.excercise.id.toString(),
         child: FittedBox(
           fit: BoxFit.contain,
           child: Material(

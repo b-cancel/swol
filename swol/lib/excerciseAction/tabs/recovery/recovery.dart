@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:swol/excerciseAction/tabs/sharedWidgets/bottomButtons.dart';
 import 'package:swol/excerciseAction/tabs/recovery/secondary/breath.dart';
 import 'package:swol/excerciseAction/tabs/recovery/timer/liquidTime.dart';
-import 'package:swol/excerciseAction/tabs/sharedWidgets/bottomButtons.dart';
-import 'package:swol/shared/methods/excerciseData.dart';
 import 'package:swol/shared/structs/anExcercise.dart';
 
 class Recovery extends StatefulWidget {
   Recovery({
-    @required this.excerciseID,
+    @required this.excercise,
     @required this.backToRecordSet,
     @required this.nextSet,
   });
 
-  final int excerciseID;
+  final AnExcercise excercise;
   final Function backToRecordSet;
   final Function nextSet;
 
@@ -30,31 +29,24 @@ class _RecoveryState extends State<Recovery> with SingleTickerProviderStateMixin
 
   //function that is removable from listener
   updateRecoveryDuration(){
-    ExcerciseData.updateExcercise(
-      widget.excerciseID,
-      recoveryPeriod: recoveryDuration.value,
-    );
+    widget.excercise.recoveryPeriod = recoveryDuration.value;
   }
 
   //init
   @override
   void initState() {
-    AnExcercise thisExcercise = ExcerciseData.getExcercises()[widget.excerciseID];
-    DateTime currentTimerStart = thisExcercise.tempStartTime;
+    DateTime currentTimerStart = widget.excercise.tempStartTime;
 
     //based on whether or not the timer has already started set the timerStart
     if(currentTimerStart == null){
-      ExcerciseData.updateExcercise(
-        widget.excerciseID,
-        tempStartTime: DateTime.now(),
-      );
+      widget.excercise.tempStartTime = DateTime.now();
       timerStart = DateTime.now();
     }
     else timerStart = currentTimerStart;
     
     //set recovery duration init
     recoveryDuration = new ValueNotifier(
-      thisExcercise.recoveryPeriod,
+      widget.excercise.recoveryPeriod,
     );
 
     //if recovery duration changes we must update it
@@ -130,17 +122,13 @@ class _RecoveryState extends State<Recovery> with SingleTickerProviderStateMixin
             ),
           ),
           BottomButtons(
-            excerciseID: widget.excerciseID,
+            excercise: widget.excercise,
             forwardAction: (){
               //move onto the next set
               widget.nextSet();
 
               //zero out the tempStartTimer
-              ExcerciseData.updateExcercise(
-                widget.excerciseID,
-                tempStartTimeCanBeNull: true,
-                tempStartTime: null,
-              );
+              widget.excercise.tempStartTime = null;
             },
             forwardActionWidget: Text(
               "Next Set",

@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:swol/other/otherHelper.dart';
+import 'package:swol/shared/structs/anExcercise.dart';
 
 class ExcerciseTitleHero extends StatelessWidget {
   ExcerciseTitleHero({
+    @required this.excercise,
     @required this.inAppBar,
-    @required this.title,
     this.onTap,
-    @required this.excerciseIDTag,
   });
 
+  final AnExcercise excercise;
   final bool inAppBar;
-  final String title;
   final Function onTap;
-  final int excerciseIDTag;
+  
 
   @override
   Widget build(BuildContext context) {
-    String generatedTag = "excerciseTitle" + excerciseIDTag.toString();
+    String generatedTag = "excerciseTitle" + excercise.id.toString();
     return Hero(
       tag: generatedTag,
       flightShuttleBuilder: (
@@ -31,7 +31,7 @@ class ExcerciseTitleHero extends StatelessWidget {
           builder: (context, child){
             return ExcerciseTitleHeroHelper(
               percentToAppBar: animation.value,
-              title: title,
+              title: excercise.name,
               //during transition 
               //no action can be taken 
               //so we guarantee it by not passing onTap
@@ -41,7 +41,7 @@ class ExcerciseTitleHero extends StatelessWidget {
       },
       child: ExcerciseTitleHeroHelper(
         percentToAppBar: (inAppBar) ? 1 : 0,
-        title: title,
+        title: excercise.name,
         onTap: onTap,
       ),
     );
