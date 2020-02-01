@@ -134,6 +134,9 @@ class _SaveButtonState extends State<SaveButton> {
                 //remove keyboard
                 FocusScope.of(context).unfocus();
 
+                DateTime theNewDateTime = LastTimeStamp.newDateTime();
+                print("the new date time is: " + theNewDateTime.toString());
+
                 //add workout to our list
                 await ExcerciseData.addExcercise(
                   AnExcercise(
@@ -149,7 +152,7 @@ class _SaveButtonState extends State<SaveButton> {
                     widget.setTarget.value,
 
                     //---
-                    LastTimeStamp.newDateTime(),
+                    theNewDateTime,
                   ),
                 );
 

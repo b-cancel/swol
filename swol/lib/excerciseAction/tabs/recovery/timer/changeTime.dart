@@ -41,7 +41,6 @@ class ChangeRecoveryTimePopUp extends StatelessWidget {
     return Theme(
       data: MyTheme.light,
       child: AlertDialog(
-        contentPadding: EdgeInsets.all(0),
         title: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -58,11 +57,10 @@ class ChangeRecoveryTimePopUp extends StatelessWidget {
             )
           ],
         ),
-        content: Container(
-          child: ChangeRecoveryTimeWidget(
-            changeDuration: Duration(milliseconds: 250), 
-            recoveryPeriod: possibleRecoveryDuration, 
-          ),
+        contentPadding: EdgeInsets.all(0),
+        content: ChangeRecoveryTimeWidget(
+          changeDuration: Duration(milliseconds: 250), 
+          recoveryPeriod: possibleRecoveryDuration, 
         ),
         actions: <Widget>[
           FlatButton(
@@ -153,12 +151,15 @@ class _ChangeRecoveryTimeWidgetState extends State<ChangeRecoveryTimeWidget> {
             width: MediaQuery.of(context).size.width,
             child: Theme(
               data: ThemeData.dark(),
-              child: TrainingTypeSections(
-                highlightField: 2,
-                //nothing / endurance / hypertrohpy / hypertrophy & strength / strength and above
-                sections: [[0], [0], [1], [1,2], [2]],
-                sectionID: sectionID,
-                plus24: true,
+              child: FittedBox(
+                fit: BoxFit.contain,
+                child: TrainingTypeSections(
+                  highlightField: 2,
+                  //nothing / endurance / hypertrohpy / hypertrophy & strength / strength and above
+                  sections: [[0], [0], [1], [1,2], [2]],
+                  sectionID: sectionID,
+                  plus24: true,
+                ),
               ),
             ),
           ),

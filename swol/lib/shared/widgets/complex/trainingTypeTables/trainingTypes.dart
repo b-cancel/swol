@@ -84,13 +84,10 @@ class _TrainingTypeSectionsState extends State<TrainingTypeSections> {
   }
 
   double cardHeight;
-  double fullHeight;
 
   @override
   void initState() {
     cardHeight = 256.0; //this is just the height that feels the nicest
-    //todo... why the plus 24?...
-    fullHeight = cardHeight + (widget.plus24 ? 24 : 0);
 
     //create all default card
     enduranceCard = CardTable(
@@ -162,7 +159,7 @@ class _TrainingTypeSectionsState extends State<TrainingTypeSections> {
     for(int i = 0; i < sectionsOfCards.length; i++){
       carousels.add(
         CarouselSlider(
-          height: fullHeight,
+          height: cardHeight,
           //so they can compare both
           enableInfiniteScroll: (sectionsOfCards[i].length > 1),
           enlargeCenterPage: true,
@@ -176,7 +173,7 @@ class _TrainingTypeSectionsState extends State<TrainingTypeSections> {
     //create main carousel
     mainCarousel = CarouselSlider(
       scrollPhysics: NeverScrollableScrollPhysics(),
-      height: fullHeight,
+      height: cardHeight,
       //so they can compare both
       enableInfiniteScroll: (carousels.length > 1),
       enlargeCenterPage: true,
@@ -213,7 +210,7 @@ class _TrainingTypeSectionsState extends State<TrainingTypeSections> {
         child: Row(
           children: <Widget>[
             Container(
-              height: fullHeight, 
+              height: cardHeight, 
               child: CardTable(
                 height: cardHeight,
                 persistent: true,

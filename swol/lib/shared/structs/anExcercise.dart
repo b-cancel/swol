@@ -143,7 +143,18 @@ class AnExcercise{
 
     //date time
     DateTime lastTimeStamp,
-  );
+  ){
+    this.name = name;
+    this.url = url;
+    this.note = note;
+
+    this.predictionID = predictionID;
+    this.repTarget = repTarget;
+    this.recoveryPeriod = recoveryPeriod;
+    this.setTarget = setTarget;
+
+    this.lastTimeStamp = lastTimeStamp;
+  }
 
   AnExcercise.fromJson(Map<String,dynamic> map){
     //---Auto Set
