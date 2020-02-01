@@ -145,11 +145,17 @@ Function _makeTrainingTypePopUp({
         ),
         Theme(
           data: ThemeData.dark(),
-          child: ScrollableTrainingTypes(
-            showEndurance: showEndurance,
-            showHypertrophy: showHypertrophy,
-            showStrength: showStrength,
-            highlightField: highlightField,
+          child: Padding(
+            padding: EdgeInsets.only(
+              top: 8,
+              bottom: 16.0,
+            ),
+            child: ScrollableTrainingTypes(
+              showEndurance: showEndurance,
+              showHypertrophy: showHypertrophy,
+              showStrength: showStrength,
+              highlightField: highlightField,
+            ),
           ),
         ),
         SuggestToLearnPage(),

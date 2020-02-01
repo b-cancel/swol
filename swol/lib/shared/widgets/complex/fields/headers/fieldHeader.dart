@@ -95,6 +95,7 @@ class RecoveryTimeHeader extends StatelessWidget {
     return Theme(
       data: MyTheme.light,
       child: HeaderWithInfo(
+        isDense: true,
         header: "Recovery Time",
         title: "Recovery Time",
         subtitle: "Not sure? Keep the default",
@@ -116,6 +117,7 @@ class RepTargetHeader extends StatelessWidget {
     return Theme(
       data: MyTheme.light,
       child: HeaderWithInfo(
+        isDense: true,
         header: "Rep Target",
         title: "Rep Target",
         subtitle: "Not sure? Keep the default",

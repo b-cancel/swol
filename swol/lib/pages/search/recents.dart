@@ -152,31 +152,58 @@ class RecentSearches extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Radius cardRadius = Radius.circular(24);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
-        AnimatedList(
-          shrinkWrap: true,
-          physics: ClampingScrollPhysics(),
-          reverse: true,
-          initialItemCount: SearchesData.getRecentSearches().length,
-          itemBuilder: (context, index, animation){
-            return buildSearch(context, index, animation);
-          },
+        ClipRRect(
+          borderRadius: BorderRadius.only(
+            topLeft: cardRadius,
+            topRight: cardRadius,
+          ),
+          child: Container(
+            color: Theme.of(context).cardColor,
+            child: AnimatedList(
+              shrinkWrap: true,
+              physics: ClampingScrollPhysics(),
+              reverse: true,
+              initialItemCount: SearchesData.getRecentSearches().length,
+              itemBuilder: (context, index, animation){
+                return buildSearch(context, index, animation);
+              },
+            ),
+          ),
         ),
-        FlatButton(
-          padding: EdgeInsets.all(0),
-          onPressed: (){
-            SearchesData.removeAllSearches();
-            updateState();
-          },
-          child: Text(
-            "Clear search history",
-            style: TextStyle(
-              color: Theme.of(context).accentColor,
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
+        ClipRRect(
+          borderRadius: BorderRadius.only(
+            bottomLeft: cardRadius,
+            bottomRight: cardRadius,
+          ),
+          child: Container(
+            decoration: BoxDecoration(
+              color: Theme.of(context).cardColor,
+            ),
+            child: FlatButton(
+              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              padding: EdgeInsets.all(0),
+              onPressed: (){
+                SearchesData.removeAllSearches();
+                updateState();
+              },
+              child: Padding(
+                padding: EdgeInsets.symmetric(
+                  vertical: 8.0,
+                ),
+                child: Text(
+                  "Clear search history",
+                  style: TextStyle(
+                    color: Theme.of(context).accentColor,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
             ),
           ),
         )

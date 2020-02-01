@@ -58,14 +58,16 @@ class CardTable extends StatelessWidget {
             //non persistent ones span the carousel width
             width: persistent ? null : MediaQuery.of(context).size.width,
             child: Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: 16,
+              padding: EdgeInsets.only(
+                left: 16,
+                right: 8,
               ),
               child: Row(
                 children: <Widget>[
                   iconWidget,
                   Text(
                     items[i],
+                    overflow: TextOverflow.fade,
                     style: TextStyle(
                       color: Colors.white,
                       fontWeight: (persistent || i == 0 || i == highlightField) 
@@ -86,7 +88,7 @@ class CardTable extends StatelessWidget {
       padding: EdgeInsets.symmetric(
         //non persistent have a little gap between them 
         //to make it obvious you can scroll betweenthem
-        horizontal: (persistent) ? 0 : 8,
+        horizontal: (persistent) ? 0 : 6,
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.only(

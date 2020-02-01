@@ -179,6 +179,7 @@ class _NamePopUpBody extends StatelessWidget {
                   circleText: "3",
                   circleTextColor: Colors.white,
                   content: Text("Rep Target"),
+                  bottomSpacing: 0,
                 )
               ],
             ),

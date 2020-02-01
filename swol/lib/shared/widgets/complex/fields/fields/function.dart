@@ -110,7 +110,7 @@ class PredictionFormulasPopUpBody extends StatelessWidget {
           data: ThemeData.dark(),
           child: Padding(
             padding: EdgeInsets.symmetric(
-              horizontal: 16,
+              horizontal: 24,
             ),
             child: Padding(
               padding: const EdgeInsets.only(

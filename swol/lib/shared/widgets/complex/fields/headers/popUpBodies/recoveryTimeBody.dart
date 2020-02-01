@@ -139,8 +139,14 @@ class RecoveryTimePopUpBody extends StatelessWidget {
         ),
         Theme(
           data: ThemeData.dark(),
-          child: AllTrainingTypes(
-            highlightField: 2,
+          child: Padding(
+            padding: EdgeInsets.only(
+              top: 8,
+              bottom: 16.0,
+            ),
+            child: AllTrainingTypes(
+              highlightField: 2,
+            ),
           ),
         ),
         SuggestToLearnPage(),

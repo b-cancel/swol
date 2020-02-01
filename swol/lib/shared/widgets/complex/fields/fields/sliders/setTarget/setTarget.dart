@@ -48,6 +48,7 @@ class SetTargetHeader extends StatelessWidget {
         header: "Set Target",
         title: "Set Target",
         subtitle: "Not sure? Keep the default",
+        isDense: true,
         body: SetTargetPopUpBody(),
       ),
     );
@@ -102,8 +103,14 @@ class SetTargetPopUpBody extends StatelessWidget {
         ),
         Theme(
           data: ThemeData.dark(),
-          child: AllTrainingTypes(
-            highlightField: 4,
+          child: Padding(
+            padding: EdgeInsets.only(
+              top: 8,
+              bottom: 16.0,
+            ),
+            child: AllTrainingTypes(
+              highlightField: 4,
+            ),
           ),
         ),
         SuggestToLearnPage(),

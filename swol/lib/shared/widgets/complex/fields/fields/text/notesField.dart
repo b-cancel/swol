@@ -108,6 +108,7 @@ class _NotePopUpBody extends StatelessWidget {
                   circleText: "3",
                   circleTextColor: Colors.white,
                   content: Text("Muscles To Focus On"),
+                  bottomSpacing: 0,
                 ),
               ],
             ),

@@ -231,14 +231,28 @@ class SearchResults extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Radius cardRadius = Radius.circular(24);
     return ListView.builder(
       shrinkWrap: true,
       physics: ClampingScrollPhysics(),
       itemCount: queryResults.length,
       itemBuilder: (context, index){
-        return ExcerciseTile(
-          excercise: excercises[queryResults[index]],
-          tileInSearch: true,
+        return ClipRRect(
+          borderRadius: BorderRadius.only(
+            //top
+            topLeft: index == 0 ? cardRadius : Radius.zero,
+            topRight: index == 0 ? cardRadius : Radius.zero,
+            //bottom
+            bottomLeft: index == (queryResults.length - 1) ? cardRadius : Radius.zero,
+            bottomRight: index == (queryResults.length - 1) ? cardRadius : Radius.zero,
+          ),
+          child: Container(
+            color: Theme.of(context).cardColor,
+            child: ExcerciseTile(
+              excercise: excercises[queryResults[index]],
+              tileInSearch: true,
+            ),
+          ),
         );
       },
     );
