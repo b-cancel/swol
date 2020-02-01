@@ -82,7 +82,6 @@ class _TrainingTypeSectionsState extends State<TrainingTypeSections> {
   void initState() {
     //create all default card
     enduranceCard = CardTable(
-      lightMode: true,
       items: [
         "Endurance ",
         "Light",
@@ -98,7 +97,6 @@ class _TrainingTypeSectionsState extends State<TrainingTypeSections> {
     );
 
     hypertrophyCard = CardTable(
-      lightMode: true,
       items: [
         "\tHypertrophy",//NOTE: extra space for dumbell
         "Heavy",
@@ -114,7 +112,6 @@ class _TrainingTypeSectionsState extends State<TrainingTypeSections> {
     );
 
     strengthCard = CardTable(
-      lightMode: true,
       items: [
         "Strength ",
         "Very Heavy",
@@ -197,14 +194,12 @@ class _TrainingTypeSectionsState extends State<TrainingTypeSections> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: (true) ? Colors.white : Theme.of(context).primaryColorDark,
       child: IntrinsicHeight(
         child: Row(
           children: <Widget>[
             Container(
               height: 256.0 + (widget.plus24 ? 24 : 0), //TODO: why do we need this?
               child: PersistentCardTable(
-                lightMode: true,
                 items: [
                   "Training Type",
                   "Weight Heaviness",
@@ -219,41 +214,38 @@ class _TrainingTypeSectionsState extends State<TrainingTypeSections> {
               ),
             ),
             Expanded(
-              child: Container(
-                color: (true) ? Colors.white: Theme.of(context).primaryColorDark,
-                child: Stack(
-                  children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.symmetric(
-                        vertical: 16, //TODO: why do we need this?
-                      ),
-                      child: mainCarousel,
+              child: Stack(
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                      vertical: 16, //TODO: why do we need this?
                     ),
-                    Positioned(
-                      top: 0,
-                      bottom: 0,
-                      child: Container(
-                        width: 32,
-                        decoration: BoxDecoration(
-                          // Box decoration takes a gradient
-                          gradient: LinearGradient(
-                            tileMode: TileMode.clamp,
-                            // Where the linear gradient begins and ends
-                            begin: Alignment.centerLeft,
-                            end: Alignment.centerRight,
-                            // Add one stop for each color. Stops should increase from 0 to 1
-                            stops: [0.1,1.0],
-                            colors: [
-                              (true) ? Colors.white : Theme.of(context).primaryColorDark,
-                              (true) ? Colors.white.withOpacity(0) : Colors.transparent,
-                            ],
-                          ),
+                    child: mainCarousel,
+                  ),
+                  Positioned(
+                    top: 0,
+                    bottom: 0,
+                    child: Container(
+                      width: 32,
+                      decoration: BoxDecoration(
+                        // Box decoration takes a gradient
+                        gradient: LinearGradient(
+                          tileMode: TileMode.clamp,
+                          // Where the linear gradient begins and ends
+                          begin: Alignment.centerLeft,
+                          end: Alignment.centerRight,
+                          // Add one stop for each color. Stops should increase from 0 to 1
+                          stops: [0.1,1.0],
+                          colors: [
+                            (true) ? Colors.white : Theme.of(context).primaryColorDark,
+                            (true) ? Colors.white.withOpacity(0) : Colors.transparent,
+                          ],
                         ),
-                        child: Container(),
                       ),
-                    )
-                  ],
-                ),
+                      child: Container(),
+                    ),
+                  )
+                ],
               ),
             ),
           ],

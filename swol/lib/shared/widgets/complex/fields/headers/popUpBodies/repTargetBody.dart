@@ -54,12 +54,8 @@ class RepTargetPopUpBody extends StatelessWidget {
         ),
         Theme(
           data: ThemeData.dark(),
-          child: Container(
-            color: Colors.white,
-            width: MediaQuery.of(context).size.width,
-            child: AllTrainingTypes(
-              highlightField: 3,
-            ),
+          child: AllTrainingTypes(
+            highlightField: 3,
           ),
         ),
         SuggestToLearnPage(),

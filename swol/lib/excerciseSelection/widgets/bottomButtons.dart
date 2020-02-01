@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 //plugin
 import 'package:page_transition/page_transition.dart';
 import 'package:swol/excerciseSelection/widgets/addNewHero.dart';
+import 'package:swol/shared/methods/excerciseData.dart';
 
 //internal: shared
 import 'package:swol/shared/methods/extensions/sharedPreferences.dart';
-import 'package:swol/shared/widgets/complex/onBoarding/image.dart';
 import 'package:swol/shared/widgets/complex/onBoarding/wrapper.dart';
 import 'package:swol/shared/functions/onboarding.dart';
 
@@ -51,39 +51,75 @@ class AddExcerciseButton extends StatelessWidget {
   }
 }
 
-class SearchExcerciseButton extends StatelessWidget {
+class SearchExcerciseButton extends StatefulWidget {
+  @override
+  _SearchExcerciseButtonState createState() => _SearchExcerciseButtonState();
+}
+
+class _SearchExcerciseButtonState extends State<SearchExcerciseButton> {
+  bool showSearch;
+
+  updateState(){
+    if(mounted){
+      setState(() {});
+      showSearch = ((ExcerciseData?.excercisesOrder?.value?.length ?? 0) > 1);
+      if(SharedPrefsExt.getSearchShown().value == false && showSearch){
+        OnBoarding.discoverSearchExcercise(context);
+      }
+    }
+  }
+
+  @override
+  void initState() {
+    showSearch = ((ExcerciseData?.excercisesOrder?.value?.length ?? 0) > 1);
+    ExcerciseData.excercisesOrder.addListener(updateState);
+    super.initState();
+  }
+
+  @override
+  void dispose() { 
+    ExcerciseData.excercisesOrder.removeListener(updateState);
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Positioned(
       right: 0,
       bottom: 0,
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: FeatureWrapper(
-          featureID: AFeature.SearchExcercise.toString(),
-          tapTarget: FloatingActionButton(
-            child: Icon(Icons.search),
-            onPressed: null,
-          ),
-          text: "Tap here to"
-          + "\nsearch through"
-          + "\nyour excercises",
-          child: FloatingActionButton.extended(
-            onPressed: (){
-              App.navSpread.value = true;
-              Navigator.push(
-                context, 
-                PageTransition(
-                  type: PageTransitionType.downToUp, 
-                  child: SearchExcercise(),
-                ),
-              );
+      child: Visibility(
+        visible: showSearch,
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: FeatureWrapper(
+            featureID: AFeature.SearchExcercise.toString(),
+            tapTarget: FloatingActionButton(
+              child: Icon(Icons.search),
+              onPressed: null,
+            ),
+            text: "Tap here to"
+            + "\nsearch through"
+            + "\nyour excercises",
+            child: FloatingActionButton.extended(
+              onPressed: (){
+                App.navSpread.value = true;
+                Navigator.push(
+                  context, 
+                  PageTransition(
+                    type: PageTransitionType.downToUp, 
+                    child: SearchExcercise(),
+                  ),
+                );
+              },
+              icon: Icon(Icons.search),
+              label: Text("Search"),
+            ),
+            top: false,
+            left: false,
+            nextFeature: (){
+              SharedPrefsExt.setSearchShown(true);
             },
-            icon: Icon(Icons.search),
-            label: Text("Search"),
           ),
-          top: false,
-          left: false,
         ),
       ),
     );

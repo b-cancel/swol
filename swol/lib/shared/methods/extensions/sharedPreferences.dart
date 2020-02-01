@@ -9,6 +9,7 @@ enum ValueName {
   InitialControlsShown, 
   IntroductionShown,
   SaveShown,
+  SearchShown,
 }
 
 //NOTE: ideally this would contain extension methods
@@ -25,6 +26,7 @@ class SharedPrefsExt {
     ValueName.InitialControlsShown: false,
     ValueName.IntroductionShown: false,
     ValueName.SaveShown: false,
+    ValueName.SearchShown: false,
   };
 
   //used throughout privately
@@ -52,6 +54,7 @@ class SharedPrefsExt {
   static ValueNotifier getInitialControlsShown() => _nameToValueNotifier[ValueName.InitialControlsShown];
   static ValueNotifier getIntroductionShown() => _nameToValueNotifier[ValueName.IntroductionShown];
   static ValueNotifier getSaveShown() => _nameToValueNotifier[ValueName.SaveShown];
+  static ValueNotifier getSearchShown() => _nameToValueNotifier[ValueName.SearchShown];
 
   //setters (must update local and global)
   static setIsDark(bool isDark) => _setLocalGlobal(ValueName.IsDark, isDark);
@@ -59,6 +62,7 @@ class SharedPrefsExt {
   static setInitialControlsShown(bool initialControlsShown) => _setLocalGlobal(ValueName.InitialControlsShown, initialControlsShown);
   static setIntroductionShown(bool introductionShown) => _setLocalGlobal(ValueName.IntroductionShown, introductionShown);
   static setSaveShown(bool saveShown) => _setLocalGlobal(ValueName.SaveShown, saveShown);
+  static setSearchShown(bool searchShown) => _setLocalGlobal(ValueName.SearchShown, searchShown);
 
   //-------------------------private-------------------------
 

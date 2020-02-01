@@ -171,16 +171,7 @@ class TrainingBody extends StatelessWidget {
                 ],
               ),
             ),
-            //TODO: check if we can just remove this and set things to these colors by default
-            Theme(
-              data: ThemeData.dark().copyWith(
-                primaryColor: Theme.of(context).primaryColor,
-                primaryColorDark: Theme.of(context).cardColor,
-                cardColor: Theme.of(context).scaffoldBackgroundColor,
-              ),
-              //TODO: check if this can be true
-              child: AllTrainingTypes(),
-            ),
+            AllTrainingTypes(),
           ],
         ),
       ],

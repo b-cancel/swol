@@ -57,14 +57,10 @@ class ExplainFunctionality extends StatelessWidget {
         ),
         Theme(
           data: ThemeData.dark(),
-          child: Container(
-              color: Colors.white,
-              width: MediaQuery.of(context).size.width,
-              child: AllTrainingTypes(
-                highlightField: 2,
-                sectionWithInitialFocus: sectionWithInitialFocus,
-              ),
-            ),
+          child: AllTrainingTypes(
+            highlightField: 2,
+            sectionWithInitialFocus: sectionWithInitialFocus,
+          ),
         ),
         SuggestToLearnPage(),
       ],

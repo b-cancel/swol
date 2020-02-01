@@ -3,24 +3,22 @@ import 'package:flutter/material.dart';
 class PersistentCardTable extends StatelessWidget {
   PersistentCardTable({
     @required this.items,
-    @required this.lightMode,
     this.highlightField,
   });
 
   final List<String> items;
-  final bool lightMode;
   final int highlightField;
 
   @override
   Widget build(BuildContext context) {
-    Color accentColor = (lightMode) ? Colors.blue : Theme.of(context).accentColor;
-    Color titleColor = (lightMode) ? Colors.white : Theme.of(context).primaryColor; 
-    Color otherColor = Colors.white; //(lightMode) ? Theme.of(context).primaryColor : 
-    Color backgroudColor = Theme.of(context).primaryColor; //(lightMode) ? Colors.white : 
+    Color accentColor = Colors.blue;
+    Color titleColor = Colors.white;
+    Color otherColor = Colors.white; 
+    Color backgroudColor = Theme.of(context).primaryColor; 
 
     //alternating colors
-    Color colorEven = Theme.of(context).cardColor; //(lightMode) ? Colors.blue.withOpacity(0.5) : 
-    Color colorOdd = Theme.of(context).primaryColor.withOpacity(0.5); //(lightMode) ? Colors.white : 
+    Color colorEven = Theme.of(context).scaffoldBackgroundColor; 
+    Color colorOdd = Theme.of(context).primaryColor;
 
     List<Widget> buildFields = new List<Widget>();
     for(int i = 0; i < items.length; i++){
@@ -91,25 +89,23 @@ class CardTable extends StatelessWidget {
   CardTable({
     @required this.items,
     @required this.icon,
-    @required this.lightMode,
     this.highlightField,
   });
 
   final List<String> items;
   final IconData icon;
-  final bool lightMode;
   final int highlightField;
 
   @override
   Widget build(BuildContext context) {
-    Color accentColor = (lightMode) ? Colors.blue : Theme.of(context).accentColor;
-    Color titleColor = (lightMode) ? Colors.white : Theme.of(context).primaryColor; 
-    Color otherColor = Colors.white; //(lightMode) ? Theme.of(context).primaryColor : 
-    Color backgroudColor = Theme.of(context).primaryColor; //(lightMode) ? Colors.white : 
+    Color accentColor = Colors.blue;
+    Color titleColor = Colors.white;
+    Color otherColor = Colors.white;
+    Color backgroudColor = Theme.of(context).primaryColor; 
 
     //alternating colors
-    Color colorEven = Theme.of(context).cardColor; //(lightMode) ? Colors.blue.withOpacity(0.5) : 
-    Color colorOdd = Theme.of(context).primaryColor.withOpacity(0.5); //(lightMode) ? Colors.white : 
+    Color colorEven = Theme.of(context).scaffoldBackgroundColor;
+    Color colorOdd = Theme.of(context).primaryColor;
 
     List<Widget> buildFields = new List<Widget>();
     for(int i = 0; i < items.length; i++){

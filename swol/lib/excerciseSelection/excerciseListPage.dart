@@ -142,6 +142,7 @@ class _ExcerciseSelectState extends State<ExcerciseSelect> {
             ),
             //Add New Excercise Button
             AddExcerciseButton(),
+            /*
             Positioned(
               top: 0,
               right: 0,
@@ -153,6 +154,7 @@ class _ExcerciseSelectState extends State<ExcerciseSelect> {
                 child: Text("meep"),
               ),
             )
+            */
           ],
         ),
       ),

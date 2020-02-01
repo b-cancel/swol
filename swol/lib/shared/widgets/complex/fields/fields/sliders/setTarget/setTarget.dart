@@ -102,13 +102,9 @@ class SetTargetPopUpBody extends StatelessWidget {
         ),
         Theme(
           data: ThemeData.dark(),
-          child: Container(
-              color: Colors.white,
-              width: MediaQuery.of(context).size.width,
-              child: AllTrainingTypes(
-                highlightField: 4,
-              ),
-            ),
+          child: AllTrainingTypes(
+            highlightField: 4,
+          ),
         ),
         SuggestToLearnPage(),
       ],
