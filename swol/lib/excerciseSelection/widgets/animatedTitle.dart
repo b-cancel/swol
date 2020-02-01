@@ -117,3 +117,54 @@ class AnimatedTitle extends StatelessWidget {
     );
   }
 }
+
+class SwolLogo extends StatelessWidget {
+  const SwolLogo({
+    this.height,
+    Key key,
+  }) : super(key: key);
+
+  final height;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: height,
+      child: FittedBox(
+        fit: BoxFit.cover,
+        child: DefaultTextStyle(
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+          ),
+          child: Stack(
+            children: <Widget>[
+              Transform.translate(
+                offset: Offset(1, 0),
+                child: Text(
+                  "S W O L",
+                  style: TextStyle(
+                    color: Theme.of(context).accentColor,
+                  ),
+                ),
+              ),
+              Transform.translate(
+                offset: Offset(-1, 0),
+                child: Text(
+                  "S W O L",
+                  style: TextStyle(
+                    color: Colors.red,
+                  ),
+                ),
+              ),
+              Text(
+                "S W O L",
+                style: TextStyle(
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
