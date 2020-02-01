@@ -5,10 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 //internal
+import 'package:swol/shared/widgets/complex/trainingTypeTables/trainingTypes.dart';
 import 'package:swol/shared/widgets/simple/oneOrTheOtherIcon.dart';
 import 'package:swol/shared/widgets/simple/ourLearnPopUp.dart';
 import 'package:swol/shared/widgets/simple/toLearnPage.dart';
-import 'package:swol/trainingTypes/trainingTypes.dart';
 
 //TODO: combine this with the sliders
 //since they are technically used in more places than just add excercise
@@ -180,7 +180,6 @@ class ScrollableTrainingTypes extends StatelessWidget {
     if(showStrength) sections.add(2);
 
     return TrainingTypeSections(
-      lightMode: true,
       highlightField: highlightField,
       sections: [sections],
       sectionID: new ValueNotifier(0),

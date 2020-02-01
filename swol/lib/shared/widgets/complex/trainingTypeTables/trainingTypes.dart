@@ -4,16 +4,17 @@ import 'package:flutter/material.dart';
 //plugins
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:swol/trainingTypes/cardTable.dart';
 
+//internal
+import 'package:swol/shared/widgets/complex/trainingTypeTables/cardTables.dart';
+
+//widgets
 class AllTrainingTypes extends StatelessWidget {
   AllTrainingTypes({
-    this.lightMode: false,
     this.highlightField: -1,
     this.sectionWithInitialFocus: 0,
   });
 
-  final bool lightMode;
   final int highlightField;
   //we assume this is between 0 and 2
   final int sectionWithInitialFocus;
@@ -31,7 +32,6 @@ class AllTrainingTypes extends StatelessWidget {
     }
 
     return TrainingTypeSections(
-      lightMode: lightMode,
       highlightField: highlightField,
       sections: [sections],
       sectionID: new ValueNotifier(0),
@@ -42,14 +42,12 @@ class AllTrainingTypes extends StatelessWidget {
 class TrainingTypeSections extends StatefulWidget {
   const TrainingTypeSections({
     Key key,
-    this.lightMode: false,
     this.highlightField: -1,
     @required this.sections,
     @required this.sectionID,
     this.plus24: false,
   }) : super(key: key);
 
-  final bool lightMode;
   final int highlightField;
   final List<List<int>> sections; 
   final ValueNotifier<int> sectionID;
@@ -84,7 +82,7 @@ class _TrainingTypeSectionsState extends State<TrainingTypeSections> {
   void initState() {
     //create all default card
     enduranceCard = CardTable(
-      lightMode: widget.lightMode,
+      lightMode: true,
       items: [
         "Endurance ",
         "Light",
@@ -100,7 +98,7 @@ class _TrainingTypeSectionsState extends State<TrainingTypeSections> {
     );
 
     hypertrophyCard = CardTable(
-      lightMode: widget.lightMode,
+      lightMode: true,
       items: [
         "\tHypertrophy",//NOTE: extra space for dumbell
         "Heavy",
@@ -116,7 +114,7 @@ class _TrainingTypeSectionsState extends State<TrainingTypeSections> {
     );
 
     strengthCard = CardTable(
-      lightMode: widget.lightMode,
+      lightMode: true,
       items: [
         "Strength ",
         "Very Heavy",
@@ -199,14 +197,14 @@ class _TrainingTypeSectionsState extends State<TrainingTypeSections> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: (widget.lightMode) ? Colors.white : Theme.of(context).primaryColorDark,
+      color: (true) ? Colors.white : Theme.of(context).primaryColorDark,
       child: IntrinsicHeight(
         child: Row(
           children: <Widget>[
             Container(
               height: 256.0 + (widget.plus24 ? 24 : 0), //TODO: why do we need this?
               child: PersistentCardTable(
-                lightMode: widget.lightMode,
+                lightMode: true,
                 items: [
                   "Training Type",
                   "Weight Heaviness",
@@ -222,7 +220,7 @@ class _TrainingTypeSectionsState extends State<TrainingTypeSections> {
             ),
             Expanded(
               child: Container(
-                color: (widget.lightMode) ? Colors.white: Theme.of(context).primaryColorDark,
+                color: (true) ? Colors.white: Theme.of(context).primaryColorDark,
                 child: Stack(
                   children: <Widget>[
                     Padding(
@@ -246,8 +244,8 @@ class _TrainingTypeSectionsState extends State<TrainingTypeSections> {
                             // Add one stop for each color. Stops should increase from 0 to 1
                             stops: [0.1,1.0],
                             colors: [
-                              (widget.lightMode) ? Colors.white : Theme.of(context).primaryColorDark,
-                              (widget.lightMode) ? Colors.white.withOpacity(0) : Colors.transparent,
+                              (true) ? Colors.white : Theme.of(context).primaryColorDark,
+                              (true) ? Colors.white.withOpacity(0) : Colors.transparent,
                             ],
                           ),
                         ),

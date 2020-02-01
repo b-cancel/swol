@@ -6,14 +6,14 @@ class HeaderForOneHandedUse extends StatelessWidget {
   const HeaderForOneHandedUse({
     Key key,
     @required this.listOfGroupOfExcercises,
-    @required this.statusBarHeight,
+    @required this.openHeight,
     @required this.newWorkoutSection,
     @required this.hiddenWorkoutSection,
     @required this.inprogressWorkoutSection,
   }) : super(key: key);
 
   final List<List<AnExcercise>> listOfGroupOfExcercises;
-  final double statusBarHeight;
+  final double openHeight;
   final bool newWorkoutSection;
   final bool hiddenWorkoutSection;
   final bool inprogressWorkoutSection;
@@ -28,9 +28,7 @@ class HeaderForOneHandedUse extends StatelessWidget {
         //we get the smallest of the 2 golden ratio stuff produced
         //and then we subtract the status bar height
         //since it SEEMS like it belong to the top thingy and therefore should be excluded
-        openHeight: measurementToGoldenRatioBS(
-          MediaQuery.of(context).size.height,
-        )[1] - statusBarHeight,
+        openHeight: openHeight,
         closedHeight: 0,
         workoutCount: listOfGroupOfExcercises.length 
         //exclude new workouts

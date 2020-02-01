@@ -2,9 +2,10 @@
 import 'package:flutter/material.dart';
 
 //internal
+import 'package:swol/shared/widgets/complex/trainingTypeTables/trainingTypes.dart';
 import 'package:swol/shared/widgets/simple/toLearnPage.dart';
-import 'package:swol/trainingTypes/trainingTypes.dart';
 
+//widget
 class RepTargetPopUpBody extends StatelessWidget {
   const RepTargetPopUpBody({
     Key key,
@@ -57,7 +58,6 @@ class RepTargetPopUpBody extends StatelessWidget {
             color: Colors.white,
             width: MediaQuery.of(context).size.width,
             child: AllTrainingTypes(
-              lightMode: true,
               highlightField: 3,
             ),
           ),

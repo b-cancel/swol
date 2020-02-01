@@ -2,12 +2,10 @@
 import 'package:flutter/material.dart';
 
 //internal: time picker
+import 'package:swol/shared/widgets/complex/trainingTypeTables/trainingTypes.dart';
 import 'package:swol/shared/widgets/complex/RecoveryTime/minSecs.dart';
 import 'package:swol/shared/widgets/complex/recoveryTime/picker.dart';
 import 'package:swol/shared/methods/theme.dart';
-
-//internal: other
-import 'package:swol/trainingTypes/trainingTypes.dart';
 
 //allows user to change the time visually without actually changing it UNTIL they click confirm
 maybeChangeTime({
@@ -156,7 +154,6 @@ class _ChangeRecoveryTimeWidgetState extends State<ChangeRecoveryTimeWidget> {
             child: Theme(
               data: ThemeData.dark(),
               child: TrainingTypeSections(
-                lightMode: true,
                 highlightField: 2,
                 //nothing / endurance / hypertrohpy / hypertrophy & strength / strength and above
                 sections: [[0], [0], [1], [1,2], [2]],

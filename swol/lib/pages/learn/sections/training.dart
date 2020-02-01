@@ -2,8 +2,8 @@
 import 'package:flutter/material.dart';
 
 //internal
+import 'package:swol/shared/widgets/complex/trainingTypeTables/trainingTypes.dart';
 import 'package:swol/shared/widgets/simple/listItem.dart';
-import 'package:swol/trainingTypes/trainingTypes.dart';
 import 'package:swol/pages/learn/description.dart';
 
 //widget
@@ -179,9 +179,7 @@ class TrainingBody extends StatelessWidget {
                 cardColor: Theme.of(context).scaffoldBackgroundColor,
               ),
               //TODO: check if this can be true
-              child: AllTrainingTypes(
-                lightMode: true,
-              ),
+              child: AllTrainingTypes(),
             ),
           ],
         ),

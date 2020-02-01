@@ -201,7 +201,10 @@ class _PillState extends State<Pill> {
                 child: Material(
                   color: Colors.transparent,
                   child: InkWell(
-                    onTap: widget.onTap,
+                    onTap: (){
+                      print("hi");
+                      widget.onTap();
+                    },
                     child: Container(
                       padding: EdgeInsets.all(4),
                       height: 24,

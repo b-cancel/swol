@@ -7,6 +7,7 @@ import 'package:swol/excerciseSelection/widgets/addNewHero.dart';
 
 //internal: shared
 import 'package:swol/shared/methods/extensions/sharedPreferences.dart';
+import 'package:swol/shared/widgets/complex/onBoarding/image.dart';
 import 'package:swol/shared/widgets/complex/onBoarding/wrapper.dart';
 import 'package:swol/shared/functions/onboarding.dart';
 
@@ -124,38 +125,15 @@ class AddExcerciseFiller extends StatelessWidget {
     Key key,
   }) : super(key: key);
 
-  /*
-  
-    finalWidgetList.add(
-      SliverFillRemaining(
-        hasScrollBody: true,
-        fillOverscroll: true,
-        child:  Center(
-          child: OnBoardingImage(
-            width: MediaQuery.of(context).size.width * (7/12),
-            imageUrl: "assets/biceps/bottomLeft.png",
-          ),
-        ),
-      ),
-    );
-    
-  */
-
   @override
   Widget build(BuildContext context) {
     return SliverFillRemaining(
       hasScrollBody: false,
       child: Center(
-        child: FractionallySizedBox(
-          widthFactor: .5,
-          child: FittedBox(
-            fit: BoxFit.cover,
-            child: Text(
-              "Add an excercise below!",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-              ),
-            ),
+        child: Text(
+          "Add An Excercise Below!",
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
           ),
         ),
       ),

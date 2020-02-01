@@ -99,9 +99,6 @@ class _ExcerciseSelectState extends State<ExcerciseSelect> {
 
   @override
   Widget build(BuildContext context) {
-    double expandHeight = MediaQuery.of(context).size.height / 3;
-    expandHeight = (expandHeight < 40) ? 40 : expandHeight;
-
     //swolheight (Since with mediaquery must be done here)
     double statusBarHeight = MediaQuery.of(context).padding.top;
     double screenWidth = MediaQuery.of(context).size.width;

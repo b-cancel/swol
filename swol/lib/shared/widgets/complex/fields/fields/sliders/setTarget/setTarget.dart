@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:swol/shared/widgets/complex/fields/fields/sliders/setTarget/trainingTypes.dart';
 import 'package:swol/shared/widgets/complex/fields/fields/sliders/sliderField.dart';
 import 'package:swol/shared/widgets/complex/fields/headers/fieldHeader.dart';
+import 'package:swol/shared/widgets/complex/trainingTypeTables/trainingTypes.dart';
 import 'package:swol/shared/widgets/simple/toLearnPage.dart';
-import 'package:swol/trainingTypes/trainingTypes.dart';
 import 'package:swol/shared/methods/theme.dart';
 
 //widget
@@ -106,7 +106,6 @@ class SetTargetPopUpBody extends StatelessWidget {
               color: Colors.white,
               width: MediaQuery.of(context).size.width,
               child: AllTrainingTypes(
-                lightMode: true,
                 highlightField: 4,
               ),
             ),

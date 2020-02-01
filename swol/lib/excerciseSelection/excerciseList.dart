@@ -7,6 +7,7 @@ import 'package:scroll_to_index/scroll_to_index.dart';
 
 //internal: shared
 import 'package:swol/shared/functions/defaultDateTimes.dart';
+import 'package:swol/shared/functions/goldenRatio.dart';
 import 'package:swol/shared/methods/excerciseData.dart';
 import 'package:swol/shared/structs/anExcercise.dart';
 
@@ -67,15 +68,23 @@ class _ExcerciseListState extends State<ExcerciseList> {
     List<Widget> sliverList = new List<Widget>();
     List<List<AnExcercise>> listOfGroupOfExcercises = new List<List<AnExcercise>>();
 
+    //a little bit of math
+    List<double> goldenBS = measurementToGoldenRatioBS(
+      MediaQuery.of(context).size.height,
+    );
+    double openHeaderHeight = goldenBS[1] - widget.statusBarHeight;
+    //TODO: figure out why that 56 is the value that worked
+    //I beleive that its because the the default size of the app bar but im not sure
+    //because I beleive having subtracted statusbar height above 
+    //should have also affected the value but it doesnt seem to be
+    double fillBodyHeight = goldenBS[0] - 56;
+
     //try to see if we have workouts to add
     List<int> excerciseOrder = ExcerciseData.excercisesOrder.value;
     if(excerciseOrder.length == 0){
       sliverList.add(AddExcerciseFiller());
     }
     else{
-      //-----------------------------------------------------------------------------------------------------------------------------
-      //-----------------------------------------------------------------------------------------------------------------------------
-      //-----------------------------------------------------------------------------------------------------------------------------
       //NOTE: I don't need to call this pretty much ever again since I should be able to pass and update the reference
       Map<int, AnExcercise> excercises = ExcerciseData.getExcercises();
 
@@ -204,7 +213,8 @@ class _ExcerciseListState extends State<ExcerciseList> {
         );
       }
 
-      //add sliver showing excercise count
+      //add sliver so our excercises don't get hidden 
+      //by the bottom floating buttons
       sliverList.add(ButtonSpacer());
     }
 
@@ -216,7 +226,7 @@ class _ExcerciseListState extends State<ExcerciseList> {
         newWorkoutSection: newWorkoutSection, 
         hiddenWorkoutSection: hiddenWorkoutSection, 
         inprogressWorkoutSection: inprogressWorkoutSection,
-        statusBarHeight: widget.statusBarHeight,
+        openHeight: openHeaderHeight,
       ),
     );
 

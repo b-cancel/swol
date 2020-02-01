@@ -2,9 +2,9 @@
 import 'package:flutter/material.dart';
 
 //internal
+import 'package:swol/shared/widgets/complex/trainingTypeTables/trainingTypes.dart';
 import 'package:swol/shared/widgets/simple/toLearnPage.dart';
 import 'package:swol/shared/widgets/simple/listItem.dart';
-import 'package:swol/trainingTypes/trainingTypes.dart';
 
 //widget
 class RecoveryTimePopUpBody extends StatelessWidget {
@@ -143,7 +143,6 @@ class RecoveryTimePopUpBody extends StatelessWidget {
               color: Colors.white,
               width: MediaQuery.of(context).size.width,
               child: AllTrainingTypes(
-                lightMode: true,
                 highlightField: 2,
               ),
             ),
