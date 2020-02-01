@@ -3,16 +3,11 @@ import 'package:flutter/material.dart';
 
 //plugin
 import 'package:page_transition/page_transition.dart';
-
-//internal: selection
-import 'package:swol/excerciseSelection/secondary/persistentHeaderDelegate.dart';
-import 'package:swol/excerciseSelection/secondary/addNewHero.dart';
+import 'package:swol/excerciseSelection/widgets/addNewHero.dart';
 
 //internal: shared
 import 'package:swol/shared/methods/extensions/sharedPreferences.dart';
-import 'package:swol/shared/structs/anExcercise.dart';
 import 'package:swol/shared/widgets/complex/onBoarding/wrapper.dart';
-import 'package:swol/shared/functions/goldenRatio.dart';
 import 'package:swol/shared/functions/onboarding.dart';
 
 //internal: other
@@ -21,13 +16,6 @@ import 'package:swol/main.dart';
 
 //widget
 class AddExcerciseButton extends StatelessWidget {
-  const AddExcerciseButton({
-    Key key,
-    @required this.screenWidth,
-  }) : super(key: key);
-
-  final double screenWidth;
-
   @override
   Widget build(BuildContext context) {
     return Positioned(
@@ -63,21 +51,8 @@ class AddExcerciseButton extends StatelessWidget {
 }
 
 class SearchExcerciseButton extends StatelessWidget {
-  const SearchExcerciseButton({
-    @required this.screenWidth,
-    Key key,
-  }) : super(key: key);
-  
-  final double screenWidth;
-
   @override
   Widget build(BuildContext context) {
-    /*
-    TextStyle(
-      fontWeight: FontWeight.bold,
-      fontSize: 18,
-    ),
-    */
     return Positioned(
       right: 0,
       bottom: 0,
@@ -114,45 +89,31 @@ class SearchExcerciseButton extends StatelessWidget {
   }
 }
 
-class HeaderForOneHandedUse extends StatelessWidget {
-  const HeaderForOneHandedUse({
+class ButtonSpacer extends StatelessWidget {
+  const ButtonSpacer({
     Key key,
-    @required this.listOfGroupOfExcercises,
-    @required this.statusBarHeight,
-    @required this.newWorkoutSection,
-    @required this.hiddenWorkoutSection,
-    @required this.inprogressWorkoutSection,
   }) : super(key: key);
-
-  final List<List<AnExcercise>> listOfGroupOfExcercises;
-  final double statusBarHeight;
-  final bool newWorkoutSection;
-  final bool hiddenWorkoutSection;
-  final bool inprogressWorkoutSection;
 
   @override
   Widget build(BuildContext context) {
-    return SliverPersistentHeader(
-      pinned: false,
-      floating: false,
-      delegate: PersistentHeaderDelegate(
-        semiClosedHeight: 60,
-        //we get the smallest of the 2 golden ratio stuff produced
-        //and then we subtract the status bar height
-        //since it SEEMS like it belong to the top thingy and therefore should be excluded
-        openHeight: measurementToGoldenRatioBS(
-          MediaQuery.of(context).size.height,
-        )[1] - statusBarHeight,
-        closedHeight: 0,
-        workoutCount: listOfGroupOfExcercises.length 
-        //exclude new workouts
-        - (newWorkoutSection ? 1 : 0) 
-        //exclude hidden workouts
-        - (hiddenWorkoutSection ? 1 : 0)
-        //exclude in progress since they either
-        //- create a new section
-        //- or replace a section
-        - (inprogressWorkoutSection ? 1 : 0),
+    return SliverToBoxAdapter(
+      child: Container(
+        color: Theme.of(context).primaryColor,
+        //56 larger button height
+        //48 smaller button height
+        height: 16 + 48.0 + 16,
+        width: MediaQuery.of(context).size.width,
+        alignment: Alignment.centerLeft,
+        padding: EdgeInsets.only(left: 16),
+        child: Text(
+          "", //BLANK: the add new buttons fills the space now
+          //listOfGroupOfExcercises.length.toString() + " Workouts",
+          //excercises.value.length.toString() + " Excercises",
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 16,
+          ),
+        ),
       ),
     );
   }
@@ -162,6 +123,23 @@ class AddExcerciseFiller extends StatelessWidget {
   const AddExcerciseFiller({
     Key key,
   }) : super(key: key);
+
+  /*
+  
+    finalWidgetList.add(
+      SliverFillRemaining(
+        hasScrollBody: true,
+        fillOverscroll: true,
+        child:  Center(
+          child: OnBoardingImage(
+            width: MediaQuery.of(context).size.width * (7/12),
+            imageUrl: "assets/biceps/bottomLeft.png",
+          ),
+        ),
+      ),
+    );
+    
+  */
 
   @override
   Widget build(BuildContext context) {

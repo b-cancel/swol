@@ -103,6 +103,7 @@ class ExcerciseData{
     else print("EXCERCISE DOESN'T EXIST");
   }
 
+  /*
   static updateExcercise(
     int id, {
       //---settings
@@ -197,6 +198,7 @@ class ExcerciseData{
     //update file
     _updateFile();
   }
+  */
 
   static _updateOrder(){
     //modify to then sort

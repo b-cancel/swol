@@ -6,14 +6,14 @@ import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
 
 //internal: shared
-import 'package:swol/shared/widgets/complex/excerciseListTile/excerciseTile.dart';
 import 'package:swol/shared/functions/defaultDateTimes.dart';
 import 'package:swol/shared/methods/excerciseData.dart';
 import 'package:swol/shared/structs/anExcercise.dart';
-import 'package:swol/shared/widgets/simple/chip.dart';
 
 //internal: other
-import 'package:swol/excerciseSelection/secondary/secondary.dart';
+import 'package:swol/excerciseSelection/widgets/persistentHeaderDelegate.dart';
+import 'package:swol/excerciseSelection/widgets/workoutSection.dart';
+import 'package:swol/excerciseSelection/widgets/bottomButtons.dart';
 import 'package:swol/other/durationFormat.dart';
 
 //widget
@@ -34,6 +34,7 @@ class ExcerciseList extends StatefulWidget {
 
 class _ExcerciseListState extends State<ExcerciseList> {
   //special sections booleans to produce workout count
+  //use in header with count and perhaps also icons of sorts
   bool inprogressWorkoutSection = false;
   bool newWorkoutSection = false;
   bool hiddenWorkoutSection = false;
@@ -41,6 +42,7 @@ class _ExcerciseListState extends State<ExcerciseList> {
   //other vars
   final Duration maxTimeBetweenExcercises = Duration(hours: 1, minutes: 30);
 
+  //removalable listener
   updateState(){
     if(mounted) setState(() {});
   }
@@ -66,18 +68,24 @@ class _ExcerciseListState extends State<ExcerciseList> {
     List<List<AnExcercise>> listOfGroupOfExcercises = new List<List<AnExcercise>>();
 
     //try to see if we have workouts to add
-    if(ExcerciseData.excercisesOrder.value.length > 0){
+    List<int> excerciseOrder = ExcerciseData.excercisesOrder.value;
+    if(excerciseOrder.length == 0){
+      sliverList.add(AddExcerciseFiller());
+    }
+    else{
       //-----------------------------------------------------------------------------------------------------------------------------
       //-----------------------------------------------------------------------------------------------------------------------------
       //-----------------------------------------------------------------------------------------------------------------------------
+      //NOTE: I don't need to call this pretty much ever again since I should be able to pass and update the reference
+      Map<int, AnExcercise> excercises = ExcerciseData.getExcercises();
 
       //seperate excercise into their groups bassed on the max distance
       DateTime lastDateTime; //MUST NOT COLLIDE WITH EVEN ARCHIVED DATE TIMES
-      for(int i = 0; i < ExcerciseData.excercisesOrder.value.length; i++){
-        int excerciseID = ExcerciseData.excercisesOrder.value[i];
+      for(int i = 0; i < excerciseOrder.length; i++){
+        int excerciseID = excerciseOrder[i];
 
         //easy to access vars
-        AnExcercise thisExcercise = ExcerciseData.getExcercises()[excerciseID];
+        AnExcercise thisExcercise = excercises[excerciseID];
         TimeStampType thisExcerciseType = LastTimeStamp.returnTimeStampType(thisExcercise.lastTimeStamp);
 
         //determine if we have any of the special section
@@ -130,10 +138,6 @@ class _ExcerciseListState extends State<ExcerciseList> {
         lastDateTime = thisExcercise.lastTimeStamp;
       }
 
-      //-----------------------------------------------------------------------------------------------------------------------------
-      //-----------------------------------------------------------------------------------------------------------------------------
-      //-----------------------------------------------------------------------------------------------------------------------------
-
       //fill sliver list
       for(int i = 0; i < listOfGroupOfExcercises.length; i++){
         //create header text
@@ -142,7 +146,6 @@ class _ExcerciseListState extends State<ExcerciseList> {
         TimeStampType sectionType = LastTimeStamp.returnTimeStampType(oldestDT);
 
         //vars to set
-        bool highlightTop = (i == 0 || sectionType == TimeStampType.Hidden);
         String title;
         String subtitle;
 
@@ -166,25 +169,12 @@ class _ExcerciseListState extends State<ExcerciseList> {
           }
         }
 
-        //Determine Section styling
-        Color topColor;
-        Color textColor;
-        FontWeight fontWeight;
-        Color bottomColor;
-
-        //set top section color
-        if(highlightTop){
-          topColor = Theme.of(context).accentColor;
-          textColor = Theme.of(context).primaryColor;
-          fontWeight = FontWeight.bold;
-        }
-        else{
-          topColor = Theme.of(context).primaryColor;
-          textColor = Colors.white;
-          fontWeight = FontWeight.normal;
-        }
-
+        //set top section Color
+        bool highlightTop = (i == 0 || sectionType == TimeStampType.Hidden);
+        Color topColor = highlightTop ? Theme.of(context).accentColor : Theme.of(context).primaryColor;
+        
         //set bottom section color
+        Color bottomColor;
         if((i + 1) < listOfGroupOfExcercises.length){
           //there is a section below our but is it hidden
           DateTime prevTS = listOfGroupOfExcercises[i+1][0].lastTimeStamp;
@@ -197,126 +187,28 @@ class _ExcerciseListState extends State<ExcerciseList> {
         //add this section to the list of slivers
         sliverList.add(
           SliverStickyHeader(
-            header: Container(
-              color: topColor,
-              padding: new EdgeInsets.only(
-                left: 16,
-                right: 16,
-                top: 16,
-                bottom: 8,
-              ),
-              alignment: Alignment.bottomLeft,
-              child: DefaultTextStyle(
-                style: TextStyle(
-                  fontSize: 16,
-                  color: textColor,
-                  fontWeight: fontWeight,
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    new Text(
-                      title,
-                    ),
-                    (subtitle == null)
-                    ? MyChip(
-                      chipString: LastTimeStamp.timeStampTypeToString(sectionType).toUpperCase(), 
-                      inverse: highlightTop,
-                    )
-                    : Text(
-                      subtitle,
-                    )
-                  ],
-                ),
-              ),
+            header: SectionHeader(
+              title: title, 
+              subtitle: subtitle, 
+              sectionType: sectionType, 
+              highlightTop: highlightTop,
+              topColor: topColor,
             ),
-            sliver: new SliverList(
-              delegate: new SliverChildListDelegate([
-                Stack(
-                  children: <Widget>[
-                    Positioned.fill(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.max,
-                        children: <Widget>[
-                          Expanded(
-                            child: Container(
-                              color: topColor,
-                              child: Container(),
-                            ),
-                          ),
-                          Expanded(
-                            child: Container(
-                              color: bottomColor,
-                              child: Container(),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Card(
-                      margin: EdgeInsets.all(0),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(24.0),
-                      ),
-                      clipBehavior: Clip.antiAlias,
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        physics: ClampingScrollPhysics(),
-                        itemCount: thisGroup.length,
-                        //ONLY false IF Hidden Section
-                        reverse: (sectionType != TimeStampType.Hidden),
-                        itemBuilder: (context, index){
-                          return ExcerciseTile(
-                            excerciseID: thisGroup[index].id,
-                          );
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-              ]),
+            sliver: SectionBody(
+              topColor: topColor, 
+              bottomColor: bottomColor, 
+              thisGroup: thisGroup, 
+              sectionType: sectionType,
             ),
           ),
         );
       }
 
       //add sliver showing excercise count
-      sliverList.add(
-        SliverToBoxAdapter(
-          child: Container(
-            color: Theme.of(context).primaryColor,
-            //56 larger button height
-            //48 smaller button height
-            height: 16 + 48.0 + 16,
-            width: MediaQuery.of(context).size.width,
-            alignment: Alignment.centerLeft,
-            padding: EdgeInsets.only(left: 16),
-            child: Text(
-              "", //BLANK: the add new buttons fills the space now
-              //listOfGroupOfExcercises.length.toString() + " Workouts",
-              //excercises.value.length.toString() + " Excercises",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 16,
-              ),
-            ),
-          ),
-        ),
-      );
-
-      //-----------------------------------------------------------------------------------------------------------------------------
-      //-----------------------------------------------------------------------------------------------------------------------------
-      //-----------------------------------------------------------------------------------------------------------------------------
-    }
-    else{
-      //add sliver telling user to add item
-      sliverList.add(
-        AddExcerciseFiller(),
-      );
+      sliverList.add(ButtonSpacer());
     }
 
-    //add header
+    //add header because we always have one
     List<Widget> finalWidgetList = new List<Widget>();
     finalWidgetList.add(
       HeaderForOneHandedUse(
@@ -328,33 +220,8 @@ class _ExcerciseListState extends State<ExcerciseList> {
       ),
     );
 
+    //add all the other widgets below it
     finalWidgetList.addAll(sliverList);
-
-    /*
-    finalWidgetList.add(
-      SliverFillRemaining(
-        hasScrollBody: true,
-        fillOverscroll: true,
-        child: Container(
-          color: Colors.red,
-          child: Container(),
-        ),
-        
-        
-        /*Center(
-          child: OnBoardingImage(
-            width: MediaQuery.of(context).size.width * (7/12),
-            imageUrl: "assets/biceps/bottomLeft.png",
-          ),
-        ),*/
-      ),
-    );
-    */
-
-    //grab screen width so you can pass it through
-    double screenWidth = MediaQuery.of(context).size.width;
-
-    print("------------rebuidling");
 
     //return
     return Stack(
@@ -363,9 +230,7 @@ class _ExcerciseListState extends State<ExcerciseList> {
           controller: widget.autoScrollController,
           slivers: finalWidgetList,
         ),
-        SearchExcerciseButton(
-          screenWidth: screenWidth,
-        ),
+        SearchExcerciseButton(),
       ],
     );
   }

@@ -1,4 +1,5 @@
 //dart
+import 'package:swol/excerciseSelection/widgets/decoration.dart';
 import 'package:vector_math/vector_math_64.dart' as vect;
 
 //flutter
@@ -10,7 +11,6 @@ import 'package:page_transition/page_transition.dart';
 
 //internal
 import 'package:swol/shared/widgets/complex/onBoarding/wrapper.dart';
-import 'package:swol/excerciseSelection/secondary/decoration.dart';
 import 'package:swol/shared/functions/onboarding.dart';
 import 'package:swol/pages/learn/page.dart';
 import 'package:swol/main.dart';

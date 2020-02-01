@@ -4,11 +4,10 @@ import 'package:flutter/material.dart';
 //plugin
 import 'package:scroll_to_index/scroll_to_index.dart';
 
-
 //internal: excercise selection
+import 'package:swol/excerciseSelection/widgets/animatedTitle.dart';
+import 'package:swol/excerciseSelection/widgets/bottomButtons.dart';
 import 'package:swol/excerciseSelection/excerciseList.dart';
-import 'package:swol/excerciseSelection/secondary/animatedTitle.dart';
-import 'package:swol/excerciseSelection/secondary/secondary.dart';
 import 'package:swol/excerciseSelection/uela.dart';
 
 //internal: shared
@@ -34,18 +33,6 @@ import 'package:swol/shared/widgets/simple/themeSwitcher.dart';
 
 //TODO: when the user open the app and there is ONLY 1 excercise in progress
 //TODO: automatically go to that excercse (ensure animation)
-
-/*
-if (Navigator.of(tabs[index].tabContext).canPop()) {
-        Navigator.of(tabs[index].tabContext)
-            .popUntil((Route<dynamic> r) => r.isFirst);
-      }
-*/
-//Navigator.popUntil(context, (Route<dynamic> route) => route.isFirst)
-/*
-Navigator.pushNamedAndRemoveUntil(context, '/', (_) => false);
-The tricky part is the animation: looks like a push not a pop or replace.
-*/
 
 //main widget
 class ExcerciseSelect extends StatefulWidget {
@@ -157,9 +144,7 @@ class _ExcerciseSelectState extends State<ExcerciseSelect> {
               autoScrollController: autoScrollController,
             ),
             //Add New Excercise Button
-            AddExcerciseButton(
-              screenWidth: screenWidth,
-            ),
+            AddExcerciseButton(),
             Positioned(
               top: 0,
               right: 0,
