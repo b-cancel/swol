@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/widgets.dart';
 import 'package:swol/other/functions/helper.dart';
+import 'package:swol/shared/methods/excerciseData.dart';
 
 //TODO whenever we need to listen to something at any point
 //use a value notifier
@@ -22,51 +23,132 @@ class AnExcercise{
 
   //---Settings
 
-  //NOTE: this is set after by the addExcercise function
+  //NOTE: this is saved by the addExcercise function
   int id;
 
   //basic
-  String name;
-  String url;
-  String note;
-
+  String _name;
+  String get name => _name;
+  set name(String newName){
+    _name = newName;
+    ExcerciseData.updateFile();
+  }
+  
+  String _url;
+  String get url => _url;
+  set url(String newUrl){
+    _url = newUrl;
+    ExcerciseData.updateFile();
+  }
+  
+  String _note;
+  String get note => _note;
+  set note(String newNote){
+    _note = newNote;
+    ExcerciseData.updateFile();
+  }
+  
   //other
-  int predictionID;
-  int repTarget;
-  Duration recoveryPeriod;
-  int setTarget;
+  int _predictionID;
+  int get predictionID => _predictionID;
+  set predictionID(int newPredictionID){
+    _predictionID = newPredictionID;
+    ExcerciseData.updateFile();
+  }
+  
+  int _repTarget;
+  int get repTarget => _repTarget;
+  set repTarget(int newRepTarget){
+    _repTarget = newRepTarget;
+    ExcerciseData.updateFile();
+  }
+  
+  Duration _recoveryPeriod;
+  Duration get recoveryPeriod => _recoveryPeriod;
+  set recoveryPeriod(Duration newRecoveryPeriod){
+    _recoveryPeriod = newRecoveryPeriod;
+    ExcerciseData.updateFile();
+  }
+  
+  int _setTarget;
+  int get setTarget => _setTarget;
+  set setTarget(int newSetTarget){
+    _setTarget = newSetTarget;
+    ExcerciseData.updateFile();
+  }
 
   //---Recorded
 
   //NOTE: this MUST ALWAYS BE FILLED since its used to sort everything
   //and taking an alternative approach would be a pain
-  DateTime lastTimeStamp;
-  int lastWeight;
-  int lastReps;
+  DateTime _lastTimeStamp;
+  DateTime get lastTimeStamp => _lastTimeStamp;
+  set lastTimeStamp(DateTime newLastTimeStamp){
+    _lastTimeStamp = newLastTimeStamp;
+    ExcerciseData.updateFile();
+    ExcerciseData.updateOrder();
+  }
+  
+  int _lastWeight;
+  int get lastWeight => _lastWeight;
+  set lastWeight(int newLastWeight){
+    _lastWeight = newLastWeight;
+    ExcerciseData.updateFile();
+  }
+  
+  int _lastReps;
+  int get lastReps => _lastReps;
+  set lastReps(int newLastReps){
+    _lastReps = newLastReps;
+    ExcerciseData.updateFile();
+  }
 
   //---Temporary
 
-  int tempWeight;
-  int tempReps;
-  DateTime tempStartTime;
-  int tempSetCount;
+  int _tempWeight;
+  int get tempWeight => _tempWeight;
+  set tempWeight(int newTempWeight){
+    _tempWeight = newTempWeight;
+    ExcerciseData.updateFile();
+  }
+  
+  int _tempReps;
+  int get tempReps => _tempReps;
+  set tempReps(int newTempReps){
+    _tempReps = newTempReps;
+    ExcerciseData.updateFile();
+  }
+  
+  DateTime _tempStartTime;
+  DateTime get tempStartTime => _tempStartTime;
+  set tempStartTime(DateTime newTempStartTime){
+    _tempStartTime = newTempStartTime;
+    ExcerciseData.updateFile();
+  }
+  
+  int _tempSetCount;
+  int get tempSetCount => _tempSetCount;
+  set tempSetCount(int newTempSetCount){
+    _tempSetCount = newTempSetCount;
+    ExcerciseData.updateFile();
+  }
 
   //build
-  AnExcercise({
+  AnExcercise(
     //basic data
-    @required this.name,
-    @required this.url,
-    @required this.note,
+    String name, 
+    String url, 
+    String note,
 
     //other
-    @required this.predictionID,
-    @required this.repTarget,
-    @required this.recoveryPeriod,
-    @required this.setTarget,
+    int predictionID,
+    int repTarget,
+    Duration recoveryPeriod,
+    int setTarget,
 
-    //uses default but must be set
-    @required this.lastTimeStamp,
-  });
+    //date time
+    DateTime lastTimeStamp,
+  );
 
   AnExcercise.fromJson(Map<String,dynamic> map){
     //---Auto Set
@@ -150,16 +232,5 @@ class AnExcercise{
 
   static String _durationToString(Duration d){
     return d?.inSeconds.toString() ?? null;
-  }
-
-  static String excercisesToString(List<AnExcercise> excercises){
-    String string = "[";
-    for(int i = 0; i < excercises.length; i++){
-      String str = json.encode(excercises[i].toJson());
-      string += str;
-      if(i < (excercises.length - 1)) string += ",";
-    }
-    string += "]";
-    return string;
   }
 }

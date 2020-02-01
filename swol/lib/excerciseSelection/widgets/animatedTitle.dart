@@ -1,5 +1,4 @@
 //dart
-import 'package:swol/excerciseSelection/widgets/decoration.dart';
 import 'package:vector_math/vector_math_64.dart' as vect;
 
 //flutter

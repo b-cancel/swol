@@ -64,7 +64,7 @@ class ExcerciseData{
           updateOrderAndFile: false, //we update the order at the end
         );
       }
-      _updateOrder();
+      updateOrder();
     }
   }
 
@@ -87,8 +87,8 @@ class ExcerciseData{
     //NOTE: since inprogress items are to be viewed above new items
     //we do have to update order
     if(updateOrderAndFile){
-      _updateOrder();
-      _updateFile();
+      updateOrder();
+      updateFile();
     }
   }
 
@@ -98,109 +98,12 @@ class ExcerciseData{
       excercisesOrder.value.remove(id);
 
       //update file
-      _updateFile();
+      updateFile();
     }
     else print("EXCERCISE DOESN'T EXIST");
   }
 
-  /*
-  static updateExcercise(
-    int id, {
-      //---settings
-      //for sorting purposes
-      DateTime lastTimeStamp, //TODO: test
-      //basic 
-      String name, 
-      String note, 
-      String url,
-      //other
-      int predictionID, //TODO: test
-      int repTarget, //TODO: test
-      Duration recoveryPeriod, //TODO: test
-      int setTarget, //TODO: test
-      //---recorded
-      int lastWeight, //TODO: test
-      int lastReps, //TODO: test
-
-      //---Temporary
-      int tempWeight, //TODO: test
-      bool tempWeightCanBeNull: false, //TODO: test
-      int tempReps, //TODO: test
-      bool tempRepsCanBeNull: false, //TODO: test
-      DateTime tempStartTime, //TODO: test
-      bool tempStartTimeCanBeNull: false, //TODO: test
-      int tempSetCount, //TODO: test
-      bool tempSetCountCanBeNull: false, //TODO: test
-
-      //---OTHER
-      bool updateFile: true,
-  }){
-    //update timestamp if desired
-    if(lastTimeStamp != null){
-      _excercises[id].lastTimeStamp = lastTimeStamp;
-      _updateOrder();
-    }
-
-    if(name != null){
-      //TODO: figure out how this is working
-      //It should cause things to reload but I'm not sure where its doing it
-      _excercises[id].name = name;
-    }
-
-    if(note != null){
-      _excercises[id].note = note;
-    }
-
-    if(url != null){
-      _excercises[id].url = url;
-    }
-
-    if(predictionID != null){
-      _excercises[id].predictionID = predictionID;
-    }
-
-    if(repTarget != null){
-      _excercises[id].repTarget = repTarget;
-    }
-
-    if(recoveryPeriod != null){
-      _excercises[id].recoveryPeriod = recoveryPeriod;
-    }
-
-    if(setTarget != null){
-      _excercises[id].setTarget = setTarget;
-    }
-
-    if(lastWeight != null){
-      _excercises[id].lastWeight = lastWeight;
-    }
-
-    if(lastReps != null){
-      _excercises[id].lastReps = lastReps;
-    }
-
-    if(tempWeight != null || tempWeightCanBeNull){
-      _excercises[id].tempWeight = tempWeight;
-    }
-
-    if(tempReps != null || tempRepsCanBeNull){
-      _excercises[id].tempReps = tempReps;
-    }
-
-    if(tempStartTime != null || tempStartTimeCanBeNull){
-      _excercises[id].tempStartTime = tempStartTime;
-    }
-
-    if(tempSetCount != null || tempSetCountCanBeNull){
-      _excercises[id].tempSetCount = tempSetCount;
-    }
-
-    //update file
-    _updateFile();
-  }
-  */
-
-  static _updateOrder(){
+  static updateOrder(){
     //modify to then sort
     Map<DateTime, int> dateTimeToID = new Map<DateTime, int>();
     List<int> keys = _excercises.keys.toList();
@@ -234,10 +137,20 @@ class ExcerciseData{
   }
 
   //should never have to update from anywhere else
-  static _updateFile() async {
-    String newFileData = AnExcercise.excercisesToString(
-      _excercises.values.toList()
-    );
+  static updateFile() async {
+    String newFileData = excercisesToString();
     SafeWrite.write(_excerciseFile, newFileData);
+  }
+
+  static String excercisesToString(){
+    List<AnExcercise> excercises = _excercises.values.toList();
+    String string = "[";
+    for(int i = 0; i < excercises.length; i++){
+      String str = json.encode(excercises[i].toJson());
+      string += str;
+      if(i < (excercises.length - 1)) string += ",";
+    }
+    string += "]";
+    return string;
   }
 }
