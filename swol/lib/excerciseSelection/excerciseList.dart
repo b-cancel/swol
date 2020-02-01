@@ -73,11 +73,6 @@ class _ExcerciseListState extends State<ExcerciseList> {
       MediaQuery.of(context).size.height,
     );
     double openHeaderHeight = goldenBS[1] - widget.statusBarHeight;
-    //TODO: figure out why that 56 is the value that worked
-    //I beleive that its because the the default size of the app bar but im not sure
-    //because I beleive having subtracted statusbar height above 
-    //should have also affected the value but it doesnt seem to be
-    double fillBodyHeight = goldenBS[0] - 56;
 
     //try to see if we have workouts to add
     List<int> excerciseOrder = ExcerciseData.excercisesOrder.value;

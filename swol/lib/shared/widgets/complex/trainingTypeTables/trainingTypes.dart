@@ -88,15 +88,15 @@ class _TrainingTypeSectionsState extends State<TrainingTypeSections> {
 
   @override
   void initState() {
-    //todo... why the plus 24?... why even need solid height?
-    cardHeight = 256.0;
+    cardHeight = 256.0; //this is just the height that feels the nicest
+    //todo... why the plus 24?...
     fullHeight = cardHeight + (widget.plus24 ? 24 : 0);
 
     //create all default card
     enduranceCard = CardTable(
       height: cardHeight,
       items: [
-        "Endurance ",
+        "Endurance",
         "Light",
         "0:15 to 1:00",
         "13+",

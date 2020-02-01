@@ -14,7 +14,7 @@ class FunctionCardTable extends StatelessWidget {
   final bool isDark;
   final bool otherDark;
 
-  List<Widget> buildFields(List<String> items){
+  List<Widget> buildFields(List<String> items, {bool leftAligned: true}){
     List<Widget> buildFields = new List<Widget>();
 
     for(int i = 0; i < items.length; i++){
@@ -28,7 +28,7 @@ class FunctionCardTable extends StatelessWidget {
       buildFields.add(
         Container(
           color: fieldColor,
-          alignment: Alignment.centerLeft,
+          alignment: leftAligned ? Alignment.centerLeft : Alignment.centerRight,
           child: Padding(
             padding: EdgeInsets.symmetric(
               vertical: 8,
@@ -67,19 +67,19 @@ class FunctionCardTable extends StatelessWidget {
             child: IntrinsicWidth(
               child: Column(
                 mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.end,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: buildFields([
                   "Limitation Level",
-                  "8 BEGINNER",
+                  "BEGINNER 8",
                   "7",
                   "6",
                   "5",
-                  "4 AVG",
+                  "AVG 4",
                   "3",
                   "2",
-                  "1 PRO",
-                ]),
+                  "PRO 1",
+                ], leftAligned: false),
               ),
             ),
           ),

@@ -6,7 +6,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 
 //internal
-import 'package:swol/shared/methods/extensions/sharedPreferences.dart';
 import 'package:swol/shared/structs/anExcercise.dart';
 import 'package:swol/shared/functions/safeSave.dart';
 import 'package:swol/other/otherHelper.dart';
@@ -15,6 +14,7 @@ import 'package:swol/other/otherHelper.dart';
 //1. grabs excercises from storage
 //2. places excercises to storage
 class ExcerciseData{
+  static int nextID;
   static File _excerciseFile;
 
   //main struct we are maintaining (id -> excercise)
@@ -67,7 +67,7 @@ class ExcerciseData{
           updateOrderAndFile: false, //we update the order at the end
         );
       }
-      AnExcercise.nextID = maxID + 1;
+      nextID = (maxID + 1);
       updateOrder();
     }
   }
@@ -80,8 +80,8 @@ class ExcerciseData{
   })async{
     //give it an ID (IF needed)
     if(theWorkout.id == null){
-      theWorkout.id = AnExcercise.nextID;
-      AnExcercise.nextID += 1;
+      theWorkout.id = nextID;
+      nextID += 1;
     }
 
     //add to workouts

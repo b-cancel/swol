@@ -16,9 +16,6 @@ class AnExcercise{
   static const Duration defaultRecovery = const Duration(minutes: 1, seconds: 30);
   static const int defaultSetTarget = 4;
 
-  //static (used to assign ID)
-  static int nextID;
-
   //---Settings
 
   //NOTE: this is saved by the addExcercise function

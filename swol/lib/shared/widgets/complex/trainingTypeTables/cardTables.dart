@@ -83,10 +83,10 @@ class CardTable extends StatelessWidget {
     //output the fields in their card
     Radius cardRadius = Radius.circular(24);
     return Padding(
-      padding: EdgeInsets.only(
+      padding: EdgeInsets.symmetric(
         //non persistent have a little gap between them 
         //to make it obvious you can scroll betweenthem
-        right: (persistent) ? 0 : 16,
+        horizontal: (persistent) ? 0 : 8,
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.only(

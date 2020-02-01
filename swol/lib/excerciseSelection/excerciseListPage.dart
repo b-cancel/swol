@@ -14,7 +14,6 @@ import 'package:swol/excerciseSelection/uela.dart';
 import 'package:swol/shared/methods/extensions/sharedPreferences.dart';
 import 'package:swol/shared/functions/onboarding.dart';
 import 'package:swol/shared/widgets/simple/scrollToTop.dart';
-import 'package:swol/shared/widgets/simple/themeSwitcher.dart';
 
 //Sections and how they are handled
 //New => newest additions on bottom

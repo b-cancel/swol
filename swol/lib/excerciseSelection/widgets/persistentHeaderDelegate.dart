@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:swol/shared/functions/goldenRatio.dart';
 import 'package:swol/shared/structs/anExcercise.dart';
 
 class HeaderForOneHandedUse extends StatelessWidget {

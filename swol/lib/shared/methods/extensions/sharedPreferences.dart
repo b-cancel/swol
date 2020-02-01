@@ -3,7 +3,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 enum ValueName {
   IsDark,
-  NextID,
   TermsAgreed, 
   //for onboarding
   InitialControlsShown, 
@@ -67,7 +66,7 @@ class SharedPrefsExt {
   //-------------------------private-------------------------
 
   static _getOrSetToDefault(ValueName name){
-    bool isBool = name != ValueName.NextID;
+    bool isBool = true;
     String key = name.toString();
 
     //try to find the value
