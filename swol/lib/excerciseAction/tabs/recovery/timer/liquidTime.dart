@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 //packages
 import 'package:liquid_progress_indicator/liquid_progress_indicator.dart';
+import 'package:swol/excerciseAction/tabs/recovery/timer/puslingBackground.dart';
 
 //internal
 import 'package:swol/excerciseAction/tabs/recovery/timer/turnOffVibration.dart';
@@ -213,6 +214,7 @@ class _LiquidTimeState extends State<LiquidTime> with TickerProviderStateMixin {
         totalDurationPassed: totalDurationPassed,
         recoveryDurationString: timerDurationString,
         updateState: updateState,
+        //todo finish fixing this
         explainFunctionality: () => print("hello"), //explainFunctionalityPopUp(2),
         maybeChangeRecoveryDuration: maybeChangeRecoveryDuration,
       );
@@ -319,11 +321,9 @@ class _LiquidTimeState extends State<LiquidTime> with TickerProviderStateMixin {
                   Container(
                     color: Colors.red
                   ),
-                  /*
                   PulsingBackground(
                     width: MediaQuery.of(context).size.width,
                   ),
-                  */
                   LiquidCircularProgressIndicator(
                     //animated values
                     value: 1 - progressValue,
@@ -358,9 +358,14 @@ class _LiquidTimeState extends State<LiquidTime> with TickerProviderStateMixin {
         children: <Widget>[
           Theme(
             data: MyTheme.light,
-            child: InfoOutlineWhiteButton(
-              firstTimerRunning: firstTimerRunning,
-              totalDurationPassed: totalDurationPassed,
+            child: Padding(
+              padding: EdgeInsets.only(
+                top: 16.0,
+              ),
+              child: InfoOutlineWhiteButton(
+                firstTimerRunning: firstTimerRunning,
+                totalDurationPassed: totalDurationPassed,
+              ),
             ),
           ),
           timeWidget,

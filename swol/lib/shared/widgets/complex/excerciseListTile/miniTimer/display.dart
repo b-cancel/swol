@@ -13,6 +13,7 @@ import 'package:swol/shared/widgets/complex/excerciseListTile/miniTimer/timerBut
 import 'package:swol/shared/widgets/complex/excerciseListTile/miniTimer/circles.dart';
 import 'package:swol/shared/widgets/simple/triangleAngle.dart';
 import 'package:swol/shared/structs/anExcercise.dart';
+
 //widget
 class WatchUI extends StatelessWidget {
   //NOTE: defaults is the mini version of the watch

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:swol/excerciseAction/tabs/recovery/secondary/timeDisplay.dart';
+import 'package:swol/excerciseAction/tabs/recovery/timer/puslingBackground.dart';
 import 'package:swol/excerciseAction/tabs/recovery/timer/turnOffVibration.dart';
 import 'package:swol/other/durationFormat.dart';
 
@@ -119,11 +120,9 @@ class SuperOverflow extends StatelessWidget {
                 Container(
                   color: Colors.red,
                 ),
-                /*
                 PulsingBackground(
                   width: MediaQuery.of(context).size.width,
                 ),
-                */
                 Positioned.fill(
                   child: FittedBox(
                     fit: BoxFit.contain,
