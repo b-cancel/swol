@@ -144,18 +144,20 @@ class AnExcercise{
     //date time
     DateTime lastTimeStamp,
   ){
-    this.name = name;
-    this.url = url;
-    this.note = note;
+    _name = name;
+    _url = url;
+    _note = note;
 
-    this.predictionID = predictionID;
-    this.repTarget = repTarget;
-    this.recoveryPeriod = recoveryPeriod;
-    this.setTarget = setTarget;
+    _predictionID = predictionID;
+    _repTarget = repTarget;
+    _recoveryPeriod = recoveryPeriod;
+    _setTarget = setTarget;
 
+    //NOTE: the update to the file should only happen after everything else
     this.lastTimeStamp = lastTimeStamp;
   }
 
+  //NOTE: from here we MUST set things directly to the private variables
   AnExcercise.fromJson(Map<String,dynamic> map){
     //---Auto Set
 
@@ -164,28 +166,28 @@ class AnExcercise{
     //---Settings
 
     //basic data
-    name = map["name"];
-    url = map["url"];
-    note = map["note"];
+    _name = map["name"];
+    _url = map["url"];
+    _note = map["note"];
 
     //other
-    predictionID = map["predictionID"];
-    repTarget = map["repTarget"];
-    recoveryPeriod = _stringToDuration(map["recoveryPeriod"]);
-    setTarget = map["setTarget"];
+    _predictionID = map["predictionID"];
+    _repTarget = map["repTarget"];
+    _recoveryPeriod = _stringToDuration(map["recoveryPeriod"]);
+    _setTarget = map["setTarget"];
 
     //---Recorded
 
-    lastTimeStamp = _stringToDateTime(map["lastTimeStamp"]);
-    lastWeight = map["lastWeight"];
-    lastReps = map["lastReps"];
+    _lastTimeStamp = _stringToDateTime(map["lastTimeStamp"]);
+    _lastWeight = map["lastWeight"];
+    _lastReps = map["lastReps"];
 
     //---Temporary
 
-    tempWeight = map["tempWeight"];
-    tempReps = map["tempReps"];
-    tempStartTime = _stringToDateTime(map["tempStartTime"]);
-    tempSetCount = map["tempSetCount"];
+    _tempWeight = map["tempWeight"];
+    _tempReps = map["tempReps"];
+    _tempStartTime = _stringToDateTime(map["tempStartTime"]);
+    _tempSetCount = map["tempSetCount"];
   }
 
   DateTime _stringToDateTime(String json){
