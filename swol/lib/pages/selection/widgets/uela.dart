@@ -1,7 +1,6 @@
 //flutter
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:swol/excerciseTimer/displayUI/shakingAlarm.dart';
 
 //internal: shared
 import 'package:swol/shared/methods/extensions/sharedPreferences.dart';
@@ -9,8 +8,8 @@ import 'package:swol/shared/methods/vibrate.dart';
 import 'package:swol/shared/methods/theme.dart';
 
 //internal: utils
-import 'package:swol/sharedWidgets/triangleAngle.dart';
-import 'package:swol/sharedWidgets/playOnceGif.dart';
+import 'package:swol/shared/widgets/simple/triangleAngle.dart';
+import 'package:swol/shared/widgets/simple/playOnceGif.dart';
 
 //widget
 class UELA extends StatefulWidget {

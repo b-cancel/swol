@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 
 //internal
-import 'package:swol/excerciseTimer/displayUI/display.dart';
+import 'package:swol/shared/widgets/complex/excerciseListTile/miniTimer/display.dart';
 import 'package:swol/shared/structs/anExcercise.dart';
 import 'package:swol/other/otherHelper.dart';
 

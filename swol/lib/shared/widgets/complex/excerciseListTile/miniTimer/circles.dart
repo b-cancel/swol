@@ -2,8 +2,8 @@
 import 'package:flutter/material.dart';
 
 //internal
-import 'package:swol/excerciseTimer/displayUI/shakingAlarm.dart';
-import 'package:swol/sharedWidgets/triangleAngle.dart';
+import 'package:swol/shared/widgets/complex/excerciseListTile/miniTimer/shakingAlarm.dart';
+import 'package:swol/shared/widgets/simple/triangleAngle.dart';
 import 'package:swol/other/otherHelper.dart';
 
 //widget

@@ -1,13 +1,19 @@
-import 'package:flutter/material.dart';
-import 'package:loading_indicator/loading_indicator.dart';
-import 'package:swol/excerciseTimer/displayUI/circles.dart';
-import 'package:swol/excerciseTimer/displayUI/shakingAlarm.dart';
-import 'package:swol/excerciseTimer/displayUI/timerButton.dart';
-import 'package:swol/shared/structs/anExcercise.dart';
+//dart
 import 'dart:math' as math;
 
-import 'package:swol/sharedWidgets/triangleAngle.dart';
+//flutter
+import 'package:flutter/material.dart';
 
+//plugin
+import 'package:loading_indicator/loading_indicator.dart';
+
+//internal
+import 'package:swol/shared/widgets/complex/excerciseListTile/miniTimer/shakingAlarm.dart';
+import 'package:swol/shared/widgets/complex/excerciseListTile/miniTimer/timerButton.dart';
+import 'package:swol/shared/widgets/complex/excerciseListTile/miniTimer/circles.dart';
+import 'package:swol/shared/widgets/simple/triangleAngle.dart';
+import 'package:swol/shared/structs/anExcercise.dart';
+//widget
 class WatchUI extends StatelessWidget {
   //NOTE: defaults is the mini version of the watch
   WatchUI({

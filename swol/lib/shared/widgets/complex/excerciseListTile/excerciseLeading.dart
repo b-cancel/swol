@@ -1,9 +1,9 @@
 //flutter
 import 'package:flutter/material.dart';
-import 'package:swol/shared/widgets/complex/excerciseListTile/miniTimer.dart';
-import 'package:swol/shared/widgets/simple/heros/curveMod.dart';
 
 //internal: shared
+import 'package:swol/shared/widgets/complex/excerciseListTile/miniTimer/wrapper.dart';
+import 'package:swol/shared/widgets/simple/heros/curveMod.dart';
 import 'package:swol/shared/widgets/simple/heros/leading.dart';
 import 'package:swol/shared/functions/defaultDateTimes.dart';
 import 'package:swol/shared/structs/anExcercise.dart';
