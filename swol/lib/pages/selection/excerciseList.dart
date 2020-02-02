@@ -13,9 +13,9 @@ import 'package:swol/shared/methods/excerciseData.dart';
 import 'package:swol/shared/structs/anExcercise.dart';
 
 //internal: other
-import 'package:swol/excerciseSelection/widgets/persistentHeaderDelegate.dart';
-import 'package:swol/excerciseSelection/widgets/workoutSection.dart';
-import 'package:swol/excerciseSelection/widgets/bottomButtons.dart';
+import 'package:swol/pages/selection/widgets/persistentHeaderDelegate.dart';
+import 'package:swol/pages/selection/widgets/workoutSection.dart';
+import 'package:swol/pages/selection/widgets/bottomButtons.dart';
 import 'package:swol/other/durationFormat.dart';
 
 //widget

@@ -5,10 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
 
 //internal: excercise selection
-import 'package:swol/excerciseSelection/widgets/animatedTitle.dart';
-import 'package:swol/excerciseSelection/widgets/bottomButtons.dart';
-import 'package:swol/excerciseSelection/excerciseList.dart';
-import 'package:swol/excerciseSelection/uela.dart';
+import 'package:swol/pages/selection/widgets/animatedTitle.dart';
+import 'package:swol/pages/selection/excerciseList.dart';
+import 'package:swol/pages/selection/widgets/uela.dart';
 
 //internal: shared
 import 'package:swol/shared/methods/extensions/sharedPreferences.dart';

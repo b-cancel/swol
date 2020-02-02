@@ -15,7 +15,7 @@ import 'package:swol/shared/methods/excerciseData.dart';
 import 'package:swol/shared/methods/theme.dart';
 
 //internal
-import 'package:swol/excerciseSelection/excerciseListPage.dart';
+import 'package:swol/pages/selection/excerciseListPage.dart';
 import 'package:swol/pages/search/searchesData.dart';
 
 //app start

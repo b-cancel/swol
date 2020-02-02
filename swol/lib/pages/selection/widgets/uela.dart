@@ -1,6 +1,7 @@
 //flutter
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:swol/excerciseTimer/displayUI/shakingAlarm.dart';
 
 //internal: shared
 import 'package:swol/shared/methods/extensions/sharedPreferences.dart';
@@ -112,11 +113,13 @@ class _UELAState extends State<UELA> {
                   padding: EdgeInsets.only(
                     top: 8,
                   ),
-                  child: PlayGifOnce(
-                    assetName: "assets/popUpGifs/agree.gif",
-                    runTimeMS: 2370,
-                    frameCount: 70,
-                    colorWhite: false,
+                  child: ClipOval(
+                    child: PlayGifOnce( 
+                      assetName: "assets/popUpGifs/agree.gif",
+                      runTimeMS: 2370,
+                      frameCount: 70,
+                      colorWhite: false,
+                    ),
                   ),
                 ),
                 Positioned.fill(

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 //plugin
 import 'package:page_transition/page_transition.dart';
-import 'package:swol/excerciseSelection/widgets/addNewHero.dart';
+import 'package:swol/pages/selection/widgets/addNewHero.dart';
 import 'package:swol/shared/methods/excerciseData.dart';
 
 //internal: shared

@@ -21,7 +21,7 @@ import 'package:swol/shared/widgets/complex/fields/fields/function.dart';
 import 'package:swol/shared/structs/anExcercise.dart';
 
 //internal: other
-import 'package:swol/excerciseSelection/widgets/addNewHero.dart';
+import 'package:swol/pages/selection/widgets/addNewHero.dart';
 import 'package:swol/other/functions/helper.dart';
 import 'package:swol/main.dart';
 
