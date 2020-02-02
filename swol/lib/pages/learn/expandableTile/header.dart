@@ -26,6 +26,10 @@ class TileHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Color innerColor =  (isOpen.value)
+    ? Theme.of(context).primaryColorDark
+    : Colors.white;
+
     return AnimatedContainer(
       duration: Duration(milliseconds: 300),
       margin: EdgeInsets.only(
@@ -59,12 +63,14 @@ class TileHeader extends StatelessWidget {
                           child: Icon(
                             headerIcon,
                             size: (size == null) ? 24 : size,
+                            color: innerColor,
                           ),
                         ),
                         Text(
                           headerText,
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
+                            color: innerColor,
                           ),
                         ),
                       ],
@@ -74,6 +80,7 @@ class TileHeader extends StatelessWidget {
                 IconButton(
                   onPressed: openOrClose,
                   icon: RotatingIcon(
+                    color: innerColor,
                     isOpen: isOpen,
                   ),
                 )
@@ -88,11 +95,13 @@ class TileHeader extends StatelessWidget {
 
 class RotatingIcon extends StatelessWidget {
   RotatingIcon({
+    @required this.color,
     this.duration: const Duration(milliseconds: 300),
     @required this.isOpen,
   });
 
   //passed params
+  final Color color;
   final Duration duration;
   final ValueNotifier<bool> isOpen;
 
@@ -128,6 +137,7 @@ class RotatingIcon extends StatelessWidget {
         angle: anim.value,
         child: Icon(
           Icons.keyboard_arrow_down,
+          color: color,
         ),
       ),
     );
