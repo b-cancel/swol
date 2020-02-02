@@ -10,18 +10,14 @@ class CustomRectTween extends RectTween {
   final Rect a;
   final Rect b;
 
+  //todo modify if really needed
   @override
   Rect lerp(double t) {
-    final verticalDist = Curves.easeInOut.transform(t);
-    //final top = lerpDouble(a.top, b.top, t) * (1 - verticalDist);
-    print("a: " + a.left.toString() + " vs " + "b: " + b.left.toString());
-    bool aBelowB = a.left < b.left;
     return Rect.fromLTRB(
-      //worked well here (a: 72.0 vs b: 349.42857142857144)
-      lerpDouble(a.left, b.left, t),// * ((aBelowB) ? verticalDist : 1),
-      lerpDouble(a.top, b.top, t),// * (1 - verticalDist),
+      lerpDouble(a.left, b.left, t),
+      lerpDouble(a.top, b.top, t),
       lerpDouble(a.right, b.right, t),
-      lerpDouble(a.bottom, b.bottom, t),// * (1 - verticalDist),
+      lerpDouble(a.bottom, b.bottom, t),
     );
   }
 

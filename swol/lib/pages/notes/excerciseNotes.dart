@@ -13,7 +13,6 @@ import 'package:swol/shared/functions/defaultDateTimes.dart';
 import 'package:swol/shared/widgets/simple/backButton.dart';
 import 'package:swol/shared/methods/excerciseData.dart';
 import 'package:swol/shared/structs/anExcercise.dart';
-import 'package:swol/shared/widgets/simple/heros/note.dart';
 import 'package:swol/sharedWidgets/playOnceGif.dart';
 
 //internal: other
@@ -80,7 +79,7 @@ class _ExcerciseNotesState extends State<ExcerciseNotes> {
       appBar: AppBar(
         backgroundColor: Theme.of(context).primaryColorDark,
         leading: BackFromExcercise(),
-        title: NotesHero(),
+        title: Text("Notes"),
         actions: [
           BigActionButton(
             excercise: widget.excercise,

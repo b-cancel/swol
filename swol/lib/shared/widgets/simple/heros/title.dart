@@ -76,7 +76,8 @@ class ExcerciseTitleHeroHelper extends StatelessWidget {
             ),
           ),
           child: Container(
-            color: Color.lerp(
+            color: (percentToAppBar == 0 || percentToAppBar == 1) ? Colors.transparent
+              : Color.lerp(
               Theme.of(context).cardColor, 
               Theme.of(context).primaryColorDark, 
               percentToAppBar,
