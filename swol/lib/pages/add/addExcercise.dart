@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 
 //plugins
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import 'package:direct_select_flutter/direct_select_container.dart';
 
 //internal: addition
 import 'package:swol/pages/add/widgets/recoveryTime.dart';
@@ -220,38 +219,35 @@ class AddExcercise extends StatelessWidget {
             ),
           ),
         ),
-        //TODO: the widget below isn't doing anything unless I use that one plugin
-        body: DirectSelectContainer(
-          child: Stack(
-            children: <Widget>[
-              Container(
-                color: Theme.of(context).scaffoldBackgroundColor,
-                child: AnimationLimiter(
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    padding: EdgeInsets.symmetric(
-                      vertical: 16,
-                    ),
-                    itemCount: sections.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return AnimationConfiguration.staggeredList(
-                        position: index,
-                        //500 (page slide in) + 250 (save button show)
-                        delay: (delayBetweenListItems),
-                        duration: showListDuration,
-                        child: SlideAnimation(
-                          verticalOffset: 50.0,
-                          child: FadeInAnimation(
-                            child: sections[index],
-                          ),
-                        ),
-                      );
-                    },
+        body: Stack(
+          children: <Widget>[
+            Container(
+              color: Theme.of(context).scaffoldBackgroundColor,
+              child: AnimationLimiter(
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  padding: EdgeInsets.symmetric(
+                    vertical: 16,
                   ),
+                  itemCount: sections.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return AnimationConfiguration.staggeredList(
+                      position: index,
+                      //500 (page slide in) + 250 (save button show)
+                      delay: (delayBetweenListItems),
+                      duration: showListDuration,
+                      child: SlideAnimation(
+                        verticalOffset: 50.0,
+                        child: FadeInAnimation(
+                          child: sections[index],
+                        ),
+                      ),
+                    );
+                  },
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

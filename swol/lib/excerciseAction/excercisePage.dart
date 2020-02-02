@@ -1,8 +1,8 @@
 //flutter
 import 'package:flutter/material.dart';
+import 'package:flutter_page_transition/flutter_page_transition.dart';
 
 //plugin
-import 'package:page_transition/page_transition.dart';
 
 //internal: excercise
 import 'package:swol/shared/widgets/simple/heros/title.dart';
@@ -35,7 +35,7 @@ class _ExcercisePageState extends State<ExcercisePage> {
     Navigator.push(
       context, 
       PageTransition(
-        type: PageTransitionType.rightToLeft, 
+        type: PageTransitionType.slideInLeft,
         duration: Duration(milliseconds: 300),
         child: ExcerciseNotes(
           excercise: widget.excercise,
