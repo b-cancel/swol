@@ -13,7 +13,7 @@ import 'package:swol/shared/widgets/simple/chip.dart';
 import 'package:swol/other/durationFormat.dart';
 
 //tile might need reloading
-class ExcerciseTileLeading extends StatelessWidget {
+class ExcerciseTileLeading extends StatefulWidget {
   ExcerciseTileLeading({
     @required this.excercise,
     @required this.tileInSearch,
@@ -23,22 +23,30 @@ class ExcerciseTileLeading extends StatelessWidget {
   final bool tileInSearch;
 
   @override
+  _ExcerciseTileLeadingState createState() => _ExcerciseTileLeadingState();
+}
+
+class _ExcerciseTileLeadingState extends State<ExcerciseTileLeading> {
+  //TODO listen to "lastTimeStamp", "tempStartTime"
+  //TODO listen to "set target", "set count" to reload 
+  //and also 
+  @override
   Widget build(BuildContext context) {
     //NOTE: timer takes precendence over regular inprogress
-    if(excercise.tempStartTime != null){
-      Duration timePassed = DateTime.now().difference(excercise.tempStartTime);
+    if(widget.excercise.tempStartTime != null){
+      Duration timePassed = DateTime.now().difference(widget.excercise.tempStartTime);
       if(timePassed > Duration(minutes: 5)){
         return AnimatedMiniNormalTimerAlternativeWrapper(
-          excerciseReference: excercise,
+          excerciseReference: widget.excercise,
         );
       }
       else{
         return AnimatedMiniNormalTimer(
-          excerciseReference: excercise,
+          excerciseReference: widget.excercise,
         );
       }
     }
-    else if(LastTimeStamp.isInProgress(excercise.lastTimeStamp)){
+    else if(LastTimeStamp.isInProgress(widget.excercise.lastTimeStamp)){
       //TODO: this should show different things if you are BEFORE or PAST your set target
       //TODO: if before you set target it should show "To Set X/Y?"
       //TODO: if after your set target it should show "Complete Set X?"
@@ -47,7 +55,7 @@ class ExcerciseTileLeading extends StatelessWidget {
       //TODO: to perform the action we THINK they will want
       bool isLastSet = true;
       return Hero(
-        tag: "excercise" + (isLastSet ? "Complete" : "Continue") + excercise.id.toString(),
+        tag: "excercise" + (isLastSet ? "Complete" : "Continue") + widget.excercise.id.toString(),
         createRectTween: (begin, end) {
           return CustomRectTween(a: begin, b: end);
         },
@@ -65,8 +73,8 @@ class ExcerciseTileLeading extends StatelessWidget {
     else{ //NOT in timer, NOT in progress => show in what section it is
       //since we are starting off the excercise we don't need to worry about suggesting an action
       //so we don't need to worry about anything being a hero
-      if(tileInSearch){
-        if(LastTimeStamp.isNew(excercise.lastTimeStamp)){
+      if(widget.tileInSearch){
+        if(LastTimeStamp.isNew(widget.excercise.lastTimeStamp)){
           return ListTileChipShell(
             chip: MyChip(
               chipString: 'NEW',
@@ -74,7 +82,7 @@ class ExcerciseTileLeading extends StatelessWidget {
           );
         }
         else{
-          if(LastTimeStamp.isHidden(excercise.lastTimeStamp)){
+          if(LastTimeStamp.isHidden(widget.excercise.lastTimeStamp)){
             return ListTileChipShell(
               chip: MyChip(
                 chipString: 'HIDDEN',
@@ -84,7 +92,7 @@ class ExcerciseTileLeading extends StatelessWidget {
           else{
             return Text(
               DurationFormat.format(
-                DateTime.now().difference(excercise.lastTimeStamp),
+                DateTime.now().difference(widget.excercise.lastTimeStamp),
                 showMinutes: false,
                 showSeconds: false,
                 showMilliseconds: false,
@@ -97,7 +105,7 @@ class ExcerciseTileLeading extends StatelessWidget {
       }
       else return ExcerciseBegin(
         inAppBar: false,
-        excercise: excercise,
+        excercise: widget.excercise,
       );
     }
   }

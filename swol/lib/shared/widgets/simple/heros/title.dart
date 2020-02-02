@@ -13,7 +13,6 @@ class ExcerciseTitleHero extends StatelessWidget {
   final AnExcercise excercise;
   final bool inAppBar;
   final Function onTap;
-  
 
   @override
   Widget build(BuildContext context) {
@@ -32,12 +31,12 @@ class ExcerciseTitleHero extends StatelessWidget {
       ) {
         return AnimatedBuilder(
           animation: animation,
-          builder: (context, child){
+          builder: (context, child) {
             return ExcerciseTitleHeroHelper(
               percentToAppBar: animation.value,
-              title: excercise.name,
-              //during transition 
-              //no action can be taken 
+              excercise: excercise,
+              //during transition
+              //no action can be taken
               //so we guarantee it by not passing onTap
             );
           },
@@ -45,7 +44,7 @@ class ExcerciseTitleHero extends StatelessWidget {
       },
       child: ExcerciseTitleHeroHelper(
         percentToAppBar: (inAppBar) ? 1 : 0,
-        title: excercise.name,
+        excercise: excercise,
         onTap: onTap,
       ),
     );
@@ -55,12 +54,12 @@ class ExcerciseTitleHero extends StatelessWidget {
 class ExcerciseTitleHeroHelper extends StatelessWidget {
   ExcerciseTitleHeroHelper({
     @required this.percentToAppBar,
-    @required this.title,
+    @required this.excercise,
     this.onTap,
   });
 
   final double percentToAppBar;
-  final String title;
+  final AnExcercise excercise;
   final Function onTap;
 
   @override
@@ -76,31 +75,53 @@ class ExcerciseTitleHeroHelper extends StatelessWidget {
             ),
           ),
           child: Container(
-            color: (percentToAppBar == 0 || percentToAppBar == 1) ? Colors.transparent
-              : Color.lerp(
-              Theme.of(context).cardColor, 
-              Theme.of(context).primaryColorDark, 
-              percentToAppBar,
-            ),
+            color: (percentToAppBar == 0 || percentToAppBar == 1)
+                ? Colors.transparent
+                : Color.lerp(
+                    Theme.of(context).cardColor,
+                    Theme.of(context).primaryColorDark,
+                    percentToAppBar,
+                  ),
             child: Container(
-            alignment: Alignment.centerLeft,
-            padding: EdgeInsets.only(
-              left: lerpDouble(
-                0,
-                56,
-                percentToAppBar,
+              alignment: Alignment.centerLeft,
+              padding: EdgeInsets.only(
+                left: lerpDouble(
+                  0,
+                  56,
+                  percentToAppBar,
+                ),
               ),
+              child: ReloadingTitle(
+                excercise: excercise,
+              )
             ),
-            child: Text(
-              title,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                fontSize: 18,
-              ),
-            ),
-              ),
           ),
         ),
+      ),
+    );
+  }
+}
+
+//NOTE: this reloads simply because its stateful
+class ReloadingTitle extends StatefulWidget {
+  ReloadingTitle({
+    @required this.excercise,
+  });
+
+  final AnExcercise excercise;
+
+  @override
+  _ReloadingTitleState createState() => _ReloadingTitleState();
+}
+
+class _ReloadingTitleState extends State<ReloadingTitle> {
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      widget.excercise.name,
+      overflow: TextOverflow.ellipsis,
+      style: TextStyle(
+        fontSize: 18,
       ),
     );
   }

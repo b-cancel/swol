@@ -17,7 +17,6 @@ import 'package:swol/shared/widgets/simple/scrollToTop.dart';
 //Sections and how they are handled
 //New => newest additions on bottom
 //  since you would probably add your new routine and then work it
-///TODO: ensure this exception
 //Hidden => newest addition on top [EXCEPTION]
 //  since the excercises you most recently archived are the ones most likely to be searched for again
 //In Progress => newest additions on bottom

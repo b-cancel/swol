@@ -71,17 +71,7 @@ class ExcerciseTile extends StatelessWidget {
       ),
       //NOTE: this must output to null if there isn't a weight 
       //because otherwise it will yeild alot of wasted space
-      subtitle: (excercise.lastWeight == null) 
-      //used so all tiles are the same height
-      //and can properly show the mini timer
-      ? Container(
-        height: 0,
-        width: 0,
-        //NOE: we can uncomment for equal spacing (I prefer it to be uneven)
-        //height: 30, 
-      )
-      //show 1 rep max stuffs
-      : ExcerciseTileSubtitle(
+      subtitle: ExcerciseTileSubtitle(
         excercise: excercise,
       ),
       trailing: ExcerciseTileLeading(

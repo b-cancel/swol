@@ -1,20 +1,16 @@
+import 'package:flutter/material.dart';
 import 'package:swol/other/functions/helper.dart';
 import 'package:swol/shared/methods/excerciseData.dart';
 
-//TODO whenever we need to listen to something at any point
-//use a value notifier
-//for everything else provide a getter or setter that updates things properly without making us have to deal with boilerplate
-//ideally we should grab all the excercises ONCE, on the excercise list page init
-//afte that we should listen to changes in order and viola (Adding, removing, editing in ways that change order cause a rebuild in the list)
-//everything else only cause a reload in the relevant widgets... when its relevant
-//TODO: start off with listening to the recoveryperiod changing... and tempStartTime so that we can get the mini timer working
-//TODO: the above tells us we should update this... and not use the weird update excercise function ive been using
 class AnExcercise{
   //constants
   static const int defaultFunctionID = Functions.defaultFunctionIndex;
   static const int defaultRepTarget = 8;
   static const Duration defaultRecovery = const Duration(minutes: 1, seconds: 30);
   static const int defaultSetTarget = 4;
+
+  //default value notifier values
+  static DateTime defaultDateTime = DateTime.fromMicrosecondsSinceEpoch(0);
 
   //---Settings
 
@@ -114,10 +110,22 @@ class AnExcercise{
     ExcerciseData.updateFile();
   }
   
-  DateTime _tempStartTime;
-  DateTime get tempStartTime => _tempStartTime;
-  set tempStartTime(DateTime newTempStartTime){
-    _tempStartTime = newTempStartTime;
+  //notifiers can never be null, because they must be listened to
+  //but we do have a default value 
+  //for each notifier type
+  ValueNotifier<DateTime> _tempStartTime;
+
+  //needs to be listened to by excerciseTileLeading
+  //might return default datetime value
+  ValueNotifier<DateTime> get tempStartTime => _tempStartTime;
+
+  //for the setting we ONLY GRAB THE NOTIFIERS VALUE
+  //since the private notifier may already have things attached
+  //ALSO on init of the excercise the value notifier MUST BE initialized
+  //so we don't have to do that here
+  set tempStartTime(ValueNotifier<DateTime> newTempStartTime){
+    DateTime newValue = newTempStartTime.value;
+    _tempStartTime.value = newValue;
     ExcerciseData.updateFile();
   }
   
@@ -144,6 +152,11 @@ class AnExcercise{
     //date time
     DateTime lastTimeStamp,
   ){
+    //variables that have notifiers 
+    //that are required to have atleast a default value
+    _tempStartTime = new ValueNotifier<DateTime>(defaultDateTime);
+
+    //required to pass variables
     _name = name;
     _url = url;
     _note = note;
@@ -186,7 +199,8 @@ class AnExcercise{
 
     _tempWeight = map["tempWeight"];
     _tempReps = map["tempReps"];
-    _tempStartTime = _stringToDateTime(map["tempStartTime"]);
+    //todo confirm this keeps in mind the defaultDateTime
+    _tempStartTime = new ValueNotifier<DateTime>(_stringToDateTime(map["tempStartTime"]));
     _tempSetCount = map["tempSetCount"];
   }
 
@@ -229,7 +243,8 @@ class AnExcercise{
 
       "tempWeight": tempWeight,
       "tempReps": tempReps,
-      "tempStartTime": _dateTimeToString(tempStartTime),
+      //todo confirm this keeps in mind the defaultDateTime
+      "tempStartTime": _dateTimeToString(tempStartTime.value),
       "tempSetCount": tempSetCount,
     };
   }
