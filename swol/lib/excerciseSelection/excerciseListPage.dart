@@ -33,6 +33,13 @@ import 'package:swol/shared/widgets/simple/scrollToTop.dart';
 //TODO: when the user open the app and there is ONLY 1 excercise in progress
 //TODO: automatically go to that excercse (ensure animation)
 
+class ExcerciseSelectStateless extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return ExcerciseSelect();
+  }
+}
+
 //main widget
 class ExcerciseSelect extends StatefulWidget {
   @override
@@ -131,8 +138,6 @@ class _ExcerciseSelectState extends State<ExcerciseSelect> {
               onTop: onTop,
               autoScrollController: autoScrollController,
             ),
-            //Add New Excercise Button
-            AddExcerciseButton(),
           ],
         ),
       ),

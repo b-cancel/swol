@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 //plugin
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
+import 'package:swol/main.dart';
 
 //internal: shared
 import 'package:swol/shared/functions/defaultDateTimes.dart';
@@ -45,12 +46,21 @@ class _ExcerciseListState extends State<ExcerciseList> {
 
   //removalable listener
   updateState(){
-    if(mounted) setState(() {});
+    if(mounted){
+      beforeManualBuild();
+      setState(() {});
+    }
   }
 
   //init
   @override
   void initState() {
+    //wait to have mediaquery available
+    WidgetsBinding.instance.addPostFrameCallback((_){
+      beforeManualBuild();
+      setState(() {});
+    });
+    
     //Updates every time we update[timestamp], add, or remove some excercise
     ExcerciseData.excercisesOrder.addListener(updateState);
     super.initState();
@@ -62,16 +72,16 @@ class _ExcerciseListState extends State<ExcerciseList> {
     super.dispose();
   }
 
-  //build
-  @override
-  Widget build(BuildContext context) {
+  //prevents unecessary calculation when navigating
+  List<Widget> slivers;
+  beforeManualBuild(){
+    print("manual build");
+
     List<Widget> sliverList = new List<Widget>();
     List<List<AnExcercise>> listOfGroupOfExcercises = new List<List<AnExcercise>>();
 
     //a little bit of math
-    List<double> goldenBS = measurementToGoldenRatioBS(
-      MediaQuery.of(context).size.height,
-    );
+    List<double> goldenBS = measurementToGoldenRatioBS(MediaQuery.of(context).size.height);
     double openHeaderHeight = goldenBS[1] - widget.statusBarHeight;
 
     //try to see if we have workouts to add
@@ -214,8 +224,9 @@ class _ExcerciseListState extends State<ExcerciseList> {
     }
 
     //add header because we always have one
-    List<Widget> finalWidgetList = new List<Widget>();
-    finalWidgetList.add(
+    slivers?.clear();
+    slivers = new List<Widget>();
+    slivers.add(
       HeaderForOneHandedUse(
         listOfGroupOfExcercises: listOfGroupOfExcercises, 
         newWorkoutSection: newWorkoutSection, 
@@ -226,17 +237,24 @@ class _ExcerciseListState extends State<ExcerciseList> {
     );
 
     //add all the other widgets below it
-    finalWidgetList.addAll(sliverList);
+    slivers.addAll(sliverList);
+  }
 
-    //return
-    return Stack(
-      children: <Widget>[
-        CustomScrollView(
-          controller: widget.autoScrollController,
-          slivers: finalWidgetList,
-        ),
-        SearchExcerciseButton(),
-      ],
-    );
+  //build
+  @override
+  Widget build(BuildContext context) {
+    if(slivers == null) return SplashScreen();
+    else{
+      return Stack(
+        children: <Widget>[
+          CustomScrollView(
+            controller: widget.autoScrollController,
+            slivers: slivers,
+          ),
+          SearchExcerciseButton(),
+          AddExcerciseButton(),
+        ],
+      );
+    }
   }
 }

@@ -29,6 +29,7 @@ class AddExcerciseButton extends StatelessWidget {
           featureID: AFeature.AddExcercise.toString(),
           tapTarget: FloatingActionButton(
             onPressed: null, //TODO: check
+            backgroundColor: Theme.of(context).accentColor,
             child: Icon(Icons.add),
           ),
           text: "Tap here to add a\n"
@@ -95,6 +96,7 @@ class _SearchExcerciseButtonState extends State<SearchExcerciseButton> {
             featureID: AFeature.SearchExcercise.toString(),
             tapTarget: FloatingActionButton(
               child: Icon(Icons.search),
+              backgroundColor: Theme.of(context).accentColor,
               onPressed: null,
             ),
             text: "Tap here to"

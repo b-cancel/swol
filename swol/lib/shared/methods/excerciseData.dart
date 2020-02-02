@@ -131,15 +131,22 @@ class ExcerciseData{
     }
 
     //find the place the new id in its position
+    bool allMatch = dates.length == (excercisesOrder?.value ?? 0);
     List<int> newOrder = new List<int>();
     for(int i = 0; i < dates.length; i++){
       DateTime thisDate = dates[i];
       int thisID = dateTimeToID[thisDate];
+  
+      //check if order matches
+      //if it does we save ourselves an extra reload
+      allMatch = (allMatch && thisID == excercisesOrder.value[i]);
+
+      //add this id in case not everything matches
       newOrder.add(thisID);
     }
 
     //official update
-    excercisesOrder.value = newOrder;
+    if(allMatch == false) excercisesOrder.value = newOrder;
   }
 
   //should never have to update from anywhere else

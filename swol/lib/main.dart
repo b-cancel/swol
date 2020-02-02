@@ -76,17 +76,15 @@ class _GrabSystemDataState extends State<GrabSystemData> {
     await SearchesData.searchesInit();
     await ExcerciseData.excercisesInit();
     preferences = await SharedPreferences.getInstance();
+    SharedPrefsExt.init(preferences);
+    SystemChrome.setSystemUIOverlayStyle(ThemeChanger.darkStyle);
     setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
     if(preferences == null) return SplashScreen();
-    else{
-        SharedPrefsExt.init(preferences);
-        SystemChrome.setSystemUIOverlayStyle(ThemeChanger.darkStyle);
-        return ExcerciseSelect();
-    }
+    else return ExcerciseSelectStateless();
   }
 }
 

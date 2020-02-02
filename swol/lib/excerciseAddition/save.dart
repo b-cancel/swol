@@ -117,7 +117,7 @@ class _SaveButtonState extends State<SaveButton> {
       + "and allow you to save",
       child: AnimatedContainer(
         duration: widget.showSaveDuration,
-        curve: Curves.easeInOut,
+        curve: Curves.bounceInOut,
         constraints: BoxConstraints(
           //no limit vs limit
           //the 100 is so large its never going to be a limitation
