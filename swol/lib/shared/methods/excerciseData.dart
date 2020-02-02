@@ -121,7 +121,7 @@ class ExcerciseData{
     for(int i = 0; i < keys.length; i++){
       int keyIsID = keys[i];
       AnExcercise excercise = _excercises[keyIsID];
-      dateTimeToID[excercise.lastTimeStamp] = keyIsID;
+      dateTimeToID[excercise.lastTimeStamp.value] = keyIsID;
     }
 
     //sort

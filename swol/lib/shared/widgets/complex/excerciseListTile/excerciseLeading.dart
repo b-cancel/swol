@@ -27,14 +27,31 @@ class ExcerciseTileLeading extends StatefulWidget {
 }
 
 class _ExcerciseTileLeadingState extends State<ExcerciseTileLeading> {
-  //TODO listen to "lastTimeStamp", "tempStartTime"
+  updateState(){
+    if(mounted) setState(() {});
+  }
+
+  @override
+  void initState() {
+    widget.excercise.lastTimeStamp.addListener(updateState);
+    widget.excercise.tempStartTime.addListener(updateState);
+    super.initState();
+  }
+
+  @override
+  void dispose() { 
+    widget.excercise.tempStartTime.removeListener(updateState);
+    widget.excercise.lastTimeStamp.removeListener(updateState);
+    super.dispose();
+  }
+
   //TODO listen to "set target", "set count" to reload 
   //and also 
   @override
   Widget build(BuildContext context) {
     //NOTE: timer takes precendence over regular inprogress
-    if(widget.excercise.tempStartTime != null){
-      Duration timePassed = DateTime.now().difference(widget.excercise.tempStartTime);
+    if(widget.excercise.tempStartTime.value !=  AnExcercise.defaultDateTime){
+      Duration timePassed = DateTime.now().difference(widget.excercise.tempStartTime.value);
       if(timePassed > Duration(minutes: 5)){
         return AnimatedMiniNormalTimerAlternativeWrapper(
           excerciseReference: widget.excercise,
@@ -46,7 +63,7 @@ class _ExcerciseTileLeadingState extends State<ExcerciseTileLeading> {
         );
       }
     }
-    else if(LastTimeStamp.isInProgress(widget.excercise.lastTimeStamp)){
+    else if(LastTimeStamp.isInProgress(widget.excercise.lastTimeStamp.value)){
       //TODO: this should show different things if you are BEFORE or PAST your set target
       //TODO: if before you set target it should show "To Set X/Y?"
       //TODO: if after your set target it should show "Complete Set X?"
@@ -74,7 +91,7 @@ class _ExcerciseTileLeadingState extends State<ExcerciseTileLeading> {
       //since we are starting off the excercise we don't need to worry about suggesting an action
       //so we don't need to worry about anything being a hero
       if(widget.tileInSearch){
-        if(LastTimeStamp.isNew(widget.excercise.lastTimeStamp)){
+        if(LastTimeStamp.isNew(widget.excercise.lastTimeStamp.value)){
           return ListTileChipShell(
             chip: MyChip(
               chipString: 'NEW',
@@ -82,7 +99,7 @@ class _ExcerciseTileLeadingState extends State<ExcerciseTileLeading> {
           );
         }
         else{
-          if(LastTimeStamp.isHidden(widget.excercise.lastTimeStamp)){
+          if(LastTimeStamp.isHidden(widget.excercise.lastTimeStamp.value)){
             return ListTileChipShell(
               chip: MyChip(
                 chipString: 'HIDDEN',
@@ -92,7 +109,7 @@ class _ExcerciseTileLeadingState extends State<ExcerciseTileLeading> {
           else{
             return Text(
               DurationFormat.format(
-                DateTime.now().difference(widget.excercise.lastTimeStamp),
+                DateTime.now().difference(widget.excercise.lastTimeStamp.value),
                 showMinutes: false,
                 showSeconds: false,
                 showMilliseconds: false,

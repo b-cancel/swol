@@ -100,7 +100,7 @@ class _ExcerciseListState extends State<ExcerciseList> {
 
         //easy to access vars
         AnExcercise thisExcercise = excercises[excerciseID];
-        TimeStampType thisExcerciseType = LastTimeStamp.returnTimeStampType(thisExcercise.lastTimeStamp);
+        TimeStampType thisExcerciseType = LastTimeStamp.returnTimeStampType(thisExcercise.lastTimeStamp.value);
 
         //determine if we have any of the special section
         if(inprogressWorkoutSection == false){
@@ -125,13 +125,13 @@ class _ExcerciseListState extends State<ExcerciseList> {
           //we know we process things in order... so we only need to check the last group added
           //and even further really just the last item added to that group
           AnExcercise lastExcercise = lastGroup[lastGroup.length - 1];
-          TimeStampType lastExcerciseType = LastTimeStamp.returnTimeStampType(lastExcercise.lastTimeStamp);
+          TimeStampType lastExcerciseType = LastTimeStamp.returnTimeStampType(lastExcercise.lastTimeStamp.value);
 
           //we are a different kind of excercise that the previous one so we KNOW we need a new group
           if(thisExcerciseType != lastExcerciseType) makeNewGroup = true;
           else{ //we are the same type of excercise
             if(thisExcerciseType == TimeStampType.Other){
-              Duration timeBetweenExcercises = thisExcercise.lastTimeStamp.difference(lastExcercise.lastTimeStamp);
+              Duration timeBetweenExcercises = thisExcercise.lastTimeStamp.value.difference(lastExcercise.lastTimeStamp.value);
               makeNewGroup = (timeBetweenExcercises > maxTimeBetweenExcercises);
             }
             else makeNewGroup = false;
@@ -149,14 +149,14 @@ class _ExcerciseListState extends State<ExcerciseList> {
         );
 
         //update lastDateTime
-        lastDateTime = thisExcercise.lastTimeStamp;
+        lastDateTime = thisExcercise.lastTimeStamp.value;
       }
 
       //fill sliver list
       for(int i = 0; i < listOfGroupOfExcercises.length; i++){
         //create header text
         List<AnExcercise> thisGroup = listOfGroupOfExcercises[i];
-        DateTime oldestDT = thisGroup[0].lastTimeStamp;
+        DateTime oldestDT = thisGroup[0].lastTimeStamp.value;
         TimeStampType sectionType = LastTimeStamp.returnTimeStampType(oldestDT);
 
         //vars to set
@@ -191,7 +191,7 @@ class _ExcerciseListState extends State<ExcerciseList> {
         Color bottomColor;
         if((i + 1) < listOfGroupOfExcercises.length){
           //there is a section below our but is it hidden
-          DateTime prevTS = listOfGroupOfExcercises[i+1][0].lastTimeStamp;
+          DateTime prevTS = listOfGroupOfExcercises[i+1][0].lastTimeStamp.value;
           if(LastTimeStamp.isHidden(prevTS)){
             bottomColor = Theme.of(context).accentColor;
           }

@@ -53,7 +53,7 @@ maybeAreYouSurePopUp(
   );
 
   //Are you sure
-  Duration timerRuntime = DateTime.now().difference(excercise.tempStartTime);
+  Duration timerRuntime = DateTime.now().difference(excercise.tempStartTime.value);
   if(timerRuntime > excercise.recoveryPeriod) next();
   else{
     //round to nearest 5 seconds (to avoid problems later)

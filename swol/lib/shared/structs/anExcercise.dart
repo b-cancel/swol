@@ -72,10 +72,11 @@ class AnExcercise{
 
   //NOTE: this MUST ALWAYS BE FILLED since its used to sort everything
   //and taking an alternative approach would be a pain
-  DateTime _lastTimeStamp;
-  DateTime get lastTimeStamp => _lastTimeStamp;
-  set lastTimeStamp(DateTime newLastTimeStamp){
-    _lastTimeStamp = newLastTimeStamp;
+  ValueNotifier<DateTime> _lastTimeStamp;
+  ValueNotifier<DateTime> get lastTimeStamp => _lastTimeStamp;
+  set lastTimeStamp(ValueNotifier<DateTime> newLastTimeStamp){
+    DateTime newValue = newLastTimeStamp.value;
+    _lastTimeStamp.value = newValue;
     ExcerciseData.updateFile();
     ExcerciseData.updateOrder();
   }
@@ -167,7 +168,7 @@ class AnExcercise{
     _setTarget = setTarget;
 
     //NOTE: the update to the file should only happen after everything else
-    this.lastTimeStamp = lastTimeStamp;
+    this.lastTimeStamp = new ValueNotifier<DateTime>(lastTimeStamp);
   }
 
   //NOTE: from here we MUST set things directly to the private variables
@@ -191,7 +192,7 @@ class AnExcercise{
 
     //---Recorded
 
-    _lastTimeStamp = _stringToDateTime(map["lastTimeStamp"]);
+    _lastTimeStamp = _stringToDateTimeVN(map["lastTimeStamp"]);
     _lastWeight = map["lastWeight"];
     _lastReps = map["lastReps"];
 
@@ -199,14 +200,13 @@ class AnExcercise{
 
     _tempWeight = map["tempWeight"];
     _tempReps = map["tempReps"];
-    //todo confirm this keeps in mind the defaultDateTime
-    _tempStartTime = new ValueNotifier<DateTime>(_stringToDateTime(map["tempStartTime"]));
+    _tempStartTime = _stringToDateTimeVN(map["tempStartTime"]);
     _tempSetCount = map["tempSetCount"];
   }
 
-  DateTime _stringToDateTime(String json){
-    if(json == null || json == "null") return null;
-    else return DateTime.parse(json);
+  ValueNotifier<DateTime> _stringToDateTimeVN(String json){
+    if(json == null || json == "null") return new ValueNotifier<DateTime>(defaultDateTime);
+    else return new ValueNotifier<DateTime>(DateTime.parse(json));
   }
 
   Duration _stringToDuration(String json){
@@ -235,7 +235,7 @@ class AnExcercise{
 
       //---Recorded
 
-      "lastTimeStamp": _dateTimeToString(lastTimeStamp),
+      "lastTimeStamp": _dateTimeToString(lastTimeStamp.value),
       "lastWeight": lastWeight,
       "lastReps": lastReps,
 
@@ -243,14 +243,14 @@ class AnExcercise{
 
       "tempWeight": tempWeight,
       "tempReps": tempReps,
-      //todo confirm this keeps in mind the defaultDateTime
       "tempStartTime": _dateTimeToString(tempStartTime.value),
       "tempSetCount": tempSetCount,
     };
   }
 
   static String _dateTimeToString(DateTime dt){
-    return dt?.toIso8601String() ?? null;
+    if(dt == defaultDateTime) return null;
+    else return dt?.toIso8601String() ?? null;
   }
 
   static String _durationToString(Duration d){

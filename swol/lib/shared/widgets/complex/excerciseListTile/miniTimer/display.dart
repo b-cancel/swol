@@ -42,7 +42,7 @@ class WatchUI extends StatelessWidget {
     for(int i = 0; i < 10 ; i++) angles.add(36 * i);
     angles.add(360);
 
-    DateTime timerStarted = excerciseReference.tempStartTime;
+    DateTime timerStarted = excerciseReference.tempStartTime.value;
     Duration timePassed = DateTime.now().difference(timerStarted);
 
     //72 degrees 1 minutes
@@ -119,7 +119,7 @@ class WatchUI extends StatelessWidget {
                       littleCircleSize: littleCircleSize,
                       //-----
                       recoveryPeriod: excerciseReference.recoveryPeriod,
-                      tempStartTime: excerciseReference.tempStartTime,
+                      tempStartTime: excerciseReference.tempStartTime.value,
                       after5Mintes: controller.value == 1,
                       distanceFromLast5MinuteInternal: controller.value,
                     ),
