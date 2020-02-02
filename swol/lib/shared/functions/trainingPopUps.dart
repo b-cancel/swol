@@ -9,6 +9,7 @@ import 'package:swol/shared/widgets/complex/trainingTypeTables/trainingTypes.dar
 import 'package:swol/shared/widgets/simple/oneOrTheOtherIcon.dart';
 import 'package:swol/shared/widgets/simple/ourLearnPopUp.dart';
 import 'package:swol/shared/widgets/simple/toLearnPage.dart';
+import 'package:swol/shared/methods/theme.dart';
 
 //TODO: combine this with the sliders
 //since they are technically used in more places than just add excercise
@@ -144,7 +145,7 @@ Function _makeTrainingTypePopUp({
           ),
         ),
         Theme(
-          data: ThemeData.dark(),
+          data: MyTheme.dark,
           child: Padding(
             padding: EdgeInsets.only(
               top: 8,

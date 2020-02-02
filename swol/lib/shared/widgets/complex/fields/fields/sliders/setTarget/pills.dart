@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 //internal
 import 'package:swol/shared/functions/trainingPopUps.dart';
+import 'package:swol/shared/methods/theme.dart';
 
 //widgets
 class ThePills extends StatelessWidget {
@@ -51,7 +52,7 @@ class ThePillsDark extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Theme(
-      data: ThemeData.dark(),
+      data: MyTheme.dark,
       child: Container(
         //seven sections in between since there are 9 clicks
         width: (totalScreenWidth/4) * 8,

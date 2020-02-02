@@ -7,6 +7,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 //internal
 import 'package:swol/shared/widgets/complex/RangeInformation/trainingNameButton.dart';
 import 'package:swol/shared/widgets/complex/RangeInformation/ticks.dart';
+import 'package:swol/shared/methods/theme.dart';
 import 'package:swol/shared/structs/range.dart';
 
 //guides the users and instructs them all at once with minimal UI
@@ -175,7 +176,7 @@ class _AnimatedRangeInformationState extends State<AnimatedRangeInformation> {
     return FittedBox(
       fit: BoxFit.contain,
       child: Theme(
-        data: ThemeData.dark(),
+        data: MyTheme.dark,
         child: Container(
           width: MediaQuery.of(context).size.width,
           height: chosenHeight,

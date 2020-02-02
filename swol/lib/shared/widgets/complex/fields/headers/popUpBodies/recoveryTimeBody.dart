@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:swol/shared/widgets/complex/trainingTypeTables/trainingTypes.dart';
 import 'package:swol/shared/widgets/simple/toLearnPage.dart';
 import 'package:swol/shared/widgets/simple/listItem.dart';
+import 'package:swol/shared/methods/theme.dart';
 
 //widget
 class RecoveryTimePopUpBody extends StatelessWidget {
@@ -138,7 +139,7 @@ class RecoveryTimePopUpBody extends StatelessWidget {
           ),
         ),
         Theme(
-          data: ThemeData.dark(),
+          data: MyTheme.dark,
           child: Padding(
             padding: EdgeInsets.only(
               top: 8,

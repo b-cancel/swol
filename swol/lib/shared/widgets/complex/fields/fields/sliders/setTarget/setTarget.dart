@@ -102,7 +102,7 @@ class SetTargetPopUpBody extends StatelessWidget {
           ),
         ),
         Theme(
-          data: ThemeData.dark(),
+          data: MyTheme.dark,
           child: Padding(
             padding: EdgeInsets.only(
               top: 8,
