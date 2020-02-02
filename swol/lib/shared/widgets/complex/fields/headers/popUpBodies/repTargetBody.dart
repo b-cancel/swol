@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 //internal
 import 'package:swol/shared/widgets/complex/trainingTypeTables/trainingTypes.dart';
 import 'package:swol/shared/widgets/simple/toLearnPage.dart';
+import 'package:swol/shared/methods/theme.dart';
 
 //widget
 class RepTargetPopUpBody extends StatelessWidget {
@@ -53,7 +54,7 @@ class RepTargetPopUpBody extends StatelessWidget {
           ),
         ),
         Theme(
-          data: ThemeData.dark(),
+          data: MyTheme.dark,
           child: Padding(
             padding: EdgeInsets.only(
               top: 8,

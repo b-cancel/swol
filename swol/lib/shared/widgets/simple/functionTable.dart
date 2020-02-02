@@ -5,23 +5,18 @@ import 'package:flutter/material.dart';
 //widget
 class FunctionCardTable extends StatelessWidget {
   FunctionCardTable({
-    @required this.context,
-    this.isDark: true,
-    this.otherDark: false,
+    this.cardBackground: false,
   });
 
-  final BuildContext context;
-  final bool isDark;
-  final bool otherDark;
+  final bool cardBackground;
 
-  List<Widget> buildFields(List<String> items, {bool leftAligned: true}){
+  List<Widget> buildFields(BuildContext context, List<String> items, {bool leftAligned: true}){
     List<Widget> buildFields = new List<Widget>();
-
     for(int i = 0; i < items.length; i++){
       Color fieldColor;
-      if(i == 0) fieldColor = (isDark) ? Theme.of(context).accentColor : Colors.blue;
+      if(i == 0) fieldColor = Theme.of(context).accentColor;
       else{
-        if(i%2==0) fieldColor = otherDark ? Theme.of(context).scaffoldBackgroundColor : Theme.of(context).cardColor;
+        if(i%2==0) fieldColor = cardBackground ? Theme.of(context).scaffoldBackgroundColor : Theme.of(context).cardColor;
         else fieldColor = Theme.of(context).primaryColor;
       }
 
@@ -35,15 +30,13 @@ class FunctionCardTable extends StatelessWidget {
             ),
             child: Padding(
               padding: EdgeInsets.only(
-                left: 16,
-                right: 8,
+                left: leftAligned == false ? 24 : 0,
+                right: 16,
               ),
               child: Text(
                 items[i],
                 style: TextStyle(
-                  color: (i == 0) 
-                  ? ((isDark) ? Colors.black : Colors.white) 
-                  : Colors.white,
+                  color: Colors.white,
                   fontWeight: (i == 0) ? FontWeight.bold : FontWeight.normal,
                 ),
               ),
@@ -69,7 +62,7 @@ class FunctionCardTable extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.end,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: buildFields([
+                children: buildFields(context, [
                   "Limitation Level",
                   "BEGINNER 8",
                   "7",
@@ -91,7 +84,7 @@ class FunctionCardTable extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: buildFields([
+                  children: buildFields(context, [
                     "Ability Formulas",
                     "Brzycki",
                     "McGlothin (or Landers)",

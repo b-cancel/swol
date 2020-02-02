@@ -186,6 +186,7 @@ class ScrollableTrainingTypes extends StatelessWidget {
     if(showStrength) sections.add(2);
 
     return TrainingTypeSections(
+      cardBackground: false,
       highlightField: highlightField,
       sections: [sections],
       sectionID: new ValueNotifier(0),

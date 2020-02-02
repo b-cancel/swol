@@ -8,7 +8,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:bot_toast/bot_toast.dart';
-import 'package:provider/provider.dart';
 
 //internal: shared
 import 'package:swol/shared/methods/extensions/sharedPreferences.dart';
@@ -47,7 +46,7 @@ class App extends StatelessWidget {
         child:  MaterialApp(
           title: 'SWOL',
           navigatorObservers: [BotToastNavigatorObserver()],//2.registered route observer
-          theme: ThemeData.dark(),
+          theme: MyTheme.dark,
           home: GrabSystemData(),
         ),
       ),
@@ -85,15 +84,8 @@ class _GrabSystemDataState extends State<GrabSystemData> {
     if(preferences == null) return SplashScreen();
     else{
         SharedPrefsExt.init(preferences);
-        ThemeData initialTheme = (SharedPrefsExt.getIsDark().value) ? MyTheme.dark : MyTheme.light;
-
-        //return app
-        return ChangeNotifierProvider<ThemeChanger>(
-          //NOTE: this will also setup the status and notifiaction bar colors
-          //we don't wait for this though, because constructors can't be async
-          create: (_) => ThemeChanger(initialTheme), 
-          child: ExcerciseSelect(),
-        );
+        SystemChrome.setSystemUIOverlayStyle(ThemeChanger.darkStyle);
+        return ExcerciseSelect();
     }
   }
 }

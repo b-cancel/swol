@@ -1,5 +1,6 @@
 //flutter
 import 'package:flutter/material.dart';
+import 'package:swol/shared/methods/theme.dart';
 
 //internal
 import 'package:swol/shared/widgets/complex/trainingTypeTables/trainingTypes.dart';
@@ -56,7 +57,7 @@ class ExplainFunctionality extends StatelessWidget {
           ),
         ),
         Theme(
-          data: ThemeData.dark(),
+          data: MyTheme.dark,
           child: AllTrainingTypes(
             highlightField: 2,
             sectionWithInitialFocus: sectionWithInitialFocus,

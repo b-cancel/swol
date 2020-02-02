@@ -4,6 +4,7 @@ class CardTable extends StatelessWidget {
   CardTable({
     @required this.height,
     @required this.items,
+    @required this.cardBackground,
     this.highlightField,
     this.persistent: false,
     this.icon,
@@ -11,14 +12,15 @@ class CardTable extends StatelessWidget {
 
   final double height;
   final List<String> items;
+  final bool cardBackground;
   final int highlightField;
   final bool persistent;
   final IconData icon;
 
   @override
   Widget build(BuildContext context) {
-    Color accentColor = Colors.blue; //todo replace for the current theme color
-    Color colorEven = Theme.of(context).scaffoldBackgroundColor; 
+    Color accentColor = Theme.of(context).accentColor; //todo replace for the current theme color
+    Color colorEven = cardBackground ? Theme.of(context).scaffoldBackgroundColor : Theme.of(context).cardColor;
     Color colorOdd = Theme.of(context).primaryColor;
 
     //build the fields

@@ -29,7 +29,7 @@ class HeaderWithInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Theme(
-      data: ThemeData.dark(),
+      data: MyTheme.dark,
       child: _HeaderWithInfoDark(
         header: header, 
         subtle: subtle,

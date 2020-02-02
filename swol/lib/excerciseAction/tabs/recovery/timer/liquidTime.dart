@@ -8,9 +8,12 @@ import 'package:liquid_progress_indicator/liquid_progress_indicator.dart';
 import 'package:swol/excerciseAction/tabs/recovery/secondary/explained.dart';
 import 'package:swol/excerciseAction/tabs/recovery/secondary/timeDisplay.dart';
 import 'package:swol/excerciseAction/tabs/recovery/timer/changeTime.dart';
+import 'package:swol/excerciseAction/tabs/recovery/timer/information.dart';
 import 'package:swol/excerciseAction/tabs/recovery/timer/superOverflow.dart';
 import 'package:swol/excerciseAction/tabs/recovery/timer/turnOffVibration.dart';
+import 'package:swol/shared/methods/theme.dart';
 import 'package:swol/shared/methods/vibrate.dart';
+import 'package:swol/shared/widgets/complex/fields/headers/ourInformationPopUp.dart';
 
 /*
 TODO: improve turning off the vibration
@@ -36,7 +39,7 @@ should not restart the vibration
 */
 
 //build
-class LiquidTime extends StatefulWidget {
+class LiquidTime extends StatefulWidget { 
   LiquidTime({
     @required this.timerStart,
     @required this.changeableTimerDuration,
@@ -109,19 +112,6 @@ class _LiquidTimeState extends State<LiquidTime> with TickerProviderStateMixin {
     maybeChangeTime(
       context: context,
       recoveryDuration: widget.changeableTimerDuration,
-    );
-  }
-
-  //TODO: confirm that going to learn from here doesn't break anything
-  explainFunctionalityPopUp(int sectionWithInitialFocus){
-    showDialog<void>(
-      context: context,
-      barrierDismissible: true,
-      builder: (BuildContext context) {
-        return ExplainFunctionality(
-          sectionWithInitialFocus: sectionWithInitialFocus,
-        );
-      },
     );
   }
 
@@ -223,17 +213,11 @@ class _LiquidTimeState extends State<LiquidTime> with TickerProviderStateMixin {
         totalDurationPassed: totalDurationPassed,
         recoveryDurationString: timerDurationString,
         updateState: updateState,
-        explainFunctionality: () => explainFunctionalityPopUp(2),
+        explainFunctionality: () => print("hello"), //explainFunctionalityPopUp(2),
         maybeChangeRecoveryDuration: maybeChangeRecoveryDuration,
       );
     }
     else{ //either we are half red or not red at all
-      //determine what section to focus on first when the user is looking for guidance
-      int sectionWithInitialFocus;
-      if(totalDurationPassed <= Duration(minutes: 1)) sectionWithInitialFocus = 0;
-      else if(totalDurationPassed < Duration(minutes: 3)) sectionWithInitialFocus = 1;
-      else sectionWithInitialFocus = 2;
-
       //format how much time has passed into a string
       List<String> totalDurationPassedStrings = durationToCustomDisplay(totalDurationPassed);
       String totalDurationString = totalDurationPassedStrings[0] + " : " + totalDurationPassedStrings[1]; //bottom right for ?
@@ -323,98 +307,6 @@ class _LiquidTimeState extends State<LiquidTime> with TickerProviderStateMixin {
         showIcon: widget.showIcon,
       );
 
-      //initially tells the user what happening
-      //then explains they can no longer to the training type behind the one they were aiming for
-      String extraMessage = firstTimerRunning ? "Flushing Acid Build Up" : null;
-      
-      //reminds the user what this duration of break is good for
-      String readyFor; //only empty for the first 15 seconds
-      String lateFor;
-
-      //we are ready for some type of workout
-      if(totalDurationPassed < Duration(seconds: 15) == false 
-      && Duration(minutes: 5) < totalDurationPassed == false){
-        readyFor = "Ready For ";
-        if(totalDurationPassed < Duration(minutes: 1)){ //15s to 1m
-          readyFor += "Endurance";
-        } 
-        else{
-          lateFor = "Too Late For ";
-          if(totalDurationPassed < Duration(minutes: 2)){ //to 2m hypertrophy
-            readyFor += "Hypertrophy";
-            lateFor += "Endurance";
-          }
-          else if(totalDurationPassed < Duration(minutes: 3)){ //to 3m hypertrophy or strength
-            readyFor += "Hypertrophy/Strength";
-            lateFor += "Hypertrophy";
-          }
-          else{ //to 5m strength
-            readyFor += "Strength";
-            lateFor += "Hypertrophy";
-          }
-          lateFor += " Training";
-        }
-        readyFor += " Training";
-      }
-
-      if(extraMessage == null && readyFor == null && lateFor == null){
-        extraMessage = "You Waited Too Long";
-        lateFor = "you need to warm up again";
-      }
-
-      //handle 3 liners a bit more delicately
-      if(lateFor != null && extraMessage != null && readyFor != null){
-        lateFor = lateFor.toLowerCase();
-        lateFor = null;
-      }
-
-      //---------------------
-      Widget topInfoButton = FittedBox(
-        fit: BoxFit.contain,
-        child: Container(
-          padding: EdgeInsets.symmetric(
-            horizontal: 12,
-            vertical: 0,
-          ),
-          child: OutlineButton(
-            highlightedBorderColor: Theme.of(context).accentColor,
-            onPressed: () => explainFunctionalityPopUp(sectionWithInitialFocus),
-            padding: EdgeInsets.symmetric(
-              horizontal: 8,
-              vertical: 4,
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                extraMessage != null ? Text(
-                  extraMessage,
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
-                  ),
-                ) : EmptyContainer(),
-                readyFor != null ? 
-                Text(
-                  readyFor,
-                  style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: extraMessage == null ? FontWeight.bold : FontWeight.normal,
-                  ),
-                )
-                : EmptyContainer(),
-                lateFor != null ? Text(
-                  lateFor,
-                  style: TextStyle(
-                    fontSize: 10,
-                  ),
-                ) : EmptyContainer(),
-              ],
-            ),
-          )
-        ),
-      );
-
       Widget timeWidget = Stack(
         children: <Widget>[
           Container(
@@ -464,7 +356,13 @@ class _LiquidTimeState extends State<LiquidTime> with TickerProviderStateMixin {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          topInfoButton,
+          Theme(
+            data: MyTheme.light,
+            child: InfoOutlineWhiteButton(
+              firstTimerRunning: firstTimerRunning,
+              totalDurationPassed: totalDurationPassed,
+            ),
+          ),
           timeWidget,
         ],
       );

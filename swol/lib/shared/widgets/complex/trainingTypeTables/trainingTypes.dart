@@ -14,12 +14,14 @@ class AllTrainingTypes extends StatelessWidget {
     this.highlightField: -1,
     this.sectionWithInitialFocus: 0,
     this.shadowColor: Colors.white,
+    this.cardBackground: false,
   });
 
   final int highlightField;
   //we assume this is between 0 and 2
   final int sectionWithInitialFocus;
   final Color shadowColor;
+  final bool cardBackground;
 
   @override
   Widget build(BuildContext context) {
@@ -38,6 +40,7 @@ class AllTrainingTypes extends StatelessWidget {
       sections: [sections],
       sectionID: new ValueNotifier(0),
       shadowColor: shadowColor,
+      cardBackground: cardBackground,
     );
   }
 }
@@ -45,17 +48,17 @@ class AllTrainingTypes extends StatelessWidget {
 class TrainingTypeSections extends StatefulWidget {
   const TrainingTypeSections({
     Key key,
-    this.highlightField: -1,
+    @required this.cardBackground,
     @required this.sections,
     @required this.sectionID,
-    this.plus24: false,
+    this.highlightField: -1,
     this.shadowColor: Colors.white,
   }) : super(key: key);
 
-  final int highlightField;
+  final bool cardBackground;
   final List<List<int>> sections; 
   final ValueNotifier<int> sectionID;
-  final bool plus24;
+  final int highlightField;
   final Color shadowColor;
 
   @override
@@ -91,6 +94,7 @@ class _TrainingTypeSectionsState extends State<TrainingTypeSections> {
 
     //create all default card
     enduranceCard = CardTable(
+      cardBackground: widget.cardBackground,
       height: cardHeight,
       items: [
         "Endurance",
@@ -107,6 +111,7 @@ class _TrainingTypeSectionsState extends State<TrainingTypeSections> {
     );
 
     hypertrophyCard = CardTable(
+      cardBackground: widget.cardBackground,
       height: cardHeight,
       items: [
         "\tHypertrophy",//NOTE: extra space for dumbell
@@ -123,6 +128,7 @@ class _TrainingTypeSectionsState extends State<TrainingTypeSections> {
     );
 
     strengthCard = CardTable(
+      cardBackground: widget.cardBackground,
       height: cardHeight,
       items: [
         "Strength ",
@@ -212,6 +218,7 @@ class _TrainingTypeSectionsState extends State<TrainingTypeSections> {
             Container(
               height: cardHeight, 
               child: CardTable(
+                cardBackground: widget.cardBackground,
                 height: cardHeight,
                 persistent: true,
                 items: [

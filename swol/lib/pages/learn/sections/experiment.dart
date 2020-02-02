@@ -225,8 +225,7 @@ class ExperimentBody extends StatelessWidget {
                       horizontal: 8.0,
                     ),
                     child: FunctionCardTable(
-                      context: context,
-                      otherDark: true,
+                      cardBackground: true,
                     ),
                   ),
                 ),

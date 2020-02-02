@@ -3,12 +3,13 @@ import 'package:flutter/material.dart';
 
 //internal
 import 'package:swol/shared/widgets/simple/ourLearnPopUp.dart';
+import 'package:swol/shared/methods/theme.dart';
 
 //widget
 infoPopUpFunction(
   BuildContext context, 
   {
-    @required String title,
+    String title: "",
     String subtitle: "",
     @required Widget body,
     isDense: false,
@@ -22,7 +23,7 @@ infoPopUpFunction(
       size: 128,
     ),
     [
-      Text(
+      title == null ? Container() : Text(
         title,
         style: TextStyle(
           fontWeight: FontWeight.bold,
@@ -42,7 +43,7 @@ infoPopUpFunction(
           top: 16.0,
         ),
         child: Theme(
-          data: ThemeData.dark(),
+          data: MyTheme.dark,
           child: Container(
             width: MediaQuery.of(context).size.width,
             child: body,

@@ -2,9 +2,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-//plugins
-import 'package:swol/shared/methods/extensions/sharedPreferences.dart';
-
 //my own definition of dark and light
 class MyTheme{
   //set changes on theme
@@ -31,7 +28,7 @@ class ThemeChanger with ChangeNotifier {
     systemNavigationBarIconBrightness: Brightness.dark,
   );
 
-  static SystemUiOverlayStyle _darkStyle = SystemUiOverlayStyle(
+  static SystemUiOverlayStyle darkStyle = SystemUiOverlayStyle(
     systemNavigationBarColor: Colors.black,
     statusBarColor: Colors.black,
     systemNavigationBarDividerColor: Colors.black,
@@ -40,7 +37,7 @@ class ThemeChanger with ChangeNotifier {
     systemNavigationBarIconBrightness: Brightness.light,
   );
 
-  static SystemUiOverlayStyle _lightStyle = SystemUiOverlayStyle(
+  static SystemUiOverlayStyle lightStyle = SystemUiOverlayStyle(
     systemNavigationBarColor: Colors.white,
     statusBarColor: Colors.white,
     systemNavigationBarDividerColor: Colors.white,
@@ -49,6 +46,7 @@ class ThemeChanger with ChangeNotifier {
     systemNavigationBarIconBrightness: Brightness.dark,
   );
 
+  /*
   //-------------------------Updaters-------------------------
 
   //app theme updater
@@ -64,7 +62,7 @@ class ThemeChanger with ChangeNotifier {
 
     //switch system theme UI
     SystemChrome.setSystemUIOverlayStyle(
-      isDark ? _darkStyle : _lightStyle,
+      isDark ? darkStyle : lightStyle,
     );
   }
 
@@ -89,4 +87,5 @@ class ThemeChanger with ChangeNotifier {
       SharedPrefsExt.setIsDark((newThemeData.brightness == Brightness.dark));
     }
   }
+  */
 }

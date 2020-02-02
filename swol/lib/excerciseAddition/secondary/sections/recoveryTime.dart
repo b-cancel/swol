@@ -53,12 +53,10 @@ class RecoveryTimeWidget extends StatelessWidget {
     Key key,
     @required this.changeDuration,
     @required this.recoveryPeriod,
-    this.darkTheme: true,
   }) : super(key: key);
 
   final Duration changeDuration;
   final ValueNotifier<Duration> recoveryPeriod;
-  final bool darkTheme;
 
   @override
   Widget build(BuildContext context) {
@@ -70,7 +68,6 @@ class RecoveryTimeWidget extends StatelessWidget {
           child: AnimRecoveryTimeInfoToWhiteTheme(
             changeDuration: changeDuration, 
             recoveryPeriod: recoveryPeriod, 
-            darkTheme: darkTheme,
           ),
         ),
         Padding(
@@ -86,11 +83,11 @@ class RecoveryTimeWidget extends StatelessWidget {
         ),
         RecoveryTimePicker(
           duration: recoveryPeriod,
-          darkTheme: darkTheme,
+          darkTheme: true,
         ),
         MinsSecsBelowTimePicker(
           duration: recoveryPeriod,
-          darkTheme: darkTheme,
+          darkTheme: true,
         ),
       ],
     );
@@ -102,19 +99,16 @@ class AnimRecoveryTimeInfoToWhiteTheme extends StatelessWidget {
     Key key,
     @required this.changeDuration,
     @required this.recoveryPeriod,
-    @required this.darkTheme,
   }) : super(key: key);
 
   final Duration changeDuration;
   final ValueNotifier<Duration> recoveryPeriod;
-  final bool darkTheme;
 
   @override
   Widget build(BuildContext context) {
     return AnimatedRangeInformation(
       changeDuration: changeDuration,
       selectedDuration: recoveryPeriod,
-      darkTheme: darkTheme,
       ranges: [
         Range(
           name: "Endurance Training",

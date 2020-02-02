@@ -141,19 +141,6 @@ class _ExcerciseSelectState extends State<ExcerciseSelect> {
             ),
             //Add New Excercise Button
             AddExcerciseButton(),
-            /*
-            Positioned(
-              top: 0,
-              right: 0,
-              left: 0,
-              child: RaisedButton(
-                onPressed: (){
-                  showThemeSwitcher(context);
-                },
-                child: Text("meep"),
-              ),
-            )
-            */
           ],
         ),
       ),
