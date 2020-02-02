@@ -6,10 +6,10 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:direct_select_flutter/direct_select_container.dart';
 
 //internal: addition
-import 'package:swol/excerciseAddition/secondary/sections/recoveryTime.dart';
-import 'package:swol/excerciseAddition/matchTrainingTypeTip.dart';
-import 'package:swol/excerciseAddition/reloadingCard.dart';
-import 'package:swol/excerciseAddition/save.dart';
+import 'package:swol/pages/add/widgets/recoveryTime.dart';
+import 'package:swol/pages/add/widgets/matchTrainingTypeTip.dart';
+import 'package:swol/pages/add/widgets/reloadingCard.dart';
+import 'package:swol/pages/add/widgets/save.dart';
 
 //internal: shared
 import 'package:swol/shared/widgets/complex/fields/fields/sliders/setTarget/setTarget.dart';
