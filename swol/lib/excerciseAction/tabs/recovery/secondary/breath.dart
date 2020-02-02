@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:swol/shared/widgets/simple/heros/curveMod.dart';
 
 class ToBreath extends StatelessWidget {
   const ToBreath({
@@ -29,6 +30,9 @@ class ToBreath extends StatelessWidget {
             height: 50,
             child: Hero(
               tag: 'breath',
+              createRectTween: (begin, end) {
+                return CustomRectTween(a: begin, b: end);
+              },
               child: new Image(
                 image: new AssetImage("assets/gifs/breathMod.gif"),
                 //lines being slightly distinguishable is ugly

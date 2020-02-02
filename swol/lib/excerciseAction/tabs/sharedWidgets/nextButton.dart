@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:swol/shared/structs/anExcercise.dart';
+import 'package:swol/shared/widgets/simple/heros/curveMod.dart';
 
 class BottomNextButton extends StatelessWidget {
   const BottomNextButton({
@@ -44,7 +45,7 @@ class BottomNextButton extends StatelessWidget {
                 offset: Offset(0, 0),
                 child: Icon(
                   Icons.arrow_drop_down,
-                  color: Theme.of(context).primaryColorDark,
+                  //color: Theme.of(context).primaryColorDark,
                 ),
               ),
               forwardActionWidget,
@@ -57,6 +58,9 @@ class BottomNextButton extends StatelessWidget {
     if(wrapInHero){
       return Hero(
         tag: "excerciseContinue"+ excercise.id.toString(),
+        createRectTween: (begin, end) {
+          return CustomRectTween(a: begin, b: end);
+        },
         child: FittedBox(
           fit: BoxFit.contain,
           child: Material(

@@ -1,6 +1,7 @@
 //flutter
 import 'package:flutter/material.dart';
 import 'package:swol/shared/widgets/complex/excerciseListTile/miniTimer.dart';
+import 'package:swol/shared/widgets/simple/heros/curveMod.dart';
 
 //internal: shared
 import 'package:swol/shared/widgets/simple/heros/leading.dart';
@@ -47,6 +48,9 @@ class ExcerciseTileLeading extends StatelessWidget {
       bool isLastSet = true;
       return Hero(
         tag: "excercise" + (isLastSet ? "Complete" : "Continue") + excercise.id.toString(),
+        createRectTween: (begin, end) {
+          return CustomRectTween(a: begin, b: end);
+        },
         child: FittedBox(
           fit: BoxFit.contain,
           child: Material(

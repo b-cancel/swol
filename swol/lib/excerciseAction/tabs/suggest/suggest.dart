@@ -124,9 +124,6 @@ class _SuggestionState extends State<Suggestion> {
                 forwardAction: widget.recordSet,
                 forwardActionWidget: RichText(
                   text: TextSpan(
-                    style: TextStyle(
-                      color: Theme.of(context).primaryColorDark,
-                    ),
                     children: [
                       TextSpan(
                         text: "Record ",

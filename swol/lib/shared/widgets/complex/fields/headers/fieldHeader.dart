@@ -78,8 +78,10 @@ class _HeaderWithInfoDark extends StatelessWidget {
           offset: Offset(12, 0),
           child: IconButton(
             onPressed: () => onPressed(),
-            icon: Icon(Icons.info),
-            color: subtle ? Theme.of(context).primaryColor :  Theme.of(context).accentColor,
+            icon: Icon(
+              Icons.info,
+              color: subtle ? Theme.of(context).primaryColorDark : Theme.of(context).accentColor,
+            ),
           ),
         )
       ],

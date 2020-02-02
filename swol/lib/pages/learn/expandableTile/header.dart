@@ -59,18 +59,12 @@ class TileHeader extends StatelessWidget {
                           child: Icon(
                             headerIcon,
                             size: (size == null) ? 24 : size,
-                            color: (isOpen.value)
-                            ? Theme.of(context).primaryColorDark
-                            : Colors.white,
                           ),
                         ),
                         Text(
                           headerText,
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            color: (isOpen.value)
-                            ? Theme.of(context).primaryColorDark
-                            : Colors.white,
                           ),
                         ),
                       ],
@@ -134,9 +128,6 @@ class RotatingIcon extends StatelessWidget {
         angle: anim.value,
         child: Icon(
           Icons.keyboard_arrow_down,
-          color: (isOpen.value)
-          ? Theme.of(context).primaryColorDark
-          : Colors.white,
         ),
       ),
     );

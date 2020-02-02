@@ -11,6 +11,7 @@ import 'package:page_transition/page_transition.dart';
 import 'package:swol/excerciseAddition/addExcercise.dart';
 import 'package:swol/main.dart';
 import 'package:swol/other/otherHelper.dart';
+import 'package:swol/shared/widgets/simple/heros/curveMod.dart';
 
 class AddNewHero extends StatelessWidget {
   const AddNewHero({
@@ -24,6 +25,9 @@ class AddNewHero extends StatelessWidget {
   Widget build(BuildContext context) {
     return Hero(
       tag: 'addNew',
+      createRectTween: (begin, end) {
+        return CustomRectTween(a: begin, b: end);
+      },
       flightShuttleBuilder: (
         BuildContext flightContext,
         Animation<double> animation,

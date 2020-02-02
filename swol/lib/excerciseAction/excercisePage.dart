@@ -7,6 +7,7 @@ import 'package:page_transition/page_transition.dart';
 //internal: excercise
 import 'package:swol/shared/widgets/simple/heros/title.dart';
 import 'package:swol/shared/widgets/simple/backButton.dart';
+import 'package:swol/shared/widgets/simple/heros/note.dart';
 import 'package:swol/shared/structs/anExcercise.dart';
 
 //internal
@@ -36,6 +37,7 @@ class _ExcercisePageState extends State<ExcercisePage> {
       context, 
       PageTransition(
         type: PageTransitionType.rightToLeft, 
+        duration: Duration(milliseconds: 1300),
         child: ExcerciseNotes(
           excercise: widget.excercise,
         ),
@@ -100,7 +102,7 @@ class _ExcercisePageState extends State<ExcercisePage> {
                                 toNotes(context);
                               },
                               icon: Icon(Icons.edit),
-                              label: Text("Notes"),
+                              label: NotesHero(),
                             ),
                           ),
                         ),

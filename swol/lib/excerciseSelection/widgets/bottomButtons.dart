@@ -101,6 +101,7 @@ class _SearchExcerciseButtonState extends State<SearchExcerciseButton> {
             + "\nsearch through"
             + "\nyour excercises",
             child: FloatingActionButton.extended(
+              backgroundColor: Theme.of(context).accentColor,
               onPressed: (){
                 App.navSpread.value = true;
                 Navigator.push(

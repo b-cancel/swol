@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:swol/other/otherHelper.dart';
 import 'package:swol/shared/structs/anExcercise.dart';
+import 'package:swol/shared/widgets/simple/heros/curveMod.dart';
 
 class ExcerciseTitleHero extends StatelessWidget {
   ExcerciseTitleHero({
@@ -19,6 +20,9 @@ class ExcerciseTitleHero extends StatelessWidget {
     String generatedTag = "excerciseTitle" + excercise.id.toString();
     return Hero(
       tag: generatedTag,
+      createRectTween: (begin, end) {
+        return CustomRectTween(a: begin, b: end);
+      },
       flightShuttleBuilder: (
         BuildContext flightContext,
         Animation<double> animation,

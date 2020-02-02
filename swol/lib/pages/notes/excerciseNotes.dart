@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 //plugin
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:swol/excerciseAction/excercisePage.dart';
 
 //internl: excercise
 import 'package:swol/shared/widgets/complex/fields/fields/linkField/link.dart';
@@ -12,6 +13,7 @@ import 'package:swol/shared/functions/defaultDateTimes.dart';
 import 'package:swol/shared/widgets/simple/backButton.dart';
 import 'package:swol/shared/methods/excerciseData.dart';
 import 'package:swol/shared/structs/anExcercise.dart';
+import 'package:swol/shared/widgets/simple/heros/note.dart';
 import 'package:swol/sharedWidgets/playOnceGif.dart';
 
 //internal: other
@@ -76,8 +78,9 @@ class _ExcerciseNotesState extends State<ExcerciseNotes> {
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
+        backgroundColor: Theme.of(context).primaryColorDark,
         leading: BackFromExcercise(),
-        title: Text("Notes"),
+        title: NotesHero(),
         actions: [
           BigActionButton(
             excercise: widget.excercise,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:swol/shared/structs/anExcercise.dart';
+import 'package:swol/shared/widgets/simple/heros/curveMod.dart';
 import 'package:vector_math/vector_math_64.dart' as vect;
 
 //TODO: change the theme of the button depending on stuffs
@@ -222,6 +223,9 @@ class _DoneButtonButtonState extends State<DoneButtonButton> {
     if(widget.wrapInHero){
       return Hero(
         tag: "excerciseComplete"+ widget.excercise.id.toString(),
+        createRectTween: (begin, end) {
+          return CustomRectTween(a: begin, b: end);
+        },
         child: FittedBox(
           fit: BoxFit.contain,
           child: Material(

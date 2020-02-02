@@ -75,17 +75,19 @@ class ExcerciseData{
   //when we are adding all the excercises in on init
   //we dont care to update order until the end
   //and we dont care to update the file since the info came from the file
-  static addExcercise(AnExcercise theWorkout, {
+  static addExcercise(AnExcercise theExcercise, {
     bool updateOrderAndFile: true, 
   })async{
     //give it an ID (IF needed)
-    if(theWorkout.id == null){
-      theWorkout.id = nextID;
+    if(theExcercise.id == null){
+      theExcercise.id = nextID;
       nextID += 1;
     }
 
-    //add to workouts
-    _excercises[theWorkout.id] = theWorkout;
+    print("Adding: " + theExcercise.id.toString() + "---------------");
+
+    //add to excercises
+    _excercises[theExcercise.id] = theExcercise;
 
     //NOTE: since inprogress items are to be viewed above new items
     //we do have to update order
@@ -96,6 +98,7 @@ class ExcerciseData{
   }
 
   static deleteExcercise(int id){
+    print("-----------DELETING");
     if(_excercises.containsKey(id)){
       _excercises.remove(id);
       excercisesOrder.value.remove(id);

@@ -132,9 +132,6 @@ class _RecoveryState extends State<Recovery> with SingleTickerProviderStateMixin
             },
             forwardActionWidget: Text(
               "Next Set",
-              style: TextStyle(
-                color: Theme.of(context).primaryColorDark,
-              ),
             ),
             backAction: widget.backToRecordSet,
           )
