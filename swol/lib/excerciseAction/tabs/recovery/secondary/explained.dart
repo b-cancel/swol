@@ -1,10 +1,10 @@
 //flutter
 import 'package:flutter/material.dart';
-import 'package:swol/shared/methods/theme.dart';
 
 //internal
 import 'package:swol/shared/widgets/complex/trainingTypeTables/trainingTypes.dart';
 import 'package:swol/shared/widgets/simple/toLearnPage.dart';
+import 'package:swol/shared/methods/theme.dart';
 
 //widget
 class ExplainFunctionality extends StatelessWidget {

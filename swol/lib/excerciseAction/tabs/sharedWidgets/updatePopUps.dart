@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+
+//internal
 import 'package:swol/shared/structs/anExcercise.dart';
+import 'package:swol/shared/methods/theme.dart';
 
 //TODO: this isn't even close to finish, i jump all the guns
 
@@ -107,7 +110,7 @@ maybeAreYouSurePopUp(
       barrierDismissible: true,
       builder: (BuildContext context) {
         return Theme(
-          data: ThemeData.light(),
+          data: MyTheme.light,
           child: AlertDialog(
             title: Text("Skip Recovery Period?"),
             content: Column(
@@ -222,7 +225,7 @@ bool maybeUpdateSetTarget(
       barrierDismissible: true,
       builder: (BuildContext context) {
         return Theme(
-          data: ThemeData.light(),
+          data: MyTheme.light,
           child: AlertDialog(
             title: Text("Update Set Target?"),
             content: Text(content),

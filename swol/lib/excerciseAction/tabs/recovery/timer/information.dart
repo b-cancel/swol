@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+
+//internal: action
 import 'package:swol/excerciseAction/tabs/recovery/secondary/explained.dart';
 import 'package:swol/excerciseAction/tabs/recovery/secondary/timeDisplay.dart';
+
+//internal: shared
 import 'package:swol/shared/widgets/complex/fields/headers/ourInformationPopUp.dart';
+import 'package:swol/shared/methods/theme.dart';
 
 //explainFunctionalityPopUp(sectionWithInitialFocus)
 class InfoOutlineWhiteButton extends StatelessWidget {
@@ -36,7 +41,7 @@ class InfoOutlineWhiteButton extends StatelessWidget {
 
     //return inner widget in dark mode
     return Theme(
-      data: ThemeData.dark(),
+      data: MyTheme.dark,
       child: InfoOutlineDarkButton(
         firstTimerRunning: firstTimerRunning,
         totalDurationPassed: totalDurationPassed,

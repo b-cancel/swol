@@ -4,8 +4,8 @@ import 'package:flutter/services.dart';
 
 //internal: shared
 import 'package:swol/shared/methods/extensions/sharedPreferences.dart';
-import 'package:swol/shared/methods/theme.dart';
 import 'package:swol/shared/methods/vibrate.dart';
+import 'package:swol/shared/methods/theme.dart';
 
 //internal: utils
 import 'package:swol/sharedWidgets/triangleAngle.dart';

@@ -150,7 +150,7 @@ class _ChangeRecoveryTimeWidgetState extends State<ChangeRecoveryTimeWidget> {
           Container(
             width: MediaQuery.of(context).size.width,
             child: Theme(
-              data: ThemeData.dark(),
+              data: MyTheme.dark,
               child: FittedBox(
                 fit: BoxFit.contain,
                 child: TrainingTypeSections(

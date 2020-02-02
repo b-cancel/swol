@@ -5,15 +5,15 @@ import 'package:flutter/material.dart';
 import 'package:liquid_progress_indicator/liquid_progress_indicator.dart';
 
 //internal
-import 'package:swol/excerciseAction/tabs/recovery/secondary/explained.dart';
-import 'package:swol/excerciseAction/tabs/recovery/secondary/timeDisplay.dart';
-import 'package:swol/excerciseAction/tabs/recovery/timer/changeTime.dart';
-import 'package:swol/excerciseAction/tabs/recovery/timer/information.dart';
-import 'package:swol/excerciseAction/tabs/recovery/timer/superOverflow.dart';
 import 'package:swol/excerciseAction/tabs/recovery/timer/turnOffVibration.dart';
+import 'package:swol/excerciseAction/tabs/recovery/secondary/timeDisplay.dart';
+import 'package:swol/excerciseAction/tabs/recovery/timer/superOverflow.dart';
+import 'package:swol/excerciseAction/tabs/recovery/timer/information.dart';
+import 'package:swol/excerciseAction/tabs/recovery/timer/changeTime.dart';
+
+//internal: shared
 import 'package:swol/shared/methods/theme.dart';
 import 'package:swol/shared/methods/vibrate.dart';
-import 'package:swol/shared/widgets/complex/fields/headers/ourInformationPopUp.dart';
 
 /*
 TODO: improve turning off the vibration

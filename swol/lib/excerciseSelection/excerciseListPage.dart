@@ -111,14 +111,6 @@ class _ExcerciseSelectState extends State<ExcerciseSelect> {
           statusBarHeight: statusBarHeight,
         ),
         actions: <Widget>[
-          /*
-          IconButton(
-            onPressed: (){
-              showThemeSwitcher(context);
-            },
-            icon: Icon(Icons.settings),
-          )
-          */
           AnimatedTitleAction(
             screenWidth: screenWidth,
           ),
