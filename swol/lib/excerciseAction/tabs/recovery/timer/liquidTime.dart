@@ -210,13 +210,16 @@ class _LiquidTimeState extends State<LiquidTime> with TickerProviderStateMixin {
     //but its highly unlikely the phone will lag so much 
     //that it won't call it within the last 1 second
     if(totalDurationPassed >= (maxEffectiveTimerDuration - Duration(seconds: 1))){
-      return SuperOverflow(
-        totalDurationPassed: totalDurationPassed,
-        recoveryDurationString: timerDurationString,
-        updateState: updateState,
-        //todo finish fixing this
-        explainFunctionality: () => print("hello"), //explainFunctionalityPopUp(2),
-        maybeChangeRecoveryDuration: maybeChangeRecoveryDuration,
+      return Hero(
+        tag: 'timer',
+        child: SuperOverflow(
+          totalDurationPassed: totalDurationPassed,
+          recoveryDurationString: timerDurationString,
+          updateState: updateState,
+          //todo finish fixing this
+          explainFunctionality: () => print("hello"), //explainFunctionalityPopUp(2),
+          maybeChangeRecoveryDuration: maybeChangeRecoveryDuration,
+        ),
       );
     }
     else{ //either we are half red or not red at all
@@ -336,10 +339,13 @@ class _LiquidTimeState extends State<LiquidTime> with TickerProviderStateMixin {
                     //only show when our timer has completed
                     center: Material(
                       color: Colors.transparent,
-                      child: InkWell(
-                        onTap: () => maybeChangeRecoveryDuration(),
-                        child: Center(
-                          child: timeDisplay
+                      child: Hero(
+                        tag: 'timer',
+                        child: InkWell(
+                          onTap: () => maybeChangeRecoveryDuration(),
+                          child: Center(
+                            child: timeDisplay
+                          ),
                         ),
                       ),
                     ),

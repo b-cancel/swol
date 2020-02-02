@@ -72,7 +72,7 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
     //TODO: select the first tab based on how far we are into the workout (HARD)
     //TODO: remove the random picker test code below
     var rng = new math.Random();
-    int randomPage = (rng.nextInt(3)).clamp(0, 2);
+    int randomPage = 2; //(rng.nextInt(3)).clamp(0, 2);
 
     //the done button must be initialy show in order for the hero transition to work properly
     showDoneButton = new ValueNotifier<bool>(randomPage != 1); 
