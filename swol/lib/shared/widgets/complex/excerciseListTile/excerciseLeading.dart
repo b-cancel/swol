@@ -43,6 +43,9 @@ class _ExcerciseTileLeadingState extends State<ExcerciseTileLeading> {
   void initState() {
     widget.excercise.lastTimeStamp.addListener(updateState);
     widget.excercise.tempStartTime.addListener(updateState);
+    //TODO: confirm the two below are functional
+    widget.excercise.setTarget.addListener(updateState);
+    widget.excercise.tempSetCount.addListener(updateState);
     super.initState();
   }
 
@@ -50,15 +53,16 @@ class _ExcerciseTileLeadingState extends State<ExcerciseTileLeading> {
   void dispose() { 
     widget.excercise.tempStartTime.removeListener(updateState);
     widget.excercise.lastTimeStamp.removeListener(updateState);
+    widget.excercise.setTarget.removeListener(updateState);
+    widget.excercise.tempSetCount.removeListener(updateState);
     super.dispose();
   }
 
-  //TODO listen to "set target", "set count" to reload 
   //and also 
   @override
   Widget build(BuildContext context) {
     //NOTE: timer takes precendence over regular inprogress
-    if(widget.excercise.tempStartTime.value != AnExcercise.defaultDateTime){
+    if(widget.excercise.tempStartTime.value != AnExcercise.nullDateTime){
       return AnimatedMiniNormalTimer(
         excerciseReference: widget.excercise,
       );

@@ -75,7 +75,7 @@ class _SuggestionState extends State<Suggestion> {
 
     //set set target stuff initially
     repTarget = new ValueNotifier(
-      widget.excercise.setTarget,
+      widget.excercise.repTarget,
     );
 
     //when value changes we update it

@@ -10,7 +10,8 @@ class AnExcercise{
   static const int defaultSetTarget = 4;
 
   //default value notifier values
-  static DateTime defaultDateTime = DateTime.fromMicrosecondsSinceEpoch(0);
+  static DateTime nullDateTime = DateTime.fromMicrosecondsSinceEpoch(0);
+  static int nullInt = -1;
 
   //---Settings
 
@@ -61,9 +62,9 @@ class AnExcercise{
     ExcerciseData.updateFile();
   }
   
-  int _setTarget;
-  int get setTarget => _setTarget;
-  set setTarget(int newSetTarget){
+  ValueNotifier<int> _setTarget;
+  ValueNotifier<int> get setTarget => _setTarget;
+  set setTarget(ValueNotifier<int> newSetTarget){
     _setTarget = newSetTarget;
     ExcerciseData.updateFile();
   }
@@ -130,9 +131,9 @@ class AnExcercise{
     ExcerciseData.updateFile();
   }
   
-  int _tempSetCount;
-  int get tempSetCount => _tempSetCount;
-  set tempSetCount(int newTempSetCount){
+  ValueNotifier<int> _tempSetCount;
+  ValueNotifier<int> get tempSetCount => _tempSetCount;
+  set tempSetCount(ValueNotifier<int> newTempSetCount){
     _tempSetCount = newTempSetCount;
     ExcerciseData.updateFile();
   }
@@ -155,7 +156,7 @@ class AnExcercise{
   ){
     //variables that have notifiers 
     //that are required to have atleast a default value
-    _tempStartTime = new ValueNotifier<DateTime>(defaultDateTime);
+    _tempStartTime = new ValueNotifier<DateTime>(nullDateTime);
 
     //required to pass variables
     _name = name;
@@ -165,7 +166,7 @@ class AnExcercise{
     _predictionID = predictionID;
     _repTarget = repTarget;
     _recoveryPeriod = recoveryPeriod;
-    _setTarget = setTarget;
+    _setTarget = new ValueNotifier<int>(setTarget);
 
     //NOTE: the update to the file should only happen after everything else
     this.lastTimeStamp = new ValueNotifier<DateTime>(lastTimeStamp);
@@ -188,11 +189,15 @@ class AnExcercise{
     _predictionID = map["predictionID"];
     _repTarget = map["repTarget"];
     _recoveryPeriod = _stringToDuration(map["recoveryPeriod"]);
-    _setTarget = map["setTarget"];
+    _setTarget = new ValueNotifier<int>(
+      map["setTarget"]
+    );
 
     //---Recorded
 
-    _lastTimeStamp = _stringToDateTimeVN(map["lastTimeStamp"]);
+    _lastTimeStamp = new ValueNotifier<DateTime>(
+      _stringToDateTime(map["lastTimeStamp"])
+    );
     _lastWeight = map["lastWeight"];
     _lastReps = map["lastReps"];
 
@@ -200,13 +205,18 @@ class AnExcercise{
 
     _tempWeight = map["tempWeight"];
     _tempReps = map["tempReps"];
-    _tempStartTime = _stringToDateTimeVN(map["tempStartTime"]);
-    _tempSetCount = map["tempSetCount"];
+    _tempStartTime = new ValueNotifier<DateTime>(
+      _stringToDateTime(map["tempStartTime"])
+    );
+    var tsc = map["tempSetCount"];
+    _tempSetCount = new ValueNotifier<int>(
+      tsc == null ? nullInt : tsc,
+    );
   }
 
-  ValueNotifier<DateTime> _stringToDateTimeVN(String json){
-    if(json == null || json == "null") return new ValueNotifier<DateTime>(defaultDateTime);
-    else return new ValueNotifier<DateTime>(DateTime.parse(json));
+  DateTime _stringToDateTime(String json){
+    if(json == null || json == "null") return nullDateTime;
+    else return DateTime.parse(json);
   }
 
   Duration _stringToDuration(String json){
@@ -231,7 +241,7 @@ class AnExcercise{
       "predictionID": predictionID,
       "repTarget": repTarget,
       "recoveryPeriod": _durationToString(recoveryPeriod),
-      "setTarget": setTarget,
+      "setTarget": setTarget.value,
 
       //---Recorded
 
@@ -244,12 +254,12 @@ class AnExcercise{
       "tempWeight": tempWeight,
       "tempReps": tempReps,
       "tempStartTime": _dateTimeToString(tempStartTime.value),
-      "tempSetCount": tempSetCount,
+      "tempSetCount": tempSetCount.value,
     };
   }
 
   static String _dateTimeToString(DateTime dt){
-    if(dt == defaultDateTime) return null;
+    if(dt == nullDateTime) return null;
     else return dt?.toIso8601String() ?? null;
   }
 

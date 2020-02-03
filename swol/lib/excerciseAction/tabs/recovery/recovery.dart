@@ -38,7 +38,7 @@ class _RecoveryState extends State<Recovery> with SingleTickerProviderStateMixin
     DateTime currentTimerStart = widget.excercise.tempStartTime.value;
 
     //based on whether or not the timer has already started set the timerStart
-    if(currentTimerStart == AnExcercise.defaultDateTime){
+    if(currentTimerStart == AnExcercise.nullDateTime){
       widget.excercise.tempStartTime = new ValueNotifier<DateTime>(DateTime.now());
       timerStart = DateTime.now();
     }
@@ -128,7 +128,7 @@ class _RecoveryState extends State<Recovery> with SingleTickerProviderStateMixin
               widget.nextSet();
 
               //zero out the tempStartTimer
-              widget.excercise.tempStartTime = new ValueNotifier<DateTime>(AnExcercise.defaultDateTime);
+              widget.excercise.tempStartTime = new ValueNotifier<DateTime>(AnExcercise.nullDateTime);
             },
             forwardActionWidget: Text(
               "Next Set",
