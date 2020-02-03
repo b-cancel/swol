@@ -28,7 +28,15 @@ class ExcerciseTileLeading extends StatefulWidget {
 
 class _ExcerciseTileLeadingState extends State<ExcerciseTileLeading> {
   updateState(){
-    if(mounted) setState(() {});
+    if(mounted){
+      //when opening to the timer widget things might break
+      //that only really for testing
+      //but this delay doesn't really break anything
+      //so its here and will probably stay here
+      WidgetsBinding.instance.addPostFrameCallback((_){
+        setState(() {});
+      });
+    } 
   }
 
   @override
@@ -50,18 +58,10 @@ class _ExcerciseTileLeadingState extends State<ExcerciseTileLeading> {
   @override
   Widget build(BuildContext context) {
     //NOTE: timer takes precendence over regular inprogress
-    if(widget.excercise.tempStartTime.value !=  AnExcercise.defaultDateTime){
-      Duration timePassed = DateTime.now().difference(widget.excercise.tempStartTime.value);
-      if(timePassed > Duration(minutes: 5)){
-        return AnimatedMiniNormalTimerAlternativeWrapper(
-          excerciseReference: widget.excercise,
-        );
-      }
-      else{
-        return AnimatedMiniNormalTimer(
-          excerciseReference: widget.excercise,
-        );
-      }
+    if(widget.excercise.tempStartTime.value != AnExcercise.defaultDateTime){
+      return AnimatedMiniNormalTimer(
+        excerciseReference: widget.excercise,
+      );
     }
     else if(LastTimeStamp.isInProgress(widget.excercise.lastTimeStamp.value)){
       //TODO: this should show different things if you are BEFORE or PAST your set target

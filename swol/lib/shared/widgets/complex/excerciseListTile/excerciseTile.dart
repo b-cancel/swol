@@ -31,7 +31,7 @@ class ExcerciseTile extends StatelessWidget {
         //TODO: remove all this testing code
         //-----
         print("id:" + excercise.id.toString());
-        print("time stamp: " + excercise.lastTimeStamp.toString());
+        print("time stamp: " + excercise.lastTimeStamp.value.toString());
         print("name: " +  excercise.name.toString());
         print("url: " + excercise.url.toString());
         print("note: " + excercise.note.toString());

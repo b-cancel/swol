@@ -61,6 +61,7 @@ class _AnimatedMiniNormalTimerState extends State<AnimatedMiniNormalTimer> with 
 
     //start animation
     //NOTICE: this value never really changes, once its started... its started...
+    //NOTE: again by now we know tempStartTime isnt null
     Duration timePassed = DateTime.now().difference(widget.excerciseReference.tempStartTime.value);
     controller.forward(
       from: timeToLerpValue(timePassed),

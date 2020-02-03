@@ -114,6 +114,7 @@ class ExcerciseData{
     else print("EXCERCISE DOESN'T EXIST");
   }
 
+  //TODO: there is a better way to do this
   static updateOrder(){
     //modify to then sort
     Map<DateTime, int> dateTimeToID = new Map<DateTime, int>();

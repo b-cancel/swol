@@ -53,6 +53,7 @@ maybeAreYouSurePopUp(
   );
 
   //Are you sure
+  //todo might have to double check given the value notifier stuff
   Duration timerRuntime = DateTime.now().difference(excercise.tempStartTime.value);
   if(timerRuntime > excercise.recoveryPeriod) next();
   else{

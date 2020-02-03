@@ -42,6 +42,7 @@ class WatchUI extends StatelessWidget {
     for(int i = 0; i < 10 ; i++) angles.add(36 * i);
     angles.add(360);
 
+    //NOTE: by now we already know the timer tempStartTime isn't null
     DateTime timerStarted = excerciseReference.tempStartTime.value;
     Duration timePassed = DateTime.now().difference(timerStarted);
 
