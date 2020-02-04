@@ -16,32 +16,6 @@ class ProgressCircle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    /*
-    //NOTE: largest possible circle size seems to be 62
-    //56 feels good
-    //48 feels better
-    double circleSize = 48;
-    double circleToTicksPadding = 3;
-    double tickWidth = 4;
-    double ticksToProgressCirclePadding = 4;
-
-    //calculate stuff needed to build
-    List<int> angles = new List<int>();
-    for(int i = 0; i < 10 ; i++) angles.add(36 * i);
-    angles.add(360);
-
-    //NOTE: by now we already know the timer tempStartTime isn't null
-    DateTime timerStarted = excercise.tempStartTime.value;
-    Duration timePassed = DateTime.now().difference(timerStarted);
-
-    
-
-    double littleCircleSize = circleSize 
-      - (circleToTicksPadding * 2) 
-      - (tickWidth * 2) 
-      - (ticksToProgressCirclePadding * 2);
-      */
-
     Duration timePassed = DateTime.now().difference(excercise.tempStartTime.value);
     bool stillTimer = timePassed <= excercise.recoveryPeriod;
 
@@ -52,16 +26,24 @@ class ProgressCircle extends StatelessWidget {
         //will match the outer rim of the alarm clock's circle
         child: Stack(
           children: <Widget>[
-            GrowingPieSlice(controller: controller, stillTimer: stillTimer),
-            Visibility(
-              visible: controller.value != 1,
-              child: CircleTicks(),
-            ),
+            //background that hides the waves until the end
             Positioned.fill(
               child: Container(
-                padding: EdgeInsets.all(
-                  10,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: controller.value == 1 ? Colors.transparent : Theme.of(context).primaryColorDark,
                 ),
+              )
+            ),
+            //pie slice that show exactly how much time has passed
+            GrowingPieSlice(
+              controller: controller, 
+              stillTimer: stillTimer,
+            ),
+            //pie slices that show time passed and time selected
+            Positioned.fill(
+              child: Padding(
+                padding: EdgeInsets.all(10),
                 child: ClipOval(
                   child: FittedBox(
                     fit: BoxFit.contain,
@@ -74,6 +56,12 @@ class ProgressCircle extends StatelessWidget {
                 ),
               ),
             ),
+            //the ticks on the watch
+            Visibility(
+              visible: controller.value != 1,
+              child: CircleTicks(),
+            ),  
+            //the rim of the circle          
             CircleRim(controller: controller),
           ],
         ),
