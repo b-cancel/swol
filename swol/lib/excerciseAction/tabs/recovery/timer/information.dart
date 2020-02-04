@@ -1,14 +1,12 @@
+//flutter
 import 'package:flutter/material.dart';
 
-//internal: action
+//internal
 import 'package:swol/excerciseAction/tabs/recovery/secondary/explained.dart';
-import 'package:swol/excerciseAction/tabs/recovery/secondary/timeDisplay.dart';
-
-//internal: shared
 import 'package:swol/shared/widgets/complex/fields/headers/ourInformationPopUp.dart';
 import 'package:swol/shared/methods/theme.dart';
 
-//explainFunctionalityPopUp(sectionWithInitialFocus)
+//widget
 class InfoOutlineWhiteButton extends StatelessWidget {
   const InfoOutlineWhiteButton({
     Key key,
@@ -112,47 +110,58 @@ class InfoOutlineDarkButton extends StatelessWidget {
 
     return FittedBox(
       fit: BoxFit.contain,
-      child: Container(
-        padding: EdgeInsets.symmetric(
-          horizontal: 12,
-          vertical: 0,
+      child: Padding(
+        padding: EdgeInsets.only(
+          top: 12,
         ),
-        child: OutlineButton(
-          highlightedBorderColor: Theme.of(context).accentColor,
-          onPressed: () => showInfo(),
+        child: Padding(
           padding: EdgeInsets.symmetric(
-            horizontal: 8,
-            vertical: 4,
+            horizontal: 12,
           ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              extraMessage != null ? Text(
-                extraMessage,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18,
+          child: OutlineButton(
+            highlightedBorderColor: Theme.of(context).accentColor,
+            onPressed: () => showInfo(),
+            padding: EdgeInsets.symmetric(
+              horizontal: 8,
+              vertical: 4,
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Visibility(
+                  visible: extraMessage != null,
+                  child: Text(
+                    extraMessage ?? "",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
+                  ),
                 ),
-              ) : EmptyContainer(),
-              readyFor != null ? 
-              Text(
-                readyFor,
-                style: TextStyle(
-                  fontSize: 12,
-                  fontWeight: extraMessage == null ? FontWeight.bold : FontWeight.normal,
+                Visibility(
+                  visible: readyFor != null,
+                  child: Text(
+                    readyFor ?? "",
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: extraMessage == null ? FontWeight.bold : FontWeight.normal,
+                    ),
+                  ),
                 ),
-              )
-              : EmptyContainer(),
-              lateFor != null ? Text(
-                lateFor,
-                style: TextStyle(
-                  fontSize: 10,
-                ),
-              ) : EmptyContainer(),
-            ],
-          ),
-        )
+                Visibility(
+                  visible: lateFor != null,
+                  child: Text(
+                    lateFor ?? "",
+                    style: TextStyle(
+                      fontSize: 10,
+                    ),
+                  ),
+                )
+              ],
+            ),
+          )
+        ),
       ),
     );
   }

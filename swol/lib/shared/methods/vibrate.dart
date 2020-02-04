@@ -1,11 +1,12 @@
+import 'package:flutter/material.dart';
 import 'package:vibration/vibration.dart';
 
 class Vibrator{
   static bool _hasCheckedForVibrator = false;
   static bool _hasVibration = false;
-  static bool isVibrating = false;
+  static ValueNotifier<bool> isVibrating = new ValueNotifier<bool>(false);
 
-  static _vibrationCheck()async{
+  static _vibrationCheck() async{
     if(_hasCheckedForVibrator == false){
       _hasCheckedForVibrator = true;
       _hasVibration = await Vibration.hasVibrator();
@@ -23,8 +24,8 @@ class Vibrator{
 
   static startConstantVibration()async{
     await _vibrationCheck();
-    if(_hasVibration && isVibrating == false){
-      isVibrating = true;
+    if(_hasVibration){
+      isVibrating.value = true;
       Vibration.vibrate(
         pattern: [500],
         intensities: [255],
@@ -35,8 +36,8 @@ class Vibrator{
 
   static stopVibration()async{
     await _vibrationCheck();
-    if(_hasVibration && isVibrating == true){
-      isVibrating = false;
+    if(_hasVibration){
+      isVibrating.value = false;
       Vibration.cancel();
     }
   }

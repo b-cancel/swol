@@ -120,9 +120,7 @@ class SuperOverflow extends StatelessWidget {
                 Container(
                   color: Colors.red,
                 ),
-                PulsingBackground(
-                  width: MediaQuery.of(context).size.width,
-                ),
+                PulsingBackground(),
                 Positioned.fill(
                   child: FittedBox(
                     fit: BoxFit.contain,
@@ -193,9 +191,7 @@ class SuperOverflow extends StatelessWidget {
               ],
             ),
           ),
-          VibrationSwitch(
-            updateState: updateState,
-          ),
+          VibrationSwitch(),
         ],
       ),
     );

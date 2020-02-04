@@ -1,10 +1,15 @@
+//flutter
 import 'package:flutter/material.dart';
+
+//internal: action
 import 'package:swol/excerciseAction/tabs/sharedWidgets/bottomButtons.dart';
 import 'package:swol/excerciseAction/tabs/recovery/secondary/breath.dart';
 import 'package:swol/excerciseAction/tabs/recovery/timer/liquidTime.dart';
-import 'package:swol/shared/structs/anExcercise.dart';
-import 'package:swol/shared/widgets/simple/heros/curveMod.dart';
 
+//internal: shared
+import 'package:swol/shared/structs/anExcercise.dart';
+
+//widget
 class Recovery extends StatefulWidget { 
   Recovery({
     @required this.excercise,
@@ -21,11 +26,6 @@ class Recovery extends StatefulWidget {
 }
 
 class _RecoveryState extends State<Recovery> with SingleTickerProviderStateMixin {
-  //the time our timer starts that doesn't change
-  DateTime timerStart;
-  bool timerJustStarted;
-
-  //so we can update our excercises duration
   ValueNotifier<Duration> recoveryDuration;
 
   //function that is removable from listener
@@ -36,21 +36,13 @@ class _RecoveryState extends State<Recovery> with SingleTickerProviderStateMixin
   //init
   @override
   void initState() {
-    DateTime currentTimerStart = widget.excercise.tempStartTime.value;
-
-    //based on whether or not the timer has already started set the timerStart
-    if(currentTimerStart == AnExcercise.nullDateTime){
+    //start the timer or allow it to continue
+    if(widget.excercise.tempStartTime.value == AnExcercise.nullDateTime){
       widget.excercise.tempStartTime = new ValueNotifier<DateTime>(DateTime.now());
-      timerStart = DateTime.now();
     }
-    else timerStart = currentTimerStart;
     
-    //set recovery duration init
-    recoveryDuration = new ValueNotifier(
-      widget.excercise.recoveryPeriod,
-    );
-
-    //if recovery duration changes we must update it
+    //setup things to make recovery duration changeable
+    recoveryDuration = new ValueNotifier(widget.excercise.recoveryPeriod);
     recoveryDuration.addListener(updateRecoveryDuration);
 
     //super init
@@ -69,7 +61,6 @@ class _RecoveryState extends State<Recovery> with SingleTickerProviderStateMixin
   @override
   Widget build(BuildContext context) {
     Radius cardRadius = Radius.circular(24);
-    String generatedHeroTag = "timer" + widget.excercise.id.toString();
 
     //build
     return Container(
@@ -93,30 +84,10 @@ class _RecoveryState extends State<Recovery> with SingleTickerProviderStateMixin
                   ),
                   child: Container(
                     alignment: Alignment.center,
-                    child: Hero(
-                      tag: generatedHeroTag,
-                      createRectTween: (begin, end) {
-                        return CustomRectTween(a: begin, b: end);
-                      },
-                      child: FittedBox(
-                        fit: BoxFit.contain,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.yellow,
-                            shape: BoxShape.circle,
-                          ),
-                          height: MediaQuery.of(context).size.width,
-                          width: MediaQuery.of(context).size.width,
-                        ),
-                      )
-                      
-                      
-                      /*LiquidTime(
-                        excercise: widget.excercise,
-                        changeableTimerDuration: recoveryDuration,
-                        timerStart: timerStart,
-                        showIcon: false,
-                      ),*/
+                    child: Timer(
+                      excercise: widget.excercise,
+                      changeableTimerDuration: recoveryDuration,
+                      showIcon: false,
                     ),
                   )
                 ),

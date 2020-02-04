@@ -100,7 +100,10 @@ class TimeDisplay extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   mainAxisAlignment: topArrowUp == true ? MainAxisAlignment.start : MainAxisAlignment.end,
                   children: <Widget>[
-                    (topArrowUp == true) ? topTriangle : EmptyContainer(),
+                    Visibility(
+                      visible: topArrowUp == true,
+                      child: topTriangle,
+                    ),
                     FittedBox(
                       fit: BoxFit.contain,
                       child: Text(
@@ -111,12 +114,15 @@ class TimeDisplay extends StatelessWidget {
                         ),
                       ),
                     ),
-                    (topArrowUp == false) ? Padding(
-                      padding: EdgeInsets.only(
-                        bottom: 16,
+                    Visibility(
+                      visible: topArrowUp == false,
+                      child: Padding(
+                        padding: EdgeInsets.only(
+                          bottom: 16,
+                        ),
+                        child: topTriangle,
                       ),
-                      child: topTriangle,
-                    ) : EmptyContainer(),
+                    ),
                   ],
                 ),
               ),
@@ -156,21 +162,6 @@ class TimeDisplay extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
-}
-
-class EmptyContainer extends StatelessWidget {
-  const EmptyContainer({
-    Key key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 0,
-      width: 0,
-      child: Container(),
     );
   }
 }

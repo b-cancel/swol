@@ -8,16 +8,27 @@ import 'package:flutter_icons/flutter_icons.dart';
 import 'package:swol/shared/methods/vibrate.dart';
 
 //build
-class VibrationSwitch extends StatelessWidget {
-  const VibrationSwitch({
-    this.updateState,
-    Key key,
-  }) : super(key: key);
+class VibrationSwitch extends StatefulWidget {
+  @override
+  _VibrationSwitchState createState() => _VibrationSwitchState();
+}
 
-  //required because if this is the last time vibration started
-  //then setState won't automatically be called
-  //and the vibration button won't go away
-  final Function updateState;
+class _VibrationSwitchState extends State<VibrationSwitch> {
+  updateState(){
+    if(mounted) setState(() {});
+  }
+
+  @override
+  void initState() {
+    Vibrator.isVibrating.addListener(updateState);
+    super.initState();
+  }
+
+  @override
+  void dispose() { 
+    Vibrator.isVibrating.removeListener(updateState);
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,15 +36,13 @@ class VibrationSwitch extends StatelessWidget {
       top: 0,
       left: 0,
       child: Container(
+        padding: EdgeInsets.all(24),
         child: Visibility(
-          visible: (Vibrator.isVibrating) ? true : false,
+          visible: (Vibrator.isVibrating.value) ? true : false,
           child: IconButton(
             padding: EdgeInsets.all(16),
             tooltip: 'Turn Off Vibration',
-            onPressed: (){
-              Vibrator.stopVibration();
-              if(updateState != null) updateState();
-            },
+            onPressed: () => Vibrator.stopVibration(),
             icon: Icon(
               MaterialCommunityIcons.getIconData("vibrate-off")
             ),

@@ -5,32 +5,21 @@ import 'package:loading_indicator/loading_indicator.dart';
 import 'package:progress_indicators/progress_indicators.dart';
 
 class PulsingBackground extends StatelessWidget {
-  PulsingBackground({
-    @required this.width,
-  });
-
-  final double width;
-
   @override
   Widget build(BuildContext context) {
-    //---the glowing indicator that we may or may not use
-    
-    //max size of pusler given width and nanually set padding
-    double maxWidthIndicator = width + (24.0 * 2);
-
     //in case at some point I want to switch between indicators
     Duration pusleDuration = Duration(milliseconds: 1000); //so its serves as a indicator of change as well
     List<Widget> pulsingBackgrounds = [
       //import 'package:flutter_spinkit/flutter_spinkit.dart';
       SpinKitDualRing(
-        lineWidth: maxWidthIndicator/2,
+        lineWidth: 1/2,
         color: Colors.white,
-        size: maxWidthIndicator,
+        size: 1,
         duration: pusleDuration,
       ),
       SpinKitDoubleBounce( //ABBY LIKED
         color: Colors.white,
-        size: maxWidthIndicator,
+        size: 1,
         duration: pusleDuration,
       ),
       //import 'package:loading_indicator/loading_indicator.dart';
@@ -52,19 +41,27 @@ class PulsingBackground extends StatelessWidget {
     ];
 
     //pusling backgrond widget that may or may not be used
-    return Container(
-      child: Stack(
-        children: <Widget>[
-          Container(
-            color: Colors.red,
-          ),
-          Container(
-            alignment: Alignment.center,
-            width: maxWidthIndicator,
-            height: maxWidthIndicator,
-            child: pulsingBackgrounds[1],
-          ),
-        ],
+    return Positioned.fill(
+      child: Container(
+        child: Stack(
+          children: <Widget>[
+            Positioned.fill(
+              child: Container(
+                color: Colors.red,
+              ),
+            ),
+            Positioned.fill(
+              child: Container(
+                width: 1,
+                height: 1,
+                child: FittedBox(
+                  fit: BoxFit.contain,
+                  child: pulsingBackgrounds[1],
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
