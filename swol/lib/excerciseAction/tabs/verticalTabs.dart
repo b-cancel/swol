@@ -11,6 +11,7 @@ import 'package:swol/excerciseAction/tabs/recovery/recovery.dart';
 import 'package:swol/excerciseAction/tabs/sharedWidgets/doneButton.dart';
 import 'package:swol/excerciseAction/tabs/suggest/suggest.dart';
 import 'package:swol/shared/structs/anExcercise.dart';
+import 'package:swol/shared/widgets/simple/heros/curveMod.dart';
 
 /// A vertical tab widget for flutter
 class VerticalTabs extends StatefulWidget {
@@ -79,15 +80,18 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
     controlAnimatedGoalSet = new ValueNotifier<int>(randomPage);
     controlAnimatedGoalSet.addListener(updateState);
 
-    //travel to the page that has initial focus
+    //travel to the page that has initial 
+    /*
     WidgetsBinding.instance.addPostFrameCallback((_){
       WidgetsBinding.instance.addPostFrameCallback((_){
         toPage(randomPage, instant: true);
       });
     });
+    */
 
     pageViewController = PageController(
       keepPage: true,
+      initialPage: randomPage,
     );
 
     //handle goal set caluclation and display
@@ -126,6 +130,7 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
           //TODO: when we are done with debuging we can uncomment this
           //scrollPhysics: NeverScrollableScrollPhysics(),
           scrollDirection: Axis.vertical,
+        
           children: <Widget>[
             Suggestion( 
               excercise: widget.excercise,

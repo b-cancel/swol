@@ -69,10 +69,9 @@ class _RecoveryState extends State<Recovery> with SingleTickerProviderStateMixin
   @override
   Widget build(BuildContext context) {
     Radius cardRadius = Radius.circular(24);
-
     String generatedHeroTag = "timer" + widget.excercise.id.toString();
-    print("from regular: " + generatedHeroTag);
 
+    //build
     return Container(
       child: Column(
         mainAxisSize: MainAxisSize.max,
