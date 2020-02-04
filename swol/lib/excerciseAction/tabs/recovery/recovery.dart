@@ -69,29 +69,6 @@ class _RecoveryState extends State<Recovery> with SingleTickerProviderStateMixin
   Widget build(BuildContext context) {
     Radius cardRadius = Radius.circular(24);
 
-    Widget child = Column(
-      mainAxisSize: MainAxisSize.min,
-      children: <Widget>[
-        Container(
-          decoration: BoxDecoration(
-            color: Theme.of(context).cardColor,
-            borderRadius: BorderRadius.only(
-              bottomLeft: cardRadius,
-              bottomRight: cardRadius,
-            ),
-          ),
-          child: Container(
-            alignment: Alignment.center,
-            child: LiquidTime(
-              changeableTimerDuration: recoveryDuration,
-              timerStart: timerStart,
-              showIcon: false,
-            ),
-          )
-        ),
-      ],
-    );
-
     return Container(
       child: Column(
         mainAxisSize: MainAxisSize.max,
@@ -100,7 +77,45 @@ class _RecoveryState extends State<Recovery> with SingleTickerProviderStateMixin
         //everything including bottom button and spacing
         children: <Widget>[
           PreviousCardCorners(
-            child: child, 
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Container(
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).cardColor,
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: cardRadius,
+                      bottomRight: cardRadius,
+                    ),
+                  ),
+                  child: Container(
+                    alignment: Alignment.center,
+                    child: Hero(
+                      tag: "timer" + widget.excercise.id.toString(),
+                      child: FittedBox(
+                        fit: BoxFit.contain,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.yellow,
+                            shape: BoxShape.circle,
+                          ),
+                          height: MediaQuery.of(context).size.width,
+                          width: MediaQuery.of(context).size.width,
+                        ),
+                      )
+                      
+                      
+                      /*LiquidTime(
+                        excercise: widget.excercise,
+                        changeableTimerDuration: recoveryDuration,
+                        timerStart: timerStart,
+                        showIcon: false,
+                      ),*/
+                    ),
+                  )
+                ),
+              ],
+            ), 
             cardRadius: cardRadius,
           ),
           Expanded(
@@ -163,6 +178,7 @@ class PreviousCardCorners extends StatelessWidget {
         Stack(
           children: <Widget>[
             child,
+            //-------------------------Top Left-------------------------
             Positioned(
               top: 0,
               left: 0,
@@ -192,6 +208,7 @@ class PreviousCardCorners extends StatelessWidget {
                 ],
               ),
             ),
+            //-------------------------Top Right-------------------------
             Positioned(
               top: 0,
               right: 0,

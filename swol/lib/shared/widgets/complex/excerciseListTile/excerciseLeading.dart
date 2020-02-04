@@ -64,7 +64,7 @@ class _ExcerciseTileLeadingState extends State<ExcerciseTileLeading> {
     //NOTE: timer takes precendence over regular inprogress
     if(widget.excercise.tempStartTime.value != AnExcercise.nullDateTime){
       return AnimatedMiniNormalTimer(
-        excerciseReference: widget.excercise,
+        excercise: widget.excercise,
       );
     }
     else if(LastTimeStamp.isInProgress(widget.excercise.lastTimeStamp.value)){

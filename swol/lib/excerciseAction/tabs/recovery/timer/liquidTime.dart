@@ -15,6 +15,7 @@ import 'package:swol/excerciseAction/tabs/recovery/timer/changeTime.dart';
 //internal: shared
 import 'package:swol/shared/methods/theme.dart';
 import 'package:swol/shared/methods/vibrate.dart';
+import 'package:swol/shared/structs/anExcercise.dart';
 
 /*
 TODO: improve turning off the vibration
@@ -42,12 +43,14 @@ should not restart the vibration
 //build
 class LiquidTime extends StatefulWidget { 
   LiquidTime({
+    @required this.excercise,
     @required this.timerStart,
     @required this.changeableTimerDuration,
     this.showArrows: true,
     this.showIcon: true,
   });
 
+  final AnExcercise excercise;
   //initial controller set
   final DateTime timerStart;
   //time before we go any level of red
@@ -210,16 +213,13 @@ class _LiquidTimeState extends State<LiquidTime> with TickerProviderStateMixin {
     //but its highly unlikely the phone will lag so much 
     //that it won't call it within the last 1 second
     if(totalDurationPassed >= (maxEffectiveTimerDuration - Duration(seconds: 1))){
-      return Hero(
-        tag: 'timer',
-        child: SuperOverflow(
-          totalDurationPassed: totalDurationPassed,
-          recoveryDurationString: timerDurationString,
-          updateState: updateState,
-          //todo finish fixing this
-          explainFunctionality: () => print("hello"), //explainFunctionalityPopUp(2),
-          maybeChangeRecoveryDuration: maybeChangeRecoveryDuration,
-        ),
+      return SuperOverflow(
+        totalDurationPassed: totalDurationPassed,
+        recoveryDurationString: timerDurationString,
+        updateState: updateState,
+        //todo finish fixing this
+        explainFunctionality: () => print("hello"), //explainFunctionalityPopUp(2),
+        maybeChangeRecoveryDuration: maybeChangeRecoveryDuration,
       );
     }
     else{ //either we are half red or not red at all
@@ -339,13 +339,10 @@ class _LiquidTimeState extends State<LiquidTime> with TickerProviderStateMixin {
                     //only show when our timer has completed
                     center: Material(
                       color: Colors.transparent,
-                      child: Hero(
-                        tag: 'timer',
-                        child: InkWell(
-                          onTap: () => maybeChangeRecoveryDuration(),
-                          child: Center(
-                            child: timeDisplay
-                          ),
+                      child: InkWell(
+                        onTap: () => maybeChangeRecoveryDuration(),
+                        child: Center(
+                          child: timeDisplay
                         ),
                       ),
                     ),
@@ -357,6 +354,8 @@ class _LiquidTimeState extends State<LiquidTime> with TickerProviderStateMixin {
           VibrationSwitch(),
         ],
       );
+
+      print("----------from regular: " + "timer" + widget.excercise.id.toString());
 
       return Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
