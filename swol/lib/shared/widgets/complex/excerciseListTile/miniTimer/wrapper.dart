@@ -72,7 +72,7 @@ class _AnimatedMiniNormalTimerState extends State<AnimatedMiniNormalTimer> with 
   Widget build(BuildContext context) {
     return WatchUI(
       controller: controller,
-      excerciseReference: widget.excercise,
+      excercise: widget.excercise,
     );
   }
 }

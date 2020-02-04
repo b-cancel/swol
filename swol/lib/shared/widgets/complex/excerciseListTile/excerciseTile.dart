@@ -45,7 +45,7 @@ class ExcerciseTile extends StatelessWidget {
         App.navSpread.value = true;
 
         //page transition
-        Duration transitionDuration = Duration(milliseconds: 10000);
+        Duration transitionDuration = Duration(milliseconds: 3000);
         PageTransition page = PageTransition(
           duration: transitionDuration,
           type: PageTransitionType.upToDown, 

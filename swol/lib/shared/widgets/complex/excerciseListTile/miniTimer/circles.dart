@@ -1,8 +1,8 @@
 //flutter
 import 'package:flutter/material.dart';
+import 'package:swol/shared/widgets/complex/excerciseListTile/miniTimer/invertedCircleClipper.dart';
 
 //internal
-import 'package:swol/shared/widgets/complex/excerciseListTile/miniTimer/shakingAlarm.dart';
 import 'package:swol/shared/widgets/simple/triangleAngle.dart';
 import 'package:swol/other/otherHelper.dart';
 
