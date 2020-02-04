@@ -3,8 +3,9 @@ import 'package:swol/excerciseAction/tabs/sharedWidgets/bottomButtons.dart';
 import 'package:swol/excerciseAction/tabs/recovery/secondary/breath.dart';
 import 'package:swol/excerciseAction/tabs/recovery/timer/liquidTime.dart';
 import 'package:swol/shared/structs/anExcercise.dart';
+import 'package:swol/shared/widgets/simple/heros/curveMod.dart';
 
-class Recovery extends StatefulWidget {
+class Recovery extends StatefulWidget { 
   Recovery({
     @required this.excercise,
     @required this.backToRecordSet,
@@ -69,6 +70,9 @@ class _RecoveryState extends State<Recovery> with SingleTickerProviderStateMixin
   Widget build(BuildContext context) {
     Radius cardRadius = Radius.circular(24);
 
+    String generatedHeroTag = "timer" + widget.excercise.id.toString();
+    print("from regular: " + generatedHeroTag);
+
     return Container(
       child: Column(
         mainAxisSize: MainAxisSize.max,
@@ -91,7 +95,10 @@ class _RecoveryState extends State<Recovery> with SingleTickerProviderStateMixin
                   child: Container(
                     alignment: Alignment.center,
                     child: Hero(
-                      tag: "timer" + widget.excercise.id.toString(),
+                      tag: generatedHeroTag,
+                      createRectTween: (begin, end) {
+                        return CustomRectTween(a: begin, b: end);
+                      },
                       child: FittedBox(
                         fit: BoxFit.contain,
                         child: Container(

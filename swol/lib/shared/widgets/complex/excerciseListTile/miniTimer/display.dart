@@ -35,13 +35,14 @@ class WatchUI extends StatelessWidget {
     //sizes
     double total = 56;
     double circleSize = 48;
-
-    print("----------from mini: " + "timer" + excerciseReference.id.toString());
+    
+    String generatedTag = "timer" + excerciseReference.id.toString();
+    print("----------from mini: " + generatedTag);
 
     //the box I think will be in the hero
     //so that the fitted box within it can grow the widget inside of it
     return Hero(
-      tag: "timer" + excerciseReference.id.toString(),
+      tag: generatedTag,
       child: Container( 
         //color: Colors.black,
         child: FittedBox(

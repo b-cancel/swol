@@ -34,7 +34,7 @@ class Suggestion extends StatefulWidget {
 }
 
 class _SuggestionState extends State<Suggestion> {
-  //function select
+  //function select 
   ValueNotifier<int> functionIndex;
   String functionValue;
 

@@ -97,7 +97,7 @@ class ContinueOrComplete extends StatelessWidget {
       child: Text(
         afterLastSet ? "Finished?" : "Next Set?",
         style: TextStyle(
-          color: Theme.of(context).primaryColorDark,
+          color: Colors.white,
           fontWeight: FontWeight.bold,
         ),
       ),
