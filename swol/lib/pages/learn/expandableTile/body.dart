@@ -46,7 +46,6 @@ class TileBody extends StatelessWidget {
                 ),
                 clipBehavior: Clip.antiAlias,
                 child: Container(
-                  key: UniqueKey(),
                   color: Theme.of(context).cardColor,
                   padding: EdgeInsets.only(
                     bottom: 24,

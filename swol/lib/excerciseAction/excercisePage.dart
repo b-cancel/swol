@@ -1,6 +1,6 @@
 //flutter
 import 'package:flutter/material.dart';
-import 'package:flutter_page_transition/flutter_page_transition.dart';
+import 'package:page_transition/page_transition.dart';
 
 //plugin
 
@@ -35,7 +35,7 @@ class _ExcercisePageState extends State<ExcercisePage> {
     Navigator.push(
       context, 
       PageTransition(
-        type: PageTransitionType.slideInLeft,
+        type: PageTransitionType.rightToLeft,
         duration: Duration(milliseconds: 300),
         child: ExcerciseNotes(
           excercise: widget.excercise,

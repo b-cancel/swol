@@ -38,8 +38,8 @@ class LearnExcercise extends StatefulWidget {
 }
 
 class _LearnExcerciseState extends State<LearnExcercise> {
-  GlobalKey listKey = new GlobalKey();
-  AutoScrollController autoScrollController = new AutoScrollController();
+  final GlobalKey listKey = new GlobalKey();
+  final AutoScrollController autoScrollController = new AutoScrollController();
 
   //is opens
   List<ValueNotifier<bool>> allIsOpens = new List<ValueNotifier<bool>>();
@@ -201,6 +201,7 @@ class _LearnExcerciseState extends State<LearnExcercise> {
                 headerText: "Introduction", 
                 expandedChild: IntroductionBody(),
               ),
+              
               ExpandableTile(
                 autoScrollController: autoScrollController,
                 index: 1,
@@ -252,6 +253,7 @@ class _LearnExcerciseState extends State<LearnExcercise> {
                 expandedChild: ResearchBody(),
                 theOnlyException: true,
               ),
+              
               SliverFillRemaining(
                 hasScrollBody: false,
                 fillOverscroll: false,

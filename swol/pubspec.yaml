@@ -30,7 +30,7 @@ dependencies:
   shimmer: ^1.0.1
 
   #inidicate that a list is a list
-  flutter_staggered_animations: "^0.1.2"
+  flutter_staggered_animations: ^0.1.2
 
   #info pop up
   awesome_dialog: ^0.1.0
@@ -42,8 +42,8 @@ dependencies:
   flutter_custom_clippers: ^1.1.0
 
   #feature discovery
-  feature_discovery: ^0.6.0 #import 'package:feature_discovery/feature_discovery.dart';
-  highlighter_coachmark: ^0.0.3 #import 'package:highlighter_coachmark/highlighter_coachmark.dart';
+  feature_discovery: ^0.6.0
+  highlighter_coachmark: ^0.0.3
 
   #swiper
   #flutter_swiper: ^1.1.6 #100rated (alternate)
@@ -79,12 +79,11 @@ dependencies:
   #SETTINGS
   shared_preferences: ^0.5.3+4
 
-  #THEME (for theme if I add it)
-  #provider: ^3.1.0 #^2.0.1
-
-  #STICKY HEADERS 
+  #STICKY HEADERS (nothing older works)
   flutter_sticky_header: ^0.4.0 
-  sticky_headers: ^0.1.8+1 #for expandable tile
+
+  #SCROLL TO TOP (for my expandable)
+  scroll_to_index: '1.0.2' 
 
   #VIBRATION
   vibration: ^1.2.2
@@ -93,18 +92,14 @@ dependencies:
   liquid_progress_indicator: ^0.3.2
 
   #PICKER (for time picking)
-  flutter_picker: ^1.1.0
-
-  #SCROLL TO TOP (for my expandable)
-  scroll_to_index: ^1.0.5
+  flutter_picker: ^1.1.0 
 
   #ICONS
   font_awesome_flutter: ^8.4.0
   flutter_icons: ^0.3.1
 
   #TRANSITIONS
-  page_transition: ^1.1.4 
-  flutter_page_transition: ^0.1.6 #for slide left and right
+  page_transition: ^1.1.5
 
 flutter_native_splash:
   image: assets/splash/splashCut.png

@@ -40,66 +40,57 @@ class ExpandableTile extends StatefulWidget {
 class _ExpandableTileState extends State<ExpandableTile> {
   @override
   Widget build(BuildContext context) {
-    //eventhough it looks kinda ugly when no sections are open
-    //not letting the user do this messes with usability
-    openOrClose(){
-      widget.isOpen.value = !widget.isOpen.value;
-      setState(() {});
-    }
-
-    //problem with auto scroll tag
-
-    /*
-    controller: widget.autoScrollController,
+    return AutoScrollTag(
+      controller: widget.autoScrollController,
       key: ValueKey(widget.index),
       index: widget.index,
-    */
-
-
-    //build
-    return SliverStickyHeader(
-      header: AnimatedBuilder(
-        animation: widget.isOpen,
-        builder: (context, child){
-          return TileHeader(
-            headerIcon: widget.headerIcon,
-            headerText: widget.headerText,
-            size: widget.size,
-            openOrClose: () => openOrClose(),
-            isOpen: widget.isOpen,
-          );
-        },
-      ),
-      sliver: new SliverList(
-        delegate: new SliverChildListDelegate([
-          AnimatedBuilder(
-            animation: widget.isOpen,
-            builder: (context, child){
-              return AnimatedSwitcher(
-                duration: Duration(milliseconds: 300),
-                transitionBuilder: (widget, animation){
-                  return SizeTransition(
-                    child: widget,
-                    sizeFactor: Tween<double>(
-                      begin: 0, 
-                      end: 1,
-                    ).animate(animation),
-                  );
-                },
-                child: (widget.isOpen.value) 
-                ? TileBody(
-                  child: widget.expandedChild,
-                  theOnlyException: widget.theOnlyException,
-                )
-                : Container(
-                  key: UniqueKey(),
-                  height: 0,
-                  width: MediaQuery.of(context).size.width,
-                ),
-              );
-            },
-          ),
-        ]),
+      child: SliverStickyHeader(
+        header: AnimatedBuilder(
+          animation: widget.isOpen,
+          builder: (context, child){
+            return TileHeader(
+              headerIcon: widget.headerIcon,
+              headerText: widget.headerText,
+              size: widget.size,
+              openOrClose: (){
+                widget.isOpen.value = !widget.isOpen.value;
+                setState(() {});
+              },
+              isOpen: widget.isOpen,
+            );
+          },
+        ),
+        sliver: new SliverList(
+          delegate: new SliverChildListDelegate([
+            AnimatedBuilder(
+              animation: widget.isOpen,
+              builder: (context, child){
+                return AnimatedSwitcher(
+                  duration: Duration(milliseconds: 300),
+                  transitionBuilder: (widget, animation){
+                    return SizeTransition(
+                      child: widget,
+                      sizeFactor: Tween<double>(
+                        begin: 0, 
+                        end: 1,
+                      ).animate(animation),
+                    );
+                  },
+                  child: (widget.isOpen.value) 
+                  ? TileBody(
+                    child: widget.expandedChild,
+                    theOnlyException: widget.theOnlyException,
+                  )
+                  : Container(
+                    key: UniqueKey(),
+                    height: 0,
+                    width: MediaQuery.of(context).size.width,
+                  ),
+                );
+              },
+            ),
+          ]),
+        ),
       ),
     );
   }

@@ -167,13 +167,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.1.7+2"
-  flutter_page_transition:
-    dependency: "direct main"
-    description:
-      name: flutter_page_transition
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.1.6"
   flutter_picker:
     dependency: "direct main"
     description:
@@ -386,7 +379,7 @@ packages:
       name: scroll_to_index
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.5"
+    version: "1.0.2"
   shared_preferences:
     dependency: "direct main"
     description:
@@ -434,13 +427,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.12.0"
-  sticky_headers:
-    dependency: "direct main"
-    description:
-      name: sticky_headers
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.1.8+1"
   stream_channel:
     dependency: transitive
     description:
