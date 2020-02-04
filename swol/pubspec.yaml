@@ -84,9 +84,10 @@ dependencies:
 
   #STICKY HEADERS 
   flutter_sticky_header: ^0.4.0 
+  sticky_headers: ^0.1.8+1 #for expandable tile
 
   #VIBRATION
-  vibration: ^1.2.1
+  vibration: ^1.2.2
 
   #LOADING (for big timer)
   liquid_progress_indicator: ^0.3.2
@@ -95,7 +96,7 @@ dependencies:
   flutter_picker: ^1.1.0
 
   #SCROLL TO TOP (for my expandable)
-  scroll_to_index: ^1.0.2
+  scroll_to_index: ^1.0.5
 
   #ICONS
   font_awesome_flutter: ^8.4.0
