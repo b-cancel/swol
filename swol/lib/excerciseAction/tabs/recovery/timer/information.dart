@@ -6,6 +6,49 @@ import 'package:swol/excerciseAction/tabs/recovery/secondary/explained.dart';
 import 'package:swol/shared/widgets/complex/fields/headers/ourInformationPopUp.dart';
 import 'package:swol/shared/methods/theme.dart';
 
+/*
+-------------------------the button-------------------------
+
+*****before you pass your designated time
+1. "Recoverying For Your Next Set"
+2. *what training type you are ready for*
+
+*****after you pass your designated time
+1. "Move onto your next set"
+2. *what training type you are ready for*
+
+*****after 5 minutes
+1. "You should warm up again"
+
+
+*****after 10 minutes
+1. "You Waited Too long"
+2. its been X time since your last set
+
+*****after so much longer its logical to assume they just forgot to stop it
+1. "You Must've Forgot To Finish"
+2. its been x time since your last set
+
+-------------------------the pop up-------------------------
+
+*****before
+title: "Wait!"
+subtitle: "finish recoverying for your next set"
+
+*****after
+title: "Move " 
+
+*****after 5
+
+*****after 10
+
+*****after ridic
+title: Its Been Way Too Long
+subtitle: You Must've Forgotten To Finish
+*/
+
+//"you must warm up again for optimal results"
+
 //widget
 class InfoOutlineWhiteButton extends StatelessWidget {
   const InfoOutlineWhiteButton({
@@ -21,9 +64,9 @@ class InfoOutlineWhiteButton extends StatelessWidget {
   Widget build(BuildContext context) {
     //determine what section to focus on first when the user is looking for guidance
     int sectionWithInitialFocus;
-    if(totalDurationPassed <= Duration(minutes: 1)) sectionWithInitialFocus = 0;
-    else if(totalDurationPassed < Duration(minutes: 3)) sectionWithInitialFocus = 1;
-    else sectionWithInitialFocus = 2;
+    if(totalDurationPassed <= Duration(minutes: 1)) sectionWithInitialFocus = 0; //endurance
+    else if(totalDurationPassed < Duration(minutes: 3)) sectionWithInitialFocus = 1; //hypertrohpy
+    else sectionWithInitialFocus = 2; //strength
 
     //generate function
     Function showInfo = () => infoPopUpFunction(
@@ -31,6 +74,8 @@ class InfoOutlineWhiteButton extends StatelessWidget {
       //assumed for the users within this class
       context,
       //vars
+      title: "Wait",
+      subtitle: "to finish recoverying",
       isDense: true,
       body: ExplainFunctionality(
         sectionWithInitialFocus: sectionWithInitialFocus,
@@ -65,11 +110,10 @@ class InfoOutlineDarkButton extends StatelessWidget {
   Widget build(BuildContext context) {
     //initially tells the user what happening
     //then explains they can no longer to the training type behind the one they were aiming for
-    String extraMessage = firstTimerRunning ? "Flushing Acid Build Up" : null;
+    String extraMessage = firstTimerRunning ? "Recoverying For Next Set" : "Move Onto Your Next Set";
     
     //reminds the user what this duration of break is good for
     String readyFor; //only empty for the first 15 seconds
-    String lateFor;
 
     //we are ready for some type of workout
     if(totalDurationPassed < Duration(seconds: 15) == false 
@@ -79,33 +123,22 @@ class InfoOutlineDarkButton extends StatelessWidget {
         readyFor += "Endurance";
       } 
       else{
-        lateFor = "Too Late For ";
         if(totalDurationPassed < Duration(minutes: 2)){ //to 2m hypertrophy
           readyFor += "Hypertrophy";
-          lateFor += "Endurance";
         }
         else if(totalDurationPassed < Duration(minutes: 3)){ //to 3m hypertrophy or strength
           readyFor += "Hypertrophy/Strength";
-          lateFor += "Hypertrophy";
         }
         else{ //to 5m strength
           readyFor += "Strength";
-          lateFor += "Hypertrophy";
         }
-        lateFor += " Training";
       }
       readyFor += " Training";
     }
 
-    if(extraMessage == null && readyFor == null && lateFor == null){
+    if(extraMessage == null && readyFor == null){// && lateFor == null){
       extraMessage = "You Waited Too Long";
-      lateFor = "you need to warm up again";
-    }
-
-    //handle 3 liners a bit more delicately
-    if(lateFor != null && extraMessage != null && readyFor != null){
-      lateFor = lateFor.toLowerCase();
-      lateFor = null;
+      //lateFor = "you need to warm up again";
     }
 
     return FittedBox(
@@ -149,15 +182,6 @@ class InfoOutlineDarkButton extends StatelessWidget {
                     ),
                   ),
                 ),
-                Visibility(
-                  visible: lateFor != null,
-                  child: Text(
-                    lateFor ?? "",
-                    style: TextStyle(
-                      fontSize: 10,
-                    ),
-                  ),
-                )
               ],
             ),
           )
@@ -166,3 +190,107 @@ class InfoOutlineDarkButton extends StatelessWidget {
     );
   }
 }
+
+/*
+RichText(
+          text: TextSpan(
+            style: TextStyle(
+              color: Theme.of(context).primaryColorDark,
+            ),
+            children: [
+              TextSpan(
+                text: "you can do so in the ",
+              ),
+              TextSpan(
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
+                text: "bottom left",
+              ),
+              TextSpan(
+                text: " corner",
+              ),
+            ],
+          ),
+        ),
+*/
+
+/*
+RichText(
+          text: TextSpan(
+            style: TextStyle(
+              color: Theme.of(context).primaryColorDark,
+            ),
+            children: [
+              TextSpan(
+                text: "it's been ",
+              ),
+              TextSpan(
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
+                text: durationString,
+              ),
+              TextSpan(
+                text: " since your last set",
+              ),
+            ],
+          ),
+        ),
+*/
+
+/*
+//set duration string
+    String durationString;
+    if(totalDurationPassed > Duration(days: 1)){
+      //NOTE: nobodies workout is going to be this long
+      durationString = "over a day";
+    }
+    else{
+      //basically only show 1. hours 2. minutes
+      durationString = DurationFormat.format(
+        totalDurationPassed, 
+        //show shorter version (aesthetic)
+        short: false,
+        //don't show anything larger than 24 horus
+        showYears: false, 
+        showMonths: false, 
+        showWeeks: false, 
+        showDays: false,
+        //dont't show anything smaller than a minute (since seconds don't update)
+        showSeconds: false,
+        showMilliseconds: false,
+        showMicroseconds: false,
+      );
+    }
+    
+    //check if they its REASONABLE that they just forgot and haven't finished their workout
+    bool wholeSeperateWorkout = totalDurationPassed > Duration(hours: 1, minutes: 30);
+*/
+
+//(wholeSeperateWorkout) ? "You Forgot To Finish" : "You Waited Too Long",
+
+/*
+Center(
+                  child: Container(
+                    padding: const EdgeInsets.all(12.0),
+                    child: ConstrainedBox(
+                      constraints: BoxConstraints(
+                        maxWidth: MediaQuery.of(context).size.width/6,
+                      ),
+                      child: FittedBox(
+                        fit: BoxFit.contain,
+                        child: DefaultTextStyle(
+                          style: TextStyle(
+                            color: Theme.of(context).primaryColorDark,
+                          ),
+                          child: EditIcon(
+                            text: recoveryDurationString,
+                            roundedRight: true,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+*/

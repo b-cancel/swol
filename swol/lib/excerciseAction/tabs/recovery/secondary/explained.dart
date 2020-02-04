@@ -21,6 +21,7 @@ class ExplainFunctionality extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Container(
+          color: Colors.red,
           padding: EdgeInsets.symmetric(
             horizontal: 16,
           ),
@@ -58,9 +59,15 @@ class ExplainFunctionality extends StatelessWidget {
         ),
         Theme(
           data: MyTheme.dark,
-          child: AllTrainingTypes(
-            highlightField: 2,
-            sectionWithInitialFocus: sectionWithInitialFocus,
+          child: Padding(
+            padding: EdgeInsets.only(
+              top: 8,
+              bottom: 16.0,
+            ),
+            child: AllTrainingTypes(
+              highlightField: 2,
+              sectionWithInitialFocus: sectionWithInitialFocus,
+            ),
           ),
         ),
         SuggestToLearnPage(),

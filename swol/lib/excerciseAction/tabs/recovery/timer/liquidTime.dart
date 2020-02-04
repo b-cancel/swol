@@ -8,7 +8,6 @@ import 'package:swol/excerciseAction/tabs/recovery/timer/puslingBackground.dart'
 //internal
 import 'package:swol/excerciseAction/tabs/recovery/timer/turnOffVibration.dart';
 import 'package:swol/excerciseAction/tabs/recovery/secondary/timeDisplay.dart';
-import 'package:swol/excerciseAction/tabs/recovery/timer/superOverflow.dart';
 import 'package:swol/excerciseAction/tabs/recovery/timer/information.dart';
 import 'package:swol/excerciseAction/tabs/recovery/timer/changeTime.dart';
 
@@ -196,22 +195,6 @@ class _TimerState extends State<Timer> with TickerProviderStateMixin {
     super.dispose();
   }
 
-  /*
-  //calculate string for timer duration
-    //List<String> timerDurationStrings = durationToCustomDisplay(widget.changeableTimerDuration.value);
-    //String timerDurationString = timerDurationStrings[0] + " : " + timerDurationStrings[1];
-
-    //format how much time has passed into a string
-    //List<String> totalDurationPassedStrings = durationToCustomDisplay(totalDurationPassed);
-    //String totalDurationString = totalDurationPassedStrings[0] + " : " + totalDurationPassedStrings[1]; //bottom right for ?
-
-    //chosen colors
-    //final Color greenTimerAccent = Theme.of(context).accentColor;
-    //final Color redStopwatchAccent = Colors.red;
-
-    //bool withinMaxDuration = (totalDurationPassed <= maxEffectiveBreakDuration);
-  */
-
   @override
   Widget build(BuildContext context) {
     String generatedHeroTag = "timer" + widget.excercise.id.toString();
@@ -234,17 +217,12 @@ class _TimerState extends State<Timer> with TickerProviderStateMixin {
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
         Visibility(
-          visible: firstTimerRunning,
+          visible: maxBreakController.value != 1,
           child: Theme(
             data: MyTheme.light,
-            child: Padding(
-              padding: EdgeInsets.only(
-                top: 0.0,
-              ),
-              child: InfoOutlineWhiteButton(
-                firstTimerRunning: firstTimerRunning,
-                totalDurationPassed: totalDurationPassed,
-              ),
+            child: InfoOutlineWhiteButton(
+              firstTimerRunning: firstTimerRunning,
+              totalDurationPassed: totalDurationPassed,
             ),
           ),
         ),
@@ -276,18 +254,22 @@ class _TimerState extends State<Timer> with TickerProviderStateMixin {
                               borderColor: Colors.transparent,
                               borderWidth: 0,
                               direction: Axis.vertical, 
-                              //only show when our timer has completed
-                              center: Material(
-                                color: Colors.transparent,
-                                child: InkWell(
-                                  onTap: () => maybeChangeRecoveryDuration(),
-                                  child: Center(
-                                    child: timeDisplay
-                                  ),
-                                ),
-                              ),
                             ),
                             */
+                            Material(
+                              color: Colors.transparent,
+                              child: InkWell(
+                                onTap: () => maybeChangeRecoveryDuration(),
+                                child: Container(),
+                                
+                                
+                                /*SuperOverflow(
+                                  totalDurationPassed: totalDurationPassed, 
+                                  recoveryDurationString: "some string or something", 
+                                )*/
+                                //TODO: show here either time display or the text that tells the user they waited too long
+                              ),
+                            ),
                           ],
                         ),
                       ),
@@ -320,7 +302,21 @@ class _TimerState extends State<Timer> with TickerProviderStateMixin {
 
 
 
+/*
+  //calculate string for timer duration
+    //List<String> timerDurationStrings = durationToCustomDisplay(widget.changeableTimerDuration.value);
+    //String timerDurationString = timerDurationStrings[0] + " : " + timerDurationStrings[1];
 
+    //format how much time has passed into a string
+    //List<String> totalDurationPassedStrings = durationToCustomDisplay(totalDurationPassed);
+    //String totalDurationString = totalDurationPassedStrings[0] + " : " + totalDurationPassedStrings[1]; //bottom right for ?
+
+    //chosen colors
+    //final Color greenTimerAccent = Theme.of(context).accentColor;
+    //final Color redStopwatchAccent = Colors.red;
+
+    //bool withinMaxDuration = (totalDurationPassed <= maxEffectiveBreakDuration);
+  */
 
 
     /*

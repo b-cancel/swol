@@ -9,8 +9,8 @@ import 'package:swol/shared/methods/theme.dart';
 infoPopUpFunction(
   BuildContext context, 
   {
-    String title: "",
-    String subtitle: "",
+    String title,
+    String subtitle,
     @required Widget body,
     isDense: false,
   }){
@@ -23,24 +23,32 @@ infoPopUpFunction(
       size: 128,
     ),
     [
-      title == null ? Container() : Text(
-        title,
-        style: TextStyle(
-          fontWeight: FontWeight.bold,
-          fontSize: 24,
-          color: Colors.black,
+      Visibility(
+        visible: title != null,
+        maintainSize: false,
+        child: Text(
+          title ?? "",
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 24,
+            color: Colors.black,
+          ),
         ),
       ),
-      subtitle == null ? Container() : Text(
-        subtitle,
-        style: TextStyle(
-          fontSize: 14,
-          color: Colors.black,
+      Visibility(
+        visible: subtitle != null,
+        maintainSize: false,
+        child: Text(
+          subtitle ?? "",
+          style: TextStyle(
+            fontSize: 14,
+            color: Colors.black,
+          ),
         ),
       ),
       Padding(
-        padding: const EdgeInsets.only(
-          top: 16.0,
+        padding: EdgeInsets.only(
+          top: (title != null || subtitle != null) ? 16.0 : 0,
         ),
         child: Theme(
           data: MyTheme.dark,
