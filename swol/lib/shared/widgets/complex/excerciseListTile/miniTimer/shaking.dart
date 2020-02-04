@@ -68,7 +68,7 @@ class TimerShaker extends StatelessWidget {
                   height: 50,
                   child: Image(
                   image: new AssetImage(
-                    (noTimeLeft == false) ? "assets/alarmTick.gif" : "assets/tickStill.png",
+                    (noTimeLeft) ? "assets/alarmTick.gif" : "assets/tickStill.png",
                   ),
                   color: Colors.white,
                 ),

@@ -57,28 +57,26 @@ class ProgressCircle extends StatelessWidget {
               visible: controller.value != 1,
               child: CircleTicks(),
             ),
+            Positioned.fill(
+              child: Container(
+                padding: EdgeInsets.all(
+                  10,
+                ),
+                child: ClipOval(
+                  child: FittedBox(
+                    fit: BoxFit.contain,
+                    child: CircleProgress(
+                      fullRed: controller.value == 1,
+                      tempStartTime: excercise.tempStartTime.value,
+                      recoveryPeriod: excercise.recoveryPeriod,
+                    ),
+                  ),
+                ),
+              ),
+            ),
             CircleRim(controller: controller),
           ],
         ),
-        
-        
-        
-        /*AnimatedCircleWidget(
-          angles: angles, 
-          ticks: ticks,
-          //-----
-          circleSize: circleSize,
-          circleToTicksPadding: circleToTicksPadding,
-          tickWidth: tickWidth,
-          ticksToProgressCirclePadding: ticksToProgressCirclePadding,
-          littleCircleSize: littleCircleSize,
-          //-----
-          recoveryPeriod: excercise.recoveryPeriod,
-          tempStartTime: excercise.tempStartTime.value,
-          after5Mintes: controller.value == 1,
-          distanceFromLast5MinuteInternal: controller.value,
-        ),
-        */
       ),
     );
   }
@@ -190,23 +188,20 @@ class CircleTicks extends StatelessWidget {
 
     //compile the ticks
     return Positioned.fill(
-      child: Container(
+      child: ClipPath(
+        clipper: InvertedCircleClipper(
+          radiusPercent: 0.35,
+        ),
         child: FittedBox(
           fit: BoxFit.contain,
-          child: ClipPath(
-            clipper: InvertedCircleClipper(
-              radiusPercent: 0.10,
+          child: Container(
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
             ),
-            child: FittedBox(
-              fit: BoxFit.contain,
-              child: Container(
-                color: Colors.yellow,
-              )
-              
-              
-              /*Stack(
-                children: ticks,
-              ),*/
+            height: 1,
+            width: 1,
+            child: Stack(
+              children: ticks,
             ),
           ),
         ),
@@ -214,34 +209,3 @@ class CircleTicks extends StatelessWidget {
     );
   }
 }
-
-
-/*
-
-              //-----
-              after5Mintes? Container() : 
-              //-----
-              Container(
-                padding: EdgeInsets.all(
-                  tickWidth,
-                ),
-                child: ClipOval(
-                  child: Container(
-                    padding: EdgeInsets.all(
-                      ticksToProgressCirclePadding,
-                    ),
-                    child: ClipOval(
-                      child: CircleProgress(
-                        size: littleCircleSize,
-                        fullRed: after5Mintes,
-                        tempStartTime: tempStartTime,
-                        recoveryPeriod: recoveryPeriod,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              //-----
-            ],
-          ),
-*/
