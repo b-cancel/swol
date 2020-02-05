@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 //internal
 import 'package:swol/excerciseAction/tabs/recovery/secondary/explained.dart';
+import 'package:swol/shared/structs/anExcercise.dart';
 import 'package:swol/shared/widgets/complex/fields/headers/ourInformationPopUp.dart';
 import 'package:swol/shared/methods/theme.dart';
 
@@ -52,12 +53,12 @@ subtitle: You Must've Forgotten To Finish
 class InfoOutlineWhiteButton extends StatelessWidget {
   const InfoOutlineWhiteButton({
     Key key,
-    @required this.firstTimerRunning,
     @required this.totalDurationPassed,
+    @required this.excercise,
   }) : super(key: key);
 
-  final bool firstTimerRunning;
   final Duration totalDurationPassed;
+  final AnExcercise excercise;
 
   @override
   Widget build(BuildContext context) {
@@ -85,7 +86,7 @@ class InfoOutlineWhiteButton extends StatelessWidget {
     return Theme(
       data: MyTheme.dark,
       child: InfoOutlineDarkButton(
-        firstTimerRunning: firstTimerRunning,
+        excercise: excercise,
         totalDurationPassed: totalDurationPassed,
         showInfo: showInfo,
       ),
@@ -96,21 +97,55 @@ class InfoOutlineWhiteButton extends StatelessWidget {
 class InfoOutlineDarkButton extends StatelessWidget {
   const InfoOutlineDarkButton({
     Key key,
-    @required this.firstTimerRunning,
+    @required this.excercise,
     @required this.totalDurationPassed,
     @required this.showInfo,
   }) : super(key: key);
 
-  final bool firstTimerRunning;
+  final AnExcercise excercise;
   final Duration totalDurationPassed;
   final Function showInfo;
 
   @override
   Widget build(BuildContext context) {
-    //initially tells the user what happening
-    //then explains they can no longer to the training type behind the one they were aiming for
-    String extraMessage = firstTimerRunning ? "Recoverying For Next Set" : "Move Onto Your Next Set";
-    
+    String trainingType;
+    if(totalDurationPassed < Duration(minutes: 1)) trainingType = "Endurance";
+    else if(totalDurationPassed < Duration(minutes: 2)) trainingType = "Hypertrohpy";
+    else if(totalDurationPassed < Duration(minutes: 3)) trainingType = "Hyp/Str";
+    else trainingType = "Strength";
+
+    String primaryMsg;
+    String secondaryMsg;
+    //TODO: doesn't suggest timer change
+    if(totalDurationPassed < excercise.recoveryPeriod){
+      primaryMsg = "Still Recovering From";
+      secondaryMsg = trainingType + " Training";
+    }
+    else{ //TODO: doesn't suggest timer change
+      if(totalDurationPassed < (excercise.recoveryPeriod + Duration(seconds: 15))){
+        primaryMsg = "Go To Your Next Set";
+      } //TODO: doesn't suggest timer change
+      else if(totalDurationPassed < (excercise.recoveryPeriod + Duration(seconds: 30))){
+        primaryMsg = "Hurry! Go To Your Next Set";
+      }
+      else{ //TODO: POP UP DOES SUGGEST TIMER CHANGE
+        //if we chose hypertrohpy training, as long as we are still in hypertrphy show the above
+        //TODO: complete
+        if(true) primaryMsg = "Hurry! Go To Your Next Set"; 
+        else{
+          //TODO: EXCEPTION: pop up doesn't suggest timer change
+          if(totalDurationPassed > Duration(hours: 1, minutes: 30)){
+            primaryMsg = "Did you forget to finish?";
+            secondaryMsg = "tap the button on the bottom left to do so";
+          }
+          else{
+            primaryMsg = "You Waited Too Long";
+            secondaryMsg = "you should warm up again";
+          }
+        }
+      }
+    }
+ 
     //reminds the user what this duration of break is good for
     String readyFor; //only empty for the first 15 seconds
 
@@ -135,11 +170,7 @@ class InfoOutlineDarkButton extends StatelessWidget {
       readyFor += " Training";
     }
 
-    if(extraMessage == null && readyFor == null){// && lateFor == null){
-      extraMessage = "You Waited Too Long";
-      //lateFor = "you need to warm up again";
-    }
-
+    //return
     return FittedBox(
       fit: BoxFit.contain,
       child: Padding(
@@ -162,9 +193,9 @@ class InfoOutlineDarkButton extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 Visibility(
-                  visible: extraMessage != null,
+                  visible: primaryMsg != null,
                   child: Text(
-                    extraMessage ?? "",
+                    primaryMsg ?? "",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 18,
@@ -172,12 +203,11 @@ class InfoOutlineDarkButton extends StatelessWidget {
                   ),
                 ),
                 Visibility(
-                  visible: readyFor != null,
+                  visible: secondaryMsg != null,
                   child: Text(
-                    readyFor ?? "",
+                    secondaryMsg ?? "",
                     style: TextStyle(
                       fontSize: 12,
-                      fontWeight: extraMessage == null ? FontWeight.bold : FontWeight.normal,
                     ),
                   ),
                 ),

@@ -211,6 +211,14 @@ class _TimerState extends State<Timer> with TickerProviderStateMixin {
     //simplifying varaible for the merge of timer and stopwatch widgets
     bool firstTimerRunning = (extraDurationPassed == Duration.zero);
 
+    Widget infoButton = Theme(
+      data: MyTheme.light,
+      child: InfoOutlineWhiteButton(
+        totalDurationPassed: totalDurationPassed,
+        excercise: widget.excercise,
+      ),
+    );
+
     //return
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -218,13 +226,7 @@ class _TimerState extends State<Timer> with TickerProviderStateMixin {
       children: <Widget>[
         Visibility(
           visible: maxBreakController.value != 1,
-          child: Theme(
-            data: MyTheme.light,
-            child: InfoOutlineWhiteButton(
-              firstTimerRunning: firstTimerRunning,
-              totalDurationPassed: totalDurationPassed,
-            ),
-          ),
+          child: infoButton,
         ),
         Container(
           color: Colors.green,
@@ -244,6 +246,9 @@ class _TimerState extends State<Timer> with TickerProviderStateMixin {
                         child: Stack(
                           children: <Widget>[
                             PulsingBackground(),
+                            Center(
+                              child: infoButton,
+                            ),
                             /*
                             LiquidCircularProgressIndicator(
                               //animated values
@@ -256,6 +261,7 @@ class _TimerState extends State<Timer> with TickerProviderStateMixin {
                               direction: Axis.vertical, 
                             ),
                             */
+                            /*
                             Material(
                               color: Colors.transparent,
                               child: InkWell(
@@ -270,6 +276,7 @@ class _TimerState extends State<Timer> with TickerProviderStateMixin {
                                 //TODO: show here either time display or the text that tells the user they waited too long
                               ),
                             ),
+                            */
                           ],
                         ),
                       ),

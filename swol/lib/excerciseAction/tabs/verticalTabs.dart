@@ -131,17 +131,6 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
     //10 feet in 5 seconds, 2 feets per second
     //how long to travel 3 feet? 3/2 = 1.5 seconds
     double totalTravel = (bottomPadding * 2) + topPadding;
-    double unitsPerMicrosecond = totalTravel / transitionDuration.inMicroseconds;
-    int microsecondsToTravelBottomPadding = bottomPadding ~/ unitsPerMicrosecond;
-    
-    //calculate how 2nd animation stuff
-    Duration delayBeforeStartSecondAnim = Duration(microseconds: microsecondsToTravelBottomPadding);
-    Duration secondAnimDuration = transitionDuration - delayBeforeStartSecondAnim;
-    double secondAnimTravel = bottomPadding + topPadding;
-
-    //calculate how 1st animation stuff will work
-    Duration firstAnimDuration = transitionDuration;
-    double firstAnimTravel = totalTravel;
 
     //all the stuffs
     return Stack(
@@ -158,8 +147,8 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
                 statusBarHeight: widget.statusBarHeight,
                 recordSet: () => toPage(1),
                 heroUp: firstUp,
-                heroAnimDuration: firstAnimDuration,
-                heroAnimTravel: firstAnimTravel,
+                heroAnimDuration: transitionDuration,
+                heroAnimTravel: totalTravel,
               ),
             ),
             ClipRRect(
@@ -167,8 +156,8 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
                 excercise: widget.excercise,
                 statusBarHeight: widget.statusBarHeight,
                 heroUp: firstUp,
-                heroAnimDuration: firstAnimDuration,
-                heroAnimTravel: firstAnimTravel,
+                heroAnimDuration: transitionDuration,
+                heroAnimTravel: totalTravel,
                 //TODO: going back should not reset what they already typed
                 //note: try to stop them from typing dumb stuff but if they do then restore the dumb stuff
                 //TODO: do so when the user holds the button AND when they click it
