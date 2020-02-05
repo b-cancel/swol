@@ -40,6 +40,42 @@ then leaving and enter the excercise again
 should not restart the vibration
 */
 
+//NOTE: never ask wether we should change the timer
+//if they stop at less time than expected the pop up will annoy them
+//if they stop after more time then expected the buzzing will annoy them
+//them being annoyed will cause them to change it themeselves
+
+//NOTE: we want to stop users from accidentally continuing
+//which is why we have the "are you sure" pop up
+//but we don't want to stop them from purposely continuing quicker then they planned
+//UNLESS its detrimental to them so...
+
+//Being Flexible with the user
+//IF they are within their selected training type we show it so
+//  if they want to skip the extra time they know exactly when to do so
+//  if they want to wait a bit more time they know exactly when to stop waiting
+//Until they arrive at their desired training type we DONT show what training types they are ready for
+//after they pass their desired training type we show that they waited too long
+
+//When to show the are you sure pop up
+//If we are not yet within our training type, the pop up only shows up if we are 15 seconds before our selected time
+//if we are within our training type, regardless of how many seconds we are before our selected time the pop up doesn't show up
+//  NOTE: distinction between Endurance training and less than 15 seconds of waiting
+
+//NOTE: now ready for X training will let users know if they can skip without significant damage
+enum TimerState {
+  //state handling                            pop up  | button
+
+  //between 0
+  Waiting, //and timeSelect - 15              yes     | "Recovering yada"
+  Impatient, //and timeSelect                 no      | "Recovering yada"
+  MadeIt, //before and timeSelect + 15        no      | "Move yada"
+  BareleyMadeIt, //before and timeSelect + 30:no      | "Hurry Move yada"
+  StillSameTrainigtype, //varries             yes     | "Hurry before you end up in another training type"
+  WarmUp, //varries                           yes     | "You Waited to long"
+  Forgot, //above 1 hour and 30 minutes
+}
+
 //build
 class Timer extends StatefulWidget { 
   Timer({
@@ -195,6 +231,16 @@ class _TimerState extends State<Timer> with TickerProviderStateMixin {
     super.dispose();
   }
 
+  String durationToTrainingType(Duration duration, {bool zeroIsEndurance: true}){
+    if(duration < Duration(minutes: 1)){
+      if(zeroIsEndurance) return "Endurance";
+      else return "";
+    }
+    else if(duration < Duration(minutes: 2)) return "Hypertrohpy";
+    else if(duration < Duration(minutes: 3)) return "Hyp/Str";
+    else return "Strength";
+  }
+
   @override
   Widget build(BuildContext context) {
     String generatedHeroTag = "timer" + widget.excercise.id.toString();
@@ -202,14 +248,47 @@ class _TimerState extends State<Timer> with TickerProviderStateMixin {
     //show UI depending on how much time has passed
     Duration totalDurationPassed = DateTime.now().difference(widget.excercise.tempStartTime.value);
 
-    //calculate extra time passed
-    Duration extraDurationPassed = Duration.zero;
-    if(totalDurationPassed > widget.changeableTimerDuration.value){
-      extraDurationPassed = totalDurationPassed - widget.changeableTimerDuration.value;
-    }
+    //text for pop ups and button
+    String trainingSelected = durationToTrainingType(widget.excercise.recoveryPeriod);
+    String trainingSelectedIfStopped = durationToTrainingType(totalDurationPassed);
 
-    //simplifying varaible for the merge of timer and stopwatch widgets
-    bool firstTimerRunning = (extraDurationPassed == Duration.zero);
+    /*
+        String primaryMsg;
+    String secondaryMsg;
+    //TODO: doesn't suggest timer change
+    if(totalDurationPassed < excercise.recoveryPeriod){
+      primaryMsg = "Still Recovering From";
+      secondaryMsg = trainingType + " Training";
+    }
+    else{ //TODO: doesn't suggest timer change
+      if(totalDurationPassed < (excercise.recoveryPeriod + Duration(seconds: 15))){
+        primaryMsg = "Go To Your Next Set";
+      } //TODO: doesn't suggest timer change
+      else if(totalDurationPassed < (excercise.recoveryPeriod + Duration(seconds: 30))){
+        primaryMsg = "Hurry! Go To Your Next Set";
+      }
+      else{ //TODO: POP UP DOES SUGGEST TIMER CHANGE
+        //if we chose hypertrohpy training, as long as we are still in hypertrphy show the above
+        //TODO: complete
+        if(true) primaryMsg = "Hurry! Go To Your Next Set"; 
+        else{
+          //TODO: EXCEPTION: pop up doesn't suggest timer change
+          if(totalDurationPassed > Duration(hours: 1, minutes: 30)){
+            primaryMsg = "Did you forget to finish?";
+            secondaryMsg = "tap the button on the bottom left to do so";
+          }
+          else{
+            primaryMsg = "You Waited Too Long";
+            secondaryMsg = "you should warm up again";
+          }
+        }
+      }
+    }
+    */
+
+    //timer state
+    int timerState;
+    
 
     Widget infoButton = Theme(
       data: MyTheme.light,

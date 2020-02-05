@@ -108,67 +108,8 @@ class InfoOutlineDarkButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String trainingType;
-    if(totalDurationPassed < Duration(minutes: 1)) trainingType = "Endurance";
-    else if(totalDurationPassed < Duration(minutes: 2)) trainingType = "Hypertrohpy";
-    else if(totalDurationPassed < Duration(minutes: 3)) trainingType = "Hyp/Str";
-    else trainingType = "Strength";
-
     String primaryMsg;
     String secondaryMsg;
-    //TODO: doesn't suggest timer change
-    if(totalDurationPassed < excercise.recoveryPeriod){
-      primaryMsg = "Still Recovering From";
-      secondaryMsg = trainingType + " Training";
-    }
-    else{ //TODO: doesn't suggest timer change
-      if(totalDurationPassed < (excercise.recoveryPeriod + Duration(seconds: 15))){
-        primaryMsg = "Go To Your Next Set";
-      } //TODO: doesn't suggest timer change
-      else if(totalDurationPassed < (excercise.recoveryPeriod + Duration(seconds: 30))){
-        primaryMsg = "Hurry! Go To Your Next Set";
-      }
-      else{ //TODO: POP UP DOES SUGGEST TIMER CHANGE
-        //if we chose hypertrohpy training, as long as we are still in hypertrphy show the above
-        //TODO: complete
-        if(true) primaryMsg = "Hurry! Go To Your Next Set"; 
-        else{
-          //TODO: EXCEPTION: pop up doesn't suggest timer change
-          if(totalDurationPassed > Duration(hours: 1, minutes: 30)){
-            primaryMsg = "Did you forget to finish?";
-            secondaryMsg = "tap the button on the bottom left to do so";
-          }
-          else{
-            primaryMsg = "You Waited Too Long";
-            secondaryMsg = "you should warm up again";
-          }
-        }
-      }
-    }
- 
-    //reminds the user what this duration of break is good for
-    String readyFor; //only empty for the first 15 seconds
-
-    //we are ready for some type of workout
-    if(totalDurationPassed < Duration(seconds: 15) == false 
-    && Duration(minutes: 5) < totalDurationPassed == false){
-      readyFor = "Ready For ";
-      if(totalDurationPassed < Duration(minutes: 1)){ //15s to 1m
-        readyFor += "Endurance";
-      } 
-      else{
-        if(totalDurationPassed < Duration(minutes: 2)){ //to 2m hypertrophy
-          readyFor += "Hypertrophy";
-        }
-        else if(totalDurationPassed < Duration(minutes: 3)){ //to 3m hypertrophy or strength
-          readyFor += "Hypertrophy/Strength";
-        }
-        else{ //to 5m strength
-          readyFor += "Strength";
-        }
-      }
-      readyFor += " Training";
-    }
 
     //return
     return FittedBox(
