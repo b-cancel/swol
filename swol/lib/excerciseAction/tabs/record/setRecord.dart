@@ -29,12 +29,18 @@ class SetRecord extends StatelessWidget {
     @required this.backToSuggestion,
     @required this.setBreak,
     @required this.statusBarHeight,
+    @required this.heroUp,
+    @required this.heroAnimDuration,
+    @required this.heroAnimTravel,
   });
 
   final AnExcercise excercise;
   final Function backToSuggestion;
   final Function setBreak;
   final double statusBarHeight;
+  final ValueNotifier<bool> heroUp;
+  final Duration heroAnimDuration;
+  final double heroAnimTravel;
 
   @override
   Widget build(BuildContext context) {
@@ -63,6 +69,9 @@ class SetRecord extends StatelessWidget {
             top: 0,
             child: SetRecordCardBottom(
               rawSpaceToRedistribute: spaceToRedistribute,
+              heroUp: heroUp,
+              heroAnimDuration: heroAnimDuration,
+              heroAnimTravel: heroAnimTravel,
             ),
           ),
         ],
@@ -77,11 +86,18 @@ class SetRecordCardBottom extends StatelessWidget {
     @required this.rawSpaceToRedistribute,
     this.removeBottomButtonSpacing: true,
     this.extraSpacing: 24,
+    @required this.heroUp,
+    @required this.heroAnimDuration,
+    @required this.heroAnimTravel,
   }) : super(key: key);
 
   final double rawSpaceToRedistribute;
   final double extraSpacing;
   final bool removeBottomButtonSpacing;
+  //optional
+  final ValueNotifier<bool> heroUp;
+  final Duration heroAnimDuration;
+  final double heroAnimTravel;
 
   @override
   Widget build(BuildContext context) {
@@ -126,8 +142,11 @@ class SetRecordCardBottom extends StatelessWidget {
               child: SetDisplay(
                 useAccent: false,
                 title: "Goal Set",
-                lastWeight: 124,
+                lastWeight: 124, 
                 lastReps: 23,
+                heroUp: heroUp,
+                heroAnimDuration: heroAnimDuration,
+                heroAnimTravel: heroAnimTravel,
               ),
             ),
           ),

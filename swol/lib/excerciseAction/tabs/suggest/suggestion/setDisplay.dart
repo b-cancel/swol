@@ -2,13 +2,14 @@
 import 'package:flutter/material.dart';
 
 //plugin
+import 'package:vector_math/vector_math_64.dart' as vect;
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 //internal
 import 'package:swol/shared/functions/goldenRatio.dart';
 
 //widget
-class SetDisplay extends StatelessWidget {
+class SetDisplay extends StatefulWidget {
   const SetDisplay({
     Key key,
     @required this.title,
@@ -16,6 +17,10 @@ class SetDisplay extends StatelessWidget {
     @required this.lastReps,
     this.extraCurvy: false,
     @required this.useAccent,
+    //optional
+    this.heroUp,
+    this.heroAnimDuration,
+    this.heroAnimTravel,
   }) : super(key: key);
 
   final String title;
@@ -23,23 +28,71 @@ class SetDisplay extends StatelessWidget {
   final int lastReps;
   final bool extraCurvy;
   final bool useAccent;
+  //optional
+  final ValueNotifier<bool> heroUp;
+  final Duration heroAnimDuration;
+  final double heroAnimTravel;
+
+  @override
+  _SetDisplayState createState() => _SetDisplayState();
+}
+
+class _SetDisplayState extends State<SetDisplay> {
+  updateState(){
+    print("woah--------------updating");
+    if(mounted) setState(() {});
+  }
+
+  @override
+  void initState() {
+    if(widget.heroUp != null){
+      widget.heroUp.addListener(updateState);
+    }
+    super.initState();
+  }
+
+  @override
+  void dispose() { 
+    if(widget.heroUp != null){
+      widget.heroUp.removeListener(updateState);
+    }
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     List<double> defGW = measurementToGoldenRatioBS(250);
-    double curveValue = extraCurvy ? 48 : 24;
+    double curveValue = widget.extraCurvy ? 48 : 24;
     double difference = 12;
 
-    Color stuffColor = useAccent ? Theme.of(context).primaryColorDark : Colors.white;
+    Color backgroundColor = widget.useAccent ? Theme.of(context).accentColor : Theme.of(context).cardColor;
+    if(widget.heroUp != null){
+      backgroundColor = widget.heroUp.value ? Theme.of(context).accentColor : Theme.of(context).cardColor;
+    }
 
-    return Container(
-      //duration: Duration(milliseconds: 1500),
+    Color foregroundColor;
+    if(backgroundColor == Theme.of(context).accentColor){
+      foregroundColor = Theme.of(context).primaryColorDark;
+    }
+    else foregroundColor = Colors.white;
+
+    return AnimatedContainer(
+      duration: widget.heroAnimDuration ?? Duration.zero,
       width: MediaQuery.of(context).size.width,
       decoration: BoxDecoration(
-        color: useAccent ? Theme.of(context).accentColor : Theme.of(context).cardColor,
+        color: backgroundColor,
         borderRadius: BorderRadius.only(
           bottomLeft: Radius.circular(curveValue),
           bottomRight: Radius.circular(curveValue),
+        ),
+      ),
+      //NOTE: I can't change alignment since that will mess up the FittedBox child
+      transform:  Matrix4.translation(
+        vect.Vector3(
+          0, 
+          widget.heroUp == null ? 0 
+          : (widget.heroUp.value ? 0 : widget.heroAnimTravel),
+          0,
         ),
       ),
       padding: EdgeInsets.symmetric(
@@ -54,7 +107,7 @@ class SetDisplay extends StatelessWidget {
           child: DefaultTextStyle(
             style: TextStyle(
               fontSize: 24,
-              color: stuffColor,
+              color: foregroundColor,
             ),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -64,10 +117,10 @@ class SetDisplay extends StatelessWidget {
                   child: FittedBox(
                     fit: BoxFit.fitWidth,
                     child: Text(
-                      title,
+                      widget.title,
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        color: stuffColor,
+                        color: foregroundColor,
                       ),
                     ),
                   ),
@@ -84,11 +137,11 @@ class SetDisplay extends StatelessWidget {
                         ),
                         child: Container(
                           height: 28,
-                          color: stuffColor,
+                          color: foregroundColor,
                           width: 4,
                         ),
                       ),
-                      Text(lastWeight.toString()),
+                      Text(widget.lastWeight.toString()),
                       Container(
                         alignment: Alignment.topLeft,
                         padding: EdgeInsets.only(
@@ -98,7 +151,7 @@ class SetDisplay extends StatelessWidget {
                         child: Icon(
                           FontAwesomeIcons.dumbbell,
                           size: 12,
-                          color: stuffColor,
+                          color: foregroundColor,
                         ),
                       ),
                       Padding(
@@ -108,10 +161,10 @@ class SetDisplay extends StatelessWidget {
                         child: Icon(
                           FontAwesomeIcons.times,
                           size: 12,
-                          color: stuffColor,
+                          color: foregroundColor,
                         ),
                       ),
-                      Text(lastReps.toString()),
+                      Text(widget.lastReps.toString()),
                       Container(
                         alignment: Alignment.topLeft,
                         padding: EdgeInsets.only(
@@ -120,7 +173,7 @@ class SetDisplay extends StatelessWidget {
                         child: Icon(
                           Icons.repeat,
                           size: 12,
-                          color: stuffColor,
+                          color: foregroundColor,
                         ),
                       ),
                     ],

@@ -20,11 +20,17 @@ class SuggestionSection extends StatelessWidget {
     @required this.lastWeight,
     @required this.lastReps,
     @required this.rawSpaceToRedistribute,
+    @required this.heroUp,
+    @required this.heroAnimDuration,
+    @required this.heroAnimTravel,
   }) : super(key: key);
 
   final int lastWeight;
   final int lastReps;
   final double rawSpaceToRedistribute;
+  final ValueNotifier<bool> heroUp;
+  final Duration heroAnimDuration;
+  final double heroAnimTravel;
 
   //TODO: grab actual values from excercise reference
   final ValueNotifier<int> repTarget = new ValueNotifier(
@@ -72,6 +78,9 @@ class SuggestionSection extends StatelessWidget {
             title: "Goal Set",
             lastWeight: 124,
             lastReps: 23,
+            heroUp: heroUp,
+            heroAnimDuration: heroAnimDuration,
+            heroAnimTravel: heroAnimTravel,
           ),
         ],
       ),

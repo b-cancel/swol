@@ -52,7 +52,6 @@ class VerticalTabs extends StatefulWidget {
 //TODO: confirm the immediately above
 
 class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMixin {
-  ValueNotifier<int> controlAnimatedGoalSet;
   ValueNotifier<int> calculatedWeight;
   ValueNotifier<int> calculatedReps;
 
@@ -62,6 +61,11 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
 
   //for the hero widget
   PageController pageViewController;
+
+  //for the "hero" widget (if not up then down)
+  int currPageID;
+  ValueNotifier<bool> firstUp;
+  ValueNotifier<bool> secondUp;
 
   //init
   @override
@@ -73,12 +77,14 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
     //TODO: select the first tab based on how far we are into the workout (HARD)
     //TODO: remove the random picker test code below
     var rng = new math.Random();
-    int randomPage = 2; //(rng.nextInt(3)).clamp(0, 2);
+    currPageID = 2; //(rng.nextInt(3)).clamp(0, 2);
+
+    //set notifier based on random page
+    firstUp = new ValueNotifier<bool>(currPageID == 0);
+    secondUp = new ValueNotifier<bool>(currPageID == 0);
 
     //the done button must be initialy show in order for the hero transition to work properly
-    showDoneButton = new ValueNotifier<bool>(randomPage != 1); 
-    controlAnimatedGoalSet = new ValueNotifier<int>(randomPage);
-    controlAnimatedGoalSet.addListener(updateState);
+    showDoneButton = new ValueNotifier<bool>(currPageID != 1); 
 
     //travel to the page that has initial 
     /*
@@ -91,7 +97,7 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
 
     pageViewController = PageController(
       keepPage: true,
-      initialPage: randomPage,
+      initialPage: currPageID,
     );
 
     //handle goal set caluclation and display
@@ -104,7 +110,6 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
 
   @override
   void dispose() { 
-    controlAnimatedGoalSet.removeListener(updateState);
     pageViewController.dispose();
     super.dispose();
   }
@@ -113,9 +118,32 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
     if(mounted) setState(() {});
   }
 
+  Duration transitionDuration = Duration(milliseconds: 5000);
+
   //build
   @override
   Widget build(BuildContext context) {
+    //both values grabbed raw
+    double bottomPadding = 24.0 + 24.0 + 40.0 + 24;
+    double topPadding = 16;
+
+    //travel bottomPadding + bottomPadding + toPadding in 300 ms
+    //10 feet in 5 seconds, 2 feets per second
+    //how long to travel 3 feet? 3/2 = 1.5 seconds
+    double totalTravel = (bottomPadding * 2) + topPadding;
+    double unitsPerMicrosecond = totalTravel / transitionDuration.inMicroseconds;
+    int microsecondsToTravelBottomPadding = bottomPadding ~/ unitsPerMicrosecond;
+    
+    //calculate how 2nd animation stuff
+    Duration delayBeforeStartSecondAnim = Duration(microseconds: microsecondsToTravelBottomPadding);
+    Duration secondAnimDuration = transitionDuration - delayBeforeStartSecondAnim;
+    double secondAnimTravel = bottomPadding + topPadding;
+
+    //calculate how 1st animation stuff will work
+    Duration firstAnimDuration = transitionDuration;
+    double firstAnimTravel = totalTravel;
+
+    //all the stuffs
     return Stack(
       children: <Widget>[
         DoneButton(
@@ -130,38 +158,45 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
           //TODO: when we are done with debuging we can uncomment this
           //scrollPhysics: NeverScrollableScrollPhysics(),
           scrollDirection: Axis.vertical,
-        
           children: <Widget>[
-            Suggestion( 
-              excercise: widget.excercise,
-              statusBarHeight: widget.statusBarHeight,
-              recordSet: (){
-                toPage(1);
-              },
+            ClipRRect(
+              child: Suggestion( 
+                excercise: widget.excercise,
+                statusBarHeight: widget.statusBarHeight,
+                recordSet: () => toPage(1),
+                heroUp: firstUp,
+                heroAnimDuration: firstAnimDuration,
+                heroAnimTravel: firstAnimTravel,
+              ),
             ),
-            SetRecord(
-              excercise: widget.excercise,
-              statusBarHeight: widget.statusBarHeight,
-              //TODO: going back should not reset what they already typed
-              //note: try to stop them from typing dumb stuff but if they do then restore the dumb stuff
-              //TODO: do so when the user holds the button AND when they click it
-              backToSuggestion: () => toPage(0),
-              //TODO: dont allow the user to move onto the set break until they have valid set
-              //1. numbers only (obvi)
-              //2. whole numbers (kinda obvi)
-              //3. for the weight less thatb 4 digits (nobody can nothing 9,999 pounds)
-              //4. for the reps less than 3 digits (nobody can nothing 999 times)
-              //5. weight CAN BE 0, but suggest that if its body weight excercise they record that
-              //6. reps can't be 0
-              //TODO: if they try to move onto the set break explain the above
-              //- can use a pop up
-              //- can use a snackbar
-              //- can use a attached toast
-              //- can just trigger the error or something like it on the field
-              //- ideally just make it impossible for the user to do something dumb
-              setBreak: (){
-                toPage(2);
-              },
+            ClipRRect(
+              child: SetRecord(
+                excercise: widget.excercise,
+                statusBarHeight: widget.statusBarHeight,
+                heroUp: firstUp,
+                heroAnimDuration: firstAnimDuration,
+                heroAnimTravel: firstAnimTravel,
+                //TODO: going back should not reset what they already typed
+                //note: try to stop them from typing dumb stuff but if they do then restore the dumb stuff
+                //TODO: do so when the user holds the button AND when they click it
+                backToSuggestion: () => toPage(0),
+                //TODO: dont allow the user to move onto the set break until they have valid set
+                //1. numbers only (obvi)
+                //2. whole numbers (kinda obvi)
+                //3. for the weight less thatb 4 digits (nobody can nothing 9,999 pounds)
+                //4. for the reps less than 3 digits (nobody can nothing 999 times)
+                //5. weight CAN BE 0, but suggest that if its body weight excercise they record that
+                //6. reps can't be 0
+                //TODO: if they try to move onto the set break explain the above
+                //- can use a pop up
+                //- can use a snackbar
+                //- can use a attached toast
+                //- can just trigger the error or something like it on the field
+                //- ideally just make it impossible for the user to do something dumb
+                setBreak: (){
+                  toPage(2);
+                },
+              ),
             ),
             Recovery(
               excercise: widget.excercise,
@@ -187,10 +222,7 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
   //this is so that we can go to a different page if need be
   //but also to initally show the done button if need be
   toPage(int pageID, {bool instant: false}){ //0 -> 2
-    //update position of goal set
-    controlAnimatedGoalSet.value = pageID;
-
-    //move to the next page
+    currPageID = pageID;
     if(instant){
       //jump the right page
       if(pageID != 0){ //we actually have to jump
@@ -234,9 +266,21 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
       //animated to right page
       pageViewController.animateToPage(
         pageID, 
-        duration: Duration(milliseconds: 300), 
+        duration: transitionDuration, 
         curve: Curves.easeInOut,
       );
+
+      //handle the cross page "hero"
+      //after waiting "a couple of frames" for the other page to start showing up
+      WidgetsBinding.instance.addPostFrameCallback((_){
+        WidgetsBinding.instance.addPostFrameCallback((_){
+          WidgetsBinding.instance.addPostFrameCallback((_){
+            firstUp.value = (currPageID == 0);
+            secondUp.value = (currPageID == 0);
+          });
+        });
+      });
+      
     }
   }
 }

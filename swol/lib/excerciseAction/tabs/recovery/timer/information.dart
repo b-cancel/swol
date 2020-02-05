@@ -18,8 +18,7 @@ import 'package:swol/shared/methods/theme.dart';
 2. *what training type you are ready for*
 
 *****after 5 minutes
-1. "You should warm up again"
-
+1. "You might have to warm up again" (2.5 minutes from select time) 
 
 *****after 10 minutes
 1. "You Waited Too long"

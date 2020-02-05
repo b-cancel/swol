@@ -23,11 +23,17 @@ class Suggestion extends StatefulWidget {
     @required this.statusBarHeight,
     @required this.excercise,
     @required this.recordSet,
+    @required this.heroUp,
+    @required this.heroAnimDuration,
+    @required this.heroAnimTravel,
   });
 
   final double statusBarHeight;
   final AnExcercise excercise;
   final Function recordSet;
+  final ValueNotifier<bool> heroUp;
+  final Duration heroAnimDuration;
+  final double heroAnimTravel;
 
   @override
   _SuggestionState createState() => _SuggestionState();
@@ -150,6 +156,9 @@ class _SuggestionState extends State<Suggestion> {
                 lastWeight: 80, 
                 lastReps: 5,
                 rawSpaceToRedistribute: spaceToRedistribute - backButtonHeight, 
+                heroUp: widget.heroUp,
+                heroAnimDuration: widget.heroAnimDuration,
+                heroAnimTravel: widget.heroAnimTravel,
               ),
             )
           ],
