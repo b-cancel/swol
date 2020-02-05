@@ -125,7 +125,7 @@ class _ExcerciseTileLeadingState extends State<ExcerciseTileLeading> {
         }
       }
       else{
-        bool isLastSet = false;
+        bool isLastSet = true;
         return Hero(
           tag: "excercise" + (isLastSet ? "Complete" : "Continue") + widget.excercise.id.toString(),
           createRectTween: (begin, end) {
