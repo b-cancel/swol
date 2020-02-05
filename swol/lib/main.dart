@@ -38,7 +38,7 @@ class App extends StatelessWidget {
     ]); 
 
     //app loading theme
-    SystemChrome.setSystemUIOverlayStyle(ThemeChanger.allBlackStyle);
+    SystemChrome.setSystemUIOverlayStyle(ThemeChanger.darkStyle);
 
     //main app build
     return BotToastInit(
@@ -77,7 +77,6 @@ class _GrabSystemDataState extends State<GrabSystemData> {
     await ExcerciseData.excercisesInit();
     preferences = await SharedPreferences.getInstance();
     SharedPrefsExt.init(preferences);
-    SystemChrome.setSystemUIOverlayStyle(ThemeChanger.darkStyle);
     setState(() {});
   }
 

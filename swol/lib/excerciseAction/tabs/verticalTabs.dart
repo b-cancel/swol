@@ -212,7 +212,8 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
           excercise: widget.excercise,
           showDoneButton: showDoneButton,
           setsFinishedSoFar: setsFinishedSoFar,
-          animationCurve: Curves.bounceInOut,
+          showOrHideDuration: transitionDuration,
+          animationCurve: Curves.easeInOut,
         ),
       ],
     );

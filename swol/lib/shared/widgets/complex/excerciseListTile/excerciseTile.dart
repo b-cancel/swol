@@ -45,10 +45,10 @@ class ExcerciseTile extends StatelessWidget {
         App.navSpread.value = true;
 
         //page transition
-        Duration transitionDuration = Duration(milliseconds: 3000);
+        Duration transitionDuration = Duration(milliseconds: 300);
         PageTransition page = PageTransition(
           duration: transitionDuration,
-          type: PageTransitionType.upToDown, 
+          type: PageTransitionType.rightToLeft, 
           //when transitioning to this page relaoding leading is always false
           //WILL SET reloading leading to true
           child: ExcercisePage(

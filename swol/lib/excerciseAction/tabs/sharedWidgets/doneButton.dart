@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:swol/shared/structs/anExcercise.dart';
-import 'package:swol/shared/widgets/complex/excerciseListTile/miniTimer/invertedCircleClipper.dart';
 import 'package:swol/shared/widgets/simple/heros/curveMod.dart';
 import 'package:vector_math/vector_math_64.dart' as vect;
 
@@ -16,7 +15,7 @@ import 'package:vector_math/vector_math_64.dart' as vect;
 class DoneButton extends StatelessWidget {
   DoneButton({
     @required this.excercise,
-    this.showOrHideDuration: const Duration(milliseconds: 300),
+    this.showOrHideDuration: const Duration(milliseconds: 1500),
     @required this.animationCurve,
     @required this.showDoneButton,
     @required this.setsFinishedSoFar,
@@ -253,7 +252,15 @@ class DoneButtonCorner extends StatefulWidget {
 
 class _DoneButtonCornerState extends State<DoneButtonCorner> {
   updateState() {
-    if (mounted) setState(() {});
+    //we want to show but wait till the main button shows
+    if(widget.showDoneButton.value){
+      Future.delayed((widget.showOrHideDuration * (0.5)),(){
+        if(mounted) setState(() {});
+      });
+    }
+    else{
+      if(mounted) setState(() {});
+    }
   }
 
   @override
@@ -270,46 +277,56 @@ class _DoneButtonCornerState extends State<DoneButtonCorner> {
 
   @override
   Widget build(BuildContext context) {
-    Radius goalRadius = Radius.circular(
-      widget.showDoneButton.value ? 24 : 0,
-    );
+    double size = widget.showDoneButton.value ? 24 : 0;
 
     //animates corners
     return Container(
       height: 24,
       width: 24,
-      child: Stack(
-        children: <Widget>[
-          Container(
-            height: 24,
-            width: 24,
-            decoration: new BoxDecoration(
-              color: Theme.of(context).cardColor,
-              borderRadius: new BorderRadius.only(
-                bottomRight: widget.isTop ? Radius.zero : goalRadius,
-                //
-                topRight: widget.isTop ? goalRadius : Radius.zero,
+      alignment: widget.isTop ? Alignment.bottomLeft : Alignment.topLeft,
+      child: AnimatedContainer(
+        curve: widget.animationCurve,
+        duration: (widget.showOrHideDuration * (0.5)),
+        height: size,
+        width: size,
+        child: FittedBox(
+          fit: BoxFit.contain,
+          child: ClipPath(
+            clipper: CornerClipper(
+              top: widget.isTop,
+            ),
+            child: Container(
+              height: 1,
+              width: 1,
+              decoration: new BoxDecoration(
+                color: Theme.of(context).cardColor,
               ),
             ),
           ),
-          AnimatedContainer(
-            height: 24,
-            width: 24,
-            curve: widget.animationCurve,
-            duration: widget.showOrHideDuration,
-            decoration: new BoxDecoration(
-              color: Theme.of(context).primaryColorDark,
-              borderRadius: new BorderRadius.only(
-                topLeft: widget.isTop ? Radius.zero : goalRadius,
-                bottomRight: widget.isTop ? Radius.zero : goalRadius,
-                //
-                bottomLeft: widget.isTop ? goalRadius : Radius.zero,
-                topRight: widget.isTop ? goalRadius : Radius.zero,
-              ),
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }
+}
+
+//modification of inverted circle clipper taken from somewhere on the internet
+class CornerClipper extends CustomClipper<Path> {
+  CornerClipper({
+    @required this.top,
+  });
+
+  final bool top;
+  
+  @override
+  Path getClip(Size size) {
+    return new Path()
+      ..addOval(new Rect.fromCircle(
+          center: new Offset(size.width, (top ? 0 : size.height)),
+          radius: size.width * 1))
+      ..addRect(new Rect.fromLTWH(0.0, 0.0, size.width, size.height))
+      ..fillType = PathFillType.evenOdd;
+  }
+
+  @override
+  bool shouldReclip(CustomClipper<Path> oldClipper) => false;
 }
