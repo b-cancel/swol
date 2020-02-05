@@ -9,29 +9,46 @@ class BottomBackButton extends StatelessWidget {
   }) : super(key: key);
 
   final Function backAction;
-  final double  verticalPadding;
+  final double verticalPadding;
   final bool useAccentColor;
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: (){
-        print("tappies");
-        if(backAction != null) backAction();
-      },
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          IntrinsicHeight(
-            child: Row(
-              mainAxisSize: MainAxisSize.max,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                Expanded(
-                  child: Container(
-                    color: Colors.transparent,
+    return Row(
+      mainAxisSize: MainAxisSize.max,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: <Widget>[
+        //the section that the "finish with this excercise"
+        //button might be at
+        Expanded(
+          child: Column(
+            children: <Widget>[
+              Expanded(
+                child: Container(),
+              ),
+              Container(
+                height: 24,
+                decoration: BoxDecoration(
+                  color: (useAccentColor
+                      ? Theme.of(context).accentColor
+                      : Theme.of(context).cardColor),
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(24),
                   ),
                 ),
+              ),
+            ],
+          ),
+        ),
+        //the button that looks small but is actually very tall
+        GestureDetector(
+          onTap: () {
+            if (backAction != null) backAction();
+          },
+          child: IntrinsicWidth(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
                 Stack(
                   children: <Widget>[
                     Positioned(
@@ -67,20 +84,15 @@ class BottomBackButton extends StatelessWidget {
                     ),
                   ],
                 ),
+                Container(
+                  height: 24,
+                  color: (useAccentColor ? Theme.of(context).accentColor : Theme.of(context).cardColor),
+                ),
               ],
             ),
           ),
-          Container(
-            height: 24,
-            decoration: BoxDecoration(
-              color: (useAccentColor ? Theme.of(context).accentColor :  Theme.of(context).cardColor),
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(24),
-              ),
-            ),
-          )
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

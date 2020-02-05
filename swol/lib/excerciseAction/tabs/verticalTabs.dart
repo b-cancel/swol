@@ -77,7 +77,7 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
     //TODO: select the first tab based on how far we are into the workout (HARD)
     //TODO: remove the random picker test code below
     var rng = new math.Random();
-    currPageID = 2; //(rng.nextInt(3)).clamp(0, 2);
+    currPageID = 0; //(rng.nextInt(3)).clamp(0, 2);
 
     //set notifier based on random page
     firstUp = new ValueNotifier<bool>(currPageID == 0);
@@ -146,13 +146,6 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
     //all the stuffs
     return Stack(
       children: <Widget>[
-        DoneButton(
-          excercise: widget.excercise,
-          showDoneButton: showDoneButton,
-          setsFinishedSoFar: setsFinishedSoFar,
-          animationCurve: Curves.bounceInOut,
-        ),
-        //on top so covers hacks done by me in button above
         PageView(
           controller: pageViewController,
           //TODO: when we are done with debuging we can uncomment this
@@ -213,6 +206,13 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
               nextSet: () => toPage(0),
             ),
           ],
+        ),
+        //must be on top... other wise it isnt clickable
+        DoneButton(
+          excercise: widget.excercise,
+          showDoneButton: showDoneButton,
+          setsFinishedSoFar: setsFinishedSoFar,
+          animationCurve: Curves.bounceInOut,
         ),
       ],
     );

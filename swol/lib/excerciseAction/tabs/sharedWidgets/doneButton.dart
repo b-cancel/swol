@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:swol/shared/structs/anExcercise.dart';
+import 'package:swol/shared/widgets/complex/excerciseListTile/miniTimer/invertedCircleClipper.dart';
 import 'package:swol/shared/widgets/simple/heros/curveMod.dart';
 import 'package:vector_math/vector_math_64.dart' as vect;
 
@@ -7,7 +8,7 @@ import 'package:vector_math/vector_math_64.dart' as vect;
 //1. if BEFORE set target keep background dark
 //2. if AFTER set target keep background light
 
-//TODO: from suggest page -> simply close everything off 
+//TODO: from suggest page -> simply close everything off
 //TODO: including all temp variables
 
 //TODO: from break page -> must do everything that clicking next set would
@@ -65,50 +66,43 @@ class DoneButton extends StatelessWidget {
         padding: EdgeInsets.only(
           //TODO: update to be the actual height of the bottom buttons
           //24 for card peek, 24 extra for black boxes
-          bottom: 24.0, 
+          bottom: 24.0,
         ),
-        child: GestureDetector(
-          onTap: (){
-            //TODO: finish this well
-            Navigator.of(context).pop();
-          },
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              DoneButtonCorner(
-                animationCurve: animationCurve,
-                showOrHideDuration: showOrHideDuration,
-                showDoneButton: showDoneButton,
-                isTop: true,
-              ),
-              Stack(
-                children: <Widget>[
-                  DoneButtonButton(
-                    excercise: excercise,
-                    animationCurve: animationCurve,
-                    showOrHideDuration: showOrHideDuration,
-                    showDoneButton: showDoneButton,
-                    setsFinishedSoFar: setsFinishedSoFar,
-                    wrapInHero: false,
-                  ),
-                  DoneButtonButton(
-                    excercise: excercise,
-                    animationCurve: animationCurve,
-                    showOrHideDuration: showOrHideDuration,
-                    showDoneButton: showDoneButton,
-                    setsFinishedSoFar: setsFinishedSoFar,
-                    wrapInHero: true,
-                  ),
-                ],
-              ),
-              DoneButtonCorner(
-                animationCurve: animationCurve,
-                showOrHideDuration: showOrHideDuration,
-                showDoneButton: showDoneButton,
-                isTop: false,
-              ),
-            ],
+        child: Container(
+          color: Colors.red,
+          child: GestureDetector(
+            onTap: () {
+              if (showDoneButton.value) {
+                print("nothing but print");
+                //TODO: finish this well
+                Navigator.of(context).pop();
+              }
+            },
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                DoneButtonCorner(
+                  animationCurve: animationCurve,
+                  showOrHideDuration: showOrHideDuration,
+                  showDoneButton: showDoneButton,
+                  isTop: true,
+                ),
+                DoneButtonButton(
+                  excercise: excercise,
+                  animationCurve: animationCurve,
+                  showOrHideDuration: showOrHideDuration,
+                  showDoneButton: showDoneButton,
+                  setsFinishedSoFar: setsFinishedSoFar,
+                ),
+                DoneButtonCorner(
+                  animationCurve: animationCurve,
+                  showOrHideDuration: showOrHideDuration,
+                  showDoneButton: showDoneButton,
+                  isTop: false,
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -123,7 +117,6 @@ class DoneButtonButton extends StatefulWidget {
     @required this.showOrHideDuration,
     @required this.showDoneButton,
     @required this.setsFinishedSoFar,
-    @required this.wrapInHero,
   });
 
   final AnExcercise excercise;
@@ -133,25 +126,24 @@ class DoneButtonButton extends StatefulWidget {
   final ValueNotifier<bool> showDoneButton;
   //doesn't trigger anything, more of a pass by reference
   final ValueNotifier<int> setsFinishedSoFar;
-  final bool wrapInHero;
 
   @override
   _DoneButtonButtonState createState() => _DoneButtonButtonState();
 }
 
 class _DoneButtonButtonState extends State<DoneButtonButton> {
-  updateState(){
-    if(mounted) setState(() {});
+  updateState() {
+    if (mounted) setState(() {});
   }
 
   @override
-  void initState() { 
+  void initState() {
     super.initState();
     widget.showDoneButton.addListener(updateState);
   }
 
   @override
-  void dispose() { 
+  void dispose() {
     widget.showDoneButton.removeListener(updateState);
     super.dispose();
   }
@@ -165,64 +157,19 @@ class _DoneButtonButtonState extends State<DoneButtonButton> {
       widget.showDoneButton.value ? 12 : 24,
     );
 
-    Widget main = AnimatedContainer(
-      curve: widget.animationCurve,
-      duration: widget.showOrHideDuration,
-      transform: Matrix4.translation(
-        vect.Vector3(
-          (widget.showDoneButton.value) ? 0
-          : -MediaQuery.of(context).size.width,
-          0,
-          0
-        ),  
-      ),
-      decoration: new BoxDecoration(
-        color: Theme.of(context).cardColor,
+    return Container(
+      //NOTE: this container is only just a wrapper to the animated container
+      //a place holder for when the hero is playing
+      //and the hero will only be playing if the button has the accent color
+      decoration: BoxDecoration(
+        color: widget.showDoneButton.value ?  Theme.of(context).accentColor : Colors.transparent,
         borderRadius: new BorderRadius.only(
           topRight: goalRadius,
           bottomRight: goalRadius,
         ),
       ),
-      padding: EdgeInsets.symmetric(
-        horizontal: 16,
-        vertical: 8,
-      ),
-      child: Opacity(
-        opacity: widget.wrapInHero ? 1 : 0,
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Icon(
-              Icons.arrow_left
-            ),
-            RichText(
-              text: TextSpan(
-                style: TextStyle(
-                  color: Colors.white,
-                ),
-                children: [
-                  TextSpan(
-                    text: widget.setsFinishedSoFar.value.toString() + " Sets",
-                    style: TextStyle(
-                      fontWeight: FontWeight.w900,
-                    ),
-                  ),
-                  TextSpan(
-                    text: " Complete",
-                    style: TextStyle(
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-
-    if(widget.wrapInHero){
-      return Hero(
-        tag: "excerciseComplete"+ widget.excercise.id.toString(),
+      child: Hero(
+        tag: "excerciseComplete" + widget.excercise.id.toString(),
         createRectTween: (begin, end) {
           return CustomRectTween(a: begin, b: end);
         },
@@ -230,12 +177,59 @@ class _DoneButtonButtonState extends State<DoneButtonButton> {
           fit: BoxFit.contain,
           child: Material(
             color: Colors.transparent,
-            child: main,
+            child: AnimatedContainer(
+              curve: widget.animationCurve,
+              duration: widget.showOrHideDuration,
+              transform: Matrix4.translation(
+                vect.Vector3(
+                    (widget.showDoneButton.value)
+                        ? 0
+                        : -MediaQuery.of(context).size.width,
+                    0,
+                    0),
+              ),
+              decoration: new BoxDecoration(
+                color: Theme.of(context).cardColor,
+                borderRadius: new BorderRadius.only(
+                  topRight: goalRadius,
+                  bottomRight: goalRadius,
+                ),
+              ),
+              padding: EdgeInsets.symmetric(
+                horizontal: 16,
+                vertical: 8,
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Icon(Icons.arrow_left),
+                  RichText(
+                    text: TextSpan(
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                      children: [
+                        TextSpan(
+                          text: widget.setsFinishedSoFar.value.toString() +
+                              " Sets",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w900,
+                          ),
+                        ),
+                        TextSpan(
+                          text: " Complete",
+                          style: TextStyle(),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ),
         ),
-      );
-    }
-    else return main;
+      ),
+    );
   }
 }
 
@@ -257,18 +251,18 @@ class DoneButtonCorner extends StatefulWidget {
 }
 
 class _DoneButtonCornerState extends State<DoneButtonCorner> {
-  updateState(){
-    if(mounted) setState(() {});
+  updateState() {
+    if (mounted) setState(() {});
   }
 
   @override
-  void initState() { 
+  void initState() {
     super.initState();
     widget.showDoneButton.addListener(updateState);
   }
 
   @override
-  void dispose() { 
+  void dispose() {
     widget.showDoneButton.removeListener(updateState);
     super.dispose();
   }

@@ -37,40 +37,35 @@ class BottomButtons extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Buttons(
-      excercise: excercise,
-      forwardAction: forwardAction,
-      forwardActionWidget: forwardActionWidget,
-      backAction: backAction,
-      useAccentColor: true,
-    );
-  }
-}
-
-/*
-class CardTop extends StatelessWidget {
-  const CardTop({
-    @required this.useAccentColor,
-    Key key,
-  }) : super(key: key);
-  
-  final bool useAccentColor;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 24,
-      width: MediaQuery.of(context).size.width,
-      decoration: BoxDecoration(
-        color: (useAccentColor ? Theme.of(context).accentColor :  Theme.of(context).cardColor),
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(24),
+    return Stack(
+      children: <Widget>[
+        //fill the tiny gaps generate by flutter slightly flawed rendering
+        Positioned(
+          bottom: 0,
+          left: 0,
+          right: 0,
+          child: Container(
+            height: 24,
+            decoration: BoxDecoration(
+              color: Theme.of(context).accentColor,
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(24),
+              ),
+            )
+          ),
         ),
-      ),
+        //the buttons that are larger than they seem to be
+        Buttons(
+          excercise: excercise,
+          forwardAction: forwardAction,
+          forwardActionWidget: forwardActionWidget,
+          backAction: backAction,
+          useAccentColor: true,
+        ),
+      ],
     );
   }
 }
-*/
 
 class Buttons extends StatelessWidget {
   const Buttons({
@@ -106,21 +101,11 @@ class Buttons extends StatelessWidget {
               useAccentColor: useAccentColor,
             ),
           ),
-          /*
-          BottomNextButton(
-                forwardAction: forwardAction, 
-                forwardActionWidget: forwardActionWidget,
-                verticalPadding: extraVerticalPadding,
-                excercise: excercise,
-                wrapInHero: false,
-              ),
-          */
           BottomNextButton(
             forwardAction: forwardAction, 
             forwardActionWidget: forwardActionWidget,
             verticalPadding: extraVerticalPadding,
             excercise: excercise,
-            wrapInHero: true,
           ),
         ],
       ),
