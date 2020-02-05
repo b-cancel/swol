@@ -76,6 +76,12 @@ class _SetDisplayState extends State<SetDisplay> {
     }
     else foregroundColor = Colors.white;
 
+    double movementY = 0;
+    if(widget.heroUp != null){
+      if(widget.useAccent) movementY = widget.heroUp.value ? 0 : widget.heroAnimTravel;
+      else movementY = widget.heroUp.value ? -widget.heroAnimTravel : 0;
+    }
+
     return AnimatedContainer(
       duration: widget.heroAnimDuration ?? Duration.zero,
       width: MediaQuery.of(context).size.width,
@@ -90,8 +96,7 @@ class _SetDisplayState extends State<SetDisplay> {
       transform:  Matrix4.translation(
         vect.Vector3(
           0, 
-          widget.heroUp == null ? 0 
-          : (widget.heroUp.value ? 0 : widget.heroAnimTravel),
+          movementY,
           0,
         ),
       ),

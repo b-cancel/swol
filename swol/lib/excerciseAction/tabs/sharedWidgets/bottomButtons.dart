@@ -37,23 +37,17 @@ class BottomButtons extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: <Widget>[
-        Buttons(
-          excercise: excercise,
-          forwardAction: forwardAction,
-          forwardActionWidget: forwardActionWidget,
-          backAction: backAction,
-        ),
-        CardTop(
-          useAccentColor: true,
-        )
-      ],
+    return Buttons(
+      excercise: excercise,
+      forwardAction: forwardAction,
+      forwardActionWidget: forwardActionWidget,
+      backAction: backAction,
+      useAccentColor: true,
     );
   }
 }
 
+/*
 class CardTop extends StatelessWidget {
   const CardTop({
     @required this.useAccentColor,
@@ -76,6 +70,7 @@ class CardTop extends StatelessWidget {
     );
   }
 }
+*/
 
 class Buttons extends StatelessWidget {
   const Buttons({
@@ -83,12 +78,14 @@ class Buttons extends StatelessWidget {
     @required this.forwardAction,
     @required this.forwardActionWidget,
     this.backAction,
+    this.useAccentColor,
   });
 
   final AnExcercise excercise;
   final Function forwardAction;
   final Widget forwardActionWidget;
   final Function backAction;
+  final bool useAccentColor;
 
   @override
   Widget build(BuildContext context) {
@@ -103,28 +100,27 @@ class Buttons extends StatelessWidget {
             //TODO: should also probably pass something that links to the next buttons activity
             //because this is the back button but it also hold a peice of the next button
             //that ofcourse will change colors when PROPERLY active
-            child: BottomBackButton(
+            child: BottomBackButton( 
               backAction: backAction,
               verticalPadding: extraVerticalPadding,
+              useAccentColor: useAccentColor,
             ),
           ),
-          Stack(
-            children: <Widget>[
-              BottomNextButton(
+          /*
+          BottomNextButton(
                 forwardAction: forwardAction, 
                 forwardActionWidget: forwardActionWidget,
                 verticalPadding: extraVerticalPadding,
                 excercise: excercise,
                 wrapInHero: false,
               ),
-              BottomNextButton(
-                forwardAction: forwardAction, 
-                forwardActionWidget: forwardActionWidget,
-                verticalPadding: extraVerticalPadding,
-                excercise: excercise,
-                wrapInHero: true,
-              ),
-            ],
+          */
+          BottomNextButton(
+            forwardAction: forwardAction, 
+            forwardActionWidget: forwardActionWidget,
+            verticalPadding: extraVerticalPadding,
+            excercise: excercise,
+            wrapInHero: true,
           ),
         ],
       ),

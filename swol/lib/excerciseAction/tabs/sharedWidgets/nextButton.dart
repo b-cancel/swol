@@ -20,16 +20,14 @@ class BottomNextButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Widget main =  RaisedButton(
-      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-      shape: RoundedRectangleBorder(
+    Widget main = Container(
+      decoration: BoxDecoration(
+        color: Theme.of(context).accentColor,
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(12),
           topRight: Radius.circular(12),
         ),
       ),
-      color: Theme.of(context).accentColor,
-      onPressed: () => forwardAction(),
       padding: EdgeInsets.only(
         right: 16,
       ),
@@ -51,6 +49,22 @@ class BottomNextButton extends StatelessWidget {
               forwardActionWidget,
             ],
           ),
+        ),
+      ),
+    );
+
+    main = GestureDetector(
+      onTap: () => forwardAction(),
+      child: IntrinsicWidth(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            main,
+            Container(
+              height: 24,
+              color: Theme.of(context).accentColor,
+            )
+          ]
         ),
       ),
     );
