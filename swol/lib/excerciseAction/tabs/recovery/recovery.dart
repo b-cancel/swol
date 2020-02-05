@@ -27,6 +27,7 @@ class Recovery extends StatefulWidget {
 
 class _RecoveryState extends State<Recovery> with SingleTickerProviderStateMixin {
   ValueNotifier<Duration> recoveryDuration;
+  ValueNotifier<bool> areYouSurePopUp;
 
   //function that is removable from listener
   updateRecoveryDuration(){
@@ -44,6 +45,7 @@ class _RecoveryState extends State<Recovery> with SingleTickerProviderStateMixin
     //setup things to make recovery duration changeable
     recoveryDuration = new ValueNotifier(widget.excercise.recoveryPeriod);
     recoveryDuration.addListener(updateRecoveryDuration);
+    areYouSurePopUp = new ValueNotifier<bool>(false);
 
     //super init
     super.initState();
@@ -87,6 +89,7 @@ class _RecoveryState extends State<Recovery> with SingleTickerProviderStateMixin
                     child: Timer(
                       excercise: widget.excercise,
                       changeableTimerDuration: recoveryDuration,
+                      areYouSurePopUp: areYouSurePopUp,
                       showIcon: false,
                     ),
                   )
@@ -116,6 +119,8 @@ class _RecoveryState extends State<Recovery> with SingleTickerProviderStateMixin
           BottomButtons(
             excercise: widget.excercise,
             forwardAction: (){
+              //TODO: react to "areYouSurePopUp"
+
               //move onto the next set
               widget.nextSet();
 

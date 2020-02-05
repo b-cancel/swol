@@ -81,6 +81,7 @@ class Timer extends StatefulWidget {
   Timer({
     @required this.excercise,
     @required this.changeableTimerDuration,
+    @required this.areYouSurePopUp,
     this.showArrows: true,
     this.showIcon: true,
   });
@@ -88,6 +89,7 @@ class Timer extends StatefulWidget {
   final AnExcercise excercise;
   //time before we go any level of red
   final ValueNotifier<Duration> changeableTimerDuration;
+  final ValueNotifier<bool> areYouSurePopUp;
   //smaller settings
   final bool showArrows;
   final bool showIcon;
@@ -249,11 +251,21 @@ class _TimerState extends State<Timer> with TickerProviderStateMixin {
     Duration totalDurationPassed = DateTime.now().difference(widget.excercise.tempStartTime.value);
 
     //text for pop ups and button
-    String trainingSelected = durationToTrainingType(widget.excercise.recoveryPeriod);
-    String trainingSelectedIfStopped = durationToTrainingType(totalDurationPassed);
+    String trainingSelected = durationToTrainingType(widget.excercise.recoveryPeriod, zeroIsEndurance: false);
+    String trainingBreakGoodFor = durationToTrainingType(totalDurationPassed, zeroIsEndurance: false);
+
+    //are you sure?
+    bool withinTrainingType = (trainingSelected == trainingBreakGoodFor);
+    if(withinTrainingType) widget.areYouSurePopUp.value = withinTrainingType;
+    else{
+      Duration bufferSize = Duration(seconds: 15);
+      Duration lowerBound = widget.excercise.recoveryPeriod - bufferSize;
+      Duration upperBound = widget.excercise.recoveryPeriod +  bufferSize;
+      widget.areYouSurePopUp.value = (lowerBound <= totalDurationPassed && totalDurationPassed <= upperBound);
+    }
 
     /*
-        String primaryMsg;
+    String primaryMsg;
     String secondaryMsg;
     //TODO: doesn't suggest timer change
     if(totalDurationPassed < excercise.recoveryPeriod){
