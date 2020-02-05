@@ -128,6 +128,45 @@ class SetRecordCardBottom extends StatelessWidget {
         mainAxisSize: MainAxisSize.max,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
+          Container(
+            width: MediaQuery.of(context).size.width,
+            height: 24,
+            color: Theme.of(context).accentColor,
+          ),
+          Stack(
+            children: <Widget>[
+              Positioned.fill(
+                child: Column(
+                  children: <Widget>[
+                    Expanded(
+                      child: Container(
+                        color: Theme.of(context).accentColor,
+                      ),
+                    ),
+                    Expanded(
+                      child: Container(),
+                    )
+                  ],
+                ),
+              ),
+              Container(
+                decoration: BoxDecoration(
+                  color: Theme.of(context).cardColor,
+                  borderRadius: BorderRadius.all(Radius.circular(24)),
+                ),
+                child: SetDisplay(
+                  useAccent: false,
+                  title: "Goal Set",
+                  lastWeight: 124, 
+                  lastReps: 23,
+                  heroUp: heroUp,
+                  heroAnimDuration: heroAnimDuration,
+                  heroAnimTravel: heroAnimTravel,
+                ),
+              ),
+            ],
+          ),
+          /*
           PreviousCardCorners(
             cardRadius: cardRadius,
             child: Container(
@@ -139,17 +178,10 @@ class SetRecordCardBottom extends StatelessWidget {
                 ),
               ),
               width: MediaQuery.of(context).size.width,
-              child: SetDisplay(
-                useAccent: false,
-                title: "Goal Set",
-                lastWeight: 124, 
-                lastReps: 23,
-                heroUp: heroUp,
-                heroAnimDuration: heroAnimDuration,
-                heroAnimTravel: heroAnimTravel,
-              ),
+              child: 
             ),
           ),
+          */
           Flexible(
             flex: smallNumber,
             child: Container(),

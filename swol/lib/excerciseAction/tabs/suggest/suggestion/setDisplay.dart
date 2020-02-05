@@ -70,11 +70,10 @@ class _SetDisplayState extends State<SetDisplay> {
       backgroundColor = widget.heroUp.value ? Theme.of(context).accentColor : Theme.of(context).cardColor;
     }
 
-    Color foregroundColor;
-    if(backgroundColor == Theme.of(context).accentColor){
-      foregroundColor = Theme.of(context).primaryColorDark;
+    Color foregroundColor = widget.useAccent ? Theme.of(context).primaryColorDark : Colors.white;
+    if(widget.heroUp != null){
+      foregroundColor = widget.heroUp.value ? Theme.of(context).primaryColorDark : Colors.white;
     }
-    else foregroundColor = Colors.white;
 
     double movementY = 0;
     if(widget.heroUp != null){
@@ -87,10 +86,7 @@ class _SetDisplayState extends State<SetDisplay> {
       width: MediaQuery.of(context).size.width,
       decoration: BoxDecoration(
         color: backgroundColor,
-        borderRadius: BorderRadius.only(
-          bottomLeft: Radius.circular(curveValue),
-          bottomRight: Radius.circular(curveValue),
-        ),
+        borderRadius: BorderRadius.all(Radius.circular(curveValue)),
       ),
       //NOTE: I can't change alignment since that will mess up the FittedBox child
       transform:  Matrix4.translation(

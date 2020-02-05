@@ -124,33 +124,10 @@ class _ExcerciseTileLeadingState extends State<ExcerciseTileLeading> {
           }
         }
       }
-      else{
-        bool isLastSet = true;
-        return Hero(
-          tag: "excercise" + (isLastSet ? "Complete" : "Continue") + widget.excercise.id.toString(),
-          createRectTween: (begin, end) {
-            return CustomRectTween(a: begin, b: end);
-          },
-          child: FittedBox(
-            fit: BoxFit.contain,
-            child: Material(
-              color: Colors.transparent,
-              child: ContinueOrComplete(
-                afterLastSet: isLastSet,
-              ),
-            ),
-          ),
-        );
-      }
-      
-      
-      
-      
-      /*return ExcerciseBegin(
+      else return ExcerciseBegin(
         inAppBar: false,
         excercise: widget.excercise,
       );
-      */
     }
   }
 }

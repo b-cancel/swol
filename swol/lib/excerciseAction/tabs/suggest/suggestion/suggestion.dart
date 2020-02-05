@@ -73,14 +73,24 @@ class SuggestionSection extends StatelessWidget {
               cardRadius: cardRadius,
             ),
           ),
-          SetDisplay(
-            useAccent: true,
-            title: "Goal Set",
-            lastWeight: 124,
-            lastReps: 23,
-            heroUp: heroUp,
-            heroAnimDuration: heroAnimDuration,
-            heroAnimTravel: heroAnimTravel,
+          Container(
+            decoration: BoxDecoration(
+              color: Theme.of(context).accentColor,
+              borderRadius: BorderRadius.only(
+                bottomRight: cardRadius,
+                bottomLeft: cardRadius,
+              ),
+            ),
+            width: MediaQuery.of(context).size.width,
+            child: SetDisplay(
+              useAccent: true,
+              title: "Goal Set",
+              lastWeight: 124,
+              lastReps: 23,
+              heroUp: heroUp,
+              heroAnimDuration: heroAnimDuration,
+              heroAnimTravel: heroAnimTravel,
+            ),
           ),
         ],
       ),

@@ -118,7 +118,7 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
     if(mounted) setState(() {});
   }
 
-  Duration transitionDuration = Duration(milliseconds: 5000);
+  Duration transitionDuration = Duration(milliseconds: 300);
 
   //build
   @override
