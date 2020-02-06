@@ -1,6 +1,5 @@
 //flutter
 import 'package:flutter/material.dart';
-import 'package:swol/excerciseAction/tabs/recovery/timer/liquidTime.dart';
 
 //internal
 import 'package:swol/shared/widgets/complex/trainingTypeTables/trainingTypes.dart';
@@ -36,15 +35,6 @@ class ExplainFunctionality extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               RichText(
-                //Different types of trainings
-                //require different set breaks
-                //for the best results
-
-                //but since you are current doing X training
-                //you should take a break of atleast A
-                //and of at most B
-
-                //the break time ranges for each training type are highlighted below
                 text: TextSpan(
                   style: TextStyle(
                     color: Colors.black,
@@ -122,4 +112,44 @@ class ExplainFunctionality extends StatelessWidget {
       ],
     );
   }
+}
+
+String durationToTrainingType(Duration duration, {bool zeroIsEndurance: true}) {
+  if (duration < Duration(minutes: 1)) {
+    if (zeroIsEndurance)
+      return "Endurance";
+    else {
+      if (duration < Duration(seconds: 15)) {
+        return "";
+      } else
+        return "Endurance";
+    }
+  } else if (duration < Duration(minutes: 2))
+    return "Hypertrohpy";
+  else if (duration < Duration(minutes: 3))
+    return "Hyp/Str";
+  else
+    return "Strength";
+}
+
+String trainingTypeToMin(String training) {
+  if (training == "Endurance")
+    return "15 seconds";
+  else if (training == "Hypertrohpy")
+    return "1 minute";
+  else if (training == "Hyp/Str")
+    return "2 minutes";
+  else
+    return "3 minutes";
+}
+
+String trainingTypeToMax(String training) {
+  if (training == "Endurance")
+    return "1 minutes";
+  else if (training == "Hypertrohpy")
+    return "2 minutes";
+  else if (training == "Hyp/Str")
+    return "3 minutes";
+  else
+    return "5 minutes";
 }

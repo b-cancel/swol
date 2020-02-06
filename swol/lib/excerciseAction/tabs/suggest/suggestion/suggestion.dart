@@ -57,12 +57,29 @@ class SuggestionSection extends StatelessWidget {
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
-          SetDisplay(
-            useAccent: false,
-            extraCurvy: true,
-            title: "Last Set",
-            lastWeight: 9999,
-            lastReps: 888,
+          Stack(
+            children: <Widget>[
+              Positioned.fill(
+                child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    Expanded(
+                      child: Container(
+                        color: Theme.of(context).cardColor,
+                      ),
+                    ),
+                    Expanded(child: Container()),
+                  ]
+                ),
+              ),
+              SetDisplay(
+                useAccent: false,
+                extraCurvy: true,
+                title: "Last Set",
+                lastWeight: 9999,
+                lastReps: 888,
+              ),
+            ],
           ),
           Expanded(
             child: FunctionSettings(

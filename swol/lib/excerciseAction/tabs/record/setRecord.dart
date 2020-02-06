@@ -1,9 +1,6 @@
 //flutter
 import 'package:flutter/material.dart';
 
-//plugins
-import 'package:swol/excerciseAction/tabs/recovery/recovery.dart';
-
 //internal
 import 'package:swol/excerciseAction/tabs/suggest/suggestion/setDisplay.dart';
 import 'package:swol/excerciseAction/tabs/sharedWidgets/cardWithHeader.dart';

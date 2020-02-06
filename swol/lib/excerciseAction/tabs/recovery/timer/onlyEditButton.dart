@@ -39,15 +39,13 @@ List<String> durationToCustomDisplay(Duration duration){
 class OnlyEditButton extends StatelessWidget {
   const OnlyEditButton({
     Key key,
-    @required this.breakDuration,
+    @required this.durationString,
   }) : super(key: key);
 
-  final Duration breakDuration;
+  final String durationString;
 
   @override
   Widget build(BuildContext context) {
-    List<String> breakString = durationToCustomDisplay(breakDuration);
-    String fullString = breakString[0] + ":" + breakString[1];
     return Center(
       child: Padding(
         padding: EdgeInsets.all(16),
@@ -55,24 +53,16 @@ class OnlyEditButton extends StatelessWidget {
           padding: EdgeInsets.only(
             bottom: 16,
           ),
-          child: ConstrainedBox(
-            constraints: BoxConstraints(
-              maxWidth: MediaQuery.of(context)
-                      .size
-                      .width /
-                  6,
-            ),
-            child: FittedBox(
-              fit: BoxFit.contain,
-              child: DefaultTextStyle(
-                style: TextStyle(
-                  color: Theme.of(context)
-                      .primaryColorDark,
-                ),
-                child: EditIcon(
-                  text: fullString,
-                  roundedRight: true,
-                ),
+          child: FittedBox(
+            fit: BoxFit.contain,
+            child: DefaultTextStyle(
+              style: TextStyle(
+                color: Theme.of(context)
+                    .primaryColorDark,
+              ),
+              child: EditIcon(
+                text: durationString,
+                roundedRight: true,
               ),
             ),
           ),

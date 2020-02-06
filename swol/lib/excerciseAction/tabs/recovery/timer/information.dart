@@ -3,74 +3,48 @@ import 'package:flutter/material.dart';
 
 //internal
 import 'package:swol/excerciseAction/tabs/recovery/secondary/explained.dart';
-import 'package:swol/excerciseAction/tabs/recovery/timer/liquidTime.dart';
-import 'package:swol/shared/structs/anExcercise.dart';
 import 'package:swol/shared/widgets/complex/fields/headers/ourInformationPopUp.dart';
 import 'package:swol/shared/methods/theme.dart';
-
-/*
--------------------------the button-------------------------
-
-*****before you pass your designated time
-1. "Recoverying For Your Next Set"
-2. *what training type you are ready for*
-
-*****after you pass your designated time
-1. "Move onto your next set"
-2. *what training type you are ready for*
-
-*****after 5 minutes
-1. "You might have to warm up again" (2.5 minutes from select time) 
-
-*****after 10 minutes
-1. "You Waited Too long"
-2. its been X time since your last set
-
-*****after so much longer its logical to assume they just forgot to stop it
-1. "You Must've Forgot To Finish"
-2. its been x time since your last set
-
--------------------------the pop up-------------------------
-
-*****before
-title: "Wait!"
-subtitle: "finish recoverying for your next set"
-
-*****after
-title: "Move " 
-
-*****after 5
-
-*****after 10
-
-*****after ridic
-title: Its Been Way Too Long
-subtitle: You Must've Forgotten To Finish
-*/
-
-//"you must warm up again for optimal results"
 
 //widget
 class InfoOutlineWhiteButton extends StatelessWidget {
   const InfoOutlineWhiteButton({
     Key key,
-    @required this.withinTrainingType,
-    @required this.buffer,
-    @required this.trainingName,
+    @required this.areYouSurePopUp,
     @required this.totalDurationPassed,
     @required this.selectedDuration,
     @required this.isWhite,
   }) : super(key: key);
 
-  final bool withinTrainingType;
-  final Duration buffer;
-  final String trainingName;
+  final ValueNotifier<bool> areYouSurePopUp;
   final Duration totalDurationPassed;
   final Duration selectedDuration;
   final bool isWhite;
 
   @override
   Widget build(BuildContext context) {
+    //text for pop ups and button
+    String trainingSelected = durationToTrainingType(
+      selectedDuration,
+      zeroIsEndurance: false,
+    );
+    String trainingBreakGoodFor = durationToTrainingType(
+      totalDurationPassed, 
+      zeroIsEndurance: false,
+    );
+
+    //are you sure?
+    Duration buffer = Duration(seconds: 15);
+    bool withinTrainingType = (trainingSelected == trainingBreakGoodFor);
+    if (withinTrainingType)
+      areYouSurePopUp.value = withinTrainingType;
+    else {
+      Duration lowerBound = selectedDuration - buffer;
+      Duration upperBound = selectedDuration + buffer;
+      areYouSurePopUp.value = (lowerBound <= totalDurationPassed &&
+          totalDurationPassed <= upperBound);
+    }
+
     //determine what section to focus on first when the user is looking for guidance
     int sectionWithInitialFocus;
     if(totalDurationPassed <= Duration(minutes: 1)) sectionWithInitialFocus = 0; //endurance
@@ -87,7 +61,7 @@ class InfoOutlineWhiteButton extends StatelessWidget {
       subtitle: "before moving onto your next set",
       isDense: true,
       body: ExplainFunctionality(
-        trainingName: trainingName,
+        trainingName: trainingSelected,
         sectionWithInitialFocus: sectionWithInitialFocus,
       ),
     );
@@ -96,7 +70,7 @@ class InfoOutlineWhiteButton extends StatelessWidget {
     return Theme(
       data: MyTheme.dark,
       child: InfoOutlineDarkButton(
-        trainingName: trainingName,
+        trainingName: trainingSelected,
         withinTrainingTypeRange: withinTrainingType,
         buffer: buffer,
         totalDurationPassed: totalDurationPassed,

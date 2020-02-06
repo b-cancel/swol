@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:swol/excerciseAction/tabs/recovery/secondary/triangle.dart';
+import 'package:swol/excerciseAction/tabs/recovery/timer/onlyEditButton.dart';
 
 //showing time in a semi nice format for both timer and stopwatch widgets
 class TimeDisplay extends StatelessWidget {
@@ -10,8 +11,8 @@ class TimeDisplay extends StatelessWidget {
     @required this.textContainerSize,
     @required this.topNumber,
     this.topArrowUp,
-    @required this.bottomLeftNumber,
-    @required this.bottomRightNumber,
+    @required this.breakTime,
+    @required this.timePassed,
     this.showBottomArrow: false,
     @required this.isTimer,
     this.showIcon: false,
@@ -20,14 +21,19 @@ class TimeDisplay extends StatelessWidget {
   final double textContainerSize;
   final String topNumber;
   final bool topArrowUp;
-  final String bottomLeftNumber;
-  final String bottomRightNumber;
+  final String breakTime;
+  final Duration timePassed;
   final bool showBottomArrow;
   final bool isTimer;
   final bool showIcon;
 
   @override
   Widget build(BuildContext context) {
+    //based on all the calculated variables above show the various numbers
+    List<String> passedStrings = durationToCustomDisplay(timePassed);
+    String passedString = passedStrings[0] +" : " +passedStrings[1]; 
+    
+    //calculate triangle bits
     Widget topTriangle = (topArrowUp == null) ? Container()
     : Container(
       child: FittedBox(
@@ -36,6 +42,7 @@ class TimeDisplay extends StatelessWidget {
       ),
     );
 
+    //reurn
     return Transform.translate(
       //need because the icon throws off the balance of the design
       offset: Offset(0, -((48.0 + 16.0) / 3)),
@@ -110,12 +117,12 @@ class TimeDisplay extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           EditIcon(
-                            text: bottomLeftNumber,
+                            text: breakTime,
                           ),
                           EditIcon(
                             invisible: true,
                             showArrow: showBottomArrow,
-                            text: bottomRightNumber,
+                            text: passedString,
                           )
                         ],
                       ),

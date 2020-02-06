@@ -3,43 +3,19 @@ import 'package:flutter/material.dart';
 
 //packages
 import 'package:liquid_progress_indicator/liquid_progress_indicator.dart';
-import 'package:swol/excerciseAction/tabs/recovery/timer/onlyEditButton.dart';
-import 'package:swol/excerciseAction/tabs/recovery/timer/puslingBackground.dart';
 
 //internal
+import 'package:swol/excerciseAction/tabs/recovery/timer/puslingBackground.dart';
 import 'package:swol/excerciseAction/tabs/recovery/timer/turnOffVibration.dart';
 import 'package:swol/excerciseAction/tabs/recovery/secondary/timeDisplay.dart';
+import 'package:swol/excerciseAction/tabs/recovery/timer/onlyEditButton.dart';
 import 'package:swol/excerciseAction/tabs/recovery/timer/information.dart';
 import 'package:swol/excerciseAction/tabs/recovery/timer/changeTime.dart';
 
 //internal: shared
-import 'package:swol/shared/methods/theme.dart';
-import 'package:swol/shared/methods/vibrate.dart';
 import 'package:swol/shared/structs/anExcercise.dart';
-import 'package:vibration/vibration.dart';
-
-/*
-TODO: improve turning off the vibration
-the small snippet of code that stops vibration 
-in "updateTimerDuration" covers some of the cases below
-
-if you turned off the vibration after the timer went off
-then as long as the timer isnt extended
-changing it should not restart the vibration
-neither should leaving and entering the excercise again
-A.K.A.
-setting the timer to the same time
-or setting the timer to less time
-should not restart the vibration
-
-if you turned off the 5 minutes timer vibration
-then leaving and entering the excercise again 
-should not restart the vibration
-
-if you turned off the 10 minutes timer vibration
-then leaving and enter the excercise again 
-should not restart the vibration
-*/
+import 'package:swol/shared/methods/vibrate.dart';
+import 'package:swol/shared/methods/theme.dart';
 
 //NOTE: never ask wether we should change the timer
 //if they stop at less time than expected the pop up will annoy them
@@ -62,46 +38,6 @@ should not restart the vibration
 //If we are not yet within our training type, the pop up only shows up if we are 15 seconds before our selected time
 //if we are within our training type, regardless of how many seconds we are before our selected time the pop up doesn't show up
 //  NOTE: distinction between Endurance training and less than 15 seconds of waiting
-
-String durationToTrainingType(Duration duration, {bool zeroIsEndurance: true}) {
-  if (duration < Duration(minutes: 1)) {
-    if (zeroIsEndurance)
-      return "Endurance";
-    else {
-      if (duration < Duration(seconds: 15)) {
-        return "";
-      } else
-        return "Endurance";
-    }
-  } else if (duration < Duration(minutes: 2))
-    return "Hypertrohpy";
-  else if (duration < Duration(minutes: 3))
-    return "Hyp/Str";
-  else
-    return "Strength";
-}
-
-String trainingTypeToMin(String training) {
-  if (training == "Endurance")
-    return "15 seconds";
-  else if (training == "Hypertrohpy")
-    return "1 minute";
-  else if (training == "Hyp/Str")
-    return "2 minutes";
-  else
-    return "3 minutes";
-}
-
-String trainingTypeToMax(String training) {
-  if (training == "Endurance")
-    return "1 minutes";
-  else if (training == "Hypertrohpy")
-    return "2 minutes";
-  else if (training == "Hyp/Str")
-    return "3 minutes";
-  else
-    return "5 minutes";
-}
 
 //build
 class Timer extends StatefulWidget {
@@ -269,37 +205,115 @@ class _TimerState extends State<Timer> with TickerProviderStateMixin {
     String generatedHeroTag = "timer" + widget.excercise.id.toString();
 
     //show UI depending on how much time has passed
-    Duration totalDurationPassed =
-        DateTime.now().difference(widget.excercise.tempStartTime.value);
+    DateTime timerStart = widget.excercise.tempStartTime.value;
+    Duration totalDurationPassed = DateTime.now().difference(timerStart);
 
-    //text for pop ups and button
-    String trainingSelected = durationToTrainingType(
-        widget.excercise.recoveryPeriod,
-        zeroIsEndurance: false);
-    String trainingBreakGoodFor =
-        durationToTrainingType(totalDurationPassed, zeroIsEndurance: false);
-
-    //are you sure?
-    Duration buffer = Duration(seconds: 15);
-    bool withinTrainingType = (trainingSelected == trainingBreakGoodFor);
-    if (withinTrainingType)
-      widget.areYouSurePopUp.value = withinTrainingType;
-    else {
-      Duration lowerBound = widget.excercise.recoveryPeriod - buffer;
-      Duration upperBound = widget.excercise.recoveryPeriod + buffer;
-      widget.areYouSurePopUp.value = (lowerBound <= totalDurationPassed &&
-          totalDurationPassed <= upperBound);
-    }
-
+    //the information button
     Widget infoButton = Theme(
       data: MyTheme.light,
       child: InfoOutlineWhiteButton(
-        trainingName: trainingSelected,
-        withinTrainingType: withinTrainingType,
-        buffer: buffer,
+        areYouSurePopUp: widget.areYouSurePopUp,
         totalDurationPassed: totalDurationPassed,
         selectedDuration: widget.excercise.recoveryPeriod,
         isWhite: maxTimerController.value != 1,
+      ),
+    );
+
+    //show how much time we have selected
+    List<String> breakTimeStrings = durationToCustomDisplay(widget.excercise.recoveryPeriod);
+    String breakTimeString = breakTimeStrings[0] + ":" + breakTimeStrings[1];
+
+    //-------------------------Optimize Below-------------------------
+
+    //chosen colors
+    final Color greenTimerAccent = Theme.of(context).accentColor;
+    final Color redStopwatchAccent = Colors.red;
+
+    //---calculate extra time passed
+    Duration extraDurationPassed = Duration.zero;
+    if (totalDurationPassed > widget.changeableTimerDuration.value) {
+      extraDurationPassed =
+          totalDurationPassed - widget.changeableTimerDuration.value;
+    }
+
+    //simplifying varaible for the merge of timer and stopwatch widgets
+    bool firstTimerRunning = (extraDurationPassed == Duration.zero);
+    bool withinMaxDuration = (totalDurationPassed <= maxBreakDuration);
+
+    //-----varaibles that varry below
+    //wave progress
+    double progressValue; //should run from 0 -> 1
+    //colors
+    Animation<Color> waveColor;
+    Color backgroundColor;
+    //numbers
+    String topNumber;
+
+    //react differently to the timer or stopwatch
+    if (firstTimerRunning) {
+      //For Timer (GREY background & green wave)
+      backgroundColor = greyBackground;
+      waveColor = AlwaysStoppedAnimation(greenTimerAccent);
+
+      //calculate top number (+1 second handles a rounded error)
+      Duration durationLeft = widget.excercise.recoveryPeriod 
+      - totalDurationPassed 
+      + Duration(seconds: 1);
+
+      List<String> durLeftStrs = durationToCustomDisplay(durationLeft);
+      String durLeftString = durLeftStrs[0] + " : " + durLeftStrs[1]; 
+      topNumber = durLeftString;
+
+      //set progress value
+      progressValue = timesToValue(
+          totalDurationPassed, widget.changeableTimerDuration.value);
+    } else {
+      //For Stopwatch (red background & GREY background)
+      backgroundColor =
+          (withinMaxDuration) ? redStopwatchAccent : Colors.transparent;
+      waveColor = AlwaysStoppedAnimation(
+        //when the stopwatch finishes we want our screen to be full red all the time
+        (withinMaxDuration) ? greyBackground : Colors.transparent,
+      );
+
+      //calculate top Number
+      List<String> extraDurStrings =durationToCustomDisplay(extraDurationPassed);
+      String extraDurationString = extraDurStrings[0] + " : " + extraDurStrings[1];
+      topNumber = extraDurationString;
+
+      //---generate the progress values
+      //make generate the proper progress value (we dont want it to jump)
+      //thankfully since our max setable time is 4:55 and our actual max wait time is 5 minutes
+      //we know we will have atleast 5 seconds for the 2nd progress bar to jump from bottom to top
+
+      //maxDuration = maxEffectiveBREAKduration NOT maxEffectiveTIMERduration
+      if (withinMaxDuration == false)
+        progressValue = 1;
+      else {
+        //between 0 and 1
+        progressValue = timesToValue(
+          totalDurationPassed - widget.changeableTimerDuration.value,
+          maxBreakDuration - widget.changeableTimerDuration.value,
+        );
+      }
+    }
+
+    //just in case for small floating point "mistakes"
+    progressValue = progressValue.clamp(0.0, 1.0);
+
+    //-------------------------Optimize Above-------------------------
+
+    Widget changeTimeWidget = Positioned.fill(
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          //TODO: make sure this pop up works
+          onTap: (){
+            print("change-----------");
+            //maybeChangeRecoveryDuration()
+          },
+          child: Container(),
+        ),
       ),
     );
 
@@ -328,41 +342,6 @@ class _TimerState extends State<Timer> with TickerProviderStateMixin {
                       child: Stack(
                         children: <Widget>[
                           PulsingBackground(),
-                          Positioned.fill(
-                            child: Material(
-                              color: Colors.transparent,
-                              child: InkWell(
-                                onTap: () => maybeChangeRecoveryDuration(),
-                                child: Container(
-
-                                ),
-                              ),
-                            ),
-                          ),
-                          Visibility(
-                            visible: maxTimerController.value == 1,
-                            child: Positioned.fill(
-                              child: Center(
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                                  children: <Widget>[
-                                    infoButton,
-                                    OnlyEditButton(
-                                      breakDuration: widget.excercise.recoveryPeriod,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                          Visibility(
-                            visible: maxTimerController.value != 1,
-                            child: Container(
-                              color: Colors.yellow,
-                            ),
-                          )
-                          /*
                           LiquidCircularProgressIndicator(
                             //animated values
                             value: 1 - progressValue,
@@ -373,7 +352,51 @@ class _TimerState extends State<Timer> with TickerProviderStateMixin {
                             borderWidth: 0,
                             direction: Axis.vertical, 
                           ),
-                          */
+                          Visibility(
+                            visible: maxTimerController.value == 1,
+                            child: Positioned.fill(
+                              child: Stack(
+                                children: [
+                                  changeTimeWidget,
+                                  Positioned.fill(
+                                    child: Center(
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                                        children: <Widget>[
+                                          infoButton,
+                                          OnlyEditButton(
+                                            durationString: breakTimeString,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          Visibility(
+                            visible: maxTimerController.value != 1,
+                            child: Stack(
+                              children: [
+                                Center(
+                                  child: TimeDisplay(
+                                    textContainerSize: MediaQuery.of(context).size.width - (24 * 2),
+                                    topNumber: topNumber,
+                                    breakTime: breakTimeString,
+                                    timePassed: totalDurationPassed,
+                                    //easy variables
+                                    topArrowUp: widget.showArrows ? (firstTimerRunning ? false : true) : null,
+                                    isTimer: (firstTimerRunning) ? true : false,
+                                    showBottomArrow: widget.showArrows ? true : false,
+                                    showIcon: widget.showIcon,
+                                  ),
+                                ),
+                                changeTimeWidget,
+                              ],
+                            ),
+                          ),
                         ],
                       ),
                     ),
@@ -385,180 +408,5 @@ class _TimerState extends State<Timer> with TickerProviderStateMixin {
         ),
       ],
     );
-
-/*
-  //calculate string for timer duration
-    //List<String> timerDurationStrings = durationToCustomDisplay(widget.changeableTimerDuration.value);
-    //String timerDurationString = timerDurationStrings[0] + " : " + timerDurationStrings[1];
-
-    //format how much time has passed into a string
-    //List<String> totalDurationPassedStrings = durationToCustomDisplay(totalDurationPassed);
-    //String totalDurationString = totalDurationPassedStrings[0] + " : " + totalDurationPassedStrings[1]; //bottom right for ?
-
-    //chosen colors
-    //final Color greenTimerAccent = Theme.of(context).accentColor;
-    //final Color redStopwatchAccent = Colors.red;
-
-    //bool withinMaxDuration = (totalDurationPassed <= maxEffectiveBreakDuration);
-  */
-
-    /*
-    //super red gives us a completely different widget
-    //NOTE: the ONE SECOND accounts for the fact that 
-    //the controller might not call set state immediately at the 10 minute mark
-    //but its highly unlikely the phone will lag so much 
-    //that it won't call it within the last 1 second
-    if(totalDurationPassed >= (maxEffectiveTimerDuration - Duration(seconds: 1))){
-      return SuperOverflow(
-        totalDurationPassed: totalDurationPassed,
-        recoveryDurationString: timerDurationString,
-        updateState: updateState,
-        //todo finish fixing this
-        explainFunctionality: () => print("hello"), //explainFunctionalityPopUp(2),
-        maybeChangeRecoveryDuration: maybeChangeRecoveryDuration,
-      );
-    }
-    else{ //either we are half red or not red at all
-      //format how much time has passed into a string
-      List<String> totalDurationPassedStrings = durationToCustomDisplay(totalDurationPassed);
-      String totalDurationString = totalDurationPassedStrings[0] + " : " + totalDurationPassedStrings[1]; //bottom right for ?
-
-      //chosen colors
-      final Color greenTimerAccent = Theme.of(context).accentColor;
-      final Color redStopwatchAccent = Colors.red;
-
-      //---calculate extra time passed
-      Duration extraDurationPassed = Duration.zero;
-      if(totalDurationPassed > widget.changeableTimerDuration.value){
-        extraDurationPassed = totalDurationPassed - widget.changeableTimerDuration.value;
-      }
-
-      //simplifying varaible for the merge of timer and stopwatch widgets
-      bool firstTimerRunning = (extraDurationPassed == Duration.zero);
-      bool withinMaxDuration = (totalDurationPassed <= maxEffectiveBreakDuration);
-
-      //-----variables that don't really vary
-      String bottomLeftNumber = timerDurationString;
-      String bottomRightNumber = totalDurationString;
-
-      //-----varaibles that varry below
-      //wave progress
-      double progressValue; //should run from 0 -> 1
-      //colors
-      Animation<Color> waveColor;
-      Color backgroundColor;
-      //numbers
-      String topNumber;
-
-      //react differently to the timer or stopwatch
-      if(firstTimerRunning){
-        //For Timer (GREY background & green wave)
-        backgroundColor = greyBackground;
-        waveColor = AlwaysStoppedAnimation(greenTimerAccent);
-
-        //calculate top number (+1 second handles a rounded error)
-        Duration durationLeft = widget.changeableTimerDuration.value - totalDurationPassed + Duration(seconds: 1);
-        List<String> durationLeftStrings = durationToCustomDisplay(durationLeft);
-        String durationLeftString = durationLeftStrings[0] + " : " + durationLeftStrings[1]; //top number for timer
-        topNumber = durationLeftString;
-
-        //set progress value
-        progressValue =  timesToValue(totalDurationPassed, widget.changeableTimerDuration.value);
-      }
-      else{
-        //For Stopwatch (red background & GREY background)
-        backgroundColor = (withinMaxDuration) ? redStopwatchAccent : Colors.transparent;
-        waveColor = AlwaysStoppedAnimation(
-          //when the stopwatch finishes we want our screen to be full red all the time
-          (withinMaxDuration) ? greyBackground : Colors.transparent,
-        );
-
-        //calculate top Number
-        List<String> extraDurationPassedStrings = durationToCustomDisplay(extraDurationPassed);
-        String extraDurationPassedString = extraDurationPassedStrings[0] + " : " + extraDurationPassedStrings[1];
-        topNumber = extraDurationPassedString;
-
-        //---generate the progress values
-        //make generate the proper progress value (we dont want it to jump)
-        //thankfully since our max setable time is 4:55 and our actual max wait time is 5 minutes
-        //we know we will have atleast 5 seconds for the 2nd progress bar to jump from bottom to top
-
-        //maxDuration = maxEffectiveBREAKduration NOT maxEffectiveTIMERduration
-        if(withinMaxDuration == false) progressValue = 1;
-        else{ //between 0 and 1
-          progressValue = timesToValue(
-            totalDurationPassed - widget.changeableTimerDuration.value,
-            maxEffectiveBreakDuration - widget.changeableTimerDuration.value,
-          );
-        }
-      }
-
-      //just in case for small floating point "mistakes"
-      progressValue = progressValue.clamp(0.0, 1.0);
-
-      //based on all the calculated variables above show the various numbers
-      Widget timeDisplay = TimeDisplay(
-        textContainerSize: MediaQuery.of(context).size.width - (24 * 2),
-        topNumber: topNumber, 
-        topArrowUp:  widget.showArrows ? (firstTimerRunning ? false : true) : null,
-        bottomLeftNumber: bottomLeftNumber, 
-        bottomRightNumber: bottomRightNumber,
-        showBottomArrow: widget.showArrows ? true : false,
-        isTimer: (firstTimerRunning) ? true : false,
-        showIcon: widget.showIcon,
-      );
-
-      Widget timeWidget = Stack(
-        children: <Widget>[
-          Container(
-            height: MediaQuery.of(context).size.width,
-            width: MediaQuery.of(context).size.width, //3.25/5
-            padding: EdgeInsets.all(24),
-            child: ClipOval(
-              child: Stack(
-                children: <Widget>[
-                  Container(
-                    color: Colors.red
-                  ),
-                  PulsingBackground(
-                    width: MediaQuery.of(context).size.width,
-                  ),
-                  LiquidCircularProgressIndicator(
-                    //animated values
-                    value: 1 - progressValue,
-                    valueColor: waveColor,
-                    backgroundColor: backgroundColor,
-                    //set values
-                    borderColor: Colors.transparent,
-                    borderWidth: 0,
-                    direction: Axis.vertical, 
-                    //only show when our timer has completed
-                    center: Material(
-                      color: Colors.transparent,
-                      child: InkWell(
-                        onTap: () => maybeChangeRecoveryDuration(),
-                        child: Center(
-                          child: timeDisplay
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          VibrationSwitch(),
-        ],
-      );
-
-      print("----------from regular: " + "timer" + widget.excercise.id.toString());
-
-      return Column(
-        sldkfj
-          timeWidget,
-        ],
-      );
-    }
-    */
   }
 }
