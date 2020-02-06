@@ -62,6 +62,35 @@ should not restart the vibration
 //if we are within our training type, regardless of how many seconds we are before our selected time the pop up doesn't show up
 //  NOTE: distinction between Endurance training and less than 15 seconds of waiting
 
+String durationToTrainingType(Duration duration, {bool zeroIsEndurance: true}){
+  if(duration < Duration(minutes: 1)){
+    if(zeroIsEndurance) return "Endurance";
+    else{
+      if(duration < Duration(seconds: 15)){
+        return "";  
+      }
+      else return "Endurance";
+    }
+  }
+  else if(duration < Duration(minutes: 2)) return "Hypertrohpy";
+  else if(duration < Duration(minutes: 3)) return "Hyp/Str";
+  else return "Strength";
+}
+
+String trainingTypeToMin(String training){
+  if(training == "Endurance") return "15 seconds";
+  else if(training == "Hypertrohpy") return "1 minute";
+  else if(training == "Hyp/Str") return "2 minutes";
+  else return "3 minutes";
+}
+
+String trainingTypeToMax(String training){
+  if(training == "Endurance") return "1 minutes";
+  else if(training == "Hypertrohpy") return "2 minutes";
+  else if(training == "Hyp/Str") return "3 minutes";
+  else return "5 minutes";
+}
+
 //build
 class Timer extends StatefulWidget { 
   Timer({
@@ -219,21 +248,6 @@ class _TimerState extends State<Timer> with TickerProviderStateMixin {
     super.dispose();
   }
 
-  String durationToTrainingType(Duration duration, {bool zeroIsEndurance: true}){
-    if(duration < Duration(minutes: 1)){
-      if(zeroIsEndurance) return "Endurance";
-      else{
-        if(duration < Duration(seconds: 15)){
-          return "";  
-        }
-        else return "Endurance";
-      }
-    }
-    else if(duration < Duration(minutes: 2)) return "Hypertrohpy";
-    else if(duration < Duration(minutes: 3)) return "Hyp/Str";
-    else return "Strength";
-  }
-
   @override
   Widget build(BuildContext context) {
     String generatedHeroTag = "timer" + widget.excercise.id.toString();
@@ -246,36 +260,23 @@ class _TimerState extends State<Timer> with TickerProviderStateMixin {
     String trainingBreakGoodFor = durationToTrainingType(totalDurationPassed, zeroIsEndurance: false);
 
     //are you sure?
+    Duration buffer = Duration(seconds: 15);
     bool withinTrainingType = (trainingSelected == trainingBreakGoodFor);
     if(withinTrainingType) widget.areYouSurePopUp.value = withinTrainingType;
     else{
-      Duration bufferSize = Duration(seconds: 15);
-      Duration lowerBound = widget.excercise.recoveryPeriod - bufferSize;
-      Duration upperBound = widget.excercise.recoveryPeriod +  bufferSize;
+      Duration lowerBound = widget.excercise.recoveryPeriod - buffer;
+      Duration upperBound = widget.excercise.recoveryPeriod +  buffer;
       widget.areYouSurePopUp.value = (lowerBound <= totalDurationPassed && totalDurationPassed <= upperBound);
     }
-
-    /*
-      if within trainig type
-        if we havent yet reach target -> "Waiting for selected break time" | ALREDAY READY FOR "training type"
-        else "move onto next" | STILL READY FOR "training type"
-      else
-        if we havent yet reached target -> "recoverying" for training type
-        else 
-          if still within buffer "move ont next" | STILL READY FOR "training type"
-          else
-            if before 5 minutes and buffer "You Waited Too Long" | "you should warm up again";
-            else
-              if before 1 hour and 30 minutes Waited too long for any traing type, you should warm up again
-              else "Did you forget to finish?", "tap the button on the bottom left to do so"
-    */
-    //pass 1. within training type 2. buffer 3. timePassed 4. timeSelected
 
     Widget infoButton = Theme(
       data: MyTheme.light,
       child: InfoOutlineWhiteButton(
+        trainingName: trainingSelected,
+        withinTrainingType: withinTrainingType,
+        buffer: buffer,
         totalDurationPassed: totalDurationPassed,
-        excercise: widget.excercise,
+        selectedDuration: widget.excercise.recoveryPeriod,
       ),
     );
 

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 //internal
 import 'package:swol/excerciseAction/tabs/recovery/secondary/explained.dart';
+import 'package:swol/excerciseAction/tabs/recovery/timer/liquidTime.dart';
 import 'package:swol/shared/structs/anExcercise.dart';
 import 'package:swol/shared/widgets/complex/fields/headers/ourInformationPopUp.dart';
 import 'package:swol/shared/methods/theme.dart';
@@ -53,12 +54,18 @@ subtitle: You Must've Forgotten To Finish
 class InfoOutlineWhiteButton extends StatelessWidget {
   const InfoOutlineWhiteButton({
     Key key,
+    @required this.withinTrainingType,
+    @required this.buffer,
+    @required this.trainingName,
     @required this.totalDurationPassed,
-    @required this.excercise,
+    @required this.selectedDuration,
   }) : super(key: key);
 
+  final bool withinTrainingType;
+  final Duration buffer;
+  final String trainingName;
   final Duration totalDurationPassed;
-  final AnExcercise excercise;
+  final Duration selectedDuration;
 
   @override
   Widget build(BuildContext context) {
@@ -74,10 +81,11 @@ class InfoOutlineWhiteButton extends StatelessWidget {
       //assumed for the users within this class
       context,
       //vars
-      title: "Wait",
-      subtitle: "to finish recoverying",
+      title: "Wait To Recover",
+      subtitle: "before moving onto your next set",
       isDense: true,
       body: ExplainFunctionality(
+        trainingName: trainingName,
         sectionWithInitialFocus: sectionWithInitialFocus,
       ),
     );
@@ -86,8 +94,11 @@ class InfoOutlineWhiteButton extends StatelessWidget {
     return Theme(
       data: MyTheme.dark,
       child: InfoOutlineDarkButton(
-        excercise: excercise,
+        trainingName: trainingName,
+        withinTrainingTypeRange: withinTrainingType,
+        buffer: buffer,
         totalDurationPassed: totalDurationPassed,
+        selectedDuration: selectedDuration,
         showInfo: showInfo,
       ),
     );
@@ -97,30 +108,77 @@ class InfoOutlineWhiteButton extends StatelessWidget {
 class InfoOutlineDarkButton extends StatelessWidget {
   const InfoOutlineDarkButton({
     Key key,
-    @required this.excercise,
+    @required this.withinTrainingTypeRange,
+    @required this.buffer,
+    @required this.selectedDuration,
+    @required this.trainingName,
     @required this.totalDurationPassed,
     @required this.showInfo,
   }) : super(key: key);
 
-  final AnExcercise excercise;
+  final bool withinTrainingTypeRange;
+  final Duration buffer;
+  final Duration selectedDuration;
+  final String trainingName;
   final Duration totalDurationPassed;
   final Function showInfo;
 
   @override
   Widget build(BuildContext context) {
+    //the two varialbes that will inform  the use what is happening
     String primaryMsg;
     String secondaryMsg;
+
+    //fill the message given the conditions
+    bool stillTimeLeft = totalDurationPassed < selectedDuration;
+    if(stillTimeLeft){
+      if(withinTrainingTypeRange == false){
+        primaryMsg = "Currently Recovering From";
+        secondaryMsg = trainingName + " Training";
+      }
+      else{
+        primaryMsg = "You Should Wait For Full Recovery";
+        secondaryMsg = "But You Are Ready For " + trainingName + " Training";
+      }
+    }
+    else{
+      if(withinTrainingTypeRange){
+        primaryMsg = "Move To Your Next Set";
+        secondaryMsg = "You're Within " + trainingName + " Training Range";
+      }
+      else{
+        if((totalDurationPassed - buffer) < selectedDuration){
+          primaryMsg = "Move To Your Next Set";
+          secondaryMsg = "Quickly!";
+        }
+        else{
+          if(totalDurationPassed < (Duration(minutes: 5) + buffer)){
+            primaryMsg = "You Waited Too Long";
+          }
+          else{
+            if(totalDurationPassed < Duration(hours: 1, minutes: 30)){
+              primaryMsg = "You Waited Too Long";
+              secondaryMsg = "you should warm up again";
+            }
+            else{
+              primaryMsg = "Mark Your Set(s) Complete";
+              secondaryMsg = "on the bottom left";
+            }
+          }
+        }
+      }
+    }
 
     //return
     return FittedBox(
       fit: BoxFit.contain,
       child: Padding(
         padding: EdgeInsets.only(
-          top: 12,
+          top: 8,
         ),
         child: Padding(
           padding: EdgeInsets.symmetric(
-            horizontal: 12,
+            horizontal: 8,
           ),
           child: OutlineButton(
             highlightedBorderColor: Theme.of(context).accentColor,
