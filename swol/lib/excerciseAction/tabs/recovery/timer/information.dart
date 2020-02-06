@@ -59,6 +59,7 @@ class InfoOutlineWhiteButton extends StatelessWidget {
     @required this.trainingName,
     @required this.totalDurationPassed,
     @required this.selectedDuration,
+    @required this.isWhite,
   }) : super(key: key);
 
   final bool withinTrainingType;
@@ -66,6 +67,7 @@ class InfoOutlineWhiteButton extends StatelessWidget {
   final String trainingName;
   final Duration totalDurationPassed;
   final Duration selectedDuration;
+  final bool isWhite;
 
   @override
   Widget build(BuildContext context) {
@@ -100,6 +102,7 @@ class InfoOutlineWhiteButton extends StatelessWidget {
         totalDurationPassed: totalDurationPassed,
         selectedDuration: selectedDuration,
         showInfo: showInfo,
+        isWhite: isWhite,
       ),
     );
   }
@@ -114,6 +117,7 @@ class InfoOutlineDarkButton extends StatelessWidget {
     @required this.trainingName,
     @required this.totalDurationPassed,
     @required this.showInfo,
+    @required this.isWhite,
   }) : super(key: key);
 
   final bool withinTrainingTypeRange;
@@ -122,6 +126,7 @@ class InfoOutlineDarkButton extends StatelessWidget {
   final String trainingName;
   final Duration totalDurationPassed;
   final Function showInfo;
+  final bool isWhite;
 
   @override
   Widget build(BuildContext context) {
@@ -170,50 +175,62 @@ class InfoOutlineDarkButton extends StatelessWidget {
     }
 
     //return
-    return FittedBox(
-      fit: BoxFit.contain,
+    return Padding(
+      padding: EdgeInsets.only(
+        top: 24,
+      ),
       child: Padding(
-        padding: EdgeInsets.only(
-          top: 8,
+        padding: EdgeInsets.symmetric(
+          horizontal: 24,
         ),
-        child: Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: 8,
-          ),
+        child: FittedBox(
+          fit: BoxFit.contain,
           child: OutlineButton(
             highlightedBorderColor: Theme.of(context).accentColor,
+            borderSide: BorderSide(
+              color: isWhite ? Colors.white.withOpacity(0.5) : Theme.of(context).primaryColorDark,
+              width: 2,
+            ),
             onPressed: () => showInfo(),
             padding: EdgeInsets.symmetric(
               horizontal: 8,
               vertical: 4,
             ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Visibility(
-                  visible: primaryMsg != null,
-                  child: Text(
-                    primaryMsg ?? "",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                    ),
-                  ),
+            child: FittedBox(
+              fit: BoxFit.contain,
+              child: DefaultTextStyle(
+                style: TextStyle(
+                  color: isWhite ? Colors.white : Theme.of(context).primaryColorDark,
                 ),
-                Visibility(
-                  visible: secondaryMsg != null,
-                  child: Text(
-                    secondaryMsg ?? "",
-                    style: TextStyle(
-                      fontSize: 12,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Visibility(
+                      visible: primaryMsg != null,
+                      child: Text(
+                        primaryMsg ?? "",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                        ),
+                      ),
                     ),
-                  ),
+                    Visibility(
+                      visible: secondaryMsg != null,
+                      child: Text(
+                        secondaryMsg ?? "",
+                        style: TextStyle(
+                          fontSize: 12,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ],
+              ),
             ),
-          )
-        ),
+          ),
+        )
       ),
     );
   }
@@ -291,34 +308,5 @@ RichText(
         showMicroseconds: false,
       );
     }
-    
-    //check if they its REASONABLE that they just forgot and haven't finished their workout
-    bool wholeSeperateWorkout = totalDurationPassed > Duration(hours: 1, minutes: 30);
-*/
 
-//(wholeSeperateWorkout) ? "You Forgot To Finish" : "You Waited Too Long",
-
-/*
-Center(
-                  child: Container(
-                    padding: const EdgeInsets.all(12.0),
-                    child: ConstrainedBox(
-                      constraints: BoxConstraints(
-                        maxWidth: MediaQuery.of(context).size.width/6,
-                      ),
-                      child: FittedBox(
-                        fit: BoxFit.contain,
-                        child: DefaultTextStyle(
-                          style: TextStyle(
-                            color: Theme.of(context).primaryColorDark,
-                          ),
-                          child: EditIcon(
-                            text: recoveryDurationString,
-                            roundedRight: true,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
 */

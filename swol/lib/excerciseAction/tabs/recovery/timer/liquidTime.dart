@@ -1,8 +1,9 @@
-//flutter 
+//flutter
 import 'package:flutter/material.dart';
 
 //packages
 import 'package:liquid_progress_indicator/liquid_progress_indicator.dart';
+import 'package:swol/excerciseAction/tabs/recovery/timer/onlyEditButton.dart';
 import 'package:swol/excerciseAction/tabs/recovery/timer/puslingBackground.dart';
 
 //internal
@@ -62,37 +63,48 @@ should not restart the vibration
 //if we are within our training type, regardless of how many seconds we are before our selected time the pop up doesn't show up
 //  NOTE: distinction between Endurance training and less than 15 seconds of waiting
 
-String durationToTrainingType(Duration duration, {bool zeroIsEndurance: true}){
-  if(duration < Duration(minutes: 1)){
-    if(zeroIsEndurance) return "Endurance";
-    else{
-      if(duration < Duration(seconds: 15)){
-        return "";  
-      }
-      else return "Endurance";
+String durationToTrainingType(Duration duration, {bool zeroIsEndurance: true}) {
+  if (duration < Duration(minutes: 1)) {
+    if (zeroIsEndurance)
+      return "Endurance";
+    else {
+      if (duration < Duration(seconds: 15)) {
+        return "";
+      } else
+        return "Endurance";
     }
-  }
-  else if(duration < Duration(minutes: 2)) return "Hypertrohpy";
-  else if(duration < Duration(minutes: 3)) return "Hyp/Str";
-  else return "Strength";
+  } else if (duration < Duration(minutes: 2))
+    return "Hypertrohpy";
+  else if (duration < Duration(minutes: 3))
+    return "Hyp/Str";
+  else
+    return "Strength";
 }
 
-String trainingTypeToMin(String training){
-  if(training == "Endurance") return "15 seconds";
-  else if(training == "Hypertrohpy") return "1 minute";
-  else if(training == "Hyp/Str") return "2 minutes";
-  else return "3 minutes";
+String trainingTypeToMin(String training) {
+  if (training == "Endurance")
+    return "15 seconds";
+  else if (training == "Hypertrohpy")
+    return "1 minute";
+  else if (training == "Hyp/Str")
+    return "2 minutes";
+  else
+    return "3 minutes";
 }
 
-String trainingTypeToMax(String training){
-  if(training == "Endurance") return "1 minutes";
-  else if(training == "Hypertrohpy") return "2 minutes";
-  else if(training == "Hyp/Str") return "3 minutes";
-  else return "5 minutes";
+String trainingTypeToMax(String training) {
+  if (training == "Endurance")
+    return "1 minutes";
+  else if (training == "Hypertrohpy")
+    return "2 minutes";
+  else if (training == "Hyp/Str")
+    return "3 minutes";
+  else
+    return "5 minutes";
 }
 
 //build
-class Timer extends StatefulWidget { 
+class Timer extends StatefulWidget {
   Timer({
     @required this.excercise,
     @required this.changeableTimerDuration,
@@ -122,44 +134,47 @@ class _TimerState extends State<Timer> with TickerProviderStateMixin {
   final Duration maxBreakDuration = const Duration(minutes: 5);
 
   //main Controller
-  AnimationController maxTimerController; 
-  AnimationController maxBreakController; 
-  AnimationController chosenBreakController; 
+  AnimationController maxTimerController;
+  AnimationController maxBreakController;
+  AnimationController chosenBreakController;
 
   //function removable from listeners
-  updateState(){
-    if(mounted) setState(() {});
+  updateState() {
+    if (mounted) setState(() {});
   }
 
-  vibrateOnComplete(AnimationStatus status){
-    if(status == AnimationStatus.completed){
+  vibrateOnComplete(AnimationStatus status) {
+    if (status == AnimationStatus.completed) {
       Vibrator.startConstantVibration();
     }
   }
 
   //------------------------------inspect below-------------------------
-  updateTimerDuration(){
+  updateTimerDuration() {
     chosenBreakController.removeStatusListener(vibrateOnComplete);
-    Duration timePassed = DateTime.now().difference(widget.excercise.tempStartTime.value);
+    Duration timePassed =
+        DateTime.now().difference(widget.excercise.tempStartTime.value);
     chosenBreakController.duration = widget.changeableTimerDuration.value;
-    chosenBreakController.addStatusListener(vibrateOnComplete); 
+    chosenBreakController.addStatusListener(vibrateOnComplete);
     chosenBreakController.forward(
       from: timesToValue(timePassed, widget.changeableTimerDuration.value),
     );
 
     //stops the vibration IF before you were past the set time but before 5 minutes
     //but now you are within the set time and before 5 minutes
-    bool shouldBeVibrating = (timePassed >= widget.changeableTimerDuration.value);
+    bool shouldBeVibrating =
+        (timePassed >= widget.changeableTimerDuration.value);
     //this extra condition guarantees that if the timer was shut off after 5, or 10
     //it doesn't get reset
     shouldBeVibrating = shouldBeVibrating && timePassed < maxBreakDuration;
-    if(shouldBeVibrating == false && Vibrator.isVibrating.value) Vibrator.stopVibration();
+    if (shouldBeVibrating == false && Vibrator.isVibrating.value)
+      Vibrator.stopVibration();
 
     updateState();
   }
 
   //other functions
-  maybeChangeRecoveryDuration(){
+  maybeChangeRecoveryDuration() {
     maybeChangeTime(
       context: context,
       recoveryDuration: widget.changeableTimerDuration,
@@ -169,7 +184,7 @@ class _TimerState extends State<Timer> with TickerProviderStateMixin {
   //------------------------------inspect above-------------------------
 
   //for calculating the controller's lerp value
-  double timesToValue(Duration passed, Duration total){
+  double timesToValue(Duration passed, Duration total) {
     return (passed.inMicroseconds / total.inMicroseconds).clamp(0.0, 1.0);
   }
 
@@ -202,9 +217,10 @@ class _TimerState extends State<Timer> with TickerProviderStateMixin {
 
     //---immediate update of time if it changes NOTE: might not be needed
     widget.changeableTimerDuration.addListener(updateTimerDuration);
- 
+
     //how much has already passed in the background
-    Duration timePassed = DateTime.now().difference(widget.excercise.tempStartTime.value);
+    Duration timePassed =
+        DateTime.now().difference(widget.excercise.tempStartTime.value);
 
     //---default vibration starts after controllers end
     maxTimerController.addStatusListener(vibrateOnComplete);
@@ -235,7 +251,7 @@ class _TimerState extends State<Timer> with TickerProviderStateMixin {
 
     //remove the UI updater
     maxTimerController.removeListener(updateState);
-    
+
     //controller dispose
     chosenBreakController.dispose();
     maxBreakController.dispose();
@@ -251,22 +267,28 @@ class _TimerState extends State<Timer> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     String generatedHeroTag = "timer" + widget.excercise.id.toString();
-    
+
     //show UI depending on how much time has passed
-    Duration totalDurationPassed = DateTime.now().difference(widget.excercise.tempStartTime.value);
+    Duration totalDurationPassed =
+        DateTime.now().difference(widget.excercise.tempStartTime.value);
 
     //text for pop ups and button
-    String trainingSelected = durationToTrainingType(widget.excercise.recoveryPeriod, zeroIsEndurance: false);
-    String trainingBreakGoodFor = durationToTrainingType(totalDurationPassed, zeroIsEndurance: false);
+    String trainingSelected = durationToTrainingType(
+        widget.excercise.recoveryPeriod,
+        zeroIsEndurance: false);
+    String trainingBreakGoodFor =
+        durationToTrainingType(totalDurationPassed, zeroIsEndurance: false);
 
     //are you sure?
     Duration buffer = Duration(seconds: 15);
     bool withinTrainingType = (trainingSelected == trainingBreakGoodFor);
-    if(withinTrainingType) widget.areYouSurePopUp.value = withinTrainingType;
-    else{
+    if (withinTrainingType)
+      widget.areYouSurePopUp.value = withinTrainingType;
+    else {
       Duration lowerBound = widget.excercise.recoveryPeriod - buffer;
-      Duration upperBound = widget.excercise.recoveryPeriod +  buffer;
-      widget.areYouSurePopUp.value = (lowerBound <= totalDurationPassed && totalDurationPassed <= upperBound);
+      Duration upperBound = widget.excercise.recoveryPeriod + buffer;
+      widget.areYouSurePopUp.value = (lowerBound <= totalDurationPassed &&
+          totalDurationPassed <= upperBound);
     }
 
     Widget infoButton = Theme(
@@ -277,6 +299,7 @@ class _TimerState extends State<Timer> with TickerProviderStateMixin {
         buffer: buffer,
         totalDurationPassed: totalDurationPassed,
         selectedDuration: widget.excercise.recoveryPeriod,
+        isWhite: maxTimerController.value != 1,
       ),
     );
 
@@ -286,89 +309,82 @@ class _TimerState extends State<Timer> with TickerProviderStateMixin {
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
         Visibility(
-          visible: maxBreakController.value != 1,
+          visible: maxTimerController.value != 1,
           child: infoButton,
         ),
-        Container(
-          color: Colors.green,
-          child: Stack(
-            children: [
-              VibrationSwitch(),
-              Hero(
-                tag: generatedHeroTag,
-                child: Container(
-                  child: FittedBox(
-                    fit: BoxFit.contain,
-                    child: Container(
-                      height: MediaQuery.of(context).size.width,
-                      width: MediaQuery.of(context).size.width,
-                      padding: EdgeInsets.all(24),
-                      child: ClipOval(
-                        child: Stack(
-                          children: <Widget>[
-                            PulsingBackground(),
-                            Center(
-                              child: infoButton,
-                            ),
-                            /*
-                            LiquidCircularProgressIndicator(
-                              //animated values
-                              value: 1 - progressValue,
-                              valueColor: waveColor,
-                              backgroundColor: backgroundColor,
-                              //set values
-                              borderColor: Colors.transparent,
-                              borderWidth: 0,
-                              direction: Axis.vertical, 
-                            ),
-                            */
-                            /*
-                            Material(
+        Stack(
+          children: [
+            VibrationSwitch(),
+            Hero(
+              tag: generatedHeroTag,
+              child: Container(
+                child: FittedBox(
+                  fit: BoxFit.contain,
+                  child: Container(
+                    height: MediaQuery.of(context).size.width,
+                    width: MediaQuery.of(context).size.width,
+                    padding: EdgeInsets.all(24),
+                    child: ClipOval(
+                      child: Stack(
+                        children: <Widget>[
+                          PulsingBackground(),
+                          Positioned.fill(
+                            child: Material(
                               color: Colors.transparent,
                               child: InkWell(
                                 onTap: () => maybeChangeRecoveryDuration(),
-                                child: Container(),
-                                
-                                
-                                /*SuperOverflow(
-                                  totalDurationPassed: totalDurationPassed, 
-                                  recoveryDurationString: "some string or something", 
-                                )*/
-                                //TODO: show here either time display or the text that tells the user they waited too long
+                                child: Container(
+
+                                ),
                               ),
                             ),
-                            */
-                          ],
-                        ),
+                          ),
+                          Visibility(
+                            visible: maxTimerController.value == 1,
+                            child: Positioned.fill(
+                              child: Center(
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                                  children: <Widget>[
+                                    infoButton,
+                                    OnlyEditButton(
+                                      breakDuration: widget.excercise.recoveryPeriod,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                          Visibility(
+                            visible: maxTimerController.value != 1,
+                            child: Container(
+                              color: Colors.yellow,
+                            ),
+                          )
+                          /*
+                          LiquidCircularProgressIndicator(
+                            //animated values
+                            value: 1 - progressValue,
+                            valueColor: waveColor,
+                            backgroundColor: backgroundColor,
+                            //set values
+                            borderColor: Colors.transparent,
+                            borderWidth: 0,
+                            direction: Axis.vertical, 
+                          ),
+                          */
+                        ],
                       ),
                     ),
                   ),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ],
     );
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 /*
   //calculate string for timer duration
@@ -385,7 +401,6 @@ class _TimerState extends State<Timer> with TickerProviderStateMixin {
 
     //bool withinMaxDuration = (totalDurationPassed <= maxEffectiveBreakDuration);
   */
-
 
     /*
     //super red gives us a completely different widget
@@ -547,26 +562,3 @@ class _TimerState extends State<Timer> with TickerProviderStateMixin {
     */
   }
 }
-
-/*
-Hero(
-                      tag: generatedHeroTag,
-                      createRectTween: (begin, end) {
-                        return CustomRectTween(a: begin, b: end);
-                      },
-                      child: FittedBox(
-                        fit: BoxFit.contain,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.yellow,
-                            shape: BoxShape.circle,
-                          ),
-                          height: MediaQuery.of(context).size.width,
-                          width: MediaQuery.of(context).size.width,
-                        ),
-                      )
-                      
-                      
-                      
-                    ),
-*/

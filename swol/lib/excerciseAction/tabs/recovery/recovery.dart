@@ -10,7 +10,7 @@ import 'package:swol/excerciseAction/tabs/recovery/timer/liquidTime.dart';
 import 'package:swol/shared/structs/anExcercise.dart';
 
 //widget
-class Recovery extends StatefulWidget { 
+class Recovery extends StatefulWidget {
   Recovery({
     @required this.excercise,
     @required this.backToRecordSet,
@@ -25,12 +25,13 @@ class Recovery extends StatefulWidget {
   _RecoveryState createState() => _RecoveryState();
 }
 
-class _RecoveryState extends State<Recovery> with SingleTickerProviderStateMixin {
+class _RecoveryState extends State<Recovery>
+    with SingleTickerProviderStateMixin {
   ValueNotifier<Duration> recoveryDuration;
   ValueNotifier<bool> areYouSurePopUp;
 
   //function that is removable from listener
-  updateRecoveryDuration(){
+  updateRecoveryDuration() {
     widget.excercise.recoveryPeriod = recoveryDuration.value;
   }
 
@@ -38,10 +39,11 @@ class _RecoveryState extends State<Recovery> with SingleTickerProviderStateMixin
   @override
   void initState() {
     //start the timer or allow it to continue
-    if(widget.excercise.tempStartTime.value == AnExcercise.nullDateTime){
-      widget.excercise.tempStartTime = new ValueNotifier<DateTime>(DateTime.now());
+    if (widget.excercise.tempStartTime.value == AnExcercise.nullDateTime) {
+      widget.excercise.tempStartTime =
+          new ValueNotifier<DateTime>(DateTime.now());
     }
-    
+
     //setup things to make recovery duration changeable
     recoveryDuration = new ValueNotifier(widget.excercise.recoveryPeriod);
     recoveryDuration.addListener(updateRecoveryDuration);
@@ -72,38 +74,46 @@ class _RecoveryState extends State<Recovery> with SingleTickerProviderStateMixin
         crossAxisAlignment: CrossAxisAlignment.center,
         //everything including bottom button and spacing
         children: <Widget>[
-          PreviousCardCorners(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Container(
+          Stack(
+            children: [
+              Positioned.fill(
+                child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  children: <Widget>[
+                    Expanded(
+                      child: Container(
+                        color: Theme.of(context).accentColor,
+                      ),
+                    ),
+                    Expanded(child: Container()),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(
+                  top: 16,
+                ),
+                child: Container(
                   decoration: BoxDecoration(
                     color: Theme.of(context).cardColor,
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: cardRadius,
-                      bottomRight: cardRadius,
-                    ),
+                    borderRadius: BorderRadius.all(cardRadius),
                   ),
-                  child: Container(
-                    alignment: Alignment.center,
-                    child: Timer(
-                      excercise: widget.excercise,
-                      changeableTimerDuration: recoveryDuration,
-                      areYouSurePopUp: areYouSurePopUp,
-                      showIcon: false,
-                    ),
-                  )
+                  child: Timer(
+                    excercise: widget.excercise,
+                    changeableTimerDuration: recoveryDuration,
+                    areYouSurePopUp: areYouSurePopUp,
+                    showIcon: false,
+                  ),
                 ),
-              ],
-            ), 
-            cardRadius: cardRadius,
+              ),
+            ],
           ),
           Expanded(
             child: Container(
               padding: EdgeInsets.only(
                 //24 to clear button
                 //extra 24 to clear curve
-                bottom: 24.0,// + 24,
+                bottom: 24.0, // + 24,
               ),
               child: Container(
                 //color: Colors.blue,
@@ -118,14 +128,15 @@ class _RecoveryState extends State<Recovery> with SingleTickerProviderStateMixin
           ),
           BottomButtons(
             excercise: widget.excercise,
-            forwardAction: (){
+            forwardAction: () {
               //TODO: react to "areYouSurePopUp"
 
               //move onto the next set
               widget.nextSet();
 
               //zero out the tempStartTimer
-              widget.excercise.tempStartTime = new ValueNotifier<DateTime>(AnExcercise.nullDateTime);
+              widget.excercise.tempStartTime =
+                  new ValueNotifier<DateTime>(AnExcercise.nullDateTime);
             },
             forwardActionWidget: Text(
               "Next Set",
@@ -197,9 +208,9 @@ class PreviousCardCorners extends StatelessWidget {
               child: Stack(
                 children: <Widget>[
                   Positioned(
-                    //NOTE: in order for smooth blend 
+                    //NOTE: in order for smooth blend
                     //notice the difference alos between 24 and 25 size
-                    right: 0, 
+                    right: 0,
                     child: Container(
                       height: 24,
                       width: 24,
