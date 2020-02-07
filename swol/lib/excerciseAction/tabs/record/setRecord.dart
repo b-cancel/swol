@@ -163,34 +163,13 @@ class SetRecordCardBottom extends StatelessWidget {
               ),
             ],
           ),
-          /*
-          PreviousCardCorners(
-            cardRadius: cardRadius,
-            child: Container(
-              decoration: BoxDecoration(
-                color: Theme.of(context).cardColor,
-                borderRadius: BorderRadius.only(
-                  bottomRight: cardRadius,
-                  bottomLeft: cardRadius,
-                ),
-              ),
-              width: MediaQuery.of(context).size.width,
-              child: 
-            ),
-          ),
-          */
-          Flexible(
-            flex: smallNumber,
+          Expanded(
             child: Container(),
           ),
           CardWithHeader(
             header: "Record Set",
             aLittleSmaller: true,
             child: child,
-          ),
-          Flexible(
-            flex: largeNumber,
-            child: Container(),
           ),
         ],
       ),

@@ -371,6 +371,7 @@ class _TimerState extends State<Timer> with TickerProviderStateMixin {
                             visible: maxTimerController.value != 1,
                             child: Stack(
                               children: [
+                                changeTimeWidget,
                                 Center(
                                   child: TimeDisplay(
                                     textContainerSize: MediaQuery.of(context).size.width - (24 * 2),
@@ -382,9 +383,9 @@ class _TimerState extends State<Timer> with TickerProviderStateMixin {
                                     isTimer: (firstTimerRunning) ? true : false,
                                     showBottomArrow: widget.showArrows ? true : false,
                                     showIcon: widget.showIcon,
+                                    changeTimeWidget: changeTimeWidget,
                                   ),
                                 ),
-                                changeTimeWidget,
                               ],
                             ),
                           ),

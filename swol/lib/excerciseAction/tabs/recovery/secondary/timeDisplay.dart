@@ -1,8 +1,10 @@
 //flutter
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:swol/excerciseAction/tabs/recovery/secondary/triangle.dart';
 import 'package:swol/excerciseAction/tabs/recovery/timer/onlyEditButton.dart';
+import 'package:swol/shared/widgets/simple/ourToolTip.dart';
 
 //showing time in a semi nice format for both timer and stopwatch widgets
 class TimeDisplay extends StatelessWidget {
@@ -16,6 +18,7 @@ class TimeDisplay extends StatelessWidget {
     this.showBottomArrow: false,
     @required this.isTimer,
     this.showIcon: false,
+    @required this.changeTimeWidget,
   }) : super(key: key);
 
   final double textContainerSize;
@@ -26,6 +29,7 @@ class TimeDisplay extends StatelessWidget {
   final bool showBottomArrow;
   final bool isTimer;
   final bool showIcon;
+  final Widget changeTimeWidget;
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +49,7 @@ class TimeDisplay extends StatelessWidget {
     //reurn
     return Transform.translate(
       //need because the icon throws off the balance of the design
-      offset: Offset(0, -((48.0 + 16.0) / 3)),
+      offset: Offset(0, 0), //-((48.0 + 16.0) / 3)),
       child: Container(
         padding: EdgeInsets.all(24),
         child: FittedBox(
@@ -53,8 +57,8 @@ class TimeDisplay extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              Opacity(
-                opacity: showIcon ? 1.0 : 0.0,
+              Visibility(
+                visible: showIcon,
                 child: Padding(
                   padding: EdgeInsets.only(
                     bottom: (isTimer) ? 0 : 16,
@@ -76,27 +80,41 @@ class TimeDisplay extends StatelessWidget {
                       visible: topArrowUp == true,
                       child: topTriangle,
                     ),
-                    FittedBox(
-                      fit: BoxFit.contain,
-                      child: Text(
-                        topNumber,
-                        style: TextStyle(
-                          color: Theme.of(context).primaryColor,
-                          fontWeight: FontWeight.bold,
+                    ClipRRect(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(24),
+                      ),
+                      child: Material(
+                        color: Colors.transparent,
+                        child: InkWell(
+                          onTap: () => showToolTip(
+                            context,
+                            topArrowUp ? "Extra Time Waited" : "Time Left To Wait",
+                            direction: PreferDirection.topCenter,
+                            showIcon: false,
+                          ),
+                          child: FittedBox(
+                            fit: BoxFit.contain,
+                            child: Text(
+                              topNumber,
+                              style: TextStyle(
+                                color: Theme.of(context).primaryColor,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
                         ),
                       ),
                     ),
                     Visibility(
                       visible: topArrowUp == false,
-                      child: Padding(
-                        padding: EdgeInsets.only(
-                          bottom: 16,
-                        ),
-                        child: topTriangle,
-                      ),
+                      child: topTriangle,
                     ),
                   ],
                 ),
+              ),
+              Container(
+                height: 16,
               ),
               Container(
                 width: textContainerSize,
@@ -116,14 +134,40 @@ class TimeDisplay extends StatelessWidget {
                         mainAxisSize: MainAxisSize.min,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          EditIcon(
-                            text: breakTime,
+                          ClipRRect(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(4),
+                            ),
+                            child: Stack(
+                              children: <Widget>[
+                                EditIcon(
+                                  text: breakTime,
+                                ),
+                                changeTimeWidget,
+                              ],
+                            ),
                           ),
-                          EditIcon(
-                            invisible: true,
-                            showArrow: showBottomArrow,
-                            text: passedString,
-                          )
+                          ClipRRect(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(4),
+                            ),
+                            child: Material(
+                              color: Colors.transparent,
+                              child: InkWell(
+                                onTap: () => showToolTip(
+                                  context,
+                                  "Total Time Waited",
+                                  direction: PreferDirection.bottomCenter,
+                                  showIcon: false,
+                                ),
+                                child: EditIcon(
+                                  invisible: true,
+                                  showArrow: showBottomArrow,
+                                  text: passedString,
+                                ),
+                              ),
+                            ),
+                          ),
                         ],
                       ),
                     ),
@@ -199,7 +243,12 @@ class EditIcon extends StatelessWidget {
                     top: 2,
                     bottom: (showArrow) ? 0 : 2,
                   ),
-                  child: Text(text),
+                  child: Text(
+                    text,
+                    style: TextStyle(
+                      color: Theme.of(context).primaryColorDark,
+                    ),
+                  ),
                 ),
                 (invisible) ? Container() : Container(
                   padding: EdgeInsets.all(2),
