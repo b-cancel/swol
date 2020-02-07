@@ -25,7 +25,7 @@ class SlideRangeExtent extends StatelessWidget {
         )
       ),
       padding: EdgeInsets.symmetric(
-        horizontal: (tipText == null) ? 0 : 4,
+        horizontal: (tipText == null) ? 0.0 : 4.0,
         vertical: 4,
       ),
       child: Row(
@@ -42,7 +42,12 @@ class SlideRangeExtent extends StatelessWidget {
               size: 16,
             ),
           ),
-          Text(buttonText)
+          Text(
+            buttonText,
+            style: TextStyle(
+              color: Theme.of(context).primaryColorDark,
+            ),
+          )
         ],
       ),
     );

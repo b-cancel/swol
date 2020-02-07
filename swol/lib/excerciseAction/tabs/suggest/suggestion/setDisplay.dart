@@ -1,5 +1,7 @@
 //flutter
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
+import 'package:swol/shared/widgets/simple/ourToolTip.dart';
 
 //plugin
 import 'package:vector_math/vector_math_64.dart' as vect;
@@ -142,17 +144,71 @@ class _SetDisplayState extends State<SetDisplay> {
                           width: 4,
                         ),
                       ),
-                      Text(widget.lastWeight.toString()),
-                      Container(
-                        alignment: Alignment.topLeft,
-                        padding: EdgeInsets.only(
-                          top: 2,
-                          right: 4,
-                        ),
-                        child: Icon(
-                          FontAwesomeIcons.dumbbell,
-                          size: 12,
-                          color: foregroundColor,
+                      GestureDetector(
+                        onTap: (){
+                          showWidgetToolTip(
+                            context, 
+                            GestureDetector(
+                              onTap: (){
+                                BotToast.cleanAll();
+                              },
+                              child: RichText(
+                                text: TextSpan(
+                                  children: [
+                                    TextSpan(
+                                      text: "It doesn't matter\nif you use"
+                                    ),
+                                    TextSpan(
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                      text: " LBS",
+                                    ),
+                                    TextSpan(
+                                      text: " or ",
+                                    ),
+                                    TextSpan(
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                      text: "KG\n",
+                                    ),
+                                    TextSpan(
+                                      text: "As long as you keep things "
+                                    ),
+                                    TextSpan(
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                      text: "consistent\n",
+                                    ),
+                                    TextSpan(
+                                      text: "the math will work as expected"
+                                    ),
+                                  ]
+                                ),
+                              ),
+                            ),
+                            seconds: 8,
+                          );
+                        },
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(widget.lastWeight.toString()),
+                            Container(
+                              alignment: Alignment.topLeft,
+                              padding: EdgeInsets.only(
+                                top: 2,
+                                right: 4,
+                              ),
+                              child: Icon(
+                                FontAwesomeIcons.dumbbell,
+                                size: 12,
+                                color: foregroundColor,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                       Padding(
@@ -165,18 +221,59 @@ class _SetDisplayState extends State<SetDisplay> {
                           color: foregroundColor,
                         ),
                       ),
-                      Text(widget.lastReps.toString()),
-                      Container(
-                        alignment: Alignment.topLeft,
-                        padding: EdgeInsets.only(
-                          top: 2,
+                      GestureDetector(
+                        onTap: (){
+                          showWidgetToolTip(
+                            context, 
+                            GestureDetector(
+                              onTap: (){
+                                BotToast.cleanAll();
+                              },
+                              child: RichText(
+                                text: TextSpan(
+                                  children: [
+                                    TextSpan(
+                                      text: "How many times you lifted the weight\n"
+                                    ),
+                                    TextSpan(
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                      text: "Successfully",
+                                    ),
+                                    TextSpan(
+                                      text: " and with ",
+                                    ),
+                                    TextSpan(
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                      text: "Good Form",
+                                    ),
+                                  ]
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(widget.lastReps.toString()),
+                            Container(
+                              alignment: Alignment.topLeft,
+                              padding: EdgeInsets.only(
+                                top: 2,
+                              ),
+                              child: Icon(
+                                Icons.repeat,
+                                size: 12,
+                                color: foregroundColor,
+                              ),
+                            ),
+                          ]
                         ),
-                        child: Icon(
-                          Icons.repeat,
-                          size: 12,
-                          color: foregroundColor,
-                        ),
-                      ),
+                      )
                     ],
                   ),
                 )

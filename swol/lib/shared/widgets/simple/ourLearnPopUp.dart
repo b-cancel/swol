@@ -25,15 +25,16 @@ showLearnPopUp(
     isDense: isDense,
     dismissOnTouchOutside: true,
     animType: AnimType.SCALE,
-    customHeader: ClipOval(
+    customHeader: FittedBox(
+      fit: BoxFit.contain,
       child: Container(
-        color: iconPadding ? Colors.blue : Colors.white,
+        decoration: BoxDecoration(
+          color: iconPadding ? Colors.blue : Colors.white,
+          shape: BoxShape.circle,
+        ),
         //NOTE: 28 is the max
         padding: EdgeInsets.all(iconPadding ? 24 : 0),
-        child: FittedBox(
-          fit: BoxFit.fill,
-          child: header,
-        ),
+        child: header,
       ),
     ),
     body: Column(

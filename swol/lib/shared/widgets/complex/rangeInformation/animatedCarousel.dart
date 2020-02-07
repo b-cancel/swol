@@ -88,7 +88,7 @@ class _AnimatedRangeInformationState extends State<AnimatedRangeInformation> {
   Widget build(BuildContext context) {
     double thisWidth = MediaQuery.of(context).size.width;
     //36 for the button, 24 for the ticks
-    double chosenHeight = 36.0 + 24;
+    double chosenHeight = 36.0 + (widget.darkTheme ? 24 : 0.0);
 
     //create carousel seperately so we can control it
     carousel = CarouselSlider(
@@ -120,15 +120,13 @@ class _AnimatedRangeInformationState extends State<AnimatedRangeInformation> {
                   ),
                 ),
                 //---End Sections
-                (widget.darkTheme == false) 
-                ? Container()
-                : DefaultTextStyle(
+                DefaultTextStyle(
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                   ),
                   child: Padding(
-                    padding: const EdgeInsets.only(
-                      top: 24.0,
+                    padding: EdgeInsets.only(
+                      top: (widget.darkTheme ? 24.0 : 0.0),
                     ),
                     child: Stack(
                       children: <Widget>[
@@ -154,7 +152,7 @@ class _AnimatedRangeInformationState extends State<AnimatedRangeInformation> {
                 Positioned(
                   top: 0,
                   child: Container(
-                    height: 16,
+                    height: widget.darkTheme ? 16 : 36,
                     width: thisWidth,
                     child: RangeTicks(
                       startTick: aRange.startSeconds,

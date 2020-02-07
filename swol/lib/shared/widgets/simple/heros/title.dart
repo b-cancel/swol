@@ -68,33 +68,26 @@ class ExcerciseTitleHeroHelper extends StatelessWidget {
       color: Colors.transparent,
       child: InkWell(
         onTap: onTap,
-        child: ClipRRect(
-          borderRadius: new BorderRadius.all(
-            new Radius.circular(
-              lerpDouble(12, 0, percentToAppBar),
-            ),
-          ),
-          child: Container(
-            color: (percentToAppBar == 0 || percentToAppBar == 1)
-                ? Colors.transparent
-                : Color.lerp(
-                    Theme.of(context).cardColor,
-                    Theme.of(context).primaryColorDark,
-                    percentToAppBar,
-                  ),
-            child: Container(
-              alignment: Alignment.centerLeft,
-              padding: EdgeInsets.only(
-                left: lerpDouble(
-                  0,
-                  56,
+        child: Container(
+          color: (percentToAppBar == 0 || percentToAppBar == 1)
+              ? Colors.transparent
+              : Color.lerp(
+                  Theme.of(context).cardColor,
+                  Theme.of(context).primaryColorDark,
                   percentToAppBar,
                 ),
+          child: Container(
+            alignment: Alignment.centerLeft,
+            padding: EdgeInsets.only(
+              left: lerpDouble(
+                0,
+                56,
+                percentToAppBar,
               ),
-              child: ReloadingTitle(
-                excercise: excercise,
-              )
             ),
+            child: ReloadingTitle(
+              excercise: excercise,
+            )
           ),
         ),
       ),

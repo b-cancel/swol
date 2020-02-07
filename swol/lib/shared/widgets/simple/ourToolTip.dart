@@ -4,6 +4,25 @@ import 'package:flutter/material.dart';
 //plugin
 import 'package:bot_toast/bot_toast.dart';
 
+showWidgetToolTip(BuildContext context, Widget widget, {int seconds: 4}){
+  BotToast.showAttachedWidget(
+    enableSafeArea: true,
+    attachedBuilder: (_){
+      return Card(
+        color: Theme.of(context).scaffoldBackgroundColor,
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: widget,
+        ),
+      );
+    },
+    duration: Duration(seconds: seconds),
+    targetContext: context,
+    onlyOne: true,
+    preferDirection: PreferDirection.topRight,
+  );
+}
+
 //function
 showToolTip(BuildContext context, String text){
   BotToast.showAttachedWidget(
@@ -27,33 +46,38 @@ class OurToolTip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      color: Theme.of(context).scaffoldBackgroundColor,
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          //NOTE: the reason we may need to take out the icon later...
-          //if the widget overflows the rest of the warning won't show
-          //and ofcourse its more important that it shows than anything else
-          Padding(
-            padding: const EdgeInsets.only(
-              left: 8.0,
+    return GestureDetector(
+      onTap: (){
+        BotToast.cleanAll();
+      },
+      child: Card(
+        color: Theme.of(context).scaffoldBackgroundColor,
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            //NOTE: the reason we may need to take out the icon later...
+            //if the widget overflows the rest of the warning won't show
+            //and ofcourse its more important that it shows than anything else
+            Padding(
+              padding: const EdgeInsets.only(
+                left: 8.0,
+              ),
+              child: Icon(
+                Icons.warning,
+                size: 24,
+              ),
             ),
-            child: Icon(
-              Icons.warning,
-              size: 24,
+            //this is what's actually important
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                text,
+                maxLines: 3,
+              )
             ),
-          ),
-          //this is what's actually important
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(
-              text,
-              maxLines: 3,
-            )
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

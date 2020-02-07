@@ -99,14 +99,17 @@ class AnimRecoveryTimeInfoToWhiteTheme extends StatelessWidget {
     Key key,
     @required this.changeDuration,
     @required this.recoveryPeriod,
+    this.darkTheme: true,
   }) : super(key: key);
 
   final Duration changeDuration;
   final ValueNotifier<Duration> recoveryPeriod;
+  final bool darkTheme;
 
   @override
   Widget build(BuildContext context) {
     return AnimatedRangeInformation(
+      darkTheme: darkTheme,
       changeDuration: changeDuration,
       selectedDuration: recoveryPeriod,
       ranges: [

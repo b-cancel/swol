@@ -109,14 +109,6 @@ class _TimerState extends State<Timer> with TickerProviderStateMixin {
     updateState();
   }
 
-  //other functions
-  maybeChangeRecoveryDuration() {
-    maybeChangeTime(
-      context: context,
-      recoveryDuration: widget.changeableTimerDuration,
-    );
-  }
-
   //------------------------------inspect above-------------------------
 
   //for calculating the controller's lerp value
@@ -306,13 +298,12 @@ class _TimerState extends State<Timer> with TickerProviderStateMixin {
     Widget changeTimeWidget = Positioned.fill(
       child: Material(
         color: Colors.transparent,
-        child: InkWell(
-          //TODO: make sure this pop up works
-          onTap: (){
-            print("change-----------");
-            //maybeChangeRecoveryDuration()
-          },
-          child: Container(),
+        child: Theme(
+          data: MyTheme.light,
+          child: ActualButton(
+            color: Theme.of(context).scaffoldBackgroundColor,
+            changeableTimerDuration: widget.changeableTimerDuration,
+          ),
         ),
       ),
     );

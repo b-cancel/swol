@@ -67,8 +67,11 @@ class ExplainFunctionality extends StatelessWidget {
                     ),
                     TextSpan(
                       style: bold,
-                      text: trainingTypeToMax(trainingName) + "\n",
+                      text: trainingTypeToMax(trainingName),
                     ),
+                    TextSpan(
+                      text: " before moving on to your next set\n"
+                    )
                     //-------------------------
                   ],
                 ),
@@ -87,7 +90,7 @@ class ExplainFunctionality extends StatelessWidget {
                       text: "Break Time Ranges"
                     ),
                     TextSpan(
-                      text: " for all training types are below for reference",
+                      text: " for all training types are below for reference\n",
                     ),
                   ]
                 ) 

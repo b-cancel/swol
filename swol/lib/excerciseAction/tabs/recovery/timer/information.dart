@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 //internal
 import 'package:swol/excerciseAction/tabs/recovery/secondary/explained.dart';
+import 'package:swol/other/durationFormat.dart';
 import 'package:swol/shared/widgets/complex/fields/headers/ourInformationPopUp.dart';
 import 'package:swol/shared/methods/theme.dart';
 
@@ -133,14 +134,15 @@ class InfoOutlineDarkButton extends StatelessWidget {
         else{
           if(totalDurationPassed < (Duration(minutes: 5) + buffer)){
             primaryMsg = "You Waited Too Long";
+            secondaryMsg = "Quickly! Move On Before You Cool Down!";
           }
           else{
             if(totalDurationPassed < Duration(hours: 1, minutes: 30)){
               primaryMsg = "You Waited Too Long";
-              secondaryMsg = "you should warm up again";
+              secondaryMsg = "Don't Worry! Just Do A Warm Up Set";
             }
             else{
-              primaryMsg = "Mark Your Set(s) Complete";
+              primaryMsg = "Mark Your Sets Complete";
               secondaryMsg = "on the bottom left";
             }
           }
@@ -180,23 +182,17 @@ class InfoOutlineDarkButton extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
-                    Visibility(
-                      visible: primaryMsg != null,
-                      child: Text(
-                        primaryMsg ?? "",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18,
-                        ),
+                    Text(
+                      primaryMsg ?? "",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
                       ),
                     ),
-                    Visibility(
-                      visible: secondaryMsg != null,
-                      child: Text(
-                        secondaryMsg ?? "",
-                        style: TextStyle(
-                          fontSize: 12,
-                        ),
+                    Text(
+                      secondaryMsg ?? "",
+                      style: TextStyle(
+                        fontSize: 12,
                       ),
                     ),
                   ],
@@ -209,78 +205,3 @@ class InfoOutlineDarkButton extends StatelessWidget {
     );
   }
 }
-
-/*
-RichText(
-          text: TextSpan(
-            style: TextStyle(
-              color: Theme.of(context).primaryColorDark,
-            ),
-            children: [
-              TextSpan(
-                text: "you can do so in the ",
-              ),
-              TextSpan(
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                ),
-                text: "bottom left",
-              ),
-              TextSpan(
-                text: " corner",
-              ),
-            ],
-          ),
-        ),
-*/
-
-/*
-RichText(
-          text: TextSpan(
-            style: TextStyle(
-              color: Theme.of(context).primaryColorDark,
-            ),
-            children: [
-              TextSpan(
-                text: "it's been ",
-              ),
-              TextSpan(
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                ),
-                text: durationString,
-              ),
-              TextSpan(
-                text: " since your last set",
-              ),
-            ],
-          ),
-        ),
-*/
-
-/*
-//set duration string
-    String durationString;
-    if(totalDurationPassed > Duration(days: 1)){
-      //NOTE: nobodies workout is going to be this long
-      durationString = "over a day";
-    }
-    else{
-      //basically only show 1. hours 2. minutes
-      durationString = DurationFormat.format(
-        totalDurationPassed, 
-        //show shorter version (aesthetic)
-        short: false,
-        //don't show anything larger than 24 horus
-        showYears: false, 
-        showMonths: false, 
-        showWeeks: false, 
-        showDays: false,
-        //dont't show anything smaller than a minute (since seconds don't update)
-        showSeconds: false,
-        showMilliseconds: false,
-        showMicroseconds: false,
-      );
-    }
-
-*/
