@@ -30,11 +30,7 @@ class RepTargetField extends StatefulWidget {
 }
 
 class _RepTargetFieldState extends State<RepTargetField> {
-  final ValueNotifier<Duration> repTargetDuration = new ValueNotifier(
-    Duration(
-      seconds: AnExcercise.defaultRepTarget * 5,
-    )
-  );
+  ValueNotifier<Duration> repTargetDuration;
 
   repTargetUpdate(){
     repTargetDuration.value = Duration(
@@ -44,7 +40,13 @@ class _RepTargetFieldState extends State<RepTargetField> {
 
   @override
   void initState() {
-    //handle listeners that will then make it possible to give tips all throghout
+    //create notifier
+    repTargetDuration = new ValueNotifier<Duration>(Duration.zero);
+
+    //set its value given rep target
+    repTargetUpdate();
+
+    //listen to value changes so both notifiers stay synced
     widget.repTarget.addListener(repTargetUpdate);
 
     //super init
