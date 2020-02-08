@@ -77,33 +77,30 @@ class PredictionFormulasPopUpBody extends StatelessWidget {
           alignment: Alignment.centerLeft,
           child: RichText(
             text: TextSpan(
-              style: TextStyle(
-                color: Colors.black,
-              ),
-              children: [
-                TextSpan(
-                  text: "Select the formula that you ",
+                style: TextStyle(
+                  color: Colors.black,
                 ),
-                TextSpan(
-                  text: "beleive",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
+                children: [
+                  TextSpan(
+                    text: "Select the formula that you ",
                   ),
-                ),
-                TextSpan(
-                  text: " will predict your ",
-                ),
-                TextSpan(
-                  text: "ability",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
+                  TextSpan(
+                    text: "beleive",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-                TextSpan(
-                  text: " for this excercise\n"
-                ),
-              ]
-            ),
+                  TextSpan(
+                    text: " will predict your ",
+                  ),
+                  TextSpan(
+                    text: "ability",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  TextSpan(text: " for this excercise\n"),
+                ]),
           ),
         ),
         Theme(
@@ -142,25 +139,38 @@ class FunctionDropDown extends StatefulWidget {
 class _FunctionDropDownState extends State<FunctionDropDown> {
   @override
   Widget build(BuildContext context) {
-    return DropdownButton<String>(
-      value: widget.functionString.value,
-      icon: Icon(Icons.arrow_drop_down),
-      isExpanded: true,
-      iconSize: 24,
-      elevation: 16,
-      onChanged: (String newValue) {
-        setState(() {
-          widget.functionString.value = newValue;
-          widget.functionIndex.value = Functions.functionToIndex[widget.functionString.value];
-        });
-      },
-      items: Functions.functions.map<DropdownMenuItem<String>>((String value) {
-        return DropdownMenuItem<String>(
-          value: value,
-          child: Text(value),
-        );
-      })
-      .toList(),
+    return Theme(
+      data: Theme.of(context).copyWith(
+        canvasColor: MyTheme.dark.primaryColorDark,
+      ),
+      child: DropdownButton<String>(
+        value: widget.functionString.value,
+        icon: Icon(Icons.arrow_drop_down),
+        isExpanded: true,
+        iconSize: 24,
+        elevation: 16,
+        onChanged: (String newValue) {
+          setState(() {
+            widget.functionString.value = newValue;
+            widget.functionIndex.value =
+                Functions.functionToIndex[widget.functionString.value];
+          });
+        },
+        items:
+            Functions.functions.map<DropdownMenuItem<String>>((String value) {
+          bool selected = value == widget.functionString.value;
+          return DropdownMenuItem<String>(
+            value: value,
+            child: Text(
+              value,
+              style: TextStyle(
+                fontWeight: selected ? FontWeight.bold : FontWeight.normal,
+                color: selected ? Colors.white : Colors.white.withOpacity(0.75),
+              ),
+            ),
+          );
+        }).toList(),
+      ),
     );
   }
 }
