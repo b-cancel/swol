@@ -23,6 +23,7 @@ class AnimatedRangeInformation extends StatefulWidget {
     @required this.ranges,
     this.bigTickNumber: 30,
     this.darkTheme: true,
+    this.hideNameButtons: false,
   }) : super(key: key);
 
   final Duration changeDuration;
@@ -30,6 +31,7 @@ class AnimatedRangeInformation extends StatefulWidget {
   final List<Range> ranges;
   final int bigTickNumber;
   final bool darkTheme;
+  final bool hideNameButtons;
 
   @override
   _AnimatedRangeInformationState createState() => _AnimatedRangeInformationState();
@@ -107,16 +109,33 @@ class _AnimatedRangeInformationState extends State<AnimatedRangeInformation> {
           builder: (BuildContext context) {
             return Stack(
               children: <Widget>[
-                //---Name Sections
-                (widget.darkTheme == false) ? Container()
-                : Padding(
-                  padding: EdgeInsets.only(
-                    top: 24.0,
-                  ),
-                  child: TrainingNameButton(
+                //---Tick Sections
+                Positioned(
+                  top: 0,
+                  child: Container(
+                    height: widget.darkTheme ? 16 : 36,
                     width: thisWidth,
-                    sectionName: aRange.name,
-                    sectionTap: aRange.onTap,
+                    child: RangeTicks(
+                      startTick: aRange.startSeconds,
+                      endTick: aRange.endSeconds,
+                      selectedDuration: widget.selectedDuration,
+                      bigTickNumber: widget.bigTickNumber,
+                      darkTheme: widget.darkTheme,
+                    ),
+                  ),
+                ),
+                //---Name Sections
+                Visibility(
+                  visible: (widget.hideNameButtons == false),
+                  child: Padding(
+                    padding: EdgeInsets.only(
+                      top:  widget.darkTheme ? 24.0 : 0,
+                    ),
+                    child: TrainingNameButton(
+                      width: thisWidth,
+                      sectionName: aRange.name,
+                      sectionTap: aRange.onTap,
+                    ),
                   ),
                 ),
                 //---End Sections
@@ -133,33 +152,14 @@ class _AnimatedRangeInformationState extends State<AnimatedRangeInformation> {
                         Positioned(
                           top: 0,
                           left: 0,
-                          child: Container(
-                            child: aRange.left,
-                          ),
+                          child: aRange.left,
                         ),
                         Positioned(
                           top: 0,
                           right: 0,
-                          child: Container(
-                            child: aRange.right,
-                          ),
+                          child: aRange.right,
                         )
                       ],
-                    ),
-                  ),
-                ),
-                //---Tick Sections
-                Positioned(
-                  top: 0,
-                  child: Container(
-                    height: widget.darkTheme ? 16 : 36,
-                    width: thisWidth,
-                    child: RangeTicks(
-                      startTick: aRange.startSeconds,
-                      endTick: aRange.endSeconds,
-                      selectedDuration: widget.selectedDuration,
-                      bigTickNumber: widget.bigTickNumber,
-                      darkTheme: widget.darkTheme,
                     ),
                   ),
                 ),

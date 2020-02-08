@@ -159,7 +159,14 @@ class SetRecordCardBottom extends StatelessWidget {
             ],
           ),
           Expanded(
-            child: Container(),
+            child: Center(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text("10% from predicted values")
+                ],
+              ),
+            ),
           ),
           CardWithHeader(
             header: "Record Set",

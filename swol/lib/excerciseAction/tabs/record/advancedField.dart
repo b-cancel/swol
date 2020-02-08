@@ -12,26 +12,17 @@ class RecordFields extends StatelessWidget {
     double iconSize = goldenBS[1];
     List<double> golden2BS = measurementToGoldenRatioBS(iconSize);
     iconSize = golden2BS[1];
-
-    BorderSide noBorder = BorderSide(width: 0);
     double borderSize = 3;
-    BorderSide accentBorder = BorderSide(width: borderSize, color: Theme.of(context).accentColor);
-    BorderSide regularBorder = BorderSide(width: borderSize, color: Theme.of(context).primaryColorLight);
 
     //build
     return IntrinsicHeight(
       child: Row(
         mainAxisSize: MainAxisSize.max,
         children: [
-          Expanded(
-            child: Container(
-              color: Theme.of(context).scaffoldBackgroundColor,
-              padding: EdgeInsets.all(16),
-              child: FittedBox(
-                fit: BoxFit.contain,
-                child: Text("345"),
-              ),
-            ),
+          RecordField(
+            isLeft: true,
+            text: "256",
+            borderSize: borderSize,
           ),
           Container(
             child: Column(
@@ -58,13 +49,92 @@ class RecordFields extends StatelessWidget {
               ],
             ),
           ),
-          Expanded(
+          RecordField(
+            isLeft: false,
+            text: "8",
+            borderSize: borderSize,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class RecordField extends StatelessWidget {
+  RecordField({
+    @required this.isLeft,
+    @required this.text,
+    @required this.borderSize,
+  });
+
+  final bool isLeft;
+  final String text;
+  final double borderSize;
+
+  @override
+  Widget build(BuildContext context) {
+    Radius normalCurve = Radius.circular(24);
+
+    return Expanded(
+      child: Stack(
+        children: <Widget>[
+          Positioned.fill(
             child: Container(
-              color: Theme.of(context).scaffoldBackgroundColor,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(
+                  //set 
+                  topRight: isLeft ? Radius.zero : normalCurve,
+                  bottomLeft: isLeft ? normalCurve : Radius.zero,
+                  //not so set
+                  topLeft: isLeft ? normalCurve : Radius.zero,
+                  bottomRight: isLeft ? Radius.zero : normalCurve,
+                ),
+                border: Border.all(
+                  color: isLeft ? Theme.of(context).accentColor : Theme.of(context).primaryColorLight, 
+                  width: borderSize,
+                ),
+              ),
               padding: EdgeInsets.all(16),
               child: FittedBox(
                 fit: BoxFit.contain,
-                child: Text("26"),
+                child: Text(text),
+              ),
+            ),
+          ),
+          Positioned.fill(
+            child: Padding(
+              padding: EdgeInsets.only(
+                top: isLeft ? borderSize : borderSize * 3 + 8,
+                bottom: isLeft ? borderSize * 3 + 8 : borderSize,
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                children: <Widget>[
+                  Expanded(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border(
+                          right: isLeft ? BorderSide(
+                            color: Theme.of(context).cardColor, 
+                            width: borderSize,
+                          ) : BorderSide(),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border(
+                          left: isLeft == false ? BorderSide(
+                            color: Theme.of(context).cardColor, 
+                            width: borderSize,
+                          ) : BorderSide(),
+                        )
+                      ),
+                    )
+                  ),
+                ],
               ),
             ),
           )
@@ -114,7 +184,10 @@ class TappableIcon extends StatelessWidget {
               topRight: isLeft ? tinyCurve : Radius.zero,
               bottomLeft: isLeft ? Radius.zero : tinyCurve,
             ),
-            border: Border.all(color: Theme.of(context).accentColor, width: borderSize),
+            border: Border.all(
+              color: isLeft ? Theme.of(context).accentColor : Theme.of(context).primaryColorLight, 
+              width: borderSize,
+            ),
           ),
           child: Stack(
             children: <Widget>[
@@ -137,8 +210,8 @@ class TappableIcon extends StatelessWidget {
               Positioned.fill(
                 child: Padding(
                   padding: EdgeInsets.only(
-                    left: isLeft ? 2 : 0,
-                    right: isLeft ? 0 : 2,
+                    left: isLeft ? 0 : 4,
+                    right: isLeft ? 4 : 0,
                   ),
                   child: Padding(
                     padding: EdgeInsets.all(4.0),

@@ -17,11 +17,13 @@ class RepTargetField extends StatefulWidget {
     @required this.repTarget,
     @required this.changeDuration,
     @required this.subtle,
+    this.darkTheme: true,
   });
 
   final ValueNotifier<int> repTarget;
   final Duration changeDuration;
   final bool subtle;
+  final bool darkTheme;
 
   @override
   _RepTargetFieldState createState() => _RepTargetFieldState();
@@ -69,6 +71,7 @@ class _RepTargetFieldState extends State<RepTargetField> {
         child: AnimRepTargetInfoWhite(
           changeDuration: Duration(milliseconds: 300), 
           repTargetDuration: repTargetDuration,
+          darkTheme: widget.subtle == false,
         ),
       ),
     );
@@ -81,10 +84,12 @@ class AnimRepTargetInfoWhite extends StatelessWidget {
     Key key,
     @required this.changeDuration,
     @required this.repTargetDuration,
+    this.darkTheme: true,
   }) : super(key: key);
 
   final Duration changeDuration;
   final ValueNotifier<Duration> repTargetDuration;
+  final bool darkTheme;
 
   @override
   Widget build(BuildContext context) {
@@ -92,6 +97,7 @@ class AnimRepTargetInfoWhite extends StatelessWidget {
       changeDuration: changeDuration,
       selectedDuration: repTargetDuration,
       bigTickNumber: 25,
+      darkTheme: darkTheme,
       ranges: [
         Range(
           name: "Strength Training",

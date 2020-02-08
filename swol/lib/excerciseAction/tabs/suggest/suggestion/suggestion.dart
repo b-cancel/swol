@@ -159,7 +159,7 @@ class FunctionSettings extends StatelessWidget {
               child: Stack(
                 children: <Widget>[
                   TextWithCorners(
-                   text: "using your Last Set",
+                   text: "using your Prediction Formula",
                    radius: arrowRadius
                  ),
                  Positioned.fill(
@@ -215,7 +215,7 @@ class FunctionSettings extends StatelessWidget {
                   horizontal: 24,
                 ),
                 child: TextWithCorners(
-                  text: "your selected Prediction Formula",
+                  text: "and your Rep Target",
                   radius: cardRadius,
                 ),
               ),
@@ -246,7 +246,149 @@ class FunctionSettings extends StatelessWidget {
             Expanded(
               child: TextWithCorners(
                 useAccent: true,
-                text: "and your Rep Target\nyour Goal Set should be",
+                text: "your next set should be",
+                radius: arrowRadius,
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+}
+
+class FunctionSettings2 extends StatelessWidget {
+  const FunctionSettings2({
+    Key key,
+    @required this.repTarget,
+    @required this.functionIndex,
+    @required this.functionString,
+    @required this.arrowRadius,
+    @required this.cardRadius,
+  }) : super(key: key);
+
+  final ValueNotifier<int> repTarget;
+  final ValueNotifier<int> functionIndex;
+  final ValueNotifier<String> functionString;
+  final Radius arrowRadius;
+  final Radius cardRadius;
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: <Widget>[
+        //the two corners that "attach" to the goal set card
+        Positioned(
+          left: 0,
+          bottom: 0,
+          child: Corner(
+            cardRadius: arrowRadius,
+            isLeft: true,
+          ),
+        ),
+        Positioned(
+          right: 0,
+          bottom: 0,
+          child: Corner(
+            cardRadius: arrowRadius,
+          ),
+        ),
+        //everything else
+        Column(
+          mainAxisSize: MainAxisSize.max,
+          children: <Widget>[
+            Expanded(
+              child: Stack(
+                children: <Widget>[
+                  TextWithCorners(
+                   text: "using your Prediction Formula",
+                   radius: arrowRadius
+                 ),
+                 Positioned.fill(
+                   child: Container(
+                     child: Row(
+                       children: <Widget>[
+                         Container(
+                           color: Theme.of(context).primaryColorDark,
+                           width: 24,
+                         ),
+                         Expanded(
+                           child: Container(),
+                         ),
+                         Container(
+                           color: Theme.of(context).primaryColorDark,
+                           width: 24,
+                         )
+                       ],
+                     ),
+                   ),
+                 ),
+               ],
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: 24.0,
+              ),
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                decoration: BoxDecoration(
+                  color: Theme.of(context).cardColor,
+                  borderRadius: BorderRadius.only(
+                    bottomRight: cardRadius,
+                    bottomLeft: cardRadius,
+                  ),
+                ),
+                child: Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 24,
+                  ),
+                  child: FunctionDropDown(
+                    functionIndex: functionIndex,
+                    functionString: functionString,
+                  ),
+                ),
+              ),
+            ),
+            Expanded(
+              child: Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: 24,
+                ),
+                child: TextWithCorners(
+                  text: "and your Rep Target",
+                  radius: cardRadius,
+                ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: 24.0,
+              ),
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                decoration: BoxDecoration(
+                  color: Theme.of(context).cardColor,
+                  borderRadius: BorderRadius.only(
+                    bottomRight: arrowRadius,
+                    bottomLeft: arrowRadius,
+                  ),
+                ),
+                padding: EdgeInsets.only(
+                  top: 16,
+                  bottom: 12,
+                ),
+                child: RepTargetField(
+                  changeDuration: Duration(milliseconds: 300),
+                  repTarget: repTarget,
+                  subtle: true,
+                ),
+              ),
+            ),
+            Expanded(
+              child: TextWithCorners(
+                useAccent: true,
+                text: "your next set should be",
                 radius: arrowRadius,
               ),
             ),
