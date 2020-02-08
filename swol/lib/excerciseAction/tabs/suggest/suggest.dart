@@ -153,6 +153,7 @@ class _SuggestionState extends State<Suggestion> {
               child: firstTime.value ? CalibrationCard(
                 rawSpaceToRedistribute: spaceToRedistribute, 
               ) : SuggestionSection(
+                excercise: widget.excercise,
                 lastWeight: 80, 
                 lastReps: 5,
                 rawSpaceToRedistribute: spaceToRedistribute - backButtonHeight, 

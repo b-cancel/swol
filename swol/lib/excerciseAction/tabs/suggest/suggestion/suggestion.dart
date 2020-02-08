@@ -1,5 +1,6 @@
 //flutter
 import 'package:flutter/material.dart';
+import 'package:swol/excerciseAction/tabs/record/changeFunction.dart';
 
 //plugin
 import 'package:swol/excerciseAction/tabs/suggest/suggestion/setDisplay.dart';
@@ -17,6 +18,7 @@ import 'package:swol/other/functions/helper.dart';
 class SuggestionSection extends StatelessWidget {
   SuggestionSection({
     Key key,
+    @required this.excercise,
     @required this.lastWeight,
     @required this.lastReps,
     @required this.rawSpaceToRedistribute,
@@ -25,23 +27,13 @@ class SuggestionSection extends StatelessWidget {
     @required this.heroAnimTravel,
   }) : super(key: key);
 
+  final AnExcercise excercise;
   final int lastWeight;
   final int lastReps;
   final double rawSpaceToRedistribute;
   final ValueNotifier<bool> heroUp;
   final Duration heroAnimDuration;
   final double heroAnimTravel;
-
-  //TODO: grab actual values from excercise reference
-  final ValueNotifier<int> repTarget = new ValueNotifier(
-    AnExcercise.defaultRepTarget,
-  );
-  final ValueNotifier<int> functionIndex = new ValueNotifier(
-    AnExcercise.defaultFunctionID,
-  );
-  final ValueNotifier<String> functionString = new ValueNotifier(
-    Functions.functions[AnExcercise.defaultFunctionID]
-  );
 
   @override
   Widget build(BuildContext context) {
@@ -83,9 +75,7 @@ class SuggestionSection extends StatelessWidget {
           ),
           Expanded(
             child: FunctionSettings(
-              repTarget: repTarget,
-              functionIndex: functionIndex,
-              functionString: functionString,
+              excercise: excercise,
               arrowRadius: arrowRadius,
               cardRadius: cardRadius,
             ),
@@ -115,22 +105,66 @@ class SuggestionSection extends StatelessWidget {
   }
 }
 
-class FunctionSettings extends StatelessWidget {
+class FunctionSettings extends StatefulWidget {
   const FunctionSettings({
     Key key,
-    @required this.repTarget,
-    @required this.functionIndex,
-    @required this.functionString,
+    @required this.excercise,
     @required this.arrowRadius,
     @required this.cardRadius,
   }) : super(key: key);
 
-  final ValueNotifier<int> repTarget;
-  final ValueNotifier<int> functionIndex;
-  final ValueNotifier<String> functionString;
+  final AnExcercise excercise;
   final Radius arrowRadius;
   final Radius cardRadius;
 
+  @override
+  _FunctionSettingsState createState() => _FunctionSettingsState();
+}
+
+class _FunctionSettingsState extends State<FunctionSettings> {
+  ValueNotifier<int> repTarget;
+  ValueNotifier<int> predictionID;
+
+  //updating function
+  updateRepTarget() {
+    widget.excercise.repTarget = repTarget.value;
+  }
+
+  updatePredictionID(){
+    widget.excercise.predictionID = predictionID.value;
+  }
+
+  //init
+  @override
+  void initState() {
+    //super init
+    super.initState();
+
+    //create notifiers
+    repTarget = new ValueNotifier<int>(widget.excercise.repTarget);
+    predictionID = new ValueNotifier<int>(widget.excercise.predictionID);
+
+    //add listeners
+    repTarget.addListener(updateRepTarget);
+    predictionID.addListener(updatePredictionID);
+  }
+
+  //dispose
+  @override
+  void dispose() { 
+    //remove listeners
+    repTarget.removeListener(updateRepTarget);
+    predictionID.removeListener(updatePredictionID);
+
+    //dispose notifiers
+    repTarget.dispose();
+    predictionID.dispose();
+
+    //super dispose
+    super.dispose();
+  }
+
+  //build
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -140,7 +174,7 @@ class FunctionSettings extends StatelessWidget {
           left: 0,
           bottom: 0,
           child: Corner(
-            cardRadius: arrowRadius,
+            cardRadius: widget.arrowRadius,
             isLeft: true,
           ),
         ),
@@ -148,7 +182,7 @@ class FunctionSettings extends StatelessWidget {
           right: 0,
           bottom: 0,
           child: Corner(
-            cardRadius: arrowRadius,
+            cardRadius: widget.arrowRadius,
           ),
         ),
         //everything else
@@ -160,7 +194,7 @@ class FunctionSettings extends StatelessWidget {
                 children: <Widget>[
                   TextWithCorners(
                    text: "using your Prediction Formula",
-                   radius: arrowRadius
+                   radius: widget.arrowRadius
                  ),
                  Positioned.fill(
                    child: Container(
@@ -193,18 +227,30 @@ class FunctionSettings extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: Theme.of(context).cardColor,
                   borderRadius: BorderRadius.only(
-                    bottomRight: cardRadius,
-                    bottomLeft: cardRadius,
+                    bottomRight: widget.cardRadius,
+                    bottomLeft: widget.cardRadius,
                   ),
                 ),
                 child: Padding(
                   padding: EdgeInsets.symmetric(
                     horizontal: 24,
                   ),
-                  child: PredictionField(
-                    functionIndex: functionIndex, 
-                    functionString: functionString,
-                    subtle: true,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      PredictionFormulaHeader(
+                        subtle: true,
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(
+                          bottom: 8.0,
+                        ),
+                        child: ChangeFunction(
+                          predictionID: predictionID, 
+                          arrowsUpDown: false,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
@@ -216,7 +262,7 @@ class FunctionSettings extends StatelessWidget {
                 ),
                 child: TextWithCorners(
                   text: "and your Rep Target",
-                  radius: cardRadius,
+                  radius: widget.cardRadius,
                 ),
               ),
             ),
@@ -229,8 +275,8 @@ class FunctionSettings extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: Theme.of(context).cardColor,
                   borderRadius: BorderRadius.only(
-                    bottomRight: arrowRadius,
-                    bottomLeft: arrowRadius,
+                    bottomRight: widget.arrowRadius,
+                    bottomLeft: widget.arrowRadius,
                   ),
                 ),
                 padding: EdgeInsets.only(
@@ -247,7 +293,7 @@ class FunctionSettings extends StatelessWidget {
               child: TextWithCorners(
                 useAccent: true,
                 text: "your next set should be",
-                radius: arrowRadius,
+                radius: widget.arrowRadius,
               ),
             ),
           ],

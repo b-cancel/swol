@@ -137,8 +137,7 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
       children: <Widget>[
         PageView(
           controller: pageViewController,
-          //TODO: when we are done with debuging we can uncomment this
-          //scrollPhysics: NeverScrollableScrollPhysics(),
+          physics: NeverScrollableScrollPhysics(),
           scrollDirection: Axis.vertical,
           children: <Widget>[
             ClipRRect(

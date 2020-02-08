@@ -1,11 +1,13 @@
 //flutter
 import 'package:flutter/material.dart';
 import 'package:swol/excerciseAction/tabs/record/advancedField.dart';
+import 'package:swol/excerciseAction/tabs/record/changeFunction.dart';
 
 //internal
 import 'package:swol/excerciseAction/tabs/suggest/suggestion/setDisplay.dart';
 import 'package:swol/excerciseAction/tabs/sharedWidgets/cardWithHeader.dart';
 import 'package:swol/excerciseAction/tabs/sharedWidgets/bottomButtons.dart';
+import 'package:swol/other/functions/helper.dart';
 import 'package:swol/shared/functions/goldenRatio.dart';
 import 'package:swol/shared/structs/anExcercise.dart';
 
@@ -79,7 +81,7 @@ class SetRecord extends StatelessWidget {
 }
 
 class SetRecordCardBottom extends StatelessWidget {
-  const SetRecordCardBottom({
+  SetRecordCardBottom({
     Key key,
     @required this.rawSpaceToRedistribute,
     this.removeBottomButtonSpacing: true,
@@ -96,6 +98,13 @@ class SetRecordCardBottom extends StatelessWidget {
   final ValueNotifier<bool> heroUp;
   final Duration heroAnimDuration;
   final double heroAnimTravel;
+
+  final ValueNotifier<int> functionIndex = new ValueNotifier(
+    AnExcercise.defaultFunctionID,
+  );
+  final ValueNotifier<String> functionString = new ValueNotifier(
+    Functions.functions[AnExcercise.defaultFunctionID]
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -163,7 +172,11 @@ class SetRecordCardBottom extends StatelessWidget {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text("10% from predicted values")
+                  //Text("10% from predicted values")
+                  ChangeFunction(
+                    predictionID: functionIndex, 
+                    arrowsUpDown: false,
+                  ),
                 ],
               ),
             ),
