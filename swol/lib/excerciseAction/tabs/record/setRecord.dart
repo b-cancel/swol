@@ -1,5 +1,6 @@
 //flutter
 import 'package:flutter/material.dart';
+import 'package:swol/excerciseAction/tabs/record/advancedField.dart';
 
 //internal
 import 'package:swol/excerciseAction/tabs/suggest/suggestion/setDisplay.dart';
@@ -110,12 +111,6 @@ class SetRecordCardBottom extends StatelessWidget {
     //card radius
     Radius cardRadius = Radius.circular(24);
 
-    Widget child = Container(
-      height: 250,
-      width: MediaQuery.of(context).size.width,
-      color: Colors.yellow,
-    );
-
     //return
     return Container(
       //The extra padding that just looked right
@@ -169,7 +164,7 @@ class SetRecordCardBottom extends StatelessWidget {
           CardWithHeader(
             header: "Record Set",
             aLittleSmaller: true,
-            child: child,
+            child: RecordFields(),
           ),
         ],
       ),

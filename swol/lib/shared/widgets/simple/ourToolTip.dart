@@ -4,7 +4,10 @@ import 'package:flutter/material.dart';
 //plugin
 import 'package:bot_toast/bot_toast.dart';
 
-showWidgetToolTip(BuildContext context, Widget widget, {int seconds: 4}){
+showWidgetToolTip(BuildContext context, Widget widget, {
+  int seconds: 4,
+  PreferDirection direction: PreferDirection.topRight,
+}){
   BotToast.showAttachedWidget(
     enableSafeArea: true,
     attachedBuilder: (_){
@@ -19,7 +22,7 @@ showWidgetToolTip(BuildContext context, Widget widget, {int seconds: 4}){
     duration: Duration(seconds: seconds),
     targetContext: context,
     onlyOne: true,
-    preferDirection: PreferDirection.topRight,
+    preferDirection: direction,
   );
 }
 

@@ -1,6 +1,7 @@
 //flutter
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
+import 'package:swol/excerciseAction/toolTips.dart';
 import 'package:swol/shared/widgets/simple/ourToolTip.dart';
 
 //plugin
@@ -145,53 +146,7 @@ class _SetDisplayState extends State<SetDisplay> {
                         ),
                       ),
                       GestureDetector(
-                        onTap: (){
-                          showWidgetToolTip(
-                            context, 
-                            GestureDetector(
-                              onTap: (){
-                                BotToast.cleanAll();
-                              },
-                              child: RichText(
-                                text: TextSpan(
-                                  children: [
-                                    TextSpan(
-                                      text: "It doesn't matter\nif you use"
-                                    ),
-                                    TextSpan(
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                      text: " LBS",
-                                    ),
-                                    TextSpan(
-                                      text: " or ",
-                                    ),
-                                    TextSpan(
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                      text: "KG\n",
-                                    ),
-                                    TextSpan(
-                                      text: "As long as you keep things "
-                                    ),
-                                    TextSpan(
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                      text: "consistent\n",
-                                    ),
-                                    TextSpan(
-                                      text: "the math will work as expected"
-                                    ),
-                                  ]
-                                ),
-                              ),
-                            ),
-                            seconds: 8,
-                          );
-                        },
+                        onTap: () => showWeightToolTip(context, direction: PreferDirection.bottomLeft),
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
@@ -222,40 +177,7 @@ class _SetDisplayState extends State<SetDisplay> {
                         ),
                       ),
                       GestureDetector(
-                        onTap: (){
-                          showWidgetToolTip(
-                            context, 
-                            GestureDetector(
-                              onTap: (){
-                                BotToast.cleanAll();
-                              },
-                              child: RichText(
-                                text: TextSpan(
-                                  children: [
-                                    TextSpan(
-                                      text: "How many times you lifted the weight\n"
-                                    ),
-                                    TextSpan(
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                      text: "Successfully",
-                                    ),
-                                    TextSpan(
-                                      text: " and with ",
-                                    ),
-                                    TextSpan(
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                      text: "Good Form",
-                                    ),
-                                  ]
-                                ),
-                              ),
-                            ),
-                          );
-                        },
+                        onTap: () => showRepsToolTip(context, direction: PreferDirection.bottomRight),
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
