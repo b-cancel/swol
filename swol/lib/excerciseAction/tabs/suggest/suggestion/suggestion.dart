@@ -123,15 +123,10 @@ class FunctionSettings extends StatefulWidget {
 
 class _FunctionSettingsState extends State<FunctionSettings> {
   ValueNotifier<int> repTarget;
-  ValueNotifier<int> predictionID;
 
   //updating function
   updateRepTarget() {
     widget.excercise.repTarget = repTarget.value;
-  }
-
-  updatePredictionID(){
-    widget.excercise.predictionID = predictionID.value;
   }
 
   //init
@@ -142,11 +137,9 @@ class _FunctionSettingsState extends State<FunctionSettings> {
 
     //create notifiers
     repTarget = new ValueNotifier<int>(widget.excercise.repTarget);
-    predictionID = new ValueNotifier<int>(widget.excercise.predictionID);
 
     //add listeners
     repTarget.addListener(updateRepTarget);
-    predictionID.addListener(updatePredictionID);
   }
 
   //dispose
@@ -154,11 +147,9 @@ class _FunctionSettingsState extends State<FunctionSettings> {
   void dispose() { 
     //remove listeners
     repTarget.removeListener(updateRepTarget);
-    predictionID.removeListener(updatePredictionID);
 
     //dispose notifiers
     repTarget.dispose();
-    predictionID.dispose();
 
     //super dispose
     super.dispose();
@@ -246,7 +237,7 @@ class _FunctionSettingsState extends State<FunctionSettings> {
                           bottom: 8.0,
                         ),
                         child: ChangeFunction(
-                          predictionID: predictionID, 
+                          excercise: widget.excercise, 
                           arrowsUpDown: false,
                         ),
                       ),

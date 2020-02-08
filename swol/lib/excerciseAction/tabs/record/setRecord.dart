@@ -68,6 +68,7 @@ class SetRecord extends StatelessWidget {
           Positioned(
             top: 0,
             child: SetRecordCardBottom(
+              excercise: excercise,
               rawSpaceToRedistribute: spaceToRedistribute,
               heroUp: heroUp,
               heroAnimDuration: heroAnimDuration,
@@ -83,6 +84,7 @@ class SetRecord extends StatelessWidget {
 class SetRecordCardBottom extends StatelessWidget {
   SetRecordCardBottom({
     Key key,
+    @required this.excercise,
     @required this.rawSpaceToRedistribute,
     this.removeBottomButtonSpacing: true,
     this.extraSpacing: 24,
@@ -91,6 +93,7 @@ class SetRecordCardBottom extends StatelessWidget {
     @required this.heroAnimTravel,
   }) : super(key: key);
 
+  final AnExcercise excercise;
   final double rawSpaceToRedistribute;
   final double extraSpacing;
   final bool removeBottomButtonSpacing;
@@ -98,13 +101,6 @@ class SetRecordCardBottom extends StatelessWidget {
   final ValueNotifier<bool> heroUp;
   final Duration heroAnimDuration;
   final double heroAnimTravel;
-
-  final ValueNotifier<int> functionIndex = new ValueNotifier(
-    AnExcercise.defaultFunctionID,
-  );
-  final ValueNotifier<String> functionString = new ValueNotifier(
-    Functions.functions[AnExcercise.defaultFunctionID]
-  );
 
   @override
   Widget build(BuildContext context) {
@@ -174,8 +170,8 @@ class SetRecordCardBottom extends StatelessWidget {
                 children: [
                   //Text("10% from predicted values")
                   ChangeFunction(
-                    predictionID: functionIndex, 
-                    arrowsUpDown: false,
+                    excercise: excercise, 
+                    arrowsUpDown: true,
                   ),
                 ],
               ),

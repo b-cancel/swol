@@ -4,15 +4,16 @@ import 'package:flutter/material.dart';
 //plugin
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:swol/other/functions/helper.dart';
+import 'package:swol/shared/structs/anExcercise.dart';
 
 //widget
 class ChangeFunction extends StatefulWidget {
   ChangeFunction({
-    @required this.predictionID,
+    @required this.excercise,
     @required this.arrowsUpDown,
   });
 
-  final ValueNotifier<int> predictionID;
+  final AnExcercise excercise;
   final bool arrowsUpDown;
 
   @override
@@ -20,20 +21,19 @@ class ChangeFunction extends StatefulWidget {
 }
 
 class _ChangeFunctionState extends State<ChangeFunction> {
+  ValueNotifier<int> predictionID;
   ValueNotifier<bool> lastFunction;
   ValueNotifier<bool> firstFunction;
-  /*
-  setState(() {
-          widget.functionString.value = newValue;
-          widget.functionIndex.value = Functions.functionToIndex[widget.functionString.value];
-        });
-  */
 
   var carousel;
 
   updateFirstLast(){
-    firstFunction.value = widget.predictionID.value == 0;
-    lastFunction.value = widget.predictionID.value == Functions.functions.length - 1;
+    firstFunction.value = predictionID.value == 0;
+    lastFunction.value = predictionID.value == Functions.functions.length - 1;
+  }
+
+  updatePredictionID(){
+    widget.excercise.predictionID = predictionID.value;
   }
 
   updateState(){
@@ -46,6 +46,7 @@ class _ChangeFunctionState extends State<ChangeFunction> {
     super.initState();
 
     //create listeners
+    predictionID = new ValueNotifier<int>(widget.excercise.predictionID);
     lastFunction = new ValueNotifier<bool>(false);
     firstFunction = new ValueNotifier<bool>(false);
     
@@ -55,10 +56,11 @@ class _ChangeFunctionState extends State<ChangeFunction> {
     //create listeners
     lastFunction.addListener(updateState);
     firstFunction.addListener(updateState);
+    predictionID.addListener(updatePredictionID);
 
     //make carousel
     carousel = CarouselSlider(
-      initialPage: widget.predictionID.value,
+      initialPage: predictionID.value,
       height: 36,
       enableInfiniteScroll: false,
       autoPlay: false,
@@ -67,7 +69,7 @@ class _ChangeFunctionState extends State<ChangeFunction> {
       scrollDirection: Axis.vertical,
       viewportFraction: 1.0,
       onPageChanged: (int val){
-        widget.predictionID.value = val;
+        predictionID.value = val;
         updateFirstLast();
       },
       items: Functions.functions.map((i) {
@@ -98,10 +100,12 @@ class _ChangeFunctionState extends State<ChangeFunction> {
     //remove listeners
     lastFunction.removeListener(updateState);
     firstFunction.removeListener(updateState);
+    predictionID.removeListener(updatePredictionID);
 
     //dispose notifiers
     lastFunction.dispose();
     firstFunction.dispose();
+    predictionID.dispose();
 
     //super dispose
     super.dispose();
@@ -134,12 +138,18 @@ class _ChangeFunctionState extends State<ChangeFunction> {
             children: <Widget>[
               Container(
                 width: MediaQuery.of(context).size.width,
-                child: Icon(Icons.arrow_drop_up),
+                child: Icon(
+                  Icons.arrow_drop_up,
+                  color: lastFunction.value ? Theme.of(context).cardColor : null,
+                ),
               ),
               carousel,
               Container(
                 width: MediaQuery.of(context).size.width,
-                child: Icon(Icons.arrow_drop_down),
+                child: Icon(
+                  Icons.arrow_drop_down,
+                  color: firstFunction.value ? Theme.of(context).cardColor : null,
+                ),
               )
             ],
           ),
@@ -148,13 +158,13 @@ class _ChangeFunctionState extends State<ChangeFunction> {
               children: <Widget>[
                 Expanded(
                   child: InkWell(
-                    onTap: () => nextFunction(),
+                    onTap: lastFunction.value ? null : () => nextFunction(),
                     child: Container(),
                   ),
                 ),
                 Expanded(
                   child: InkWell(
-                    onTap: () => prevFunction(),
+                    onTap: firstFunction.value ? null : () => prevFunction(),
                     child: Container(),
                   ),
                 )
