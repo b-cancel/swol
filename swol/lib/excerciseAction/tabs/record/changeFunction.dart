@@ -10,11 +10,11 @@ import 'package:swol/shared/structs/anExcercise.dart';
 class ChangeFunction extends StatefulWidget {
   ChangeFunction({
     @required this.excercise,
-    @required this.arrowsUpDown,
+    @required this.middleArrows,
   });
 
   final AnExcercise excercise;
-  final bool arrowsUpDown;
+  final bool middleArrows;
 
   @override
   _ChangeFunctionState createState() => _ChangeFunctionState();
@@ -27,17 +27,17 @@ class _ChangeFunctionState extends State<ChangeFunction> {
 
   var carousel;
 
-  updateFirstLast(){
+  updateFirstLast() {
     firstFunction.value = predictionID.value == 0;
     lastFunction.value = predictionID.value == Functions.functions.length - 1;
   }
 
-  updatePredictionID(){
+  updatePredictionID() {
     widget.excercise.predictionID = predictionID.value;
   }
 
-  updateState(){
-    if(mounted) setState(() {});
+  updateState() {
+    if (mounted) setState(() {});
   }
 
   @override
@@ -49,7 +49,7 @@ class _ChangeFunctionState extends State<ChangeFunction> {
     predictionID = new ValueNotifier<int>(widget.excercise.predictionID);
     lastFunction = new ValueNotifier<bool>(false);
     firstFunction = new ValueNotifier<bool>(false);
-    
+
     //set values
     updateFirstLast();
 
@@ -65,26 +65,50 @@ class _ChangeFunctionState extends State<ChangeFunction> {
       enableInfiniteScroll: false,
       autoPlay: false,
       reverse: true,
-      scrollPhysics: NeverScrollableScrollPhysics(),
       scrollDirection: Axis.vertical,
       viewportFraction: 1.0,
-      onPageChanged: (int val){
+      onPageChanged: (int val) {
         predictionID.value = val;
         updateFirstLast();
       },
-      items: Functions.functions.map((i) {
+      items: Functions.functions.map((functionName) {
         return Builder(
           builder: (BuildContext context) {
             return Center(
               child: Container(
                 height: 36,
                 child: Center(
-                  child: Text(
-                    i,
-                    style: TextStyle(
-                      fontSize: widget.arrowsUpDown ? 18 : 16,
-                      fontWeight: FontWeight.bold,
-                    ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Visibility(
+                        visible: widget.middleArrows,
+                        child: Icon(
+                          Icons.arrow_drop_down,
+                          color: functionName != Functions.functions[0]
+                              ? null
+                              : Theme.of(context).cardColor,
+                        ),
+                      ),
+                      Text(
+                        functionName,
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Visibility(
+                        visible: widget.middleArrows,
+                        child: Icon(
+                          Icons.arrow_drop_up,
+                          color: functionName != Functions.functions[
+                            Functions.functions.length - 1
+                          ]
+                              ? null
+                              : Theme.of(context).cardColor,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
@@ -96,7 +120,7 @@ class _ChangeFunctionState extends State<ChangeFunction> {
   }
 
   @override
-  void dispose() { 
+  void dispose() {
     //remove listeners
     lastFunction.removeListener(updateState);
     firstFunction.removeListener(updateState);
@@ -127,108 +151,66 @@ class _ChangeFunctionState extends State<ChangeFunction> {
 
   @override
   Widget build(BuildContext context) {
-    
-
-    //different configs vertical v horizontal
-    if (widget.arrowsUpDown) {
-      return Stack(
-        children: <Widget>[
-          Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Container(
-                width: MediaQuery.of(context).size.width,
-                child: Icon(
-                  Icons.arrow_drop_up,
-                  color: lastFunction.value ? Theme.of(context).cardColor : null,
-                ),
+    return ClipRRect(
+      borderRadius: BorderRadius.only(
+        bottomRight: Radius.circular(12),
+        bottomLeft: Radius.circular(12),
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: Stack(
+          children: <Widget>[
+            Container(
+              width: MediaQuery.of(context).size.width,
+              child: Row(
+                children: <Widget>[
+                  Visibility(
+                    visible: widget.middleArrows == false,
+                    child: Icon(
+                      Icons.arrow_drop_down,
+                      color: firstFunction.value
+                          ? Theme.of(context).primaryColorDark
+                          : null,
+                    ),
+                  ),
+                  Expanded(
+                    child: carousel,
+                  ),
+                  Visibility(
+                    visible: widget.middleArrows == false,
+                    child: Icon(
+                      Icons.arrow_drop_up,
+                      color: lastFunction.value
+                          ? Theme.of(context).primaryColorDark
+                          : null,
+                    ),
+                  )
+                ],
               ),
-              carousel,
-              Container(
-                width: MediaQuery.of(context).size.width,
-                child: Icon(
-                  Icons.arrow_drop_down,
-                  color: firstFunction.value ? Theme.of(context).cardColor : null,
-                ),
-              )
-            ],
-          ),
-          Positioned.fill(
-            child: Column(
-              children: <Widget>[
-                Expanded(
-                  child: InkWell(
-                    onTap: lastFunction.value ? null : () => nextFunction(),
-                    child: Container(),
-                  ),
-                ),
-                Expanded(
-                  child: InkWell(
-                    onTap: firstFunction.value ? null : () => prevFunction(),
-                    child: Container(),
-                  ),
-                )
-              ],
             ),
-          ),
-        ],
-      );
-    } else {
-      return ClipRRect(
-        borderRadius: BorderRadius.only(
-          bottomRight: Radius.circular(12),
-          bottomLeft: Radius.circular(12),
-        ),
-        child: Material(
-          color: Colors.transparent,
-          child: Stack(
-            children: <Widget>[
-              Container(
-                width: MediaQuery.of(context).size.width,
-                child: Row(
-                  children: <Widget>[
-                    Container(
-                      child: Icon(
-                        Icons.arrow_drop_down,
-                        color: firstFunction.value ? Theme.of(context).primaryColorDark : null,
-                      ),
+            Positioned.fill(
+              child: Row(
+                children: <Widget>[
+                  Expanded(
+                    child: GestureDetector(
+                      behavior: HitTestBehavior.translucent,
+                      onTap: firstFunction.value ? null : () => prevFunction(),
+                      child: Container(),
                     ),
-                    Expanded(
-                      child: carousel,
+                  ),
+                  Expanded(
+                    child: GestureDetector(
+                      behavior: HitTestBehavior.translucent,
+                      onTap: lastFunction.value ? null : () => nextFunction(),
+                      child: Container(),
                     ),
-                    Container(
-                      child: Icon(
-                        Icons.arrow_drop_up,
-                        color: lastFunction.value ? Theme.of(context).primaryColorDark : null,
-                      ),
-                    )
-                  ],
-                ),
+                  )
+                ],
               ),
-              Positioned.fill(
-                child: Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: InkWell(
-                        onTap: firstFunction.value ? null : () => prevFunction(),
-                        child: Container(
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      child: InkWell(
-                        onTap: lastFunction.value ? null : () => nextFunction(),
-                        child: Container(
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
-      );
-    }
+      ),
+    );
   }
 }

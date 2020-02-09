@@ -238,7 +238,7 @@ class _FunctionSettingsState extends State<FunctionSettings> {
                         ),
                         child: ChangeFunction(
                           excercise: widget.excercise, 
-                          arrowsUpDown: false,
+                          middleArrows: false,
                         ),
                       ),
                     ],
