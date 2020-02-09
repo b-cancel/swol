@@ -52,35 +52,32 @@ class SetRecord extends StatelessWidget {
     double appBarHeight = 56; //constant according to flutter docs
     double spaceToRedistribute = fullHeight - appBarHeight - statusBarHeight;
 
-    return Container(
-      width: fullHeight,
-      child: Stack(
-        children: <Widget>[
-          Positioned(
-            bottom: 0,
-            left: 0,
-            right: 0,
-            child: BottomButtons(
-              excercise: excercise,
-              forwardAction: setBreak,
-              forwardActionWidget: Text(
-                "Take Set Break",
+    return ListView(
+      children: <Widget>[
+        Container(
+          height: spaceToRedistribute,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              SetRecordCardBottom(
+                excercise: excercise,
+                rawSpaceToRedistribute: spaceToRedistribute,
+                heroUp: heroUp,
+                heroAnimDuration: heroAnimDuration,
+                heroAnimTravel: heroAnimTravel,
               ),
-              backAction: backToSuggestion,
-            ),
+              BottomButtons(
+                excercise: excercise,
+                forwardAction: setBreak,
+                forwardActionWidget: Text(
+                  "Take Set Break",
+                ),
+                backAction: backToSuggestion,
+              ),
+            ],
           ),
-          Positioned(
-            top: 0,
-            child: SetRecordCardBottom(
-              excercise: excercise,
-              rawSpaceToRedistribute: spaceToRedistribute,
-              heroUp: heroUp,
-              heroAnimDuration: heroAnimDuration,
-              heroAnimTravel: heroAnimTravel,
-            ),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
@@ -119,11 +116,13 @@ class SetRecordCardBottom extends StatelessWidget {
 
     //card radius
     Radius cardRadius = Radius.circular(24);
-    Color distanceColor = Theme.of(context).cardColor; 
+    Color distanceColor = Theme.of(context).cardColor;
     int id = 0;
-    if(id == 1) distanceColor = Colors.red.withOpacity(0.33);
-    else if(id == 2) distanceColor = Colors.red.withOpacity(0.66);
-    else if(id == 3) distanceColor = Colors.red;
+    if (id == 1)
+      distanceColor = Colors.red.withOpacity(0.33);
+    else if (id == 2)
+      distanceColor = Colors.red.withOpacity(0.66);
+    else if (id == 3) distanceColor = Colors.red;
 
     //return
     return Container(
