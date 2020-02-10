@@ -10,7 +10,6 @@ import 'package:swol/shared/widgets/complex/fields/fields/text/nameField.dart';
 import 'package:swol/shared/widgets/complex/fields/fields/text/notesField.dart';
 import 'package:swol/shared/widgets/simple/playOnceGif.dart';
 import 'package:swol/shared/functions/defaultDateTimes.dart';
-import 'package:swol/shared/widgets/simple/backButton.dart';
 import 'package:swol/shared/methods/excerciseData.dart';
 import 'package:swol/shared/structs/anExcercise.dart';
 
@@ -77,7 +76,20 @@ class _ExcerciseNotesState extends State<ExcerciseNotes> {
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
         backgroundColor: Theme.of(context).primaryColorDark,
-        leading: BackFromExcercise(),
+        leading: FittedBox(
+          fit: BoxFit.contain,
+          child: IconButton(
+            icon: Icon(Icons.chevron_left),
+            color: Theme.of(context).iconTheme.color,
+            tooltip: MaterialLocalizations.of(context).backButtonTooltip,
+            onPressed: () {
+              //close any keyboard that may be open
+              FocusScope.of(context).unfocus();
+              //pop to the page below us
+              Navigator.of(context).pop();
+            },
+          ),
+        ),
         title: Text("Notes"),
         actions: [
           BigActionButton(

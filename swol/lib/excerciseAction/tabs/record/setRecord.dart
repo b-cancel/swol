@@ -11,8 +11,6 @@ import 'package:swol/excerciseAction/tabs/record/changeFunction.dart';
 import 'package:swol/excerciseAction/tabs/suggest/suggestion/setDisplay.dart';
 import 'package:swol/excerciseAction/tabs/sharedWidgets/cardWithHeader.dart';
 import 'package:swol/excerciseAction/tabs/sharedWidgets/bottomButtons.dart';
-import 'package:swol/other/functions/helper.dart';
-import 'package:swol/shared/functions/goldenRatio.dart';
 import 'package:swol/shared/structs/anExcercise.dart';
 
 //TODO: because of the cursor, the tooltip menu, and other stuff
@@ -36,6 +34,8 @@ class SetRecord extends StatelessWidget {
     @required this.heroUp,
     @required this.heroAnimDuration,
     @required this.heroAnimTravel,
+    @required this.weightController,
+    @required this.repController,
   });
 
   final AnExcercise excercise;
@@ -45,6 +45,8 @@ class SetRecord extends StatelessWidget {
   final ValueNotifier<bool> heroUp;
   final Duration heroAnimDuration;
   final double heroAnimTravel;
+  final TextEditingController weightController;
+  final TextEditingController repController;
 
   @override
   Widget build(BuildContext context) {
@@ -52,56 +54,7 @@ class SetRecord extends StatelessWidget {
     double appBarHeight = 56; //constant according to flutter docs
     double spaceToRedistribute = fullHeight - appBarHeight - statusBarHeight;
 
-    return ListView(
-      children: <Widget>[
-        Container(
-          height: spaceToRedistribute,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Expanded(
-                child: SetRecordCardBottom(
-                  excercise: excercise,
-                  heroUp: heroUp,
-                  heroAnimDuration: heroAnimDuration,
-                  heroAnimTravel: heroAnimTravel,
-                ),
-              ),
-              BottomButtons(
-                excercise: excercise,
-                forwardAction: setBreak,
-                forwardActionWidget: Text(
-                  "Take Set Break",
-                ),
-                backAction: backToSuggestion,
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class SetRecordCardBottom extends StatelessWidget {
-  SetRecordCardBottom({
-    Key key,
-    @required this.excercise,
-    @required this.heroUp,
-    @required this.heroAnimDuration,
-    @required this.heroAnimTravel,
-  }) : super(key: key);
-
-  final AnExcercise excercise;
-  //optional
-  final ValueNotifier<bool> heroUp;
-  final Duration heroAnimDuration;
-  final double heroAnimTravel;
-
-  @override
-  Widget build(BuildContext context) {
-    //card radius
-    Radius cardRadius = Radius.circular(24);
+    //color for "suggestion"
     Color distanceColor = Theme.of(context).cardColor;
     int id = 0;
     if (id == 1)
@@ -110,8 +63,16 @@ class SetRecordCardBottom extends StatelessWidget {
       distanceColor = Colors.red.withOpacity(0.66);
     else if (id == 3) distanceColor = Colors.red;
 
-    //return
-    return Container(
+    //build
+    return ListView(
+      children: <Widget>[
+        Container(
+          height: spaceToRedistribute,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Expanded(
+                child: Container(
       //The extra padding that just looked right
       width: MediaQuery.of(context).size.width,
       child: Column(
@@ -233,11 +194,28 @@ class SetRecordCardBottom extends StatelessWidget {
             child: CardWithHeader(
               header: "Record Set",
               aLittleSmaller: true,
-              child: RecordFields(),
+              child: RecordFields(
+                weightController: weightController,
+                repController: repController,
+              ),
             ),
           ),
         ],
       ),
+    ),
+              ),
+              BottomButtons(
+                excercise: excercise,
+                forwardAction: setBreak,
+                forwardActionWidget: Text(
+                  "Take Set Break",
+                ),
+                backAction: backToSuggestion,
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }

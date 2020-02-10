@@ -33,7 +33,7 @@ dependencies:
   flutter_staggered_animations: ^0.1.2
 
   #info pop up
-  awesome_dialog: ^0.1.0
+  awesome_dialog: ^0.1.1
 
   #toast (work as customizable tool tips)
   bot_toast: ^2.2.0

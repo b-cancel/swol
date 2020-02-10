@@ -120,16 +120,8 @@ Function _makeTrainingTypePopUp({
     }
 
     //show pop up
-    showLearnPopUp(
+    showCustomPopUp(
       context,
-      Container(
-        width: 56,
-        height: 56,
-        child: FittedBox(
-          fit: BoxFit.fill,
-          child: headerIcon,
-        ),
-      ),
       [
         Padding(
           padding: const EdgeInsets.only(
@@ -161,6 +153,7 @@ Function _makeTrainingTypePopUp({
         ),
         SuggestToLearnPage(),
       ],
+      headerIcon,
       isDense: true,
     );
   };

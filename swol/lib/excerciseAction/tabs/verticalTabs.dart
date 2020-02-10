@@ -11,18 +11,19 @@ import 'package:swol/excerciseAction/tabs/recovery/recovery.dart';
 import 'package:swol/excerciseAction/tabs/sharedWidgets/doneButton.dart';
 import 'package:swol/excerciseAction/tabs/suggest/suggest.dart';
 import 'package:swol/shared/structs/anExcercise.dart';
-import 'package:swol/shared/widgets/simple/heros/curveMod.dart';
 
 /// A vertical tab widget for flutter
 class VerticalTabs extends StatefulWidget {
+  final TextEditingController weightController;
+  final TextEditingController repController;
   final AnExcercise excercise;
-  final double maxHeight;
   final Duration delayTillShowDoneButton;
   final double statusBarHeight;
 
   VerticalTabs({
+    @required this.weightController,
+    @required this.repController,
     @required this.excercise,
-    @required this.maxHeight,
     this.delayTillShowDoneButton: const Duration(milliseconds: 200),
     @required this.statusBarHeight,
   });
@@ -157,6 +158,8 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
                 heroUp: firstUp,
                 heroAnimDuration: transitionDuration,
                 heroAnimTravel: totalTravel,
+                weightController: widget.weightController,
+                repController: widget.repController,
                 //TODO: going back should not reset what they already typed
                 //note: try to stop them from typing dumb stuff but if they do then restore the dumb stuff
                 //TODO: do so when the user holds the button AND when they click it
@@ -210,8 +213,14 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
   //NOTE: this function will always run on init
   //this is so that we can go to a different page if need be
   //but also to initally show the done button if need be
-  toPage(int pageID, {bool instant: false}){ //0 -> 2
+  toPage(int pageID, {bool instant: false}){ //0 -> 
+    //close the keybaord if needed
+    FocusScope.of(context).unfocus();
+
+    //save the page we are on
     currPageID = pageID;
+
+    //deterime the reaction
     if(instant){
       //jump the right page
       if(pageID != 0){ //we actually have to jump

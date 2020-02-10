@@ -5,6 +5,14 @@ import 'package:swol/excerciseAction/toolTips.dart';
 import 'package:swol/shared/functions/goldenRatio.dart';
 
 class RecordFields extends StatefulWidget {
+  RecordFields({
+    @required this.weightController,
+    @required this.repController,
+  });
+
+  final TextEditingController weightController;
+  final TextEditingController repController;
+
   //weight field
   @override
   _RecordFieldsState createState() => _RecordFieldsState();
@@ -12,10 +20,7 @@ class RecordFields extends StatefulWidget {
 
 class _RecordFieldsState extends State<RecordFields> {
   final FocusNode weightFocusNode = new FocusNode();
-  final TextEditingController weightController = new TextEditingController();
-
   final FocusNode repFocusNode = new FocusNode();
-  final TextEditingController repController = new TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +46,7 @@ class _RecordFieldsState extends State<RecordFields> {
         children: [
           RecordField(
             focusNode: weightFocusNode,
-            conroller: weightController,
+            conroller: widget.weightController,
             isLeft: true,
             text: "256",
             borderSize: borderSize,
@@ -73,7 +78,7 @@ class _RecordFieldsState extends State<RecordFields> {
           ),
           RecordField(
             focusNode: repFocusNode,
-            conroller: repController,
+            conroller: widget.repController,
             isLeft: false,
             text: "8",
             borderSize: borderSize,

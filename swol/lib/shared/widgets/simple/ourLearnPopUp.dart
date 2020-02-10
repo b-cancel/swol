@@ -5,36 +5,42 @@ import 'package:flutter/material.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 
 //function
-showLearnPopUp(
+showCustomPopUp(
   BuildContext context,
-  Widget header,
   List<Widget> children,
-  {
-    bool isDense: false,
-    bool iconPadding: true,
-  }){
+  Widget header, {
+  AnimType animationType: AnimType.BOTTOMSLIDE,
+  bool isDense: false,
+}) {
   //unfocus so whatever was focused before doesnt annoying scroll us back
-  //for some reason this only happens in addExcercise 
+  //for some reason this only happens in addExcercise
   //when opening popups for name, notes, link, and recovery time
   //still its annoying and hence must die
   FocusScope.of(context).unfocus();
 
-  //show the pop up
-  AwesomeDialog( 
+  //show pop up
+  AwesomeDialog(
     context: context,
     isDense: isDense,
     dismissOnTouchOutside: true,
-    animType: AnimType.SCALE,
+    animType: animationType,
     customHeader: FittedBox(
       fit: BoxFit.contain,
       child: Container(
         decoration: BoxDecoration(
-          color: iconPadding ? Colors.blue : Colors.white,
+          color: Colors.blue,
           shape: BoxShape.circle,
         ),
         //NOTE: 28 is the max
-        padding: EdgeInsets.all(iconPadding ? 24 : 0),
-        child: header,
+        padding: EdgeInsets.all(24),
+        child: Container(
+          width: 56,
+          height: 56,
+          child: FittedBox(
+            fit: BoxFit.fill,
+            child: header,
+          ),
+        ),
       ),
     ),
     body: Column(

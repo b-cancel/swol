@@ -1,12 +1,13 @@
 //flutter
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
-import 'package:page_transition/page_transition.dart';
 
 //plugin
+import 'package:page_transition/page_transition.dart';
 
 //internal: excercise
+import 'package:swol/shared/widgets/simple/heros/leading.dart';
 import 'package:swol/shared/widgets/simple/heros/title.dart';
-import 'package:swol/shared/widgets/simple/backButton.dart';
 import 'package:swol/shared/structs/anExcercise.dart';
 
 //internal
@@ -27,34 +28,38 @@ class ExcercisePage extends StatefulWidget {
 }
 
 class _ExcercisePageState extends State<ExcercisePage> {
-  toNotes(BuildContext context){
-    //close keyboard if perhaps typing next set
-    FocusScope.of(context).unfocus();
+  //the two controllers we use to determine wether to warn the user 
+  //that they might want to begin their set break or risk losing their plugged in values
+  final TextEditingController weightController = new TextEditingController();
+  final TextEditingController repController = new TextEditingController();
 
-    //go to notes
-    Navigator.push(
-      context, 
-      PageTransition(
-        type: PageTransitionType.rightToLeft,
-        duration: Duration(milliseconds: 300),
-        child: ExcerciseNotes(
-          excercise: widget.excercise,
-        ),
-      ),
-    );
+  //init
+  @override
+  void initState() {
+    //super init
+    super.initState();
+
+    //fill controller vars with temp vars if we have them
+    weightController.text = widget.excercise?.tempWeight?.toString() ?? "";
+    repController.text = widget.excercise?.tempReps?.toString() ?? "";
   }
 
+  //dispose
+  @override
+  void dispose() {
+    //dispose no longer needed controllers
+    weightController.dispose();
+    repController.dispose();
+
+    //super dispose
+    super.dispose();
+  }
+
+  //build
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () async{
-        //may have to unfocus
-        FocusScope.of(context).unfocus();
-        //animate the header
-        App.navSpread.value = false;
-        //can still pop
-        return true; 
-      },
+      onWillPop: () async => noWarning(),
       child: Scaffold(
         backgroundColor: Theme.of(context).primaryColorDark,
         appBar: PreferredSize(
@@ -85,8 +90,17 @@ class _ExcercisePageState extends State<ExcercisePage> {
                           left: 0,
                           top: 0,
                           bottom: 0,
-                          child: BackFromExcercise(
-                            excercise: widget.excercise,
+                          child: FittedBox(
+                            fit: BoxFit.contain,
+                            child: IconButton(
+                              icon: ExcerciseBegin(
+                                inAppBar: true,
+                                excercise: widget.excercise,
+                              ),
+                              color: Theme.of(context).iconTheme.color,
+                              tooltip: MaterialLocalizations.of(context).backButtonTooltip,
+                              onPressed: () => noWarning(alsoPop: true),
+                            ),
                           ),
                         ),
                         Positioned(
@@ -115,10 +129,62 @@ class _ExcercisePageState extends State<ExcercisePage> {
         ),
         body: VerticalTabs(
           excercise: widget.excercise,
-          maxHeight: MediaQuery.of(context).size.height,
           statusBarHeight: MediaQuery.of(context).padding.top,
+          weightController: weightController,
+          repController: repController,
         ),
       ),
     );
+  }
+
+  //called when going to notes
+  toNotes(BuildContext context){
+    //close keyboard if perhaps typing next set
+    FocusScope.of(context).unfocus();
+
+    //go to notes
+    Navigator.push(
+      context, 
+      PageTransition(
+        type: PageTransitionType.rightToLeft,
+        duration: Duration(milliseconds: 300),
+        child: ExcerciseNotes(
+          excercise: widget.excercise,
+        ),
+      ),
+    );
+  }
+
+  //determine whether we should warn the user
+  noWarning({bool alsoPop: false}){
+    bool warningWaranted = true;
+    if(warningWaranted){
+      //todo show pop up that will either just go back to this page
+      //todo or confirm the loss of data
+      AwesomeDialog(
+        context: context,
+        isDense: true,
+        dismissOnTouchOutside: true,
+        dialogType: DialogType.WARNING,
+        animType: AnimType.LEFTSLIDE,
+        headerAnimationLoop: false,
+        body: Container(
+          child: Text("naw bruh"),
+        )
+      ).show();
+    }
+    else{
+      //may have to unfocus
+      FocusScope.of(context).unfocus();
+      //animate the header
+      App.navSpread.value = false;
+      //pop if not using the back button
+      if(alsoPop) Navigator.of(context).pop();
+    }
+
+    //for the function that requires you to allow poping
+    //if warning was not needed than the system can auto pop
+    //else the pop up will do so
+    return warningWaranted == false;
   }
 }

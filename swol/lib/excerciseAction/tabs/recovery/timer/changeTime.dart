@@ -8,6 +8,7 @@ import 'package:swol/shared/widgets/complex/trainingTypeTables/trainingTypes.dar
 import 'package:swol/shared/widgets/complex/RecoveryTime/minSecs.dart';
 import 'package:swol/shared/widgets/complex/recoveryTime/picker.dart';
 import 'package:swol/shared/methods/theme.dart';
+import 'package:swol/shared/widgets/simple/ourLearnPopUp.dart';
 
 class ActualButton extends StatelessWidget {
   const ActualButton({
@@ -21,101 +22,91 @@ class ActualButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ValueNotifier<Duration> possibleRecoveryDuration = new ValueNotifier<Duration>(
+    ValueNotifier<Duration> possibleRecoveryDuration =
+        new ValueNotifier<Duration>(
       changeableTimerDuration.value,
     );
+
     return InkWell(
       onTap: () {
-        AwesomeDialog(
-          context: context,
-          isDense: true,
-          dismissOnTouchOutside: true,
-          //animType: AnimType.SCALE,
-          customHeader: FittedBox(
-            fit: BoxFit.contain,
-            child: Container(
-              decoration: BoxDecoration(
-                color: color,
-                shape: BoxShape.circle,
-              ),
-              padding: EdgeInsets.all(24),
-              child: Icon(
-                Icons.edit,
-                color: Colors.white,
-                size: 56,
+        showCustomPopUp(
+          context,
+          [
+            Text(
+              "Change Break Time",
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 24,
+                color: Colors.black,
               ),
             ),
-          ),
-          body: Column(
-            children: [
-              Text(
-                "Change Break Time",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 24,
-                  color: Colors.black,
-                ),
+            Text(
+              "Don't Worry! The Timer Won't Reset",
+              style: TextStyle(
+                fontSize: 14,
+                color: Colors.black, //was grey at some point
               ),
-              Text(
-                "Don't Worry! The Timer Won't Reset",
-                style: TextStyle(
-                  fontSize: 14,
-                  color: Colors.black, //was grey at some point
-                ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(
+                top: 16,
               ),
-              Padding(
-                padding: EdgeInsets.only(
-                  top: 16,
-                ),
-                child: Column(
-                  children: <Widget>[
-                    ChangeRecoveryTimeWidget(
-                      changeDuration: Duration(milliseconds: 250),
-                      recoveryPeriod: possibleRecoveryDuration,
+              child: Column(
+                children: <Widget>[
+                  ChangeRecoveryTimeWidget(
+                    changeDuration: Duration(milliseconds: 250),
+                    recoveryPeriod: possibleRecoveryDuration,
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(
+                      top: 8.0,
                     ),
-                    Padding(
-                      padding: EdgeInsets.only(
-                        top: 8.0,
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.max,
-                        children: [
-                          Expanded(
-                            child: Container(),
-                          ),
-                          FlatButton(
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            child: Text(
-                              "Cancel",
-                              style: TextStyle(
-                                color: Colors.black,
-                              ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Expanded(
+                          child: Container(),
+                        ),
+                        FlatButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          child: Text(
+                            "Cancel",
+                            style: TextStyle(
+                              color: Colors.black,
                             ),
                           ),
-                          RaisedButton(
-                            color: Colors.blue,
-                            onPressed: () {
-                              changeableTimerDuration.value = possibleRecoveryDuration.value;
-                              Navigator.pop(context);
-                            },
-                            child: Text(
-                              "Change",
-                              style: TextStyle(
-                                color: Colors.white,
-                              ),
+                        ),
+                        RaisedButton(
+                          color: Colors.blue,
+                          onPressed: () {
+                            changeableTimerDuration.value =
+                                possibleRecoveryDuration.value;
+                            Navigator.pop(context);
+                          },
+                          child: Text(
+                            "Change",
+                            style: TextStyle(
+                              color: Colors.white,
                             ),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-            ],
+            ),
+          ],
+          Icon(
+            Icons.edit,
+            color: Colors.white,
+            size: 56,
           ),
-        ).show();
+          isDense: true,
+          animationType: AnimType.TOPSLIDE,
+        );
       },
     );
   }
@@ -217,8 +208,8 @@ class _ChangeRecoveryTimeWidgetState extends State<ChangeRecoveryTimeWidget> {
                   bottom: 8,
                 ),
                 child: AnimRecoveryTimeInfoToWhiteTheme(
-                  changeDuration: widget.changeDuration, 
-                  recoveryPeriod: widget.recoveryPeriod, 
+                  changeDuration: widget.changeDuration,
+                  recoveryPeriod: widget.recoveryPeriod,
                   darkTheme: false,
                 ),
               ),
