@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 //plugin
 import 'package:page_transition/page_transition.dart';
+import 'package:swol/shared/methods/theme.dart';
 
 //internal: shared
 import 'package:swol/shared/widgets/complex/excerciseListTile/excerciseLeading.dart';
@@ -51,8 +52,11 @@ class ExcerciseTile extends StatelessWidget {
           type: PageTransitionType.rightToLeft, 
           //when transitioning to this page relaoding leading is always false
           //WILL SET reloading leading to true
-          child: ExcercisePage(
-            excercise: excercise,
+          child: Theme(
+            data: MyTheme.light,
+            child: ExcercisePage(
+              excercise: excercise,
+            ),
           ),
         );
 
