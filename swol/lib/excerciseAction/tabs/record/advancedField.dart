@@ -27,10 +27,17 @@ class _RecordFieldsState extends State<RecordFields> {
     iconSize = golden2BS[1];
     double borderSize = 3;
 
+    /*
+    
+    */
+    double totalHeight = (iconSize * 2) + 8;
+
     //build
-    return IntrinsicHeight(
+    return Container(
+      height: totalHeight,
       child: Row(
         mainAxisSize: MainAxisSize.max,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           RecordField(
             focusNode: weightFocusNode,
@@ -39,32 +46,30 @@ class _RecordFieldsState extends State<RecordFields> {
             text: "256",
             borderSize: borderSize,
           ),
-          Container(
-            child: Column(
-              children: <Widget>[
-                TappableIcon(
-                  focusNode: weightFocusNode,
-                  iconSize: iconSize,
-                  borderSize: borderSize,
-                  icon: Padding(
-                    padding: const EdgeInsets.only(
-                      right: 8,
-                    ),
-                    child: Icon(
-                      FontAwesomeIcons.dumbbell,
-                    ),
+          Column(
+            children: <Widget>[
+              TappableIcon(
+                focusNode: weightFocusNode,
+                iconSize: iconSize,
+                borderSize: borderSize,
+                icon: Padding(
+                  padding: const EdgeInsets.only(
+                    right: 8,
                   ),
-                  isLeft: true,
+                  child: Icon(
+                    FontAwesomeIcons.dumbbell,
+                  ),
                 ),
-                TappableIcon(
-                  focusNode: repFocusNode,
-                  iconSize: iconSize,
-                  borderSize: borderSize,
-                  icon: Icon(Icons.repeat),
-                  isLeft: false,
-                ),
-              ],
-            ),
+                isLeft: true,
+              ),
+              TappableIcon(
+                focusNode: repFocusNode,
+                iconSize: iconSize,
+                borderSize: borderSize,
+                icon: Icon(Icons.repeat),
+                isLeft: false,
+              ),
+            ],
           ),
           RecordField(
             focusNode: repFocusNode,
@@ -123,8 +128,16 @@ class _RecordFieldState extends State<RecordField> {
 
   @override
   Widget build(BuildContext context) {
+    BorderSide borderThatHides = BorderSide(
+      color: widget.focusNode.hasFocus ? Theme.of(context).accentColor : Theme.of(context).cardColor,
+      width: widget.borderSize,
+    );
+
+    BorderSide borderThatExists = BorderSide(
+      color: Colors.transparent,
+    );
+
     Widget coveringStick = Container(
-      color: Colors.red,
       width: widget.borderSize,
       padding: EdgeInsets.only(
         top: widget.isLeft ? widget.borderSize : widget.borderSize * 3 + 8,
@@ -136,16 +149,8 @@ class _RecordFieldState extends State<RecordField> {
           Expanded(
             child: Container(
               decoration: BoxDecoration(
-                color: Colors.blue,
                 border: Border(
-                  right: widget.isLeft
-                      ? BorderSide(
-                          color: Colors.white,
-                          width: widget.borderSize,
-                        )
-                      : BorderSide(
-                          color: Colors.transparent,
-                        ),
+                  right: widget.isLeft ? borderThatHides : borderThatExists,
                 ),
               ),
             ),
@@ -153,16 +158,8 @@ class _RecordFieldState extends State<RecordField> {
           Expanded(
             child: Container(
               decoration: BoxDecoration(
-                color: Colors.green,
                 border: Border(
-                  left: widget.isLeft == false
-                  ? BorderSide(
-                      color: Colors.white,
-                      width: widget.borderSize,
-                    )
-                  : BorderSide(
-                      color: Colors.transparent,
-                    ),
+                  left: widget.isLeft == false ? borderThatHides : borderThatExists,
                 ),
               ),
             ),
@@ -172,79 +169,121 @@ class _RecordFieldState extends State<RecordField> {
     );
 
     Radius normalCurve = Radius.circular(24);
-    double multiplier = 4;
+    //NOTE: without toolbar shown our multiplier can drop to 3
+    //else must be 4
+    double multiplier = 3;
     return Expanded(
-      child: Stack(
-        alignment: widget.isLeft ? Alignment.centerRight : Alignment.centerLeft,
-        children: <Widget>[
-          Positioned.fill(
-            child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                    //set
-                    topRight: widget.isLeft ? Radius.zero : normalCurve,
-                    bottomLeft: widget.isLeft ? normalCurve : Radius.zero,
-                    //not so set
-                    topLeft: widget.isLeft ? normalCurve : Radius.zero,
-                    bottomRight: widget.isLeft ? Radius.zero : normalCurve,
+      //NOTE: this is required because for some reason 
+      //initially focusing on the text field misifres sometimes
+      child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: (){
+          //reset text so they start back up at the begining
+          widget.conroller.clear();
+          //focus on the field so the user can begin typing
+          FocusScope.of(context).requestFocus(widget.focusNode);
+        },
+        child: Stack(
+          alignment: widget.isLeft ? Alignment.centerRight : Alignment.centerLeft,
+          children: <Widget>[
+            Positioned.fill(
+              child: Container(
+                  decoration: BoxDecoration(
+                    color: widget.focusNode.hasFocus ? Theme.of(context).accentColor : Colors.transparent,
+                    borderRadius: BorderRadius.only(
+                      //set
+                      topRight: widget.isLeft ? Radius.zero : normalCurve,
+                      bottomLeft: widget.isLeft ? normalCurve : Radius.zero,
+                      //not so set
+                      topLeft: widget.isLeft ? normalCurve : Radius.zero,
+                      bottomRight: widget.isLeft ? Radius.zero : normalCurve,
+                    ),
+                    border: Border.all(
+                      color: widget.focusNode.hasFocus
+                          ? Theme.of(context).accentColor
+                          : Theme.of(context).primaryColorLight,
+                      width: widget.borderSize,
+                    ),
                   ),
-                  border: Border.all(
-                    color: widget.focusNode.hasFocus
-                        ? Theme.of(context).accentColor
-                        : Theme.of(context).primaryColorLight,
-                    width: widget.borderSize,
+                  padding: EdgeInsets.symmetric(
+                    vertical: 16,
                   ),
-                ),
-                padding: EdgeInsets.symmetric(
-                  vertical: 16,
-                ),
-                child: FittedBox(
-                  fit: BoxFit.contain,
-                  child: Container(
-                    width: 48.0 * multiplier,
-                    height: 24.0 * multiplier,
-                    child: TextField(
-                      controller: widget.conroller,
-                      focusNode: widget.focusNode,
-                      style: TextStyle(
-                        fontSize: 16.0 * multiplier,
+                  child: FittedBox(
+                    fit: BoxFit.contain,
+                    child: Container(
+                      width: 48.0 * multiplier,
+                      height: 24.0 * multiplier,
+                      child: TextField(
+                        controller: widget.conroller,
+                        focusNode: widget.focusNode,
+                        //set text size as large as a large phone 
+                        //so if anything the cursor is smaller than it should be
+                        style: TextStyle(
+                          fontSize: 16.0 * multiplier,
+                        ),
+                        //eliminate bottom line border
+                        decoration: InputDecoration(
+                          //hide automatically bottom border
+                          border: InputBorder.none,
+                          //hides digit counter
+                          counterText: "",
+                        ),
+                        //hide signs or decimals from keyboard if possible
+                        keyboardType: TextInputType.numberWithOptions(
+                          signed: false,
+                          decimal: false,
+                        ),
+                        //cut, copy, past, and select all are not necessary
+                        toolbarOptions: ToolbarOptions(),
+                        //adding dashing intelligently is not needed in IOS
+                        smartDashesType: SmartDashesType.disabled,
+                        //ditto but for quote is not needed in IOS
+                        smartQuotesType: SmartQuotesType.disabled,
+                        //next to go to other field
+                        textInputAction: TextInputAction.next,
+                        //so your eyes dont burn
+                        keyboardAppearance: Brightness.dark,
+                        //balance
+                        textAlign: TextAlign.center,
+                        textAlignVertical: TextAlignVertical.center,
+                        //where you are writing kinda matters
+                        showCursor: true,
+                        //no passwords here
+                        obscureText: false,
+                        //no suggstion of fancy selection useful
+                        enableSuggestions: false, 
+                        enableInteractiveSelection: false,
+                        //guarnatee only digits and a max of 4 digits
+                        maxLength: widget.isLeft ? 4 : 3,
+                        inputFormatters: [
+                          //super guarnatee a max of 4 digits
+                          LengthLimitingTextInputFormatter(
+                            widget.isLeft ? 4 : 3,
+                          ),
+                          //super guarantee only digits
+                          WhitelistingTextInputFormatter.digitsOnly,
+                        ],
+                        //line count
+                        expands: false, //only 1 line at all times
+                        minLines: 1,
+                        maxLines: 1,
+                        maxLengthEnforced: true,
+                        //TODO: only true for the field that we arrive at that isnt filled
+                        //TODO: obvi if both not filled autofocus on weight
+                        //autofocus: true,
                       ),
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                      ),
-                      keyboardType: TextInputType.numberWithOptions(
-                        signed: false,
-                        decimal: false,
-                      ),
-                      //TODO: pass other focusNode
-                      textInputAction: widget.isLeft
-                          ? TextInputAction.next
-                          : TextInputAction.done,
-                      textAlign: TextAlign.center,
-                      textAlignVertical: TextAlignVertical.center,
-                      showCursor: true,
-                      //toolbarOptions: ToolbarOptions(),
-                      obscureText: false,
-                      enableSuggestions: false,
-                      enableInteractiveSelection: true,
-                      inputFormatters: [
-                        WhitelistingTextInputFormatter.digitsOnly,
-                        LengthLimitingTextInputFormatter(4),
-                      ],
-                      //NOTE: replace by the inputFormatter above
-                      //maxLength: 4,
-                      minLines: 1,
-                      maxLengthEnforced: true,
-                      maxLines: 1,
-                      //TODO: only true for the first
-                      //autofocus: true,
                     ),
                   ),
                 ),
+            ),
+            coveringStick,
+            Positioned.fill(
+              child: Container(
+                color: Colors.transparent,
               ),
-          ),
-          //coveringStick,
-        ],
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -272,7 +311,6 @@ class TappableIcon extends StatefulWidget {
 
 class _TappableIconState extends State<TappableIcon> {
   updateState() {
-    print("change focus to: " + widget.focusNode.hasFocus.toString());
     if (mounted) setState(() {});
   }
 
@@ -297,11 +335,6 @@ class _TappableIconState extends State<TappableIcon> {
   @override
   Widget build(BuildContext context) {
     Radius tinyCurve = Radius.circular(12);
-    Radius normalCurve = Radius.circular(24);
-    Radius bigCurve = Radius.circular(48);
-
-    print("building given focus to: " + widget.focusNode.hasFocus.toString());
-
     return GestureDetector(
       onTap: () {
         if (widget.isLeft)
@@ -320,6 +353,7 @@ class _TappableIconState extends State<TappableIcon> {
           width: widget.iconSize,
           height: widget.iconSize,
           decoration: BoxDecoration(
+            color: widget.focusNode.hasFocus ? Theme.of(context).accentColor : Colors.transparent,
             borderRadius: BorderRadius.only(
               topRight: widget.isLeft ? tinyCurve : Radius.zero,
               bottomLeft: widget.isLeft ? Radius.zero : tinyCurve,
@@ -339,7 +373,7 @@ class _TappableIconState extends State<TappableIcon> {
                       Offset(widget.borderSize * (widget.isLeft ? -1 : 1), 0),
                   child: Container(
                     decoration: BoxDecoration(
-                      color: Theme.of(context).cardColor,
+                      color: widget.focusNode.hasFocus ? Theme.of(context).accentColor : Theme.of(context).cardColor,
                       borderRadius: BorderRadius.only(
                         topRight: widget.isLeft ? tinyCurve : Radius.zero,
                         bottomLeft: widget.isLeft ? Radius.zero : tinyCurve,

@@ -96,7 +96,7 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
     */
 
     pageViewController = PageController(
-      keepPage: true,
+      //keepPage: true,
       initialPage: currPageID,
     );
 
