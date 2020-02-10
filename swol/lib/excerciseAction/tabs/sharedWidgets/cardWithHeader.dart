@@ -46,8 +46,8 @@ class CardWithHeader extends StatelessWidget {
       child: Column(
         children: <Widget>[
           Container(
-            padding: EdgeInsets.only(
-              left: 16,
+            padding: EdgeInsets.symmetric(
+              horizontal: 16,
             ),
             child: Row(
               mainAxisSize: MainAxisSize.max,

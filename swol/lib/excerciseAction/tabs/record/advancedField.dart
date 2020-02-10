@@ -4,16 +4,19 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:swol/excerciseAction/toolTips.dart';
 import 'package:swol/shared/functions/goldenRatio.dart';
 
-class RecordFields extends StatelessWidget {
+class RecordFields extends StatefulWidget {
   //weight field
+  @override
+  _RecordFieldsState createState() => _RecordFieldsState();
+}
+
+class _RecordFieldsState extends State<RecordFields> {
   final FocusNode weightFocusNode = new FocusNode();
   final TextEditingController weightController = new TextEditingController();
 
-  //rep field
   final FocusNode repFocusNode = new FocusNode();
   final TextEditingController repController = new TextEditingController();
 
-  //build
   @override
   Widget build(BuildContext context) {
     //-32 is for 16 pixels of padding from both sides
@@ -97,8 +100,7 @@ class RecordField extends StatefulWidget {
 
 class _RecordFieldState extends State<RecordField> {
   updateState() {
-    print("focus chagned to: " + widget.focusNode.hasFocus.toString());
-    //if (mounted) setState(() {});
+    if (mounted) setState(() {});
   }
 
   @override
@@ -122,6 +124,7 @@ class _RecordFieldState extends State<RecordField> {
   @override
   Widget build(BuildContext context) {
     Widget coveringStick = Container(
+      color: Colors.red,
       width: widget.borderSize,
       padding: EdgeInsets.only(
         top: widget.isLeft ? widget.borderSize : widget.borderSize * 3 + 8,
@@ -133,10 +136,11 @@ class _RecordFieldState extends State<RecordField> {
           Expanded(
             child: Container(
               decoration: BoxDecoration(
+                color: Colors.blue,
                 border: Border(
                   right: widget.isLeft
                       ? BorderSide(
-                          color: Theme.of(context).cardColor,
+                          color: Colors.white,
                           width: widget.borderSize,
                         )
                       : BorderSide(
@@ -149,15 +153,16 @@ class _RecordFieldState extends State<RecordField> {
           Expanded(
             child: Container(
               decoration: BoxDecoration(
+                color: Colors.green,
                 border: Border(
                   left: widget.isLeft == false
-                      ? BorderSide(
-                          color: Theme.of(context).cardColor,
-                          width: widget.borderSize,
-                        )
-                      : BorderSide(
-                          color: Colors.transparent,
-                        ),
+                  ? BorderSide(
+                      color: Colors.white,
+                      width: widget.borderSize,
+                    )
+                  : BorderSide(
+                      color: Colors.transparent,
+                    ),
                 ),
               ),
             ),
@@ -166,19 +171,11 @@ class _RecordFieldState extends State<RecordField> {
       ),
     );
 
-    if (widget.isLeft) {
-      coveringStick = Positioned(
-        right: 0,
-        top: 0,
-        bottom: 0,
-        child: coveringStick,
-      );
-    } else {}
-
     Radius normalCurve = Radius.circular(24);
     double multiplier = 4;
     return Expanded(
       child: Stack(
+        alignment: widget.isLeft ? Alignment.centerRight : Alignment.centerLeft,
         children: <Widget>[
           Positioned.fill(
             child: Container(
@@ -243,9 +240,10 @@ class _RecordFieldState extends State<RecordField> {
                       //autofocus: true,
                     ),
                   ),
-                ),),
+                ),
+              ),
           ),
-          coveringStick,
+          //coveringStick,
         ],
       ),
     );

@@ -146,7 +146,7 @@ class _SetDisplayState extends State<SetDisplay> {
                         ),
                       ),
                       GestureDetector(
-                        onTap: () => showWeightToolTip(context, direction: PreferDirection.bottomLeft),
+                        onTap: () => showWeightToolTip(context, direction: PreferDirection.topLeft),
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
@@ -177,7 +177,7 @@ class _SetDisplayState extends State<SetDisplay> {
                         ),
                       ),
                       GestureDetector(
-                        onTap: () => showRepsToolTip(context, direction: PreferDirection.bottomRight),
+                        onTap: () => showRepsToolTip(context, direction: PreferDirection.topRight),
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [

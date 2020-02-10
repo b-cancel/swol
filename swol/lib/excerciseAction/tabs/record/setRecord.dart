@@ -59,12 +59,13 @@ class SetRecord extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              SetRecordCardBottom(
-                excercise: excercise,
-                rawSpaceToRedistribute: spaceToRedistribute,
-                heroUp: heroUp,
-                heroAnimDuration: heroAnimDuration,
-                heroAnimTravel: heroAnimTravel,
+              Expanded(
+                child: SetRecordCardBottom(
+                  excercise: excercise,
+                  heroUp: heroUp,
+                  heroAnimDuration: heroAnimDuration,
+                  heroAnimTravel: heroAnimTravel,
+                ),
               ),
               BottomButtons(
                 excercise: excercise,
@@ -86,18 +87,12 @@ class SetRecordCardBottom extends StatelessWidget {
   SetRecordCardBottom({
     Key key,
     @required this.excercise,
-    @required this.rawSpaceToRedistribute,
-    this.removeBottomButtonSpacing: true,
-    this.extraSpacing: 24,
     @required this.heroUp,
     @required this.heroAnimDuration,
     @required this.heroAnimTravel,
   }) : super(key: key);
 
   final AnExcercise excercise;
-  final double rawSpaceToRedistribute;
-  final double extraSpacing;
-  final bool removeBottomButtonSpacing;
   //optional
   final ValueNotifier<bool> heroUp;
   final Duration heroAnimDuration;
@@ -105,15 +100,6 @@ class SetRecordCardBottom extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double spaceToRedistribute = rawSpaceToRedistribute;
-
-    //make instinct based removals since all the UI is semi contected
-    spaceToRedistribute -= extraSpacing;
-    if (removeBottomButtonSpacing) {
-      //NOTE: 64 is the height of the bottom buttons
-      spaceToRedistribute -= 64;
-    }
-
     //card radius
     Radius cardRadius = Radius.circular(24);
     Color distanceColor = Theme.of(context).cardColor;
@@ -127,7 +113,6 @@ class SetRecordCardBottom extends StatelessWidget {
     //return
     return Container(
       //The extra padding that just looked right
-      height: spaceToRedistribute - 12,
       width: MediaQuery.of(context).size.width,
       child: Column(
         mainAxisSize: MainAxisSize.max,
@@ -241,10 +226,15 @@ class SetRecordCardBottom extends StatelessWidget {
               ),
             ),
           ),
-          CardWithHeader(
-            header: "Record Set",
-            aLittleSmaller: true,
-            child: RecordFields(),
+          Padding(
+            padding: EdgeInsets.only(
+              bottom: 24.0,
+            ),
+            child: CardWithHeader(
+              header: "Record Set",
+              aLittleSmaller: true,
+              child: RecordFields(),
+            ),
           ),
         ],
       ),
