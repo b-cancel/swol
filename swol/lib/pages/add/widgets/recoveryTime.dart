@@ -100,11 +100,13 @@ class AnimRecoveryTimeInfoToWhiteTheme extends StatelessWidget {
     @required this.changeDuration,
     @required this.recoveryPeriod,
     this.darkTheme: true,
+    this.hideNameButtons: false,
   }) : super(key: key);
 
   final Duration changeDuration;
   final ValueNotifier<Duration> recoveryPeriod;
   final bool darkTheme;
+  final bool hideNameButtons;
 
   @override
   Widget build(BuildContext context) {
@@ -112,6 +114,7 @@ class AnimRecoveryTimeInfoToWhiteTheme extends StatelessWidget {
       darkTheme: darkTheme,
       changeDuration: changeDuration,
       selectedDuration: recoveryPeriod,
+      hideNameButtons: hideNameButtons,
       ranges: [
         Range(
           name: "Endurance Training",

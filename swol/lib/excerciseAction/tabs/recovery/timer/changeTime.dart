@@ -210,6 +210,7 @@ class _ChangeRecoveryTimeWidgetState extends State<ChangeRecoveryTimeWidget> {
                   changeDuration: widget.changeDuration,
                   recoveryPeriod: widget.recoveryPeriod,
                   darkTheme: false,
+                  hideNameButtons: true,
                 ),
               ),
             ),
