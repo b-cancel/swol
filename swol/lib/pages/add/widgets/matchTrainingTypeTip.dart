@@ -270,7 +270,7 @@ class _TipSpacingState extends State<TipSpacing> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: widget.tipIsShowing.value ? 56.0 + 16 + 8 : 0,
+      height: widget.tipIsShowing.value ? 56.0 + 24 + 24 : 0,
       width: MediaQuery.of(context).size.width,
     );
   }

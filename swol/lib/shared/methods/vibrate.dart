@@ -15,7 +15,7 @@ class Vibrator{
 
   //TODO: make sure this doesn't conflict with a vibration that has already started, or wants to start
   //the above referes to a continuous vibration
-  static vibrateOnce({Duration duration: const Duration(milliseconds: 500)})async{
+  static vibrateOnce({Duration duration: const Duration(milliseconds: 350)})async{
     await _vibrationCheck();
     if(_hasVibration) Vibration.vibrate(
       duration: duration.inMilliseconds,

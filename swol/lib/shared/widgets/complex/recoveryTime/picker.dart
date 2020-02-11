@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 
 //plugin
 import 'package:flutter_picker/flutter_picker.dart';
+import 'package:swol/shared/methods/vibrate.dart';
 
 //you only need to get so precise
 const List<int> secondOptions = [
@@ -109,6 +110,11 @@ class _RecoveryTimePickerState extends State<RecoveryTimePicker> {
       height: widget.height,
       selecteds: [minutesSeconds[0], secondOptions.indexOf(minutesSeconds[1])],
       onSelect: (Picker picker, int index, List<int> ints){
+        //haptics
+        Vibrator.vibrateOnce(
+          duration: Duration(milliseconds: 250),
+        );
+
         //grab minutes and seconds
         List selections = picker.getSelectedValues();
         int newMinutes = int.parse(selections[0]);

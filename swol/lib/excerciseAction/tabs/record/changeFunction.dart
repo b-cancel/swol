@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 //plugin
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:swol/other/functions/helper.dart';
+import 'package:swol/shared/methods/vibrate.dart';
 import 'package:swol/shared/structs/anExcercise.dart';
 
 //widget
@@ -68,6 +69,7 @@ class _ChangeFunctionState extends State<ChangeFunction> {
       scrollDirection: Axis.vertical,
       viewportFraction: 1.0,
       onPageChanged: (int val) {
+        Vibrator.vibrateOnce();
         predictionID.value = val;
         updateFirstLast();
       },

@@ -1,6 +1,7 @@
 //flutter
 import 'package:flutter/material.dart';
 import 'package:swol/shared/methods/theme.dart';
+import 'package:swol/shared/methods/vibrate.dart';
 
 //internal
 import 'package:swol/shared/widgets/complex/fields/headers/fieldHeader.dart';
@@ -150,6 +151,7 @@ class _FunctionDropDownState extends State<FunctionDropDown> {
         iconSize: 24,
         elevation: 16,
         onChanged: (String newValue) {
+          Vibrator.vibrateOnce();
           setState(() {
             widget.functionString.value = newValue;
             widget.functionIndex.value =
