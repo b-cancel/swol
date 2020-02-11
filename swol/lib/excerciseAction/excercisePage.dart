@@ -17,6 +17,9 @@ import 'package:swol/excerciseAction/tabs/verticalTabs.dart';
 import 'package:swol/pages/notes/excerciseNotes.dart';
 import 'package:swol/main.dart';
 
+//TODO: make sure that wehn we start the timer it also sets tempweight and tempreps
+//TODO: make sure that when we have tempweight and tempreps they are read into the controllers
+
 //widgets
 class ExcercisePage extends StatefulWidget {
   ExcercisePage({
@@ -74,182 +77,191 @@ class _ExcercisePageState extends State<ExcercisePage> {
   //determine whether we should warn the user
   noWarning({bool alsoPop: false}) {
     DateTime startTime = widget.excercise.tempStartTime.value;
-    bool timerNotStarted = startTime == AnExcercise.nullDateTime;
-    bool weightValid = weightController.text != "";
-    weightValid &= weightController.text != "0";
-    bool repsValid = repsController.text != "";
-    repsValid &= repsController.text != "0";
-    bool weightOrRepsNotEmptyOrZero = weightValid || repsValid;
-    bool warningWaranted = timerNotStarted && weightOrRepsNotEmptyOrZero;
+    bool timerNotStarted = (startTime == AnExcercise.nullDateTime);
 
-    //bring up the pop up if needed
-    if (warningWaranted) {
-      //NOTE: this assumes the user CANT type anything except digits of the right size
-      bool setValid = weightValid && repsValid;
+    //if the timer hasn't yet started we may need to bring up the pop up
+    if (timerNotStarted) {
+      //check for data validity
+      bool weightValid = weightController.text != "";
+      weightValid &= weightController.text != "0";
+      bool repsValid = repsController.text != "";
+      repsValid &= repsController.text != "0";
 
-      //show the dialog
-      AwesomeDialog(
-        context: context,
-        isDense: true,
-        dismissOnTouchOutside: true,
-        dialogType: DialogType.WARNING,
-        animType: AnimType.LEFTSLIDE,
-        headerAnimationLoop: false,
-        body: Column(
-          children: [
-            Text(
-              "Begin Your Set Break",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 24,
-                color: Colors.black,
-              ),
-            ),
-            Text(
-              "to avoid losing your set",
-              style: TextStyle(
-                fontSize: 14,
-                color: Colors.black,
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(
-                top: 16,
-              ),
-              child: Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: 24.0,
+      //since this isthe warning we only care of atleast one if filled
+      //else we assume a misclick
+      if (weightValid || repsValid) {
+        //NOTE: this assumes the user CANT type anything except digits of the right size
+        bool setValid = weightValid && repsValid;
+
+        //bring up pop up
+        AwesomeDialog(
+          context: context,
+          isDense: false,
+          dismissOnTouchOutside: true,
+          dialogType: DialogType.WARNING,
+          animType: AnimType.LEFTSLIDE,
+          headerAnimationLoop: false,
+          body: Column(
+            children: [
+              Text(
+                "Begin Your Set Break",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 24,
+                  color: Colors.black,
                 ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    weightAndRepsToDescription(
-                      weightController.text, 
-                      repsController.text,
-                    ),
-                    weightAndRepsToProblem(weightValid, repsValid),
-                    Visibility(
-                      visible: setValid == false,
-                      child: RichText(
-                        text: TextSpan(
-                          style: TextStyle(
-                            color: Colors.black,
+              ),
+              Text(
+                "to avoid losing your set",
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.black,
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(
+                  top: 16,
+                ),
+                child: Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 24.0,
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      weightAndRepsToDescription(
+                        weightController.text,
+                        repsController.text,
+                      ),
+                      weightAndRepsToProblem(
+                        weightValid, 
+                        repsValid,
+                      ),
+                      Visibility(
+                        visible: setValid == false,
+                        child: RichText(
+                          text: TextSpan(
+                            style: TextStyle(
+                              color: Colors.black,
+                            ),
+                            children: [
+                              TextSpan(
+                                text: "If you don't ",
+                              ),
+                              TextSpan(
+                                text: "Fix Your Set",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              TextSpan(
+                                text: ", this information will be lost. ",
+                              ),
+                              TextSpan(
+                                text: "Would you like to ",
+                              ),
+                              TextSpan(
+                                text: "Go Back",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              TextSpan(
+                                text: " and Fix Your Set?",
+                              ),
+                            ],
                           ),
+                        ),
+                      ),
+                      Visibility(
+                        visible: setValid,
+                        child: RichText(
+                          text: TextSpan(
+                            style: TextStyle(
+                              color: Colors.black,
+                            ),
+                            children: [
+                              TextSpan(
+                                text: "But if you don't ",
+                              ),
+                              TextSpan(
+                                text: "Begin Your Set Break",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              TextSpan(
+                                text: ", this set will be lost. ",
+                              ),
+                              TextSpan(
+                                text: "Would you like to ",
+                              ),
+                              TextSpan(
+                                text: "Go Back",
+                                style: TextStyle( 
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              TextSpan(
+                                text: " and Begin Your Set Break?",
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      //-------------------------Reps-------------------------
+                      Transform.translate(
+                        offset: Offset(0, 16),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.max,
                           children: [
-                            TextSpan(
-                              text: "If you don't ",
+                            Expanded(
+                              child: Container(),
                             ),
-                            TextSpan(
-                              text: "Fix Your Set",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
+                            FlatButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                                goBack(true);
+                              },
+                              child: Text(
+                                "No, Delete The Set",
+                                style: TextStyle(
+                                  color: Colors.black,
+                                ),
                               ),
                             ),
-                            TextSpan(
-                              text: ", this information will be lost. ",
-                            ),
-                            TextSpan(
-                              text: "Would you like to ",
-                            ),
-                            TextSpan(
-                              text: "Go Back",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
+                            RaisedButton(
+                              color: Colors.blue,
+                              onPressed: () => Navigator.of(context).pop(),
+                              child: Text(
+                                "Yes, Go Back",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                ),
                               ),
-                            ),
-                            TextSpan(
-                              text: " and Fix Your Set?",
                             ),
                           ],
                         ),
                       ),
-                    ),
-                    Visibility(
-                      visible: setValid,
-                      child: RichText(
-                        text: TextSpan(
-                          style: TextStyle(
-                            color: Colors.black,
-                          ),
-                          children: [
-                            TextSpan(
-                              text: "But if you don't ",
-                            ),
-                            TextSpan(
-                              text: "Begin Your Set Break",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            TextSpan(
-                              text: ", this set will be lost. ",
-                            ),
-                            TextSpan(
-                              text: "Would you like to ",
-                            ),
-                            TextSpan(
-                              text: "Go Back",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            TextSpan(
-                              text: " and Begin Your Set Break?",
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    //-------------------------Reps-------------------------
-                    Transform.translate(
-                      offset: Offset(0, 16),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.max,
-                        children: [
-                          Expanded(
-                            child: Container(),
-                          ),
-                          FlatButton(
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                              goBack(true);
-                            },
-                            child: Text(
-                              "No, Delete The Set",
-                              style: TextStyle(
-                                color: Colors.black,
-                              ),
-                            ),
-                          ),
-                          RaisedButton(
-                            color: Colors.blue,
-                            onPressed: () => Navigator.of(context).pop(),
-                            child: Text(
-                              "Yes, Go Back",
-                              style: TextStyle(
-                                color: Colors.white,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
-        ),
-      ).show();
-    } else{
+            ],
+          ),
+        ).show();
+
+        //don't allow popping automatically
+        return false;
+      } else {
+        goBack(alsoPop);
+        return true;
+      }
+    } else {
       goBack(alsoPop);
+      return true;
     }
-
-    //for the function that requires you to allow poping
-    //if warning was not needed than the system can auto pop
-    //else the pop up will do so
-    return warningWaranted == false;
   }
 
   goBack(bool alsoPop) {

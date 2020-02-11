@@ -221,24 +221,25 @@ class SetRecord extends StatelessWidget {
 
   //determine whether we should warn the user
   maybeError(BuildContext context) {
-    DateTime startTime = excercise.tempStartTime.value;
-    bool timerNotStarted = startTime == AnExcercise.nullDateTime;
+    //check data validity
     bool weightValid = weightController.text != "";
     weightValid &= weightController.text != "0";
     bool repsValid = repsController.text != "";
     repsValid &= repsController.text != "0";
-    bool weightOrRepsNotEmptyOrZero = weightValid || repsValid;
-    bool warningWaranted = timerNotStarted && weightOrRepsNotEmptyOrZero;
 
     //bring up the pop up if needed
-    if (true) { //TODO: use actual condition
+    if ((weightValid && repsValid) == false) {
       //NOTE: this assumes the user CANT type anything except digits of the right size
       bool setValid = weightValid && repsValid;
+
+      //change the buttons shows a the wording a tad
+      DateTime startTime = excercise.tempStartTime.value;
+      bool timerNotStarted = startTime == AnExcercise.nullDateTime;
+      String continueString = (timerNotStarted) ? "Begin Your Set Break" : "Return To Your Timer";
 
       //show the dialog
       AwesomeDialog(
         context: context,
-        isDense: true,
         dismissOnTouchOutside: true,
         dialogType: DialogType.ERROR,
         animType: AnimType.RIGHSLIDE,
@@ -254,7 +255,7 @@ class SetRecord extends StatelessWidget {
               ),
             ),
             Text(
-              "to move onto your set break",
+              "To " + continueString,
               style: TextStyle(
                 fontSize: 14,
                 color: Colors.black,
@@ -291,21 +292,21 @@ class SetRecord extends StatelessWidget {
                           ),
                           children: [
                             TextSpan(
-                              text: "Repair",
+                              text: "Fix",
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
                             TextSpan(
-                              text: " Your set",
+                              text: " Your Set",
                               style: TextStyle(
                                 fontWeight: timerNotStarted ? FontWeight.bold : FontWeight.normal,
                               ),
                             ),
                             TextSpan(
-                              text: " to " 
-                              + (timerNotStarted ? "Begin Your Set Break" : "Return To Your Timer")
+                              text: " to " + continueString,
                             ),
+                            //only if timer has started
                             TextSpan(
                               text: timerNotStarted ? "" : "\nor "
                             ),

@@ -8,18 +8,17 @@ Widget weightAndRepsToDescription(String weight, String reps, {bool isError: fal
 
   //build
   return RichText(
-    softWrap: false,
     text: TextSpan(
       style: TextStyle(
         color: Colors.black,
       ),
       children: [
         TextSpan(
-          text: isError ? "You are trying to record a set where you lifted" : "You started recording a set where you lifted",
+          text: (isError ? "You are trying to record" : "You started recording") + " a set, where you lifted ",
         ),
         //-------------------------Weight-------------------------
         TextSpan(
-          text: "\n" + (zeroWeight ? "Nothing" : weight),
+          text: (zeroWeight ? "Nothing" : weight),
           style: TextStyle(
             fontWeight: FontWeight.bold,
           ),
@@ -50,60 +49,40 @@ weightAndRepsToProblem(bool weightValid, bool repsValid, {bool isError: false}){
   //build
   return Visibility(
     visible: setValid == false,
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Visibility(
-          visible: weightValid == false,
-          child: RichText(
-            text: TextSpan(
-              style: TextStyle(
-                color: Colors.black,
-              ),
-              children: [
-                TextSpan(
-                  text: "But for body weight excercises you should instead ",
-                ),
-                TextSpan(
-                  text: "record your body weight" 
-                  //for warning "new line"
-                  //for error if alone "new line"
-                  //for error if not alone ""
-                  + ((isError && repsValid == false) ? "" : "\n"),
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
+    child: RichText(
+      text: TextSpan(
+        style: TextStyle(
+          color: Colors.black,
+        ),
+        children: [
+          TextSpan(
+            text: (weightValid) ? "" : "But for body weight excercises you should instead ",
+          ),
+          TextSpan(
+            text: (weightValid) ? "" : ("record your body weight" 
+            //for warning "new line"
+            //for error if alone "new line"
+            //for error if not alone ""
+            + ((isError && repsValid == false) ? "" : "\n")),
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
             ),
           ),
-        ),
-        Visibility(
-          visible: repsValid == false,
-          child: RichText(
-            text: TextSpan(
-              style: TextStyle(
-                color: Colors.black,
-              ),
-              children: [
-                //for warning "But a set"
-                //for error if alone "But a set"
-                //for error if not alone "And a set"
-                TextSpan(
-                  text: ((isError && weightValid == false ? ", and" : "But"))
-                  + " a set requires",
-                ),
-                TextSpan(
-                  text: " atleast 1 rep\n",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
+          //for warning "But a set"
+          //for error if alone "But a set"
+          //for error if not alone "And a set"
+          TextSpan(
+            text: (repsValid) ? "" : (((isError && weightValid == false ? ", and" : "But"))
+            + " a set requires"),
+          ),
+          TextSpan(
+            text: (repsValid) ? "" : " atleast 1 Rep\n",
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     ),
   );
 }
