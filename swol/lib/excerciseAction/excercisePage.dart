@@ -65,7 +65,7 @@ class _ExcercisePageState extends State<ExcercisePage> {
       child: ExcercisePageDark(
         excercise: widget.excercise,
         weightController: weightController,
-        repController: repsController,
+        repsController: repsController,
         noWarning: noWarning,
       ),
     );
@@ -75,9 +75,10 @@ class _ExcercisePageState extends State<ExcercisePage> {
   noWarning({bool alsoPop: false}) {
     DateTime startTime = widget.excercise.tempStartTime.value;
     bool timerNotStarted = startTime == AnExcercise.nullDateTime;
-    bool weightValid =
-        weightController.text != "" && weightController.text != "0";
-    bool repsValid = repsController.text != "" && repsController.text != "0";
+    bool weightValid = weightController.text != "";
+    weightValid &= weightController.text != "0";
+    bool repsValid = repsController.text != "";
+    repsValid &= repsController.text != "0";
     bool weightOrRepsNotEmptyOrZero = weightValid || repsValid;
     bool warningWaranted = timerNotStarted && weightOrRepsNotEmptyOrZero;
 
@@ -123,94 +124,45 @@ class _ExcercisePageState extends State<ExcercisePage> {
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    weightAndRepsToWidget(
-                        weightController.text, repsController.text),
+                    weightAndRepsToDescription(
+                      weightController.text, 
+                      repsController.text,
+                    ),
+                    weightAndRepsToProblem(weightValid, repsValid),
                     Visibility(
                       visible: setValid == false,
-                      //TODO: add set warning or aid
-                      //IF reps is 0 then it should be recorded as a set
-                      //IF weight is 0 then assume you are talking about body weight excercises and tell them to use their body weight
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Visibility(
-                            visible: weightValid == false,
-                            child: RichText(
-                              text: TextSpan(
-                                style: TextStyle(
-                                  color: Colors.black,
-                                ),
-                                children: [
-                                  TextSpan(
-                                    text:
-                                        "But for body weight excercises you should instead ",
-                                  ),
-                                  TextSpan(
-                                    text: "record your body weight\n",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
+                      child: RichText(
+                        text: TextSpan(
+                          style: TextStyle(
+                            color: Colors.black,
                           ),
-                          Visibility(
-                            visible: repsValid == false,
-                            child: RichText(
-                              text: TextSpan(
-                                style: TextStyle(
-                                  color: Colors.black,
-                                ),
-                                children: [
-                                  TextSpan(
-                                    text:
-                                        "But a set consists of lifting a weight ",
-                                  ),
-                                  TextSpan(
-                                    text: "atleast once\n",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ],
-                              ),
+                          children: [
+                            TextSpan(
+                              text: "If you don't ",
                             ),
-                          ),
-                          RichText(
-                            text: TextSpan(
+                            TextSpan(
+                              text: "Fix Your Set",
                               style: TextStyle(
-                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
                               ),
-                              children: [
-                                TextSpan(
-                                  text: "If you don't ",
-                                ),
-                                TextSpan(
-                                  text: "Fix Your Set",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                TextSpan(
-                                  text: " this information will be lost. ",
-                                ),
-                                TextSpan(
-                                  text: "Would you like to ",
-                                ),
-                                TextSpan(
-                                  text: "Go Back",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                TextSpan(
-                                  text: " and Fix Your Set?",
-                                ),
-                              ],
                             ),
-                          ),
-                        ],
+                            TextSpan(
+                              text: ", this information will be lost. ",
+                            ),
+                            TextSpan(
+                              text: "Would you like to ",
+                            ),
+                            TextSpan(
+                              text: "Go Back",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            TextSpan(
+                              text: " and Fix Your Set?",
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                     Visibility(
@@ -231,7 +183,7 @@ class _ExcercisePageState extends State<ExcercisePage> {
                               ),
                             ),
                             TextSpan(
-                              text: " this set will be lost. ",
+                              text: ", this set will be lost. ",
                             ),
                             TextSpan(
                               text: "Would you like to ",
@@ -290,8 +242,9 @@ class _ExcercisePageState extends State<ExcercisePage> {
           ],
         ),
       ).show();
-    } else
+    } else{
       goBack(alsoPop);
+    }
 
     //for the function that requires you to allow poping
     //if warning was not needed than the system can auto pop
@@ -313,13 +266,13 @@ class ExcercisePageDark extends StatelessWidget {
   ExcercisePageDark({
     @required this.excercise,
     @required this.weightController,
-    @required this.repController,
+    @required this.repsController,
     @required this.noWarning,
   });
 
   final AnExcercise excercise;
   final TextEditingController weightController;
-  final TextEditingController repController;
+  final TextEditingController repsController;
   final Function noWarning;
 
   @override
@@ -399,7 +352,7 @@ class ExcercisePageDark extends StatelessWidget {
           excercise: excercise,
           statusBarHeight: MediaQuery.of(context).padding.top,
           weightController: weightController,
-          repController: repController,
+          repsController: repsController,
         ),
       ),
     );

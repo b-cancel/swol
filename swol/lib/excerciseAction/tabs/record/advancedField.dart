@@ -186,6 +186,7 @@ class _RecordFieldState extends State<RecordField> {
           //reset text so they start back up at the begining
           widget.conroller.clear();
           //focus on the field so the user can begin typing
+          FocusScope.of(context).unfocus();
           FocusScope.of(context).requestFocus(widget.focusNode);
         },
         child: Stack(

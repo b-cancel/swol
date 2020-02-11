@@ -10,19 +10,20 @@ import 'package:swol/excerciseAction/tabs/record/setRecord.dart';
 import 'package:swol/excerciseAction/tabs/recovery/recovery.dart';
 import 'package:swol/excerciseAction/tabs/sharedWidgets/doneButton.dart';
 import 'package:swol/excerciseAction/tabs/suggest/suggest.dart';
+import 'package:swol/shared/methods/theme.dart';
 import 'package:swol/shared/structs/anExcercise.dart';
 
 /// A vertical tab widget for flutter
 class VerticalTabs extends StatefulWidget {
   final TextEditingController weightController;
-  final TextEditingController repController;
+  final TextEditingController repsController;
   final AnExcercise excercise;
   final Duration delayTillShowDoneButton;
   final double statusBarHeight;
 
   VerticalTabs({
     @required this.weightController,
-    @required this.repController,
+    @required this.repsController,
     @required this.excercise,
     this.delayTillShowDoneButton: const Duration(milliseconds: 200),
     @required this.statusBarHeight,
@@ -141,17 +142,16 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
           physics: NeverScrollableScrollPhysics(),
           scrollDirection: Axis.vertical,
           children: <Widget>[
-            ClipRRect(
-              child: Suggestion( 
-                excercise: widget.excercise,
-                statusBarHeight: widget.statusBarHeight,
-                recordSet: () => toPage(1),
-                heroUp: firstUp,
-                heroAnimDuration: transitionDuration,
-                heroAnimTravel: totalTravel,
-              ),
+            Suggestion( 
+              excercise: widget.excercise,
+              statusBarHeight: widget.statusBarHeight,
+              recordSet: () => toPage(1),
+              heroUp: firstUp,
+              heroAnimDuration: transitionDuration,
+              heroAnimTravel: totalTravel,
             ),
-            ClipRRect(
+            Theme(
+              data: MyTheme.light,
               child: SetRecord(
                 excercise: widget.excercise,
                 statusBarHeight: widget.statusBarHeight,
@@ -159,7 +159,7 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
                 heroAnimDuration: transitionDuration,
                 heroAnimTravel: totalTravel,
                 weightController: widget.weightController,
-                repController: widget.repController,
+                repsController: widget.repsController,
                 //TODO: going back should not reset what they already typed
                 //note: try to stop them from typing dumb stuff but if they do then restore the dumb stuff
                 //TODO: do so when the user holds the button AND when they click it
