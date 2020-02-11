@@ -15,18 +15,26 @@ import 'package:swol/shared/structs/anExcercise.dart';
 
 /// A vertical tab widget for flutter
 class VerticalTabs extends StatefulWidget {
+  final ValueNotifier<int> pageNumber;
   final TextEditingController weightController;
+  final FocusNode weightFocusNode;
   final TextEditingController repsController;
+  final FocusNode repsFocusNode;
   final AnExcercise excercise;
   final Duration delayTillShowDoneButton;
   final double statusBarHeight;
+  final Function focusOnFirstInValid;
 
   VerticalTabs({
+    @required this.pageNumber,
     @required this.weightController,
+    @required this.weightFocusNode,
     @required this.repsController,
+    @required this.repsFocusNode,
     @required this.excercise,
     this.delayTillShowDoneButton: const Duration(milliseconds: 200),
     @required this.statusBarHeight,
+    @required this.focusOnFirstInValid,
   });
 
   @override
@@ -65,7 +73,6 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
   PageController pageViewController;
 
   //for the "hero" widget (if not up then down)
-  int currPageID;
   ValueNotifier<bool> firstUp;
   ValueNotifier<bool> secondUp;
 
@@ -79,14 +86,14 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
     //TODO: select the first tab based on how far we are into the workout (HARD)
     //TODO: remove the random picker test code below
     var rng = new math.Random();
-    currPageID = 0; //(rng.nextInt(3)).clamp(0, 2);
+    widget.pageNumber.value = 0; //(rng.nextInt(3)).clamp(0, 2);
 
     //set notifier based on random page
-    firstUp = new ValueNotifier<bool>(currPageID == 0);
-    secondUp = new ValueNotifier<bool>(currPageID == 0);
+    firstUp = new ValueNotifier<bool>(widget.pageNumber.value == 0);
+    secondUp = new ValueNotifier<bool>(widget.pageNumber.value == 0);
 
     //the done button must be initialy show in order for the hero transition to work properly
-    showDoneButton = new ValueNotifier<bool>(currPageID != 1); 
+    showDoneButton = new ValueNotifier<bool>(widget.pageNumber.value != 1); 
 
     //travel to the page that has initial 
     /*
@@ -99,7 +106,7 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
 
     pageViewController = PageController(
       //keepPage: true,
-      initialPage: currPageID,
+      initialPage: widget.pageNumber.value,
     );
 
     //handle goal set caluclation and display
@@ -159,7 +166,9 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
                 heroAnimDuration: transitionDuration,
                 heroAnimTravel: totalTravel,
                 weightController: widget.weightController,
+                weightFocusNode: widget.weightFocusNode,
                 repsController: widget.repsController,
+                repsFocusNode: widget.repsFocusNode,
                 //TODO: going back should not reset what they already typed
                 //note: try to stop them from typing dumb stuff but if they do then restore the dumb stuff
                 //TODO: do so when the user holds the button AND when they click it
@@ -180,6 +189,7 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
                 setBreak: (){
                   toPage(2);
                 },
+                focusOnFirstInValid: widget.focusOnFirstInValid,
               ),
             ),
             Recovery(
@@ -218,7 +228,7 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
     FocusScope.of(context).unfocus();
 
     //save the page we are on
-    currPageID = pageID;
+    widget.pageNumber.value = pageID;
 
     //deterime the reaction
     if(instant){
@@ -273,8 +283,8 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
       WidgetsBinding.instance.addPostFrameCallback((_){
         WidgetsBinding.instance.addPostFrameCallback((_){
           WidgetsBinding.instance.addPostFrameCallback((_){
-            firstUp.value = (currPageID == 0);
-            secondUp.value = (currPageID == 0);
+            firstUp.value = (widget.pageNumber.value == 0);
+            secondUp.value = (widget.pageNumber.value == 0);
           });
         });
       });

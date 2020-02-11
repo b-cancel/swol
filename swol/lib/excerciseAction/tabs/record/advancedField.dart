@@ -7,11 +7,15 @@ import 'package:swol/shared/functions/goldenRatio.dart';
 class RecordFields extends StatefulWidget {
   RecordFields({
     @required this.weightController,
-    @required this.repController,
+    @required this.weightFocusNode,
+    @required this.repsController,
+    @required this.repsFocusNode,
   });
 
   final TextEditingController weightController;
-  final TextEditingController repController;
+  final FocusNode weightFocusNode;
+  final TextEditingController repsController;
+  final FocusNode repsFocusNode;
 
   //weight field
   @override
@@ -19,9 +23,6 @@ class RecordFields extends StatefulWidget {
 }
 
 class _RecordFieldsState extends State<RecordFields> {
-  final FocusNode weightFocusNode = new FocusNode();
-  final FocusNode repFocusNode = new FocusNode();
-
   @override
   Widget build(BuildContext context) {
     //-32 is for 16 pixels of padding from both sides
@@ -32,29 +33,25 @@ class _RecordFieldsState extends State<RecordFields> {
     iconSize = golden2BS[1];
     double borderSize = 3;
 
-    /*
-    
-    */
-    double totalHeight = (iconSize * 2) + 8;
-
     //build
     return Container(
-      height: totalHeight,
+      height: (iconSize * 2) + 8,
       child: Row(
         mainAxisSize: MainAxisSize.max,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           RecordField(
-            focusNode: weightFocusNode,
-            conroller: widget.weightController,
+            focusNode: widget.weightFocusNode,
+            controller: widget.weightController,
             isLeft: true,
-            text: "256",
             borderSize: borderSize,
+            otherFocusNode: widget.repsFocusNode,
+            otherController: widget.repsController
           ),
           Column(
             children: <Widget>[
               TappableIcon(
-                focusNode: weightFocusNode,
+                focusNode: widget.weightFocusNode,
                 iconSize: iconSize,
                 borderSize: borderSize,
                 icon: Padding(
@@ -68,7 +65,7 @@ class _RecordFieldsState extends State<RecordFields> {
                 isLeft: true,
               ),
               TappableIcon(
-                focusNode: repFocusNode,
+                focusNode: widget.repsFocusNode,
                 iconSize: iconSize,
                 borderSize: borderSize,
                 icon: Icon(Icons.repeat),
@@ -77,11 +74,12 @@ class _RecordFieldsState extends State<RecordFields> {
             ],
           ),
           RecordField(
-            focusNode: repFocusNode,
-            conroller: widget.repController,
+            focusNode: widget.repsFocusNode,
+            controller: widget.repsController,
             isLeft: false,
-            text: "8",
             borderSize: borderSize,
+            otherFocusNode: widget.weightFocusNode,
+            otherController: widget.weightController,
           ),
         ],
       ),
@@ -92,17 +90,19 @@ class _RecordFieldsState extends State<RecordFields> {
 class RecordField extends StatefulWidget {
   RecordField({
     @required this.focusNode,
-    @required this.conroller,
+    @required this.controller,
     @required this.isLeft,
-    @required this.text,
     @required this.borderSize,
+    @required this.otherFocusNode,
+    @required this.otherController,
   });
 
   final FocusNode focusNode;
-  final TextEditingController conroller;
+  final TextEditingController controller;
   final bool isLeft;
-  final String text;
   final double borderSize;
+  final FocusNode otherFocusNode;
+  final TextEditingController otherController;
 
   @override
   _RecordFieldState createState() => _RecordFieldState();
@@ -184,7 +184,7 @@ class _RecordFieldState extends State<RecordField> {
         behavior: HitTestBehavior.opaque,
         onTap: (){
           //reset text so they start back up at the begining
-          widget.conroller.clear();
+          widget.controller.clear();
           //focus on the field so the user can begin typing
           FocusScope.of(context).unfocus();
           FocusScope.of(context).requestFocus(widget.focusNode);
@@ -220,7 +220,7 @@ class _RecordFieldState extends State<RecordField> {
                       width: 48.0 * multiplier,
                       height: 24.0 * multiplier,
                       child: TextField(
-                        controller: widget.conroller,
+                        controller: widget.controller,
                         focusNode: widget.focusNode,
                         //set text size as large as a large phone 
                         //so if anything the cursor is smaller than it should be
@@ -245,8 +245,6 @@ class _RecordFieldState extends State<RecordField> {
                         smartDashesType: SmartDashesType.disabled,
                         //ditto but for quote is not needed in IOS
                         smartQuotesType: SmartQuotesType.disabled,
-                        //next to go to other field
-                        textInputAction: TextInputAction.next,
                         //so your eyes dont burn
                         keyboardAppearance: Brightness.dark,
                         //balance
@@ -274,9 +272,33 @@ class _RecordFieldState extends State<RecordField> {
                         minLines: 1,
                         maxLines: 1,
                         maxLengthEnforced: true,
-                        //TODO: only true for the field that we arrive at that isnt filled
-                        //TODO: obvi if both not filled autofocus on weight
-                        //autofocus: true,
+                        //next to go to other field
+                        textInputAction: TextInputAction.next,
+                        //NOTE: on submitted seems to be working just as well
+                        onEditingComplete: (){
+                          //NOTE: we don't care for our state because
+                          //if the user presses NEXT they want an OBVIOUS action to be performed
+                          //regardless of whether or not its the most useful thing
+
+                          //if we press next then we KNOW that the keyboard is open
+                          //in which case we have 2 possible actions to perform
+                          //1. either we close the keyboard which naturally leads into us unfocusing
+                          //2. or we move onto the next text field
+
+                          //so although sometimes staying on our own field makes more sense
+                          //we don't do that because the user EXPECTS some OBVIOUS action
+                          if(widget.otherController.text != "" && widget.otherController.text != "0"){
+                            //the other controller has a valid value
+                            //so we perform the only other possible action
+                            FocusScope.of(context).unfocus();
+                          }
+                          else{
+                            //in case the otherController has just a 0
+                            widget.otherController.clear();
+                            //focus on the next field
+                            FocusScope.of(context).requestFocus(widget.otherFocusNode);
+                          }
+                        },
                       ),
                     ),
                   ),

@@ -35,10 +35,15 @@ class ExcercisePage extends StatefulWidget {
 }
 
 class _ExcercisePageState extends State<ExcercisePage> {
-  //the two controllers we use to determine wether to warn the user
-  //that they might want to begin their set break or risk losing their plugged in values
+  final ValueNotifier<int> pageNumber = new ValueNotifier<int>(0);
+
+  //weight
   final TextEditingController weightController = new TextEditingController();
+  final FocusNode weightFocusNode = new FocusNode();
+
+  //reps
   final TextEditingController repsController = new TextEditingController();
+  final FocusNode repsFocusNode = new FocusNode();
 
   //init
   @override
@@ -68,12 +73,42 @@ class _ExcercisePageState extends State<ExcercisePage> {
     return Theme(
       data: MyTheme.dark,
       child: ExcercisePageDark(
+        pageNumber: pageNumber,
         excercise: widget.excercise,
         weightController: weightController,
+        weightFocusNode: weightFocusNode,
         repsController: repsController,
+        repsFocusNode: repsFocusNode,
         noWarning: noWarning,
+        focusOnFirstInValid: focusOnFirstInValid,
       ),
     );
+  }
+
+  //if both are valid nothing happens
+  focusOnFirstInValid(){
+    if(pageNumber.value == 1){
+      //grab weight stuff
+      bool weightEmpty = weightController.text == "";
+      bool weightZero = weightController.text == "0";
+      bool weightInvalid = weightEmpty || weightZero;
+
+      //maybe focus on weight
+      if(weightInvalid){
+        FocusScope.of(context).requestFocus(weightFocusNode);
+      }
+      else{
+        //grab reps stuff
+        bool repsEmtpy = repsController.text == "";
+        bool repsZero = repsController.text == "0";
+        bool repsInvalid = repsEmtpy || repsZero;
+
+        //maybe focus on reps
+        if(repsInvalid){
+          FocusScope.of(context).requestFocus(repsFocusNode);
+        }
+      }
+    }
   }
 
   //determine whether we should warn the user
@@ -236,7 +271,13 @@ class _ExcercisePageState extends State<ExcercisePage> {
                             RaisedButton(
                               color: Colors.blue,
                               //TODO: focus on the first field that is messed up
-                              onPressed: () => Navigator.of(context).pop(),
+                              onPressed: (){
+                                //pop ourselves
+                                Navigator.of(context).pop();
+
+                                //move onto next invalid
+                                focusOnFirstInValid();
+                              },
                               child: Text(
                                 "Yes, Go Back",
                                 style: TextStyle(
@@ -279,16 +320,24 @@ class _ExcercisePageState extends State<ExcercisePage> {
 
 class ExcercisePageDark extends StatelessWidget {
   ExcercisePageDark({
+    @required this.pageNumber,
     @required this.excercise,
     @required this.weightController,
+    @required this.weightFocusNode,
     @required this.repsController,
+    @required this.repsFocusNode,
     @required this.noWarning,
+    @required this.focusOnFirstInValid,
   });
 
+  final ValueNotifier<int> pageNumber;
   final AnExcercise excercise;
   final TextEditingController weightController;
+  final FocusNode weightFocusNode;
   final TextEditingController repsController;
+  final FocusNode repsFocusNode;
   final Function noWarning;
+  final Function focusOnFirstInValid;
 
   @override
   Widget build(BuildContext context) {
@@ -364,10 +413,14 @@ class ExcercisePageDark extends StatelessWidget {
           ),
         ),
         body: VerticalTabs(
+          pageNumber: pageNumber,
           excercise: excercise,
           statusBarHeight: MediaQuery.of(context).padding.top,
           weightController: weightController,
+          weightFocusNode: weightFocusNode,
           repsController: repsController,
+          repsFocusNode: repsFocusNode,
+          focusOnFirstInValid: focusOnFirstInValid,
         ),
       ),
     );

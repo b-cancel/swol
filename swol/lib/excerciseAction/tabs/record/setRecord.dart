@@ -23,7 +23,7 @@ import 'package:swol/shared/methods/theme.dart';
 //TODO: make sure that we refocus on the problematic field
 
 //widget
-class SetRecord extends StatelessWidget {
+class SetRecord extends StatefulWidget {
   SetRecord({
     @required this.excercise,
     @required this.backToSuggestion,
@@ -33,7 +33,10 @@ class SetRecord extends StatelessWidget {
     @required this.heroAnimDuration,
     @required this.heroAnimTravel,
     @required this.weightController,
+    @required this.weightFocusNode,
     @required this.repsController,
+    @required this.repsFocusNode,
+    @required this.focusOnFirstInValid,
   });
 
   final AnExcercise excercise;
@@ -44,13 +47,35 @@ class SetRecord extends StatelessWidget {
   final Duration heroAnimDuration;
   final double heroAnimTravel;
   final TextEditingController weightController;
+  final FocusNode weightFocusNode;
   final TextEditingController repsController;
+  final FocusNode repsFocusNode;
+  final Function focusOnFirstInValid;
+
+  @override
+  _SetRecordState createState() => _SetRecordState();
+}
+
+class _SetRecordState extends State<SetRecord> {
+  @override
+  void initState() {
+    //super init
+    super.initState();
+
+    //autofocus if possible
+    WidgetsBinding.instance.addPostFrameCallback((_){
+      //NOTE: if you don't wait until transition things begin to break
+      Future.delayed(widget.heroAnimDuration, (){
+        widget.focusOnFirstInValid();
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     double fullHeight = MediaQuery.of(context).size.height;
     double appBarHeight = 56; //constant according to flutter docs
-    double spaceToRedistribute = fullHeight - appBarHeight - statusBarHeight;
+    double spaceToRedistribute = fullHeight - appBarHeight - widget.statusBarHeight;
 
     //color for "suggestion"
     //TODO: because we are wrapped in a white so the pop up works well
@@ -104,9 +129,9 @@ class SetRecord extends StatelessWidget {
                               ),
                             ),
                             GoalSetWrapped(
-                              heroUp: heroUp,
-                              heroAnimDuration: heroAnimDuration,
-                              heroAnimTravel: heroAnimTravel,
+                              heroUp: widget.heroUp,
+                              heroAnimDuration: widget.heroAnimDuration,
+                              heroAnimTravel: widget.heroAnimTravel,
                             ),
                           ],
                         ),
@@ -171,7 +196,7 @@ class SetRecord extends StatelessWidget {
                                         ),
                                       ),
                                       ChangeFunction(
-                                        excercise: excercise,
+                                        excercise: widget.excercise,
                                         middleArrows: true,
                                       ),
                                     ],
@@ -189,8 +214,10 @@ class SetRecord extends StatelessWidget {
                             header: "Record Set",
                             aLittleSmaller: true,
                             child: RecordFields(
-                              weightController: weightController,
-                              repController: repsController,
+                              weightController: widget.weightController,
+                              weightFocusNode: widget.weightFocusNode,
+                              repsController: widget.repsController,
+                              repsFocusNode: widget.repsFocusNode,
                             ),
                           ),
                         ),
@@ -199,12 +226,12 @@ class SetRecord extends StatelessWidget {
                   ),
                 ),
                 BottomButtons(
-                  excercise: excercise,
+                  excercise: widget.excercise,
                   forwardAction: () => maybeError(context),
                   forwardActionWidget: Text(
                     "Take Set Break",
                   ),
-                  backAction: backToSuggestion,
+                  backAction: widget.backToSuggestion,
                 ),
               ],
             ),
@@ -214,13 +241,12 @@ class SetRecord extends StatelessWidget {
     );
   }
 
-  //determine whether we should warn the user
   maybeError(BuildContext context) {
     //check data validity
-    bool weightValid = weightController.text != "";
-    weightValid &= weightController.text != "0";
-    bool repsValid = repsController.text != "";
-    repsValid &= repsController.text != "0";
+    bool weightValid = widget.weightController.text != "";
+    weightValid &= widget.weightController.text != "0";
+    bool repsValid = widget.repsController.text != "";
+    repsValid &= widget.repsController.text != "0";
 
     //bring up the pop up if needed
     if ((weightValid && repsValid) == false) {
@@ -228,7 +254,7 @@ class SetRecord extends StatelessWidget {
       bool setValid = weightValid && repsValid;
 
       //change the buttons shows a the wording a tad
-      DateTime startTime = excercise.tempStartTime.value;
+      DateTime startTime = widget.excercise.tempStartTime.value;
       bool timerNotStarted = startTime == AnExcercise.nullDateTime;
       String continueString =
           (timerNotStarted) ? "Begin Your Set Break" : "Return To Your Timer";
@@ -270,8 +296,8 @@ class SetRecord extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     weightAndRepsToDescription(
-                      weightController.text,
-                      repsController.text,
+                      widget.weightController.text,
+                      widget.repsController.text,
                       isError: true,
                     ),
                     weightAndRepsToProblem(
@@ -326,7 +352,7 @@ class SetRecord extends StatelessWidget {
                                   text: " back to, ",
                                 ),
                                 TextSpan(
-                                  text: excercise.tempWeight.toString(),
+                                  text: widget.excercise.tempWeight.toString(),
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -335,14 +361,14 @@ class SetRecord extends StatelessWidget {
                                   text: " for ",
                                 ),
                                 TextSpan(
-                                  text: excercise.tempReps.toString(),
+                                  text: widget.excercise.tempReps.toString(),
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
                                 TextSpan(
                                   text: "rep" +
-                                      (excercise.tempReps == 1 ? "" : "s"),
+                                      (widget.excercise.tempReps == 1 ? "" : "s"),
                                 ),
                               ],
                             ),
@@ -359,16 +385,16 @@ class SetRecord extends StatelessWidget {
                                 FlatButton(
                                   onPressed: () {
                                     //revert back
-                                    weightController.text =
-                                        excercise.tempWeight.toString();
-                                    repsController.text =
-                                        excercise.tempReps.toString();
+                                    widget.weightController.text =
+                                        widget.excercise.tempWeight.toString();
+                                    widget.repsController.text =
+                                        widget.excercise.tempReps.toString();
 
                                     //pop ourselves
                                     Navigator.of(context).pop();
 
                                     //go back to timer
-                                    setBreak();
+                                    widget.setBreak();
                                   },
                                   child: Text(
                                     "Revert Back",
@@ -379,9 +405,13 @@ class SetRecord extends StatelessWidget {
                                 ),
                                 RaisedButton(
                                   color: Colors.blue,
-                                  //pop ourselves so the user can act
-                                  //TODO: focus on the first field that is messed up
-                                  onPressed: () => Navigator.of(context).pop(),
+                                  onPressed: (){
+                                    //pop ourselves
+                                    Navigator.of(context).pop();
+                                    //either one, or both values are valid
+                                    //if both are valid, nothing happens
+                                    widget.focusOnFirstInValid();
+                                  },
                                   child: Text(
                                     "Let Me Fix It",
                                     style: TextStyle(
@@ -403,7 +433,7 @@ class SetRecord extends StatelessWidget {
         ),
       ).show();
     } else {
-      setBreak();
+      widget.setBreak();
     }
   }
 }
