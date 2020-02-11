@@ -11,6 +11,7 @@ showCustomPopUp(
   Widget header, {
   AnimType animationType: AnimType.BOTTOMSLIDE,
   bool isDense: false,
+  Color color: Colors.blue,
 }) {
   //unfocus so whatever was focused before doesnt annoying scroll us back
   //for some reason this only happens in addExcercise
@@ -28,7 +29,7 @@ showCustomPopUp(
       fit: BoxFit.contain,
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.blue,
+          color: color,
           shape: BoxShape.circle,
         ),
         //NOTE: 28 is the max

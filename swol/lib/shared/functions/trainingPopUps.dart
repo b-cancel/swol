@@ -114,7 +114,7 @@ Function _makeTrainingTypePopUp({
             color: iconColor,
           ),
           iconColor: iconColor,
-          backgroundColor: Colors.blue,
+          backgroundColor: Colors.black,
         );
       break;
     }
@@ -155,6 +155,7 @@ Function _makeTrainingTypePopUp({
       ],
       headerIcon,
       isDense: true,
+      color: Colors.black,
     );
   };
 }

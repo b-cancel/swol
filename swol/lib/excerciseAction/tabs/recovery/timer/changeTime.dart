@@ -57,10 +57,8 @@ class ActualButton extends StatelessWidget {
                     changeDuration: Duration(milliseconds: 250),
                     recoveryPeriod: possibleRecoveryDuration,
                   ),
-                  Padding(
-                    padding: EdgeInsets.only(
-                      top: 8.0,
-                    ),
+                  Transform.translate(
+                    offset: Offset(0, 16),
                     child: Row(
                       mainAxisSize: MainAxisSize.max,
                       children: [
@@ -104,6 +102,7 @@ class ActualButton extends StatelessWidget {
             color: Colors.white,
             size: 56,
           ),
+          color: Colors.black,
           isDense: true,
           animationType: AnimType.TOPSLIDE,
         );
