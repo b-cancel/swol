@@ -19,6 +19,8 @@ import 'package:swol/main.dart';
 
 //TODO: make sure that wehn we start the timer it also sets tempweight and tempreps
 //TODO: make sure that when we have tempweight and tempreps they are read into the controllers
+//TODO: make sure we are properly reverting back to the expected values
+//TODO: make sure that we refocus on the problematic field
 
 //widgets
 class ExcercisePage extends StatefulWidget {
@@ -233,6 +235,7 @@ class _ExcercisePageState extends State<ExcercisePage> {
                             ),
                             RaisedButton(
                               color: Colors.blue,
+                              //TODO: focus on the first field that is messed up
                               onPressed: () => Navigator.of(context).pop(),
                               child: Text(
                                 "Yes, Go Back",

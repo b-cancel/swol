@@ -1,33 +1,28 @@
-//flutter
+//dart
 import 'dart:ui';
 
-import 'package:awesome_dialog/awesome_dialog.dart';
+//flutter
 import 'package:flutter/material.dart';
+
+//plugins
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:swol/excerciseAction/controllersToWidgets.dart';
-import 'package:swol/excerciseAction/tabs/record/advancedField.dart';
-import 'package:swol/excerciseAction/tabs/record/changeFunction.dart';
 
 //internal
 import 'package:swol/excerciseAction/tabs/suggest/suggestion/setDisplay.dart';
 import 'package:swol/excerciseAction/tabs/sharedWidgets/cardWithHeader.dart';
 import 'package:swol/excerciseAction/tabs/sharedWidgets/bottomButtons.dart';
-import 'package:swol/shared/methods/theme.dart';
+import 'package:swol/excerciseAction/tabs/record/changeFunction.dart';
+import 'package:swol/excerciseAction/tabs/record/advancedField.dart';
+import 'package:swol/excerciseAction/controllersToWidgets.dart';
 import 'package:swol/shared/structs/anExcercise.dart';
+import 'package:swol/shared/methods/theme.dart';
 
-//TODO: because of the cursor, the tooltip menu, and other stuff
-//TODO: we need to actually get close to guessing what the text size should be
-//TODO: for this we first switch to mono space font and do a test on each character get the size and width of each
-//TODO: and how this realtes or changes as font size does
-//TODO: so that then for any screen size AND quantity of characters we can guess the width
-//TODO: then to make up for the difference that are smaller we use fitted box
-//TODO: we also have to convert the whole thing into a list view that contains a container of the size of the max height
-//TODO: this will allow the keyboard to scroll the fields into position when they are being editing
-//TODO: or preferably I think use Scrollable.ensureVisible
+//TODO: the set should also be shown the revert button
+//TODO: make sure that we refocus on the problematic field
 
-//TODO: use directionality widget to switch start direction "directionality"
-
+//widget
 class SetRecord extends StatelessWidget {
   SetRecord({
     @required this.excercise,
@@ -58,7 +53,7 @@ class SetRecord extends StatelessWidget {
     double spaceToRedistribute = fullHeight - appBarHeight - statusBarHeight;
 
     //color for "suggestion"
-    //TODO: because we are wrapped in a white so the pop up works well 
+    //TODO: because we are wrapped in a white so the pop up works well
     //TODO: this distance color will be white even though it should be the dark card color
     //TODO: fix that... maybe... clean white is kinda cool to
     Color distanceColor = Theme.of(context).cardColor;
@@ -109,8 +104,8 @@ class SetRecord extends StatelessWidget {
                               ),
                             ),
                             GoalSetWrapped(
-                              heroUp: heroUp, 
-                              heroAnimDuration: heroAnimDuration, 
+                              heroUp: heroUp,
+                              heroAnimDuration: heroAnimDuration,
                               heroAnimTravel: heroAnimTravel,
                             ),
                           ],
@@ -235,7 +230,8 @@ class SetRecord extends StatelessWidget {
       //change the buttons shows a the wording a tad
       DateTime startTime = excercise.tempStartTime.value;
       bool timerNotStarted = startTime == AnExcercise.nullDateTime;
-      String continueString = (timerNotStarted) ? "Begin Your Set Break" : "Return To Your Timer";
+      String continueString =
+          (timerNotStarted) ? "Begin Your Set Break" : "Return To Your Timer";
 
       //show the dialog
       AwesomeDialog(
@@ -274,12 +270,12 @@ class SetRecord extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     weightAndRepsToDescription(
-                      weightController.text, 
+                      weightController.text,
                       repsController.text,
                       isError: true,
                     ),
                     weightAndRepsToProblem(
-                      weightValid, 
+                      weightValid,
                       repsValid,
                       isError: true,
                     ),
@@ -300,32 +296,105 @@ class SetRecord extends StatelessWidget {
                             TextSpan(
                               text: " Your Set",
                               style: TextStyle(
-                                fontWeight: timerNotStarted ? FontWeight.bold : FontWeight.normal,
+                                fontWeight: timerNotStarted
+                                    ? FontWeight.bold
+                                    : FontWeight.normal,
                               ),
                             ),
                             TextSpan(
                               text: " to " + continueString,
                             ),
-                            //only if timer has started
-                            TextSpan(
-                              text: timerNotStarted ? "" : "\nor "
-                            ),
-                            TextSpan(
-                              text: timerNotStarted ? "" : "Revert",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            //TODO: show the values we are going to revert to 
-                            TextSpan(
-                              text: timerNotStarted ? "" : " back to your previous values",
-                            ),
                           ],
                         ),
                       ),
                     ),
-                    //TODO: show repair vs back to your previous values buttons ONLY IF
-                    //TODO: we have previous values (we know we do if the timer already started)
+                    Visibility(
+                      visible: timerNotStarted == false,
+                      child: Column(
+                        children: <Widget>[
+                          RichText(
+                            text: TextSpan(
+                              children: [
+                                TextSpan(text: "\nor "),
+                                TextSpan(
+                                  text: "Revert",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                TextSpan(
+                                  text: " back to, ",
+                                ),
+                                TextSpan(
+                                  text: excercise.tempWeight.toString(),
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                TextSpan(
+                                  text: " for ",
+                                ),
+                                TextSpan(
+                                  text: excercise.tempReps.toString(),
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                TextSpan(
+                                  text: "rep" +
+                                      (excercise.tempReps == 1 ? "" : "s"),
+                                ),
+                              ],
+                            ),
+                          ),
+                          //-------------------------Butttons-------------------------
+                          Transform.translate(
+                            offset: Offset(0, 16),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                Expanded(
+                                  child: Container(),
+                                ),
+                                FlatButton(
+                                  onPressed: () {
+                                    //revert back
+                                    weightController.text =
+                                        excercise.tempWeight.toString();
+                                    repsController.text =
+                                        excercise.tempReps.toString();
+
+                                    //pop ourselves
+                                    Navigator.of(context).pop();
+
+                                    //go back to timer
+                                    setBreak();
+                                  },
+                                  child: Text(
+                                    "Revert Back",
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                ),
+                                RaisedButton(
+                                  color: Colors.blue,
+                                  //pop ourselves so the user can act
+                                  //TODO: focus on the first field that is messed up
+                                  onPressed: () => Navigator.of(context).pop(),
+                                  child: Text(
+                                    "Let Me Fix It",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -333,7 +402,7 @@ class SetRecord extends StatelessWidget {
           ],
         ),
       ).show();
-    } else{
+    } else {
       setBreak();
     }
   }
