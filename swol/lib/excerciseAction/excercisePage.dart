@@ -86,6 +86,8 @@ class _ExcercisePageState extends State<ExcercisePage> {
   }
 
   //if both are valid nothing happens
+  //NOTE: in all cases where this is used the keyboard is guaranteed to be closed
+  //and its closed automatically by unfocusing so there are no weird exceptions to cover
   focusOnFirstInValid(){
     if(pageNumber.value == 1){
       //grab weight stuff
@@ -95,6 +97,7 @@ class _ExcercisePageState extends State<ExcercisePage> {
 
       //maybe focus on weight
       if(weightInvalid){
+        weightController.clear(); //since invalid maybe 0
         FocusScope.of(context).requestFocus(weightFocusNode);
       }
       else{
@@ -105,6 +108,7 @@ class _ExcercisePageState extends State<ExcercisePage> {
 
         //maybe focus on reps
         if(repsInvalid){
+          repsController.clear(); //since invalid maybe 0
           FocusScope.of(context).requestFocus(repsFocusNode);
         }
       }
@@ -129,6 +133,9 @@ class _ExcercisePageState extends State<ExcercisePage> {
       if (weightValid || repsValid) {
         //NOTE: this assumes the user CANT type anything except digits of the right size
         bool setValid = weightValid && repsValid;
+
+        //remove focus so the pop up doesnt bring it back
+        FocusScope.of(context).unfocus();
 
         //bring up pop up
         AwesomeDialog(

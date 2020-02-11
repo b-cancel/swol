@@ -259,6 +259,9 @@ class _SetRecordState extends State<SetRecord> {
       String continueString =
           (timerNotStarted) ? "Begin Your Set Break" : "Return To Your Timer";
 
+      //remove focus so the pop up doesnt bring it back
+      FocusScope.of(context).unfocus();
+
       //show the dialog
       AwesomeDialog(
         context: context,
