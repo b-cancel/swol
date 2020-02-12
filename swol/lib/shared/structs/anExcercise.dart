@@ -154,6 +154,8 @@ class AnExcercise{
     //date time
     DateTime lastTimeStamp,
   ){
+    //NOTE: for all notifier variables we must first create them with some default
+
     //variables that have notifiers 
     //that are required to have atleast a default value
     _tempStartTime = new ValueNotifier<DateTime>(nullDateTime);
@@ -169,7 +171,8 @@ class AnExcercise{
     _setTarget = new ValueNotifier<int>(setTarget);
 
     //NOTE: the update to the file should only happen after everything else
-    this.lastTimeStamp = new ValueNotifier<DateTime>(lastTimeStamp);
+    _lastTimeStamp = new ValueNotifier<DateTime>(nullDateTime);
+    this.lastTimeStamp = ValueNotifier<DateTime>(lastTimeStamp);
   }
 
   //NOTE: from here we MUST set things directly to the private variables

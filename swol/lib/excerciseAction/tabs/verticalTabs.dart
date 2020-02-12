@@ -65,10 +65,6 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
   ValueNotifier<int> calculatedWeight;
   ValueNotifier<int> calculatedReps;
 
-  //for done button
-  ValueNotifier<bool> showDoneButton;
-  ValueNotifier<int> setsFinishedSoFar;
-
   //for the hero widget
   PageController pageViewController;
 
@@ -79,10 +75,6 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
   //init
   @override
   void initState() {
-    //TODO: properly read in the value
-    //NOTE: we might need to go the init page first (Reuse the logic)
-    setsFinishedSoFar = new ValueNotifier<int>(1);
-
     //TODO: select the first tab based on how far we are into the workout (HARD)
     //TODO: remove the random picker test code below
     var rng = new math.Random();
@@ -91,9 +83,6 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
     //set notifier based on random page
     firstUp = new ValueNotifier<bool>(widget.pageNumber.value == 0);
     secondUp = new ValueNotifier<bool>(widget.pageNumber.value == 0);
-
-    //the done button must be initialy show in order for the hero transition to work properly
-    showDoneButton = new ValueNotifier<bool>(widget.pageNumber.value != 1); 
 
     //travel to the page that has initial 
     /*
@@ -211,8 +200,7 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
         //must be on top... other wise it isnt clickable
         DoneButton(
           excercise: widget.excercise,
-          showDoneButton: showDoneButton,
-          setsFinishedSoFar: setsFinishedSoFar,
+          pageNumber: widget.pageNumber,
           showOrHideDuration: transitionDuration,
           animationCurve: Curves.easeInOut,
         ),
@@ -220,6 +208,7 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
     );
   }
 
+  //TODO: what happens if you jump or animate to the page you are already on
   //NOTE: this function will always run on init
   //this is so that we can go to a different page if need be
   //but also to initally show the done button if need be
@@ -232,45 +221,9 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
 
     //deterime the reaction
     if(instant){
-      //jump the right page
-      if(pageID != 0){ //we actually have to jump
-        pageViewController.jumpToPage(pageID);
-      }
-      //ELSE: we are already on that page (avoid potential errors)
+      pageViewController.jumpToPage(pageID);
     }
     else{
-      //determine wether to show or hide the page 
-      if(pageID != 1){
-        if(pageID == 0){
-          //TODO: before show it properly update the set finished to so far
-          //how to do so is discussed above
-          setsFinishedSoFar.value = 2;
-
-          //TODO: going to the suggest page doesn't always show the button
-          showDoneButton.value = true;
-        }
-        else{
-          //TODO: before show it properly update the set finished to so far
-          //how to do so is discussed above
-          setsFinishedSoFar.value = 3;
-
-          //going to recovery page will for sure show it
-          showDoneButton.value = true;
-        }
-      } 
-      else{
-        //in the record set page that option goes away
-
-        //primarily so the user can go back to the suggestion page
-        //or go initially into the suggestion page
-        //and get the button to animate into the screen
-        //and call their attention
-
-        //NOTE: that we don't need to update the sets finished so far
-        //we only update that if we are showing the button
-        showDoneButton.value = false; //will hide it
-      }
-
       //animated to right page
       pageViewController.animateToPage(
         pageID, 
