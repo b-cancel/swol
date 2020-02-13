@@ -301,6 +301,10 @@ class _ExcercisePageState extends State<ExcercisePage> {
               ),
             ],
           ),
+          onDissmissCallback: (){
+            //move onto next invalid
+            focusOnFirstInValid();
+          }
         ).show();
 
         //don't allow popping automatically

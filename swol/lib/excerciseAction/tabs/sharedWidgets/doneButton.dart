@@ -98,6 +98,8 @@ class DoneButtonButton extends StatefulWidget {
 }
 
 class _DoneButtonButtonState extends State<DoneButtonButton> {
+  bool fullyHide; 
+  
   updateState() {
     if (mounted) setState(() {});
   }
@@ -105,6 +107,7 @@ class _DoneButtonButtonState extends State<DoneButtonButton> {
   @override
   void initState() {
     super.initState();
+    updateFullyHide();
     widget.pageNumber.addListener(updateState);
   }
 
@@ -112,6 +115,10 @@ class _DoneButtonButtonState extends State<DoneButtonButton> {
   void dispose() {
     widget.pageNumber.removeListener(updateState);
     super.dispose();
+  }
+
+  updateFullyHide(){
+    fullyHide = (showButton() == false);
   }
 
   completeSets({
@@ -224,64 +231,73 @@ class _DoneButtonButtonState extends State<DoneButtonButton> {
     );
 
     //build
-    return Stack(
-      children: <Widget>[
-        Positioned.fill(
-          child: AnimatedContainer(
-            duration: widget.showOrHideDuration,
-            curve: widget.animationCurve,
-            transform: newTransform,
-            decoration: newBoxDecoration,
+    return Visibility(
+      visible: fullyHide = false,
+      child: Stack(
+        children: <Widget>[
+          Positioned.fill(
+            child: AnimatedContainer(
+              duration: widget.showOrHideDuration,
+              curve: widget.animationCurve,
+              transform: newTransform,
+              decoration: newBoxDecoration,
+            ),
           ),
-        ),
-        Hero(
-          tag: "excerciseComplete" + widget.excercise.id.toString(),
-          createRectTween: (begin, end) {
-            return CustomRectTween(a: begin, b: end);
-          },
-          child: FittedBox(
-            fit: BoxFit.contain,
-            child: Material(
-              color: Colors.transparent,
-              child: AnimatedContainer(
-                curve: widget.animationCurve,
-                duration: widget.showOrHideDuration,
-                transform: newTransform,
-                decoration: newBoxDecoration,
-                padding: EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 8,
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    Icon(Icons.arrow_left),
-                    RichText(
-                      text: TextSpan(
-                        style: TextStyle(
-                          color: Colors.white,
-                        ),
-                        children: [
-                          TextSpan(
-                            text: setsPassed.toString() + " Sets",
-                            style: TextStyle(
-                              fontWeight: FontWeight.w900,
+          Hero(
+            tag: "excerciseComplete" + widget.excercise.id.toString(),
+            createRectTween: (begin, end) {
+              return CustomRectTween(a: begin, b: end);
+            },
+            child: FittedBox(
+              fit: BoxFit.contain,
+              child: Material(
+                color: Colors.transparent,
+                child: AnimatedContainer(
+                  onEnd: (){
+                    updateFullyHide();
+                    WidgetsBinding.instance.addPostFrameCallback((_){
+                      setState(() {});
+                    });
+                  },
+                  curve: widget.animationCurve,
+                  duration: widget.showOrHideDuration,
+                  transform: newTransform,
+                  decoration: newBoxDecoration,
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 8,
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Icon(Icons.arrow_left),
+                      RichText(
+                        text: TextSpan(
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
+                          children: [
+                            TextSpan(
+                              text: setsPassed.toString() + " Sets",
+                              style: TextStyle(
+                                fontWeight: FontWeight.w900,
+                              ),
                             ),
-                          ),
-                          TextSpan(
-                            text: " Complete",
-                            style: TextStyle(),
-                          ),
-                        ],
+                            TextSpan(
+                              text: " Complete",
+                              style: TextStyle(),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
@@ -306,21 +322,29 @@ class DoneButtonCorner extends StatefulWidget {
 }
 
 class _DoneButtonCornerState extends State<DoneButtonCorner> {
+  bool fullyHide;
+
   updateState() {
     //we want to show but wait till the main button shows
-    if(showButton()) {
-      Future.delayed((widget.showOrHideDuration * (0.5)),(){
+    if(showButton()) { //play the show animation after a delay
+      //so that the corners dont animation faster than the button
+      Future.delayed(widget.showOrHideDuration * (0.5),(){
         if(mounted) setState(() {});
       });
     }
-    else{
+    else{ //play the hide animation immediately
       if(mounted) setState(() {});
     }
+  }
+
+  updateFullyHide(){
+    fullyHide = (showButton() == false);
   }
 
   @override
   void initState() {
     super.initState();
+    updateFullyHide();
     widget.pageNumber.addListener(updateState);
   }
 
@@ -362,26 +386,35 @@ class _DoneButtonCornerState extends State<DoneButtonCorner> {
     else cardColor = Theme.of(context).accentColor;
 
     //animates corners
-    return Container(
-      height: 24,
-      width: 24,
-      alignment: widget.isTop ? Alignment.bottomLeft : Alignment.topLeft,
-      child: AnimatedContainer(
-        curve: widget.animationCurve,
-        duration: (widget.showOrHideDuration * (0.5)),
-        height: size,
-        width: size,
-        child: FittedBox(
-          fit: BoxFit.contain,
-          child: ClipPath(
-            clipper: CornerClipper(
-              top: widget.isTop,
-            ),
-            child: Container(
-              height: 1,
-              width: 1,
-              decoration: new BoxDecoration(
-                color: cardColor,
+    return Visibility(
+      visible: fullyHide = false,
+      child: Container(
+        height: 24,
+        width: 24,
+        alignment: widget.isTop ? Alignment.bottomLeft : Alignment.topLeft,
+        child: AnimatedContainer(
+          onEnd: (){
+            updateFullyHide();
+            WidgetsBinding.instance.addPostFrameCallback((_){
+              setState(() {});
+            });
+          },
+          curve: widget.animationCurve,
+          duration: (widget.showOrHideDuration * (0.5)),
+          height: size,
+          width: size,
+          child: FittedBox(
+            fit: BoxFit.contain,
+            child: ClipPath(
+              clipper: CornerClipper(
+                top: widget.isTop,
+              ),
+              child: Container(
+                height: 1,
+                width: 1,
+                decoration: new BoxDecoration(
+                  color: cardColor,
+                ),
               ),
             ),
           ),

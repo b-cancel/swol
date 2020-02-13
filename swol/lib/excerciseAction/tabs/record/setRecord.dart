@@ -434,6 +434,11 @@ class _SetRecordState extends State<SetRecord> {
             ),
           ],
         ),
+        onDissmissCallback: (){
+          //either one, or both values are valid
+          //if both are valid, nothing happens
+          widget.focusOnFirstInValid();
+        }
       ).show();
     } else {
       widget.setBreak();
