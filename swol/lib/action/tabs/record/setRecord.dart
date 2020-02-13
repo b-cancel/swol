@@ -6,18 +6,22 @@ import 'package:flutter/material.dart';
 
 //plugins
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:swol/action/page.dart';
 
-//internal
+//internal: action
 import 'package:swol/action/tabs/suggest/suggestion/setDisplay.dart';
 import 'package:swol/action/tabs/sharedWidgets/cardWithHeader.dart';
 import 'package:swol/action/tabs/sharedWidgets/bottomButtons.dart';
 import 'package:swol/action/tabs/record/changeFunction.dart';
 import 'package:swol/action/tabs/record/advancedField.dart';
-import 'package:swol/action/other/controllersToWidgets.dart';
+
+//internal: shared
 import 'package:swol/shared/structs/anExcercise.dart';
 import 'package:swol/shared/methods/theme.dart';
+
+//TODO: on set init AND on resume we focus on first (if there is anything to focus on obvi)
+//TODO: this includes pop ups
 
 //TODO: the set should also be shown the revert button
 //TODO: make sure that we refocus on the problematic field
@@ -32,11 +36,6 @@ class SetRecord extends StatefulWidget {
     @required this.heroUp,
     @required this.heroAnimDuration,
     @required this.heroAnimTravel,
-    @required this.weightController,
-    @required this.weightFocusNode,
-    @required this.repsController,
-    @required this.repsFocusNode,
-    @required this.focusOnFirstInValid,
   });
 
   final AnExcercise excercise;
@@ -46,34 +45,78 @@ class SetRecord extends StatefulWidget {
   final ValueNotifier<bool> heroUp;
   final Duration heroAnimDuration;
   final double heroAnimTravel;
-  final TextEditingController weightController;
-  final FocusNode weightFocusNode;
-  final TextEditingController repsController;
-  final FocusNode repsFocusNode;
-  final Function focusOnFirstInValid;
 
   @override
   _SetRecordState createState() => _SetRecordState();
 }
 
-class _SetRecordState extends State<SetRecord> {
+class _SetRecordState extends State<SetRecord> with WidgetsBindingObserver {
+  final TextEditingController weightCtrl = new TextEditingController();
+  final FocusNode weightFN = new FocusNode();
+
+  final TextEditingController repsCtrl = new TextEditingController();
+  final FocusNode repsFN = new FocusNode();
+
   @override
   void initState() {
-    //super init
+    //supe init
     super.initState();
 
-    //TODO: confirm this
-    //NOTE: assumes that our weightController vlaues are never out of sync with our tempValues here... 
-    widget.weightController.text = widget.excercise?.tempWeight?.toString() ?? "";
-    widget.repsController.text = widget.excercise?.tempReps?.toString() ?? "";
+    //add observer for on resume
+    WidgetsBinding.instance.addObserver(this);
 
+    //NOTE: set the initial values of our controllers
+    weightCtrl.text = widget.excercise?.tempWeight?.toString() ?? "";
+    repsCtrl.text = widget.excercise?.tempReps?.toString() ?? "";
+    
     //autofocus if possible
     WidgetsBinding.instance.addPostFrameCallback((_){
       //NOTE: if you don't wait until transition things begin to break
       Future.delayed(widget.heroAnimDuration, (){
-        widget.focusOnFirstInValid();
+        focusOnFirstInValid();
       });
     });
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+   
+  //if both are valid nothing happens
+  //NOTE: in all cases where this is used the keyboard is guaranteed to be closed
+  //and its closed automatically by unfocusing so there are no weird exceptions to cover
+  focusOnFirstInValid(){
+    //grab weight stuff
+    bool weightEmpty = weightCtrl.text == "";
+    bool weightZero = weightCtrl.text == "0";
+    bool weightInvalid = weightEmpty || weightZero;
+
+    //maybe focus on weight
+    if(weightInvalid){
+      weightCtrl.clear(); //since invalid maybe 0
+      FocusScope.of(context).requestFocus(weightFN);
+    }
+    else{
+      //grab reps stuff
+      bool repsEmtpy = repsCtrl.text == "";
+      bool repsZero = repsCtrl.text == "0";
+      bool repsInvalid = repsEmtpy || repsZero;
+
+      //maybe focus on reps
+      if(repsInvalid){
+        repsCtrl.clear(); //since invalid maybe 0
+        FocusScope.of(context).requestFocus(repsFN);
+      }
+    }
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if(state == AppLifecycleState.resumed){
+      focusOnFirstInValid();
+    }
   }
 
   @override
@@ -133,10 +176,22 @@ class _SetRecordState extends State<SetRecord> {
                                 ],
                               ),
                             ),
-                            GoalSetWrapped(
-                              heroUp: widget.heroUp,
-                              heroAnimDuration: widget.heroAnimDuration,
-                              heroAnimTravel: widget.heroAnimTravel,
+                            Container(
+                              decoration: BoxDecoration(
+                                color: Theme.of(context).cardColor,
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(24),
+                                ),
+                              ),
+                              child: SetDisplay(
+                                useAccent: false,
+                                title: "Goal Set",
+                                lastWeight: 124,
+                                lastReps: 23,
+                                heroUp: widget.heroUp,
+                                heroAnimDuration: widget.heroAnimDuration,
+                                heroAnimTravel: widget.heroAnimTravel,
+                              ),
                             ),
                           ],
                         ),
@@ -219,10 +274,10 @@ class _SetRecordState extends State<SetRecord> {
                             header: "Record Set",
                             aLittleSmaller: true,
                             child: RecordFields(
-                              weightController: widget.weightController,
-                              weightFocusNode: widget.weightFocusNode,
-                              repsController: widget.repsController,
-                              repsFocusNode: widget.repsFocusNode,
+                              weightController: weightCtrl,
+                              weightFocusNode: weightFN,
+                              repsController: repsCtrl,
+                              repsFocusNode: repsFN,
                             ),
                           ),
                         ),
@@ -230,13 +285,12 @@ class _SetRecordState extends State<SetRecord> {
                     ),
                   ),
                 ),
-                BottomButtons(
-                  excercise: widget.excercise,
-                  forwardAction: () => maybeError(context),
-                  forwardActionWidget: Text(
-                    "Take Set Break",
+                Theme(
+                  data: MyTheme.light,
+                  child: WhiteBottomButtonsWrapper(
+                    excercise: widget.excercise,
+                    backToSuggestion: widget.backToSuggestion,
                   ),
-                  backAction: widget.backToSuggestion,
                 ),
               ],
             ),
@@ -245,242 +299,27 @@ class _SetRecordState extends State<SetRecord> {
       ),
     );
   }
-
-  maybeError(BuildContext context) {
-    //check data validity
-    bool weightValid = widget.weightController.text != "";
-    weightValid &= widget.weightController.text != "0";
-    bool repsValid = widget.repsController.text != "";
-    repsValid &= widget.repsController.text != "0";
-
-    //bring up the pop up if needed
-    if ((weightValid && repsValid) == false) {
-      //NOTE: this assumes the user CANT type anything except digits of the right size
-      bool setValid = weightValid && repsValid;
-
-      //change the buttons shows a the wording a tad
-      DateTime startTime = widget.excercise.tempStartTime.value;
-      bool timerNotStarted = startTime == AnExcercise.nullDateTime;
-      String continueString =
-          (timerNotStarted) ? "Begin Your Set Break" : "Return To Your Timer";
-
-      //remove focus so the pop up doesnt bring it back
-      FocusScope.of(context).unfocus();
-
-      //show the dialog
-      AwesomeDialog(
-        context: context,
-        dismissOnTouchOutside: true,
-        dialogType: DialogType.ERROR,
-        animType: AnimType.RIGHSLIDE,
-        headerAnimationLoop: false,
-        body: Column(
-          children: [
-            Text(
-              "Fix Your Set",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 24,
-                color: Colors.black,
-              ),
-            ),
-            Text(
-              "To " + continueString,
-              style: TextStyle(
-                fontSize: 14,
-                color: Colors.black,
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(
-                top: 16,
-              ),
-              child: Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: 24.0,
-                ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    weightAndRepsToDescription(
-                      widget.weightController.text,
-                      widget.repsController.text,
-                      isError: true,
-                    ),
-                    weightAndRepsToProblem(
-                      weightValid,
-                      repsValid,
-                      isError: true,
-                    ),
-                    Visibility(
-                      visible: setValid == false,
-                      child: RichText(
-                        text: TextSpan(
-                          style: TextStyle(
-                            color: Colors.black,
-                          ),
-                          children: [
-                            TextSpan(
-                              text: "Fix",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            TextSpan(
-                              text: " Your Set",
-                              style: TextStyle(
-                                fontWeight: timerNotStarted
-                                    ? FontWeight.bold
-                                    : FontWeight.normal,
-                              ),
-                            ),
-                            TextSpan(
-                              text: " to " + continueString,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    Visibility(
-                      visible: timerNotStarted == false,
-                      child: Column(
-                        children: <Widget>[
-                          RichText(
-                            text: TextSpan(
-                              children: [
-                                TextSpan(text: "\nor "),
-                                TextSpan(
-                                  text: "Revert",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                TextSpan(
-                                  text: " back to, ",
-                                ),
-                                TextSpan(
-                                  text: widget.excercise.tempWeight.toString(),
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                TextSpan(
-                                  text: " for ",
-                                ),
-                                TextSpan(
-                                  text: widget.excercise.tempReps.toString(),
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                TextSpan(
-                                  text: "rep" +
-                                      (widget.excercise.tempReps == 1 ? "" : "s"),
-                                ),
-                              ],
-                            ),
-                          ),
-                          //-------------------------Butttons-------------------------
-                          Transform.translate(
-                            offset: Offset(0, 16),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.max,
-                              children: [
-                                Expanded(
-                                  child: Container(),
-                                ),
-                                FlatButton(
-                                  onPressed: () {
-                                    //revert back
-                                    widget.weightController.text =
-                                        widget.excercise.tempWeight.toString();
-                                    widget.repsController.text =
-                                        widget.excercise.tempReps.toString();
-
-                                    //pop ourselves
-                                    Navigator.of(context).pop();
-
-                                    //go back to timer
-                                    widget.setBreak();
-                                  },
-                                  child: Text(
-                                    "Revert Back",
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                    ),
-                                  ),
-                                ),
-                                RaisedButton(
-                                  color: Colors.blue,
-                                  onPressed: (){
-                                    //pop ourselves
-                                    Navigator.of(context).pop();
-                                    //either one, or both values are valid
-                                    //if both are valid, nothing happens
-                                    widget.focusOnFirstInValid();
-                                  },
-                                  child: Text(
-                                    "Let Me Fix It",
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
-        onDissmissCallback: (){
-          //either one, or both values are valid
-          //if both are valid, nothing happens
-          widget.focusOnFirstInValid();
-        }
-      ).show();
-    } else {
-      widget.setBreak();
-    }
-  }
 }
 
-class GoalSetWrapped extends StatelessWidget {
-  const GoalSetWrapped({
+class WhiteBottomButtonsWrapper extends StatelessWidget {
+  const WhiteBottomButtonsWrapper({
     Key key,
-    @required this.heroUp,
-    @required this.heroAnimDuration,
-    @required this.heroAnimTravel,
+    @required this.excercise,
+    @required this.backToSuggestion,
   }) : super(key: key);
 
-  final ValueNotifier<bool> heroUp;
-  final Duration heroAnimDuration;
-  final double heroAnimTravel;
+  final AnExcercise excercise;
+  final Function backToSuggestion;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Theme.of(context).cardColor,
-        borderRadius: BorderRadius.all(
-          Radius.circular(24),
-        ),
+    return BottomButtons(
+      excercise: excercise,
+      forwardAction: () => maybeError(context),
+      forwardActionWidget: Text(
+        "Take Set Break",
       ),
-      child: SetDisplay(
-        useAccent: false,
-        title: "Goal Set",
-        lastWeight: 124,
-        lastReps: 23,
-        heroUp: heroUp,
-        heroAnimDuration: heroAnimDuration,
-        heroAnimTravel: heroAnimTravel,
-      ),
+      backAction: backToSuggestion,
     );
   }
 }

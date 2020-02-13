@@ -62,17 +62,17 @@ class SetProblem extends StatelessWidget {
   SetProblem({
     @required this.weightValid,
     @required this.repsValid,
+    @required this.setValid,
     this.isError,
   });
 
   final bool weightValid;
   final bool repsValid;
+  final bool setValid;
   final bool isError;
 
   @override
   Widget build(BuildContext context) {
-    bool setValid = weightValid && repsValid;
-
     return Visibility(
       visible: setValid == false,
       child: RichText(

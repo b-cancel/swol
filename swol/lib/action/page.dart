@@ -39,8 +39,8 @@ class ExcercisePage extends StatelessWidget {
     return Theme(
       data: MyTheme.dark,
       child: WillPopScope(
-        onWillPop: () async => noWarning(context, excercise),
-        child: ExcercisePageWhite(
+        onWillPop: () async => warningThenAllowPop(context, excercise),
+        child: ExcercisePageDark(
           excercise: excercise,
         ),
       ),
@@ -48,8 +48,8 @@ class ExcercisePage extends StatelessWidget {
   }
 }
 
-class ExcercisePageWhite extends StatelessWidget {
-  ExcercisePageWhite({
+class ExcercisePageDark extends StatelessWidget {
+  ExcercisePageDark({
     @required this.excercise,
   });
 
@@ -122,7 +122,7 @@ class PageTitle extends StatelessWidget {
               ),
               color: Theme.of(context).iconTheme.color,
               tooltip: MaterialLocalizations.of(context).backButtonTooltip,
-              onPressed: () => noWarning(context, excercise, alsoPop: true),
+              onPressed: () => warningThenAllowPop(context, excercise, alsoPop: true),
             ),
           ),
         ),

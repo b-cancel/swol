@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:swol/action/page.dart';
 import 'package:swol/shared/structs/anExcercise.dart';
 import 'package:swol/shared/widgets/simple/heros/curveMod.dart';
 import 'package:vector_math/vector_math_64.dart' as vect;
@@ -15,15 +16,13 @@ import 'package:vector_math/vector_math_64.dart' as vect;
 class DoneButton extends StatefulWidget {
   DoneButton({
     @required this.excercise,
-    this.showOrHideDuration: const Duration(milliseconds: 1500),
+    this.showOrHideDuration: const Duration(milliseconds: 300),
     @required this.animationCurve,
-    @required this.pageNumber,
   });
 
   final AnExcercise excercise;
   final Curve animationCurve;
   final Duration showOrHideDuration;
-  final ValueNotifier<int> pageNumber;
 
   @override
   _DoneButtonState createState() => _DoneButtonState();
@@ -52,7 +51,6 @@ class _DoneButtonState extends State<DoneButton> {
               DoneButtonCorner(
                 animationCurve: widget.animationCurve,
                 showOrHideDuration: widget.showOrHideDuration,
-                pageNumber: widget.pageNumber,
                 excercise: widget.excercise,
                 isTop: true,
               ),
@@ -61,12 +59,10 @@ class _DoneButtonState extends State<DoneButton> {
                 excercise: widget.excercise,
                 animationCurve: widget.animationCurve,
                 showOrHideDuration: widget.showOrHideDuration,
-                pageNumber: widget.pageNumber,
               ),
               DoneButtonCorner(
                 animationCurve: widget.animationCurve,
                 showOrHideDuration: widget.showOrHideDuration,
-                pageNumber: widget.pageNumber,
                 excercise: widget.excercise,
                 isTop: false,
               ),
@@ -84,14 +80,12 @@ class DoneButtonButton extends StatefulWidget {
     @required this.excercise,
     @required this.animationCurve,
     @required this.showOrHideDuration,
-    @required this.pageNumber,
   });
 
   final ValueNotifier<Function> onTap;
   final AnExcercise excercise;
   final Curve animationCurve;
   final Duration showOrHideDuration;
-  final ValueNotifier<int> pageNumber;
 
   @override
   _DoneButtonButtonState createState() => _DoneButtonButtonState();
@@ -108,12 +102,12 @@ class _DoneButtonButtonState extends State<DoneButtonButton> {
   void initState() {
     super.initState();
     updateFullyHide();
-    widget.pageNumber.addListener(updateState);
+    ExcercisePage.pageNumber.addListener(updateState);
   }
 
   @override
   void dispose() {
-    widget.pageNumber.removeListener(updateState);
+    ExcercisePage.pageNumber.removeListener(updateState);
     super.dispose();
   }
 
@@ -154,10 +148,14 @@ class _DoneButtonButtonState extends State<DoneButtonButton> {
     if(tempSetCount != widget.excercise.setTarget.value){
       //TODO: bring the pop up that asks us if we want to update our set target
     }
+    else{
+      //the set target doesn't need to be updated
+      widget.excercise.tempSetCount.value = AnExcercise.nullInt;
+    }
   }
 
   bool showButton(){
-    bool pageWithButton = widget.pageNumber.value != 1;
+    bool pageWithButton = ExcercisePage.pageNumber.value != 1;
     bool nullTSC = widget.excercise.tempSetCount.value == AnExcercise.nullInt;
     return (pageWithButton && nullTSC == false);
   }
@@ -184,7 +182,7 @@ class _DoneButtonButtonState extends State<DoneButtonButton> {
     //handle page changes
     int tempSetCount = widget.excercise.tempSetCount.value ?? 0;
     int setsPassed;
-    if(widget.pageNumber.value != 2){
+    if(ExcercisePage.pageNumber.value != 2){
       //for page 0 and 1 
       //although page 1 shouldn't have the button
       DateTime tempStartTime = widget.excercise.tempStartTime.value;
@@ -306,14 +304,12 @@ class DoneButtonCorner extends StatefulWidget {
   DoneButtonCorner({
     @required this.animationCurve,
     @required this.showOrHideDuration,
-    @required this.pageNumber,
     @required this.excercise,
     @required this.isTop,
   });
 
   final Curve animationCurve;
   final Duration showOrHideDuration;
-  final ValueNotifier<int> pageNumber;
   final AnExcercise excercise;
   final bool isTop;
 
@@ -345,17 +341,17 @@ class _DoneButtonCornerState extends State<DoneButtonCorner> {
   void initState() {
     super.initState();
     updateFullyHide();
-    widget.pageNumber.addListener(updateState);
+    ExcercisePage.pageNumber.addListener(updateState);
   }
 
   @override
   void dispose() {
-    widget.pageNumber.removeListener(updateState);
+    ExcercisePage.pageNumber.removeListener(updateState);
     super.dispose();
   }
 
   bool showButton(){
-    bool pageWithButton = widget.pageNumber.value != 1;
+    bool pageWithButton = ExcercisePage.pageNumber.value != 1;
     bool nullTSC = widget.excercise.tempSetCount.value == AnExcercise.nullInt;
     return (pageWithButton && nullTSC == false);
   }
@@ -367,7 +363,7 @@ class _DoneButtonCornerState extends State<DoneButtonCorner> {
     //handle page changes
     int tempSetCount = widget.excercise.tempSetCount.value ?? 0;
     int setsPassed;
-    if(widget.pageNumber.value != 2){
+    if(ExcercisePage.pageNumber.value != 2){
       //for page 0 and 1 
       //although page 1 shouldn't have the button
       DateTime tempStartTime = widget.excercise.tempStartTime.value;
