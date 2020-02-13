@@ -2,9 +2,9 @@
 import 'package:flutter/material.dart';
 
 //internal: action
-import 'package:swol/excerciseAction/tabs/sharedWidgets/bottomButtons.dart';
-import 'package:swol/excerciseAction/tabs/recovery/secondary/breath.dart';
-import 'package:swol/excerciseAction/tabs/recovery/timer/liquidTime.dart';
+import 'package:swol/action/tabs/sharedWidgets/bottomButtons.dart';
+import 'package:swol/action/tabs/recovery/secondary/breath.dart';
+import 'package:swol/action/tabs/recovery/timer/liquidTime.dart';
 
 //internal: shared
 import 'package:swol/shared/structs/anExcercise.dart';

@@ -59,21 +59,24 @@ class _TipGeneratorState extends State<TipGenerator> {
   ValueNotifier<String> updateableTipMessage;
 
   bool hasEndurance(TrainingID item){
-    if(item == TrainingID.Endurance) return true;
+    if(item == TrainingID.All) return true;
+    else if(item == TrainingID.Endurance) return true;
     else if(item == TrainingID.EnduranceAndHypertrophy) return true;
     else if(item == TrainingID.StrengthAndEndurance) return true;
     else return false;
   }
 
   bool hasHypertrohpy(TrainingID item){
-    if(item == TrainingID.EnduranceAndHypertrophy) return true;
+    if(item == TrainingID.All) return true;
+    else if(item == TrainingID.EnduranceAndHypertrophy) return true;
     else if(item == TrainingID.Hypertrophy) return true;
     else if(item == TrainingID.HypertrophyAndStrength) return true;
     else return false;
   }
 
   bool hasStrength(TrainingID item){
-    if(item == TrainingID.StrengthAndEndurance) return true;
+    if(item == TrainingID.All) return true;
+    else if(item == TrainingID.StrengthAndEndurance) return true;
     else if(item == TrainingID.HypertrophyAndStrength) return true;
     else if(item == TrainingID.Strength) return true;
     else return false;
@@ -121,6 +124,15 @@ class _TipGeneratorState extends State<TipGenerator> {
     }
   }
 
+  //NOTE: this function allows chains for example
+  //recovery: hypertrophy/strength
+  //rep target: THIS CAN BE ANYTHING
+  //set target: endurance/hypertrophy
+  //but its the best solution because if we want them ALL to atleast share 1 value
+  //then we arrive at the problem
+  //we about when a and b share a trainig type and b and c share one
+  //should we suggest that a change or that c change?
+  //and the pop up is already as complex as it has to be
   updateTip(){
     //handle recovery period
     Duration currRecovery = widget.recoveryPeriod.value;
@@ -168,17 +180,14 @@ class _TipGeneratorState extends State<TipGenerator> {
       recoveryID,
       setTargetID,
     );
-    print("rec and set: " + recoveryANDsetTarget.toString());
     bool setTargetANDrepTarget = trainingIDsEqual(
       setTargetID,
       repTargetID,
     );
-    print("set and rep: " + setTargetANDrepTarget.toString());
     bool repTargetANDrecovery = trainingIDsEqual(
       repTargetID,
       recoveryID,
     );
-    print("rep and rec: " + repTargetANDrecovery.toString());
 
     //show tip if needed
     int matches = 0;

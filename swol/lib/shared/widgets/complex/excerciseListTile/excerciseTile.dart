@@ -12,7 +12,7 @@ import 'package:swol/shared/widgets/simple/heros/title.dart';
 import 'package:swol/shared/structs/anExcercise.dart';
 
 //internal: other
-import 'package:swol/excerciseAction/excercisePage.dart';
+import 'package:swol/action/page.dart';
 import 'package:swol/main.dart';
 
 //widget

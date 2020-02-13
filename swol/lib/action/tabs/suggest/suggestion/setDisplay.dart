@@ -1,8 +1,7 @@
 //flutter
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
-import 'package:swol/excerciseAction/toolTips.dart';
-import 'package:swol/shared/widgets/simple/ourToolTip.dart';
+import 'package:swol/action/other/toolTips.dart';
 
 //plugin
 import 'package:vector_math/vector_math_64.dart' as vect;

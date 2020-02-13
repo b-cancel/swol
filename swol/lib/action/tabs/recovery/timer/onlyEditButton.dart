@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:swol/excerciseAction/tabs/recovery/secondary/timeDisplay.dart';
+import 'package:swol/action/tabs/recovery/secondary/timeDisplay.dart';
 
 //utility (max is 9:59 but we indicate we are maxed out with 9:99)
 List<String> durationToCustomDisplay(Duration duration){

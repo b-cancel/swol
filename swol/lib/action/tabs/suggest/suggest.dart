@@ -2,9 +2,9 @@
 import 'package:flutter/material.dart';
 
 //internal: action
-import 'package:swol/excerciseAction/tabs/suggest/suggestion/suggestion.dart';
-import 'package:swol/excerciseAction/tabs/sharedWidgets/bottomButtons.dart';
-import 'package:swol/excerciseAction/tabs/suggest/calibration.dart';
+import 'package:swol/action/tabs/suggest/suggestion/suggestion.dart';
+import 'package:swol/action/tabs/sharedWidgets/bottomButtons.dart';
+import 'package:swol/action/tabs/suggest/calibration.dart';
 
 //internal: other
 import 'package:swol/other/functions/helper.dart';

@@ -2,8 +2,7 @@
 import 'package:flutter/material.dart';
 
 //internal
-import 'package:swol/excerciseAction/tabs/recovery/secondary/explained.dart';
-import 'package:swol/other/durationFormat.dart';
+import 'package:swol/action/tabs/recovery/secondary/explained.dart';
 import 'package:swol/shared/widgets/complex/fields/headers/ourInformationPopUp.dart';
 import 'package:swol/shared/methods/theme.dart';
 

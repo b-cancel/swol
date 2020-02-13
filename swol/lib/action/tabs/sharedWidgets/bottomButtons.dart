@@ -2,8 +2,8 @@
 import 'package:flutter/material.dart';
 
 //internal
-import 'package:swol/excerciseAction/tabs/sharedWidgets/backButton.dart';
-import 'package:swol/excerciseAction/tabs/sharedWidgets/nextButton.dart';
+import 'package:swol/action/tabs/sharedWidgets/backButton.dart';
+import 'package:swol/action/tabs/sharedWidgets/nextButton.dart';
 import 'package:swol/shared/structs/anExcercise.dart';
 //TODO: at all times the next button should hero with the excercise tile's "next?" button
 //TODO: ofcourse if the "next?" button is in the excercise tile

@@ -6,10 +6,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 //internal: tabs
-import 'package:swol/excerciseAction/tabs/record/setRecord.dart';
-import 'package:swol/excerciseAction/tabs/recovery/recovery.dart';
-import 'package:swol/excerciseAction/tabs/sharedWidgets/doneButton.dart';
-import 'package:swol/excerciseAction/tabs/suggest/suggest.dart';
+import 'package:swol/action/tabs/record/setRecord.dart';
+import 'package:swol/action/tabs/recovery/recovery.dart';
+import 'package:swol/action/tabs/sharedWidgets/doneButton.dart';
+import 'package:swol/action/tabs/suggest/suggest.dart';
 import 'package:swol/shared/methods/theme.dart';
 import 'package:swol/shared/structs/anExcercise.dart';
 

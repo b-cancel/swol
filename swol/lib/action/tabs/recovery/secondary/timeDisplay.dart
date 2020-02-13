@@ -2,8 +2,8 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
-import 'package:swol/excerciseAction/tabs/recovery/secondary/triangle.dart';
-import 'package:swol/excerciseAction/tabs/recovery/timer/onlyEditButton.dart';
+import 'package:swol/action/tabs/recovery/secondary/triangle.dart';
+import 'package:swol/action/tabs/recovery/timer/onlyEditButton.dart';
 import 'package:swol/shared/widgets/simple/ourToolTip.dart';
 
 //showing time in a semi nice format for both timer and stopwatch widgets

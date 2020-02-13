@@ -10,12 +10,12 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 //internal
-import 'package:swol/excerciseAction/tabs/suggest/suggestion/setDisplay.dart';
-import 'package:swol/excerciseAction/tabs/sharedWidgets/cardWithHeader.dart';
-import 'package:swol/excerciseAction/tabs/sharedWidgets/bottomButtons.dart';
-import 'package:swol/excerciseAction/tabs/record/changeFunction.dart';
-import 'package:swol/excerciseAction/tabs/record/advancedField.dart';
-import 'package:swol/excerciseAction/controllersToWidgets.dart';
+import 'package:swol/action/tabs/suggest/suggestion/setDisplay.dart';
+import 'package:swol/action/tabs/sharedWidgets/cardWithHeader.dart';
+import 'package:swol/action/tabs/sharedWidgets/bottomButtons.dart';
+import 'package:swol/action/tabs/record/changeFunction.dart';
+import 'package:swol/action/tabs/record/advancedField.dart';
+import 'package:swol/action/other/controllersToWidgets.dart';
 import 'package:swol/shared/structs/anExcercise.dart';
 import 'package:swol/shared/methods/theme.dart';
 
@@ -61,6 +61,11 @@ class _SetRecordState extends State<SetRecord> {
   void initState() {
     //super init
     super.initState();
+
+    //TODO: confirm this
+    //NOTE: assumes that our weightController vlaues are never out of sync with our tempValues here... 
+    widget.weightController.text = widget.excercise?.tempWeight?.toString() ?? "";
+    widget.repsController.text = widget.excercise?.tempReps?.toString() ?? "";
 
     //autofocus if possible
     WidgetsBinding.instance.addPostFrameCallback((_){

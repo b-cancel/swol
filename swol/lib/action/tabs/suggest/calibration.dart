@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:swol/excerciseAction/goldenRatioPosition.dart';
-import 'package:swol/excerciseAction/tabs/sharedWidgets/cardWithHeader.dart';
+import 'package:swol/action/other/goldenRatioPosition.dart';
+import 'package:swol/action/tabs/sharedWidgets/cardWithHeader.dart';
 import 'package:swol/shared/functions/goldenRatio.dart';
 import 'package:swol/shared/widgets/simple/listItem.dart';
 

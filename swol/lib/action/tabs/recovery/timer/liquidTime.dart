@@ -5,12 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:liquid_progress_indicator/liquid_progress_indicator.dart';
 
 //internal
-import 'package:swol/excerciseAction/tabs/recovery/timer/puslingBackground.dart';
-import 'package:swol/excerciseAction/tabs/recovery/timer/turnOffVibration.dart';
-import 'package:swol/excerciseAction/tabs/recovery/secondary/timeDisplay.dart';
-import 'package:swol/excerciseAction/tabs/recovery/timer/onlyEditButton.dart';
-import 'package:swol/excerciseAction/tabs/recovery/timer/information.dart';
-import 'package:swol/excerciseAction/tabs/recovery/timer/changeTime.dart';
+import 'package:swol/action/tabs/recovery/timer/puslingBackground.dart';
+import 'package:swol/action/tabs/recovery/timer/turnOffVibration.dart';
+import 'package:swol/action/tabs/recovery/secondary/timeDisplay.dart';
+import 'package:swol/action/tabs/recovery/timer/onlyEditButton.dart';
+import 'package:swol/action/tabs/recovery/timer/information.dart';
+import 'package:swol/action/tabs/recovery/timer/changeTime.dart';
 
 //internal: shared
 import 'package:swol/shared/structs/anExcercise.dart';

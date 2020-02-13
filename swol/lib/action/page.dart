@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 //plugin
 import 'package:page_transition/page_transition.dart';
-import 'package:swol/excerciseAction/controllersToWidgets.dart';
+import 'package:swol/action/other/controllersToWidgets.dart';
 import 'package:swol/shared/methods/theme.dart';
 
 //internal: excercise
@@ -13,7 +13,7 @@ import 'package:swol/shared/widgets/simple/heros/title.dart';
 import 'package:swol/shared/structs/anExcercise.dart';
 
 //internal
-import 'package:swol/excerciseAction/tabs/verticalTabs.dart';
+import 'package:swol/action/tabs/verticalTabs.dart';
 import 'package:swol/pages/notes/excerciseNotes.dart';
 import 'package:swol/main.dart';
 
@@ -44,29 +44,7 @@ class _ExcercisePageState extends State<ExcercisePage> {
   //reps
   final TextEditingController repsController = new TextEditingController();
   final FocusNode repsFocusNode = new FocusNode();
-
-  //init
-  @override
-  void initState() {
-    //super init
-    super.initState();
-
-    //fill controller vars with temp vars if we have them
-    weightController.text = widget.excercise?.tempWeight?.toString() ?? "";
-    repsController.text = widget.excercise?.tempReps?.toString() ?? "";
-  }
-
-  //dispose
-  @override
-  void dispose() {
-    //dispose no longer needed controllers
-    weightController.dispose();
-    repsController.dispose();
-
-    //super dispose
-    super.dispose();
-  }
-
+  
   //build
   @override
   Widget build(BuildContext context) {

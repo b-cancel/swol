@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:swol/excerciseAction/toolTips.dart';
+import 'package:swol/action/other/toolTips.dart';
 import 'package:swol/shared/functions/goldenRatio.dart';
 
 class RecordFields extends StatefulWidget {
