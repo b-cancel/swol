@@ -50,8 +50,7 @@ class ExcerciseTile extends StatelessWidget {
         PageTransition page = PageTransition(
           duration: transitionDuration,
           type: PageTransitionType.rightToLeft, 
-          //when transitioning to this page relaoding leading is always false
-          //WILL SET reloading leading to true
+          //wrap in light so warning pop up works well
           child: Theme(
             data: MyTheme.light,
             child: ExcercisePage(
