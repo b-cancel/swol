@@ -58,10 +58,25 @@ class TipGenerator extends StatefulWidget {
 class _TipGeneratorState extends State<TipGenerator> {
   ValueNotifier<String> updateableTipMessage;
 
-  bool oneOfThemIs(TrainingID a, TrainingID b, TrainingID val){
-    bool aIs = (a == val);
-    bool bIs = (b == val);
-    return aIs || bIs;
+  bool hasEndurance(TrainingID item){
+    if(item == TrainingID.Endurance) return true;
+    else if(item == TrainingID.EnduranceAndHypertrophy) return true;
+    else if(item == TrainingID.StrengthAndEndurance) return true;
+    else return false;
+  }
+
+  bool hasHypertrohpy(TrainingID item){
+    if(item == TrainingID.EnduranceAndHypertrophy) return true;
+    else if(item == TrainingID.Hypertrophy) return true;
+    else if(item == TrainingID.HypertrophyAndStrength) return true;
+    else return false;
+  }
+
+  bool hasStrength(TrainingID item){
+    if(item == TrainingID.StrengthAndEndurance) return true;
+    else if(item == TrainingID.HypertrophyAndStrength) return true;
+    else if(item == TrainingID.Strength) return true;
+    else return false;
   }
 
   bool trainingIDsEqual(TrainingID a, TrainingID b){
@@ -70,21 +85,12 @@ class _TipGeneratorState extends State<TipGenerator> {
       //if either cover all 3 trainings then there is an obvious match
       if(a == TrainingID.All || b == TrainingID.All) return true;
       else{ 
-        //neither of them cover all scenarios
-        bool oneEndurance = oneOfThemIs(a, b, TrainingID.Endurance);
-        bool oneHypertrohpy = oneOfThemIs(a, b, TrainingID.Hypertrophy);
-        bool oneStrength = oneOfThemIs(a, b, TrainingID.Strength);
-
-        //only if there are overlaps is it possible still be equal
-        if(oneOfThemIs(a, b, TrainingID.EnduranceAndHypertrophy)){
-          return (oneEndurance || oneHypertrohpy);
-        }
-        else if(oneOfThemIs(a, b, TrainingID.HypertrophyAndStrength)){
-          return (oneHypertrohpy || oneStrength);
-        }
-        else if(oneOfThemIs(a, b, TrainingID.StrengthAndEndurance)){
-          return (oneStrength || oneEndurance);
-        }
+        bool aHasEndurance = hasEndurance(a);
+        bool aHasHypertrophy = hasHypertrohpy(a);
+        bool aHasStrength = hasStrength(a);
+        if(aHasEndurance && aHasEndurance == hasEndurance(b)) return true;
+        else if(aHasHypertrophy && aHasHypertrophy == hasHypertrohpy(b)) return true;
+        else if(aHasStrength && aHasStrength == hasStrength(b)) return true;
         else return false;
       }
     }
@@ -162,14 +168,17 @@ class _TipGeneratorState extends State<TipGenerator> {
       recoveryID,
       setTargetID,
     );
+    print("rec and set: " + recoveryANDsetTarget.toString());
     bool setTargetANDrepTarget = trainingIDsEqual(
       setTargetID,
       repTargetID,
     );
+    print("set and rep: " + setTargetANDrepTarget.toString());
     bool repTargetANDrecovery = trainingIDsEqual(
       repTargetID,
       recoveryID,
     );
+    print("rep and rec: " + repTargetANDrecovery.toString());
 
     //show tip if needed
     int matches = 0;
