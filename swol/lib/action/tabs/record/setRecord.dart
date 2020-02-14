@@ -78,13 +78,20 @@ class _SetRecordState extends State<SetRecord> {
     WidgetsBinding.instance.addPostFrameCallback((_){
       //NOTE: if you don't wait until transition things begin to break
       Future.delayed(widget.heroAnimDuration, (){
-        focusOnFirstInValid();
+        focusOnFirstInvalid();
       });
     });
+
+    //attach a listener so a change in it will cause a refocus
+    //done from warning, error, and notes page
+    ExcercisePage.causeRefocus.addListener(focusOnFirstInvalid);
   }
 
   @override
   void dispose() {
+    //remove listeners
+    ExcercisePage.causeRefocus.removeListener(focusOnFirstInvalid);
+
     //remove notifiers
     weightCtrl.removeListener(updateWeightNotifier);
     repsCtrl.removeListener(updateRepsNotifier);
@@ -96,7 +103,7 @@ class _SetRecordState extends State<SetRecord> {
   //if both are valid nothing happens
   //NOTE: in all cases where this is used the keyboard is guaranteed to be closed
   //and its closed automatically by unfocusing so there are no weird exceptions to cover
-  focusOnFirstInValid(){
+  focusOnFirstInvalid(){
     //grab weight stuff
     bool weightEmpty = weightCtrl.text == "";
     bool weightZero = weightCtrl.text == "0";
@@ -119,6 +126,10 @@ class _SetRecordState extends State<SetRecord> {
         FocusScope.of(context).requestFocus(repsFN);
       }
     }
+
+    //whatever cause the refocusing
+    //no longer needs it
+    ExcercisePage.causeRefocus.value = false;
   }
 
   @override

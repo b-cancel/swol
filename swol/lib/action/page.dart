@@ -30,6 +30,8 @@ class ExcercisePage extends StatelessWidget {
 
   //used so that we can change the page number from anywhere
   static final ValueNotifier<int> pageNumber = new ValueNotifier<int>(0);
+  //used so that we can cause a field refocusing from different parts of the app
+  static final ValueNotifier<bool> causeRefocus = new ValueNotifier<bool>(false);
   //used so that we can set the goal set from both the suggest and record page
   static final ValueNotifier<int> setGoalWeight = new ValueNotifier<int>(0);
   static final ValueNotifier<int> setGoalReps = new ValueNotifier<int>(0);

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 //plugin
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:swol/action/page.dart';
 
 //internl: excercise
 import 'package:swol/shared/widgets/complex/fields/fields/linkField/link.dart';
@@ -70,68 +71,79 @@ class _ExcerciseNotesState extends State<ExcerciseNotes> {
 
   final FocusNode noteFocusNode = FocusNode();
 
+  goBackToExcercisePage(){
+    //close any keyboard that may be open
+    FocusScope.of(context).unfocus();
+    //indicate that we should refocus
+    ExcercisePage.causeRefocus.value = true;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).primaryColorDark,
-        leading: FittedBox(
-          fit: BoxFit.contain,
-          child: IconButton(
-            icon: Icon(Icons.chevron_left),
-            color: Theme.of(context).iconTheme.color,
-            tooltip: MaterialLocalizations.of(context).backButtonTooltip,
-            onPressed: () {
-              //close any keyboard that may be open
-              FocusScope.of(context).unfocus();
-              //pop to the page below us
-              Navigator.of(context).pop();
-            },
-          ),
-        ),
-        title: Text("Notes"),
-        actions: [
-          BigActionButton(
-            excercise: widget.excercise,
-            delete: false,
-          ),
-          BigActionButton(
-            excercise: widget.excercise,
-            delete: true,
-          ),
-        ],
-      ),
-      body: ListView(
-        children: <Widget>[
-          Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: 16,
-              vertical: 8,
+    return WillPopScope(
+      onWillPop: () async{
+        goBackToExcercisePage();
+        return true;
+      },
+      child: Scaffold(
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        appBar: AppBar(
+          backgroundColor: Theme.of(context).primaryColorDark,
+          leading: FittedBox(
+            fit: BoxFit.contain,
+            child: IconButton(
+              icon: Icon(Icons.chevron_left),
+              color: Theme.of(context).iconTheme.color,
+              tooltip: MaterialLocalizations.of(context).backButtonTooltip,
+              onPressed: () {
+                goBackToExcercisePage();
+                Navigator.of(context).pop();
+              },
             ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                NameField(
-                  editOneAtATime: true,
-                  nameToUpdate: name,
-                  showError: nameError,
-                  autofocus: true,
-                ),
-                NotesField(
-                  editOneAtATime: true,
-                  noteToUpdate: note,
-                  noteFocusNode: noteFocusNode,
-                ),
-                LinkField(
-                  url: url,
-                  editOneAtATime: true,
-                ),
-              ],
-            ), 
           ),
-        ],
+          title: Text("Notes"),
+          actions: [
+            BigActionButton(
+              excercise: widget.excercise,
+              delete: false,
+            ),
+            BigActionButton(
+              excercise: widget.excercise,
+              delete: true,
+            ),
+          ],
+        ),
+        body: ListView(
+          children: <Widget>[
+            Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: 16,
+                vertical: 8,
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  NameField(
+                    editOneAtATime: true,
+                    nameToUpdate: name,
+                    showError: nameError,
+                    autofocus: true,
+                  ),
+                  NotesField(
+                    editOneAtATime: true,
+                    noteToUpdate: note,
+                    noteFocusNode: noteFocusNode,
+                  ),
+                  LinkField(
+                    url: url,
+                    editOneAtATime: true,
+                  ),
+                ],
+              ), 
+            ),
+          ],
+        ),
       ),
     );
   }
