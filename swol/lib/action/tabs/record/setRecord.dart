@@ -8,12 +8,12 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:swol/action/page.dart';
+import 'package:swol/action/shared/setDisplay.dart';
 
 //internal: action
-import 'package:swol/action/tabs/suggest/suggestion/setDisplay.dart';
 import 'package:swol/action/tabs/sharedWidgets/cardWithHeader.dart';
 import 'package:swol/action/tabs/sharedWidgets/bottomButtons.dart';
-import 'package:swol/action/tabs/record/changeFunction.dart';
+import 'package:swol/action/shared/changeFunction.dart';
 import 'package:swol/action/tabs/record/advancedField.dart';
 
 //internal: shared
@@ -150,10 +150,11 @@ class _SetRecordState extends State<SetRecord> {
       distanceColor = Colors.red.withOpacity(0.66);
     else if (id == 3) distanceColor = Colors.red;
 
-    //build
-    return ClipRRect( //clipping so "hero" doesn't show up in the other page
+    //clipping so "hero" doesn't show up in the other page
+    return ClipRRect( 
       child: Theme(
         data: MyTheme.dark,
+        //must be in listview so that the textfield can be scrolled into place
         child: ListView(
           children: <Widget>[
             Container(
@@ -163,7 +164,6 @@ class _SetRecordState extends State<SetRecord> {
                 children: <Widget>[
                   Expanded(
                     child: Container(
-                      //The extra padding that just looked right
                       width: MediaQuery.of(context).size.width,
                       child: Column(
                         mainAxisSize: MainAxisSize.max,
@@ -280,19 +280,14 @@ class _SetRecordState extends State<SetRecord> {
                               ),
                             ),
                           ),
-                          Padding(
-                            padding: EdgeInsets.only(
-                              bottom: 24.0,
-                            ),
-                            child: CardWithHeader(
-                              header: "Record Set",
-                              aLittleSmaller: true,
-                              child: RecordFields(
-                                weightController: weightCtrl,
-                                weightFocusNode: weightFN,
-                                repsController: repsCtrl,
-                                repsFocusNode: repsFN,
-                              ),
+                          CardWithHeader(
+                            header: "Record Set",
+                            aLittleSmaller: true,
+                            child: RecordFields(
+                              weightController: weightCtrl,
+                              weightFocusNode: weightFN,
+                              repsController: repsCtrl,
+                              repsFocusNode: repsFN,
                             ),
                           ),
                         ],
@@ -319,6 +314,7 @@ class _SetRecordState extends State<SetRecord> {
   }
 }
 
+//TODO: fix white wrapping so the little ugly drak blue corner doesn't show
 class WhiteBottomButtonsWrapper extends StatelessWidget {
   const WhiteBottomButtonsWrapper({
     Key key,

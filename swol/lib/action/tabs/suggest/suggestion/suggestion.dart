@@ -1,18 +1,15 @@
 //flutter
 import 'package:flutter/material.dart';
-import 'package:swol/action/tabs/record/changeFunction.dart';
+import 'package:swol/action/shared/setDisplay.dart';
 
 //plugin
-import 'package:swol/action/tabs/suggest/suggestion/setDisplay.dart';
 import 'package:swol/action/tabs/suggest/suggestion/corners.dart';
+import 'package:swol/action/shared/changeFunction.dart';
 
 //internal: shared
 import 'package:swol/shared/widgets/complex/fields/fields/sliders/repTarget.dart';
 import 'package:swol/shared/widgets/complex/fields/fields/function.dart';
 import 'package:swol/shared/structs/anExcercise.dart';
-
-//internal: other
-import 'package:swol/other/functions/helper.dart';
 
 //includes both calibration and the suggestion
 class SuggestionSection extends StatelessWidget {

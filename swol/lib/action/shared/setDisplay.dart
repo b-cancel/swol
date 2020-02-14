@@ -1,7 +1,7 @@
 //flutter
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
-import 'package:swol/action/other/toolTips.dart';
+import 'package:swol/action/shared/setToolTips.dart';
 
 //plugin
 import 'package:vector_math/vector_math_64.dart' as vect;
@@ -41,7 +41,6 @@ class SetDisplay extends StatefulWidget {
 
 class _SetDisplayState extends State<SetDisplay> {
   updateState(){
-    print("woah--------------updating");
     if(mounted) setState(() {});
   }
 

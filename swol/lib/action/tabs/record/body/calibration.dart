@@ -1,17 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:swol/action/other/goldenRatioPosition.dart';
 import 'package:swol/action/tabs/sharedWidgets/cardWithHeader.dart';
 import 'package:swol/shared/functions/goldenRatio.dart';
 import 'package:swol/shared/widgets/simple/listItem.dart';
 
 class CalibrationCard extends StatelessWidget {
-  const CalibrationCard({
-    Key key,
-    @required this.rawSpaceToRedistribute,
-  }) : super(key: key);
-
-  final double rawSpaceToRedistribute;
-
   @override
   Widget build(BuildContext context) {
     //minor setting
@@ -23,7 +15,7 @@ class CalibrationCard extends StatelessWidget {
     List<double> goldenWidth2 = measurementToGoldenRatioBS(goldenWidth[1]);
 
     //widget to be golden ratio centered
-    Widget child = Column(
+    return Column(
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -149,12 +141,6 @@ class CalibrationCard extends StatelessWidget {
           ),
         ),
       ],
-    );
-
-    //build
-    return GoldenRatioPosition(
-      spaceToRedistribute: rawSpaceToRedistribute,
-      child: child,
     );
   }
 }
