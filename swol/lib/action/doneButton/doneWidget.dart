@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:swol/action/doneButton/button.dart';
 import 'package:swol/action/doneButton/corner.dart';
+import 'package:swol/action/page.dart';
 import 'package:swol/shared/structs/anExcercise.dart';
 
 //TODO: change the theme of the button depending on stuffs
@@ -28,12 +29,56 @@ class DoneButton extends StatefulWidget {
 }
 
 class _DoneButtonState extends State<DoneButton> {
-  //this function is update by done button button
-  //im not sure why... 
-  final ValueNotifier<Function> onTap = new ValueNotifier<Function>((){});
+
+  updateState() {
+    //we want to show but wait till the main button shows
+    if(showButton()) { //play the show animation after a delay
+      //so that the corners dont animation faster than the button
+      Future.delayed(widget.showOrHideDuration * (0.5),(){
+        if(mounted) setState(() {});
+      });
+    }
+    else{ //play the hide animation immediately
+      if(mounted) setState(() {});
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    ExcercisePage.pageNumber.addListener(updateState);
+  }
+
+  @override
+  void dispose() {
+    ExcercisePage.pageNumber.removeListener(updateState);
+    super.dispose();
+  }
   
   @override
   Widget build(BuildContext context) {
+    //handle page changes
+    int tempSetCount = widget.excercise.tempSetCount.value ?? 0;
+    int setsPassed;
+    if(ExcercisePage.pageNumber.value != 2){
+      //for page 0 and 1 
+      //although page 1 shouldn't have the button
+      DateTime tempStartTime = widget.excercise.tempStartTime.value;
+      if(tempStartTime == AnExcercise.nullDateTime){
+        setsPassed = tempSetCount;
+      }
+      else setsPassed = tempSetCount - 1;
+    }
+    else setsPassed = tempSetCount;
+
+    //determine button color based on sets passed
+    Color cardColor;
+    if(setsPassed < widget.excercise.setTarget.value){
+      cardColor = Theme.of(context).cardColor;
+    }
+    else cardColor = Theme.of(context).accentColor;
+
+    //position
     return Positioned(
       bottom: 0,
       left: 0,
@@ -41,7 +86,9 @@ class _DoneButtonState extends State<DoneButton> {
       //from bottom of the screen
       //to the top of the visual button
       child: GestureDetector(
-        onTap: () => onTap.value(),
+        onTap: (){
+          print("hello world");
+        },
         child: Padding(
           padding: EdgeInsets.only(
             bottom: 24.0,
@@ -51,21 +98,23 @@ class _DoneButtonState extends State<DoneButton> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               DoneButtonCorner(
+                show: showButton(),
+                color: cardColor,
                 animationCurve: widget.animationCurve,
                 showOrHideDuration: widget.showOrHideDuration,
-                excercise: widget.excercise,
                 isTop: true,
               ),
               DoneButtonButton(
-                onTap: onTap,
+                onTap: new ValueNotifier<Function>((){}),
                 excercise: widget.excercise,
                 animationCurve: widget.animationCurve,
                 showOrHideDuration: widget.showOrHideDuration,
               ),
               DoneButtonCorner(
+                show: showButton(),
+                color: cardColor,
                 animationCurve: widget.animationCurve,
                 showOrHideDuration: widget.showOrHideDuration,
-                excercise: widget.excercise,
                 isTop: false,
               ),
             ],
@@ -73,5 +122,13 @@ class _DoneButtonState extends State<DoneButton> {
         ),
       ),
     );
+  }
+
+  bool showButton(){
+    bool pageWithButton = ExcercisePage.pageNumber.value != 1;
+    print("should show button: " + pageWithButton.toString());
+    //TODO: remove this
+    bool nullTSC = false; //widget.excercise.tempSetCount.value == AnExcercise.nullInt;
+    return (pageWithButton && nullTSC == false);
   }
 }
