@@ -36,7 +36,6 @@ class _FloatingDoneButtonState extends State<FloatingDoneButton> {
     //for that reason when our setsPassed are equal to 0
     //we show "Delete The Set" instead
 
-    //TODO: uncomment debug code 
     bool nullTSC = false; //widget.excercise.tempSetCount.value == AnExcercise.nullInt;
     return (pageWithButton && nullTSC == false);
   }

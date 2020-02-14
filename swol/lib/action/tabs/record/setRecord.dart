@@ -7,14 +7,14 @@ import 'package:flutter/material.dart';
 //plugins
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:swol/action/page.dart';
-import 'package:swol/action/shared/setDisplay.dart';
 
 //internal: action
 import 'package:swol/action/tabs/sharedWidgets/cardWithHeader.dart';
-import 'package:swol/action/tabs/sharedWidgets/bottomButtons.dart';
-import 'package:swol/action/shared/changeFunction.dart';
 import 'package:swol/action/tabs/record/advancedField.dart';
+import 'package:swol/action/shared/changeFunction.dart';
+import 'package:swol/action/bottomButtons/button.dart';
+import 'package:swol/action/shared/setDisplay.dart';
+import 'package:swol/action/page.dart';
 
 //internal: shared
 import 'package:swol/shared/structs/anExcercise.dart';

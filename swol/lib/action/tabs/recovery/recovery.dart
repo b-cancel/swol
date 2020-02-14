@@ -1,11 +1,11 @@
 //flutter
 import 'package:flutter/material.dart';
-import 'package:swol/action/page.dart';
 
 //internal: action
-import 'package:swol/action/tabs/sharedWidgets/bottomButtons.dart';
 import 'package:swol/action/tabs/recovery/secondary/breath.dart';
 import 'package:swol/action/tabs/recovery/timer/liquidTime.dart';
+import 'package:swol/action/bottomButtons/button.dart';
+import 'package:swol/action/page.dart';
 
 //internal: shared
 import 'package:swol/shared/structs/anExcercise.dart';

@@ -105,7 +105,6 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
           children: <Widget>[
             Suggestion( 
               excercise: widget.excercise,
-              statusBarHeight: widget.statusBarHeight,
               heroUp: goalSetUp,
               heroAnimDuration: transitionDuration,
               heroAnimTravel: totalTravel,

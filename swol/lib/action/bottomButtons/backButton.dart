@@ -117,7 +117,7 @@ class ActualBackButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(
-        left: 16,
+        left: 24, //extra spacing for big fingers
         top: verticalPadding,
         bottom: verticalPadding,
       ),

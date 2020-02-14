@@ -1,33 +1,31 @@
 //flutter
 import 'package:flutter/material.dart';
-import 'package:swol/action/page.dart';
 
 //internal: action
 import 'package:swol/action/tabs/suggest/suggestion/suggestion.dart';
-import 'package:swol/action/tabs/sharedWidgets/bottomButtons.dart';
+import 'package:swol/action/bottomButtons/button.dart';
+import 'package:swol/action/page.dart';
 
 //internal: other
-import 'package:swol/other/functions/helper.dart';
 import 'package:swol/shared/structs/anExcercise.dart';
+import 'package:swol/other/functions/helper.dart';
 
-//TODO: implement this
-//FLIPPED used when the user arrived directly to the suggest page
-//and the temp set was not null
-//meaning they came from the excercise list and for some reason either
-//1. left the excercise without starting there break
-//2. finished the break and was done with the excercise
-//    but didn't mark it as done
+//TODO: from set record page
+//we don't care if we are BEFORE or AFTER our set target
+//either way the user has decided to continue
+//we should respect that
+//and there are no other bottom buttons to click or distract
+//so we simply highligt the bottom next button at all times
 
+//widget
 class Suggestion extends StatefulWidget {
   Suggestion({
-    @required this.statusBarHeight,
     @required this.excercise,
     @required this.heroUp,
     @required this.heroAnimDuration,
     @required this.heroAnimTravel,
   });
 
-  final double statusBarHeight;
   final AnExcercise excercise;
   final ValueNotifier<bool> heroUp;
   final Duration heroAnimDuration;
@@ -38,8 +36,6 @@ class Suggestion extends StatefulWidget {
 }
 
 class _SuggestionState extends State<Suggestion> {
-  bool showCalibration;
-
   //function select
   ValueNotifier<int> functionIndex;
   String functionValue;
@@ -57,10 +53,6 @@ class _SuggestionState extends State<Suggestion> {
 
     //TODO: might not need this
     setState(() {});
-  }
-
-  testFirstTime() {
-    if (mounted) setState(() {});
   }
 
   @override
@@ -96,14 +88,6 @@ class _SuggestionState extends State<Suggestion> {
 
   @override
   Widget build(BuildContext context) {
-    double fullHeight = MediaQuery.of(context).size.height;
-    double appBarHeight = 56; //constant according to flutter docs
-    double bottomButtonsHeight = 64;
-    double backButtonHeight = 48;
-    double spaceToRedistribute = fullHeight - widget.statusBarHeight;
-    spaceToRedistribute -= (appBarHeight + bottomButtonsHeight);
-
-    //buildy boi
     return ClipRRect(
       //clipping so "hero" doesn't show up in the other page
       child: Column(
@@ -111,9 +95,9 @@ class _SuggestionState extends State<Suggestion> {
           Expanded(
             child: Padding(
               padding: EdgeInsets.only(
-                bottom: 24,
+                bottom: 24, //extra for the complete button
               ),
-              child: SuggestionSection(
+              child: SuggestBody(
                 excercise: widget.excercise,
                 heroUp: widget.heroUp,
                 heroAnimDuration: widget.heroAnimDuration,

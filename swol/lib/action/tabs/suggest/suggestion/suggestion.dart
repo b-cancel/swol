@@ -12,8 +12,8 @@ import 'package:swol/shared/widgets/complex/fields/fields/function.dart';
 import 'package:swol/shared/structs/anExcercise.dart';
 
 //includes both calibration and the suggestion
-class SuggestionSection extends StatelessWidget {
-  SuggestionSection({
+class SuggestBody extends StatelessWidget {
+  SuggestBody({
     Key key,
     @required this.excercise,
     @required this.heroUp,

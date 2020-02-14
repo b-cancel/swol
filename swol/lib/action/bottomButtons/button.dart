@@ -2,26 +2,11 @@
 import 'package:flutter/material.dart';
 
 //internal
-import 'package:swol/action/tabs/sharedWidgets/backButton.dart';
-import 'package:swol/action/tabs/sharedWidgets/nextButton.dart';
+import 'package:swol/action/bottomButtons/backButton.dart';
+import 'package:swol/action/bottomButtons/nextButton.dart';
 import 'package:swol/shared/structs/anExcercise.dart';
-//TODO: at all times the next button should hero with the excercise tile's "next?" button
-//TODO: ofcourse if the "next?" button is in the excercise tile
 
-//TODO: from suggest page
-//1. if we are BEFORE our set target then highlight
-//2. if we are AFTER our set target then we don't highlight
-//TODO: make sure the above also according affects the next page
-
-//TODO: from set record page
-//we don't care if we are BEFORE or AFTER our set target
-//either way the user has decided to continue
-//we should respect that
-//and there are no other bottom buttons to click or distract
-//so we simply highligt the bottom next button at all times
-
-//TODO: from break duration page
-//same as suggest page, except that we don't care about how it affectsthe next page
+//widget
 class BottomButtons extends StatelessWidget {
   BottomButtons({
     @required this.excercise,
@@ -85,7 +70,6 @@ class Buttons extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double extraVerticalPadding = 8;
-
     return IntrinsicHeight(
       child: Row(
         mainAxisSize: MainAxisSize.max,
