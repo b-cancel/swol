@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 //plugins
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:swol/action/shared/halfColored.dart';
 
 //internal: action
 import 'package:swol/action/tabs/sharedWidgets/cardWithHeader.dart';
@@ -174,40 +175,25 @@ class _SetRecordState extends State<SetRecord> {
                             height: 24,
                             color: Theme.of(context).accentColor,
                           ),
-                          Stack(
-                            children: <Widget>[
-                              Positioned.fill(
-                                child: Column(
-                                  children: <Widget>[
-                                    Expanded(
-                                      child: Container(
-                                        color: Theme.of(context).accentColor,
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child: Container(),
-                                    )
-                                  ],
+                          TopBackgroundColored(
+                            color: Theme.of(context).accentColor,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Theme.of(context).cardColor,
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(24),
                                 ),
                               ),
-                              Container(
-                                decoration: BoxDecoration(
-                                  color: Theme.of(context).cardColor,
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(24),
-                                  ),
-                                ),
-                                child: SetDisplay(
-                                  useAccent: false,
-                                  title: "Goal Set",
-                                  lastWeight: 124,
-                                  lastReps: 23,
-                                  heroUp: widget.heroUp,
-                                  heroAnimDuration: widget.heroAnimDuration,
-                                  heroAnimTravel: widget.heroAnimTravel,
-                                ),
+                              child: SetDisplay(
+                                useAccent: false,
+                                title: "Goal Set",
+                                lastWeight: 124,
+                                lastReps: 23,
+                                heroUp: widget.heroUp,
+                                heroAnimDuration: widget.heroAnimDuration,
+                                heroAnimTravel: widget.heroAnimTravel,
                               ),
-                            ],
+                            ),
                           ),
                           Expanded(
                             child: Center(

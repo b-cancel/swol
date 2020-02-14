@@ -1,10 +1,13 @@
 //flutter
 import 'package:flutter/material.dart';
+import 'package:swol/action/shared/halfColored.dart';
+import 'package:swol/action/shared/setDisplay.dart';
 
 //internal: action
-import 'package:swol/action/tabs/suggest/suggestion/suggestion.dart';
+import 'package:swol/action/tabs/suggest/changeSuggestion.dart';
 import 'package:swol/action/bottomButtons/button.dart';
 import 'package:swol/action/page.dart';
+import 'package:swol/action/tabs/suggest/corners.dart';
 
 //internal: other
 import 'package:swol/shared/structs/anExcercise.dart';
@@ -88,6 +91,11 @@ class _SuggestionState extends State<Suggestion> {
 
   @override
   Widget build(BuildContext context) {
+    //card radius
+    Radius arrowRadius = Radius.circular(48);
+    Radius cardRadius = Radius.circular(24);
+
+    //build
     return ClipRRect(
       //clipping so "hero" doesn't show up in the other page
       child: Column(
@@ -97,11 +105,50 @@ class _SuggestionState extends State<Suggestion> {
               padding: EdgeInsets.only(
                 bottom: 24, //extra for the complete button
               ),
-              child: SuggestBody(
-                excercise: widget.excercise,
-                heroUp: widget.heroUp,
-                heroAnimDuration: widget.heroAnimDuration,
-                heroAnimTravel: widget.heroAnimTravel,
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    TopBackgroundColored(
+                      color: Theme.of(context).cardColor,
+                      child: SetDisplay(
+                        useAccent: false,
+                        extraCurvy: true,
+                        title: "Last Set",
+                        lastWeight: 9999,
+                        lastReps: 888,
+                      ),
+                    ),
+                    Expanded(
+                      child: SuggestionChanger(
+                        excercise: widget.excercise,
+                        arrowRadius: arrowRadius,
+                        cardRadius: cardRadius,
+                      ),
+                    ),
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).accentColor,
+                        borderRadius: BorderRadius.only(
+                          bottomRight: cardRadius,
+                          bottomLeft: cardRadius,
+                        ),
+                      ),
+                      width: MediaQuery.of(context).size.width,
+                      child: SetDisplay(
+                        useAccent: true,
+                        title: "Goal Set",
+                        lastWeight: 124,
+                        lastReps: 23,
+                        heroUp: widget.heroUp,
+                        heroAnimDuration: widget.heroAnimDuration,
+                        heroAnimTravel: widget.heroAnimTravel,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
