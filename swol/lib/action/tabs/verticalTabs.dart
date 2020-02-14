@@ -116,7 +116,7 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
           ],
         ),
         //must be on top... other wise it isnt clickable
-        DoneButton(
+        FloatingDoneButton(
           excercise: widget.excercise,
           showOrHideDuration: transitionDuration,
           animationCurve: Curves.easeInOut,
@@ -131,24 +131,32 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
     //close the keybaord since we have been on page 1 (record)
     FocusScope.of(context).unfocus();
 
+    //grab start offset so we know when to start the "hero" transition
+    startHeroOnOffsetChange(pageViewController.offset);
+
     //animated to right page
     pageViewController.animateToPage(
       ExcercisePage.pageNumber.value, 
       duration: transitionDuration, 
       curve: Curves.easeInOut,
     );
+  }
 
-    //handle the cross page "hero"
-    //after waiting "a couple of frames" for the other page to start showing up
-    //TODO: find a more fool proof way of doing this
-    //perhaps by using offsets and recursion to check where they are
-    //assuming they should be at some half way point if animation has begun
+  //NOTE: we don't need to plan for the rare case 
+  //where before the animation starts 
+  //we want to go to another page
+  //because there is no way that can happen because
+  //1. only about 3 frames pass
+  //2. if we are moving towards the "record" page
+  //    until the transition begins no other navigation buttons are expose
+  //3. if we are moving towards the "suggest page"
+  //    the next button is immediately hidden
+  //    TODO: can cover case where somehow maggically pressed but not worth
+  startHeroOnOffsetChange(double startOffset){
     WidgetsBinding.instance.addPostFrameCallback((_){
-      WidgetsBinding.instance.addPostFrameCallback((_){
-        WidgetsBinding.instance.addPostFrameCallback((_){
-          goalSetUp.value = (ExcercisePage.pageNumber.value == 0);
-        });
-      });
+      double currentOffset = pageViewController.offset;
+      if(currentOffset == startOffset) startHeroOnOffsetChange(startOffset);
+      else goalSetUp.value = (ExcercisePage.pageNumber.value == 0);
     });
   }
 }

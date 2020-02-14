@@ -6,6 +6,7 @@ class DoneButtonCorner extends StatelessWidget {
   DoneButtonCorner({
     @required this.show,
     @required this.color,
+    //stay the same throughout
     @required this.animationCurve,
     @required this.showOrHideDuration,
     @required this.isTop,
@@ -13,6 +14,7 @@ class DoneButtonCorner extends StatelessWidget {
 
   final bool show;
   final Color color;
+  //stay the same throughout
   final Curve animationCurve;
   final Duration showOrHideDuration;
   final bool isTop;

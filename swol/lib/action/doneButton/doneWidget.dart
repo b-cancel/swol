@@ -13,8 +13,8 @@ import 'package:swol/shared/structs/anExcercise.dart';
 
 //TODO: from break page -> must do everything that clicking next set would
 //TODO: essentially make all the pop ups that would pop up... do so...
-class DoneButton extends StatefulWidget {
-  DoneButton({
+class FloatingDoneButton extends StatefulWidget {
+  FloatingDoneButton({
     @required this.excercise,
     this.showOrHideDuration: const Duration(milliseconds: 300),
     @required this.animationCurve,
@@ -25,11 +25,16 @@ class DoneButton extends StatefulWidget {
   final Duration showOrHideDuration;
 
   @override
-  _DoneButtonState createState() => _DoneButtonState();
+  _FloatingDoneButtonState createState() => _FloatingDoneButtonState();
 }
 
-class _DoneButtonState extends State<DoneButton> {
+class _FloatingDoneButtonState extends State<FloatingDoneButton> {
 
+  //TODO: the button parts animates immeditely
+  //TODO: the corners animate in faster after a delay
+  //TODO: the corner animate out faster 
+  //TODO: make sure the handle consequences of start then ending
+  //TODO: because no we have 2 seperate shows, one for button, one for corners
   updateState() {
     //we want to show but wait till the main button shows
     if(showButton()) { //play the show animation after a delay
@@ -85,6 +90,7 @@ class _DoneButtonState extends State<DoneButton> {
       //NOTE: this button spans all the space possible 
       //from bottom of the screen
       //to the top of the visual button
+      //TODO: when the button is hidden, tapping in this area shouldn't do anything
       child: GestureDetector(
         onTap: (){
           print("hello world");
