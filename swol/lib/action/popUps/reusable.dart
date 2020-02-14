@@ -98,7 +98,7 @@ class SetProblem extends StatelessWidget {
     @required this.weightValid,
     @required this.repsValid,
     @required this.setValid,
-    this.isError,
+    this.isError: false,
   });
 
   final bool weightValid;

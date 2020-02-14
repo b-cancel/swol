@@ -46,7 +46,7 @@ class SetRecord extends StatefulWidget {
   _SetRecordState createState() => _SetRecordState();
 }
 
-class _SetRecordState extends State<SetRecord> with WidgetsBindingObserver {
+class _SetRecordState extends State<SetRecord> {
   final TextEditingController weightCtrl = new TextEditingController();
   final FocusNode weightFN = new FocusNode();
 
@@ -65,9 +65,6 @@ class _SetRecordState extends State<SetRecord> with WidgetsBindingObserver {
   void initState() {
     //supe init
     super.initState();
-
-    //add observer for on resume
-    WidgetsBinding.instance.addObserver(this);
 
     //NOTE: set the initial values of our controllers from notifiers
     weightCtrl.text = ExcercisePage.setWeight.value;
@@ -88,9 +85,6 @@ class _SetRecordState extends State<SetRecord> with WidgetsBindingObserver {
 
   @override
   void dispose() {
-    //remove observers
-    WidgetsBinding.instance.removeObserver(this);
-
     //remove notifiers
     weightCtrl.removeListener(updateWeightNotifier);
     repsCtrl.removeListener(updateRepsNotifier);
@@ -124,13 +118,6 @@ class _SetRecordState extends State<SetRecord> with WidgetsBindingObserver {
         repsCtrl.clear(); //since invalid maybe 0
         FocusScope.of(context).requestFocus(repsFN);
       }
-    }
-  }
-
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    if(state == AppLifecycleState.resumed){
-      focusOnFirstInValid();
     }
   }
 

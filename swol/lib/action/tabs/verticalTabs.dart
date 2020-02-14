@@ -24,7 +24,7 @@ class VerticalTabs extends StatefulWidget {
 }
 
 class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMixin {
-  Duration transitionDuration = Duration(milliseconds: 3000); //TODO: back to 300
+  Duration transitionDuration = Duration(milliseconds: 300);
 
   //for the "hero" widget (if not up then down)
   ValueNotifier<bool> goalSetUp;
@@ -35,6 +35,9 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
   //init
   @override
   void initState() {
+    //super init
+    super.initState();
+
     //initally set the notifiers
     //after this our notifiers initially set our controllers
     //our controllers update our notifiers
@@ -58,9 +61,6 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
 
     //listen to changes on pageNumber to then go to that page
     ExcercisePage.pageNumber.addListener(updatePage);
-
-    //super init
-    super.initState();
   }
 
   //dipose
@@ -68,10 +68,13 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
   void dispose() { 
     //remove listener
     ExcercisePage.pageNumber.removeListener(updatePage);
+
     //remove controller
     pageViewController.dispose();
+    
     //remove notifier
     goalSetUp.dispose();
+
     //super dispose
     super.dispose();
   }

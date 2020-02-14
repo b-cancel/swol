@@ -20,6 +20,9 @@ dependencies:
   flutter:
     sdk: flutter
 
+  #for what we expected on resume to do
+  flutter_widgets: ^0.1.11
+
   #for monospaced font
   google_fonts: ^0.3.3
 
