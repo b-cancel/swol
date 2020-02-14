@@ -1,5 +1,6 @@
 //flutter
 import 'package:flutter/material.dart';
+import 'package:swol/shared/widgets/simple/conditional.dart';
 
 //internal
 import 'package:swol/shared/widgets/simple/heros/curveMod.dart';
@@ -79,23 +80,27 @@ class DoneButton extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
                     Icon(Icons.arrow_left),
-                    RichText(
-                      text: TextSpan(
-                        style: TextStyle(
-                          color: Colors.white,
-                        ),
-                        children: [
-                          TextSpan(
-                            text: setsPassed.toString() + " Sets",
-                            style: TextStyle(
-                              fontWeight: FontWeight.w900,
+                    Conditional(
+                      condition: setsPassed == 0,
+                      ifTrue: Text("Delete The Set"),
+                      ifFalse: RichText(
+                        text: TextSpan(
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
+                          children: [
+                            TextSpan(
+                              text: setsPassed.toString() + " Sets",
+                              style: TextStyle(
+                                fontWeight: FontWeight.w900,
+                              ),
                             ),
-                          ),
-                          TextSpan(
-                            text: " Complete",
-                            style: TextStyle(),
-                          ),
-                        ],
+                            TextSpan(
+                              text: " Complete",
+                              style: TextStyle(),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ],
