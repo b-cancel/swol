@@ -220,6 +220,7 @@ class _RecordFieldState extends State<RecordField> {
                       width: 48.0 * multiplier,
                       height: 24.0 * multiplier,
                       child: TextField(
+                        cursorColor: Theme.of(context).cardColor,
                         controller: widget.controller,
                         focusNode: widget.focusNode,
                         //set text size as large as a large phone 

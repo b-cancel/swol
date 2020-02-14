@@ -1,8 +1,12 @@
+//flutter
 import 'package:flutter/material.dart';
-import 'package:swol/action/tabs/sharedWidgets/cardWithHeader.dart';
-import 'package:swol/shared/functions/goldenRatio.dart';
-import 'package:swol/shared/widgets/simple/listItem.dart';
 
+//internal
+import 'package:swol/shared/widgets/simple/listItem.dart';
+import 'package:swol/shared/functions/goldenRatio.dart';
+import 'package:swol/action/shared/cardWithHeader.dart';
+
+//widget
 class CalibrationCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
