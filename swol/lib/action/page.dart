@@ -78,12 +78,14 @@ class ExcercisePageDark extends StatelessWidget {
           ),
         ),
       ),
-      body: VerticalTabs(
-        excercise: excercise,
-        //this the only place this works from
-        //since this is the whole new context after navigation 
-        //and the others are within a scaffold
-        statusBarHeight: MediaQuery.of(context).padding.top,
+      body: ClipRRect( //clipping so the done button doesnt show out of screen
+        child: VerticalTabs(
+          excercise: excercise,
+          //this the only place this works from
+          //since this is the whole new context after navigation 
+          //and the others are within a scaffold
+          statusBarHeight: MediaQuery.of(context).padding.top,
+        ),
       ),
     );
   }

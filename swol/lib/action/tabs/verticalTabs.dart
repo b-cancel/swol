@@ -1,16 +1,12 @@
-//dart
-import 'dart:math' as math;
-
 //flutter
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:swol/action/page.dart';
 
-//internal: tabs
+//internal
+import 'package:swol/action/doneButton/doneWidget.dart';
 import 'package:swol/action/tabs/record/setRecord.dart';
 import 'package:swol/action/tabs/recovery/recovery.dart';
-import 'package:swol/action/tabs/sharedWidgets/doneButton.dart';
 import 'package:swol/action/tabs/suggest/suggest.dart';
+import 'package:swol/action/page.dart';
 import 'package:swol/shared/structs/anExcercise.dart';
 
 /// A vertical tab widget for flutter
