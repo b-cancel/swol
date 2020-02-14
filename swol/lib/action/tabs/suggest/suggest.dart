@@ -111,59 +111,61 @@ class _SuggestionState extends State<Suggestion> {
     spaceToRedistribute -= (appBarHeight + bottomButtonsHeight);
 
     //buildy boi
-    return GestureDetector(
-      onTap: (){
-        firstTime.value = !firstTime.value;
-        //state will be set after
-      },
-      child: Container(
-        width: fullHeight,
-        child: Stack(
-          children: <Widget>[
-            Positioned(
-              bottom: 0,
-              left: 0,
-              right: 0,
-              child: BottomButtons(
-                excercise: widget.excercise,
-                forwardAction: (){
-                  ExcercisePage.pageNumber.value = 1;
-                },
-                forwardActionWidget: RichText(
-                  text: TextSpan(
-                    children: [
-                      TextSpan(
-                        text: "Record ",
-                      ),
-                      TextSpan(
-                        text: "Set 1",
-                        style: TextStyle(
-                          fontWeight: FontWeight.w900,
+    return ClipRRect( //clipping so "hero" doesn't show up in the other page
+      child: GestureDetector(
+        onTap: (){
+          firstTime.value = !firstTime.value;
+          //state will be set after
+        },
+        child: Container(
+          width: fullHeight,
+          child: Stack(
+            children: <Widget>[
+              Positioned(
+                bottom: 0,
+                left: 0,
+                right: 0,
+                child: BottomButtons(
+                  excercise: widget.excercise,
+                  forwardAction: (){
+                    ExcercisePage.pageNumber.value = 1;
+                  },
+                  forwardActionWidget: RichText(
+                    text: TextSpan(
+                      children: [
+                        TextSpan(
+                          text: "Record ",
                         ),
-                      ),
-                      TextSpan(
-                        text: "/3",
-                      ),
-                    ],
+                        TextSpan(
+                          text: "Set 1",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w900,
+                          ),
+                        ),
+                        TextSpan(
+                          text: "/3",
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-            Positioned(
-              top: 0,
-              child: firstTime.value ? CalibrationCard(
-                rawSpaceToRedistribute: spaceToRedistribute, 
-              ) : SuggestionSection(
-                excercise: widget.excercise,
-                lastWeight: 80, 
-                lastReps: 5,
-                rawSpaceToRedistribute: spaceToRedistribute - backButtonHeight, 
-                heroUp: widget.heroUp,
-                heroAnimDuration: widget.heroAnimDuration,
-                heroAnimTravel: widget.heroAnimTravel,
-              ),
-            )
-          ],
+              Positioned(
+                top: 0,
+                child: firstTime.value ? CalibrationCard(
+                  rawSpaceToRedistribute: spaceToRedistribute, 
+                ) : SuggestionSection(
+                  excercise: widget.excercise,
+                  lastWeight: 80, 
+                  lastReps: 5,
+                  rawSpaceToRedistribute: spaceToRedistribute - backButtonHeight, 
+                  heroUp: widget.heroUp,
+                  heroAnimDuration: widget.heroAnimDuration,
+                  heroAnimTravel: widget.heroAnimTravel,
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );

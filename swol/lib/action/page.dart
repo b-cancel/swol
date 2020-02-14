@@ -98,55 +98,55 @@ class PageTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      alignment: Alignment.center,
-      children: <Widget>[
-        Positioned(
-          left: 0,
-          bottom: 0,
-          top: 0,
-          right: 0,
-          child: Theme(
-            data: MyTheme.dark,
+    return Theme(
+      data: MyTheme.dark,
+      child: Stack(
+        alignment: Alignment.center,
+        children: <Widget>[
+          Positioned(
+            left: 0,
+            bottom: 0,
+            top: 0,
+            right: 0,
             child: ExcerciseTitleHero(
               inAppBar: true,
               excercise: excercise,
               onTap: () => toNotes(context),
             ),
           ),
-        ),
-        Positioned(
-          left: 0,
-          top: 0,
-          bottom: 0,
-          child: FittedBox(
-            fit: BoxFit.contain,
-            child: IconButton(
-              icon: ExcerciseBegin(
-                inAppBar: true,
-                excercise: excercise,
+          Positioned(
+            left: 0,
+            top: 0,
+            bottom: 0,
+            child: FittedBox(
+              fit: BoxFit.contain,
+              child: IconButton(
+                icon: ExcerciseBegin(
+                  inAppBar: true,
+                  excercise: excercise,
+                ),
+                color: Colors.white,
+                tooltip: MaterialLocalizations.of(context).backButtonTooltip,
+                onPressed: () => warningThenAllowPop(context, excercise, alsoPop: true),
               ),
-              color: Theme.of(context).iconTheme.color,
-              tooltip: MaterialLocalizations.of(context).backButtonTooltip,
-              onPressed: () => warningThenAllowPop(context, excercise, alsoPop: true),
             ),
           ),
-        ),
-        Positioned(
-          right: 0,
-          top: 0,
-          bottom: 0,
-          child: Padding(
-            padding: EdgeInsets.all(8),
-            child: OutlineButton.icon(
-              highlightedBorderColor: Theme.of(context).accentColor,
-              onPressed: () => toNotes(context),
-              icon: Icon(Icons.edit),
-              label: Text("Notes"),
+          Positioned(
+            right: 0,
+            top: 0,
+            bottom: 0,
+            child: Padding(
+              padding: EdgeInsets.all(8),
+              child: OutlineButton.icon(
+                highlightedBorderColor: Theme.of(context).accentColor,
+                onPressed: () => toNotes(context),
+                icon: Icon(Icons.edit),
+                label: Text("Notes"),
+              ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 

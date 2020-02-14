@@ -153,167 +153,169 @@ class _SetRecordState extends State<SetRecord> with WidgetsBindingObserver {
     else if (id == 3) distanceColor = Colors.red;
 
     //build
-    return Theme(
-      data: MyTheme.dark,
-      child: ListView(
-        children: <Widget>[
-          Container(
-            height: spaceToRedistribute,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Expanded(
-                  child: Container(
-                    //The extra padding that just looked right
-                    width: MediaQuery.of(context).size.width,
-                    child: Column(
-                      mainAxisSize: MainAxisSize.max,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Container(
-                          width: MediaQuery.of(context).size.width,
-                          height: 24,
-                          color: Theme.of(context).accentColor,
-                        ),
-                        Stack(
-                          children: <Widget>[
-                            Positioned.fill(
-                              child: Column(
-                                children: <Widget>[
-                                  Expanded(
-                                    child: Container(
-                                      color: Theme.of(context).accentColor,
-                                    ),
-                                  ),
-                                  Expanded(
-                                    child: Container(),
-                                  )
-                                ],
-                              ),
-                            ),
-                            Container(
-                              decoration: BoxDecoration(
-                                color: Theme.of(context).cardColor,
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(24),
-                                ),
-                              ),
-                              child: SetDisplay(
-                                useAccent: false,
-                                title: "Goal Set",
-                                lastWeight: 124,
-                                lastReps: 23,
-                                heroUp: widget.heroUp,
-                                heroAnimDuration: widget.heroAnimDuration,
-                                heroAnimTravel: widget.heroAnimTravel,
-                              ),
-                            ),
-                          ],
-                        ),
-                        Expanded(
-                          child: Center(
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Row(
-                                  mainAxisSize: MainAxisSize.min,
+    return ClipRRect( //clipping so "hero" doesn't show up in the other page
+      child: Theme(
+        data: MyTheme.dark,
+        child: ListView(
+          children: <Widget>[
+            Container(
+              height: spaceToRedistribute,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Expanded(
+                    child: Container(
+                      //The extra padding that just looked right
+                      width: MediaQuery.of(context).size.width,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.max,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Container(
+                            width: MediaQuery.of(context).size.width,
+                            height: 24,
+                            color: Theme.of(context).accentColor,
+                          ),
+                          Stack(
+                            children: <Widget>[
+                              Positioned.fill(
+                                child: Column(
                                   children: <Widget>[
-                                    Container(
-                                      child: Text(
-                                        "24",
-                                        style: GoogleFonts.robotoMono(
-                                          color: distanceColor,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 96,
-                                          wordSpacing: 0,
-                                        ),
+                                    Expanded(
+                                      child: Container(
+                                        color: Theme.of(context).accentColor,
                                       ),
                                     ),
-                                    DefaultTextStyle(
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                      child: Center(
-                                        child: Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Icon(
-                                              FontAwesomeIcons.percentage,
-                                              color: distanceColor,
-                                              size: 42,
-                                            ),
-                                            Text(
-                                              "higher",
-                                              style: TextStyle(
-                                                fontSize: 42,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
+                                    Expanded(
+                                      child: Container(),
+                                    )
                                   ],
                                 ),
-                                Transform.translate(
-                                  offset: Offset(0, -16),
-                                  child: Column(
+                              ),
+                              Container(
+                                decoration: BoxDecoration(
+                                  color: Theme.of(context).cardColor,
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(24),
+                                  ),
+                                ),
+                                child: SetDisplay(
+                                  useAccent: false,
+                                  title: "Goal Set",
+                                  lastWeight: 124,
+                                  lastReps: 23,
+                                  heroUp: widget.heroUp,
+                                  heroAnimDuration: widget.heroAnimDuration,
+                                  heroAnimTravel: widget.heroAnimTravel,
+                                ),
+                              ),
+                            ],
+                          ),
+                          Expanded(
+                            child: Center(
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Row(
                                     mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Center(
+                                    children: <Widget>[
+                                      Container(
                                         child: Text(
-                                          "than calculated by the",
-                                          style: TextStyle(
-                                            fontSize: 22,
+                                          "24",
+                                          style: GoogleFonts.robotoMono(
+                                            color: distanceColor,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 96,
+                                            wordSpacing: 0,
                                           ),
                                         ),
                                       ),
-                                      ChangeFunction(
-                                        excercise: widget.excercise,
-                                        middleArrows: true,
+                                      DefaultTextStyle(
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                        child: Center(
+                                          child: Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Icon(
+                                                FontAwesomeIcons.percentage,
+                                                color: distanceColor,
+                                                size: 42,
+                                              ),
+                                              Text(
+                                                "higher",
+                                                style: TextStyle(
+                                                  fontSize: 42,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
                                       ),
                                     ],
                                   ),
-                                ),
-                              ],
+                                  Transform.translate(
+                                    offset: Offset(0, -16),
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Center(
+                                          child: Text(
+                                            "than calculated by the",
+                                            style: TextStyle(
+                                              fontSize: 22,
+                                            ),
+                                          ),
+                                        ),
+                                        ChangeFunction(
+                                          excercise: widget.excercise,
+                                          middleArrows: true,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(
-                            bottom: 24.0,
-                          ),
-                          child: CardWithHeader(
-                            header: "Record Set",
-                            aLittleSmaller: true,
-                            child: RecordFields(
-                              weightController: weightCtrl,
-                              weightFocusNode: weightFN,
-                              repsController: repsCtrl,
-                              repsFocusNode: repsFN,
+                          Padding(
+                            padding: EdgeInsets.only(
+                              bottom: 24.0,
+                            ),
+                            child: CardWithHeader(
+                              header: "Record Set",
+                              aLittleSmaller: true,
+                              child: RecordFields(
+                                weightController: weightCtrl,
+                                weightFocusNode: weightFN,
+                                repsController: repsCtrl,
+                                repsFocusNode: repsFN,
+                              ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
-                ),
-                Theme(
-                  data: MyTheme.light,
-                  child: WhiteBottomButtonsWrapper(
-                    excercise: widget.excercise,
-                    backToSuggestion: (){
-                      ExcercisePage.pageNumber.value = 0;
-                      //TODO... anything else here?
-                    }
+                  Theme(
+                    data: MyTheme.light,
+                    child: WhiteBottomButtonsWrapper(
+                      excercise: widget.excercise,
+                      backToSuggestion: (){
+                        ExcercisePage.pageNumber.value = 0;
+                        //TODO... anything else here?
+                      }
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

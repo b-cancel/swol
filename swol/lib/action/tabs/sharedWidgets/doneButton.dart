@@ -29,6 +29,8 @@ class DoneButton extends StatefulWidget {
 }
 
 class _DoneButtonState extends State<DoneButton> {
+  //this function is update by done button button
+  //im not sure why... 
   final ValueNotifier<Function> onTap = new ValueNotifier<Function>((){});
   
   @override
@@ -36,14 +38,15 @@ class _DoneButtonState extends State<DoneButton> {
     return Positioned(
       bottom: 0,
       left: 0,
-      child: Padding(
-        padding: EdgeInsets.only(
-          //TODO: update to be the actual height of the bottom buttons
-          //24 for card peek, 24 extra for black boxes
-          bottom: 24.0,
-        ),
-        child: GestureDetector(
-          onTap: () => onTap.value(),
+      //NOTE: this button spans all the space possible 
+      //from bottom of the screen
+      //to the top of the visual button
+      child: GestureDetector(
+        onTap: () => onTap.value(),
+        child: Padding(
+          padding: EdgeInsets.only(
+            bottom: 24.0,
+          ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -112,7 +115,8 @@ class _DoneButtonButtonState extends State<DoneButtonButton> {
   }
 
   updateFullyHide(){
-    fullyHide = (showButton() == false);
+    //TODO: remove this
+    fullyHide = false; //(showButton() == false);
   }
 
   completeSets({
@@ -156,7 +160,9 @@ class _DoneButtonButtonState extends State<DoneButtonButton> {
 
   bool showButton(){
     bool pageWithButton = ExcercisePage.pageNumber.value != 1;
-    bool nullTSC = widget.excercise.tempSetCount.value == AnExcercise.nullInt;
+    print("should show button: " + pageWithButton.toString());
+    //TODO: remove this
+    bool nullTSC = false; //widget.excercise.tempSetCount.value == AnExcercise.nullInt;
     return (pageWithButton && nullTSC == false);
   }
 
@@ -230,7 +236,8 @@ class _DoneButtonButtonState extends State<DoneButtonButton> {
 
     //build
     return Visibility(
-      visible: fullyHide = false,
+      //TODO: remove this
+      visible: true, //fullyHide = false,
       child: Stack(
         children: <Widget>[
           Positioned.fill(
@@ -334,7 +341,8 @@ class _DoneButtonCornerState extends State<DoneButtonCorner> {
   }
 
   updateFullyHide(){
-    fullyHide = (showButton() == false);
+    //TODO: remove this
+    fullyHide = false; //(showButton() == false);
   }
 
   @override
@@ -352,7 +360,9 @@ class _DoneButtonCornerState extends State<DoneButtonCorner> {
 
   bool showButton(){
     bool pageWithButton = ExcercisePage.pageNumber.value != 1;
-    bool nullTSC = widget.excercise.tempSetCount.value == AnExcercise.nullInt;
+    print("should show button: " + pageWithButton.toString());
+    //TODO: remove this
+    bool nullTSC = false; //widget.excercise.tempSetCount.value == AnExcercise.nullInt;
     return (pageWithButton && nullTSC == false);
   }
 
@@ -383,7 +393,8 @@ class _DoneButtonCornerState extends State<DoneButtonCorner> {
 
     //animates corners
     return Visibility(
-      visible: fullyHide = false,
+      //TODO: remove this
+      visible: true, //fullyHide = false,
       child: Container(
         height: 24,
         width: 24,
