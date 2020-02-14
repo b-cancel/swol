@@ -21,77 +21,23 @@ class BottomBackButton extends StatelessWidget {
         //the section that the "finish with this excercise"
         //button might be at
         Expanded(
-          child: Column(
-            children: <Widget>[
-              Expanded(
-                child: Container(),
-              ),
-              Container(
-                height: 24,
-                padding: EdgeInsets.only(
-                  top: 24,
-                ),
-                decoration: BoxDecoration(
-                  color: (useAccentColor
-                      ? Theme.of(context).accentColor
-                      : Theme.of(context).cardColor),
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(24),
-                  ),
-                ),
-              ),
-            ],
-          ),
+          child: Container(),
         ),
         //the button that looks small but is actually very tall
-        GestureDetector(
-          onTap: backAction == null ? null : () => backAction(),
-          child: Padding(
-            padding: EdgeInsets.only(
-              top: 24,
-            ),
-            child: IntrinsicWidth(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Stack(
-                    children: <Widget>[
-                      Positioned(
-                        bottom: 0,
-                        right: 0,
-                        child: Stack(
-                          children: <Widget>[
-                            Positioned(
-                              bottom: 0,
-                              right: 0,
-                              child: Container(
-                                color: Theme.of(context).accentColor,
-                                height: 12,
-                                width: 12,
-                              ),
-                            ),
-                            Container(
-                              decoration: BoxDecoration(
-                                color: Theme.of(context).primaryColorDark,
-                                borderRadius: BorderRadius.only(
-                                  bottomRight: Radius.circular(12),
-                                ),
-                              ),
-                              height: 24,
-                              width: 24,
-                            ),
-                          ],
-                        ),
-                      ),
-                      ActualBackButton(
-                        verticalPadding: verticalPadding,
-                        hidden: backAction == null,
-                      ),
-                    ],
-                  ),
-                  Container(
-                    height: 24,
-                    color: (useAccentColor ? Theme.of(context).accentColor : Theme.of(context).cardColor),
+        Container(
+          child: GestureDetector(
+            onTap: backAction == null ? null : () => backAction(),
+            child: Padding(
+              padding: EdgeInsets.only(
+                top: 24,
+                bottom: 24,
+              ),
+              child: Stack(
+                children: <Widget>[
+                  BottomRightCorner(),
+                  ActualBackButton(
+                    verticalPadding: verticalPadding,
+                    hidden: backAction == null,
                   ),
                 ],
               ),
@@ -99,6 +45,43 @@ class BottomBackButton extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+}
+
+class BottomRightCorner extends StatelessWidget {
+  const BottomRightCorner({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Positioned(
+      bottom: 0,
+      right: 0,
+      child: Stack(
+        children: <Widget>[
+          Positioned(
+            bottom: 0,
+            right: 0,
+            child: Container(
+              color: Theme.of(context).accentColor,
+              height: 12,
+              width: 12,
+            ),
+          ),
+          Container(
+            decoration: BoxDecoration(
+              color: Theme.of(context).primaryColorDark,
+              borderRadius: BorderRadius.only(
+                bottomRight: Radius.circular(12),
+              ),
+            ),
+            height: 24,
+            width: 24,
+          ),
+        ],
+      ),
     );
   }
 }
@@ -132,10 +115,7 @@ class ActualBackButton extends StatelessWidget {
                 color: Colors.white,
               ),
             ),
-            Transform.translate(
-              offset: Offset(0, 0),
-              child: Icon(Icons.arrow_drop_up),
-            ),
+            Icon(Icons.arrow_drop_up),
           ],
         ),
       ),
