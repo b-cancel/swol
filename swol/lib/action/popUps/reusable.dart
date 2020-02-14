@@ -1,5 +1,40 @@
 import 'package:flutter/material.dart';
 
+class SetTitle extends StatelessWidget {
+  const SetTitle({
+    Key key,
+    @required this.title,
+    @required this.subtitle,
+  }) : super(key: key);
+
+  final String title;
+  final String subtitle;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(
+          title,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 24,
+            color: Colors.black,
+          ),
+        ),
+        Text(
+          subtitle,
+          style: TextStyle(
+            fontSize: 14,
+            color: Colors.black,
+          ),
+        ),
+      ]
+    );
+  }
+}
+
 class SetDescription extends StatelessWidget {
   SetDescription({
     @required this.weight,

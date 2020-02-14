@@ -27,9 +27,13 @@ class ExcercisePage extends StatelessWidget {
   final AnExcercise excercise;
 
   //static vars used through out initializaed with their default values
+
+  //used so that we can change the page number from anywhere
   static final ValueNotifier<int> pageNumber = new ValueNotifier<int>(0);
+  //used so that we can set the goal set from both the suggest and record page
   static final ValueNotifier<int> setGoalWeight = new ValueNotifier<int>(0);
   static final ValueNotifier<int> setGoalReps = new ValueNotifier<int>(0);
+  //used so that we can save the set locally before saving it in temps
   static final ValueNotifier<String> setWeight = new ValueNotifier<String>("");
   static final ValueNotifier<String> setReps = new ValueNotifier<String>("");
 
@@ -76,7 +80,9 @@ class ExcercisePageDark extends StatelessWidget {
       ),
       body: VerticalTabs(
         excercise: excercise,
-        //TODO: is this the only place this works from
+        //this the only place this works from
+        //since this is the whole new context after navigation 
+        //and the others are within a scaffold
         statusBarHeight: MediaQuery.of(context).padding.top,
       ),
     );

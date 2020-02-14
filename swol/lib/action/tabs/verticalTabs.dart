@@ -11,7 +11,6 @@ import 'package:swol/action/tabs/record/setRecord.dart';
 import 'package:swol/action/tabs/recovery/recovery.dart';
 import 'package:swol/action/tabs/sharedWidgets/doneButton.dart';
 import 'package:swol/action/tabs/suggest/suggest.dart';
-import 'package:swol/shared/methods/theme.dart';
 import 'package:swol/shared/structs/anExcercise.dart';
 
 /// A vertical tab widget for flutter
@@ -38,6 +37,10 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
   //init
   @override
   void initState() {
+    //initally set the nnotifiers
+    ExcercisePage.setWeight.value = widget?.excercise?.tempWeight ?? "";
+    ExcercisePage.setReps.value = widget?.excercise?.tempReps ?? "";
+
     //TODO: select the first tab based on how far we are into the workout (HARD)
     //TODO: remove the random picker test code below
     var rng = new math.Random();

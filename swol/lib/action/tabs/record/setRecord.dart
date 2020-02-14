@@ -65,9 +65,9 @@ class _SetRecordState extends State<SetRecord> with WidgetsBindingObserver {
     //add observer for on resume
     WidgetsBinding.instance.addObserver(this);
 
-    //NOTE: set the initial values of our controllers
-    weightCtrl.text = widget.excercise?.tempWeight?.toString() ?? "";
-    repsCtrl.text = widget.excercise?.tempReps?.toString() ?? "";
+    //NOTE: set the initial values of our controllers from notifiers
+    weightCtrl.text = ExcercisePage.setWeight.value;
+    repsCtrl.text = ExcercisePage.setReps.value;
     
     //autofocus if possible
     WidgetsBinding.instance.addPostFrameCallback((_){
