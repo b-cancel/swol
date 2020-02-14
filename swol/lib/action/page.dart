@@ -97,11 +97,11 @@ class _ExcercisePageDarkState extends State<ExcercisePageDark> {
 
       //handle weight
       widget.excercise.lastWeight = widget.excercise.tempWeight;
-      widget.excercise.tempWeight = 0;
+      widget.excercise.tempWeight = null;
 
       //handle reps
       widget.excercise.lastReps = widget.excercise.tempReps;
-      widget.excercise.tempReps = 0;
+      widget.excercise.tempReps = null;
 
       //reset timer
       widget.excercise.tempStartTime.value = AnExcercise.nullDateTime;

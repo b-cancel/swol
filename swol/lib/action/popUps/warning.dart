@@ -128,7 +128,7 @@ warningThenAllowPop(BuildContext context, AnExcercise excercise,
         //onDissmissCallback: ,
         dismissOnTouchOutside: true,
         dialogType: DialogType.WARNING,
-        animType: AnimType.LEFTSLIDE,
+        animType: AnimType.BOTTOMSLIDE,
         headerAnimationLoop: false,
         body: Column(
           children: [

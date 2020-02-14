@@ -35,12 +35,6 @@ class _RecoveryState extends State<Recovery>
   //init
   @override
   void initState() {
-    //start the timer or allow it to continue
-    if (widget.excercise.tempStartTime.value == AnExcercise.nullDateTime) {
-      widget.excercise.tempStartTime =
-          new ValueNotifier<DateTime>(DateTime.now());
-    }
-
     //setup things to make recovery duration changeable
     recoveryDuration = new ValueNotifier(widget.excercise.recoveryPeriod);
     recoveryDuration.addListener(updateRecoveryDuration);
@@ -144,100 +138,6 @@ class _RecoveryState extends State<Recovery>
           )
         ],
       ),
-    );
-  }
-}
-
-class PreviousCardCorners extends StatelessWidget {
-  const PreviousCardCorners({
-    Key key,
-    @required this.child,
-    @required this.cardRadius,
-  }) : super(key: key);
-
-  final Widget child;
-  final Radius cardRadius;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        Container(
-          height: 16,
-          width: MediaQuery.of(context).size.width,
-          color: Theme.of(context).accentColor,
-        ),
-        Stack(
-          children: <Widget>[
-            child,
-            //-------------------------Top Left-------------------------
-            Positioned(
-              top: 0,
-              left: 0,
-              child: Stack(
-                children: <Widget>[
-                  Container(
-                    height: 24,
-                    width: 24,
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).accentColor,
-                      borderRadius: BorderRadius.only(
-                        bottomRight: cardRadius,
-                      ),
-                    ),
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).cardColor,
-                      borderRadius: BorderRadius.only(
-                        topLeft: cardRadius,
-                        bottomRight: cardRadius,
-                      ),
-                    ),
-                    height: 25,
-                    width: 25,
-                  ),
-                ],
-              ),
-            ),
-            //-------------------------Top Right-------------------------
-            Positioned(
-              top: 0,
-              right: 0,
-              child: Stack(
-                children: <Widget>[
-                  Positioned(
-                    //NOTE: in order for smooth blend
-                    //notice the difference alos between 24 and 25 size
-                    right: 0,
-                    child: Container(
-                      height: 24,
-                      width: 24,
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).accentColor,
-                        borderRadius: BorderRadius.only(
-                          bottomLeft: cardRadius,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).cardColor,
-                      borderRadius: BorderRadius.only(
-                        topRight: cardRadius,
-                        bottomLeft: cardRadius,
-                      ),
-                    ),
-                    height: 25,
-                    width: 25,
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ],
     );
   }
 }
