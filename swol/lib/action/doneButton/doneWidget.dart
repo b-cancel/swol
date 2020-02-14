@@ -4,15 +4,8 @@ import 'package:swol/action/doneButton/corner.dart';
 import 'package:swol/action/page.dart';
 import 'package:swol/shared/structs/anExcercise.dart';
 
-//TODO: change the theme of the button depending on stuffs
-//1. if BEFORE set target keep background dark
-//2. if AFTER set target keep background light
+enum Complete {ForgotToFinish, DeleteNewSet, Normal}
 
-//TODO: from suggest page -> simply close everything off
-//TODO: including all temp variables
-
-//TODO: from break page -> must do everything that clicking next set would
-//TODO: essentially make all the pop ups that would pop up... do so...
 class FloatingDoneButton extends StatefulWidget {
   FloatingDoneButton({
     @required this.excercise,
@@ -29,7 +22,6 @@ class FloatingDoneButton extends StatefulWidget {
 }
 
 class _FloatingDoneButtonState extends State<FloatingDoneButton> {
-
   //TODO: the button parts animates immeditely
   //TODO: the corners animate in faster after a delay
   //TODO: the corner animate out faster 
@@ -48,6 +40,14 @@ class _FloatingDoneButtonState extends State<FloatingDoneButton> {
     }
   }
 
+  bool showButton(){
+    bool pageWithButton = ExcercisePage.pageNumber.value != 1;
+    print("should show button: " + pageWithButton.toString());
+    //TODO: remove this
+    bool nullTSC = false; //widget.excercise.tempSetCount.value == AnExcercise.nullInt;
+    return (pageWithButton && nullTSC == false);
+  }
+
   @override
   void initState() {
     super.initState();
@@ -62,20 +62,24 @@ class _FloatingDoneButtonState extends State<FloatingDoneButton> {
   
   @override
   Widget build(BuildContext context) {
+  
     //handle page changes
-    int tempSetCount = widget.excercise.tempSetCount.value ?? 0;
-    int setsPassed;
+    int setsPassed = widget.excercise.tempSetCount.value ?? 0;
+    Complete completionType;
     if(ExcercisePage.pageNumber.value != 2){
       //for page 0 and 1 
       //although page 1 shouldn't have the button
       DateTime tempStartTime = widget.excercise.tempStartTime.value;
       if(tempStartTime == AnExcercise.nullDateTime){
-        setsPassed = tempSetCount;
+        completionType = Complete.ForgotToFinish;
       }
-      else setsPassed = tempSetCount - 1;
+      else{
+        setsPassed -= 1;
+        completionType = Complete.DeleteNewSet;
+      }
     }
-    else setsPassed = tempSetCount;
-
+    else completionType = Complete.Normal;
+    
     //determine button color based on sets passed
     Color cardColor;
     if(setsPassed < widget.excercise.setTarget.value){
@@ -93,7 +97,13 @@ class _FloatingDoneButtonState extends State<FloatingDoneButton> {
       //TODO: when the button is hidden, tapping in this area shouldn't do anything
       child: GestureDetector(
         onTap: (){
-          print("hello world");
+          completeSets(
+            //only if we forgot to finish are temps ALREADY null
+            setTempsToNull: completionType != Complete.ForgotToFinish,
+            //only if we are completing under normal circumstances
+            //do we also have to copy the temp variables and save them to last
+            tempToLast: completionType == Complete.Normal,
+          );
         },
         child: Padding(
           padding: EdgeInsets.only(
@@ -103,20 +113,22 @@ class _FloatingDoneButtonState extends State<FloatingDoneButton> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              DoneButtonCorner(
+              DoneCorner(
                 show: showButton(),
                 color: cardColor,
                 animationCurve: widget.animationCurve,
                 showOrHideDuration: widget.showOrHideDuration,
                 isTop: true,
               ),
-              DoneButtonButton(
-                onTap: new ValueNotifier<Function>((){}),
-                excercise: widget.excercise,
+              DoneButton(
+                show: showButton(),
+                color: cardColor,
+                setsPassed: setsPassed,
+                excerciseID: widget.excercise.id,
                 animationCurve: widget.animationCurve,
                 showOrHideDuration: widget.showOrHideDuration,
               ),
-              DoneButtonCorner(
+              DoneCorner(
                 show: showButton(),
                 color: cardColor,
                 animationCurve: widget.animationCurve,
@@ -130,11 +142,46 @@ class _FloatingDoneButtonState extends State<FloatingDoneButton> {
     );
   }
 
-  bool showButton(){
-    bool pageWithButton = ExcercisePage.pageNumber.value != 1;
-    print("should show button: " + pageWithButton.toString());
-    //TODO: remove this
-    bool nullTSC = false; //widget.excercise.tempSetCount.value == AnExcercise.nullInt;
-    return (pageWithButton && nullTSC == false);
+  completeSets({
+    bool setTempsToNull: false,
+    bool tempToLast: false,
+  }){
+    //time stamp
+    widget.excercise.lastTimeStamp.value = DateTime.now();
+
+    //temp start time
+    if(setTempsToNull){
+      widget.excercise.tempStartTime.value = AnExcercise.nullDateTime; 
+    }
+
+    //weight
+    if(tempToLast){
+      widget.excercise.lastWeight = widget.excercise.tempWeight;
+    }
+    if(setTempsToNull){
+      widget.excercise.tempWeight = null;
+    }
+
+    //reps
+    if(tempToLast){
+      widget.excercise.lastReps = widget.excercise.tempReps;
+    }
+    if(setTempsToNull){
+      widget.excercise.tempReps = null;
+    }
+
+    //set target
+    //TODO: might have to modify the temp set count here 
+    //TODO: for the scenario where we don't care to keep our current set
+    int tempSetCount = widget.excercise.tempSetCount.value ?? 0;
+    if(tempSetCount != widget.excercise.setTarget.value){
+      //TODO: bring the pop up that asks us if we want to update our set target
+      //TODO: the pop up should also pop this page
+    }
+    else{
+      //the set target doesn't need to be updated
+      widget.excercise.tempSetCount.value = AnExcercise.nullInt;
+      Navigator.of(context).pop();
+    }
   }
 }

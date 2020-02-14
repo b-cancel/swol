@@ -2,8 +2,8 @@
 
 import 'package:flutter/material.dart';
 
-class DoneButtonCorner extends StatelessWidget {
-  DoneButtonCorner({
+class DoneCorner extends StatelessWidget {
+  DoneCorner({
     @required this.show,
     @required this.color,
     //stay the same throughout
