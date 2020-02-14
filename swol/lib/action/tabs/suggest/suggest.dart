@@ -16,7 +16,7 @@ import 'package:swol/shared/structs/anExcercise.dart';
 //and the temp set was not null
 //meaning they came from the excercise list and for some reason either
 //1. left the excercise without starting there break
-//2. finished the break and was done with the excercise 
+//2. finished the break and was done with the excercise
 //    but didn't mark it as done
 
 class Suggestion extends StatefulWidget {
@@ -41,31 +41,31 @@ class Suggestion extends StatefulWidget {
 class _SuggestionState extends State<Suggestion> {
   bool showCalibration;
 
-  //function select 
+  //function select
   ValueNotifier<int> functionIndex;
   String functionValue;
 
   //set target set
   ValueNotifier<int> repTarget;
 
-  updateFunctionIndex(){
+  updateFunctionIndex() {
     functionValue = Functions.functions[functionIndex.value];
     widget.excercise.predictionID = functionIndex.value;
   }
 
-  updateRepTarget(){
+  updateRepTarget() {
     widget.excercise.repTarget = repTarget.value;
 
     //TODO: might not need this
     setState(() {});
   }
 
-  testFirstTime(){
-    if(mounted) setState(() {});
+  testFirstTime() {
+    if (mounted) setState(() {});
   }
 
   @override
-  void initState() { 
+  void initState() {
     //super init
     super.initState();
     //set function stuff initially
@@ -84,13 +84,10 @@ class _SuggestionState extends State<Suggestion> {
 
     //when value changes we update it
     repTarget.addListener(updateRepTarget);
-
-    //determine what page we should be showing
-    showCalibration = (widget.excercise.lastWeight == null); 
   }
 
   @override
-  void dispose() { 
+  void dispose() {
     functionIndex.removeListener(updateFunctionIndex);
     repTarget.removeListener(updateRepTarget);
 
@@ -108,56 +105,48 @@ class _SuggestionState extends State<Suggestion> {
     spaceToRedistribute -= (appBarHeight + bottomButtonsHeight);
 
     //buildy boi
-    return ClipRRect( //clipping so "hero" doesn't show up in the other page
-      child: Container(
-        width: fullHeight,
-        child: Stack(
-          children: <Widget>[
-            Positioned(
-              bottom: 0,
-              left: 0,
-              right: 0,
-              child: BottomButtons(
-                excercise: widget.excercise,
-                forwardAction: (){
-                  ExcercisePage.pageNumber.value = 1;
-                },
-                forwardActionWidget: RichText(
-                  text: TextSpan(
-                    children: [
-                      TextSpan(
-                        text: "Record ",
-                      ),
-                      TextSpan(
-                        text: "Set 1",
-                        style: TextStyle(
-                          fontWeight: FontWeight.w900,
-                        ),
-                      ),
-                      TextSpan(
-                        text: "/3",
-                      ),
-                    ],
-                  ),
-                ),
+    return ClipRRect(
+      //clipping so "hero" doesn't show up in the other page
+      child: Column(
+        children: <Widget>[
+          Expanded(
+            child: Padding(
+              padding: EdgeInsets.only(
+                bottom: 24,
               ),
-            ),
-            Positioned(
-              top: 0,
-              child: showCalibration ? CalibrationCard(
-                rawSpaceToRedistribute: spaceToRedistribute, 
-              ) : SuggestionSection(
+              child: SuggestionSection(
                 excercise: widget.excercise,
-                lastWeight: 80, 
-                lastReps: 5,
-                rawSpaceToRedistribute: spaceToRedistribute - backButtonHeight, 
                 heroUp: widget.heroUp,
                 heroAnimDuration: widget.heroAnimDuration,
                 heroAnimTravel: widget.heroAnimTravel,
               ),
-            )
-          ],
-        ),
+            ),
+          ),
+          BottomButtons(
+            excercise: widget.excercise,
+            forwardAction: () {
+              ExcercisePage.pageNumber.value = 1;
+            },
+            forwardActionWidget: RichText(
+              text: TextSpan(
+                children: [
+                  TextSpan(
+                    text: "Record ",
+                  ),
+                  TextSpan(
+                    text: "Set 1",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w900,
+                    ),
+                  ),
+                  TextSpan(
+                    text: "/3",
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

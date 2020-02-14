@@ -19,18 +19,12 @@ class SuggestionSection extends StatelessWidget {
   SuggestionSection({
     Key key,
     @required this.excercise,
-    @required this.lastWeight,
-    @required this.lastReps,
-    @required this.rawSpaceToRedistribute,
     @required this.heroUp,
     @required this.heroAnimDuration,
     @required this.heroAnimTravel,
   }) : super(key: key);
 
   final AnExcercise excercise;
-  final int lastWeight;
-  final int lastReps;
-  final double rawSpaceToRedistribute;
   final ValueNotifier<bool> heroUp;
   final Duration heroAnimDuration;
   final double heroAnimTravel;
@@ -43,7 +37,6 @@ class SuggestionSection extends StatelessWidget {
 
     //return
     return Container(
-      height: rawSpaceToRedistribute,
       width: MediaQuery.of(context).size.width,
       child: Column(
         mainAxisSize: MainAxisSize.max,

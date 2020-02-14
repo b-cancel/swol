@@ -46,8 +46,12 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
     ExcercisePage.setReps.value = widget?.excercise?.tempReps ?? "";
 
     //set the first page we will be at based on startTimerValue
-    bool timerNotStarted = widget.excercise.tempStartTime.value == AnExcercise.nullDateTime;
-    int initialPage = timerNotStarted ? 0 : 2; //grab
+    int initialPage;
+    if(widget.excercise.lastWeight == null) initialPage = 1;
+    else{
+      bool timerNotStarted = widget.excercise.tempStartTime.value == AnExcercise.nullDateTime;
+      initialPage = timerNotStarted ? 0 : 2; //grab
+    }
     ExcercisePage.pageNumber.value = initialPage; //update globally
 
     //set hero position depending on start page (updated when pages switch)

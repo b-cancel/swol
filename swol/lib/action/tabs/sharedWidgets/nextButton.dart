@@ -20,68 +20,73 @@ class BottomNextButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => forwardAction(),
-      child: IntrinsicWidth(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Container(
-              //NOTE: this container is only just a wrapper to the animated container
-              //a place holder for when the hero is playing
-              //and the hero will only be playing if the button has the accent color
-              decoration: BoxDecoration(
-                color: Theme.of(context).accentColor,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(12),
-                  topRight: Radius.circular(12),
+      child: Padding(
+        padding: EdgeInsets.only(
+          top: 24,
+        ),
+        child: IntrinsicWidth(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Container(
+                //NOTE: this container is only just a wrapper to the animated container
+                //a place holder for when the hero is playing
+                //and the hero will only be playing if the button has the accent color
+                decoration: BoxDecoration(
+                  color: Theme.of(context).accentColor,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(12),
+                    topRight: Radius.circular(12),
+                  ),
                 ),
-              ),
-              child: Hero(
-                tag: "excerciseContinue" + excercise.id.toString(),
-                createRectTween: (begin, end) {
-                  return CustomRectTween(a: begin, b: end);
-                },
-                child: FittedBox(
-                  fit: BoxFit.contain,
-                  child: Material(
-                    color: Colors.transparent,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).accentColor,
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(12),
-                          topRight: Radius.circular(12),
+                child: Hero(
+                  tag: "excerciseContinue" + excercise.id.toString(),
+                  createRectTween: (begin, end) {
+                    return CustomRectTween(a: begin, b: end);
+                  },
+                  child: FittedBox(
+                    fit: BoxFit.contain,
+                    child: Material(
+                      color: Colors.transparent,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).accentColor,
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(12),
+                            topRight: Radius.circular(12),
+                          ),
                         ),
-                      ),
-                      padding: EdgeInsets.only(
-                        right: 16,
-                      ),
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(
-                          vertical: verticalPadding,
+                        padding: EdgeInsets.only(
+                          right: 16,
                         ),
-                        child: Row(
-                          children: <Widget>[
-                            Transform.translate(
-                              offset: Offset(0, 0),
-                              child: Icon(
-                                Icons.arrow_drop_down,
-                                //color: Theme.of(context).primaryColorDark,
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(
+                            vertical: verticalPadding,
+                          ),
+                          child: Row(
+                            children: <Widget>[
+                              Transform.translate(
+                                offset: Offset(0, 0),
+                                child: Icon(
+                                  Icons.arrow_drop_down,
+                                  //color: Theme.of(context).primaryColorDark,
+                                ),
                               ),
-                            ),
-                            forwardActionWidget,
-                          ],
+                              forwardActionWidget,
+                            ],
+                          ),
                         ),
                       ),
                     ),
                   ),
                 ),
               ),
-            ),
-            Container(
-              height: 24,
-              color: Theme.of(context).accentColor,
-            )
-          ],
+              Container(
+                height: 24,
+                color: Theme.of(context).accentColor,
+              )
+            ],
+          ),
         ),
       ),
     );

@@ -75,17 +75,21 @@ class _ExcercisePageDarkState extends State<ExcercisePageDark> {
       //whenever we begin or resume the set we KNOW our setWeight and setReps are valid
       widget.excercise.tempWeight = int.parse(ExcercisePage.setWeight.value);
       widget.excercise.tempReps = int.parse(ExcercisePage.setReps.value);
+    
       //only if begin
       if(widget.excercise.tempStartTime.value == AnExcercise.nullDateTime){
         //start the timer
         widget.excercise.tempStartTime.value = DateTime.now(); 
+
         //indicate you have started the set
         int oldTempSetCount = widget.excercise.tempSetCount.value;
         if(oldTempSetCount < 0) widget.excercise.tempSetCount.value = 1;
         else widget.excercise.tempSetCount.value += 1; 
+
         //set in progress time stamp
         widget.excercise.lastTimeStamp.value = LastTimeStamp.inProgressDateTime();
       }
+
       //action complete
       ExcercisePage.updateSet.value = false;
     }

@@ -28,6 +28,9 @@ class BottomBackButton extends StatelessWidget {
               ),
               Container(
                 height: 24,
+                padding: EdgeInsets.only(
+                  top: 24,
+                ),
                 decoration: BoxDecoration(
                   color: (useAccentColor
                       ? Theme.of(context).accentColor
@@ -42,53 +45,56 @@ class BottomBackButton extends StatelessWidget {
         ),
         //the button that looks small but is actually very tall
         GestureDetector(
-          onTap: () {
-            if (backAction != null) backAction();
-          },
-          child: IntrinsicWidth(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Stack(
-                  children: <Widget>[
-                    Positioned(
-                      bottom: 0,
-                      right: 0,
-                      child: Stack(
-                        children: <Widget>[
-                          Positioned(
-                            bottom: 0,
-                            right: 0,
-                            child: Container(
-                              color: Theme.of(context).accentColor,
-                              height: 12,
-                              width: 12,
-                            ),
-                          ),
-                          Container(
-                            decoration: BoxDecoration(
-                              color: Theme.of(context).primaryColorDark,
-                              borderRadius: BorderRadius.only(
-                                bottomRight: Radius.circular(12),
+          onTap: backAction == null ? null : () => backAction(),
+          child: Padding(
+            padding: EdgeInsets.only(
+              top: 24,
+            ),
+            child: IntrinsicWidth(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Stack(
+                    children: <Widget>[
+                      Positioned(
+                        bottom: 0,
+                        right: 0,
+                        child: Stack(
+                          children: <Widget>[
+                            Positioned(
+                              bottom: 0,
+                              right: 0,
+                              child: Container(
+                                color: Theme.of(context).accentColor,
+                                height: 12,
+                                width: 12,
                               ),
                             ),
-                            height: 24,
-                            width: 24,
-                          ),
-                        ],
+                            Container(
+                              decoration: BoxDecoration(
+                                color: Theme.of(context).primaryColorDark,
+                                borderRadius: BorderRadius.only(
+                                  bottomRight: Radius.circular(12),
+                                ),
+                              ),
+                              height: 24,
+                              width: 24,
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                    ActualBackButton(
-                      verticalPadding: verticalPadding,
-                      hidden: backAction == null,
-                    ),
-                  ],
-                ),
-                Container(
-                  height: 24,
-                  color: (useAccentColor ? Theme.of(context).accentColor : Theme.of(context).cardColor),
-                ),
-              ],
+                      ActualBackButton(
+                        verticalPadding: verticalPadding,
+                        hidden: backAction == null,
+                      ),
+                    ],
+                  ),
+                  Container(
+                    height: 24,
+                    color: (useAccentColor ? Theme.of(context).accentColor : Theme.of(context).cardColor),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
