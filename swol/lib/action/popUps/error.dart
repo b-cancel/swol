@@ -4,6 +4,7 @@ import 'package:swol/action/page.dart';
 import 'package:swol/action/popUps/reusable.dart';
 import 'package:swol/shared/structs/anExcercise.dart';
 
+/*
 maybeError(BuildContext context, AnExcercise excercise) {
     //handle weight
     String weight = ExcercisePage.setWeight.value;
@@ -205,3 +206,4 @@ maybeError(BuildContext context, AnExcercise excercise) {
       widget.setBreak();
     }
   }
+  */

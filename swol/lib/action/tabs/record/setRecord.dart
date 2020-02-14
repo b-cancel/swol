@@ -30,8 +30,6 @@ import 'package:swol/shared/methods/theme.dart';
 class SetRecord extends StatefulWidget {
   SetRecord({
     @required this.excercise,
-    @required this.backToSuggestion,
-    @required this.setBreak,
     @required this.statusBarHeight,
     @required this.heroUp,
     @required this.heroAnimDuration,
@@ -39,8 +37,6 @@ class SetRecord extends StatefulWidget {
   });
 
   final AnExcercise excercise;
-  final Function backToSuggestion;
-  final Function setBreak;
   final double statusBarHeight;
   final ValueNotifier<bool> heroUp;
   final Duration heroAnimDuration;
@@ -57,6 +53,14 @@ class _SetRecordState extends State<SetRecord> with WidgetsBindingObserver {
   final TextEditingController repsCtrl = new TextEditingController();
   final FocusNode repsFN = new FocusNode();
 
+  updateWeightNotifier(){
+    ExcercisePage.setWeight.value = weightCtrl.text;
+  }
+
+  updateRepsNotifier(){
+    ExcercisePage.setReps.value = repsCtrl.text;
+  }
+
   @override
   void initState() {
     //supe init
@@ -68,6 +72,10 @@ class _SetRecordState extends State<SetRecord> with WidgetsBindingObserver {
     //NOTE: set the initial values of our controllers from notifiers
     weightCtrl.text = ExcercisePage.setWeight.value;
     repsCtrl.text = ExcercisePage.setReps.value;
+
+    //add listeners
+    weightCtrl.addListener(updateWeightNotifier);
+    repsCtrl.addListener(updateRepsNotifier);
     
     //autofocus if possible
     WidgetsBinding.instance.addPostFrameCallback((_){
@@ -80,7 +88,14 @@ class _SetRecordState extends State<SetRecord> with WidgetsBindingObserver {
 
   @override
   void dispose() {
+    //remove observers
     WidgetsBinding.instance.removeObserver(this);
+
+    //remove notifiers
+    weightCtrl.removeListener(updateWeightNotifier);
+    repsCtrl.removeListener(updateRepsNotifier);
+
+    //super dispose
     super.dispose();
   }
    
@@ -289,7 +304,10 @@ class _SetRecordState extends State<SetRecord> with WidgetsBindingObserver {
                   data: MyTheme.light,
                   child: WhiteBottomButtonsWrapper(
                     excercise: widget.excercise,
-                    backToSuggestion: widget.backToSuggestion,
+                    backToSuggestion: (){
+                      ExcercisePage.pageNumber.value = 0;
+                      //TODO... anything else here?
+                    }
                   ),
                 ),
               ],
@@ -315,7 +333,10 @@ class WhiteBottomButtonsWrapper extends StatelessWidget {
   Widget build(BuildContext context) {
     return BottomButtons(
       excercise: excercise,
-      forwardAction: () => maybeError(context),
+      forwardAction: (){
+        //TODO: trigger error maybe if stuff isnt valid
+        ExcercisePage.pageNumber.value = 2;
+      },
       forwardActionWidget: Text(
         "Take Set Break",
       ),

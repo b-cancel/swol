@@ -1,5 +1,6 @@
 //flutter
 import 'package:flutter/material.dart';
+import 'package:swol/action/page.dart';
 
 //internal: action
 import 'package:swol/action/tabs/suggest/suggestion/suggestion.dart';
@@ -22,7 +23,6 @@ class Suggestion extends StatefulWidget {
   Suggestion({
     @required this.statusBarHeight,
     @required this.excercise,
-    @required this.recordSet,
     @required this.heroUp,
     @required this.heroAnimDuration,
     @required this.heroAnimTravel,
@@ -30,7 +30,6 @@ class Suggestion extends StatefulWidget {
 
   final double statusBarHeight;
   final AnExcercise excercise;
-  final Function recordSet;
   final ValueNotifier<bool> heroUp;
   final Duration heroAnimDuration;
   final double heroAnimTravel;
@@ -127,7 +126,9 @@ class _SuggestionState extends State<Suggestion> {
               right: 0,
               child: BottomButtons(
                 excercise: widget.excercise,
-                forwardAction: widget.recordSet,
+                forwardAction: (){
+                  ExcercisePage.pageNumber.value = 1;
+                },
                 forwardActionWidget: RichText(
                   text: TextSpan(
                     children: [

@@ -1,5 +1,6 @@
 //flutter
 import 'package:flutter/material.dart';
+import 'package:swol/action/page.dart';
 
 //internal: action
 import 'package:swol/action/tabs/sharedWidgets/bottomButtons.dart';
@@ -13,13 +14,9 @@ import 'package:swol/shared/structs/anExcercise.dart';
 class Recovery extends StatefulWidget {
   Recovery({
     @required this.excercise,
-    @required this.backToRecordSet,
-    @required this.nextSet,
   });
 
   final AnExcercise excercise;
-  final Function backToRecordSet;
-  final Function nextSet;
 
   @override
   _RecoveryState createState() => _RecoveryState();
@@ -132,7 +129,7 @@ class _RecoveryState extends State<Recovery>
               //TODO: react to "areYouSurePopUp"
 
               //move onto the next set
-              widget.nextSet();
+              ExcercisePage.pageNumber.value = 0;
 
               //zero out the tempStartTimer
               widget.excercise.tempStartTime =
@@ -141,7 +138,9 @@ class _RecoveryState extends State<Recovery>
             forwardActionWidget: Text(
               "Next Set",
             ),
-            backAction: widget.backToRecordSet,
+            backAction: (){
+              ExcercisePage.pageNumber.value = 1;
+            },
           )
         ],
       ),
