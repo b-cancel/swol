@@ -28,56 +28,57 @@ class VerticalTabs extends StatefulWidget {
 }
 
 class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMixin {
-  //for the hero widget
-  PageController pageViewController;
+  Duration transitionDuration = Duration(milliseconds: 300);
 
   //for the "hero" widget (if not up then down)
   ValueNotifier<bool> goalSetUp;
 
+  //handle page switches
+  PageController pageViewController;
+
   //init
   @override
   void initState() {
-    //initally set the nnotifiers
+    //initally set the notifiers
+    //after this our notifiers initially set our controllers
+    //our controllers update our notifiers
+    //and then our notifiers ONLY update our temps under very specific conditions
     ExcercisePage.setWeight.value = widget?.excercise?.tempWeight ?? "";
     ExcercisePage.setReps.value = widget?.excercise?.tempReps ?? "";
 
-    //TODO: select the first tab based on how far we are into the workout (HARD)
-    //TODO: remove the random picker test code below
-    var rng = new math.Random();
-    ExcercisePage.pageNumber.value = 0; //(rng.nextInt(3)).clamp(0, 2);
+    //set the first page we will be at based on startTimerValue
+    bool timerNotStarted = widget.excercise.tempStartTime.value == AnExcercise.nullDateTime;
+    int initialPage = timerNotStarted ? 0 : 2; //grab
+    ExcercisePage.pageNumber.value = initialPage; //update globally
 
-    //set notifier based on random page
-    goalSetUp = new ValueNotifier<bool>(ExcercisePage.pageNumber.value == 0);
+    //set hero position depending on start page (updated when pages switch)
+    goalSetUp = new ValueNotifier<bool>(initialPage == 0);
 
-    //travel to the page that has initial 
-    /*
-    WidgetsBinding.instance.addPostFrameCallback((_){
-      WidgetsBinding.instance.addPostFrameCallback((_){
-        toPage(randomPage, instant: true);
-      });
-    });
-    */
-
+    //have the page controller go to that initial page
     pageViewController = PageController(
       keepPage: false, //we need to use the on init of various pages
-      initialPage: ExcercisePage.pageNumber.value,
+      initialPage: initialPage,
     );
+
+    //listen to changes on pageNumber to then go to that page
+    ExcercisePage.pageNumber.addListener(updatePage);
 
     //super init
     super.initState();
   }
 
+  //dipose
   @override
   void dispose() { 
+    //remove listener
+    ExcercisePage.pageNumber.removeListener(updatePage);
+    //remove controller
     pageViewController.dispose();
+    //remove notifier
+    goalSetUp.dispose();
+    //super dispose
     super.dispose();
   }
-
-  updateState(){
-    if(mounted) setState(() {});
-  }
-
-  Duration transitionDuration = Duration(milliseconds: 300);
 
   //build
   @override
@@ -102,7 +103,6 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
             Suggestion( 
               excercise: widget.excercise,
               statusBarHeight: widget.statusBarHeight,
-              recordSet: () => toPage(1),
               heroUp: goalSetUp,
               heroAnimDuration: transitionDuration,
               heroAnimTravel: totalTravel,
@@ -113,40 +113,9 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
               heroUp: goalSetUp,
               heroAnimDuration: transitionDuration,
               heroAnimTravel: totalTravel,
-              //TODO: going back should not reset what they already typed
-              //note: try to stop them from typing dumb stuff but if they do then restore the dumb stuff
-              //TODO: do so when the user holds the button AND when they click it
-              backToSuggestion: () => toPage(0),
-              //TODO: dont allow the user to move onto the set break until they have valid set
-              //1. numbers only (obvi)
-              //2. whole numbers (kinda obvi)
-              //3. for the weight less thatb 4 digits (nobody can nothing 9,999 pounds)
-              //4. for the reps less than 3 digits (nobody can nothing 999 times)
-              //5. weight CAN BE 0, but suggest that if its body weight excercise they record that
-              //6. reps can't be 0
-              //TODO: if they try to move onto the set break explain the above
-              //- can use a pop up
-              //- can use a snackbar
-              //- can use a attached toast
-              //- can just trigger the error or something like it on the field
-              //- ideally just make it impossible for the user to do something dumb
-              setBreak: (){
-                toPage(2);
-              },
             ),
             Recovery(
               excercise: widget.excercise,
-              //NOTE: although at some point I thought the back button should trigger this too
-              //that's silly the back button is a "short cut" since its only on android
-              //and shortcuts should be for actions that happen often
-              //and the user will only go back to fix their set if they mistaped
-              //which ofcourse is rare in comparison to perhaps going to their next workout
-              //and reviewing form or doing a super set or whatever else
-              //TODO: tell the user timer will not reset no matter what
-              //TODO: do so when the user holds the button AND when they click it
-              backToRecordSet: () => toPage(1),
-              //TODO: there are like a million and 1 things that have to happen here (HARD)
-              nextSet: () => toPage(0),
             ),
           ],
         ),
@@ -160,38 +129,30 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
     );
   }
 
-  //TODO: what happens if you jump or animate to the page you are already on
-  //NOTE: this function will always run on init
-  //this is so that we can go to a different page if need be
-  //but also to initally show the done button if need be
-  toPage(int pageID, {bool instant: false}){ //0 -> 
-    //close the keybaord if needed
+  //NOTE: since this is triggered by a change to a notifier
+  //we will never go to a page that we are already at
+  updatePage(){
+    //close the keybaord since we have been on page 1 (record)
     FocusScope.of(context).unfocus();
 
-    //save the page we are on
-    ExcercisePage.pageNumber.value = pageID;
+    //animated to right page
+    pageViewController.animateToPage(
+      ExcercisePage.pageNumber.value, 
+      duration: transitionDuration, 
+      curve: Curves.easeInOut,
+    );
 
-    //deterime the reaction
-    if(instant){
-      pageViewController.jumpToPage(pageID);
-    }
-    else{
-      //animated to right page
-      pageViewController.animateToPage(
-        pageID, 
-        duration: transitionDuration, 
-        curve: Curves.easeInOut,
-      );
-
-      //handle the cross page "hero"
-      //after waiting "a couple of frames" for the other page to start showing up
+    //handle the cross page "hero"
+    //after waiting "a couple of frames" for the other page to start showing up
+    //TODO: find a more fool proof way of doing this
+    //perhaps by using offsets and recursion to check where they are
+    //assuming they should be at some half way point if animation has begun
+    WidgetsBinding.instance.addPostFrameCallback((_){
       WidgetsBinding.instance.addPostFrameCallback((_){
         WidgetsBinding.instance.addPostFrameCallback((_){
-          WidgetsBinding.instance.addPostFrameCallback((_){
-            goalSetUp.value = (ExcercisePage.pageNumber.value == 0);
-          });
+          goalSetUp.value = (ExcercisePage.pageNumber.value == 0);
         });
       });
-    }
+    });
   }
 }
