@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 //plugin
 import 'package:page_transition/page_transition.dart';
+import 'package:swol/shared/functions/defaultDateTimes.dart';
 import 'package:swol/shared/methods/theme.dart';
 
 //internal: excercise
@@ -30,14 +31,17 @@ class ExcercisePage extends StatelessWidget {
 
   //used so that we can change the page number from anywhere
   static final ValueNotifier<int> pageNumber = new ValueNotifier<int>(0);
-  //used so that we can cause a field refocusing from different parts of the app
-  static final ValueNotifier<bool> causeRefocus = new ValueNotifier<bool>(false);
   //used so that we can set the goal set from both the suggest and record page
   static final ValueNotifier<int> setGoalWeight = new ValueNotifier<int>(0);
   static final ValueNotifier<int> setGoalReps = new ValueNotifier<int>(0);
   //used so that we can save the set locally before saving it in temps
   static final ValueNotifier<String> setWeight = new ValueNotifier<String>("");
   static final ValueNotifier<String> setReps = new ValueNotifier<String>("");
+  //used so that we can cause a field refocusing from different parts of the app
+  static final ValueNotifier<bool> causeRefocus = new ValueNotifier<bool>(false);
+  //function trigger that can be accessed from nearly anywhere
+  static final ValueNotifier<bool> updateSet = new ValueNotifier<bool>(false);
+  static final ValueNotifier<bool> nextSet = new ValueNotifier<bool>(false);
 
   //build
   @override
@@ -54,12 +58,78 @@ class ExcercisePage extends StatelessWidget {
   }
 }
 
-class ExcercisePageDark extends StatelessWidget {
+class ExcercisePageDark extends StatefulWidget {
   ExcercisePageDark({
     @required this.excercise,
   });
 
   final AnExcercise excercise;
+
+  @override
+  _ExcercisePageDarkState createState() => _ExcercisePageDarkState();
+}
+
+class _ExcercisePageDarkState extends State<ExcercisePageDark> {
+  updateSet(){ //also cover resume case
+    if(ExcercisePage.updateSet.value){
+      //whenever we begin or resume the set we KNOW our setWeight and setReps are valid
+      widget.excercise.tempWeight = int.parse(ExcercisePage.setWeight.value);
+      widget.excercise.tempReps = int.parse(ExcercisePage.setReps.value);
+      //only if begin
+      if(widget.excercise.tempStartTime.value == AnExcercise.nullDateTime){
+        //start the timer
+        widget.excercise.tempStartTime.value = DateTime.now(); 
+        //indicate you have started the set
+        int oldTempSetCount = widget.excercise.tempSetCount.value;
+        if(oldTempSetCount < 0) widget.excercise.tempSetCount.value = 1;
+        else widget.excercise.tempSetCount.value += 1; 
+        //set in progress time stamp
+        widget.excercise.lastTimeStamp.value = LastTimeStamp.inProgressDateTime();
+      }
+      //action complete
+      ExcercisePage.updateSet.value = false;
+    }
+  }
+
+  nextSet(){
+    if(ExcercisePage.nextSet.value){
+      //when we end set we KNOW our tempWeight and tempReps are valid 
+
+      //handle weight
+      widget.excercise.lastWeight = widget.excercise.tempWeight;
+      widget.excercise.tempWeight = 0;
+
+      //handle reps
+      widget.excercise.lastReps = widget.excercise.tempReps;
+      widget.excercise.tempReps = 0;
+
+      //reset timer
+      widget.excercise.tempStartTime.value = AnExcercise.nullDateTime;
+
+      //action complete
+      ExcercisePage.nextSet.value = false;      
+    }
+  }
+
+  @override
+  void initState() {
+    //super init
+    super.initState();
+
+    //add listeners
+    ExcercisePage.updateSet.addListener(updateSet);
+    ExcercisePage.nextSet.removeListener(nextSet);
+  }
+
+  @override
+  void dispose() { 
+    //remove listeners
+    ExcercisePage.updateSet.removeListener(updateSet);
+    ExcercisePage.nextSet.removeListener(nextSet);
+
+    //super dispose
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -74,7 +144,7 @@ class ExcercisePageDark extends StatelessWidget {
             child: Theme(
               data: MyTheme.light,
               child: PageTitle(
-                excercise: excercise,
+                excercise: widget.excercise,
               ),
             ),
           ),
@@ -82,7 +152,7 @@ class ExcercisePageDark extends StatelessWidget {
       ),
       body: ClipRRect( //clipping so the done button doesnt show out of screen
         child: VerticalTabs(
-          excercise: excercise,
+          excercise: widget.excercise,
           //this the only place this works from
           //since this is the whole new context after navigation 
           //and the others are within a scaffold

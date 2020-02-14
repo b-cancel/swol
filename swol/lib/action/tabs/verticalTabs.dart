@@ -135,7 +135,7 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
     FocusScope.of(context).unfocus();
 
     //grab start offset so we know when to start the "hero" transition
-    startHeroOnOffsetChange(pageViewController.offset);
+    waitForTransitionBegin(pageViewController.offset);
 
     //animated to right page
     pageViewController.animateToPage(
@@ -155,11 +155,17 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
   //3. if we are moving towards the "suggest page"
   //    the next button is immediately hidden
   //    TODO: can cover case where somehow maggically pressed but not worth
-  startHeroOnOffsetChange(double startOffset){
+  waitForTransitionBegin(double startOffset){
     WidgetsBinding.instance.addPostFrameCallback((_){
       double currentOffset = pageViewController.offset;
-      if(currentOffset == startOffset) startHeroOnOffsetChange(startOffset);
-      else goalSetUp.value = (ExcercisePage.pageNumber.value == 0);
+      if(currentOffset == startOffset) waitForTransitionBegin(startOffset);
+      else{
+        //get the goal set animation to begin
+        goalSetUp.value = (ExcercisePage.pageNumber.value == 0);
+        //NOTE: although it seems like it
+        //we can't use this to also autofocus on the field
+        //AS FAST AS POSSIBLE because of how the carousel works
+      }
     });
   }
 }

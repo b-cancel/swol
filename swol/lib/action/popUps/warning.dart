@@ -74,6 +74,8 @@ warningThenAllowPop(BuildContext context, AnExcercise excercise,
     bool newSetValid = newWeightValid && newRepsValid;
 
     /*
+    If the set is valid -> we automatically assume
+
     IF timer hasnt started (both do same thing but have different text FOR NOW)
 
       case 1: & set is valid -> (delete | or go to page to begin set break)
