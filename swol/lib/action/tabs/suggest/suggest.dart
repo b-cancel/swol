@@ -126,8 +126,8 @@ class _SuggestionState extends State<Suggestion> {
                         useAccent: false,
                         extraCurvy: true,
                         title: "Last Set",
-                        lastWeight: 9999,
-                        lastReps: 888,
+                        lastWeight: widget.excercise.lastWeight,
+                        lastReps: widget.excercise.lastReps,
                       ),
                     ),
                     Expanded(
