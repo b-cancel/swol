@@ -49,7 +49,14 @@ class ExcercisePage extends StatelessWidget {
     return Theme(
       data: MyTheme.dark,
       child: WillPopScope(
-        onWillPop: () async => warningThenAllowPop(context, excercise),
+        onWillPop: () async{
+          return warningThenAllowPop(
+            context, 
+            excercise,
+            //false since return true here will pop
+            alsoPop: false,
+          );
+        },
         child: ExcercisePageDark(
           excercise: excercise,
         ),
@@ -102,10 +109,12 @@ class _ExcercisePageDarkState extends State<ExcercisePageDark> {
       //handle weight
       widget.excercise.lastWeight = widget.excercise.tempWeight;
       widget.excercise.tempWeight = null;
+      ExcercisePage.setWeight.value = "";
 
       //handle reps
       widget.excercise.lastReps = widget.excercise.tempReps;
       widget.excercise.tempReps = null;
+      ExcercisePage.setReps.value = "";
 
       //reset timer
       widget.excercise.tempStartTime.value = AnExcercise.nullDateTime;
@@ -205,7 +214,13 @@ class PageTitle extends StatelessWidget {
                 ),
                 color: Colors.white,
                 tooltip: MaterialLocalizations.of(context).backButtonTooltip,
-                onPressed: () => warningThenAllowPop(context, excercise, alsoPop: true),
+                onPressed: (){
+                  warningThenAllowPop(
+                    context, 
+                    excercise, 
+                    alsoPop: true,
+                  );
+                },
               ),
             ),
           ),

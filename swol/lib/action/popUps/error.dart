@@ -108,40 +108,8 @@ maybeError(BuildContext context, AnExcercise excercise) {
                       visible: timerNotStarted == false,
                       child: Column(
                         children: <Widget>[
-                          RichText(
-                            text: TextSpan(
-                              children: [
-                                TextSpan(text: "\nor "),
-                                TextSpan(
-                                  text: "Revert",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                TextSpan(
-                                  text: " back to, ",
-                                ),
-                                TextSpan(
-                                  text: excercise.tempWeight.toString(),
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                TextSpan(
-                                  text: " for ",
-                                ),
-                                TextSpan(
-                                  text: excercise.tempReps.toString(),
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                TextSpan(
-                                  text: "rep" +
-                                      (excercise.tempReps == 1 ? "" : "s"),
-                                ),
-                              ],
-                            ),
+                          RevertToPrevious(
+                            excercise: excercise,
                           ),
                           //-------------------------Butttons-------------------------
                           Transform.translate(

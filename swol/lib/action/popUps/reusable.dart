@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 
+//internal
+import 'package:swol/shared/structs/anExcercise.dart';
+
+//widgets reused in multiple pop ups
 class SetTitle extends StatelessWidget {
   const SetTitle({
     Key key,
@@ -60,6 +64,11 @@ class SetDescription extends StatelessWidget {
         ),
         children: [
           TextSpan(
+            //TODO: perhaps update this message different for all the condition
+            //error & new
+            //error & update
+            //not error & new
+            //not error & update
             text: (isError
                     ? "You are trying to record"
                     : "You started recording") +
@@ -151,6 +160,97 @@ class SetProblem extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class GoBackAndFix extends StatelessWidget {
+  const GoBackAndFix({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return RichText(
+      text: TextSpan(
+        style: TextStyle(
+          color: Colors.black,
+        ),
+        children: [
+          TextSpan(
+            text: "If you don't ",
+          ),
+          TextSpan(
+            text: "Fix Your Set",
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          TextSpan(
+            text: ", this information will be lost. ",
+          ),
+          TextSpan(
+            text: "Would you like to ",
+          ),
+          TextSpan(
+            text: "Go Back",
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          TextSpan(
+            text: " and Fix Your Set?",
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class RevertToPrevious extends StatelessWidget {
+  const RevertToPrevious({
+    Key key,
+    @required this.excercise,
+  }) : super(key: key);
+
+  final AnExcercise excercise;
+
+  @override
+  Widget build(BuildContext context) {
+    return RichText(
+      text: TextSpan(
+        children: [
+          TextSpan(text: "\nor "),
+          TextSpan(
+            text: "Revert",
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          TextSpan(
+            text: " back to, ",
+          ),
+          TextSpan(
+            text: excercise.tempWeight.toString(),
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          TextSpan(
+            text: " for ",
+          ),
+          TextSpan(
+            text: excercise.tempReps.toString(),
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          TextSpan(
+            text: "rep" +
+                (excercise.tempReps == 1 ? "" : "s"),
+          ),
+        ],
       ),
     );
   }

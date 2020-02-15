@@ -11,12 +11,14 @@ import 'package:swol/action/page.dart';
 //internal: other
 import 'package:swol/shared/structs/anExcercise.dart';
 import 'package:swol/main.dart';
-import 'package:swol/shared/widgets/simple/conditional.dart';
 
 //determine whether we should warn the user
-warningThenAllowPop(BuildContext context, AnExcercise excercise,
+warningThenAllowPop(
+  BuildContext context, 
+  AnExcercise excercise,
     {bool alsoPop: false}) {
-  //NOTE: we can assume TEMPS ARE ALWAYS VALID (not empty, not 0)
+  //NOTE: we can assume TEMPS ARE ALWAYS VALID
+  //IF they ARENT EMPTY
 
   //-------------------------BEFORE the timer starts
   //our temps are EMPTY, our notifiers MAY BE
@@ -57,7 +59,9 @@ warningThenAllowPop(BuildContext context, AnExcercise excercise,
     //if the timer HAS STARTED this happens by NOT BEING EMPTY
 
     //allow the user to go to where they wanted to
-    goBack(context, alsoPop);
+    //IF (also pop), will pop
+    //ELSE will return true and pop then
+    backToExcercises(context, alsoPop); 
     //allow poping if called by back button
     return true;
   } else {
@@ -65,70 +69,52 @@ warningThenAllowPop(BuildContext context, AnExcercise excercise,
     //either we are initially setting the value
     //or we are updating the value
 
-    //possible because either both are filled or neither
-    bool updatingSet = tempWeight != "";
-
     //check if valid
     bool newWeightValid = newWeight != "" && newWeight != "0";
     bool newRepsValid = newReps != "" && newReps != "0";
     bool newSetValid = newWeightValid && newRepsValid;
 
     /*
-    If the set is valid -> we automatically assume
-
-    IF timer hasnt started (both do same thing but have different text FOR NOW)
-
-      case 1: & set is valid -> (delete | or go to page to begin set break)
-
-        NOTE: we could start the set break for them (which cuts the required taps by 1)
-        but we WANT to be annoying so that they start starting their own set break
-        
-        the right way for 2 reasons
-
-        1. Even with letting them start their own set break from the pop up
-        If they do so with the pop up it takes longer
-          tap 1. tap in a way that the pop up comes up
-          tap 2. tap the pop up so that you begin your set break and perform your initially desired action
-          VS doing it the right way taking 1 tap
-        2. if they do it through the pop up then they won't see the hero transition of the timer
-          which might mean they dont immediately understand what the mini timer does
-
-      case 2: & set is not valid -> (delete | or go to page to fix set)
+    IF the set is valid -> we start the set or update it
+      since its very unlikely that the user will ACCIDENTALLY place 2 valid values
+      sicne if they ACCIDENTALLY tap the field the value will erase
+    ELSE
+      IF timer hasn't started -> (delete | or go to record page to fix)
+      ELSE -> (revert | or got to record page to fix)
     */
 
-    /*
-    ELSE timer has started
-      & set is valid -> automatically update
-        TODO: perhaps experiment with asking the user although it seems like they would expect it to happen automatically
+    if (newSetValid) {
+      //will start or update the set
+      ExcercisePage.updateSet.value = true;
 
-      & set is not valid -> (revert to previous balue | or go to page to fix set)
-    */
-
-    if (updatingSet && newSetValid) {
-      //auto update the temps
-      excercise.tempWeight = int.parse(newWeight);
-      excercise.tempReps = int.parse(newReps);
       //allow the user to go to where they wanted to
-      goBack(context, alsoPop);
+      //IF (also pop), will pop
+      //ELSE will return true and pop then
+      backToExcercises(context, alsoPop);
+
       //allow poping if called by back button
       return true;
     } else {
       //remove focus so the pop up doesnt bring it back
       FocusScope.of(context).unfocus();
 
-      String title = updatingSet ? "You Must Fix Your Set" : "Begin Your Set Break";
-      String subtitle = updatingSet ? "before we save it" : "so we can save your set";
+      //possible because either both are filled or neither
+      bool newSet = (tempWeight == "");
+      String title = newSet ?  "Begin Your Set Break" : "You Must Fix Your Set";
+      String subtitle = newSet ? "so we can save your set" : "before we save it";
 
       //bring up pop up
       AwesomeDialog(
         context: context,
         isDense: false,
-        //NOTE: if we do need things to refocus after we dismiss
-        //the on resume function should handle it
-        //onDissmissCallback: ,
+        onDissmissCallback: (){
+          //TODO: confirm that calling this ISNT called by the close buttons as well
+          //if it is then it MIGHT cause issues
+          ExcercisePage.causeRefocus.value = true;
+        },
         dismissOnTouchOutside: true,
         dialogType: DialogType.WARNING,
-        animType: AnimType.BOTTOMSLIDE,
+        animType: AnimType.LEFTSLIDE,
         headerAnimationLoop: false,
         body: Column(
           children: [
@@ -157,11 +143,12 @@ warningThenAllowPop(BuildContext context, AnExcercise excercise,
                       repsValid: newRepsValid,
                       setValid: newSetValid,
                     ),
-                    Conditional(
-                      condition: newSetValid,
-                      ifTrue: ValidSetWarning(),
-                      //what will always show when editing a set
-                      ifFalse: PartiallyInvalidSetWarning(),
+                    GoBackAndFix(),
+                    Visibility(
+                      visible: newSet == false,
+                      child: RevertToPrevious(
+                        excercise: excercise,
+                      ),
                     ),
                     //-------------------------Buttons-------------------------
                     Transform.translate(
@@ -174,16 +161,18 @@ warningThenAllowPop(BuildContext context, AnExcercise excercise,
                           ),
                           FlatButton(
                             onPressed: () {
-                              //TODO: if we are updating revert back to the previous values
-                              //by just not updating the temp vars
+                              //NOTE: we revert back to the previous values
+                              //by just not saving the notifier values
+
                               //pop ourselves
                               Navigator.of(context).pop();
+                              
                               //do the action the user initially wanted
-                              goBack(context, true);
+                              //regardless of where this function was called from
+                              backToExcercises(context, true);
                             },
                             child: Text(
-                              //TODO: indiciate a revert back to the previous values if we are updating
-                              "No, Delete The Set",
+                              "No, " + (newSet ? "Delete The Set" : "Revert Back"),
                               style: TextStyle(
                                 color: Colors.black,
                               ),
@@ -194,7 +183,9 @@ warningThenAllowPop(BuildContext context, AnExcercise excercise,
                             onPressed: (){
                               //pop ourselves
                               Navigator.of(context).pop();
-                              //TODO: go to the record page by changing the notifier
+
+                              //move to the right page
+                              ExcercisePage.pageNumber.value = 1;
                             },
                             child: Text(
                               "Yes, Go Back",
@@ -220,97 +211,7 @@ warningThenAllowPop(BuildContext context, AnExcercise excercise,
   }
 }
 
-//NOTE: at the moment if you edit your set
-//and the edit yields a valid set
-//it will auto update the set for you
-//which is why here we don't handle the upating the option
-class ValidSetWarning extends StatelessWidget {
-  const ValidSetWarning({
-    Key key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return RichText(
-      text: TextSpan(
-        style: TextStyle(
-          color: Colors.black,
-        ),
-        children: [
-          TextSpan(
-            text: "But if you don't ",
-          ),
-          TextSpan(
-            text: "Begin Your Set Break",
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          TextSpan(
-            text: ", this set will be lost. ",
-          ),
-          TextSpan(
-            text: "Would you like to ",
-          ),
-          TextSpan(
-            text: "Go Back",
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          TextSpan(
-            text: " and Begin Your Set Break?",
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class PartiallyInvalidSetWarning extends StatelessWidget {
-  const PartiallyInvalidSetWarning({
-    Key key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return RichText(
-      text: TextSpan(
-        style: TextStyle(
-          color: Colors.black,
-        ),
-        children: [
-          TextSpan(
-            text: "If you don't ",
-          ),
-          TextSpan(
-            text: "Fix Your Set",
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          TextSpan(
-            text: ", this information will be lost. ",
-          ),
-          TextSpan(
-            text: "Would you like to ",
-          ),
-          TextSpan(
-            text: "Go Back",
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          TextSpan(
-            text: " and Fix Your Set?",
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-goBack(BuildContext context, bool alsoPop) {
+backToExcercises(BuildContext context, bool alsoPop) {
   //may have to unfocus
   FocusScope.of(context).unfocus();
   //animate the header
