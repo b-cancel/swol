@@ -26,6 +26,7 @@ class CalibrationCard extends StatelessWidget {
       children: <Widget>[
         CardWithHeader(
           header: "Calibration Set",
+          topRound: false,
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[

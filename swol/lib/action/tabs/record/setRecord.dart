@@ -5,21 +5,20 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 
 //plugins
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:swol/action/tabs/record/body/adjustment.dart';
+import 'package:swol/action/tabs/record/body/calibration.dart';
 
 //internal: action
 import 'package:swol/action/tabs/record/field/advancedField.dart';
-import 'package:swol/action/shared/changeFunction.dart';
 import 'package:swol/action/shared/cardWithHeader.dart';
 import 'package:swol/action/bottomButtons/button.dart';
-import 'package:swol/action/shared/halfColored.dart';
-import 'package:swol/action/shared/setDisplay.dart';
 import 'package:swol/action/page.dart';
+import 'package:swol/shared/functions/goldenRatio.dart';
 
 //internal: shared
 import 'package:swol/shared/structs/anExcercise.dart';
 import 'package:swol/shared/methods/theme.dart';
+import 'package:swol/shared/widgets/simple/conditional.dart';
 
 //TODO: on set init AND on resume we focus on first (if there is anything to focus on obvi)
 //TODO: this includes pop ups
@@ -54,11 +53,11 @@ class _SetRecordState extends State<SetRecord> {
   final TextEditingController repsCtrl = new TextEditingController();
   final FocusNode repsFN = new FocusNode();
 
-  updateWeightNotifier(){
+  updateWeightNotifier() {
     ExcercisePage.setWeight.value = weightCtrl.text;
   }
 
-  updateRepsNotifier(){
+  updateRepsNotifier() {
     ExcercisePage.setReps.value = repsCtrl.text;
   }
 
@@ -74,11 +73,11 @@ class _SetRecordState extends State<SetRecord> {
     //add listeners
     weightCtrl.addListener(updateWeightNotifier);
     repsCtrl.addListener(updateRepsNotifier);
-    
+
     //autofocus if possible
-    WidgetsBinding.instance.addPostFrameCallback((_){
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       //NOTE: if you don't wait until transition things begin to break
-      Future.delayed(widget.heroAnimDuration, (){
+      Future.delayed(widget.heroAnimDuration, () {
         focusOnFirstInvalid();
       });
     });
@@ -100,29 +99,28 @@ class _SetRecordState extends State<SetRecord> {
     //super dispose
     super.dispose();
   }
-   
+
   //if both are valid nothing happens
   //NOTE: in all cases where this is used the keyboard is guaranteed to be closed
   //and its closed automatically by unfocusing so there are no weird exceptions to cover
-  focusOnFirstInvalid(){
+  focusOnFirstInvalid() {
     //grab weight stuff
     bool weightEmpty = weightCtrl.text == "";
     bool weightZero = weightCtrl.text == "0";
     bool weightInvalid = weightEmpty || weightZero;
 
     //maybe focus on weight
-    if(weightInvalid){
+    if (weightInvalid) {
       weightCtrl.clear(); //since invalid maybe 0
       FocusScope.of(context).requestFocus(weightFN);
-    }
-    else{
+    } else {
       //grab reps stuff
       bool repsEmtpy = repsCtrl.text == "";
       bool repsZero = repsCtrl.text == "0";
       bool repsInvalid = repsEmtpy || repsZero;
 
       //maybe focus on reps
-      if(repsInvalid){
+      if (repsInvalid) {
         repsCtrl.clear(); //since invalid maybe 0
         FocusScope.of(context).requestFocus(repsFN);
       }
@@ -137,22 +135,21 @@ class _SetRecordState extends State<SetRecord> {
   Widget build(BuildContext context) {
     double fullHeight = MediaQuery.of(context).size.height;
     double appBarHeight = 56; //constant according to flutter docs
-    double spaceToRedistribute = fullHeight - appBarHeight - widget.statusBarHeight;
+    double spaceToRedistribute =
+        fullHeight - appBarHeight - widget.statusBarHeight;
 
-    //color for "suggestion"
-    //TODO: because we are wrapped in a white so the pop up works well
-    //TODO: this distance color will be white even though it should be the dark card color
-    //TODO: fix that... maybe... clean white is kinda cool to
-    Color distanceColor = Theme.of(context).cardColor;
-    int id = 0;
-    if (id == 1)
-      distanceColor = Colors.red.withOpacity(0.33);
-    else if (id == 2)
-      distanceColor = Colors.red.withOpacity(0.66);
-    else if (id == 3) distanceColor = Colors.red;
+    //determine what page we are showing
+    bool calibrationRequired = widget.excercise.lastWeight == null;
+    Function backAction;
+    if(calibrationRequired ==false){
+      backAction = () {
+        ExcercisePage.pageNumber.value = 0;
+        //TODO... anything else here?
+      };
+    }
 
     //clipping so "hero" doesn't show up in the other page
-    return ClipRRect( 
+    return ClipRRect(
       child: Theme(
         data: MyTheme.dark,
         //must be in listview so that the textfield can be scrolled into place
@@ -161,134 +158,51 @@ class _SetRecordState extends State<SetRecord> {
             Container(
               height: spaceToRedistribute,
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
-                  Expanded(
-                    child: Container(
-                      width: MediaQuery.of(context).size.width,
-                      child: Column(
-                        mainAxisSize: MainAxisSize.max,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Container(
-                            width: MediaQuery.of(context).size.width,
-                            height: 24,
-                            color: Theme.of(context).accentColor,
-                          ),
-                          TopBackgroundColored(
-                            color: Theme.of(context).accentColor,
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: Theme.of(context).cardColor,
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(24),
-                                ),
-                              ),
-                              child: SetDisplay(
-                                useAccent: false,
-                                title: "Goal Set",
-                                lastWeight: 124,
-                                lastReps: 23,
-                                heroUp: widget.heroUp,
-                                heroAnimDuration: widget.heroAnimDuration,
-                                heroAnimTravel: widget.heroAnimTravel,
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            child: Center(
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: <Widget>[
-                                      Container(
-                                        child: Text(
-                                          "24",
-                                          style: GoogleFonts.robotoMono(
-                                            color: distanceColor,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 96,
-                                            wordSpacing: 0,
-                                          ),
-                                        ),
-                                      ),
-                                      DefaultTextStyle(
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                        child: Center(
-                                          child: Column(
-                                            mainAxisSize: MainAxisSize.min,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Icon(
-                                                FontAwesomeIcons.percentage,
-                                                color: distanceColor,
-                                                size: 42,
-                                              ),
-                                              Text(
-                                                "higher",
-                                                style: TextStyle(
-                                                  fontSize: 42,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  Transform.translate(
-                                    offset: Offset(0, -16),
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Center(
-                                          child: Text(
-                                            "than calculated by the",
-                                            style: TextStyle(
-                                              fontSize: 22,
-                                            ),
-                                          ),
-                                        ),
-                                        ChangeFunction(
-                                          excercise: widget.excercise,
-                                          middleArrows: true,
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          CardWithHeader(
-                            header: "Record Set",
-                            aLittleSmaller: true,
-                            child: RecordFields(
-                              weightController: weightCtrl,
-                              weightFocusNode: weightFN,
-                              repsController: repsCtrl,
-                              repsFocusNode: repsFN,
-                            ),
-                          ),
-                        ],
+                  Conditional(
+                    condition: calibrationRequired,
+                    ifTrue: Padding(
+                      padding: EdgeInsets.only(
+                        bottom: 48,
+                      ),
+                      child: CalibrationCard(),
+                    ),
+                    ifFalse: Expanded(
+                      child: MakeFunctionAdjustment(
+                        heroUp: widget.heroUp,
+                        heroAnimDuration: widget.heroAnimDuration,
+                        heroAnimTravel: widget.heroAnimTravel,
+                        excercise: widget.excercise,
                       ),
                     ),
                   ),
-                  Theme(
-                    data: MyTheme.light,
-                    child: WhiteBottomButtonsWrapper(
-                      excercise: widget.excercise,
-                      backToSuggestion: (){
-                        ExcercisePage.pageNumber.value = 0;
-                        //TODO... anything else here?
-                      }
+                  CardWithHeader(
+                    header: "Record Set",
+                    aLittleSmaller: true,
+                    child: RecordFields(
+                      weightController: weightCtrl,
+                      weightFocusNode: weightFN,
+                      repsController: repsCtrl,
+                      repsFocusNode: repsFN,
                     ),
+                  ),
+                  Visibility(
+                    visible: calibrationRequired,
+                    child: Expanded(
+                      child: Container()
+                    ),
+                  ),
+                  BottomButtons(
+                    excercise: widget.excercise,
+                    forwardAction: () {
+                      //TODO: trigger error maybe if stuff isnt valid
+                      ExcercisePage.pageNumber.value = 2;
+                    },
+                    forwardActionWidget: Text(
+                      "Take Set Break",
+                    ),
+                    backAction: backAction,
                   ),
                 ],
               ),
@@ -296,33 +210,6 @@ class _SetRecordState extends State<SetRecord> {
           ],
         ),
       ),
-    );
-  }
-}
-
-//TODO: fix white wrapping so the little ugly drak blue corner doesn't show
-class WhiteBottomButtonsWrapper extends StatelessWidget {
-  const WhiteBottomButtonsWrapper({
-    Key key,
-    @required this.excercise,
-    @required this.backToSuggestion,
-  }) : super(key: key);
-
-  final AnExcercise excercise;
-  final Function backToSuggestion;
-
-  @override
-  Widget build(BuildContext context) {
-    return BottomButtons(
-      excercise: excercise,
-      forwardAction: (){
-        //TODO: trigger error maybe if stuff isnt valid
-        ExcercisePage.pageNumber.value = 2;
-      },
-      forwardActionWidget: Text(
-        "Take Set Break",
-      ),
-      backAction: backToSuggestion,
     );
   }
 }

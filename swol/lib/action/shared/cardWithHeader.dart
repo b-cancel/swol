@@ -10,11 +10,13 @@ class CardWithHeader extends StatelessWidget {
     @required this.header,
     @required this.child,
     this.aLittleSmaller: false,
+    this.topRound: true,
   });
 
   final String header;
   final Widget child;
   final bool aLittleSmaller;
+  final bool topRound;
 
   @override
   Widget build(BuildContext context) {
@@ -36,8 +38,8 @@ class CardWithHeader extends StatelessWidget {
       decoration: BoxDecoration(
         color: Theme.of(context).accentColor,
         borderRadius: BorderRadius.only(
-          topLeft: cardRadius,
-          topRight: cardRadius,
+          topLeft: topRound ? cardRadius : Radius.zero,
+          topRight: topRound ? cardRadius : Radius.zero,
           //guarantee bottom never show
           bottomLeft: hideRadius,
           bottomRight: hideRadius,
@@ -62,9 +64,11 @@ class CardWithHeader extends StatelessWidget {
                     child: DefaultTextStyle(
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        color: Theme.of(context).primaryColorDark,
+                        color: topRound ? Colors.white : Theme.of(context).primaryColorDark,
                       ),
-                      child: Text(header),
+                      child: Text(
+                        header
+                      ),
                     ),
                   ),
                 ),
