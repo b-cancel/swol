@@ -11,7 +11,7 @@ class AnExcercise{
 
   //default value notifier values
   static DateTime nullDateTime = DateTime.fromMicrosecondsSinceEpoch(0);
-  static int nullInt = -1;
+  static int nullInt = 0;
 
   //---Settings
 

@@ -86,15 +86,21 @@ class _ExcercisePageDarkState extends State<ExcercisePageDark> {
       //only if begin
       if(widget.excercise.tempStartTime.value == AnExcercise.nullDateTime){
         //start the timer
-        widget.excercise.tempStartTime.value = DateTime.now(); 
+        widget.excercise.tempStartTime = ValueNotifier<DateTime>(DateTime.now()); 
 
         //indicate you have started the set
         int oldTempSetCount = widget.excercise.tempSetCount.value;
-        if(oldTempSetCount < 0) widget.excercise.tempSetCount.value = 1;
-        else widget.excercise.tempSetCount.value += 1; 
+        if(oldTempSetCount < 0){
+          widget.excercise.tempSetCount = ValueNotifier<int>(AnExcercise.nullInt);
+        }
+        else{
+          widget.excercise.tempSetCount = ValueNotifier<int>(
+            widget.excercise.tempSetCount.value + 1,
+          );
+        }
 
         //set in progress time stamp
-        widget.excercise.lastTimeStamp.value = LastTimeStamp.inProgressDateTime();
+        widget.excercise.lastTimeStamp = ValueNotifier<DateTime>(LastTimeStamp.inProgressDateTime());
       }
 
       //action complete
@@ -117,7 +123,7 @@ class _ExcercisePageDarkState extends State<ExcercisePageDark> {
       ExcercisePage.setReps.value = "";
 
       //reset timer
-      widget.excercise.tempStartTime.value = AnExcercise.nullDateTime;
+      widget.excercise.tempStartTime = ValueNotifier<DateTime>(AnExcercise.nullDateTime);
 
       //action complete
       ExcercisePage.nextSet.value = false;      

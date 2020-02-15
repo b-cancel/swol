@@ -174,11 +174,11 @@ class _FloatingDoneButtonState extends State<FloatingDoneButton> {
     bool tempToLast: false,
   }){
     //time stamp
-    widget.excercise.lastTimeStamp.value = DateTime.now();
+    widget.excercise.lastTimeStamp = ValueNotifier<DateTime>(DateTime.now());
 
     //temp start time
     if(setTempsToNull){
-      widget.excercise.tempStartTime.value = AnExcercise.nullDateTime; 
+      widget.excercise.tempStartTime = new ValueNotifier<DateTime>(AnExcercise.nullDateTime); 
     }
 
     //weight
@@ -206,13 +206,13 @@ class _FloatingDoneButtonState extends State<FloatingDoneButton> {
       //TODO: the pop up should also pop this page
 
       //TODO: remove test code
-      widget.excercise.tempSetCount.value = AnExcercise.nullInt;
+      widget.excercise.tempSetCount = ValueNotifier<int>(AnExcercise.nullInt);
       Navigator.of(context).pop();
     }
     else{
       //the set target doesn't need to be updated
       //but the tempSetCount MUST be nullified
-      widget.excercise.tempSetCount.value = AnExcercise.nullInt;
+      widget.excercise.tempSetCount = ValueNotifier<int>(AnExcercise.nullInt);
       Navigator.of(context).pop();
     }
   }
