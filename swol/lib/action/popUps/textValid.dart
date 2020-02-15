@@ -1,7 +1,7 @@
 bool isTextValid(String text){
-  if(text == "") return false;
+  if(text.length == 0) return false;
   else{
-    if(text.length > 0 && text[0] == "0") return false;
+    if(text[0] == "0") return false;
     else return true;
   }
 }

@@ -134,8 +134,23 @@ class _RecoveryState extends State<Recovery>
               //move onto the next set
               ExcercisePage.pageNumber.value = 0;
             },
-            forwardActionWidget: Text(
-              "Next Set",
+            forwardActionWidget: RichText(
+              text: TextSpan(
+                children: [
+                  TextSpan(
+                    text: "Begin",
+                  ),
+                  TextSpan(
+                    text: " Set " + setsPassed.toString(),
+                    style: TextStyle(
+                      fontWeight: FontWeight.w900,
+                    ),
+                  ),
+                  TextSpan(
+                    text: "/" + widget.excercise.setTarget.value.toString(),
+                  ),
+                ],
+              ),
             ),
             backAction: (){
               ExcercisePage.pageNumber.value = 1;

@@ -40,7 +40,7 @@ class ExcerciseTile extends StatelessWidget {
         print("prediction ID: " + excercise.predictionID.toString());
         print("rep target: " + excercise.repTarget.toString());
         print("recovery: " + excercise.recoveryPeriod.toString());
-        print("set target: " + excercise.setTarget.toString());
+        print("set target: " + excercise.setTarget.value.toString());
 
         //travel to page
         App.navSpread.value = true;

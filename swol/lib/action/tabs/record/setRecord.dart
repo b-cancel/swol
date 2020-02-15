@@ -147,7 +147,7 @@ class BottomButtonsWrappedInWhite extends StatelessWidget {
         );
       },
       forwardActionWidget: Text(
-        timerNotStarted ? "Take Set Break" : "Return To Timer",
+        timerNotStarted ? "Take Set Break" : "Return To Break",
       ),
       backAction: backAction,
     );

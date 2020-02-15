@@ -42,16 +42,17 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
     //after this our notifiers initially set our controllers
     //our controllers update our notifiers
     //and then our notifiers ONLY update our temps under very specific conditions
-    ExcercisePage.setWeight.value = widget?.excercise?.tempWeight ?? "";
-    ExcercisePage.setReps.value = widget?.excercise?.tempReps ?? "";
+    ExcercisePage.setWeight.value = widget?.excercise?.tempWeight.toString() ?? "";
+    ExcercisePage.setReps.value = widget?.excercise?.tempReps.toString() ?? "";
 
     //set the first page we will be at based on startTimerValue
     int initialPage;
-    if(widget.excercise.lastWeight == null) initialPage = 1;
-    else{
-      bool timerNotStarted = widget.excercise.tempStartTime.value == AnExcercise.nullDateTime;
-      initialPage = timerNotStarted ? 0 : 2; //grab
+    bool timerNotStarted = widget.excercise.tempStartTime.value == AnExcercise.nullDateTime;
+    if(timerNotStarted){
+      if(widget.excercise.lastWeight == null) initialPage = 1;
+      else initialPage = 0;
     }
+    else initialPage = 2;
     ExcercisePage.pageNumber.value = initialPage; //update globally
 
     //set hero position depending on start page (updated when pages switch)

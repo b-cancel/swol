@@ -36,9 +36,14 @@ maybeError(BuildContext context, AnExcercise excercise) {
       context: context,
       isDense: false,
       onDissmissCallback: () {
-        //TODO: confirm that calling this ISNT called by the close buttons as well
-        //if it is then it MIGHT cause issues
-        ExcercisePage.causeRefocus.value = true;
+        bool weightValid = isTextValid(ExcercisePage.setWeight.value);
+        bool repsValid = isTextValid(ExcercisePage.setReps.value);
+        bool setValid = weightValid && repsValid;
+
+        //we will only need to refocus if your set is not valid
+        if(setValid == false){
+          ExcercisePage.causeRefocus.value = true;
+        }
       },
       dismissOnTouchOutside: true,
       dialogType: DialogType.ERROR,
@@ -129,15 +134,15 @@ maybeError(BuildContext context, AnExcercise excercise) {
                               ),
                               FlatButton(
                                 onPressed: () {
-                                  //revert back
+                                  //revert back (no need to update set)
                                   ExcercisePage.setWeight.value = excercise.tempWeight.toString();
                                   ExcercisePage.setReps.value = excercise.tempReps.toString();
 
                                   //pop ourselves
                                   Navigator.of(context).pop();
+                                  //will call "onDissmissCallback"
 
                                   //continue as expected
-                                  ExcercisePage.updateSet.value = true; //start the set
                                   ExcercisePage.pageNumber.value = 2; //shift to the timer page
                                 },
                                 child: Text(
@@ -152,9 +157,7 @@ maybeError(BuildContext context, AnExcercise excercise) {
                                 onPressed: () {
                                   //pop ourselves
                                   Navigator.of(context).pop();
-                                  //either one, or both values are valid
-                                  //if both are valid, nothing happens
-                                  ExcercisePage.causeRefocus.value = true;
+                                  //will call "onDissmissCallback"
                                 },
                                 child: Text(
                                   "Let Me Fix It",

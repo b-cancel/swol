@@ -180,7 +180,7 @@ class _SuggestionState extends State<Suggestion> {
                     ),
                   ),
                   TextSpan(
-                    text: "/" + widget.excercise.setTarget.toString(),
+                    text: "/" + widget.excercise.setTarget.value.toString(),
                   ),
                 ],
               ),

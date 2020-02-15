@@ -42,8 +42,8 @@ warningThenAllowPop(
   //  NOTE: assuming we allow manually updating temps after initially set
 
   //grab temps
-  String tempWeight = (excercise?.tempWeight ?? "");
-  String tempReps = (excercise?.tempReps ?? "");
+  String tempWeight = (excercise?.tempWeight.toString() ?? "");
+  String tempReps = (excercise?.tempReps.toString() ?? "");
 
   //grab news
   String newWeight = ExcercisePage.setWeight.value;
@@ -109,9 +109,14 @@ warningThenAllowPop(
         context: context,
         isDense: false,
         onDissmissCallback: (){
-          //TODO: confirm that calling this ISNT called by the close buttons as well
-          //if it is then it MIGHT cause issues
-          ExcercisePage.causeRefocus.value = true;
+          bool newWeightValid = isTextValid(newWeight);
+          bool newRepsValid = isTextValid(newReps);
+          bool newSetValid = newWeightValid && newRepsValid;
+
+          //only refocus needed if new set is not valid
+          if(newSetValid == false){
+            ExcercisePage.causeRefocus.value = true;
+          }
         },
         dismissOnTouchOutside: true,
         dialogType: DialogType.WARNING,
@@ -164,9 +169,11 @@ warningThenAllowPop(
                             onPressed: () {
                               //NOTE: we revert back to the previous values
                               //by just not saving the notifier values
+                              //since we are leaving so they will essentially reset
 
                               //pop ourselves
                               Navigator.of(context).pop();
+                              //will call "onDissmissCallback"
                               
                               //do the action the user initially wanted
                               //regardless of where this function was called from
@@ -184,8 +191,13 @@ warningThenAllowPop(
                             onPressed: (){
                               //pop ourselves
                               Navigator.of(context).pop();
+                              //will call "onDissmissCallback"
 
                               //move to the right page
+                              //IF we are already there then good
+                              //  the "onDissmissCallback" will refocus
+                              //ELSE we will move to the right page
+                              //  and the init function of set record will refocus
                               ExcercisePage.pageNumber.value = 1;
                             },
                             child: Text(
