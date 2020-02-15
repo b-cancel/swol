@@ -28,6 +28,7 @@ class ExcerciseTileLeading extends StatefulWidget {
 
 class _ExcerciseTileLeadingState extends State<ExcerciseTileLeading> {
   updateState(){
+    print("trying to update leading state");
     if(mounted){
       //when opening to the timer widget things might break
       //that only really for testing
@@ -118,10 +119,12 @@ class _ExcerciseTileLeadingState extends State<ExcerciseTileLeading> {
           }
         }
       }
-      else return ExcerciseBegin(
-        inAppBar: false,
-        excercise: widget.excercise,
-      );
+      else{
+        return ExcerciseBegin(
+          inAppBar: false,
+          excercise: widget.excercise,
+        );
+      }
     }
   }
 }

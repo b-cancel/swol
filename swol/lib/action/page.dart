@@ -105,10 +105,10 @@ class _ExcercisePageDarkState extends State<ExcercisePageDark> {
   }
 
   nextSet(){
-    print("************next set running");
     if(ExcercisePage.nextSet.value){
-      print("********Actually running");
-      print(widget.excercise.tempWeight.toString() + " * " + widget.excercise.tempReps.toString());
+      //reset timer (MUST HAPPEN FIRST)
+      widget.excercise.tempStartTime = ValueNotifier<DateTime>(AnExcercise.nullDateTime);
+
       //when we end set we KNOW our tempWeight and tempReps are valid 
 
       //handle weight (we KNOW its VALID)
@@ -121,17 +121,9 @@ class _ExcercisePageDarkState extends State<ExcercisePageDark> {
       widget.excercise.tempReps = null;
       ExcercisePage.setReps.value = "";
 
-      //reset timer
-      widget.excercise.tempStartTime = ValueNotifier<DateTime>(AnExcercise.nullDateTime);
-
-      print("after: " + widget.excercise.lastWeight.toString() + " * " + widget.excercise.lastReps.toString());
-      print("temps: " + widget.excercise.tempWeight.toString() + " & " + widget.excercise.tempReps.toString());
-      print("notifier: " + ExcercisePage.setWeight.toString() + " & " + ExcercisePage.setReps.toString());
-
       //action complete
       ExcercisePage.nextSet.value = false;      
     }
-    else print("**********didnt run");
   }
 
   @override

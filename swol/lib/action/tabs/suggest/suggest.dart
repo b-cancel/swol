@@ -7,7 +7,6 @@ import 'package:swol/action/shared/setDisplay.dart';
 import 'package:swol/action/tabs/suggest/changeSuggestion.dart';
 import 'package:swol/action/bottomButtons/button.dart';
 import 'package:swol/action/page.dart';
-import 'package:swol/action/tabs/suggest/corners.dart';
 
 //internal: other
 import 'package:swol/shared/structs/anExcercise.dart';
