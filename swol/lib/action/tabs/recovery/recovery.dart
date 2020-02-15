@@ -131,6 +131,7 @@ class _RecoveryState extends State<Recovery>
               //TODO: are you sure pop up
               //move onto next set
               ExcercisePage.nextSet.value = true;
+          
               //move onto the next set
               ExcercisePage.pageNumber.value = 0;
             },

@@ -105,7 +105,10 @@ class _ExcercisePageDarkState extends State<ExcercisePageDark> {
   }
 
   nextSet(){
+    print("************next set running");
     if(ExcercisePage.nextSet.value){
+      print("********Actually running");
+      print(widget.excercise.tempWeight.toString() + " * " + widget.excercise.tempReps.toString());
       //when we end set we KNOW our tempWeight and tempReps are valid 
 
       //handle weight (we KNOW its VALID)
@@ -121,19 +124,37 @@ class _ExcercisePageDarkState extends State<ExcercisePageDark> {
       //reset timer
       widget.excercise.tempStartTime = ValueNotifier<DateTime>(AnExcercise.nullDateTime);
 
+      print("after: " + widget.excercise.lastWeight.toString() + " * " + widget.excercise.lastReps.toString());
+      print("temps: " + widget.excercise.tempWeight.toString() + " & " + widget.excercise.tempReps.toString());
+      print("notifier: " + ExcercisePage.setWeight.toString() + " & " + ExcercisePage.setReps.toString());
+
       //action complete
       ExcercisePage.nextSet.value = false;      
     }
+    else print("**********didnt run");
   }
 
   @override
   void initState() {
     //super init
     super.initState();
+    
+    //reset all statics to defaults
+    ExcercisePage.pageNumber.value = 0; //this will properly update itself later
+    //goals
+    ExcercisePage.setGoalWeight.value = 0;
+    ExcercisePage.setGoalReps.value = 0;
+    //notifiers
+    ExcercisePage.setWeight.value = "";
+    ExcercisePage.setReps.value = "";
+    //functions
+    ExcercisePage.causeRefocus.value = false;
+    ExcercisePage.updateSet.value = false;
+    ExcercisePage.nextSet.value = false;
 
     //add listeners
     ExcercisePage.updateSet.addListener(updateSet);
-    ExcercisePage.nextSet.removeListener(nextSet);
+    ExcercisePage.nextSet.addListener(nextSet);
   }
 
   @override

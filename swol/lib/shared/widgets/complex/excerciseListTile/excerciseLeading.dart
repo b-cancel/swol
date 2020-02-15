@@ -34,7 +34,7 @@ class _ExcerciseTileLeadingState extends State<ExcerciseTileLeading> {
       //but this delay doesn't really break anything
       //so its here and will probably stay here
       WidgetsBinding.instance.addPostFrameCallback((_){
-        setState(() {});
+        if(mounted) setState(() {});
       });
     } 
   }
@@ -68,13 +68,7 @@ class _ExcerciseTileLeadingState extends State<ExcerciseTileLeading> {
       );
     }
     else if(LastTimeStamp.isInProgress(widget.excercise.lastTimeStamp.value)){
-      //TODO: this should show different things if you are BEFORE or PAST your set target
-      //TODO: if before you set target it should show "To Set X/Y?"
-      //TODO: if after your set target it should show "Complete Set X?"
-      //TODO: both of these should be heros
-      //TODO: and essentially show the user the button they need to press 
-      //TODO: to perform the action we THINK they will want
-      bool isLastSet = true;
+      bool isLastSet = widget.excercise.tempSetCount.value >= widget.excercise.setTarget.value;
       return Hero(
         tag: "excercise" + (isLastSet ? "Complete" : "Continue") + widget.excercise.id.toString(),
         createRectTween: (begin, end) {

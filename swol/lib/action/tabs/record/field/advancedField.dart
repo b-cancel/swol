@@ -79,11 +79,11 @@ class _RecordFieldsState extends State<RecordFields> {
     //maybe focus on weight
     if (isTextValid(weightController.text) == false) {
       weightController.clear(); //since invalid maybe 0
-      FocusScope.of(context).requestFocus(weightFocusNode);
+      if(mounted) FocusScope.of(context).requestFocus(weightFocusNode);
     } else { //maybe focus on reps
       if (isTextValid(repsController.text) == false) {
         repsController.clear(); //since invalid maybe 0
-        FocusScope.of(context).requestFocus(repsFocusNode);
+        if(mounted) FocusScope.of(context).requestFocus(repsFocusNode);
       }
     }
 
