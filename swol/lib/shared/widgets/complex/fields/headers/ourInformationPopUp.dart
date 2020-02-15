@@ -21,6 +21,7 @@ infoPopUpFunction(
     dismissOnTouchOutside: true,
     animType: AnimType.SCALE,
     dialogType: DialogType.INFO,
+    headerAnimationLoop: false,
     body: Column(
       mainAxisSize: MainAxisSize.min,
       children: [

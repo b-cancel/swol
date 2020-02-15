@@ -6,22 +6,21 @@ import 'package:swol/action/popUps/textValid.dart';
 import 'package:swol/shared/structs/anExcercise.dart';
 
 maybeError(BuildContext context, AnExcercise excercise) {
-  //handle weight
+  //grab data
   String weight = ExcercisePage.setWeight.value;
-  bool weightValid = isTextValid(weight);
-
-  //hanlde reps
   String reps = ExcercisePage.setReps.value;
+
+  //validity
+  bool weightValid = isTextValid(weight);
   bool repsValid = isTextValid(reps);
+  bool setValid = weightValid && repsValid;
 
   //bring up the pop up if needed
-  if (weightValid && repsValid) {
+  if (setValid) {
     ExcercisePage.updateSet.value = true; //start the set
     ExcercisePage.pageNumber.value = 2; //shift to the timer page
-  }
-  else{
+  } else {
     //NOTE: this assumes the user CANT type anything except digits of the right size
-    bool setValid = weightValid && repsValid;
 
     //change the buttons shows a the wording a tad
     DateTime startTime = excercise.tempStartTime.value;
@@ -35,6 +34,12 @@ maybeError(BuildContext context, AnExcercise excercise) {
     //show the dialog
     AwesomeDialog(
       context: context,
+      isDense: false,
+      onDissmissCallback: () {
+        //TODO: confirm that calling this ISNT called by the close buttons as well
+        //if it is then it MIGHT cause issues
+        ExcercisePage.causeRefocus.value = true;
+      },
       dismissOnTouchOutside: true,
       dialogType: DialogType.ERROR,
       animType: AnimType.BOTTOMSLIDE,
@@ -79,93 +84,88 @@ maybeError(BuildContext context, AnExcercise excercise) {
                     setValid: setValid,
                     isError: true,
                   ),
-                  Visibility(
-                    visible: setValid == false,
-                    child: RichText(
-                      text: TextSpan(
-                        style: TextStyle(
-                          color: Colors.black,
-                        ),
-                        children: [
-                          TextSpan(
-                            text: "Fix",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          TextSpan(
-                            text: " Your Set",
-                            style: TextStyle(
-                              fontWeight: timerNotStarted
-                                  ? FontWeight.bold
-                                  : FontWeight.normal,
-                            ),
-                          ),
-                          TextSpan(
-                            text: " to " + continueString,
-                          ),
-                        ],
+                  RichText(
+                    text: TextSpan(
+                      style: TextStyle(
+                        color: Colors.black,
                       ),
+                      children: [
+                        TextSpan(
+                          text: "Fix",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        TextSpan(
+                          text: " Your Set",
+                          style: TextStyle(
+                            fontWeight: timerNotStarted
+                                ? FontWeight.bold
+                                : FontWeight.normal,
+                          ),
+                        ),
+                        TextSpan(
+                          text: " to " + continueString,
+                        ),
+                      ],
                     ),
                   ),
                   Visibility(
                     visible: timerNotStarted == false,
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         RevertToPrevious(
                           excercise: excercise,
                         ),
-                        /*
-                          //-------------------------Butttons-------------------------
-                          Transform.translate(
-                            offset: Offset(0, 16),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.max,
-                              children: [
-                                Expanded(
-                                  child: Container(),
-                                ),
-                                FlatButton(
-                                  onPressed: () {
-                                    //revert back
-                                    weightController.text =
-                                        excercise.tempWeight.toString();
-                                    widget.repsController.text =
-                                        widget.excercise.tempReps.toString();
+                        //-------------------------Butttons-------------------------
+                        Transform.translate(
+                          offset: Offset(0, 16),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              Expanded(
+                                child: Container(),
+                              ),
+                              FlatButton(
+                                onPressed: () {
+                                  //revert back
+                                  ExcercisePage.setWeight.value = excercise.tempWeight.toString();
+                                  ExcercisePage.setReps.value = excercise.tempReps.toString();
 
-                                    //pop ourselves
-                                    Navigator.of(context).pop();
+                                  //pop ourselves
+                                  Navigator.of(context).pop();
 
-                                    //go back to timer
-                                    widget.setBreak();
-                                  },
-                                  child: Text(
-                                    "Revert Back",
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                    ),
+                                  //continue as expected
+                                  ExcercisePage.updateSet.value = true; //start the set
+                                  ExcercisePage.pageNumber.value = 2; //shift to the timer page
+                                },
+                                child: Text(
+                                  "Revert Back",
+                                  style: TextStyle(
+                                    color: Colors.black,
                                   ),
                                 ),
-                                RaisedButton(
-                                  color: Colors.blue,
-                                  onPressed: (){
-                                    //pop ourselves
-                                    Navigator.of(context).pop();
-                                    //either one, or both values are valid
-                                    //if both are valid, nothing happens
-                                    widget.focusOnFirstInValid();
-                                  },
-                                  child: Text(
-                                    "Let Me Fix It",
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                    ),
+                              ),
+                              RaisedButton(
+                                color: Colors.blue,
+                                onPressed: () {
+                                  //pop ourselves
+                                  Navigator.of(context).pop();
+                                  //either one, or both values are valid
+                                  //if both are valid, nothing happens
+                                  ExcercisePage.causeRefocus.value = true;
+                                },
+                                child: Text(
+                                  "Let Me Fix It",
+                                  style: TextStyle(
+                                    color: Colors.white,
                                   ),
                                 ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
-                          */
+                        ),
                       ],
                     ),
                   ),

@@ -220,6 +220,9 @@ class RevertToPrevious extends StatelessWidget {
   Widget build(BuildContext context) {
     return RichText(
       text: TextSpan(
+        style: TextStyle(
+          color: Colors.black,
+        ),
         children: [
           TextSpan(text: "\nor "),
           TextSpan(
