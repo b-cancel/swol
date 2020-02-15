@@ -4,113 +4,119 @@ import 'package:swol/action/page.dart';
 import 'package:swol/action/popUps/reusable.dart';
 import 'package:swol/shared/structs/anExcercise.dart';
 
-/*
 maybeError(BuildContext context, AnExcercise excercise) {
-    //handle weight
-    String weight = ExcercisePage.setWeight.value;
-    bool weightValid =  weight != "" && weight != "0";
+  //handle weight
+  String weight = ExcercisePage.setWeight.value;
+  bool weightValid = weight != "" && weight != "0";
 
-    //hanlde reps
-    String reps = ExcercisePage.setReps.value;
-    bool repsValid = reps != "" && reps != "0";
+  //hanlde reps
+  String reps = ExcercisePage.setReps.value;
+  bool repsValid = reps != "" && reps != "0";
 
-    //bring up the pop up if needed
-    if ((weightValid && repsValid) == false) {
-      //NOTE: this assumes the user CANT type anything except digits of the right size
-      bool setValid = weightValid && repsValid;
+  //bring up the pop up if needed
+  if (weightValid && repsValid) {
+    ExcercisePage.updateSet.value = true; //start the set
+    ExcercisePage.pageNumber.value = 2; //shift to the timer page
+  }
+  else{
+    //TODO: finish the pop up below
 
-      //change the buttons shows a the wording a tad
-      DateTime startTime = excercise.tempStartTime.value;
-      bool timerNotStarted = startTime == AnExcercise.nullDateTime;
-      String continueString =
-          (timerNotStarted) ? "Begin Your Set Break" : "Return To Your Timer";
+    //NOTE: this assumes the user CANT type anything except digits of the right size
+    bool setValid = weightValid && repsValid;
 
-      //remove focus so the pop up doesnt bring it back
-      FocusScope.of(context).unfocus();
+    //change the buttons shows a the wording a tad
+    DateTime startTime = excercise.tempStartTime.value;
+    bool timerNotStarted = startTime == AnExcercise.nullDateTime;
+    String continueString =
+        (timerNotStarted) ? "Begin Your Set Break" : "Return To Your Timer";
 
-      //show the dialog
-      AwesomeDialog(
-        context: context,
-        dismissOnTouchOutside: true,
-        dialogType: DialogType.ERROR,
-        animType: AnimType.RIGHSLIDE,
-        headerAnimationLoop: false,
-        body: Column(
-          children: [
-            Text(
-              "Fix Your Set",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 24,
-                color: Colors.black,
-              ),
+    //remove focus so the pop up doesnt bring it back
+    FocusScope.of(context).unfocus();
+
+    //show the dialog
+    AwesomeDialog(
+      context: context,
+      dismissOnTouchOutside: true,
+      dialogType: DialogType.ERROR,
+      animType: AnimType.BOTTOMSLIDE,
+      headerAnimationLoop: false,
+      body: Column(
+        children: [
+          Text(
+            "Fix Your Set",
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 24,
+              color: Colors.black,
             ),
-            Text(
-              "To " + continueString,
-              style: TextStyle(
-                fontSize: 14,
-                color: Colors.black,
-              ),
+          ),
+          Text(
+            "To " + continueString,
+            style: TextStyle(
+              fontSize: 14,
+              color: Colors.black,
             ),
-            Padding(
-              padding: EdgeInsets.only(
-                top: 16,
+          ),
+          Padding(
+            padding: EdgeInsets.only(
+              top: 16,
+            ),
+            child: Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: 24.0,
               ),
-              child: Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: 24.0,
-                ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SetDescription(
-                      weight: weight,
-                      reps: reps,
-                      isError: true,
-                    ),
-                    SetProblem(
-                      weightValid: weightValid,
-                      repsValid: repsValid,
-                      setValid: setValid,
-                      isError: true,
-                    ),
-                    Visibility(
-                      visible: setValid == false,
-                      child: RichText(
-                        text: TextSpan(
-                          style: TextStyle(
-                            color: Colors.black,
-                          ),
-                          children: [
-                            TextSpan(
-                              text: "Fix",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            TextSpan(
-                              text: " Your Set",
-                              style: TextStyle(
-                                fontWeight: timerNotStarted
-                                    ? FontWeight.bold
-                                    : FontWeight.normal,
-                              ),
-                            ),
-                            TextSpan(
-                              text: " to " + continueString,
-                            ),
-                          ],
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SetDescription(
+                    weight: weight,
+                    reps: reps,
+                    isError: true,
+                  ),
+                  SetProblem(
+                    weightValid: weightValid,
+                    repsValid: repsValid,
+                    setValid: setValid,
+                    isError: true,
+                  ),
+                  Visibility(
+                    visible: setValid == false,
+                    child: RichText(
+                      text: TextSpan(
+                        style: TextStyle(
+                          color: Colors.black,
                         ),
+                        children: [
+                          TextSpan(
+                            text: "Fix",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          TextSpan(
+                            text: " Your Set",
+                            style: TextStyle(
+                              fontWeight: timerNotStarted
+                                  ? FontWeight.bold
+                                  : FontWeight.normal,
+                            ),
+                          ),
+                          TextSpan(
+                            text: " to " + continueString,
+                          ),
+                        ],
                       ),
                     ),
-                    Visibility(
-                      visible: timerNotStarted == false,
-                      child: Column(
-                        children: <Widget>[
-                          RevertToPrevious(
-                            excercise: excercise,
-                          ),
+                  ),
+                  Visibility(
+                    visible: timerNotStarted == false,
+                    child: Column(
+                      children: <Widget>[
+                        RevertToPrevious(
+                          excercise: excercise,
+                        ),
+                        /*
                           //-------------------------Butttons-------------------------
                           Transform.translate(
                             offset: Offset(0, 16),
@@ -160,18 +166,16 @@ maybeError(BuildContext context, AnExcercise excercise) {
                               ],
                             ),
                           ),
-                        ],
-                      ),
+                          */
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
-          ],
-        ),
-      ).show();
-    } else {
-      widget.setBreak();
-    }
+          ),
+        ],
+      ),
+    ).show();
   }
-  */
+}

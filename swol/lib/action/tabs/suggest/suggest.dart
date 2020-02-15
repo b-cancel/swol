@@ -95,6 +95,15 @@ class _SuggestionState extends State<Suggestion> {
     Radius arrowRadius = Radius.circular(48);
     Radius cardRadius = Radius.circular(24);
 
+    //calc sets passed for bottom buttons
+    int setsPassed = widget.excercise.tempSetCount.value;
+    bool timerNotStarted = widget.excercise.tempStartTime.value == AnExcercise.nullDateTime;
+    if(timerNotStarted) setsPassed += 1;
+
+    //color for bottom buttons
+    bool lastSetOrBefore = setsPassed <= widget.excercise.setTarget.value;
+    Color buttonsColor =  lastSetOrBefore ? Theme.of(context).accentColor : Theme.of(context).cardColor;
+
     //build
     return ClipRRect(
       //clipping so "hero" doesn't show up in the other page
@@ -153,6 +162,7 @@ class _SuggestionState extends State<Suggestion> {
             ),
           ),
           BottomButtons(
+            color: buttonsColor,
             excercise: widget.excercise,
             forwardAction: () {
               ExcercisePage.pageNumber.value = 1;
@@ -161,16 +171,16 @@ class _SuggestionState extends State<Suggestion> {
               text: TextSpan(
                 children: [
                   TextSpan(
-                    text: "Record ",
+                    text: timerNotStarted ? "Record" : "View",
                   ),
                   TextSpan(
-                    text: "Set 1",
+                    text: " Set " + setsPassed.toString(),
                     style: TextStyle(
                       fontWeight: FontWeight.w900,
                     ),
                   ),
                   TextSpan(
-                    text: "/3",
+                    text: "/" + widget.excercise.setTarget.toString(),
                   ),
                 ],
               ),

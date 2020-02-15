@@ -4,13 +4,13 @@ class BottomBackButton extends StatelessWidget {
   const BottomBackButton({
     this.backAction,
     @required this.verticalPadding,
-    @required this.useAccentColor,
+    @required this.color,
     Key key,
   }) : super(key: key);
 
   final Function backAction;
   final double verticalPadding;
-  final bool useAccentColor;
+  final Color color;
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +34,9 @@ class BottomBackButton extends StatelessWidget {
               ),
               child: Stack(
                 children: <Widget>[
-                  BottomRightCorner(),
+                  BottomRightCorner(
+                    color: color,
+                  ),
                   ActualBackButton(
                     verticalPadding: verticalPadding,
                     hidden: backAction == null,
@@ -51,8 +53,11 @@ class BottomBackButton extends StatelessWidget {
 
 class BottomRightCorner extends StatelessWidget {
   const BottomRightCorner({
+    @required this.color,
     Key key,
   }) : super(key: key);
+
+  final Color color;
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +70,7 @@ class BottomRightCorner extends StatelessWidget {
             bottom: 0,
             right: 0,
             child: Container(
-              color: Theme.of(context).accentColor,
+              color: color,
               height: 12,
               width: 12,
             ),

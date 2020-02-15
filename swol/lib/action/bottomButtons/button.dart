@@ -9,12 +9,14 @@ import 'package:swol/shared/structs/anExcercise.dart';
 //widget
 class BottomButtons extends StatelessWidget {
   BottomButtons({
+    @required this.color,
     @required this.excercise,
     @required this.forwardAction,
     @required this.forwardActionWidget,
     this.backAction,
   });
 
+  final Color color;
   final AnExcercise excercise;
   final Function forwardAction;
   final Widget forwardActionWidget;
@@ -32,7 +34,7 @@ class BottomButtons extends StatelessWidget {
           child: Container(
             height: 24,
             decoration: BoxDecoration(
-              color: Theme.of(context).accentColor,
+              color: color,
               borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(24),
               ),
@@ -45,7 +47,7 @@ class BottomButtons extends StatelessWidget {
           forwardAction: forwardAction,
           forwardActionWidget: forwardActionWidget,
           backAction: backAction,
-          useAccentColor: true,
+          color: color,
         ),
       ],
     );
@@ -58,14 +60,14 @@ class Buttons extends StatelessWidget {
     @required this.forwardAction,
     @required this.forwardActionWidget,
     this.backAction,
-    this.useAccentColor,
+    this.color,
   });
 
   final AnExcercise excercise;
   final Function forwardAction;
   final Widget forwardActionWidget;
   final Function backAction;
-  final bool useAccentColor;
+  final Color color;
 
   @override
   Widget build(BuildContext context) {
@@ -82,7 +84,7 @@ class Buttons extends StatelessWidget {
             child: BottomBackButton( 
               backAction: backAction,
               verticalPadding: extraVerticalPadding,
-              useAccentColor: useAccentColor,
+              color: color,
             ),
           ),
           BottomNextButton(
@@ -90,6 +92,7 @@ class Buttons extends StatelessWidget {
             forwardActionWidget: forwardActionWidget,
             verticalPadding: extraVerticalPadding,
             excercise: excercise,
+            color: color,
           ),
         ],
       ),

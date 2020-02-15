@@ -57,6 +57,13 @@ class _RecoveryState extends State<Recovery>
   Widget build(BuildContext context) {
     Radius cardRadius = Radius.circular(24);
 
+    //calc sets passed for bottom buttons
+    int setsPassed = widget.excercise.tempSetCount.value + 1;
+
+    //color for bottom buttons
+    bool lastSetOrBefore = setsPassed <= widget.excercise.setTarget.value;
+    Color buttonsColor =  lastSetOrBefore ? Theme.of(context).accentColor : Theme.of(context).cardColor;
+
     //build
     return Container(
       child: Column(
@@ -118,16 +125,14 @@ class _RecoveryState extends State<Recovery>
             ),
           ),
           BottomButtons(
+            color: buttonsColor,
             excercise: widget.excercise,
             forwardAction: () {
-              //TODO: react to "areYouSurePopUp"
-
+              //TODO: are you sure pop up
+              //move onto next set
+              ExcercisePage.nextSet.value = true;
               //move onto the next set
               ExcercisePage.pageNumber.value = 0;
-
-              //zero out the tempStartTimer
-              widget.excercise.tempStartTime =
-                  new ValueNotifier<DateTime>(AnExcercise.nullDateTime);
             },
             forwardActionWidget: Text(
               "Next Set",

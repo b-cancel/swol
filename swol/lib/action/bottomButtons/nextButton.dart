@@ -5,12 +5,14 @@ import 'package:swol/shared/widgets/simple/heros/curveMod.dart';
 class BottomNextButton extends StatelessWidget {
   const BottomNextButton({
     Key key,
+    @required this.color,
     @required this.forwardAction,
     @required this.forwardActionWidget,
     @required this.verticalPadding,
     @required this.excercise,
   }) : super(key: key);
 
+  final Color color;
   final Function forwardAction;
   final Widget forwardActionWidget;
   final double verticalPadding;
@@ -30,7 +32,7 @@ class BottomNextButton extends StatelessWidget {
           //a place holder for when the hero is playing
           //and the hero will only be playing if the button has the accent color
           decoration: BoxDecoration(
-            color: Theme.of(context).accentColor,
+            color: color,
             borderRadius: BorderRadius.only(
               topLeft: Radius.circular(12),
               topRight: Radius.circular(12),
@@ -48,7 +50,7 @@ class BottomNextButton extends StatelessWidget {
                 color: Colors.transparent,
                 child: Container(
                   decoration: BoxDecoration(
-                    color: Theme.of(context).accentColor,
+                    color: color,
                     borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(12),
                       topRight: Radius.circular(12),

@@ -1,5 +1,6 @@
 //flutter
 import 'package:flutter/material.dart';
+import 'package:swol/action/popUps/error.dart';
 
 //internal: action
 import 'package:swol/action/tabs/record/field/advancedField.dart';
@@ -54,6 +55,15 @@ class SetRecord extends StatelessWidget {
       };
     }
 
+    //calc sets passed for bottom buttons
+    int setsPassed = excercise.tempSetCount.value;
+    bool timerNotStarted = excercise.tempStartTime.value == AnExcercise.nullDateTime;
+    if(timerNotStarted) setsPassed += 1;
+
+    //color for bottom buttons
+    bool lastSetOrBefore = setsPassed <= excercise.setTarget.value;
+    Color buttonsColor =  lastSetOrBefore ? Theme.of(context).accentColor : Theme.of(context).cardColor;
+
     //clipping so "hero" doesn't show up in the other page
     return ClipRRect(
       child: Theme(
@@ -97,13 +107,16 @@ class SetRecord extends StatelessWidget {
                     ),
                   ),
                   BottomButtons(
+                    color: buttonsColor,
                     excercise: excercise,
-                    forwardAction: () {
-                      //TODO: trigger error maybe if stuff isnt valid
-                      ExcercisePage.pageNumber.value = 2;
+                    forwardAction: (){
+                      maybeError(
+                        context, 
+                        excercise,
+                      );
                     },
                     forwardActionWidget: Text(
-                      "Take Set Break",
+                      timerNotStarted ? "Take Set Break" : "Return To Timer",
                     ),
                     backAction: backAction,
                   ),
