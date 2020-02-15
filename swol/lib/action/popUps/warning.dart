@@ -7,6 +7,7 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 //internal: action
 import 'package:swol/action/popUps/reusable.dart';
 import 'package:swol/action/page.dart';
+import 'package:swol/action/popUps/textValid.dart';
 
 //internal: other
 import 'package:swol/shared/structs/anExcercise.dart';
@@ -70,8 +71,8 @@ warningThenAllowPop(
     //or we are updating the value
 
     //check if valid
-    bool newWeightValid = newWeight != "" && newWeight != "0";
-    bool newRepsValid = newReps != "" && newReps != "0";
+    bool newWeightValid = isTextValid(newWeight);
+    bool newRepsValid = isTextValid(newReps);
     bool newSetValid = newWeightValid && newRepsValid;
 
     /*

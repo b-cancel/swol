@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:swol/action/page.dart';
+import 'package:swol/action/popUps/textValid.dart';
 import 'package:swol/action/tabs/record/field/customField.dart';
 import 'package:swol/action/tabs/record/field/fieldIcon.dart';
 import 'package:swol/shared/functions/goldenRatio.dart';
@@ -75,23 +76,12 @@ class _RecordFieldsState extends State<RecordFields> {
   //NOTE: in all cases where this is used the keyboard is guaranteed to be closed
   //and its closed automatically by unfocusing so there are no weird exceptions to cover
   focusOnFirstInvalid() {
-    //grab weight stuff
-    bool weightEmpty = weightController.text == "";
-    bool weightZero = weightController.text == "0";
-    bool weightInvalid = weightEmpty || weightZero;
-
     //maybe focus on weight
-    if (weightInvalid) {
+    if (isTextValid(weightController.text) == false) {
       weightController.clear(); //since invalid maybe 0
       FocusScope.of(context).requestFocus(weightFocusNode);
-    } else {
-      //grab reps stuff
-      bool repsEmtpy = repsController.text == "";
-      bool repsZero = repsController.text == "0";
-      bool repsInvalid = repsEmtpy || repsZero;
-
-      //maybe focus on reps
-      if (repsInvalid) {
+    } else { //maybe focus on reps
+      if (isTextValid(repsController.text) == false) {
         repsController.clear(); //since invalid maybe 0
         FocusScope.of(context).requestFocus(repsFocusNode);
       }

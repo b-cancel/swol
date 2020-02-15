@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 //internal
 import 'package:swol/action/bottomButtons/backButton.dart';
 import 'package:swol/action/bottomButtons/nextButton.dart';
+import 'package:swol/shared/methods/theme.dart';
 import 'package:swol/shared/structs/anExcercise.dart';
 
 //widget
@@ -24,32 +25,35 @@ class BottomButtons extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: <Widget>[
-        //fill the tiny gaps generate by flutter slightly flawed rendering
-        Positioned(
-          bottom: 0,
-          left: 0,
-          right: 0,
-          child: Container(
-            height: 24,
-            decoration: BoxDecoration(
-              color: color,
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(24),
-              ),
-            )
+    return Theme(
+      data: MyTheme.dark,
+      child: Stack(
+        children: <Widget>[
+          //fill the tiny gaps generate by flutter slightly flawed rendering
+          Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: Container(
+              height: 24,
+              decoration: BoxDecoration(
+                color: color,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(24),
+                ),
+              )
+            ),
           ),
-        ),
-        //the buttons that are larger than they seem to be
-        Buttons(
-          excercise: excercise,
-          forwardAction: forwardAction,
-          forwardActionWidget: forwardActionWidget,
-          backAction: backAction,
-          color: color,
-        ),
-      ],
+          //the buttons that are larger than they seem to be
+          Buttons(
+            excercise: excercise,
+            forwardAction: forwardAction,
+            forwardActionWidget: forwardActionWidget,
+            backAction: backAction,
+            color: color,
+          ),
+        ],
+      ),
     );
   }
 }

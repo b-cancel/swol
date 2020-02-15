@@ -66,66 +66,90 @@ class SetRecord extends StatelessWidget {
 
     //clipping so "hero" doesn't show up in the other page
     return ClipRRect(
-      child: Theme(
-        data: MyTheme.dark,
-        //must be in listview so that the textfield can be scrolled into place
-        child: ListView(
-          children: <Widget>[
-            Container(
-              height: spaceToRedistribute,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  Conditional(
-                    condition: calibrationRequired,
-                    ifTrue: Padding(
-                      padding: EdgeInsets.only(
-                        bottom: 48,
-                      ),
-                      child: CalibrationCard(),
+      child: ListView(
+        children: <Widget>[
+          Container(
+            height: spaceToRedistribute,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                Conditional(
+                  condition: calibrationRequired,
+                  ifTrue: Padding(
+                    padding: EdgeInsets.only(
+                      bottom: 48,
                     ),
-                    ifFalse: Expanded(
-                      child: MakeFunctionAdjustment(
-                        heroUp: heroUp,
-                        heroAnimDuration: heroAnimDuration,
-                        heroAnimTravel: heroAnimTravel,
-                        excercise: excercise,
-                      ),
-                    ),
+                    child: CalibrationCard(),
                   ),
-                  CardWithHeader(
-                    header: "Record Set",
-                    aLittleSmaller: true,
-                    child: RecordFields(
+                  ifFalse: Expanded(
+                    child: MakeFunctionAdjustment(
+                      heroUp: heroUp,
                       heroAnimDuration: heroAnimDuration,
+                      heroAnimTravel: heroAnimTravel,
+                      excercise: excercise,
                     ),
                   ),
-                  Visibility(
-                    visible: calibrationRequired,
-                    child: Expanded(
-                      child: Container()
-                    ),
+                ),
+                CardWithHeader(
+                  header: "Record Set",
+                  aLittleSmaller: true,
+                  child: RecordFields(
+                    heroAnimDuration: heroAnimDuration,
                   ),
-                  BottomButtons(
-                    color: buttonsColor,
-                    excercise: excercise,
-                    forwardAction: (){
-                      maybeError(
-                        context, 
-                        excercise,
-                      );
-                    },
-                    forwardActionWidget: Text(
-                      timerNotStarted ? "Take Set Break" : "Return To Timer",
-                    ),
+                ),
+                Visibility(
+                  visible: calibrationRequired,
+                  child: Expanded(
+                    child: Container()
+                  ),
+                ),
+                Theme(
+                  data: MyTheme.light,
+                  child: BottomButtonsWrappedInWhite(
+                    buttonsColor: buttonsColor, 
+                    excercise: excercise, 
+                    timerNotStarted: timerNotStarted, 
                     backAction: backAction,
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
+    );
+  }
+}
+
+class BottomButtonsWrappedInWhite extends StatelessWidget {
+  const BottomButtonsWrappedInWhite({
+    Key key,
+    @required this.buttonsColor,
+    @required this.excercise,
+    @required this.timerNotStarted,
+    @required this.backAction,
+  }) : super(key: key);
+
+  final Color buttonsColor;
+  final AnExcercise excercise;
+  final bool timerNotStarted;
+  final Function backAction;
+
+  @override
+  Widget build(BuildContext context) {
+    return BottomButtons(
+      color: buttonsColor,
+      excercise: excercise,
+      forwardAction: (){
+        maybeError(
+          context, 
+          excercise,
+        );
+      },
+      forwardActionWidget: Text(
+        timerNotStarted ? "Take Set Break" : "Return To Timer",
+      ),
+      backAction: backAction,
     );
   }
 }

@@ -170,6 +170,9 @@ class AnExcercise{
     _recoveryPeriod = recoveryPeriod;
     _setTarget = new ValueNotifier<int>(setTarget);
 
+    //required to have a null value
+    _tempSetCount = new ValueNotifier<int>(nullInt);
+
     //NOTE: the update to the file should only happen after everything else
     _lastTimeStamp = new ValueNotifier<DateTime>(nullDateTime);
     this.lastTimeStamp = ValueNotifier<DateTime>(lastTimeStamp);
