@@ -253,7 +253,7 @@ class RevertToPrevious extends StatelessWidget {
           ),
           TextSpan(
             //we KNOW any widget that calls this has VALID tempReps
-            text: "rep" + (excercise.tempReps == 1 ? "" : "s"),
+            text: " rep" + (excercise.tempReps == 1 ? "" : "s"),
           ),
         ],
       ),

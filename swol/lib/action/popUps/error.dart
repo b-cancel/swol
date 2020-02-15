@@ -36,9 +36,11 @@ maybeError(BuildContext context, AnExcercise excercise) {
       context: context,
       isDense: false,
       onDissmissCallback: () {
-        bool weightValid = isTextValid(ExcercisePage.setWeight.value);
-        bool repsValid = isTextValid(ExcercisePage.setReps.value);
-        bool setValid = weightValid && repsValid;
+        //NOTE: MUST GRAB NEW set weight and reps 
+        //since they maybe have been updated by a revert
+        weightValid = isTextValid(ExcercisePage.setWeight.value);
+        repsValid = isTextValid(ExcercisePage.setReps.value);
+        setValid = weightValid && repsValid;
 
         //we will only need to refocus if your set is not valid
         if(setValid == false){

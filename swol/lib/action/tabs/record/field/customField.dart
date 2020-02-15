@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 //for white listing characters
 import 'package:flutter/services.dart';
+import 'package:swol/action/popUps/textValid.dart';
 
 //widget
 class RecordField extends StatefulWidget {
@@ -52,7 +53,9 @@ class _RecordFieldState extends State<RecordField> {
   @override
   Widget build(BuildContext context) {
     BorderSide borderThatHides = BorderSide(
-      color: widget.focusNode.hasFocus ? Theme.of(context).accentColor : Theme.of(context).cardColor,
+      color: widget.focusNode.hasFocus
+          ? Theme.of(context).accentColor
+          : Theme.of(context).cardColor,
       width: widget.borderSize,
     );
 
@@ -82,7 +85,9 @@ class _RecordFieldState extends State<RecordField> {
             child: Container(
               decoration: BoxDecoration(
                 border: Border(
-                  left: widget.isLeft == false ? borderThatHides : borderThatExists,
+                  left: widget.isLeft == false
+                      ? borderThatHides
+                      : borderThatExists,
                 ),
               ),
             ),
@@ -96,11 +101,11 @@ class _RecordFieldState extends State<RecordField> {
     //else must be 4
     double multiplier = 3;
     return Expanded(
-      //NOTE: this is required because for some reason 
+      //NOTE: this is required because for some reason
       //initially focusing on the text field misifres sometimes
       child: GestureDetector(
         behavior: HitTestBehavior.opaque,
-        onTap: (){
+        onTap: () {
           //reset text so they start back up at the begining
           widget.controller.clear();
           //focus on the field so the user can begin typing
@@ -108,120 +113,122 @@ class _RecordFieldState extends State<RecordField> {
           FocusScope.of(context).requestFocus(widget.focusNode);
         },
         child: Stack(
-          alignment: widget.isLeft ? Alignment.centerRight : Alignment.centerLeft,
+          alignment:
+              widget.isLeft ? Alignment.centerRight : Alignment.centerLeft,
           children: <Widget>[
             Positioned.fill(
               child: Container(
-                  decoration: BoxDecoration(
-                    color: widget.focusNode.hasFocus ? Theme.of(context).accentColor : Colors.transparent,
-                    borderRadius: BorderRadius.only(
-                      //set
-                      topRight: widget.isLeft ? Radius.zero : normalCurve,
-                      bottomLeft: widget.isLeft ? normalCurve : Radius.zero,
-                      //not so set
-                      topLeft: widget.isLeft ? normalCurve : Radius.zero,
-                      bottomRight: widget.isLeft ? Radius.zero : normalCurve,
-                    ),
-                    border: Border.all(
-                      color: widget.focusNode.hasFocus
-                          ? Theme.of(context).accentColor
-                          : Theme.of(context).primaryColorLight,
-                      width: widget.borderSize,
-                    ),
+                decoration: BoxDecoration(
+                  color: widget.focusNode.hasFocus
+                      ? Theme.of(context).accentColor
+                      : Colors.transparent,
+                  borderRadius: BorderRadius.only(
+                    //set
+                    topRight: widget.isLeft ? Radius.zero : normalCurve,
+                    bottomLeft: widget.isLeft ? normalCurve : Radius.zero,
+                    //not so set
+                    topLeft: widget.isLeft ? normalCurve : Radius.zero,
+                    bottomRight: widget.isLeft ? Radius.zero : normalCurve,
                   ),
-                  padding: EdgeInsets.symmetric(
-                    vertical: 16,
+                  border: Border.all(
+                    color: widget.focusNode.hasFocus
+                        ? Theme.of(context).accentColor
+                        : Theme.of(context).primaryColorLight,
+                    width: widget.borderSize,
                   ),
-                  child: FittedBox(
-                    fit: BoxFit.contain,
-                    child: Container(
-                      width: 48.0 * multiplier,
-                      height: 24.0 * multiplier,
-                      child: TextField(
-                        cursorColor: Theme.of(context).cardColor,
-                        controller: widget.controller,
-                        focusNode: widget.focusNode,
-                        //set text size as large as a large phone 
-                        //so if anything the cursor is smaller than it should be
-                        style: TextStyle(
-                          fontSize: 16.0 * multiplier,
-                        ),
-                        //eliminate bottom line border
-                        decoration: InputDecoration(
-                          //hide automatically bottom border
-                          border: InputBorder.none,
-                          //hides digit counter
-                          counterText: "",
-                        ),
-                        //hide signs or decimals from keyboard if possible
-                        keyboardType: TextInputType.numberWithOptions(
-                          signed: false,
-                          decimal: false,
-                        ),
-                        //cut, copy, past, and select all are not necessary
-                        toolbarOptions: ToolbarOptions(),
-                        //adding dashing intelligently is not needed in IOS
-                        smartDashesType: SmartDashesType.disabled,
-                        //ditto but for quote is not needed in IOS
-                        smartQuotesType: SmartQuotesType.disabled,
-                        //so your eyes dont burn
-                        keyboardAppearance: Brightness.dark,
-                        //balance
-                        textAlign: TextAlign.center,
-                        textAlignVertical: TextAlignVertical.center,
-                        //where you are writing kinda matters
-                        showCursor: true,
-                        //no passwords here
-                        obscureText: false,
-                        //no suggstion of fancy selection useful
-                        enableSuggestions: false, 
-                        enableInteractiveSelection: false,
-                        //guarnatee only digits and a max of 4 digits
-                        maxLength: widget.isLeft ? 4 : 3,
-                        inputFormatters: [
-                          //super guarnatee a max of 4 digits
-                          LengthLimitingTextInputFormatter(
-                            widget.isLeft ? 4 : 3,
-                          ),
-                          //super guarantee only digits
-                          WhitelistingTextInputFormatter.digitsOnly,
-                        ],
-                        //line count
-                        expands: false, //only 1 line at all times
-                        minLines: 1,
-                        maxLines: 1,
-                        maxLengthEnforced: true,
-                        //next to go to other field
-                        textInputAction: TextInputAction.next,
-                        //NOTE: on submitted seems to be working just as well
-                        onEditingComplete: (){
-                          //NOTE: we don't care for our state because
-                          //if the user presses NEXT they want an OBVIOUS action to be performed
-                          //regardless of whether or not its the most useful thing
-
-                          //if we press next then we KNOW that the keyboard is open
-                          //in which case we have 2 possible actions to perform
-                          //1. either we close the keyboard which naturally leads into us unfocusing
-                          //2. or we move onto the next text field
-
-                          //so although sometimes staying on our own field makes more sense
-                          //we don't do that because the user EXPECTS some OBVIOUS action
-                          if(widget.otherController.text != "" && widget.otherController.text != "0"){
-                            //the other controller has a valid value
-                            //so we perform the only other possible action
-                            FocusScope.of(context).unfocus();
-                          }
-                          else{
-                            //in case the otherController has just a 0
-                            widget.otherController.clear();
-                            //focus on the next field
-                            FocusScope.of(context).requestFocus(widget.otherFocusNode);
-                          }
-                        },
+                ),
+                padding: EdgeInsets.symmetric(
+                  vertical: 16,
+                ),
+                child: FittedBox(
+                  fit: BoxFit.contain,
+                  child: Container(
+                    width: 48.0 * multiplier,
+                    height: 24.0 * multiplier,
+                    child: TextField(
+                      cursorColor: Theme.of(context).cardColor,
+                      controller: widget.controller,
+                      focusNode: widget.focusNode,
+                      //set text size as large as a large phone
+                      //so if anything the cursor is smaller than it should be
+                      style: TextStyle(
+                        fontSize: 16.0 * multiplier,
                       ),
+                      //eliminate bottom line border
+                      decoration: InputDecoration(
+                        //hide automatically bottom border
+                        border: InputBorder.none,
+                        //hides digit counter
+                        counterText: "",
+                      ),
+                      //hide signs or decimals from keyboard if possible
+                      keyboardType: TextInputType.numberWithOptions(
+                        signed: false,
+                        decimal: false,
+                      ),
+                      //cut, copy, past, and select all are not necessary
+                      toolbarOptions: ToolbarOptions(),
+                      //adding dashing intelligently is not needed in IOS
+                      smartDashesType: SmartDashesType.disabled,
+                      //ditto but for quote is not needed in IOS
+                      smartQuotesType: SmartQuotesType.disabled,
+                      //so your eyes dont burn
+                      keyboardAppearance: Brightness.dark,
+                      //balance
+                      textAlign: TextAlign.center,
+                      textAlignVertical: TextAlignVertical.center,
+                      //where you are writing kinda matters
+                      showCursor: true,
+                      //no passwords here
+                      obscureText: false,
+                      //no suggstion of fancy selection useful
+                      enableSuggestions: false,
+                      enableInteractiveSelection: false,
+                      //guarnatee only digits and a max of 4 digits
+                      maxLength: widget.isLeft ? 4 : 3,
+                      inputFormatters: [
+                        //super guarnatee a max of 4 digits
+                        LengthLimitingTextInputFormatter(
+                          widget.isLeft ? 4 : 3,
+                        ),
+                        //super guarantee only digits
+                        WhitelistingTextInputFormatter.digitsOnly,
+                      ],
+                      //line count
+                      expands: false, //only 1 line at all times
+                      minLines: 1,
+                      maxLines: 1,
+                      maxLengthEnforced: true,
+                      //next to go to other field
+                      textInputAction: TextInputAction.next,
+                      //NOTE: on submitted seems to be working just as well
+                      onEditingComplete: () {
+                        //NOTE: we don't care for our state because
+                        //if the user presses NEXT they want an OBVIOUS action to be performed
+                        //regardless of whether or not its the most useful thing
+
+                        //if we press next then we KNOW that the keyboard is open
+                        //in which case we have 2 possible actions to perform
+                        //1. either we close the keyboard which naturally leads into us unfocusing
+                        //2. or we move onto the next text field
+
+                        //so although sometimes staying on our own field makes more sense
+                        //we don't do that because the user EXPECTS some OBVIOUS action
+                        if (isTextValid(widget.otherController.text)) {
+                          //the other controller has a valid value
+                          //so we perform the only other possible action
+                          FocusScope.of(context).unfocus();
+                        } else {
+                          //in case the otherController has just a 0
+                          widget.otherController.clear();
+                          //focus on the next field
+                          FocusScope.of(context).requestFocus(widget.otherFocusNode);
+                        }
+                      },
                     ),
                   ),
                 ),
+              ),
             ),
             coveringStick,
             Positioned.fill(
