@@ -182,7 +182,7 @@ class _FloatingDoneButtonState extends State<FloatingDoneButton> {
     }
 
     //weight
-    if(tempToLast){
+    if(tempToLast){ //we KNOW tempWeight is VALID
       widget.excercise.lastWeight = widget.excercise.tempWeight;
     }
     if(setTempsToNull){
@@ -190,7 +190,7 @@ class _FloatingDoneButtonState extends State<FloatingDoneButton> {
     }
 
     //reps
-    if(tempToLast){
+    if(tempToLast){ //we KNOW tempReps is VALID
       widget.excercise.lastReps = widget.excercise.tempReps;
     }
     if(setTempsToNull){

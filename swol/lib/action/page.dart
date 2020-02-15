@@ -112,12 +112,12 @@ class _ExcercisePageDarkState extends State<ExcercisePageDark> {
     if(ExcercisePage.nextSet.value){
       //when we end set we KNOW our tempWeight and tempReps are valid 
 
-      //handle weight
+      //handle weight (we KNOW its VALID)
       widget.excercise.lastWeight = widget.excercise.tempWeight;
       widget.excercise.tempWeight = null;
       ExcercisePage.setWeight.value = "";
 
-      //handle reps
+      //handle reps (we KNOW its VALID)
       widget.excercise.lastReps = widget.excercise.tempReps;
       widget.excercise.tempReps = null;
       ExcercisePage.setReps.value = "";

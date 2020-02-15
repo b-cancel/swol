@@ -52,17 +52,19 @@ class _ExcerciseTileSubtitleState extends State<ExcerciseTileSubtitle> {
       //NOTE: contains defaults for when this set is indeed a one rep max
       bool isOneRepMaxEstimated = false;
       Widget oneRepMaxWidget = Text(
+        //we KNOW its not null
         widget.excercise.lastWeight.toString(),
         style: BOLD,
       );
       String snackbarMessage = "Your 1 Rep Max";
 
       //only calculate the 1 rep max and all its related values if you must
-      if (widget.excercise.lastReps != 1) {
+      if (widget.excercise.lastReps != 1) { //we KNOW its not null
         isOneRepMaxEstimated = true;
 
         //estimate one rep max
         List oneRepMaxValues = Functions.getOneRepMaxValues(
+          //we KNOW both are VALID
           widget.excercise.lastWeight,
           widget.excercise.lastReps,
         );

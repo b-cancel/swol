@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:swol/other/functions/helper.dart';
 import 'package:swol/shared/methods/excerciseData.dart';
 
-class AnExcercise{
+class AnExcercise{ 
   //constants
   static const int defaultFunctionID = Functions.defaultFunctionIndex;
   static const int defaultRepTarget = 8;
