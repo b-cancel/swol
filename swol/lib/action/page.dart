@@ -89,15 +89,9 @@ class _ExcercisePageDarkState extends State<ExcercisePageDark> {
         widget.excercise.tempStartTime = ValueNotifier<DateTime>(DateTime.now()); 
 
         //indicate you have started the set
-        int oldTempSetCount = widget.excercise.tempSetCount.value;
-        if(oldTempSetCount < 0){
-          widget.excercise.tempSetCount = ValueNotifier<int>(AnExcercise.nullInt);
-        }
-        else{
-          widget.excercise.tempSetCount = ValueNotifier<int>(
-            widget.excercise.tempSetCount.value + 1,
-          );
-        }
+        widget.excercise.tempSetCount = ValueNotifier<int>(
+          widget.excercise.tempSetCount.value + 1,
+        );
 
         //set in progress time stamp
         widget.excercise.lastTimeStamp = ValueNotifier<DateTime>(LastTimeStamp.inProgressDateTime());
