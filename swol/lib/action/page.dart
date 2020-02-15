@@ -80,8 +80,10 @@ class _ExcercisePageDarkState extends State<ExcercisePageDark> {
   updateSet(){ //also cover resume case
     if(ExcercisePage.updateSet.value){
       //whenever we begin or resume the set we KNOW our setWeight and setReps are valid
-      widget.excercise.tempWeight = int.parse(ExcercisePage.setWeight.value);
-      widget.excercise.tempReps = int.parse(ExcercisePage.setReps.value);
+      String setWeight = ExcercisePage.setWeight.value;
+      String setReps = ExcercisePage.setReps.value;
+      widget.excercise.tempWeight = int.parse(setWeight);
+      widget.excercise.tempReps = int.parse(setReps);
     
       //only if begin
       if(widget.excercise.tempStartTime.value == AnExcercise.nullDateTime){

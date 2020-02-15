@@ -112,8 +112,10 @@ warningThenAllowPop(
         context: context,
         isDense: false,
         onDissmissCallback: (){
-          bool newWeightValid = isTextValid(newWeight);
-          bool newRepsValid = isTextValid(newReps);
+          //NOTE: MUST GRAB NEW set weight and reps 
+          //since they maybe have been updated by a revert
+          bool newWeightValid = isTextValid(ExcercisePage.setWeight.value);
+          bool newRepsValid = isTextValid(ExcercisePage.setReps.value);
           bool newSetValid = newWeightValid && newRepsValid;
 
           //only refocus needed if new set is not valid
