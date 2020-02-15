@@ -235,6 +235,7 @@ class RevertToPrevious extends StatelessWidget {
             text: " back to, ",
           ),
           TextSpan(
+            //we KNOW any widget that calls this has VALID tempWeight
             text: excercise.tempWeight.toString(),
             style: TextStyle(
               fontWeight: FontWeight.bold,
@@ -244,14 +245,15 @@ class RevertToPrevious extends StatelessWidget {
             text: " for ",
           ),
           TextSpan(
+            //we KNOW any widget that calls this has VALID tempReps
             text: excercise.tempReps.toString(),
             style: TextStyle(
               fontWeight: FontWeight.bold,
             ),
           ),
           TextSpan(
-            text: "rep" +
-                (excercise.tempReps == 1 ? "" : "s"),
+            //we KNOW any widget that calls this has VALID tempReps
+            text: "rep" + (excercise.tempReps == 1 ? "" : "s"),
           ),
         ],
       ),

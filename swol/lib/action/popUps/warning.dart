@@ -42,8 +42,11 @@ warningThenAllowPop(
   //  NOTE: assuming we allow manually updating temps after initially set
 
   //grab temps
-  String tempWeight = (excercise?.tempWeight.toString() ?? "");
-  String tempReps = (excercise?.tempReps.toString() ?? "");
+  int tempWeightString = excercise?.tempWeight;
+  int tempRepsString = excercise?.tempReps;
+  //extra step needed because null.toString() isn't null
+  String tempWeight = (tempWeightString != null) ? tempWeightString.toString() : "";
+  String tempReps = (tempRepsString != null) ? tempRepsString.toString() : "";
 
   //grab news
   String newWeight = ExcercisePage.setWeight.value;

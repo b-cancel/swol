@@ -42,8 +42,11 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
     //after this our notifiers initially set our controllers
     //our controllers update our notifiers
     //and then our notifiers ONLY update our temps under very specific conditions
-    ExcercisePage.setWeight.value = widget?.excercise?.tempWeight.toString() ?? "";
-    ExcercisePage.setReps.value = widget?.excercise?.tempReps.toString() ?? "";
+    int tempWeight = widget?.excercise?.tempWeight;
+    int tempReps = widget?.excercise?.tempReps;
+    //extra step needed because null.toString() isn't null
+    ExcercisePage.setWeight.value = (tempWeight != null) ? tempWeight.toString() : "";
+    ExcercisePage.setReps.value = (tempReps != null) ? tempReps.toString() : "";
 
     //set the first page we will be at based on startTimerValue
     int initialPage;

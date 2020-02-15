@@ -135,6 +135,8 @@ maybeError(BuildContext context, AnExcercise excercise) {
                               FlatButton(
                                 onPressed: () {
                                   //revert back (no need to update set)
+                                  //we KNOW the temps are VALID
+                                  //else the timer would not have started
                                   ExcercisePage.setWeight.value = excercise.tempWeight.toString();
                                   ExcercisePage.setReps.value = excercise.tempReps.toString();
 
