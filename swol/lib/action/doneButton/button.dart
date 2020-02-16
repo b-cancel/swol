@@ -47,6 +47,9 @@ class DoneButton extends StatelessWidget {
       ),
     );
 
+    //create font color for card color
+    Color fontColor = (color == Colors.red) ? Colors.black : Colors.white;
+
     //build
     return Stack(
       children: <Widget>[
@@ -79,24 +82,33 @@ class DoneButton extends StatelessWidget {
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
-                    Icon(Icons.arrow_left),
+                    Icon(
+                      Icons.arrow_left,
+                      color: fontColor,
+                    ),
                     Conditional(
-                      condition: setsPassed == 0,
-                      ifTrue: Text("Delete The Set"),
+                      condition: color == Colors.red,
+                      ifTrue: Text(
+                        "Delete This Set",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                        ),
+                      ),
                       ifFalse: RichText(
                         text: TextSpan(
                           style: TextStyle(
-                            color: Colors.white,
+                            color: fontColor,
                           ),
                           children: [
                             TextSpan(
-                              text: setsPassed.toString() + " Sets",
+                              text: setsPassed.toString() + " Set" + (setsPassed == 1 ? "" : "s"),
                               style: TextStyle(
                                 fontWeight: FontWeight.w900,
                               ),
                             ),
                             TextSpan(
-                              text: " Complete",
+                              text: " Finished",
                               style: TextStyle(),
                             ),
                           ],

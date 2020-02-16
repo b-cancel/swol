@@ -109,9 +109,14 @@ class _FloatingDoneButtonState extends State<FloatingDoneButton> {
     else completionType = Complete.Normal;
     
     //determine button color based on sets passed
-    bool shouldCompleteHere = (setsPassedFromHere >= widget.excercise.setTarget.value);
     Color cardColor = Theme.of(context).cardColor;
-    if(shouldCompleteHere) cardColor = Theme.of(context).accentColor;
+    if(completionType == Complete.DeleteNewSet){
+      cardColor = Colors.red;
+    }
+    else{
+      bool shouldCompleteHere = (setsPassedFromHere >= widget.excercise.setTarget.value);
+      if(shouldCompleteHere) cardColor = Theme.of(context).accentColor;
+    }
 
     //position
     return Positioned(
