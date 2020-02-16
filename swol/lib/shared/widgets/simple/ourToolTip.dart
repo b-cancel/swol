@@ -58,6 +58,7 @@ class OurToolTip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      behavior: HitTestBehavior.opaque,
       onTap: (){
         BotToast.cleanAll();
       },

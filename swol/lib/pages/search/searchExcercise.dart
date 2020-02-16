@@ -148,6 +148,7 @@ class _SearchExcerciseState extends State<SearchExcercise> {
                         Icons.search,
                       )
                       : GestureDetector(
+                        behavior: HitTestBehavior.opaque,
                         onTap: (){
                           search.text = "";
                         },

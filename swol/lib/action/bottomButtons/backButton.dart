@@ -26,6 +26,7 @@ class BottomBackButton extends StatelessWidget {
         //the button that looks small but is actually very tall
         Container(
           child: GestureDetector(
+            behavior: HitTestBehavior.opaque,
             onTap: backAction == null ? null : () => backAction(),
             child: Padding(
               padding: EdgeInsets.only(

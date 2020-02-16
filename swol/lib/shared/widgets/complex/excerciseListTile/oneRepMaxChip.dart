@@ -188,6 +188,7 @@ class _ExcerciseTileSubtitleState extends State<ExcerciseTileSubtitle> {
 
       //create the subtitle given the retreived values
       return GestureDetector(
+        behavior: HitTestBehavior.opaque,
         onTap: () {
           openSnackBar(
             context,

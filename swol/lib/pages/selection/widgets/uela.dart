@@ -237,6 +237,7 @@ class _UELAState extends State<UELA> {
                       child: Text("Close App"),
                     ),
                     GestureDetector(
+                      behavior: HitTestBehavior.opaque,
                       onTapDown: (tapDownDetails){
                         holding.value = true;
                       },

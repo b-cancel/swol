@@ -144,6 +144,7 @@ class _SetDisplayState extends State<SetDisplay> {
                         ),
                       ),
                       GestureDetector(
+                        behavior: HitTestBehavior.opaque,
                         onTap: () => showWeightToolTip(context, direction: PreferDirection.topLeft),
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
@@ -175,6 +176,7 @@ class _SetDisplayState extends State<SetDisplay> {
                         ),
                       ),
                       GestureDetector(
+                        behavior: HitTestBehavior.opaque,
                         onTap: () => showRepsToolTip(context, direction: PreferDirection.topRight),
                         child: Row(
                           mainAxisSize: MainAxisSize.min,

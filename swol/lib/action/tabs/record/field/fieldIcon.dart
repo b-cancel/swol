@@ -52,6 +52,7 @@ class _TappableIconState extends State<TappableIcon> {
   Widget build(BuildContext context) {
     Radius tinyCurve = Radius.circular(12);
     return GestureDetector(
+      behavior: HitTestBehavior.opaque,
       onTap: () {
         if (widget.isLeft)
           showWeightToolTip(context);

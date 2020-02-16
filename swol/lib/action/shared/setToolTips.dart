@@ -8,6 +8,7 @@ showRepsToolTip(BuildContext context, {
   showWidgetToolTip(
     context,
     GestureDetector(
+      behavior: HitTestBehavior.opaque,
       onTap: () {
         BotToast.cleanAll();
       },
@@ -42,6 +43,7 @@ showWeightToolTip(BuildContext context, {
   showWidgetToolTip(
     context,
     GestureDetector(
+      behavior: HitTestBehavior.opaque,
       onTap: () {
         BotToast.cleanAll();
       },

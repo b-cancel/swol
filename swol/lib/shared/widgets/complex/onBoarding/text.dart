@@ -26,6 +26,7 @@ class OnBoardingText extends StatelessWidget {
     Widget invisibleExpandedButton = Expanded(
       child: GestureDetector(
         onTap: () => secondaryOnTapNext(),
+        behavior: HitTestBehavior.opaque, 
         child: Container(
           color: Colors.transparent,
           child: Text(""),

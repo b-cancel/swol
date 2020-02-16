@@ -21,6 +21,7 @@ class BottomNextButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      behavior: HitTestBehavior.opaque,
       onTap: () => forwardAction(),
       child: Padding(
         padding: EdgeInsets.only(
