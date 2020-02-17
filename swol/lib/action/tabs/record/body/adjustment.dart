@@ -6,7 +6,7 @@ import 'package:swol/action/shared/halfColored.dart';
 import 'package:swol/action/shared/setDisplay.dart';
 import 'package:swol/shared/structs/anExcercise.dart';
 
-class MakeFunctionAdjustment extends StatelessWidget {
+class MakeFunctionAdjustment extends StatefulWidget {
   const MakeFunctionAdjustment({
     Key key,
     @required this.heroUp,
@@ -19,6 +19,36 @@ class MakeFunctionAdjustment extends StatelessWidget {
   final ValueNotifier<bool> heroUp;
   final Duration heroAnimDuration;
   final double heroAnimTravel;
+
+  @override
+  _MakeFunctionAdjustmentState createState() => _MakeFunctionAdjustmentState();
+}
+
+class _MakeFunctionAdjustmentState extends State<MakeFunctionAdjustment> {
+  final ValueNotifier<int> predictionID = new ValueNotifier<int>(0);
+
+  updatePredictionID() {
+    widget.excercise.predictionID = predictionID.value;
+  }
+
+  @override
+  void initState() {
+    //super init
+    super.initState();
+
+    //init value and notifier addition
+    predictionID.value = widget.excercise.predictionID;
+    predictionID.addListener(updatePredictionID);
+  }
+
+  @override
+  void dispose() { 
+    //remove listener
+    predictionID.removeListener(updatePredictionID);
+
+    //super dispose
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,9 +87,9 @@ class MakeFunctionAdjustment extends StatelessWidget {
               child: SetDisplay(
                 useAccent: false,
                 title: "Goal Set",
-                heroUp: heroUp,
-                heroAnimDuration: heroAnimDuration,
-                heroAnimTravel: heroAnimTravel,
+                heroUp: widget.heroUp,
+                heroAnimDuration: widget.heroAnimDuration,
+                heroAnimTravel: widget.heroAnimTravel,
               ),
             ),
           ),
@@ -124,7 +154,7 @@ class MakeFunctionAdjustment extends StatelessWidget {
                           ),
                         ),
                         ChangeFunction(
-                          excercise: excercise,
+                          predictionID: predictionID,
                           middleArrows: true,
                         ),
                       ],

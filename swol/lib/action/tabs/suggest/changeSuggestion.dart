@@ -11,25 +11,22 @@ import 'package:swol/shared/widgets/complex/fields/fields/function.dart';
 import 'package:swol/shared/structs/anExcercise.dart';
 
 //widget
-class SuggestionChanger extends StatefulWidget {
+class SuggestionChanger extends StatelessWidget {
   const SuggestionChanger({
     Key key,
+    @required this.predictionID,
     @required this.repTarget,
     @required this.excercise,
     @required this.arrowRadius,
     @required this.cardRadius,
   }) : super(key: key);
 
+  final ValueNotifier<int> predictionID;
   final ValueNotifier<int> repTarget;
   final AnExcercise excercise;
   final Radius arrowRadius;
   final Radius cardRadius;
 
-  @override
-  _SuggestionChangerState createState() => _SuggestionChangerState();
-}
-
-class _SuggestionChangerState extends State<SuggestionChanger> {
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -37,7 +34,7 @@ class _SuggestionChangerState extends State<SuggestionChanger> {
       children: <Widget>[
         Expanded(
           child: PredictionFormulaSpacer(
-            arrowRadius: widget.arrowRadius,
+            arrowRadius: arrowRadius,
           ),
         ),
         Padding(
@@ -49,8 +46,8 @@ class _SuggestionChangerState extends State<SuggestionChanger> {
             decoration: BoxDecoration(
               color: Theme.of(context).cardColor,
               borderRadius: BorderRadius.only(
-                bottomRight: widget.cardRadius,
-                bottomLeft: widget.cardRadius,
+                bottomRight: cardRadius,
+                bottomLeft: cardRadius,
               ),
             ),
             child: Padding(
@@ -68,7 +65,7 @@ class _SuggestionChangerState extends State<SuggestionChanger> {
                       bottom: 8.0,
                     ),
                     child: ChangeFunction(
-                      excercise: widget.excercise, 
+                      predictionID: predictionID,
                       middleArrows: false,
                     ),
                   ),
@@ -84,7 +81,7 @@ class _SuggestionChangerState extends State<SuggestionChanger> {
             ),
             child: TextWithCorners(
               text: "and your Rep Target",
-              radius: widget.cardRadius,
+              radius: cardRadius,
             ),
           ),
         ),
@@ -97,8 +94,8 @@ class _SuggestionChangerState extends State<SuggestionChanger> {
             decoration: BoxDecoration(
               color: Theme.of(context).cardColor,
               borderRadius: BorderRadius.only(
-                bottomRight: widget.arrowRadius,
-                bottomLeft: widget.arrowRadius,
+                bottomRight: arrowRadius,
+                bottomLeft: arrowRadius,
               ),
             ),
             padding: EdgeInsets.only(
@@ -106,7 +103,7 @@ class _SuggestionChangerState extends State<SuggestionChanger> {
             ),
             child: RepTargetField(
               changeDuration: Duration(milliseconds: 300),
-              repTarget: widget.repTarget,
+              repTarget: repTarget,
               subtle: true,
             ),
           ),
@@ -115,7 +112,7 @@ class _SuggestionChangerState extends State<SuggestionChanger> {
           child: TextWithCorners(
             useAccent: true,
             text: "your next set should be",
-            radius: widget.arrowRadius,
+            radius: arrowRadius,
           ),
         ),
       ],

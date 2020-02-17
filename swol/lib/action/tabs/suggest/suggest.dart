@@ -12,7 +12,6 @@ import 'package:swol/other/functions/W&R=1RM.dart';
 
 //internal: other
 import 'package:swol/shared/structs/anExcercise.dart';
-import 'package:swol/other/functions/helper.dart';
 
 //TODO: from set record page
 //we don't care if we are BEFORE or AFTER our set target
@@ -41,8 +40,7 @@ class Suggestion extends StatefulWidget {
 
 class _SuggestionState extends State<Suggestion> {
   //function select
-  ValueNotifier<int> functionIndex;
-  String functionValue;
+  ValueNotifier<int> predictionID;
 
   //set target set
   ValueNotifier<int> repTarget;
@@ -69,9 +67,8 @@ class _SuggestionState extends State<Suggestion> {
     print("set goal weight: " + ExcercisePage.setGoalWeight.value.toString());
   }
 
-  updateFunctionIndex() {
-    functionValue = Functions.functions[functionIndex.value];
-    widget.excercise.predictionID = functionIndex.value;
+  updatePredictionID() {
+    widget.excercise.predictionID = predictionID.value;
     updateGoal();
   }
 
@@ -86,13 +83,12 @@ class _SuggestionState extends State<Suggestion> {
     super.initState();
     
     //set function stuff initially
-    functionIndex = new ValueNotifier(
+    predictionID = new ValueNotifier(
       widget.excercise.predictionID,
     );
-    functionValue = Functions.functions[functionIndex.value];
 
     //when the value changes we update it
-    functionIndex.addListener(updateFunctionIndex);
+    predictionID.addListener(updatePredictionID);
 
     //set set target stuff initially
     repTarget = new ValueNotifier(
@@ -108,7 +104,7 @@ class _SuggestionState extends State<Suggestion> {
 
   @override
   void dispose() {
-    functionIndex.removeListener(updateFunctionIndex);
+    predictionID.removeListener(updatePredictionID);
     repTarget.removeListener(updateRepTarget);
 
     //super dispose
@@ -157,6 +153,7 @@ class _SuggestionState extends State<Suggestion> {
                     ),
                     Expanded(
                       child: SuggestionChanger(
+                        predictionID: predictionID,
                         repTarget: repTarget,
                         excercise: widget.excercise,
                         arrowRadius: arrowRadius,

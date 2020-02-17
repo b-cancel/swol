@@ -3,18 +3,19 @@ import 'package:flutter/material.dart';
 
 //plugin
 import 'package:carousel_slider/carousel_slider.dart';
+
+//internal
 import 'package:swol/other/functions/helper.dart';
 import 'package:swol/shared/methods/vibrate.dart';
-import 'package:swol/shared/structs/anExcercise.dart';
 
 //widget
 class ChangeFunction extends StatefulWidget {
   ChangeFunction({
-    @required this.excercise,
+    @required this.predictionID,
     @required this.middleArrows,
   });
 
-  final AnExcercise excercise;
+  final ValueNotifier<int> predictionID;
   final bool middleArrows;
 
   @override
@@ -22,19 +23,14 @@ class ChangeFunction extends StatefulWidget {
 }
 
 class _ChangeFunctionState extends State<ChangeFunction> {
-  ValueNotifier<int> predictionID;
-  ValueNotifier<bool> lastFunction;
-  ValueNotifier<bool> firstFunction;
+  final ValueNotifier<bool> lastFunction = new ValueNotifier<bool>(false);
+  final ValueNotifier<bool> firstFunction = new ValueNotifier<bool>(false);
 
   var carousel;
 
   updateFirstLast() {
-    firstFunction.value = predictionID.value == 0;
-    lastFunction.value = predictionID.value == Functions.functions.length - 1;
-  }
-
-  updatePredictionID() {
-    widget.excercise.predictionID = predictionID.value;
+    firstFunction.value = (widget.predictionID.value == 0);
+    lastFunction.value = (widget.predictionID.value == Functions.functions.length - 1);
   }
 
   updateState() {
@@ -46,22 +42,16 @@ class _ChangeFunctionState extends State<ChangeFunction> {
     //super init
     super.initState();
 
-    //create listeners
-    predictionID = new ValueNotifier<int>(widget.excercise.predictionID);
-    lastFunction = new ValueNotifier<bool>(false);
-    firstFunction = new ValueNotifier<bool>(false);
-
     //set values
     updateFirstLast();
 
     //create listeners
     lastFunction.addListener(updateState);
     firstFunction.addListener(updateState);
-    predictionID.addListener(updatePredictionID);
 
     //make carousel
     carousel = CarouselSlider(
-      initialPage: predictionID.value,
+      initialPage: widget.predictionID.value,
       height: 36,
       enableInfiniteScroll: false,
       autoPlay: false,
@@ -70,7 +60,7 @@ class _ChangeFunctionState extends State<ChangeFunction> {
       viewportFraction: 1.0,
       onPageChanged: (int val) {
         Vibrator.vibrateOnce();
-        predictionID.value = val;
+        widget.predictionID.value = val;
         updateFirstLast();
       },
       items: Functions.functions.map((functionName) {
@@ -126,12 +116,11 @@ class _ChangeFunctionState extends State<ChangeFunction> {
     //remove listeners
     lastFunction.removeListener(updateState);
     firstFunction.removeListener(updateState);
-    predictionID.removeListener(updatePredictionID);
 
     //dispose notifiers
     lastFunction.dispose();
     firstFunction.dispose();
-    predictionID.dispose();
+    widget.predictionID.dispose();
 
     //super dispose
     super.dispose();
