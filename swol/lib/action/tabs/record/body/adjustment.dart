@@ -42,27 +42,41 @@ class _MakeFunctionAdjustmentState extends State<MakeFunctionAdjustment> {
       widget.excercise.predictionID,
     );
 
-    //TODO: if our set weight is valid 
-    //TODO: and perhaps if our reps are also below a certain value
     //we use 1m and weight to get reps
     //this is bause maybe we wanted them to do 125 for 5 but they only had 120
     //so ideally we want to match their weight here and take it from ther
-    if(isTextValid(ExcercisePage.setWeight.value)){
-      print("weight valid *******************************");
-      ExcercisePage.setGoalWeight.value = int.parse(ExcercisePage.setWeight.value);
+    String setWeightString = ExcercisePage.setWeight.value;
+    bool weightValid = isTextValid(setWeightString);
+    double weight = weightValid ? double.parse(setWeightString) : 0;
 
-      //calc goal reps based on goal weight
-      ExcercisePage.setGoalReps.value = ToReps.from1RMandWeight(
+    //check conditions
+    int repEstimate;
+    bool above0 = false;
+    bool below25;
+    bool lessThanDouble;
+    if(weightValid){ 
+      repEstimate = ToReps.from1RMandWeight(
         oneRM, 
-        ExcercisePage.setGoalWeight.value.toDouble(), 
+        //use recorded weight
+        //since we are assuming 
+        //that's what the user couldn't change
+        weight, 
         widget.excercise.predictionID,
       ).round();
-    }
-    else{
-      print("NOT valid *******************************");
-      ExcercisePage.setGoalReps.value = widget.excercise.repTarget;
 
-      //calc goal weight based on goal reps
+      above0 = (0 < repEstimate);
+      below25 = repEstimate < 25;
+      lessThanDouble = repEstimate <= (widget.excercise.repTarget * 2.0);
+    }
+    
+    //only if all conditions are met do we use our inverse guess
+    //this should only happen under very specific circumstances
+    if(above0 && (below25 || lessThanDouble)){ //calculate reps
+      ExcercisePage.setGoalReps.value = repEstimate;
+      ExcercisePage.setGoalWeight.value = weight.round();
+    }
+    else{ //calculate weight
+      ExcercisePage.setGoalReps.value = widget.excercise.repTarget;
       ExcercisePage.setGoalWeight.value = ToWeight.fromRepAnd1Rm(
         ExcercisePage.setGoalReps.value.toDouble(), 
         oneRM, 

@@ -29,10 +29,7 @@ class ToReps{
     double b = -37 * max;
     double c = a + b;
     if(c == 0) return 0;
-    else{
-      double d = c / max;
-      return -d;
-    }
+    else return -(c / max);
   }
 
   //2 McGlothin (or Landers) Function
@@ -43,21 +40,22 @@ class ToReps{
     double a = 100 * weight;
     double b = a / max;
     double c = b - 101.3;
-    return -(c / 2.67123);
+    if(c  == 0) return 0;
+    else return -(c / 2.67123);
   }
 
   //3 Almazan Function *our own
-  /*e ^ (
-    [-ln(2)*w]
+  /*e ^ ( NEGATIVE
+    [ln(2)*w]
   ----------------
     [0.244879*m]
   )
   */
   //TIMES 109.3355 - 4.99195
   static double almazan(double weight, double max){
-    double a = -math.log(2) * weight; //[-ln(2)*w]
+    double a = math.log(2) * weight; //[ln(2)*w]
     double b = 0.244879 * max; //[0.244879*m]
-    double c = a/b;
+    double c = -(a/b);
     double d = math.pow(math.e, c);
     double e = d * 109.3355;
     return e - 4.99195;
@@ -116,8 +114,18 @@ class ToReps{
     double a = 100 * weight;
     double b = a / max;
     double c = b - const1;
-    double d = c / const2;
-    double e = -math.log(d);
-    return e / const3;
+    if(c == 0) return 0;
+    else{
+      double d = c / const2;
+      if(d < 0) return 0;
+      else{
+        double e = math.log(d);
+        if(e == 0) return 0;
+        else{
+          double f = e / const3;
+          return -f;
+        }
+      }
+    }
   }
 }
