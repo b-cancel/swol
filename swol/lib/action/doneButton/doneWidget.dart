@@ -4,6 +4,28 @@ import 'package:swol/action/doneButton/corner.dart';
 import 'package:swol/action/page.dart';
 import 'package:swol/shared/structs/anExcercise.dart';
 
+//NOTE: we have a couple of timestamp types
+//inprogress (on top), new, normal, hidden
+
+//we are trying to cover X edge case
+
+//case 1 of edge case
+//if we are doing the calibration set for an excercise, it will be categorized as "NEW"
+//if we don't complete this set and move onto our 2nd set (with suggestions) -> good
+//else we dont complete this first set and SHOULD RETURN TO "NEW"
+
+//case 2 of edge case
+//same as above but replace "NEW" for "ARCHIVED"
+
+//case 3 of edge case
+//same as above but for any in progress
+
+//in all cases we don't want to officially update the timestamp type UNTIL we finish our first set
+//so we can revert back to our location if needed
+//so we need to keep track of an extra variable in the excercise
+//ONLY when recording the first set do we want to set it so we can use it
+//and ONLY when deleting the first set do we want to reinstate it vs simply using the default DateTime.now()
+
 enum Complete {ForgotToFinish, DeleteNewSet, Normal}
 
 class FloatingDoneButton extends StatefulWidget {
