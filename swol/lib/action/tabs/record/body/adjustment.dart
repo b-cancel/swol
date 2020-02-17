@@ -57,8 +57,6 @@ class MakeFunctionAdjustment extends StatelessWidget {
               child: SetDisplay(
                 useAccent: false,
                 title: "Goal Set",
-                lastWeight: 124,
-                lastReps: 23,
                 heroUp: heroUp,
                 heroAnimDuration: heroAnimDuration,
                 heroAnimTravel: heroAnimTravel,

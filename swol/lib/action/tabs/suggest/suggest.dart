@@ -45,22 +45,26 @@ class _SuggestionState extends State<Suggestion> {
   //set target set
   ValueNotifier<int> repTarget;
 
+  updateGoal(){
+
+  }
+
   updateFunctionIndex() {
     functionValue = Functions.functions[functionIndex.value];
     widget.excercise.predictionID = functionIndex.value;
+    updateGoal();
   }
 
   updateRepTarget() {
     widget.excercise.repTarget = repTarget.value;
-
-    //TODO: might not need this
-    setState(() {});
+    updateGoal();
   }
 
   @override
   void initState() {
     //super init
     super.initState();
+    
     //set function stuff initially
     functionIndex = new ValueNotifier(
       widget.excercise.predictionID,
@@ -77,6 +81,9 @@ class _SuggestionState extends State<Suggestion> {
 
     //when value changes we update it
     repTarget.addListener(updateRepTarget);
+
+    //update goal initially before notifiers
+    updateGoal();
   }
 
   @override
@@ -122,11 +129,10 @@ class _SuggestionState extends State<Suggestion> {
                     TopBackgroundColored(
                       color: Theme.of(context).cardColor,
                       child: SetDisplay(
+                        excercise: widget.excercise,
                         useAccent: false,
                         extraCurvy: true,
                         title: "Last Set",
-                        lastWeight: widget.excercise.lastWeight,
-                        lastReps: widget.excercise.lastReps,
                       ),
                     ),
                     Expanded(
@@ -148,8 +154,6 @@ class _SuggestionState extends State<Suggestion> {
                       child: SetDisplay(
                         useAccent: true,
                         title: "Goal Set",
-                        lastWeight: 124,
-                        lastReps: 23,
                         heroUp: widget.heroUp,
                         heroAnimDuration: widget.heroAnimDuration,
                         heroAnimTravel: widget.heroAnimTravel,

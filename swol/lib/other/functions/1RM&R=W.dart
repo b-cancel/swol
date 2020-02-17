@@ -1,45 +1,55 @@
 import 'dart:math' as math;
-//rep range: 1 - > 35
+import 'package:swol/other/functions/helper.dart';
 
+//PROPER rep range: 1 - > 35
 class ToWeight{
   //NOTE: some functions CAN FAIL but that's okay we always have back ups for those that do
   //at all weight ranges, the function that approximate the one failing the most
   //is the one to its right
   //BACKUP ORDER: brzycki, mcGlothinOrLander, almazan, epleyOrBaechle [non failing]
   static double fromRepAnd1Rm(double reps, double max, int predictionID){
-    switch(predictionID){
-      case 0: return brzycki(reps, max); break;
-      case 1: return mcGlothinOrLanders(reps, max); break;
-      case 2: return almazan(reps, max); break;
-      case 3: return epleyOrBaechle(reps, max); break;
-      case 4: return oConner(reps, max); break;
-      case 5: return wathan(reps, max); break;
-      case 6: return mayhew(reps, max); break;
-      default: return lombardi(reps, max); break;
+    bool positiveWeight = (max > 0);
+    bool repsInt = ((reps.toInt()).toDouble() == reps);
+    if(positiveWeight && repsInt){
+      switch(predictionID){
+        case 0: return brzycki(reps, max); break;
+        case 1: return mcGlothinOrLanders(reps, max); break;
+        case 2: return almazan(reps, max); break;
+        case 3: return epleyOrBaechle(reps, max); break;
+        case 4: return oConner(reps, max); break;
+        case 5: return wathan(reps, max); break;
+        case 6: return mayhew(reps, max); break;
+        default: return lombardi(reps, max); break;
+      }
     }
+    else return null;
   }
 
   //1 Brzycki Function
   //[m * (37- r)] / 36
-  //TODO: watch out for limits, after the limit the result might also be bogus
-  //TODO: alt for this is mcGlothin (watch out for circular reasoning)
+  //same limits as To1RM
   static double brzycki(double reps, double max){
-    double a = 37 - reps;
-    double b = max * a;
-    double c = b / 36;
-    return c;
+    if(Functions.brzyckiUsefull(reps)){
+      double a = 37 - reps;
+      double b = max * a;
+      double c = b / 36;
+      return c;
+    }
+    else return mcGlothinOrLanders(reps, max);
   }
 
   //2 McGlothin (or Landers) Function
   //[m * (101.3 - [2.67123 * r])] / 100
-  //TODO: watch out for limits, after the limit the result might also be bogus
-  //TODO: alt for this is brzyci (watch out for circular reasoning)
+  //same limits as To1RM
   static double mcGlothinOrLanders(double reps, double max){
-    double a = 2.67123 * reps;
-    double b = 101.3 - a;
-    double c = max * b;
-    double d = c / 100;
-    return d;
+    if(Functions.mcGlothinOrLandersUsefull(reps)){
+      double a = 2.67123 * reps;
+      double b = 101.3 - a;
+      double c = max * b;
+      double d = c / 100;
+      return d;
+    }
+    else return almazan(reps, max);
   }
 
   //3 Almazan Function *our own
@@ -52,24 +62,29 @@ class ToWeight{
   ----------------------
   ln(2)
   */
-  //TODO: watch out for limits, after the limit the result might also be bogus
+  //same limits as To1RM
   static double almazan(double reps, double max){
-    double a = reps + 4.99195;
-    double b = a / 109.3355;
-    double c = math.log(b);
-    double d = 0.244879 * max * c;
-    double e = d / math.log(2);
-    return -e;
+    if(Functions.almazanUsefull(reps)){
+      double a = reps + 4.99195;
+      double b = a / 109.3355;
+      double c = math.log(b);
+      double d = 0.244879 * max * c;
+      double e = d / math.log(2);
+      return -e;
+    } 
+    else return epleyOrBaechle(reps, max);
   }
 
   //4 Epley (or Baechle) Function
   //(30 * m) / (30 + r)
+  //NOTE: no positive limits
   static double epleyOrBaechle(double reps, double max){
     return _helperOne(reps, max, 30);
   }
 
   //5 O`Conner Function
   //(40 * m) / (40 + r)
+  //NOTE: no positive limits
   static double oConner(double reps, double max){
     return _helperOne(reps, max, 40);
   }

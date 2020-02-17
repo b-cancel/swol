@@ -2,6 +2,24 @@ import 'package:swol/other/functions/W&R=1RM.dart';
 import 'dart:math' as math;
 
 class Functions{
+  //r: must not be 37 (for sure)
+  //r: must not be anything above 37 (logically)
+  static bool brzyckiUsefull(double reps) => (reps < 37);
+
+  //r: must not be 37.9226049423 (technically)
+  //r: must not be anything above 37.9226049423 (logically)
+  //r: and logically you can assume the number is 38 
+  //    1. because we are only ever going to be passed int reps
+  //    2. and because 37 actually does work here whereas 38 does not
+  static bool mcGlothinOrLandersUsefull(double reps) => (reps < 38);
+
+  //r: must not be 104.34355 (technically)
+  //r: must not anything above 104.34355 (logically)
+  //r: and logically youc an assume the number is 105
+  //    1. because we are only ever going to be passed int reps
+  //    2. and because 104 does work here whereas 105 does not
+  static bool almazanUsefull(double reps) => (reps < 105);
+
   static const int defaultFunctionIndex = 4; 
 
   static List<String> functions = [
@@ -45,9 +63,9 @@ class Functions{
         bool usingBackUpFunction = true;
 
         //if we are using one of the 3 functions that use backups, make sure we aren't going to
-        if(i == 0 && To1RM.brzyckiUsefull(reps.toDouble())) usingBackUpFunction = false;
-        else if(i == 1 && To1RM.mcGlothinOrLandersUsefull(reps.toDouble())) usingBackUpFunction = false;
-        else if(i == 2 && To1RM.almazanUsefull(reps.toDouble())) usingBackUpFunction = false;
+        if(i == 0 && brzyckiUsefull(reps.toDouble())) usingBackUpFunction = false;
+        else if(i == 1 && mcGlothinOrLandersUsefull(reps.toDouble())) usingBackUpFunction = false;
+        else if(i == 2 && almazanUsefull(reps.toDouble())) usingBackUpFunction = false;
         else usingBackUpFunction = false; //any function without a limit
         
         //add only those that didn't use a back up function

@@ -1,7 +1,9 @@
 //flutter
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
+import 'package:swol/action/page.dart';
 import 'package:swol/action/shared/setToolTips.dart';
+import 'package:swol/shared/structs/anExcercise.dart';
 
 //plugin
 import 'package:vector_math/vector_math_64.dart' as vect;
@@ -14,9 +16,11 @@ import 'package:swol/shared/functions/goldenRatio.dart';
 class SetDisplay extends StatefulWidget {
   const SetDisplay({
     Key key,
+    //if its passed then use LAST
+    //else use locals updated by stuff all over
+    this.excercise,
+    //other
     @required this.title,
-    @required this.lastWeight,
-    @required this.lastReps,
     this.extraCurvy: false,
     @required this.useAccent,
     //optional
@@ -25,9 +29,9 @@ class SetDisplay extends StatefulWidget {
     this.heroAnimTravel,
   }) : super(key: key);
 
+  final AnExcercise excercise;
+  //other
   final String title;
-  final int lastWeight;
-  final int lastReps;
   final bool extraCurvy;
   final bool useAccent;
   //optional
@@ -82,6 +86,7 @@ class _SetDisplayState extends State<SetDisplay> {
       else movementY = widget.heroUp.value ? -widget.heroAnimTravel : 0;
     }
 
+    //widget
     return AnimatedContainer(
       duration: widget.heroAnimDuration ?? Duration.zero,
       width: MediaQuery.of(context).size.width,
@@ -149,7 +154,10 @@ class _SetDisplayState extends State<SetDisplay> {
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            Text(widget.lastWeight.toString()),
+                            UpdatingSetText(
+                              isWeight: true,
+                              excercise: widget.excercise,
+                            ),
                             Container(
                               alignment: Alignment.topLeft,
                               padding: EdgeInsets.only(
@@ -181,7 +189,10 @@ class _SetDisplayState extends State<SetDisplay> {
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            Text(widget.lastReps.toString()),
+                            UpdatingSetText(
+                              isWeight: false,
+                              excercise: widget.excercise,
+                            ),
                             Container(
                               alignment: Alignment.topLeft,
                               padding: EdgeInsets.only(
@@ -205,5 +216,64 @@ class _SetDisplayState extends State<SetDisplay> {
         ),
       ),
     );
+  }
+}
+
+class UpdatingSetText extends StatefulWidget {
+  UpdatingSetText({
+    @required this.isWeight,
+    this.excercise,
+  });
+
+  final AnExcercise excercise;
+  final bool isWeight;
+
+  @override
+  _UpdatingSetTextState createState() => _UpdatingSetTextState();
+}
+
+class _UpdatingSetTextState extends State<UpdatingSetText> {
+  updateState(){
+    if(mounted) setState(() {});
+  }
+
+  @override
+  void initState() {
+    //super init
+    super.initState();
+
+    //add listners if necessary
+    if(widget.excercise == null){
+      ExcercisePage.setGoalWeight.addListener(updateState);
+      ExcercisePage.setGoalReps.addListener(updateState);
+    }
+  }
+
+  @override
+  void dispose() {
+    //remove listeners if necessary
+    if(widget.excercise == null){
+      ExcercisePage.setGoalWeight.removeListener(updateState);
+      ExcercisePage.setGoalReps.removeListener(updateState);
+    }
+
+    //super dispose
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    int value;
+    if(widget.excercise == null){
+      if(widget.isWeight) value = ExcercisePage.setGoalWeight.value;
+      else value = ExcercisePage.setGoalReps.value;
+    }
+    else{
+      if(widget.isWeight) value = widget.excercise.lastWeight;
+      else value = widget.excercise.lastReps;
+    }
+
+    //widget
+    return Text(value.toString());
   }
 }
