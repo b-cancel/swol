@@ -2,6 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:swol/other/functions/helper.dart';
 import 'package:swol/shared/methods/excerciseData.dart';
 
+//TODO: there are some variables that are updated in tandem
+//as in alot of variables are updated all together
+//so we can update the file at the end in some cases
+//perhaps by providing some alternative update method that is more tedious
+//but doesn't update the file
 class AnExcercise{ 
   //constants
   static const int defaultFunctionID = Functions.defaultFunctionIndex;
@@ -80,6 +85,13 @@ class AnExcercise{
     _lastTimeStamp.value = newValue;
     ExcerciseData.updateFile();
     ExcerciseData.updateOrder();
+  }
+
+  DateTime _backUpTimeStamp;
+  DateTime get backUpTimeStamp => _backUpTimeStamp;
+  set backUpTimeStamp(DateTime newBackUpTimeStamp){
+    _backUpTimeStamp = newBackUpTimeStamp;
+    ExcerciseData.updateFile();
   }
   
   int _lastWeight;
@@ -201,6 +213,9 @@ class AnExcercise{
 
     //---Recorded
 
+    _backUpTimeStamp = _stringToDateTime(
+      map["backUpTimeStamp"],
+    );
     _lastTimeStamp = new ValueNotifier<DateTime>(
       _stringToDateTime(map["lastTimeStamp"])
     );
@@ -251,6 +266,7 @@ class AnExcercise{
 
       //---Recorded
 
+      "backUpTimeStamp": _dateTimeToString(backUpTimeStamp),
       "lastTimeStamp": _dateTimeToString(lastTimeStamp.value),
       "lastWeight": lastWeight,
       "lastReps": lastReps,

@@ -95,9 +95,12 @@ class _ExcercisePageDarkState extends State<ExcercisePageDark> {
           widget.excercise.tempSetCount.value + 1,
         );
 
+        //we are recording our FIRST set so may go back to it 
+        //if we delete it instead of deciding to continue
+        if(widget.excercise.tempSetCount.value == 1){ 
+          widget.excercise.backUpTimeStamp = widget.excercise.lastTimeStamp.value;
+        }
         //set in progress time stamp
-        //TODO: only for first set do we save the back up lastTimeStamp
-        //TODO: could check if back up is an inProgressType or could I think check temp set count
         widget.excercise.lastTimeStamp = ValueNotifier<DateTime>(LastTimeStamp.inProgressDateTime());
       }
 

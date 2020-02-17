@@ -206,10 +206,12 @@ class _FloatingDoneButtonState extends State<FloatingDoneButton> {
     bool setTempsToNull: false,
     bool tempToLast: false,
   }){
-    //TODO: check if set started by not completed
-    //TODO: we know we started but didnt complete it if ???
     //time stamp
-    widget.excercise.lastTimeStamp = ValueNotifier<DateTime>(DateTime.now());
+    DateTime newTimeStamp = DateTime.now();
+    if(setsPassed == 0){ //we didn't care to even save this set
+      newTimeStamp = widget.excercise.backUpTimeStamp;
+    }
+    widget.excercise.lastTimeStamp = ValueNotifier<DateTime>(newTimeStamp);
 
     //temp start time
     if(setTempsToNull){
