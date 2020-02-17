@@ -14,11 +14,13 @@ import 'package:swol/shared/structs/anExcercise.dart';
 class SuggestionChanger extends StatefulWidget {
   const SuggestionChanger({
     Key key,
+    @required this.repTarget,
     @required this.excercise,
     @required this.arrowRadius,
     @required this.cardRadius,
   }) : super(key: key);
 
+  final ValueNotifier<int> repTarget;
   final AnExcercise excercise;
   final Radius arrowRadius;
   final Radius cardRadius;
@@ -28,40 +30,6 @@ class SuggestionChanger extends StatefulWidget {
 }
 
 class _SuggestionChangerState extends State<SuggestionChanger> {
-  ValueNotifier<int> repTarget;
-
-  //updating function
-  updateRepTarget() {
-    widget.excercise.repTarget = repTarget.value;
-  }
-
-  //init
-  @override
-  void initState() {
-    //super init
-    super.initState();
-
-    //create notifiers
-    repTarget = new ValueNotifier<int>(widget.excercise.repTarget);
-
-    //add listeners
-    repTarget.addListener(updateRepTarget);
-  }
-
-  //dispose
-  @override
-  void dispose() { 
-    //remove listeners
-    repTarget.removeListener(updateRepTarget);
-
-    //dispose notifiers
-    repTarget.dispose();
-
-    //super dispose
-    super.dispose();
-  }
-
-  //build
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -138,7 +106,7 @@ class _SuggestionChangerState extends State<SuggestionChanger> {
             ),
             child: RepTargetField(
               changeDuration: Duration(milliseconds: 300),
-              repTarget: repTarget,
+              repTarget: widget.repTarget,
               subtle: true,
             ),
           ),

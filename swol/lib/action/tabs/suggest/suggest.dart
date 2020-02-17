@@ -7,6 +7,8 @@ import 'package:swol/action/shared/setDisplay.dart';
 import 'package:swol/action/tabs/suggest/changeSuggestion.dart';
 import 'package:swol/action/bottomButtons/button.dart';
 import 'package:swol/action/page.dart';
+import 'package:swol/other/functions/1RM&R=W.dart';
+import 'package:swol/other/functions/W&R=1RM.dart';
 
 //internal: other
 import 'package:swol/shared/structs/anExcercise.dart';
@@ -45,8 +47,26 @@ class _SuggestionState extends State<Suggestion> {
   //set target set
   ValueNotifier<int> repTarget;
 
+  //update the goal set based on init
+  //and changed valus
   updateGoal(){
+    ExcercisePage.setGoalReps.value = widget.excercise.repTarget;
 
+    //calc oneRM based on previous
+    double oneRM = To1RM.fromWeightAndReps(
+      widget.excercise.lastWeight.toDouble(), 
+      widget.excercise.lastReps.toDouble(), 
+      widget.excercise.predictionID,
+    );
+    print('one rep max: ' + oneRM.toString());
+
+    //calc goal weight based on goal reps
+    ExcercisePage.setGoalWeight.value = ToWeight.fromRepAnd1Rm(
+      ExcercisePage.setGoalReps.value.toDouble(), 
+      oneRM, 
+      widget.excercise.predictionID,
+    ).toInt();
+    print("set goal weight: " + ExcercisePage.setGoalWeight.value.toString());
   }
 
   updateFunctionIndex() {
@@ -137,6 +157,7 @@ class _SuggestionState extends State<Suggestion> {
                     ),
                     Expanded(
                       child: SuggestionChanger(
+                        repTarget: repTarget,
                         excercise: widget.excercise,
                         arrowRadius: arrowRadius,
                         cardRadius: cardRadius,
