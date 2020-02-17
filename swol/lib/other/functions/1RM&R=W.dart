@@ -139,9 +139,10 @@ class ToWeight{
   ){
     double a = -const3 * reps;
     double b = math.pow(math.e, a);
+    //max * (c1 + c2 * b)
     double c = const2 * b;
-    double d = const1 * c;
+    double d = const1 + c;
     double e = max * d;
-    return e;
+    return e / 100;
   }
 }
