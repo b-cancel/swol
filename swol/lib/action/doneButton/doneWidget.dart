@@ -28,6 +28,7 @@ class _FloatingDoneButtonState extends State<FloatingDoneButton> {
   //whether or not this particular page wants the button to show
   bool shouldShow(){
     bool pageWithButton = ExcercisePage.pageNumber.value != 1;
+    bool nullTSC = widget.excercise.tempSetCount.value == AnExcercise.nullInt;
 
     //NOTE: because our tempSetCount is increase when we start the timer
     //if we start the timer
@@ -36,8 +37,13 @@ class _FloatingDoneButtonState extends State<FloatingDoneButton> {
     //for that reason when our setsPassed are equal to 0
     //we show "Delete The Set" instead
 
-    bool nullTSC = widget.excercise.tempSetCount.value == AnExcercise.nullInt;
-    return (pageWithButton && nullTSC == false);
+    if(pageWithButton) return nullTSC == false;
+    else{ //the page that usually doesn't have a done button
+      //does have the done button but only for the calibration set
+      //and only if all other conditions are met
+      bool inCalibrationSet = widget.excercise.lastWeight == null;
+      return inCalibrationSet && (nullTSC == false);
+    }
   }
 
   //runs after a change in pageNumber is detected
