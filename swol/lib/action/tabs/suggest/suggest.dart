@@ -56,7 +56,6 @@ class _SuggestionState extends State<Suggestion> {
       widget.excercise.lastReps.toDouble(), 
       widget.excercise.predictionID,
     );
-    print('one rep max: ' + oneRM.toString());
 
     //calc goal weight based on goal reps
     ExcercisePage.setGoalWeight.value = ToWeight.fromRepAnd1Rm(
@@ -64,7 +63,6 @@ class _SuggestionState extends State<Suggestion> {
       oneRM, 
       widget.excercise.predictionID,
     ).toInt();
-    print("set goal weight: " + ExcercisePage.setGoalWeight.value.toString());
   }
 
   updatePredictionID() {
