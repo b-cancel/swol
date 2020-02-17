@@ -1,5 +1,6 @@
 //flutter
 import 'package:flutter/material.dart';
+import 'package:swol/action/popUps/skipTimer.dart';
 
 //internal: action
 import 'package:swol/action/tabs/recovery/secondary/breath.dart';
@@ -25,7 +26,7 @@ class Recovery extends StatefulWidget {
 class _RecoveryState extends State<Recovery>
     with SingleTickerProviderStateMixin {
   ValueNotifier<Duration> recoveryDuration;
-  ValueNotifier<bool> areYouSurePopUp;
+  ValueNotifier<bool> showAreYouSure;
 
   //function that is removable from listener
   updateRecoveryDuration() {
@@ -38,7 +39,7 @@ class _RecoveryState extends State<Recovery>
     //setup things to make recovery duration changeable
     recoveryDuration = new ValueNotifier(widget.excercise.recoveryPeriod);
     recoveryDuration.addListener(updateRecoveryDuration);
-    areYouSurePopUp = new ValueNotifier<bool>(false);
+    showAreYouSure = new ValueNotifier<bool>(true);
 
     //super init
     super.initState();
@@ -99,7 +100,7 @@ class _RecoveryState extends State<Recovery>
                   child: Timer(
                     excercise: widget.excercise,
                     changeableTimerDuration: recoveryDuration,
-                    areYouSurePopUp: areYouSurePopUp,
+                    showAreYouSure: showAreYouSure,
                     showIcon: false,
                   ),
                 ),
@@ -128,12 +129,14 @@ class _RecoveryState extends State<Recovery>
             color: buttonsColor,
             excercise: widget.excercise,
             forwardAction: () {
-              //TODO: are you sure pop up
-              //move onto next set
-              ExcercisePage.nextSet.value = true;
-          
-              //move onto the next set
-              ExcercisePage.pageNumber.value = 0;
+              if(showAreYouSure.value){
+                maybeSkipTimer(
+                  context, 
+                  widget.excercise, 
+                  goToNextSet,
+                );
+              }
+              else goToNextSet();
             },
             forwardActionWidget: RichText(
               text: TextSpan(
@@ -160,5 +163,12 @@ class _RecoveryState extends State<Recovery>
         ],
       ),
     );
+  }
+
+  goToNextSet(){
+    //move onto next set
+    ExcercisePage.nextSet.value = true;
+    //move onto the next set
+    ExcercisePage.pageNumber.value = 0;
   }
 }

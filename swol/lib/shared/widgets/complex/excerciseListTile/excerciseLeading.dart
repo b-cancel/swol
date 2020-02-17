@@ -28,7 +28,6 @@ class ExcerciseTileLeading extends StatefulWidget {
 
 class _ExcerciseTileLeadingState extends State<ExcerciseTileLeading> {
   updateState(){
-    print("trying to update leading state");
     if(mounted){
       //when opening to the timer widget things might break
       //that only really for testing
@@ -44,7 +43,6 @@ class _ExcerciseTileLeadingState extends State<ExcerciseTileLeading> {
   void initState() {
     widget.excercise.lastTimeStamp.addListener(updateState);
     widget.excercise.tempStartTime.addListener(updateState);
-    //TODO: confirm the two below are functional
     widget.excercise.setTarget.addListener(updateState);
     widget.excercise.tempSetCount.addListener(updateState);
     super.initState();

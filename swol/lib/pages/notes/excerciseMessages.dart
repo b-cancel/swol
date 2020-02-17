@@ -80,7 +80,7 @@ class ConfirmActionMessage extends StatelessWidget {
               Navigator.of(context).pop();
             },
             child: Text(
-              "No, Don't " + actionString,
+              "Don't " + actionString,
               style: TextStyle(
                 color: Theme.of(context).primaryColorDark,
               ),
@@ -107,7 +107,7 @@ class ConfirmActionMessage extends StatelessWidget {
               App.navSpread.value = false;
             },
             child: Text(
-              "Yes, " + actionString,
+              actionString,
               style: TextStyle(
                 color: Colors.white,
               ),

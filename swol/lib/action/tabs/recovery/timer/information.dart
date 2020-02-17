@@ -10,13 +10,13 @@ import 'package:swol/shared/methods/theme.dart';
 class InfoOutlineWhiteButton extends StatelessWidget {
   const InfoOutlineWhiteButton({
     Key key,
-    @required this.areYouSurePopUp,
+    @required this.showAreYouSure,
     @required this.totalDurationPassed,
     @required this.selectedDuration,
     @required this.isWhite,
   }) : super(key: key);
 
-  final ValueNotifier<bool> areYouSurePopUp;
+  final ValueNotifier<bool> showAreYouSure;
   final Duration totalDurationPassed;
   final Duration selectedDuration;
   final bool isWhite;
@@ -37,11 +37,11 @@ class InfoOutlineWhiteButton extends StatelessWidget {
     Duration buffer = Duration(seconds: 15);
     bool withinTrainingType = (trainingSelected == trainingBreakGoodFor);
     if (withinTrainingType)
-      areYouSurePopUp.value = withinTrainingType;
+      showAreYouSure.value = withinTrainingType;
     else {
       Duration lowerBound = selectedDuration - buffer;
       Duration upperBound = selectedDuration + buffer;
-      areYouSurePopUp.value = (lowerBound <= totalDurationPassed &&
+      showAreYouSure.value = (lowerBound <= totalDurationPassed &&
           totalDurationPassed <= upperBound);
     }
 
@@ -70,6 +70,7 @@ class InfoOutlineWhiteButton extends StatelessWidget {
     return Theme(
       data: MyTheme.dark,
       child: InfoOutlineDarkButton(
+        showAreYouSure: showAreYouSure,
         trainingName: trainingSelected,
         withinTrainingTypeRange: withinTrainingType,
         buffer: buffer,
@@ -85,6 +86,7 @@ class InfoOutlineWhiteButton extends StatelessWidget {
 class InfoOutlineDarkButton extends StatelessWidget {
   const InfoOutlineDarkButton({
     Key key,
+    @required this.showAreYouSure,
     @required this.withinTrainingTypeRange,
     @required this.buffer,
     @required this.selectedDuration,
@@ -94,6 +96,7 @@ class InfoOutlineDarkButton extends StatelessWidget {
     @required this.isWhite,
   }) : super(key: key);
 
+  final ValueNotifier<bool> showAreYouSure;
   final bool withinTrainingTypeRange;
   final Duration buffer;
   final Duration selectedDuration;
@@ -110,17 +113,25 @@ class InfoOutlineDarkButton extends StatelessWidget {
 
     //fill the message given the conditions
     bool stillTimeLeft = totalDurationPassed < selectedDuration;
+    showAreYouSure.value = false; //its false in most cases
     if(stillTimeLeft){
       if(withinTrainingTypeRange == false){
         primaryMsg = "Currently Recovering From";
         secondaryMsg = trainingName + " Training";
+        showAreYouSure.value = true; //still recovering
       }
       else{
         primaryMsg = "You Should Wait For Full Recovery";
         secondaryMsg = "But You Are Ready For " + trainingName + " Training";
+
+        //if you are more than 30 seconds away from the selectied time
+        //then bring up the pop up
+        bool within30secondBuffer = (totalDurationPassed + Duration(seconds: 30)) >= selectedDuration;
+        if(within30secondBuffer == false) showAreYouSure.value = true;
+        else showAreYouSure.value = false; //we are within the buffer so don't show the pop up
       }
     }
-    else{
+    else{ //your timer is over but you still have some time
       if(withinTrainingTypeRange){
         primaryMsg = "Move To Your Next Set";
         secondaryMsg = "You're Within " + trainingName + " Training Range";

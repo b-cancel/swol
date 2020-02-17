@@ -59,38 +59,43 @@ class ActualButton extends StatelessWidget {
                   ),
                   Transform.translate(
                     offset: Offset(0, 16),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        Expanded(
-                          child: Container(),
-                        ),
-                        FlatButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          child: Text(
-                            "Cancel",
-                            style: TextStyle(
-                              color: Colors.black,
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 16.0,
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          Expanded(
+                            child: Container(),
+                          ),
+                          FlatButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: Text(
+                              "Cancel",
+                              style: TextStyle(
+                                color: Colors.black,
+                              ),
                             ),
                           ),
-                        ),
-                        RaisedButton(
-                          color: Colors.blue,
-                          onPressed: () {
-                            changeableTimerDuration.value =
-                                possibleRecoveryDuration.value;
-                            Navigator.pop(context);
-                          },
-                          child: Text(
-                            "Change",
-                            style: TextStyle(
-                              color: Colors.white,
+                          RaisedButton(
+                            color: Colors.blue,
+                            onPressed: () {
+                              changeableTimerDuration.value =
+                                  possibleRecoveryDuration.value;
+                              Navigator.pop(context);
+                            },
+                            child: Text(
+                              "Change",
+                              style: TextStyle(
+                                color: Colors.white,
+                              ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ],

@@ -44,7 +44,7 @@ class Timer extends StatefulWidget {
   Timer({
     @required this.excercise,
     @required this.changeableTimerDuration,
-    @required this.areYouSurePopUp,
+    @required this.showAreYouSure,
     this.showArrows: true,
     this.showIcon: true,
   });
@@ -52,7 +52,7 @@ class Timer extends StatefulWidget {
   final AnExcercise excercise;
   //time before we go any level of red
   final ValueNotifier<Duration> changeableTimerDuration;
-  final ValueNotifier<bool> areYouSurePopUp;
+  final ValueNotifier<bool> showAreYouSure;
   //smaller settings
   final bool showArrows;
   final bool showIcon;
@@ -204,7 +204,7 @@ class _TimerState extends State<Timer> with TickerProviderStateMixin {
     Widget infoButton = Theme(
       data: MyTheme.light,
       child: InfoOutlineWhiteButton(
-        areYouSurePopUp: widget.areYouSurePopUp,
+        showAreYouSure: widget.showAreYouSure,
         totalDurationPassed: totalDurationPassed,
         selectedDuration: widget.excercise.recoveryPeriod,
         isWhite: maxTimerController.value != 1,
@@ -269,7 +269,7 @@ class _TimerState extends State<Timer> with TickerProviderStateMixin {
       );
 
       //calculate top Number
-      List<String> extraDurStrings =durationToCustomDisplay(extraDurationPassed);
+      List<String> extraDurStrings = durationToCustomDisplay(extraDurationPassed);
       String extraDurationString = extraDurStrings[0] + " : " + extraDurStrings[1];
       topNumber = extraDurationString;
 
