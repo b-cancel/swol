@@ -36,14 +36,6 @@ class InfoOutlineWhiteButton extends StatelessWidget {
     //are you sure?
     Duration buffer = Duration(seconds: 15);
     bool withinTrainingType = (trainingSelected == trainingBreakGoodFor);
-    if (withinTrainingType)
-      showAreYouSure.value = withinTrainingType;
-    else {
-      Duration lowerBound = selectedDuration - buffer;
-      Duration upperBound = selectedDuration + buffer;
-      showAreYouSure.value = (lowerBound <= totalDurationPassed &&
-          totalDurationPassed <= upperBound);
-    }
 
     //determine what section to focus on first when the user is looking for guidance
     int sectionWithInitialFocus;

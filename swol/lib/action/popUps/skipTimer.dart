@@ -1,5 +1,7 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:swol/action/tabs/recovery/secondary/explained.dart';
+import 'package:swol/pages/selection/excerciseListPage.dart';
 import 'package:swol/shared/methods/theme.dart';
 import 'package:swol/shared/structs/anExcercise.dart';
 import 'package:swol/shared/widgets/complex/excerciseListTile/miniTimer/wrapper.dart';
@@ -8,6 +10,16 @@ import 'package:swol/shared/widgets/complex/excerciseListTile/miniTimer/wrapper.
 maybeSkipTimer(BuildContext context, AnExcercise excercise, Function ifSkip) {
   //remove focus so the pop up doesnt bring it back
   FocusScope.of(context).unfocus();
+
+  //are we way off? or are we atleast within the range for this type of workout
+  String trainingSelected = durationToTrainingType(
+    excercise.recoveryPeriod,
+    zeroIsEndurance: false,
+  );
+
+  TextStyle bold = TextStyle(
+    fontWeight: FontWeight.bold,
+  );
 
   //show the dialog
   AwesomeDialog(
@@ -51,7 +63,7 @@ maybeSkipTimer(BuildContext context, AnExcercise excercise, Function ifSkip) {
             bottom: 16.0,
           ),
           child: Text(
-            "Skip Timer",
+            "Skip Break?",
             style: TextStyle(
               color: Colors.black,
               fontWeight: FontWeight.bold,
@@ -59,7 +71,64 @@ maybeSkipTimer(BuildContext context, AnExcercise excercise, Function ifSkip) {
             ),
           ),
         ),
-        Text("yada yada, yoda yoda"),
+        /*
+        In order to recovery fully from a Hypertrophy Training set
+        you should wait between 2 and 3 minutes
+        before moving on to your next set
+        */
+        //updating rich text
+        ///"are you sure you want to Skip the rest of your break?"
+        RichText(
+          text: TextSpan(
+            style: TextStyle(
+              color: Colors.black,
+            ),
+            children: [
+              TextSpan(
+                text: "In order to recover fully from ",
+              ),
+              TextSpan(
+                style: bold,
+                text: trainingSelected + " Training\n",
+              ),
+              TextSpan(
+                text: "You should wait between "
+              ),
+              TextSpan(
+                style: bold,
+                text: trainingTypeToMin(trainingSelected),
+              ),
+              TextSpan(
+                text: " and "
+              ),
+              TextSpan(
+                style: bold,
+                text: trainingTypeToMax(trainingSelected),
+              ),
+              TextSpan(
+                text: " before moving on to your next set\n"
+              ),
+            ],
+          ),
+        ),
+        UpdatingBreakSet(
+          trainingName: trainingSelected,
+          excercise: excercise,
+          selectedWaitTime: "!!!",
+        ), 
+        RichText(
+          text: TextSpan(
+            children: [
+              TextSpan(
+                text: "are you sure you want to ",
+              ),
+              TextSpan(
+                text: "Skip the rest of your break?",
+                style: bold,
+              ),
+            ],
+          ),
+        ),
         Transform.translate(
           offset: Offset(0, 16),
           child: Padding(
@@ -93,7 +162,7 @@ maybeSkipTimer(BuildContext context, AnExcercise excercise, Function ifSkip) {
                     ifSkip();
                   },
                   child: Text(
-                    "Skip",
+                    "Skip Break",
                     style: TextStyle(
                       color: Colors.white,
                     ),
@@ -106,4 +175,82 @@ maybeSkipTimer(BuildContext context, AnExcercise excercise, Function ifSkip) {
       ],
     ),
   ).show();
+}
+
+class UpdatingBreakSet extends StatefulWidget{
+  UpdatingBreakSet({
+    @required this.trainingName,
+    @required this.selectedWaitTime,
+    @required this.excercise,
+  });
+
+  final String trainingName;  
+  final String selectedWaitTime;
+  final AnExcercise excercise;
+
+  @override
+  _UpdatingBreakSetState createState() => _UpdatingBreakSetState();
+}
+
+class _UpdatingBreakSetState extends State<UpdatingBreakSet> with SingleTickerProviderStateMixin{
+  @override
+  Widget build(BuildContext context) {
+    String trainingBreakGoodFor = durationToTrainingType(
+      DateTime.now().difference(widget.excercise.tempStartTime.value),
+      zeroIsEndurance: false,
+    );
+
+    bool withinTrainingType = (widget.trainingName == trainingBreakGoodFor);
+    TextStyle bold = TextStyle(
+      fontWeight: FontWeight.bold,
+    );
+    
+    if(withinTrainingType){
+      return RichText(
+        text: TextSpan(
+          children: [
+            TextSpan(
+              text: "you have waited "
+            ),
+            TextSpan(
+              text: "", //TODO: time waited to string
+              style: bold,
+            ),
+            TextSpan(
+              text: ", so you are ready for your next ",
+            ),
+            TextSpan(
+              text: widget.trainingName  + " Training",
+              style: bold,
+            ),
+            TextSpan(
+              text: " set.\n",
+            ),
+            TextSpan(
+              text: "But you have chosen to wait ",
+            ),
+            TextSpan(
+              text: widget.selectedWaitTime, //TODO: time selected to string
+              style: bold,
+            ),
+          ],
+        ),
+      );
+    }
+    else{
+      return RichText(
+        text: TextSpan(
+          children: [
+            TextSpan(
+              text: "but you have only waited ",
+            ),
+            TextSpan(
+              text: "???", //TODO: time waited to string
+              style: bold,
+            ),
+          ],
+        ),
+      );
+    }
+  }
 }
