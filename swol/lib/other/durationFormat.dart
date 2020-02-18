@@ -128,7 +128,7 @@ class DurationFormat{
           output += (spaceBetween) ? " and " : " ";
         }
       }
-      if(output != ""){
+      if(output != "" && spaceBetween){
         output = output.substring(0, output.length - 5);
       }
 

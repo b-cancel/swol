@@ -6,7 +6,7 @@ import 'package:swol/action/tabs/record/field/customField.dart';
 import 'package:swol/action/tabs/record/field/fieldIcon.dart';
 import 'package:swol/shared/functions/goldenRatio.dart';
 
-class RecordFields extends StatefulWidget {
+class RecordFields extends StatefulWidget { 
   RecordFields({
     @required this.heroAnimDuration,
   });
@@ -56,13 +56,13 @@ class _RecordFieldsState extends State<RecordFields> {
 
     //attach a listener so a change in it will cause a refocus
     //done from warning, error, and notes page
-    ExcercisePage.causeRefocus.addListener(focusOnFirstInvalid);
+    ExcercisePage.causeRefocusIfInvalid.addListener(focusOnFirstInvalid);
   }
 
   @override
   void dispose() {
     //remove listeners
-    ExcercisePage.causeRefocus.removeListener(focusOnFirstInvalid);
+    ExcercisePage.causeRefocusIfInvalid.removeListener(focusOnFirstInvalid);
 
     //remove notifiers
     weightController.removeListener(updateWeightNotifier);
@@ -78,18 +78,30 @@ class _RecordFieldsState extends State<RecordFields> {
   focusOnFirstInvalid() {
     //maybe focus on weight
     if (isTextValid(weightController.text) == false) {
-      weightController.clear(); //since invalid maybe 0
-      if(mounted) FocusScope.of(context).requestFocus(weightFocusNode);
+      //clear with value that could be nothing but invalid
+      if(weightController.text == "0") weightController.clear();
+      //request focus
+      FocusScope.of(context).requestFocus(weightFocusNode);
+      //shift cursor to the 
+      weightController.selection = TextSelection.fromPosition(
+        TextPosition(offset: weightController.text.length),
+      );
     } else { //maybe focus on reps
       if (isTextValid(repsController.text) == false) {
-        repsController.clear(); //since invalid maybe 0
-        if(mounted) FocusScope.of(context).requestFocus(repsFocusNode);
+        //clear with value that could be nothing but invalid
+        if(repsController.text == "0") repsController.clear();
+        //request focus
+        FocusScope.of(context).requestFocus(repsFocusNode);
+        //shift cursor to the end
+        repsController.selection = TextSelection.fromPosition(
+        TextPosition(offset: repsController.text.length),
+      );
       }
     }
 
     //whatever cause the refocusing
     //no longer needs it
-    ExcercisePage.causeRefocus.value = false;
+    ExcercisePage.causeRefocusIfInvalid.value = false;
   }
 
   @override

@@ -113,16 +113,10 @@ warningThenAllowPop(BuildContext context, AnExcercise excercise,
         context: context,
         isDense: false,
         onDissmissCallback: () {
-          //NOTE: MUST GRAB NEW set weight and reps
-          //since they maybe have been updated by a revert
-          bool newWeightValid = isTextValid(ExcercisePage.setWeight.value);
-          bool newRepsValid = isTextValid(ExcercisePage.setReps.value);
-          bool newSetValid = newWeightValid && newRepsValid;
-
-          //only refocus needed if new set is not valid
-          if (newSetValid == false) {
-            ExcercisePage.causeRefocus.value = true;
-          }
+          //If the pop up came up the values typed are not valid
+          //if we reverted then the refocus will do nothing
+          //since the function will see that both values are valid
+          ExcercisePage.causeRefocusIfInvalid.value = true;
         },
         dismissOnTouchOutside: true,
         dialogType: DialogType.WARNING,

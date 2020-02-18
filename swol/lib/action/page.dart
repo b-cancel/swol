@@ -38,7 +38,7 @@ class ExcercisePage extends StatelessWidget {
   static final ValueNotifier<String> setWeight = new ValueNotifier<String>("");
   static final ValueNotifier<String> setReps = new ValueNotifier<String>("");
   //used so that we can cause a field refocusing from different parts of the app
-  static final ValueNotifier<bool> causeRefocus = new ValueNotifier<bool>(false);
+  static final ValueNotifier<bool> causeRefocusIfInvalid = new ValueNotifier<bool>(false);
   //function trigger that can be accessed from nearly anywhere
   static final ValueNotifier<bool> updateSet = new ValueNotifier<bool>(false);
   static final ValueNotifier<bool> nextSet = new ValueNotifier<bool>(false);
@@ -145,7 +145,7 @@ class _ExcercisePageDarkState extends State<ExcercisePageDark> {
     ExcercisePage.setWeight.value = "";
     ExcercisePage.setReps.value = "";
     //functions
-    ExcercisePage.causeRefocus.value = false;
+    ExcercisePage.causeRefocusIfInvalid.value = false;
     ExcercisePage.updateSet.value = false;
     ExcercisePage.nextSet.value = false;
 

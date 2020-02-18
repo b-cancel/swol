@@ -74,8 +74,8 @@ class _ExcerciseNotesState extends State<ExcerciseNotes> {
   goBackToExcercisePage(){
     //close any keyboard that may be open
     FocusScope.of(context).unfocus();
-    //indicate that we should refocus
-    ExcercisePage.causeRefocus.value = true;
+    //indicate that we should refocus inf needed
+    ExcercisePage.causeRefocusIfInvalid.value = true;
   }
 
   @override

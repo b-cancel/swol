@@ -37,16 +37,10 @@ maybeError(BuildContext context, AnExcercise excercise) {
       context: context,
       isDense: false,
       onDissmissCallback: () {
-        //NOTE: MUST GRAB NEW set weight and reps 
-        //since they maybe have been updated by a revert
-        weightValid = isTextValid(ExcercisePage.setWeight.value);
-        repsValid = isTextValid(ExcercisePage.setReps.value);
-        setValid = weightValid && repsValid;
-
-        //we will only need to refocus if your set is not valid
-        if(setValid == false){
-          ExcercisePage.causeRefocus.value = true;
-        }
+        //If the pop up came up the values typed are not valid
+        //if we reverted then the refocus will do nothing
+        //since the function will see that both values are valid
+        ExcercisePage.causeRefocusIfInvalid.value = true;
       },
       dismissOnTouchOutside: true,
       dialogType: DialogType.ERROR,

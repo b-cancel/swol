@@ -96,7 +96,7 @@ class _RecordFieldState extends State<RecordField> {
       ),
     );
 
-    Radius normalCurve = Radius.circular(24);
+    Radius normalCurve = Radius.circular(24); 
     //NOTE: without toolbar shown our multiplier can drop to 3
     //else must be 4
     double multiplier = 3;
@@ -106,6 +106,7 @@ class _RecordFieldState extends State<RecordField> {
       child: GestureDetector(
         behavior: HitTestBehavior.opaque,
         onTap: () {
+          print("*****************tapped");
           //reset text so they start back up at the begining
           widget.controller.clear();
           //focus on the field so the user can begin typing
