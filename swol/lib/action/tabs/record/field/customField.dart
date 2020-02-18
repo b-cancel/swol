@@ -103,141 +103,160 @@ class _RecordFieldState extends State<RecordField> {
     return Expanded(
       //NOTE: this is required because for some reason
       //initially focusing on the text field misifres sometimes
-      child: GestureDetector(
-        behavior: HitTestBehavior.opaque,
-        onTap: () {
-          print("*****************tapped");
-          //reset text so they start back up at the begining
-          widget.controller.clear();
-          //focus on the field so the user can begin typing
-          FocusScope.of(context).unfocus();
-          FocusScope.of(context).requestFocus(widget.focusNode);
-        },
-        child: Stack(
-          alignment:
-              widget.isLeft ? Alignment.centerRight : Alignment.centerLeft,
-          children: <Widget>[
-            Positioned.fill(
-              child: Container(
-                decoration: BoxDecoration(
-                  color: widget.focusNode.hasFocus
-                      ? Theme.of(context).accentColor
-                      : Colors.transparent,
-                  borderRadius: BorderRadius.only(
-                    //set
-                    topRight: widget.isLeft ? Radius.zero : normalCurve,
-                    bottomLeft: widget.isLeft ? normalCurve : Radius.zero,
-                    //not so set
-                    topLeft: widget.isLeft ? normalCurve : Radius.zero,
-                    bottomRight: widget.isLeft ? Radius.zero : normalCurve,
-                  ),
-                  border: Border.all(
-                    color: widget.focusNode.hasFocus
-                        ? Theme.of(context).accentColor
-                        : Theme.of(context).primaryColorLight,
-                    width: widget.borderSize,
-                  ),
-                ),
-                padding: EdgeInsets.symmetric(
-                  vertical: 16,
-                ),
-                child: FittedBox(
-                  fit: BoxFit.contain,
+      child: ClipRRect(
+        borderRadius: BorderRadius.only(
+          //right
+          topRight: widget.isLeft ? Radius.zero : normalCurve,
+          bottomRight: widget.isLeft ? Radius.zero : normalCurve,
+          //left
+          bottomLeft: widget.isLeft ? normalCurve : Radius.zero,
+          topLeft: widget.isLeft ? normalCurve : Radius.zero,
+        ),
+        child: Material(
+          color: Colors.red,
+          child: InkWell(
+            onTap: () {
+              //reset text so they start back up at the begining
+              if(widget.controller.text == "0") widget.controller.clear();
+              //focus on the field so the user can begin typing
+              //TODO: check if we need unfocusing
+              FocusScope.of(context).requestFocus(widget.focusNode);
+              //shift cursor to the end
+              widget.controller.selection = TextSelection.fromPosition(
+                TextPosition(offset: widget.controller?.text?.length ?? 0),
+              );
+            },
+            child: Stack(
+              alignment:
+                  widget.isLeft ? Alignment.centerRight : Alignment.centerLeft,
+              children: <Widget>[
+                Positioned.fill(
                   child: Container(
-                    width: 48.0 * multiplier,
-                    height: 24.0 * multiplier,
-                    child: TextField(
-                      cursorColor: Theme.of(context).cardColor,
-                      controller: widget.controller,
-                      focusNode: widget.focusNode,
-                      //set text size as large as a large phone
-                      //so if anything the cursor is smaller than it should be
-                      style: TextStyle(
-                        fontSize: 16.0 * multiplier,
+                    decoration: BoxDecoration(
+                      color: widget.focusNode.hasFocus
+                          ? Theme.of(context).accentColor
+                          : Colors.transparent,
+                      borderRadius: BorderRadius.only(
+                        //set
+                        topRight: widget.isLeft ? Radius.zero : normalCurve,
+                        bottomLeft: widget.isLeft ? normalCurve : Radius.zero,
+                        //not so set
+                        topLeft: widget.isLeft ? normalCurve : Radius.zero,
+                        bottomRight: widget.isLeft ? Radius.zero : normalCurve,
                       ),
-                      //eliminate bottom line border
-                      decoration: InputDecoration(
-                        //hide automatically bottom border
-                        border: InputBorder.none,
-                        //hides digit counter
-                        counterText: "",
+                      border: Border.all(
+                        color: widget.focusNode.hasFocus
+                            ? Theme.of(context).accentColor
+                            : Theme.of(context).primaryColorLight,
+                        width: widget.borderSize,
                       ),
-                      //hide signs or decimals from keyboard if possible
-                      keyboardType: TextInputType.numberWithOptions(
-                        signed: false,
-                        decimal: false,
-                      ),
-                      //cut, copy, past, and select all are not necessary
-                      toolbarOptions: ToolbarOptions(),
-                      //adding dashing intelligently is not needed in IOS
-                      smartDashesType: SmartDashesType.disabled,
-                      //ditto but for quote is not needed in IOS
-                      smartQuotesType: SmartQuotesType.disabled,
-                      //so your eyes dont burn
-                      keyboardAppearance: Brightness.dark,
-                      //balance
-                      textAlign: TextAlign.center,
-                      textAlignVertical: TextAlignVertical.center,
-                      //where you are writing kinda matters
-                      showCursor: true,
-                      //no passwords here
-                      obscureText: false,
-                      //no suggstion of fancy selection useful
-                      enableSuggestions: false,
-                      enableInteractiveSelection: false,
-                      //guarnatee only digits and a max of 4 digits
-                      maxLength: widget.isLeft ? 4 : 3,
-                      inputFormatters: [
-                        //super guarnatee a max of 4 digits
-                        LengthLimitingTextInputFormatter(
-                          widget.isLeft ? 4 : 3,
+                    ),
+                    padding: EdgeInsets.symmetric(
+                      vertical: 16,
+                    ),
+                    child: FittedBox(
+                      fit: BoxFit.contain,
+                      child: Container(
+                        width: 48.0 * multiplier,
+                        height: 24.0 * multiplier,
+                        child: TextField(
+                          cursorColor: Theme.of(context).cardColor,
+                          controller: widget.controller,
+                          focusNode: widget.focusNode,
+                          //set text size as large as a large phone
+                          //so if anything the cursor is smaller than it should be
+                          style: TextStyle(
+                            fontSize: 16.0 * multiplier,
+                          ),
+                          //eliminate bottom line border
+                          decoration: InputDecoration(
+                            //hide automatically bottom border
+                            border: InputBorder.none,
+                            //hides digit counter
+                            counterText: "",
+                          ),
+                          //hide signs or decimals from keyboard if possible
+                          keyboardType: TextInputType.numberWithOptions(
+                            signed: false,
+                            decimal: false,
+                          ),
+                          //cut, copy, past, and select all are not necessary
+                          toolbarOptions: ToolbarOptions(),
+                          //adding dashing intelligently is not needed in IOS
+                          smartDashesType: SmartDashesType.disabled,
+                          //ditto but for quote is not needed in IOS
+                          smartQuotesType: SmartQuotesType.disabled,
+                          //so your eyes dont burn
+                          keyboardAppearance: Brightness.dark,
+                          //balance
+                          textAlign: TextAlign.center,
+                          textAlignVertical: TextAlignVertical.center,
+                          //where you are writing kinda matters
+                          showCursor: true,
+                          //no passwords here
+                          obscureText: false,
+                          //no suggstion of fancy selection useful
+                          enableSuggestions: false,
+                          enableInteractiveSelection: false,
+                          //guarnatee only digits and a max of 4 digits
+                          maxLength: widget.isLeft ? 4 : 3,
+                          inputFormatters: [
+                            //super guarnatee a max of 4 digits
+                            LengthLimitingTextInputFormatter(
+                              widget.isLeft ? 4 : 3,
+                            ),
+                            //super guarantee only digits
+                            WhitelistingTextInputFormatter.digitsOnly,
+                          ],
+                          //line count
+                          expands: false, //only 1 line at all times
+                          minLines: 1,
+                          maxLines: 1,
+                          maxLengthEnforced: true,
+                          //next to go to other field
+                          textInputAction: TextInputAction.next,
+                          //NOTE: on submitted seems to be working just as well
+                          onEditingComplete: () {
+                            //NOTE: we don't care for our state because
+                            //if the user presses NEXT they want an OBVIOUS action to be performed
+                            //regardless of whether or not its the most useful thing
+
+                            //if we press next then we KNOW that the keyboard is open
+                            //in which case we have 2 possible actions to perform
+                            //1. either we close the keyboard which naturally leads into us unfocusing
+                            //2. or we move onto the next text field
+
+                            //so although sometimes staying on our own field makes more sense
+                            //we don't do that because the user EXPECTS some OBVIOUS action
+                            if (isTextValid(widget.otherController.text)) {
+                              //the other controller has a valid value
+                              //so we perform the only other possible action
+                              FocusScope.of(context).unfocus();
+                            } else {
+                              //in case the otherController has just a 0
+                              if(widget.otherController.text == "0") widget.otherController.clear();
+                              //focus on the next field
+                              FocusScope.of(context).requestFocus(widget.otherFocusNode);
+                              //send cursor to end
+                              widget.otherController.selection = TextSelection.fromPosition(
+                                TextPosition(offset: widget.otherController?.text?.length ?? 0),
+                              );
+                            }
+                          },
                         ),
-                        //super guarantee only digits
-                        WhitelistingTextInputFormatter.digitsOnly,
-                      ],
-                      //line count
-                      expands: false, //only 1 line at all times
-                      minLines: 1,
-                      maxLines: 1,
-                      maxLengthEnforced: true,
-                      //next to go to other field
-                      textInputAction: TextInputAction.next,
-                      //NOTE: on submitted seems to be working just as well
-                      onEditingComplete: () {
-                        //NOTE: we don't care for our state because
-                        //if the user presses NEXT they want an OBVIOUS action to be performed
-                        //regardless of whether or not its the most useful thing
-
-                        //if we press next then we KNOW that the keyboard is open
-                        //in which case we have 2 possible actions to perform
-                        //1. either we close the keyboard which naturally leads into us unfocusing
-                        //2. or we move onto the next text field
-
-                        //so although sometimes staying on our own field makes more sense
-                        //we don't do that because the user EXPECTS some OBVIOUS action
-                        if (isTextValid(widget.otherController.text)) {
-                          //the other controller has a valid value
-                          //so we perform the only other possible action
-                          FocusScope.of(context).unfocus();
-                        } else {
-                          //in case the otherController has just a 0
-                          widget.otherController.clear();
-                          //focus on the next field
-                          FocusScope.of(context).requestFocus(widget.otherFocusNode);
-                        }
-                      },
+                      ),
                     ),
                   ),
                 ),
-              ),
+                coveringStick,
+                Positioned.fill(
+                  child: Container(
+                    color: Colors.transparent,
+                  ),
+                ),
+              ],
             ),
-            coveringStick,
-            Positioned.fill(
-              child: Container(
-                color: Colors.transparent,
-              ),
-            ),
-          ],
+          ),
         ),
       ),
     );
