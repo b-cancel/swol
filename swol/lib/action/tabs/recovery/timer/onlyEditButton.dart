@@ -47,24 +47,16 @@ class OnlyEditButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Padding(
-        padding: EdgeInsets.all(16),
-        child: Padding(
-          padding: EdgeInsets.only(
-            bottom: 16,
+      child: FittedBox(
+        fit: BoxFit.contain,
+        child: DefaultTextStyle(
+          style: TextStyle(
+            color: Theme.of(context)
+                .primaryColorDark,
           ),
-          child: FittedBox(
-            fit: BoxFit.contain,
-            child: DefaultTextStyle(
-              style: TextStyle(
-                color: Theme.of(context)
-                    .primaryColorDark,
-              ),
-              child: EditIcon(
-                text: durationString,
-                roundedRight: true,
-              ),
-            ),
+          child: EditIcon(
+            text: durationString,
+            roundedRight: true,
           ),
         ),
       ),

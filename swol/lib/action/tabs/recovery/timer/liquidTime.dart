@@ -359,9 +359,35 @@ class _TimerState extends State<Timer> with TickerProviderStateMixin {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.stretch,
                                       children: <Widget>[
-                                        infoButton,
-                                        OnlyEditButton(
-                                          durationString: breakTimeString,
+                                        Container(
+                                          child: infoButton,
+                                        ),
+                                        Container(
+                                          child: Row(
+                                            mainAxisSize: MainAxisSize.max,
+                                            children: <Widget>[
+                                              Expanded(
+                                                child: Container(),
+                                              ),
+                                              Container(
+                                                width: MediaQuery.of(context).size.width / 5,
+                                                child: Container(
+                                                  padding: EdgeInsets.only(
+                                                    top: 16,
+                                                  ),
+                                                  child: FittedBox(
+                                                    fit: BoxFit.contain,
+                                                    child: OnlyEditButton(
+                                                      durationString: breakTimeString,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                              Expanded(
+                                                child: Container(),
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       ],
                                     ),
