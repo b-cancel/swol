@@ -14,12 +14,14 @@ import 'package:swol/shared/structs/anExcercise.dart';
 class MakeFunctionAdjustment extends StatefulWidget {
   const MakeFunctionAdjustment({
     Key key,
+    @required this.topColor,
     @required this.heroUp,
     @required this.heroAnimDuration,
     @required this.heroAnimTravel,
     @required this.excercise,
   }) : super(key: key);
 
+  final Color topColor;
   final AnExcercise excercise;
   final ValueNotifier<bool> heroUp;
   final Duration heroAnimDuration;
@@ -138,11 +140,11 @@ class _MakeFunctionAdjustmentState extends State<MakeFunctionAdjustment> {
         children: <Widget>[
           Container(
             width: MediaQuery.of(context).size.width,
-            height: 24,
-            color: Theme.of(context).accentColor,
+            height: widget.topColor == Theme.of(context).accentColor ? 24 : 4,
+            color: widget.topColor,
           ),
           TopBackgroundColored(
-            color: Theme.of(context).accentColor,
+            color: widget.topColor,
             child: Container(
               decoration: BoxDecoration(
                 color: Theme.of(context).cardColor,

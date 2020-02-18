@@ -82,7 +82,7 @@ class _RecoveryState extends State<Recovery>
                   children: <Widget>[
                     Expanded(
                       child: Container(
-                        color: Theme.of(context).accentColor,
+                        color: buttonsColor,
                       ),
                     ),
                     Expanded(child: Container()),
@@ -91,11 +91,11 @@ class _RecoveryState extends State<Recovery>
               ),
               Padding(
                 padding: EdgeInsets.only(
-                  top: 16,
+                  top: (buttonsColor == Theme.of(context).accentColor) ? 16 : 0,
                 ),
                 child: Container(
                   decoration: BoxDecoration(
-                    color: Theme.of(context).cardColor,
+                    color: buttonsColor,
                     borderRadius: BorderRadius.all(cardRadius),
                   ),
                   child: Timer(

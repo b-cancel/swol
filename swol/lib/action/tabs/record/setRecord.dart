@@ -152,6 +152,7 @@ class SetRecord extends StatelessWidget {
                 children: <Widget>[
                   Expanded(
                     child: MakeFunctionAdjustment(
+                      topColor: buttonsColor,
                       heroUp: heroUp,
                       heroAnimDuration: heroAnimDuration,
                       heroAnimTravel: heroAnimTravel,
