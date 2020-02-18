@@ -1,6 +1,7 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:swol/action/tabs/recovery/secondary/explained.dart';
+import 'package:swol/other/durationFormat.dart';
 import 'package:swol/shared/methods/theme.dart';
 import 'package:swol/shared/structs/anExcercise.dart';
 import 'package:swol/shared/widgets/complex/excerciseListTile/miniTimer/wrapper.dart';
@@ -113,7 +114,24 @@ maybeSkipTimer(BuildContext context, AnExcercise excercise, Function ifSkip, Col
             UpdatingBreakSet(
               trainingName: trainingSelected,
               excercise: excercise,
-              selectedWaitTime: "!!!",
+              selectedWaitTime: DurationFormat.format(
+                excercise.recoveryPeriod,
+                //no longer
+                showYears: false,
+                showMonths: false,
+                showWeeks: false,
+                showDays: false,
+                showHours: false,
+                //yes medium
+                showMinutes: true,
+                showSeconds: true,
+                //no tiny
+                showMilliseconds: false,
+                showMicroseconds: false,
+                //option
+                len: 2, //long
+                spaceBetween: true,
+              ),
             ),
             RichText(
               text: TextSpan(
@@ -176,7 +194,7 @@ maybeSkipTimer(BuildContext context, AnExcercise excercise, Function ifSkip, Col
   ).show();
 }
 
-class UpdatingBreakSet extends StatefulWidget {
+class UpdatingBreakSet extends StatelessWidget {
   UpdatingBreakSet({
     @required this.trainingName,
     @required this.selectedWaitTime,
@@ -188,25 +206,36 @@ class UpdatingBreakSet extends StatefulWidget {
   final AnExcercise excercise;
 
   @override
-  _UpdatingBreakSetState createState() => _UpdatingBreakSetState();
-}
-
-class _UpdatingBreakSetState extends State<UpdatingBreakSet>
-    with SingleTickerProviderStateMixin {
-  @override
   Widget build(BuildContext context) {
+    Duration timePassed =  DateTime.now().difference(excercise.tempStartTime.value);
     String trainingBreakGoodFor = durationToTrainingType(
-      DateTime.now().difference(widget.excercise.tempStartTime.value),
+      timePassed,
       zeroIsEndurance: false,
     );
 
-    bool withinTrainingType = (widget.trainingName == trainingBreakGoodFor);
+    bool withinTrainingType = (trainingName == trainingBreakGoodFor);
     TextStyle bold = TextStyle(
       fontWeight: FontWeight.bold,
     );
 
-    //TODO: finish properly
-    String timeWaited = "???";
+    String timeWaited = DurationFormat.format(
+      timePassed,
+      //no longer
+      showYears: false,
+      showMonths: false,
+      showWeeks: false,
+      showDays: false,
+      showHours: false,
+      //yes medium
+      showMinutes: true,
+      showSeconds: true,
+      //no tiny
+      showMilliseconds: false,
+      showMicroseconds: false,
+      //option
+      len: 2, //long
+      spaceBetween: true,
+    );
 
     if (withinTrainingType) {
       return RichText(
@@ -215,7 +244,7 @@ class _UpdatingBreakSetState extends State<UpdatingBreakSet>
             color: Colors.black,
           ),
           children: [
-            TextSpan(text: "you have waited "),
+            TextSpan(text: "So far you have waited "),
             TextSpan(
               text: timeWaited,
               style: bold,
@@ -224,17 +253,17 @@ class _UpdatingBreakSetState extends State<UpdatingBreakSet>
               text: ", so you are ready for your next ",
             ),
             TextSpan(
-              text: widget.trainingName + " Training",
+              text: trainingName + " Training",
               style: bold,
             ),
             TextSpan(
-              text: " set.\n",
+              text: " set\n\n",
             ),
             TextSpan(
               text: "But you have chosen to wait ",
             ),
             TextSpan(
-              text: widget.selectedWaitTime, 
+              text: selectedWaitTime, 
               style: bold,
             ),
           ],
@@ -250,7 +279,7 @@ class _UpdatingBreakSetState extends State<UpdatingBreakSet>
           ),
           children: [
             TextSpan(
-              text: "but you have only waited ",
+              text: "but so far you have only waited ",
             ),
             TextSpan(
               text: timeWaited,

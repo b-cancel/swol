@@ -172,7 +172,7 @@ class _ExcerciseListState extends State<ExcerciseList> {
             showSeconds: false,
             showMilliseconds: false,
             showMicroseconds: false,
-            short: false,
+            len: 1, //medium
           );
           subtitle = "on a " + DurationFormat.weekDayToString[oldestDT.weekday];
         }

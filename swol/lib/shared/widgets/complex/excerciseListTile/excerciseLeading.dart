@@ -111,7 +111,7 @@ class _ExcerciseTileLeadingState extends State<ExcerciseTileLeading> {
                 showSeconds: false,
                 showMilliseconds: false,
                 showMicroseconds: false,
-                short: true,
+                len: 0, //short
               ),
             );
           }

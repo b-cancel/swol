@@ -3,9 +3,14 @@ class DurationFormat{
     "y","m","w","d","h","m","s","milli","micro"
   ];
 
-  static List<String> _indexToLong = [
-    "yr", "month", "wk", "day", "hr", 
+  static List<String> _indexToMedium = [
+    "yr", "mth", "wk", "day", "hr", 
     "min", "sec", "millisec", "microsec",
+  ];
+
+  static List<String> _indexToLong = [
+    "year", "month", "week", "day", "hour", 
+    "minute", "second", "millisecond", "microsecond"
   ];
 
   static Map<int,String> weekDayToString = {
@@ -29,7 +34,8 @@ class DurationFormat{
     bool showMilliseconds: false,
     bool showMicroseconds: false,
     //long or short?
-    bool short: true,
+    int len: 0,
+    bool spaceBetween: false,
   }){
     if(timeSince > Duration.zero){
       //setup vars
@@ -106,17 +112,23 @@ class DurationFormat{
       for(int i = 0; i < times.length; i++){
         int value = times[i];
         if(value != 0){
-          String description = (short) ? _indexToShort[i] : _indexToLong[i];
-          if(short) description = _indexToShort[i];
-          else{
-            description = _indexToLong[i];
-            description = (value > 1) ? description + "s" : description;
-            description = " " + description;
-          }
+          //return descrip
+          String description;
+          if(len == 0) description = _indexToShort[i];
+          else if(len == 1) description = _indexToMedium[i];
+          else description = _indexToLong[i];
+          
 
-          output += (times[i].toString() + description + " ");
+          //add s and space
+          description += (value > 1) ? "s" : "";
+          description = ((spaceBetween) ? " " : "") + description;
+
+          //output
+          output += (times[i].toString() + description);
+          output += (spaceBetween) ? " and " : " ";
         }
       }
+      output = output.substring(0, output.length - 5);
 
       //return stuffs
       if(output == "") return "Today";
