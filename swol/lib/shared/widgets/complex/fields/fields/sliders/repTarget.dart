@@ -11,7 +11,7 @@ import 'package:swol/shared/structs/anExcercise.dart';
 import 'package:swol/shared/structs/range.dart';
 import 'package:swol/shared/methods/theme.dart';
 
-//widget
+//NOTE: this widget should not dispose its passed rep target
 class RepTargetField extends StatefulWidget {
   RepTargetField({
     @required this.repTarget,
@@ -56,6 +56,7 @@ class _RepTargetFieldState extends State<RepTargetField> {
   @override
   void dispose() {
     widget.repTarget.removeListener(repTargetUpdate);
+    //DO NOT DISPOSE REP TARGET since it was passed
 
     //super dispose 
     super.dispose();

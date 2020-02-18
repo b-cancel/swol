@@ -40,10 +40,10 @@ class Suggestion extends StatefulWidget {
 
 class _SuggestionState extends State<Suggestion> {
   //function select
-  ValueNotifier<int> predictionID;
+  final ValueNotifier<int> predictionID = new ValueNotifier<int>(0);
 
   //set target set
-  ValueNotifier<int> repTarget;
+  final ValueNotifier<int> repTarget = new ValueNotifier<int>(0);
 
   //update the goal set based on init
   //and changed valus
@@ -80,30 +80,24 @@ class _SuggestionState extends State<Suggestion> {
     //super init
     super.initState();
     
-    //set function stuff initially
-    predictionID = new ValueNotifier(
-      widget.excercise.predictionID,
-    );
-
-    //when the value changes we update it
-    predictionID.addListener(updatePredictionID);
-
-    //set set target stuff initially
-    repTarget = new ValueNotifier(
-      widget.excercise.repTarget,
-    );
-
-    //when value changes we update it
-    repTarget.addListener(updateRepTarget);
-
-    //update goal initially before notifiers
+    //set inits
+    predictionID.value = widget.excercise.predictionID;
+    repTarget.value = widget.excercise.repTarget;
     updateGoal();
+
+    //add listeners
+    predictionID.addListener(updatePredictionID);
+    repTarget.addListener(updateRepTarget);
   }
 
   @override
   void dispose() {
     predictionID.removeListener(updatePredictionID);
     repTarget.removeListener(updateRepTarget);
+
+    //dipose stuffs
+    predictionID.dispose();
+    repTarget.dispose();
 
     //super dispose
     super.dispose();

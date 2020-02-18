@@ -128,7 +128,9 @@ class DurationFormat{
           output += (spaceBetween) ? " and " : " ";
         }
       }
-      output = output.substring(0, output.length - 5);
+      if(output != ""){
+        output = output.substring(0, output.length - 5);
+      }
 
       //return stuffs
       if(output == "") return "Today";

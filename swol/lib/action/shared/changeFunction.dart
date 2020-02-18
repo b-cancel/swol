@@ -8,7 +8,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:swol/other/functions/helper.dart';
 import 'package:swol/shared/methods/vibrate.dart';
 
-//widget
+//NOTE: should not dispose predictionID since the value was passed
 class ChangeFunction extends StatefulWidget {
   ChangeFunction({
     @required this.predictionID,
@@ -120,7 +120,6 @@ class _ChangeFunctionState extends State<ChangeFunction> {
     //dispose notifiers
     lastFunction.dispose();
     firstFunction.dispose();
-    widget.predictionID.dispose();
 
     //super dispose
     super.dispose();

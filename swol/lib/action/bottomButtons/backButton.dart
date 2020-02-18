@@ -35,17 +35,19 @@ class BottomBackButton extends StatelessWidget {
             child: GestureDetector(
               behavior: HitTestBehavior.opaque,
               onTap: backAction == null ? null : (){
-                //go back
-                backAction();
-
                 //notify users that the timer did not reset
                 if(ExcercisePage.pageNumber.value == 2){
                   showToolTip(
                     context, 
                     "the timer won't reset",
+                    showIcon: false,
                     direction: PreferDirection.bottomRight,
                   );
                 }
+
+                //go back
+                //MUST HAPPEN AFTER so that pageNumber hasn't yet updated
+                backAction();
               },
               child: Padding(
                 padding: EdgeInsets.only(

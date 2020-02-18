@@ -234,7 +234,11 @@ class UpdatingSetText extends StatefulWidget {
 
 class _UpdatingSetTextState extends State<UpdatingSetText> {
   updateState(){
-    if(mounted) setState(() {});
+    if(mounted){ //rebuild next frame to not cause issues elsewhere
+      WidgetsBinding.instance.addPostFrameCallback((_){
+        setState(() {});
+      });
+    }
   }
 
   @override
