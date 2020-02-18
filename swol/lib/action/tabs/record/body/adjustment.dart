@@ -1,3 +1,4 @@
+import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -172,6 +173,7 @@ class _MakeFunctionAdjustmentState extends State<MakeFunctionAdjustment> {
           ),
           Expanded(
             child: InaccuracyCalculator(
+              excercise: widget.excercise,
               predictionID: predictionID,
             ),
           ),
@@ -184,9 +186,11 @@ class _MakeFunctionAdjustmentState extends State<MakeFunctionAdjustment> {
 class InaccuracyCalculator extends StatefulWidget {
   const InaccuracyCalculator({
     Key key,
+    @required this.excercise,
     @required this.predictionID,
   }) : super(key: key);
 
+  final AnExcercise excercise;
   final ValueNotifier<int> predictionID;
 
   @override
@@ -233,7 +237,10 @@ class _InaccuracyCalculatorState extends State<InaccuracyCalculator> {
         children: [
           Conditional(
             condition: setValid, 
-            ifTrue: PercentOff(), 
+            ifTrue: PercentOff(
+              excercise: widget.excercise,
+              predictionID: widget.predictionID,
+            ), 
             ifFalse: WaitingForValid(),
           ),
           Transform.translate(
@@ -241,17 +248,6 @@ class _InaccuracyCalculatorState extends State<InaccuracyCalculator> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Visibility(
-                  visible: setValid,
-                  child: Center(
-                    child: Text(
-                      "than calculated by the",
-                      style: TextStyle(
-                        fontSize: 22,
-                      ),
-                    ),
-                  ),
-                ),
                 ChangeFunction(
                   predictionID: widget.predictionID,
                   middleArrows: true,
@@ -298,58 +294,148 @@ class WaitingForValid extends StatelessWidget {
   }
 }
 
-class PercentOff extends StatelessWidget {
+//NOTE: if this widget is displayed we KNOW that our set is valid
+//and when we go into this we KNOW that our last set stuff is set
+class PercentOff extends StatefulWidget {
+  PercentOff({
+    @required this.excercise,
+    @required this.predictionID,
+  });
+
+  final AnExcercise excercise;
+  final ValueNotifier<int> predictionID;
+
+  @override
+  _PercentOffState createState() => _PercentOffState();
+}
+
+class _PercentOffState extends State<PercentOff> {
+  updateState(){
+    if(mounted) setState(() {});
+  }
+
+  @override
+  void initState() {
+    //super init
+    super.initState();
+
+    //listeners
+    ExcercisePage.setWeight.addListener(updateState);
+    ExcercisePage.setReps.addListener(updateState);
+    widget.predictionID.addListener(updateState);
+  }
+
+  @override
+  void dispose() {
+    //listeners
+    ExcercisePage.setWeight.removeListener(updateState);
+    ExcercisePage.setReps.removeListener(updateState);
+    widget.predictionID.removeListener(updateState);
+
+    //super dipose
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    //color for "suggestion"
-    //TODO: because we are wrapped in a white so the pop up works well
-    //TODO: this distance color will be white even though it should be the dark card color
-    //TODO: fix that... maybe... clean white is kinda cool to
-    int percentOff = 24;
-    Color color = Theme.of(context).cardColor;
+    Color color = Colors.white;
+    /*
     int id = 0;
     if (id == 1)
       color = Colors.red.withOpacity(0.33);
     else if (id == 2)
       color = Colors.red.withOpacity(0.66);
     else if (id == 3) color = Colors.red;
+    */
+
+    //calculate our 1 rep maxes and compare them
+    int last1RM = To1RM.fromWeightAndReps(
+      widget.excercise.lastWeight.toDouble(), 
+      widget.excercise.lastReps.toDouble(), 
+      widget.predictionID.value, //use PASSED predictionID
+    ).round();
+
+    int this1RM = To1RM.fromWeightAndReps(
+      double.parse(ExcercisePage.setWeight.value), 
+      double.parse(ExcercisePage.setReps.value), 
+      widget.predictionID.value, //use PASSED predictionID
+    ).round();
+
+    print("before: " + last1RM.toString() + " now: " + this1RM.toString());
+
+    int change = last1RM - this1RM;
+    if(change < 0) change *= -1;
+    print("dif: " + change.toString());
+    double percentOff = (change / last1RM) * 100;
+    int visualPercentOff = percentOff.round();
     
-    return Row(
-      mainAxisSize: MainAxisSize.min,
+    //build
+    return Column(
       children: <Widget>[
-        Container(
-          child: Text(
-            percentOff.toString(),
-            style: GoogleFonts.robotoMono(
-              color: color,
-              fontWeight: FontWeight.bold,
-              fontSize: 96,
-              wordSpacing: 0,
+        Conditional(
+          condition: this1RM == last1RM, 
+          ifTrue: Padding(
+            padding: EdgeInsets.only(
+              bottom: 8.0,
+            ),
+            child: Text(
+              "Exactly",
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 56,
+              ),
             ),
           ),
-        ),
-        DefaultTextStyle(
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-          ),
-          child: Center(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment:
-                  CrossAxisAlignment.start,
-              children: [
-                Icon(
-                  FontAwesomeIcons.percentage,
+          ifFalse: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Container(
+              child: Text(
+                visualPercentOff.toString(),
+                style: GoogleFonts.robotoMono(
                   color: color,
-                  size: 42,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 96,
+                  wordSpacing: 0,
                 ),
-                Text(
-                  "higher",
-                  style: TextStyle(
-                    fontSize: 42,
-                  ),
+              ),
+            ),
+            DefaultTextStyle(
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+              child: Center(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment:
+                      CrossAxisAlignment.start,
+                  children: [
+                    Icon(
+                      FontAwesomeIcons.percentage,
+                      color: color,
+                      size: 42,
+                    ),
+                    Text(
+                      (this1RM > last1RM) ? "higher" : "lower",
+                      style: TextStyle(
+                        fontSize: 42,
+                      ),
+                    ),
+                  ],
                 ),
-              ],
+              ),
+            ),
+          ],
+        ),
+        ),
+        Center(
+          child: Transform.translate(
+            offset: Offset(0, (this1RM == last1RM) ? -12 : -16),
+            child: Text(
+              (this1RM == last1RM ? "as" : "than") + " calculated by the",
+              style: TextStyle(
+                fontSize: 22,
+              ),
             ),
           ),
         ),
