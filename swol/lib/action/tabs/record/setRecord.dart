@@ -51,7 +51,6 @@ class SetRecord extends StatelessWidget {
     if(calibrationRequired ==false){
       backAction = () {
         ExcercisePage.pageNumber.value = 0;
-        //TODO... anything else here?
       };
     }
 

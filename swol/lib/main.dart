@@ -70,57 +70,6 @@ class _GrabSystemDataState extends State<GrabSystemData> {
 
   @override
   void initState(){
-    //print("arr: " + Functions.orderIndices([0.3, 2.3, 77.8, 1]).toString());
-    
-    String val;
-    int maxReps = 5;
-    int maxWeight = 100;
-    print("max weight: " + maxWeight.toString());
-
-    for(int goalReps = 1; goalReps <= maxReps; goalReps++){
-      for(int weight = 1; weight <= maxWeight; weight++){
-          for(int reps = 1; reps <= maxReps; reps++){
-            //-----------------------
-            //this combo of variables should give us an array of predictionIDs
-          List<double> oneRepMaxes = new List<double>(8);
-          List<double> expectedWeights = new List<double>(8);
-          for(int predictionID = 0; predictionID <= 7; predictionID++){
-            //pick this function
-            //NOTE: we learned weight doesn't matter to calculate 1 rep maxes so
-            //use the same weight for simplifications sake
-            double oneRepMax = To1RM.fromWeightAndReps(
-              weight.toDouble(),
-              reps.toDouble(), 
-              predictionID,
-            );
-            oneRepMaxes[predictionID] = oneRepMax;
-
-            //calculate expected weight
-            double goalWeight = ToWeight.fromRepAnd1Rm(
-              goalReps.toDouble(),
-              oneRepMax, 
-              predictionID,
-            );
-            expectedWeights[predictionID] = goalWeight;
-          }
-
-          //is this config different than any other?
-          String sortedIndices = Functions.orderIndices(expectedWeights).toString();
-          if(val != sortedIndices){
-            val = sortedIndices;
-            print("Goal " + goalReps.toString() + " => " + weight.toString() + " x " + reps.toString());
-            //print(oneRepMaxes.toString());
-            
-            print(sortedIndices);
-            //print(expectedWeights.toString());
-            //Sprint(oneRMS.toString());
-          }
-            //-----------------------
-          }
-      }
-    }
-    
-
     GrabSystemData.rootContext = context;
     asyncInit();
     super.initState();

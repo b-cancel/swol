@@ -1,4 +1,7 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
+import 'package:swol/action/page.dart';
+import 'package:swol/shared/widgets/simple/ourToolTip.dart';
 
 class BottomBackButton extends StatelessWidget {
   const BottomBackButton({
@@ -25,24 +28,41 @@ class BottomBackButton extends StatelessWidget {
         ),
         //the button that looks small but is actually very tall
         Container(
-          child: GestureDetector(
-            behavior: HitTestBehavior.opaque,
-            onTap: backAction == null ? null : () => backAction(),
-            child: Padding(
-              padding: EdgeInsets.only(
-                top: 24,
-                bottom: 24,
-              ),
-              child: Stack(
-                children: <Widget>[
-                  BottomRightCorner(
-                    color: color,
-                  ),
-                  ActualBackButton(
-                    verticalPadding: verticalPadding,
-                    hidden: backAction == null,
-                  ),
-                ],
+          child: Tooltip(
+            message: ExcercisePage.pageNumber.value == 2 
+            ? "going back won't reset the timer" 
+            : "back",
+            child: GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              onTap: backAction == null ? null : (){
+                //go back
+                backAction();
+
+                //notify users that the timer did not reset
+                if(ExcercisePage.pageNumber.value == 2){
+                  showToolTip(
+                    context, 
+                    "the timer won't reset",
+                    direction: PreferDirection.bottomRight,
+                  );
+                }
+              },
+              child: Padding(
+                padding: EdgeInsets.only(
+                  top: 24,
+                  bottom: 24,
+                ),
+                child: Stack(
+                  children: <Widget>[
+                    BottomRightCorner(
+                      color: color,
+                    ),
+                    ActualBackButton(
+                      verticalPadding: verticalPadding,
+                      hidden: backAction == null,
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

@@ -233,7 +233,7 @@ class PageTitle extends StatelessWidget {
                   excercise: excercise,
                 ),
                 color: Colors.white,
-                tooltip: MaterialLocalizations.of(context).backButtonTooltip,
+                tooltip: backToolTip(),
                 onPressed: (){
                   warningThenAllowPop(
                     context, 
@@ -261,6 +261,10 @@ class PageTitle extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  String backToolTip(){
+    return "Will Automaticaly Start Or Update Your New Set";
   }
 
   toNotes(BuildContext context) {

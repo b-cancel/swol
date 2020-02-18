@@ -119,6 +119,8 @@ class _FloatingDoneButtonState extends State<FloatingDoneButton> {
   
   @override
   Widget build(BuildContext context) {
+    String message = "";
+
     //handle page changes
     int setsPassedFromHere = widget.excercise.tempSetCount.value;
     Complete completionType;
@@ -132,9 +134,37 @@ class _FloatingDoneButtonState extends State<FloatingDoneButton> {
       else{
         setsPassedFromHere -= 1;
         completionType = Complete.DeleteNewSet;
+        
       }
     }
     else completionType = Complete.Normal;
+
+    int setTarget = widget.excercise.setTarget.value;
+    int setsLeft = setTarget - setsPassedFromHere;
+
+    //do we have values left?
+    if(setsLeft > 0){
+      message += "You have " + setsLeft.toString() 
+      + " SET" + (setsLeft == 1 ? "" : "S")
+      + " LEFT before you reach your set target(" + setTarget.toString() +  "), but you can ";
+    }
+
+    //are we trying to delete something?
+    if(completionType == Complete.DeleteNewSet){
+      message += "DELETE SET " + (setsPassedFromHere + 1).toString() + ", and ";
+    }
+
+    //what this does by default
+    message += "Finish Here after having COMPLETED " + setsPassedFromHere.toString() 
+    + " set" + (setsPassedFromHere == 1 ? "" : "s");
+
+    //do we have extra values?
+    if(setsLeft < 0){
+      message += ", " +  (setsLeft * -1).toString() + " more than your set target(" + setTarget.toString() + ")";
+    }
+    
+    //add spacing
+    message = "\n" + message + "\n";
     
     //determine button color based on sets passed
     Color cardColor = Theme.of(context).cardColor;
@@ -153,49 +183,52 @@ class _FloatingDoneButtonState extends State<FloatingDoneButton> {
       //NOTE: this button spans all the space possible 
       //from bottom of the screen
       //to the top of the visual button
-      child: GestureDetector(
-        behavior: showButton.value == false ? HitTestBehavior.translucent : HitTestBehavior.opaque,
-        onTap: showButton.value == false ? null : (){
-          completeSets(
-            setsPassedFromHere,
-            //only if we forgot to finish are temps ALREADY null
-            setTempsToNull: completionType != Complete.ForgotToFinish,
-            //only if we are completing under normal circumstances
-            //do we also have to copy the temp variables and save them to last
-            tempToLast: completionType == Complete.Normal,
-          );
-        },
-        child: Padding(
-          padding: EdgeInsets.only(
-            bottom: 24.0,
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              DoneCorner(
-                show: showCorners,
-                color: cardColor,
-                animationCurve: widget.animationCurve,
-                showOrHideDuration: widget.showOrHideDuration,
-                isTop: true,
-              ),
-              DoneButton(
-                show: showButton.value,
-                color: cardColor,
-                setsPassed: setsPassedFromHere,
-                excerciseID: widget.excercise.id,
-                animationCurve: widget.animationCurve,
-                showOrHideDuration: widget.showOrHideDuration,
-              ),
-              DoneCorner(
-                show: showCorners,
-                color: cardColor,
-                animationCurve: widget.animationCurve,
-                showOrHideDuration: widget.showOrHideDuration,
-                isTop: false,
-              ),
-            ],
+      child: Tooltip(
+        message: message,
+        child: GestureDetector(
+          behavior: showButton.value == false ? HitTestBehavior.translucent : HitTestBehavior.opaque,
+          onTap: showButton.value == false ? null : (){
+            completeSets(
+              setsPassedFromHere,
+              //only if we forgot to finish are temps ALREADY null
+              setTempsToNull: completionType != Complete.ForgotToFinish,
+              //only if we are completing under normal circumstances
+              //do we also have to copy the temp variables and save them to last
+              tempToLast: completionType == Complete.Normal,
+            );
+          },
+          child: Padding(
+            padding: EdgeInsets.only(
+              bottom: 24.0,
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                DoneCorner(
+                  show: showCorners,
+                  color: cardColor,
+                  animationCurve: widget.animationCurve,
+                  showOrHideDuration: widget.showOrHideDuration,
+                  isTop: true,
+                ),
+                DoneButton(
+                  show: showButton.value,
+                  color: cardColor,
+                  setsPassed: setsPassedFromHere,
+                  excerciseID: widget.excercise.id,
+                  animationCurve: widget.animationCurve,
+                  showOrHideDuration: widget.showOrHideDuration,
+                ),
+                DoneCorner(
+                  show: showCorners,
+                  color: cardColor,
+                  animationCurve: widget.animationCurve,
+                  showOrHideDuration: widget.showOrHideDuration,
+                  isTop: false,
+                ),
+              ],
+            ),
           ),
         ),
       ),
