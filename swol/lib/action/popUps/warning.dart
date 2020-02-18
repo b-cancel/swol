@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 //plugin
 import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:swol/action/popUps/button.dart';
 
 //internal: action
 import 'package:swol/action/popUps/reusable.dart';
@@ -14,9 +15,7 @@ import 'package:swol/shared/structs/anExcercise.dart';
 import 'package:swol/main.dart';
 
 //determine whether we should warn the user
-warningThenAllowPop(
-  BuildContext context, 
-  AnExcercise excercise,
+warningThenAllowPop(BuildContext context, AnExcercise excercise,
     {bool alsoPop: false}) {
   //NOTE: we can assume TEMPS ARE ALWAYS VALID
   //IF they ARENT EMPTY
@@ -45,7 +44,8 @@ warningThenAllowPop(
   int tempWeightString = excercise?.tempWeight;
   int tempRepsString = excercise?.tempReps;
   //extra step needed because null.toString() isn't null
-  String tempWeight = (tempWeightString != null) ? tempWeightString.toString() : "";
+  String tempWeight =
+      (tempWeightString != null) ? tempWeightString.toString() : "";
   String tempReps = (tempRepsString != null) ? tempRepsString.toString() : "";
 
   //grab news
@@ -65,7 +65,7 @@ warningThenAllowPop(
     //allow the user to go to where they wanted to
     //IF (also pop), will pop
     //ELSE will return true and pop then
-    backToExcercises(context, alsoPop); 
+    backToExcercises(context, alsoPop);
     //allow poping if called by back button
     return true;
   } else {
@@ -104,22 +104,23 @@ warningThenAllowPop(
 
       //possible because either both are filled or neither
       bool newSet = (tempWeight == "");
-      String title = newSet ?  "Begin Your Set Break" : "You Must Fix Your Set";
-      String subtitle = newSet ? "so we can save your set" : "before we save it";
+      String title = newSet ? "Begin Your Set Break" : "You Must Fix Your Set";
+      String subtitle =
+          newSet ? "so we can save your set" : "before we save it";
 
       //bring up pop up
       AwesomeDialog(
         context: context,
         isDense: false,
-        onDissmissCallback: (){
-          //NOTE: MUST GRAB NEW set weight and reps 
+        onDissmissCallback: () {
+          //NOTE: MUST GRAB NEW set weight and reps
           //since they maybe have been updated by a revert
           bool newWeightValid = isTextValid(ExcercisePage.setWeight.value);
           bool newRepsValid = isTextValid(ExcercisePage.setReps.value);
           bool newSetValid = newWeightValid && newRepsValid;
 
           //only refocus needed if new set is not valid
-          if(newSetValid == false){
+          if (newSetValid == false) {
             ExcercisePage.causeRefocus.value = true;
           }
         },
@@ -130,7 +131,7 @@ warningThenAllowPop(
         body: Column(
           children: [
             SetTitle(
-              title: title, 
+              title: title,
               subtitle: subtitle,
             ),
             Padding(
@@ -161,65 +162,47 @@ warningThenAllowPop(
                         excercise: excercise,
                       ),
                     ),
-                    //-------------------------Buttons-------------------------
-                    Transform.translate(
-                      offset: Offset(0, 16),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.max,
-                        children: [
-                          Expanded(
-                            child: Container(),
-                          ),
-                          FlatButton(
-                            onPressed: () {
-                              //NOTE: we revert back to the previous values
-                              //by just not saving the notifier values
-                              //since we are leaving so they will essentially reset
-
-                              //pop ourselves
-                              Navigator.of(context).pop();
-                              //will call "onDissmissCallback"
-                              
-                              //do the action the user initially wanted
-                              //regardless of where this function was called from
-                              backToExcercises(context, true);
-                            },
-                            child: Text(
-                              "No, " + (newSet ? "Delete The Set" : "Revert Back"),
-                              style: TextStyle(
-                                color: Colors.black,
-                              ),
-                            ),
-                          ),
-                          RaisedButton(
-                            color: Colors.blue,
-                            onPressed: (){
-                              //pop ourselves
-                              Navigator.of(context).pop();
-                              //will call "onDissmissCallback"
-
-                              //move to the right page
-                              //IF we are already there then good
-                              //  the "onDissmissCallback" will refocus
-                              //ELSE we will move to the right page
-                              //  and the init function of set record will refocus
-                              ExcercisePage.pageNumber.value = 1;
-                            },
-                            child: Text(
-                              "Yes, Go Back",
-                              style: TextStyle(
-                                color: Colors.white,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
                   ],
                 ),
               ),
             ),
           ],
+        ),
+        btnCancel: AwesomeButton(
+          clear: true,
+          child: Text(
+            (newSet ? "Delete The Set" : "Revert Back"),
+          ),
+          onTap: () {
+            //NOTE: we revert back to the previous values
+            //by just not saving the notifier values
+            //since we are leaving so they will essentially reset
+
+            //pop ourselves
+            Navigator.of(context).pop();
+            //will call "onDissmissCallback"
+
+            //do the action the user initially wanted
+            //regardless of where this function was called from
+            backToExcercises(context, true);
+          },
+        ),
+        btnOk: AwesomeButton(
+          child: Text(
+            "Let Me Fix It",
+          ),
+          onTap: () {
+            //pop ourselves
+            Navigator.of(context).pop();
+            //will call "onDissmissCallback"
+
+            //move to the right page
+            //IF we are already there then good
+            //  the "onDissmissCallback" will refocus
+            //ELSE we will move to the right page
+            //  and the init function of set record will refocus
+            ExcercisePage.pageNumber.value = 1;
+          },
         ),
       ).show();
 

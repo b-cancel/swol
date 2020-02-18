@@ -27,7 +27,7 @@ maybeError(BuildContext context, AnExcercise excercise) {
     DateTime startTime = excercise.tempStartTime.value;
     bool timerNotStarted = startTime == AnExcercise.nullDateTime;
     String continueString =
-        (timerNotStarted) ? "Begin Your Set Break" : "Return To Your Timer";
+        (timerNotStarted) ? "Begin Your Set Break" : "Return To Your Break";
 
     //remove focus so the pop up doesnt bring it back
     FocusScope.of(context).unfocus();
@@ -138,7 +138,7 @@ maybeError(BuildContext context, AnExcercise excercise) {
       btnCancel: timerNotStarted ? null : AwesomeButton(
         clear: true,
         child: Text(
-          "Revert",
+          "Revert Back",
         ), 
         onTap: () {
           //revert back (no need to update set)

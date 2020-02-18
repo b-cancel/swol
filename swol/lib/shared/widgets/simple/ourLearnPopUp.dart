@@ -12,6 +12,8 @@ showCustomPopUp(
   AnimType animationType: AnimType.BOTTOMSLIDE,
   bool isDense: false,
   Color color: Colors.blue,
+  Widget btnCancel,
+  Widget btnOk,
 }) {
   //unfocus so whatever was focused before doesnt annoying scroll us back
   //for some reason this only happens in addExcercise
@@ -48,5 +50,7 @@ showCustomPopUp(
       mainAxisSize: MainAxisSize.min,
       children: children,
     ),
+    btnCancel: btnCancel,
+    btnOk: btnOk
   ).show();
 }

@@ -1,6 +1,7 @@
 //flutter
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:swol/action/popUps/button.dart';
 import 'package:swol/pages/add/widgets/recoveryTime.dart';
 
 //internal: time picker
@@ -51,59 +52,9 @@ class ActualButton extends StatelessWidget {
               padding: EdgeInsets.only(
                 top: 16,
               ),
-              child: Column(
-                children: <Widget>[
-                  ChangeRecoveryTimeWidget(
-                    changeDuration: Duration(milliseconds: 250),
-                    recoveryPeriod: possibleRecoveryDuration,
-                  ),
-                  //NOTE: do not shift the button down
-                  //you will severly mess up the tapping functionality
-                  //this is because gesture detector (the super class of all butons)
-                  //will only register taps if you tap within its parent
-                  //so transforming essentially places us outside of that
-                  Padding(
-                    padding: EdgeInsets.only(
-                      top: 24,
-                      bottom: 0,
-                      left: 24,
-                      right: 24,
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        Expanded(
-                          child: Container(),
-                        ),
-                        FlatButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          child: Text(
-                            "Cancel",
-                            style: TextStyle(
-                              color: Colors.black,
-                            ),
-                          ),
-                        ),
-                        RaisedButton(
-                          color: Colors.blue,
-                          onPressed: () {
-                            changeableTimerDuration.value =
-                                possibleRecoveryDuration.value;
-                            Navigator.pop(context);
-                          },
-                          child: Text(
-                            "Change",
-                            style: TextStyle(
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
+              child: ChangeRecoveryTimeWidget(
+                changeDuration: Duration(milliseconds: 250),
+                recoveryPeriod: possibleRecoveryDuration,
               ),
             ),
           ],
@@ -115,6 +66,27 @@ class ActualButton extends StatelessWidget {
           color: Colors.black,
           isDense: true,
           animationType: AnimType.TOPSLIDE,
+          btnCancel: AwesomeButton(
+            clear: true,
+            child: Text(
+              "Cancel",
+              style: TextStyle(
+                color: Colors.black,
+              ),
+            ),
+            onTap: () {
+              Navigator.pop(context);
+            },
+          ),
+          btnOk: AwesomeButton(
+            child: Text(
+              "Change",
+            ),
+            onTap: () {
+              changeableTimerDuration.value = possibleRecoveryDuration.value;
+              Navigator.pop(context);
+            },
+          ),
         );
       },
     );

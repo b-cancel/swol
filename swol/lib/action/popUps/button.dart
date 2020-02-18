@@ -26,6 +26,7 @@ class AwesomeButton extends StatelessWidget {
           child: DefaultTextStyle(
             style: TextStyle(
               color: clear ? Colors.black : Colors.white,
+              fontWeight: FontWeight.bold,
             ),
             child: child,
           ),
