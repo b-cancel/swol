@@ -133,6 +133,7 @@ class _RecoveryState extends State<Recovery>
               buttonsColor: buttonsColor, 
               excercise: widget.excercise,
               setsPassed: setsPassed,
+              headerColor: Theme.of(context).cardColor,
             ),
           )
         ],
@@ -150,12 +151,14 @@ class RecoveryButtonsWithWhiteContext extends StatelessWidget {
     @required this.buttonsColor,
     @required this.excercise,
     @required this.setsPassed,
+    @required this.headerColor,
   }) : super(key: key);
 
   final ValueNotifier<bool> showAreYouSure;
   final Color buttonsColor;
   final AnExcercise excercise;
   final int setsPassed;
+  final Color headerColor;
 
   @override
   Widget build(BuildContext context) {
@@ -168,6 +171,7 @@ class RecoveryButtonsWithWhiteContext extends StatelessWidget {
             context, 
             excercise, 
             goToNextSet,
+            headerColor,
           );
         }
         else goToNextSet();

@@ -1,13 +1,11 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:swol/action/tabs/recovery/secondary/explained.dart';
-import 'package:swol/pages/selection/excerciseListPage.dart';
 import 'package:swol/shared/methods/theme.dart';
 import 'package:swol/shared/structs/anExcercise.dart';
 import 'package:swol/shared/widgets/complex/excerciseListTile/miniTimer/wrapper.dart';
 
-//TODO: this timer should automatically close and perform the action if the right ammount of timer has passed
-maybeSkipTimer(BuildContext context, AnExcercise excercise, Function ifSkip) {
+maybeSkipTimer(BuildContext context, AnExcercise excercise, Function ifSkip, Color headerColor) {
   //remove focus so the pop up doesnt bring it back
   FocusScope.of(context).unfocus();
 
@@ -36,7 +34,7 @@ maybeSkipTimer(BuildContext context, AnExcercise excercise, Function ifSkip) {
           height: 128,
           width: 128,
           decoration: BoxDecoration(
-            color: Colors.black,
+            color: headerColor,
             shape: BoxShape.circle,
           ),
           //NOTE: 28 is the max
@@ -44,7 +42,7 @@ maybeSkipTimer(BuildContext context, AnExcercise excercise, Function ifSkip) {
           child: FittedBox(
             fit: BoxFit.contain,
             child: Transform.translate(
-              offset: Offset(0,2),
+              offset: Offset(0, 2),
               child: Padding(
                 padding: EdgeInsets.all(8),
                 child: AnimatedMiniNormalTimer(
@@ -78,113 +76,114 @@ maybeSkipTimer(BuildContext context, AnExcercise excercise, Function ifSkip) {
         */
         //updating rich text
         ///"are you sure you want to Skip the rest of your break?"
-        RichText(
-          text: TextSpan(
-            style: TextStyle(
-              color: Colors.black,
-            ),
-            children: [
-              TextSpan(
-                text: "In order to recover fully from ",
-              ),
-              TextSpan(
-                style: bold,
-                text: trainingSelected + " Training\n",
-              ),
-              TextSpan(
-                text: "You should wait between "
-              ),
-              TextSpan(
-                style: bold,
-                text: trainingTypeToMin(trainingSelected),
-              ),
-              TextSpan(
-                text: " and "
-              ),
-              TextSpan(
-                style: bold,
-                text: trainingTypeToMax(trainingSelected),
-              ),
-              TextSpan(
-                text: " before moving on to your next set\n"
-              ),
-            ],
+        Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: 16.0,
           ),
-        ),
-        UpdatingBreakSet(
-          trainingName: trainingSelected,
-          excercise: excercise,
-          selectedWaitTime: "!!!",
-        ), 
-        RichText(
-          text: TextSpan(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              TextSpan(
-                text: "are you sure you want to ",
-              ),
-              TextSpan(
-                text: "Skip the rest of your break?",
-                style: bold,
-              ),
-            ],
-          ),
-        ),
-        Transform.translate(
-          offset: Offset(0, 16),
-          child: Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: 16.0,
-            ),
-            child: Row(
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                Expanded(
-                  child: Container(),
+              RichText(
+              text: TextSpan(
+                style: TextStyle(
+                  color: Colors.black,
                 ),
-                FlatButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: Text(
-                    "Don't Skip",
-                    style: TextStyle(
-                      color: Colors.black,
+                children: [
+                  TextSpan(
+                    text: "In order to recover fully from ",
+                  ),
+                  TextSpan(
+                    style: bold,
+                    text: trainingSelected + " Training",
+                  ),
+                  TextSpan(text: " you should wait between "),
+                  TextSpan(
+                    style: bold,
+                    text: trainingTypeToMin(trainingSelected),
+                  ),
+                  TextSpan(text: " and "),
+                  TextSpan(
+                    style: bold,
+                    text: trainingTypeToMax(trainingSelected),
+                  ),
+                  TextSpan(text: " before moving on to your next set\n"),
+                ],
+              ),
+            ),
+            UpdatingBreakSet(
+              trainingName: trainingSelected,
+              excercise: excercise,
+              selectedWaitTime: "!!!",
+            ),
+            RichText(
+              text: TextSpan(
+                style: TextStyle(
+                  color: Colors.black,
+                ),
+                children: [
+                  TextSpan(
+                    text: "\nAre you sure you want to ",
+                  ),
+                  TextSpan(
+                    text: "Skip the rest of your break?",
+                    style: bold,
+                  ),
+                ],
+              ),
+            ),
+            Transform.translate(
+              offset: Offset(0, 16),
+              child: Row(
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Expanded(
+                    child: Container(),
+                  ),
+                  FlatButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: Text(
+                      "Don't Skip",
+                      style: TextStyle(
+                        color: Colors.black,
+                      ),
                     ),
                   ),
-                ),
-                RaisedButton(
-                  color: Colors.blue,
-                  onPressed: () {
-                    //pop ourselves
-                    Navigator.pop(context);
+                  RaisedButton(
+                    color: Colors.blue,
+                    onPressed: () {
+                      //pop ourselves
+                      Navigator.pop(context);
 
-                    //proceed as expected
-                    ifSkip();
-                  },
-                  child: Text(
-                    "Skip Break",
-                    style: TextStyle(
-                      color: Colors.white,
+                      //proceed as expected
+                      ifSkip();
+                    },
+                    child: Text(
+                      "Skip Break",
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-        ),
+          ]),
+        )
       ],
     ),
   ).show();
 }
 
-class UpdatingBreakSet extends StatefulWidget{
+class UpdatingBreakSet extends StatefulWidget {
   UpdatingBreakSet({
     @required this.trainingName,
     @required this.selectedWaitTime,
     @required this.excercise,
   });
 
-  final String trainingName;  
+  final String trainingName;
   final String selectedWaitTime;
   final AnExcercise excercise;
 
@@ -192,7 +191,8 @@ class UpdatingBreakSet extends StatefulWidget{
   _UpdatingBreakSetState createState() => _UpdatingBreakSetState();
 }
 
-class _UpdatingBreakSetState extends State<UpdatingBreakSet> with SingleTickerProviderStateMixin{
+class _UpdatingBreakSetState extends State<UpdatingBreakSet>
+    with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     String trainingBreakGoodFor = durationToTrainingType(
@@ -204,23 +204,27 @@ class _UpdatingBreakSetState extends State<UpdatingBreakSet> with SingleTickerPr
     TextStyle bold = TextStyle(
       fontWeight: FontWeight.bold,
     );
-    
-    if(withinTrainingType){
+
+    //TODO: finish properly
+    String timeWaited = "???";
+
+    if (withinTrainingType) {
       return RichText(
         text: TextSpan(
+          style: TextStyle(
+            color: Colors.black,
+          ),
           children: [
+            TextSpan(text: "you have waited "),
             TextSpan(
-              text: "you have waited "
-            ),
-            TextSpan(
-              text: "", //TODO: time waited to string
+              text: timeWaited,
               style: bold,
             ),
             TextSpan(
               text: ", so you are ready for your next ",
             ),
             TextSpan(
-              text: widget.trainingName  + " Training",
+              text: widget.trainingName + " Training",
               style: bold,
             ),
             TextSpan(
@@ -230,22 +234,26 @@ class _UpdatingBreakSetState extends State<UpdatingBreakSet> with SingleTickerPr
               text: "But you have chosen to wait ",
             ),
             TextSpan(
-              text: widget.selectedWaitTime, //TODO: time selected to string
+              text: widget.selectedWaitTime, 
               style: bold,
             ),
           ],
         ),
       );
-    }
-    else{
+    } else {
       return RichText(
+        textAlign: TextAlign.left,
         text: TextSpan(
+          
+          style: TextStyle(
+            color: Colors.black,
+          ),
           children: [
             TextSpan(
               text: "but you have only waited ",
             ),
             TextSpan(
-              text: "???", //TODO: time waited to string
+              text: timeWaited,
               style: bold,
             ),
           ],
