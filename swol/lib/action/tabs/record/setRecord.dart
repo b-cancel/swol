@@ -105,7 +105,7 @@ class SetRecord extends StatelessWidget {
                 ),
                 Theme(
                   data: MyTheme.light,
-                  child: BottomButtonsWrappedInWhite(
+                  child: SetRecordButtonsWithWhiteContext(
                     buttonsColor: buttonsColor, 
                     excercise: excercise, 
                     timerNotStarted: timerNotStarted, 
@@ -121,8 +121,8 @@ class SetRecord extends StatelessWidget {
   }
 }
 
-class BottomButtonsWrappedInWhite extends StatelessWidget {
-  const BottomButtonsWrappedInWhite({
+class SetRecordButtonsWithWhiteContext extends StatelessWidget {
+  const SetRecordButtonsWithWhiteContext({
     Key key,
     @required this.buttonsColor,
     @required this.excercise,

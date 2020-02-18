@@ -7,6 +7,7 @@ import 'package:swol/action/tabs/recovery/secondary/breath.dart';
 import 'package:swol/action/tabs/recovery/timer/liquidTime.dart';
 import 'package:swol/action/bottomButtons/button.dart';
 import 'package:swol/action/page.dart';
+import 'package:swol/shared/methods/theme.dart';
 
 //internal: shared
 import 'package:swol/shared/structs/anExcercise.dart';
@@ -125,43 +126,73 @@ class _RecoveryState extends State<Recovery>
               ),
             ),
           ),
-          BottomButtons(
-            color: buttonsColor,
-            excercise: widget.excercise,
-            forwardAction: () {
-              if(showAreYouSure.value){
-                maybeSkipTimer(
-                  context, 
-                  widget.excercise, 
-                  goToNextSet,
-                );
-              }
-              else goToNextSet();
-            },
-            forwardActionWidget: RichText(
-              text: TextSpan(
-                children: [
-                  TextSpan(
-                    text: "Begin",
-                  ),
-                  TextSpan(
-                    text: " Set " + setsPassed.toString(),
-                    style: TextStyle(
-                      fontWeight: FontWeight.w900,
-                    ),
-                  ),
-                  TextSpan(
-                    text: "/" + widget.excercise.setTarget.value.toString(),
-                  ),
-                ],
-              ),
+          Theme(
+            data: MyTheme.light,
+            child: RecoveryButtonsWithWhiteContext(
+              showAreYouSure: showAreYouSure,
+              buttonsColor: buttonsColor, 
+              excercise: widget.excercise,
+              setsPassed: setsPassed,
             ),
-            backAction: (){
-              ExcercisePage.pageNumber.value = 1;
-            },
           )
         ],
       ),
+    );
+  }
+
+  
+}
+
+class RecoveryButtonsWithWhiteContext extends StatelessWidget {
+  const RecoveryButtonsWithWhiteContext({
+    Key key,
+    @required this.showAreYouSure,
+    @required this.buttonsColor,
+    @required this.excercise,
+    @required this.setsPassed,
+  }) : super(key: key);
+
+  final ValueNotifier<bool> showAreYouSure;
+  final Color buttonsColor;
+  final AnExcercise excercise;
+  final int setsPassed;
+
+  @override
+  Widget build(BuildContext context) {
+    return BottomButtons(
+      color: buttonsColor,
+      excercise: excercise,
+      forwardAction: () {
+        if(showAreYouSure.value){
+          maybeSkipTimer( 
+            context, 
+            excercise, 
+            goToNextSet,
+          );
+        }
+        else goToNextSet();
+      },
+      forwardActionWidget: RichText(
+        text: TextSpan(
+          children: [
+            TextSpan(
+              text: "Begin",
+            ),
+            TextSpan(
+              text: " Set " + setsPassed.toString(),
+              style: TextStyle(
+                fontWeight: FontWeight.w900,
+              ),
+            ),
+            TextSpan(
+              text: "/" + excercise.setTarget.value.toString(),
+            ),
+          ],
+        ),
+      ),
+      backAction: (){
+        ExcercisePage.pageNumber.value = 1;
+      },
     );
   }
 
