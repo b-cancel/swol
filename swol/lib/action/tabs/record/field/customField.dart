@@ -236,13 +236,7 @@ class _RecordFieldState extends State<RecordField> {
                             if(widget.otherController.text == "0") widget.otherController.clear();
                             //focus on the next field
                             FocusScope.of(context).requestFocus(widget.otherFocusNode);
-                            //send cursor to end
-                            /*
-                            //NOTE: with interactive selection off it does this automatically
-                            widget.otherController.selection = TextSelection.fromPosition(
-                              TextPosition(offset: widget.otherController?.text?.length ?? 0),
-                            );
-                            */
+                            //NOTE: cursor automatically gets shifted to the end
                           }
                         },
                       ),

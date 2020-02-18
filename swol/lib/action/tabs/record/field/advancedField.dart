@@ -83,26 +83,14 @@ class _RecordFieldsState extends State<RecordFields> {
       if(weightController.text == "0") weightController.clear();
       //request focus
       FocusScope.of(context).requestFocus(weightFocusNode);
-      //shift cursor to the 
-      //NOTE: without interactive selection it does this automatically
-      /*
-      weightController.selection = TextSelection.fromPosition(
-        TextPosition(offset: weightController?.text?.length ?? 0),
-      );
-      */
+      //NOTE: cursor automatically gets shifted to the end
     } else { //maybe focus on reps
       if (isTextValid(repsController.text) == false) {
         //clear with value that could be nothing but invalid
         if(repsController.text == "0") repsController.clear();
         //request focus
         FocusScope.of(context).requestFocus(repsFocusNode);
-        //shift cursor to the end
-        //NOTE: without interactive selection it does this automatically
-        /*
-        repsController.selection = TextSelection.fromPosition(
-          TextPosition(offset: repsController?.text?.length ?? 0),
-        );
-        */
+        //NOTE: cursor automatically gets shifted to the end
       }
     }
 
