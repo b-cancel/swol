@@ -37,47 +37,65 @@ class _MakeFunctionAdjustmentState extends State<MakeFunctionAdjustment> {
   //update the goal set based on init
   //and changed valus
   updateGoal(){
-    //calc oneRM based on previous set
-    double oneRM = To1RM.fromWeightAndReps(
-      widget.excercise.lastWeight.toDouble(), 
-      widget.excercise.lastReps.toDouble(), 
-      widget.excercise.predictionID,
-    );
-
     //we use 1m and weight to get reps
     //this is bause maybe we wanted them to do 125 for 5 but they only had 120
     //so ideally we want to match their weight here and take it from ther
     String setWeightString = ExcercisePage.setWeight.value;
-    bool weightValid = isTextValid(setWeightString);
-    double weight = weightValid ? double.parse(setWeightString) : 0;
+    bool weightUseValid = isTextValid(setWeightString);
+    double weight = weightUseValid ? double.parse(setWeightString) : 0;
 
     //check conditions
-    int repEstimate;
-    bool above0 = false;
-    bool below25;
-    bool lessThanDouble;
-    if(weightValid){ 
-      repEstimate = ToReps.from1RMandWeight(
-        oneRM, 
-        //use recorded weight
-        //since we are assuming 
-        //that's what the user couldn't change
-        weight, 
-        widget.excercise.predictionID,
-      ).round();
+    List<int> repEstimates = new List<int>(8);
+    if(weightUseValid){ //if the weight is valid you can estimate reps
+      //calculate all the rep-estimates for all functions
+      for(int thisFunctionID = 0; thisFunctionID < 8; thisFunctionID++){
+        //calc the 1 rep max if we go this route
+        double oneRM = To1RM.fromWeightAndReps(
+          widget.excercise.lastWeight.toDouble(), 
+          widget.excercise.lastReps.toDouble(), 
+          thisFunctionID,
+        );
 
-      above0 = (0 < repEstimate);
-      below25 = repEstimate < 25;
-      lessThanDouble = repEstimate <= (widget.excercise.repTarget * 2.0);
+        //calc the rep estimate
+        repEstimates[thisFunctionID] = ToReps.from1RMandWeight(
+          oneRM, 
+          //use recorded weight
+          //since we are assuming 
+          //that's what the user couldn't change
+          weight, 
+          thisFunctionID,
+        ).round();
+      }
+
+      //make sure all yield valid resuls
+      for(int thisFunctionID = 0; thisFunctionID < 8; thisFunctionID++){
+        int estimate = repEstimates[thisFunctionID];
+        bool zeroOrLess = (estimate <= 0);
+        //NOTE: our encouraged upperbound is 35
+        //but we don't want to limit things too much 
+        //so that this bit is never usefull
+        //so we set it at a 100
+        bool aboveUpperBound  = (101 < estimate);
+        if(zeroOrLess || aboveUpperBound){
+          weightUseValid = false;
+          break;
+        }
+      }
     }
     
     //only if all conditions are met do we use our inverse guess
     //this should only happen under very specific circumstances
-    if(above0 && (below25 || lessThanDouble)){ //calculate reps
-      ExcercisePage.setGoalReps.value = repEstimate;
+    if(weightUseValid){ //calculate reps
+      ExcercisePage.setGoalReps.value = repEstimates[predictionID.value];
       ExcercisePage.setGoalWeight.value = weight.round();
     }
     else{ //calculate weight
+      double oneRM = To1RM.fromWeightAndReps(
+        widget.excercise.lastWeight.toDouble(), 
+        widget.excercise.lastReps.toDouble(), 
+        widget.excercise.predictionID,
+      );
+
       ExcercisePage.setGoalReps.value = widget.excercise.repTarget;
       ExcercisePage.setGoalWeight.value = ToWeight.fromRepAnd1Rm(
         ExcercisePage.setGoalReps.value.toDouble(), 

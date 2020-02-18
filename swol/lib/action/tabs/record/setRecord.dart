@@ -13,7 +13,6 @@ import 'package:swol/action/bottomButtons/button.dart';
 import 'package:swol/action/page.dart';
 
 //internal: shared
-import 'package:swol/shared/widgets/simple/conditional.dart';
 import 'package:swol/shared/structs/anExcercise.dart';
 import 'package:swol/shared/methods/theme.dart';
 
@@ -85,25 +84,6 @@ class SetRecord extends StatelessWidget {
     );
 
     if(calibrationRequired){
-      /*
-      Conditional(
-                  condition: calibrationRequired,
-                  ifTrue: Padding(
-                    padding: EdgeInsets.only(
-                      bottom: 48,
-                    ),
-                    child: CalibrationCard(),
-                  ),
-                  ifFalse: 
-                ),
-      */
-
-      /*
-      Visibility(
-                  visible: calibrationRequired,
-                  child: 
-                ),
-      */
       //clipping so "hero" doesn't show up in the other page
       return ClipRRect(
         child: ListView(
@@ -168,8 +148,6 @@ class SetRecord extends StatelessWidget {
         ),
       );
     }
-
-    
   }
 }
 

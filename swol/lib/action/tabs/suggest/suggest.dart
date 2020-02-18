@@ -62,7 +62,7 @@ class _SuggestionState extends State<Suggestion> {
       ExcercisePage.setGoalReps.value.toDouble(), 
       oneRM, 
       widget.excercise.predictionID,
-    ).toInt();
+    ).round();
   }
 
   updatePredictionID() {
