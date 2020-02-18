@@ -16,6 +16,7 @@ import 'package:swol/action/tabs/recovery/timer/changeTime.dart';
 import 'package:swol/shared/structs/anExcercise.dart';
 import 'package:swol/shared/methods/vibrate.dart';
 import 'package:swol/shared/methods/theme.dart';
+import 'package:swol/shared/widgets/simple/conditional.dart';
 
 //NOTE: never ask wether we should change the timer
 //if they stop at less time than expected the pop up will annoy them
@@ -212,7 +213,8 @@ class _TimerState extends State<Timer> with TickerProviderStateMixin {
     );
 
     //show how much time we have selected
-    List<String> breakTimeStrings = durationToCustomDisplay(widget.excercise.recoveryPeriod);
+    List<String> breakTimeStrings =
+        durationToCustomDisplay(widget.excercise.recoveryPeriod);
     String breakTimeString = breakTimeStrings[0] + ":" + breakTimeStrings[1];
 
     //-------------------------Optimize Below-------------------------
@@ -248,12 +250,12 @@ class _TimerState extends State<Timer> with TickerProviderStateMixin {
       waveColor = AlwaysStoppedAnimation(greenTimerAccent);
 
       //calculate top number (+1 second handles a rounded error)
-      Duration durationLeft = widget.excercise.recoveryPeriod 
-      - totalDurationPassed 
-      + Duration(seconds: 1);
+      Duration durationLeft = widget.excercise.recoveryPeriod -
+          totalDurationPassed +
+          Duration(seconds: 1);
 
       List<String> durLeftStrs = durationToCustomDisplay(durationLeft);
-      String durLeftString = durLeftStrs[0] + " : " + durLeftStrs[1]; 
+      String durLeftString = durLeftStrs[0] + " : " + durLeftStrs[1];
       topNumber = durLeftString;
 
       //set progress value
@@ -269,8 +271,10 @@ class _TimerState extends State<Timer> with TickerProviderStateMixin {
       );
 
       //calculate top Number
-      List<String> extraDurStrings = durationToCustomDisplay(extraDurationPassed);
-      String extraDurationString = extraDurStrings[0] + " : " + extraDurStrings[1];
+      List<String> extraDurStrings =
+          durationToCustomDisplay(extraDurationPassed);
+      String extraDurationString =
+          extraDurStrings[0] + " : " + extraDurStrings[1];
       topNumber = extraDurationString;
 
       //---generate the progress values
@@ -341,47 +345,48 @@ class _TimerState extends State<Timer> with TickerProviderStateMixin {
                             //set values
                             borderColor: Colors.transparent,
                             borderWidth: 0,
-                            direction: Axis.vertical, 
+                            direction: Axis.vertical,
                           ),
-                          Visibility(
-                            visible: maxTimerController.value == 1,
-                            child: Positioned.fill(
-                              child: Stack(
-                                children: [
-                                  changeTimeWidget,
-                                  Positioned.fill(
-                                    child: Center(
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                                        children: <Widget>[
-                                          infoButton,
-                                          OnlyEditButton(
-                                            durationString: breakTimeString,
-                                          ),
-                                        ],
-                                      ),
+                          Conditional(
+                            condition: maxTimerController.value == 1,
+                            ifTrue: Stack(
+                              children: [
+                                changeTimeWidget,
+                                Positioned.fill(
+                                  child: Center(
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.stretch,
+                                      children: <Widget>[
+                                        infoButton,
+                                        OnlyEditButton(
+                                          durationString: breakTimeString,
+                                        ),
+                                      ],
                                     ),
                                   ),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
-                          ),
-                          Visibility(
-                            visible: maxTimerController.value != 1,
-                            child: Stack(
+                            ifFalse: Stack(
                               children: [
                                 changeTimeWidget,
                                 Center(
                                   child: TimeDisplay(
-                                    textContainerSize: MediaQuery.of(context).size.width - (24 * 2),
+                                    textContainerSize:
+                                        MediaQuery.of(context).size.width -
+                                            (24 * 2),
                                     topNumber: topNumber,
                                     breakTime: breakTimeString,
                                     timePassed: totalDurationPassed,
                                     //easy variables
-                                    topArrowUp: widget.showArrows ? (firstTimerRunning ? false : true) : null,
+                                    topArrowUp: widget.showArrows
+                                        ? (firstTimerRunning ? false : true)
+                                        : null,
                                     isTimer: (firstTimerRunning) ? true : false,
-                                    showBottomArrow: widget.showArrows ? true : false,
+                                    showBottomArrow:
+                                        widget.showArrows ? true : false,
                                     showIcon: widget.showIcon,
                                     changeTimeWidget: changeTimeWidget,
                                   ),

@@ -65,7 +65,7 @@ class ActualButton extends StatelessWidget {
           ),
           color: Colors.black,
           isDense: true,
-          animationType: AnimType.TOPSLIDE,
+          animationType: AnimType.SCALE,
           btnCancel: AwesomeButton(
             clear: true,
             child: Text(

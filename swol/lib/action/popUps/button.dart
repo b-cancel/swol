@@ -13,22 +13,27 @@ class AwesomeButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: clear ? Colors.transparent : Theme.of(context).accentColor,
-      child: InkWell(
-        onTap: () => onTap(),
-        child: Container(
-          alignment: Alignment.center,
-          padding: EdgeInsets.all(8),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(6.0),
-          ),
-          child: DefaultTextStyle(
-            style: TextStyle(
-              color: clear ? Colors.black : Colors.white,
-              fontWeight: FontWeight.bold,
+    return Padding(
+      padding: EdgeInsets.only(
+        bottom: 8.0,
+      ),
+      child: Material(
+        color: clear ? Colors.transparent : Theme.of(context).accentColor,
+        child: InkWell(
+          onTap: () => onTap(),
+          child: Container(
+            alignment: Alignment.center,
+            padding: EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(6.0),
             ),
-            child: child,
+            child: DefaultTextStyle(
+              style: TextStyle(
+                color: clear ? Colors.black : Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
+              child: child,
+            ),
           ),
         ),
       ),

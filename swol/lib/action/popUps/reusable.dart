@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:swol/action/popUps/textValid.dart';
 
 //internal
 import 'package:swol/shared/structs/anExcercise.dart';
@@ -52,8 +53,8 @@ class SetDescription extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool zeroWeight = (weight == "" || weight == "0");
-    bool zeroReps = (reps == "" || reps == "0");
+    bool invalidWeight = isTextValid(weight) == false;
+    bool invalidReps = isTextValid(reps) == false;
     String weightS = (weight != "1") ? "s" : "";
     String repsS = (reps != "1") ? "s" : "";
 
@@ -76,19 +77,23 @@ class SetDescription extends StatelessWidget {
           ),
           //-------------------------Weight-------------------------
           TextSpan(
-            text: (zeroWeight ? "Nothing" : weight),
+            text: invalidWeight ? 
+            ((weight.length == 0 || weight == "0") ? "Nothing" : "An Invalid Ammount of Weight") 
+            : weight,
             style: TextStyle(
               fontWeight: FontWeight.bold,
             ),
           ),
           TextSpan(
-              text: zeroWeight ? "" : " (lb" + weightS + "/kg" + weightS + ")"),
+              text: invalidWeight ? "" : " (lb" + weightS + "/kg" + weightS + ")"),
           //-------------------------Reps-------------------------
           TextSpan(
             text: " for ",
           ),
           TextSpan(
-            text: zeroReps ? "Zero" : reps,
+            text: invalidReps ? 
+            ((reps.length == 0 || reps == "0") ? "Zero" : "An Invalid Ammount of Reps") 
+            : reps,
             style: TextStyle(
               fontWeight: FontWeight.bold,
             ),
