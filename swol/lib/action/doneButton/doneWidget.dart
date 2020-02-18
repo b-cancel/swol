@@ -46,6 +46,7 @@ class FloatingDoneButton extends StatefulWidget {
 class _FloatingDoneButtonState extends State<FloatingDoneButton> {
   ValueNotifier<bool> showButton;
   bool showCorners;
+  bool fullyHidden; //required so gestures wouldn't be registered by the hidden box
 
   //whether or not this particular page wants the button to show
   bool shouldShow(){
@@ -71,6 +72,7 @@ class _FloatingDoneButtonState extends State<FloatingDoneButton> {
   //runs after a change in pageNumber is detected
   updateButton(){
     showButton.value = shouldShow();
+    if(showButton.value) fullyHidden = false;
     setState(() {});
   }
 
@@ -87,6 +89,10 @@ class _FloatingDoneButtonState extends State<FloatingDoneButton> {
     else{ //immediately hide with button
       showCorners = false;
       setState(() {});
+      Future.delayed(widget.showOrHideDuration, (){
+        fullyHidden = true;
+        setState(() {});
+      });
     }
   }
 
@@ -99,6 +105,7 @@ class _FloatingDoneButtonState extends State<FloatingDoneButton> {
     bool shouldBeShowing = shouldShow();
     showButton = new ValueNotifier<bool>(shouldBeShowing);
     showCorners = shouldBeShowing;
+    fullyHidden = shouldBeShowing == false;
 
     //whenever button updates corners get updated
     showButton.addListener(updateCorners);
@@ -183,51 +190,57 @@ class _FloatingDoneButtonState extends State<FloatingDoneButton> {
       //NOTE: this button spans all the space possible 
       //from bottom of the screen
       //to the top of the visual button
-      child: Tooltip(
-        message: message,
-        child: GestureDetector(
-          behavior: showButton.value == false ? HitTestBehavior.translucent : HitTestBehavior.opaque,
-          onTap: showButton.value == false ? null : (){
-            completeSets(
-              setsPassedFromHere,
-              //only if we forgot to finish are temps ALREADY null
-              setTempsToNull: completionType != Complete.ForgotToFinish,
-              //only if we are completing under normal circumstances
-              //do we also have to copy the temp variables and save them to last
-              tempToLast: completionType == Complete.Normal,
-            );
-          },
-          child: Padding(
-            padding: EdgeInsets.only(
-              bottom: 24.0,
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                DoneCorner(
-                  show: showCorners,
-                  color: cardColor,
-                  animationCurve: widget.animationCurve,
-                  showOrHideDuration: widget.showOrHideDuration,
-                  isTop: true,
+      child: Container(
+        color: Colors.green,
+        child: Visibility(
+          visible: fullyHidden ? false : true,
+          child: Tooltip(
+            message: showButton.value == false ? "hiding" : message,
+            child: GestureDetector(
+              behavior: showButton.value == false ? HitTestBehavior.translucent : HitTestBehavior.opaque,
+              onTap: showButton.value == false ? null : (){
+                completeSets(
+                  setsPassedFromHere,
+                  //only if we forgot to finish are temps ALREADY null
+                  setTempsToNull: completionType != Complete.ForgotToFinish,
+                  //only if we are completing under normal circumstances
+                  //do we also have to copy the temp variables and save them to last
+                  tempToLast: completionType == Complete.Normal,
+                );
+              },
+              child: Padding(
+                padding: EdgeInsets.only(
+                  bottom: 24.0,
                 ),
-                DoneButton(
-                  show: showButton.value,
-                  color: cardColor,
-                  setsPassed: setsPassedFromHere,
-                  excerciseID: widget.excercise.id,
-                  animationCurve: widget.animationCurve,
-                  showOrHideDuration: widget.showOrHideDuration,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    DoneCorner(
+                      show: showCorners,
+                      color: cardColor,
+                      animationCurve: widget.animationCurve,
+                      showOrHideDuration: widget.showOrHideDuration,
+                      isTop: true,
+                    ),
+                    DoneButton(
+                      show: showButton.value,
+                      color: cardColor,
+                      setsPassed: setsPassedFromHere,
+                      excerciseID: widget.excercise.id,
+                      animationCurve: widget.animationCurve,
+                      showOrHideDuration: widget.showOrHideDuration,
+                    ),
+                    DoneCorner(
+                      show: showCorners,
+                      color: cardColor,
+                      animationCurve: widget.animationCurve,
+                      showOrHideDuration: widget.showOrHideDuration,
+                      isTop: false,
+                    ),
+                  ],
                 ),
-                DoneCorner(
-                  show: showCorners,
-                  color: cardColor,
-                  animationCurve: widget.animationCurve,
-                  showOrHideDuration: widget.showOrHideDuration,
-                  isTop: false,
-                ),
-              ],
+              ),
             ),
           ),
         ),
