@@ -224,7 +224,7 @@ class RevertToPrevious extends StatelessWidget {
           color: Colors.black,
         ),
         children: [
-          TextSpan(text: "\nor "),
+          TextSpan(text: "or "),
           TextSpan(
             text: "Revert",
             style: TextStyle(

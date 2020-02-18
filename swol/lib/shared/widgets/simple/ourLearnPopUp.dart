@@ -17,7 +17,7 @@ showCustomPopUp(
   //for some reason this only happens in addExcercise
   //when opening popups for name, notes, link, and recovery time
   //still its annoying and hence must die
-  FocusScope.of(context).unfocus();
+  FocusScope.of(context).unfocus(); 
 
   //show pop up
   AwesomeDialog(

@@ -1,6 +1,7 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:swol/action/page.dart';
+import 'package:swol/action/popUps/button.dart';
 import 'package:swol/action/popUps/reusable.dart';
 import 'package:swol/action/popUps/textValid.dart';
 import 'package:swol/shared/structs/anExcercise.dart';
@@ -125,54 +126,6 @@ maybeError(BuildContext context, AnExcercise excercise) {
                         RevertToPrevious(
                           excercise: excercise,
                         ),
-                        //-------------------------Butttons-------------------------
-                        Transform.translate(
-                          offset: Offset(0, 16),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.max,
-                            children: [
-                              Expanded(
-                                child: Container(),
-                              ),
-                              FlatButton(
-                                onPressed: () {
-                                  //revert back (no need to update set)
-                                  //we KNOW the temps are VALID
-                                  //else the timer would not have started
-                                  ExcercisePage.setWeight.value = excercise.tempWeight.toString();
-                                  ExcercisePage.setReps.value = excercise.tempReps.toString();
-
-                                  //pop ourselves
-                                  Navigator.of(context).pop();
-                                  //will call "onDissmissCallback"
-
-                                  //continue as expected
-                                  ExcercisePage.pageNumber.value = 2; //shift to the timer page
-                                },
-                                child: Text(
-                                  "Revert Back",
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                  ),
-                                ),
-                              ),
-                              RaisedButton(
-                                color: Colors.blue,
-                                onPressed: () {
-                                  //pop ourselves
-                                  Navigator.of(context).pop();
-                                  //will call "onDissmissCallback"
-                                },
-                                child: Text(
-                                  "Let Me Fix It",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
                       ],
                     ),
                   ),
@@ -181,6 +134,36 @@ maybeError(BuildContext context, AnExcercise excercise) {
             ),
           ),
         ],
+      ),
+      btnCancel: timerNotStarted ? null : AwesomeButton(
+        clear: true,
+        child: Text(
+          "Revert",
+        ), 
+        onTap: () {
+          //revert back (no need to update set)
+          //we KNOW the temps are VALID
+          //else the timer would not have started
+          ExcercisePage.setWeight.value = excercise.tempWeight.toString();
+          ExcercisePage.setReps.value = excercise.tempReps.toString();
+
+          //pop ourselves
+          Navigator.of(context).pop();
+          //will call "onDissmissCallback"
+
+          //continue as expected
+          ExcercisePage.pageNumber.value = 2; //shift to the timer page
+        },
+      ),
+      btnOk: timerNotStarted ? null : AwesomeButton(
+        child: Text(
+          "Let Me Fix It",
+        ),
+        onTap: () {
+          //pop ourselves
+          Navigator.of(context).pop();
+          //will call "onDissmissCallback"
+        },
       ),
     ).show();
   }

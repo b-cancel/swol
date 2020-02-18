@@ -57,45 +57,50 @@ class ActualButton extends StatelessWidget {
                     changeDuration: Duration(milliseconds: 250),
                     recoveryPeriod: possibleRecoveryDuration,
                   ),
-                  Transform.translate(
-                    offset: Offset(0, 16),
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 16.0,
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.max,
-                        children: [
-                          Expanded(
-                            child: Container(),
-                          ),
-                          FlatButton(
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            child: Text(
-                              "Cancel",
-                              style: TextStyle(
-                                color: Colors.black,
-                              ),
+                  //NOTE: do not shift the button down
+                  //you will severly mess up the tapping functionality
+                  //this is because gesture detector (the super class of all butons)
+                  //will only register taps if you tap within its parent
+                  //so transforming essentially places us outside of that
+                  Padding(
+                    padding: EdgeInsets.only(
+                      top: 24,
+                      bottom: 0,
+                      left: 24,
+                      right: 24,
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Expanded(
+                          child: Container(),
+                        ),
+                        FlatButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          child: Text(
+                            "Cancel",
+                            style: TextStyle(
+                              color: Colors.black,
                             ),
                           ),
-                          RaisedButton(
-                            color: Colors.blue,
-                            onPressed: () {
-                              changeableTimerDuration.value =
-                                  possibleRecoveryDuration.value;
-                              Navigator.pop(context);
-                            },
-                            child: Text(
-                              "Change",
-                              style: TextStyle(
-                                color: Colors.white,
-                              ),
+                        ),
+                        RaisedButton(
+                          color: Colors.blue,
+                          onPressed: () {
+                            changeableTimerDuration.value =
+                                possibleRecoveryDuration.value;
+                            Navigator.pop(context);
+                          },
+                          child: Text(
+                            "Change",
+                            style: TextStyle(
+                              color: Colors.white,
                             ),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
                 ],
