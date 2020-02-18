@@ -11,6 +11,9 @@ class MyTheme{
   //setup for light theme
   static ThemeData dark = ThemeData.dark().copyWith(
     accentColor: ThemeData.light().accentColor,
+    textSelectionColor: ThemeData.light().accentColor,
+    //NOTE: you can only set this once aparently
+    textSelectionHandleColor: ThemeData.dark().primaryColorDark,
   );
   static ThemeData light = ThemeData.light();
 }

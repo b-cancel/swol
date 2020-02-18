@@ -5,6 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:swol/action/popUps/textValid.dart';
 
+//TODO *IMPOROVEMENT* when you initially focus on the field by
+//1. tap the field
+//2. refocusing into it from advanced field
+//3. refocusing into it from tapping next on the other field
+//the cursor should start at the end
+//TODO: *IMPROVEMENT* you should be able to swipe across the field to change cursor position and feel the change with a vibration
+//TODO: *IMPROVEMENT* make sure that the selection toolbar is going to fit, given the sizing issues
+
 //widget
 class RecordField extends StatefulWidget {
   RecordField({
@@ -149,7 +157,7 @@ class _RecordFieldState extends State<RecordField> {
                         //we only WOULD LIKE the user to be able to reposition their cursor
                         //nothing else
                         //dealing with everything else is too much hassle so we turn it offf
-                        enableInteractiveSelection: false,
+                        enableInteractiveSelection: true,
                         //position in the field
                         cursorColor: Theme.of(context).cardColor,
                         controller: widget.controller,

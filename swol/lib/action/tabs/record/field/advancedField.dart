@@ -5,6 +5,7 @@ import 'package:swol/action/popUps/textValid.dart';
 import 'package:swol/action/tabs/record/field/customField.dart';
 import 'package:swol/action/tabs/record/field/fieldIcon.dart';
 import 'package:swol/shared/functions/goldenRatio.dart';
+import 'package:swol/shared/methods/theme.dart';
 
 class RecordFields extends StatefulWidget { 
   RecordFields({
@@ -121,54 +122,63 @@ class _RecordFieldsState extends State<RecordFields> {
     double borderSize = 3;
 
     //build
-    return Container(
-      height: (iconSize * 2) + 8,
-      child: Row(
-        mainAxisSize: MainAxisSize.max,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          RecordField(
-            focusNode: weightFocusNode,
-            controller: weightController,
-            isLeft: true,
-            borderSize: borderSize,
-            otherFocusNode: repsFocusNode,
-            otherController: repsController
-          ),
-          Column(
-            children: <Widget>[
-              TappableIcon(
-                focusNode: weightFocusNode,
-                iconSize: iconSize,
-                borderSize: borderSize,
-                icon: Padding(
-                  padding: const EdgeInsets.only(
-                    right: 8,
+    return Theme(
+      //NOTE: must be edited here since the color differ 
+      //from what they are for the name, notes, and link field
+      data: MyTheme.dark.copyWith(
+        textSelectionColor: MyTheme.dark.primaryColorDark,
+        //NOTE: probably due to a flutter bug I can't set the selection 
+        //"textSelectionHandleColor" here because it just won't show
+      ),
+      child: Container(
+        height: (iconSize * 2) + 8,
+        child: Row(
+          mainAxisSize: MainAxisSize.max,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            RecordField(
+              focusNode: weightFocusNode,
+              controller: weightController,
+              isLeft: true,
+              borderSize: borderSize,
+              otherFocusNode: repsFocusNode,
+              otherController: repsController
+            ),
+            Column(
+              children: <Widget>[
+                TappableIcon(
+                  focusNode: weightFocusNode,
+                  iconSize: iconSize,
+                  borderSize: borderSize,
+                  icon: Padding(
+                    padding: const EdgeInsets.only(
+                      right: 8,
+                    ),
+                    child: Icon(
+                      FontAwesomeIcons.dumbbell,
+                    ),
                   ),
-                  child: Icon(
-                    FontAwesomeIcons.dumbbell,
-                  ),
+                  isLeft: true,
                 ),
-                isLeft: true,
-              ),
-              TappableIcon(
-                focusNode: repsFocusNode,
-                iconSize: iconSize,
-                borderSize: borderSize,
-                icon: Icon(Icons.repeat),
-                isLeft: false,
-              ),
-            ],
-          ),
-          RecordField(
-            focusNode: repsFocusNode,
-            controller: repsController,
-            isLeft: false,
-            borderSize: borderSize,
-            otherFocusNode: weightFocusNode,
-            otherController: weightController,
-          ),
-        ],
+                TappableIcon(
+                  focusNode: repsFocusNode,
+                  iconSize: iconSize,
+                  borderSize: borderSize,
+                  icon: Icon(Icons.repeat),
+                  isLeft: false,
+                ),
+              ],
+            ),
+            RecordField(
+              focusNode: repsFocusNode,
+              controller: repsController,
+              isLeft: false,
+              borderSize: borderSize,
+              otherFocusNode: weightFocusNode,
+              otherController: weightController,
+            ),
+          ],
+        ),
       ),
     );
   }
