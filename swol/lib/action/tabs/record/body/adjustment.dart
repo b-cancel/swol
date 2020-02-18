@@ -10,6 +10,7 @@ import 'package:swol/other/functions/1RM&R=W.dart';
 import 'package:swol/other/functions/1RM&W=R.dart';
 import 'package:swol/other/functions/W&R=1RM.dart';
 import 'package:swol/shared/structs/anExcercise.dart';
+import 'package:swol/shared/widgets/simple/conditional.dart';
 
 class MakeFunctionAdjustment extends StatefulWidget {
   const MakeFunctionAdjustment({
@@ -82,6 +83,8 @@ class _MakeFunctionAdjustmentState extends State<MakeFunctionAdjustment> {
         }
       }
     }
+
+    print(repEstimates.toString());
     
     //only if all conditions are met do we use our inverse guess
     //this should only happen under very specific circumstances
@@ -138,18 +141,6 @@ class _MakeFunctionAdjustmentState extends State<MakeFunctionAdjustment> {
 
   @override
   Widget build(BuildContext context) {
-    //color for "suggestion"
-    //TODO: because we are wrapped in a white so the pop up works well
-    //TODO: this distance color will be white even though it should be the dark card color
-    //TODO: fix that... maybe... clean white is kinda cool to
-    Color distanceColor = Theme.of(context).cardColor;
-    int id = 0;
-    if (id == 1)
-      distanceColor = Colors.red.withOpacity(0.33);
-    else if (id == 2)
-      distanceColor = Colors.red.withOpacity(0.66);
-    else if (id == 3) distanceColor = Colors.red;
-
     return Container(
       width: MediaQuery.of(context).size.width,
       child: Column(
@@ -180,78 +171,189 @@ class _MakeFunctionAdjustmentState extends State<MakeFunctionAdjustment> {
             ),
           ),
           Expanded(
-            child: Center(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      Container(
-                        child: Text(
-                          "24",
-                          style: GoogleFonts.robotoMono(
-                            color: distanceColor,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 96,
-                            wordSpacing: 0,
-                          ),
-                        ),
-                      ),
-                      DefaultTextStyle(
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                        ),
-                        child: Center(
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment:
-                                CrossAxisAlignment.start,
-                            children: [
-                              Icon(
-                                FontAwesomeIcons.percentage,
-                                color: distanceColor,
-                                size: 42,
-                              ),
-                              Text(
-                                "higher",
-                                style: TextStyle(
-                                  fontSize: 42,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  Transform.translate(
-                    offset: Offset(0, -16),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Center(
-                          child: Text(
-                            "than calculated by the",
-                            style: TextStyle(
-                              fontSize: 22,
-                            ),
-                          ),
-                        ),
-                        ChangeFunction(
-                          predictionID: predictionID,
-                          middleArrows: true,
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
+            child: InaccuracyCalculator(
+              predictionID: predictionID,
             ),
           ),
         ],
       ),
+    );
+  }
+}
+
+class InaccuracyCalculator extends StatefulWidget {
+  const InaccuracyCalculator({
+    Key key,
+    @required this.predictionID,
+  }) : super(key: key);
+
+  final ValueNotifier<int> predictionID;
+
+  @override
+  _InaccuracyCalculatorState createState() => _InaccuracyCalculatorState();
+}
+
+class _InaccuracyCalculatorState extends State<InaccuracyCalculator> {
+  updateState(){
+    if(mounted) setState(() {});
+  }
+
+  @override
+  void initState() {
+    //super init
+    super.initState();
+
+    //listeners
+    ExcercisePage.setWeight.addListener(updateState);
+    ExcercisePage.setReps.addListener(updateState);
+  }
+
+  @override
+  void dispose() {
+    //listeners
+    ExcercisePage.setWeight.removeListener(updateState);
+    ExcercisePage.setReps.removeListener(updateState);
+
+    //super dipose
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    //check if we can show how far off they were from the target
+    bool weightValid = isTextValid(ExcercisePage.setWeight.value);
+    bool repsValid = isTextValid(ExcercisePage.setReps.value);
+    bool setValid = weightValid && repsValid;
+
+    //build
+    return Center(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Conditional(
+            condition: setValid, 
+            ifTrue: PercentOff(), 
+            ifFalse: WaitingForValid(),
+          ),
+          Transform.translate(
+            offset: Offset(0, (setValid) ? -16 : 0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Visibility(
+                  visible: setValid,
+                  child: Center(
+                    child: Text(
+                      "than calculated by the",
+                      style: TextStyle(
+                        fontSize: 22,
+                      ),
+                    ),
+                  ),
+                ),
+                ChangeFunction(
+                  predictionID: widget.predictionID,
+                  middleArrows: true,
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class WaitingForValid extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Center(
+        child: Column(
+          children: [
+            Container(
+                width: MediaQuery.of(context).size.width / 4,
+                child: Image(
+                  image: new AssetImage("assets/impatient.gif"),
+                  color: Theme.of(context).accentColor,
+                ),
+              ),
+            Container(
+              width: MediaQuery.of(context).size.width / 1.75,
+              child: FittedBox(
+                fit: BoxFit.contain,
+                child: Text(
+                  "Waiting For A Valid Set",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class PercentOff extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    //color for "suggestion"
+    //TODO: because we are wrapped in a white so the pop up works well
+    //TODO: this distance color will be white even though it should be the dark card color
+    //TODO: fix that... maybe... clean white is kinda cool to
+    int percentOff = 24;
+    Color color = Theme.of(context).cardColor;
+    int id = 0;
+    if (id == 1)
+      color = Colors.red.withOpacity(0.33);
+    else if (id == 2)
+      color = Colors.red.withOpacity(0.66);
+    else if (id == 3) color = Colors.red;
+    
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        Container(
+          child: Text(
+            percentOff.toString(),
+            style: GoogleFonts.robotoMono(
+              color: color,
+              fontWeight: FontWeight.bold,
+              fontSize: 96,
+              wordSpacing: 0,
+            ),
+          ),
+        ),
+        DefaultTextStyle(
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+          ),
+          child: Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment:
+                  CrossAxisAlignment.start,
+              children: [
+                Icon(
+                  FontAwesomeIcons.percentage,
+                  color: color,
+                  size: 42,
+                ),
+                Text(
+                  "higher",
+                  style: TextStyle(
+                    fontSize: 42,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

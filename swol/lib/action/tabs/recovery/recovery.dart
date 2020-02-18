@@ -95,7 +95,7 @@ class _RecoveryState extends State<Recovery>
                 ),
                 child: Container(
                   decoration: BoxDecoration(
-                    color: buttonsColor,
+                    color: Theme.of(context).cardColor,
                     borderRadius: BorderRadius.all(cardRadius),
                   ),
                   child: Timer(
