@@ -28,9 +28,32 @@ class ExcerciseTileSubtitle extends StatefulWidget {
   _ExcerciseTileSubtitleState createState() => _ExcerciseTileSubtitleState();
 }
 
-//NOTE: this SHOULD reload simply because its stateful but
-//TODO: confirm the above
 class _ExcerciseTileSubtitleState extends State<ExcerciseTileSubtitle> {
+  updateState(){
+    //a set was just completed so there WILL be a new last set
+    if(widget.excercise.tempStartTime.value == AnExcercise.nullDateTime){
+      if(mounted) setState(() {});
+    }
+  }
+
+  @override
+  void initState() {
+    //super init
+    super.initState();
+
+    //only changes when started or ended
+    widget.excercise.tempStartTime.addListener(updateState);
+  }
+
+  @override
+  void dispose() { 
+    //only changes when started or ended
+    widget.excercise.tempStartTime.removeListener(updateState);
+
+    //super dispose
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     if (widget.excercise.lastWeight == null) {

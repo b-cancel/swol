@@ -30,18 +30,18 @@ class ExcercisePage extends StatelessWidget {
   //static vars used through out initializaed with their default values
 
   //used so that we can change the page number from anywhere
-  static final ValueNotifier<int> pageNumber = new ValueNotifier<int>(0);
+  static final ValueNotifier<int> pageNumber = new ValueNotifier<int>(0); //being listened
   //used so that we can set the goal set from both the suggest and record page
-  static final ValueNotifier<int> setGoalWeight = new ValueNotifier<int>(0);
-  static final ValueNotifier<int> setGoalReps = new ValueNotifier<int>(0);
+  static final ValueNotifier<int> setGoalWeight = new ValueNotifier<int>(0); //being listened
+  static final ValueNotifier<int> setGoalReps = new ValueNotifier<int>(0); //being listened
   //used so that we can save the set locally before saving it in temps
-  static final ValueNotifier<String> setWeight = new ValueNotifier<String>("");
-  static final ValueNotifier<String> setReps = new ValueNotifier<String>("");
+  static final ValueNotifier<String> setWeight = new ValueNotifier<String>(""); //being listened
+  static final ValueNotifier<String> setReps = new ValueNotifier<String>(""); //being listened
   //used so that we can cause a field refocusing from different parts of the app
-  static final ValueNotifier<bool> causeRefocusIfInvalid = new ValueNotifier<bool>(false);
+  static final ValueNotifier<bool> causeRefocusIfInvalid = new ValueNotifier<bool>(false); //being listened
   //function trigger that can be accessed from nearly anywhere
-  static final ValueNotifier<bool> updateSet = new ValueNotifier<bool>(false);
-  static final ValueNotifier<bool> nextSet = new ValueNotifier<bool>(false);
+  static final ValueNotifier<bool> updateSet = new ValueNotifier<bool>(false); //being listened
+  static final ValueNotifier<bool> nextSet = new ValueNotifier<bool>(false); //being listened
 
   //build
   @override
