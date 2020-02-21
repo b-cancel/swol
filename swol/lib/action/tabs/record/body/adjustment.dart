@@ -214,12 +214,12 @@ class _MakeFunctionAdjustmentState extends State<MakeFunctionAdjustment> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children:[
                         CurvedCorner(
-                          isTop: false, 
+                          isTop: true, 
                           isLeft: true, //left
                           cornerColor: widget.topColor,
                         ),
                         CurvedCorner(
-                          isTop: false, 
+                          isTop: true, 
                           isLeft: false, //right 
                           cornerColor: widget.topColor,
                         ),

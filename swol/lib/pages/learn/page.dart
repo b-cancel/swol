@@ -41,6 +41,9 @@ class _LearnExcerciseState extends State<LearnExcercise> {
   final GlobalKey listKey = new GlobalKey();
   final AutoScrollController autoScrollController = new AutoScrollController();
 
+  //animation speed
+  final Duration duration = const Duration(milliseconds: 300);
+
   //is opens
   List<ValueNotifier<bool>> allIsOpens = new List<ValueNotifier<bool>>();
 
@@ -71,7 +74,7 @@ class _LearnExcerciseState extends State<LearnExcercise> {
         Duration(
           //300 to wait for the other sections to close
           //100 as a buffere since processing this takes a tad longer
-          milliseconds: 300 + 100,
+          milliseconds: duration.inMilliseconds + 100,
         ), 
         (){
           //scroll to index
@@ -194,6 +197,7 @@ class _LearnExcerciseState extends State<LearnExcercise> {
             controller: autoScrollController,
             slivers: [
               ExpandableTile(
+                duration: duration,
                 autoScrollController: autoScrollController,
                 index: 0,
                 isOpen: introductionIsOpen,
@@ -203,6 +207,7 @@ class _LearnExcerciseState extends State<LearnExcercise> {
               ),
               
               ExpandableTile(
+                duration: duration,
                 autoScrollController: autoScrollController,
                 index: 1,
                 isOpen: definitionIsOpen,
@@ -211,6 +216,7 @@ class _LearnExcerciseState extends State<LearnExcercise> {
                 expandedChild: DefinitionBody(),
               ),
               ExpandableTile(
+                duration: duration,
                 autoScrollController: autoScrollController,
                 index: 2,
                 isOpen: trainingIsOpen,
@@ -220,6 +226,7 @@ class _LearnExcerciseState extends State<LearnExcercise> {
                 expandedChild: TrainingBody(),
               ),
               ExpandableTile(
+                duration: duration,
                 autoScrollController: autoScrollController,
                 index: 3,
                 isOpen: precautionIsOpen,
@@ -228,6 +235,7 @@ class _LearnExcerciseState extends State<LearnExcercise> {
                 expandedChild: PrecautionsBody(),
               ),
               ExpandableTile(
+                duration: duration,
                 autoScrollController: autoScrollController,
                 index: 4,
                 isOpen: oneRepMaxIsOpen,
@@ -237,6 +245,7 @@ class _LearnExcerciseState extends State<LearnExcercise> {
                 expandedChild: OneRepMaxBody(),
               ),
               ExpandableTile(
+                duration: duration,
                 autoScrollController: autoScrollController,
                 index: 5,
                 isOpen: experimentIsOpen,
@@ -245,6 +254,7 @@ class _LearnExcerciseState extends State<LearnExcercise> {
                 expandedChild: ExperimentBody(),
               ),
               ExpandableTile(
+                duration: duration,
                 autoScrollController: autoScrollController,
                 index: 6,
                 isOpen: researchIsOpen,

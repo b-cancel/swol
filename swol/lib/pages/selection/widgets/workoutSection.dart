@@ -6,6 +6,7 @@ import 'package:swol/shared/widgets/complex/excerciseListTile/excerciseTile.dart
 import 'package:swol/shared/functions/defaultDateTimes.dart';
 import 'package:swol/shared/structs/anExcercise.dart';
 import 'package:swol/shared/widgets/simple/chip.dart';
+import 'package:swol/shared/widgets/simple/curvedCorner.dart';
 
 //widget
 class SectionHeader extends StatelessWidget {
@@ -26,39 +27,70 @@ class SectionHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: topColor,
-      padding: new EdgeInsets.only(
-        left: 16,
-        right: 16,
-        top: 16,
-        bottom: 8,
-      ),
-      alignment: Alignment.bottomLeft,
-      child: DefaultTextStyle(
-        style: TextStyle(
-          fontSize: 16,
-          color: highlightTop ? Theme.of(context).primaryColor : Colors.white,
-          fontWeight: highlightTop  ? FontWeight.bold : FontWeight.normal,
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            new Text(
-              title,
+    return Stack(
+      children: <Widget>[
+        Container(
+          color: topColor,
+          padding: new EdgeInsets.only(
+            left: 16,
+            right: 16,
+            top: 16,
+            bottom: 8,
+          ),
+          alignment: Alignment.bottomLeft,
+          child: DefaultTextStyle(
+            style: TextStyle(
+              fontSize: 16,
+              color: highlightTop ? Theme.of(context).primaryColor : Colors.white,
+              fontWeight: highlightTop  ? FontWeight.bold : FontWeight.normal,
             ),
-            (subtitle == null)
-            ? MyChip(
-              chipString: LastTimeStamp.timeStampTypeToString(sectionType).toUpperCase(), 
-              inverse: highlightTop,
-            )
-            : Text(
-              subtitle,
-            )
-          ],
+            child: Row(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                new Text(
+                  title,
+                ),
+                (subtitle == null)
+                ? MyChip(
+                  chipString: LastTimeStamp.timeStampTypeToString(sectionType).toUpperCase(), 
+                  inverse: highlightTop,
+                )
+                : Text(
+                  subtitle,
+                )
+              ],
+            ),
+          ),
         ),
-      ),
+        Positioned(
+          bottom: 0,
+          left: 0,
+          right: 0,
+          child: Container(
+            width: MediaQuery.of(context).size.width,
+            child: Transform.translate(
+              offset: Offset(0, 24),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  CurvedCorner(
+                    isTop: true, 
+                    isLeft: true, 
+                    cornerColor: topColor,
+                  ),
+                  CurvedCorner(
+                    isTop: true, 
+                    isLeft: false, 
+                    cornerColor: topColor,
+                  ),
+                ],
+              ),
+            ),
+          )
+        ),
+      ],
     );
   }
 }

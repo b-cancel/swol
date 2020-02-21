@@ -27,8 +27,8 @@ class CurvedCorner extends StatelessWidget {
         fit: BoxFit.contain,
         child: ClipPath(
           clipper: CornerClipper(
-            top: isTop,
-            left: isLeft,
+            isTop: isTop,
+            isLeft: isLeft,
           ),
           child: Container(
             color: cornerColor,
@@ -43,18 +43,18 @@ class CurvedCorner extends StatelessWidget {
 
 class CornerClipper extends CustomClipper<Path> {
   CornerClipper({
-    @required this.top,
-    this.left: true,
+    @required this.isTop,
+    this.isLeft: true,
   });
 
-  final bool top;
-  final bool left;
+  final bool isTop;
+  final bool isLeft;
   
   @override
   Path getClip(Size size) {
     return new Path()
       ..addOval(new Rect.fromCircle(
-          center: new Offset((left ? size.width : 0), (top ? 0 : size.height)),
+          center: new Offset((isLeft ? size.width : 0), (isTop ? size.height : 0)),
           radius: size.width * 1))
       ..addRect(new Rect.fromLTWH(0.0, 0.0, size.width, size.height))
       ..fillType = PathFillType.evenOdd;

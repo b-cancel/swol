@@ -13,6 +13,7 @@ import 'package:swol/pages/learn/expandableTile/body.dart';
 class ExpandableTile extends StatefulWidget {
   const ExpandableTile({
     Key key,
+    @required this.duration,
     @required this.autoScrollController,
     @required this.index,
     @required this.isOpen,
@@ -23,6 +24,7 @@ class ExpandableTile extends StatefulWidget {
     this.size,
   }) : super(key: key);
 
+  final Duration duration;
   final AutoScrollController autoScrollController;
   final int index;
   final ValueNotifier<bool> isOpen;
@@ -49,6 +51,7 @@ class _ExpandableTileState extends State<ExpandableTile> {
           animation: widget.isOpen,
           builder: (context, child){
             return TileHeader(
+              duration: widget.duration,
               headerIcon: widget.headerIcon,
               headerText: widget.headerText,
               size: widget.size,
@@ -66,7 +69,7 @@ class _ExpandableTileState extends State<ExpandableTile> {
               animation: widget.isOpen,
               builder: (context, child){
                 return AnimatedSwitcher(
-                  duration: Duration(milliseconds: 300),
+                  duration: widget.duration,
                   transitionBuilder: (widget, animation){
                     return SizeTransition(
                       child: widget,
