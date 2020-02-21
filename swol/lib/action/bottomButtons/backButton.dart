@@ -1,9 +1,15 @@
-import 'package:bot_toast/bot_toast.dart';
+//flutter
 import 'package:flutter/material.dart';
-import 'package:swol/action/doneButton/corner.dart';
-import 'package:swol/action/page.dart';
-import 'package:swol/shared/widgets/simple/ourToolTip.dart';
 
+//plugin
+import 'package:bot_toast/bot_toast.dart';
+
+//internal
+import 'package:swol/shared/widgets/simple/curvedCorner.dart';
+import 'package:swol/shared/widgets/simple/ourToolTip.dart';
+import 'package:swol/action/page.dart';
+
+//build
 class BottomBackButton extends StatelessWidget {
   const BottomBackButton({
     this.backAction,
@@ -86,24 +92,11 @@ class BottomRight extends StatelessWidget {
     return Positioned(
       bottom: 0,
       right: 0,
-      child: Container(
-        color: Colors.transparent,
-        height: 12,
-        width: 12,
-        child: FittedBox(
-          fit: BoxFit.contain,
-          child: ClipPath(
-            clipper: CornerClipper(
-              top: true,
-              left: false,
-            ),
-            child: Container(
-              color: color,
-              height: 1,
-              width: 1,
-            ),
-          ),
-        ),
+      child: CurvedCorner(
+        size: 12,
+        isTop: true, 
+        isLeft: false, 
+        cornerColor: color,
       ),
     );
   }

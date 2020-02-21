@@ -1,19 +1,28 @@
-import 'dart:math' as math;
+//flutter
 import 'package:flutter/material.dart';
+
+//plugins
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:swol/action/doneButton/corner.dart';
-import 'package:swol/action/page.dart';
-import 'package:swol/action/popUps/textValid.dart';
+
+//internal: action
 import 'package:swol/action/shared/changeFunction.dart';
 import 'package:swol/action/shared/halfColored.dart';
 import 'package:swol/action/shared/setDisplay.dart';
+import 'package:swol/action/popUps/textValid.dart';
+import 'package:swol/action/page.dart';
+
+//internal: shared
+import 'package:swol/shared/widgets/simple/curvedCorner.dart';
+import 'package:swol/shared/widgets/simple/conditional.dart';
+import 'package:swol/shared/structs/anExcercise.dart';
+
+//internal: other
 import 'package:swol/other/functions/1RM&R=W.dart';
 import 'package:swol/other/functions/1RM&W=R.dart';
 import 'package:swol/other/functions/W&R=1RM.dart';
-import 'package:swol/shared/structs/anExcercise.dart';
-import 'package:swol/shared/widgets/simple/conditional.dart';
 
+//widget
 class MakeFunctionAdjustment extends StatefulWidget {
   const MakeFunctionAdjustment({
     Key key,
@@ -204,43 +213,15 @@ class _MakeFunctionAdjustmentState extends State<MakeFunctionAdjustment> {
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children:[
-                        Container(
-                          color: Colors.transparent,
-                          height: 24,
-                          width: 24,
-                          child: FittedBox(
-                            fit: BoxFit.contain,
-                            child: ClipPath(
-                              clipper: CornerClipper(
-                                top: false,
-                                left: true,
-                              ),
-                              child: Container(
-                                color: widget.topColor,
-                                height: 1,
-                                width: 1,
-                              ),
-                            ),
-                          ),
+                        CurvedCorner(
+                          isTop: false, 
+                          isLeft: true, //left
+                          cornerColor: widget.topColor,
                         ),
-                        Container(
-                          color: Colors.transparent,
-                          height: 24,
-                          width: 24,
-                          child: FittedBox(
-                            fit: BoxFit.contain,
-                            child: ClipPath(
-                              clipper: CornerClipper(
-                                top: false,
-                                left: false,
-                              ),
-                              child: Container(
-                                color: widget.topColor,
-                                height: 1,
-                                width: 1,
-                              ),
-                            ),
-                          ),
+                        CurvedCorner(
+                          isTop: false, 
+                          isLeft: false, //right 
+                          cornerColor: widget.topColor,
                         ),
                       ]
                     )

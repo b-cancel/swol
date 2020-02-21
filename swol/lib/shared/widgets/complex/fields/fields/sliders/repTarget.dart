@@ -5,10 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:swol/shared/widgets/complex/fields/fields/sliders/sliderField.dart';
 import 'package:swol/shared/widgets/complex/rangeInformation/animatedCarousel.dart';
 import 'package:swol/shared/widgets/complex/fields/headers/fieldHeader.dart';
-import 'package:swol/shared/widgets/complex/trainingTypeTables/trainingTypes.dart';
 import 'package:swol/shared/widgets/simple/sliderTipButton.dart';
 import 'package:swol/shared/functions/trainingPopUps.dart';
-import 'package:swol/shared/structs/anExcercise.dart';
 import 'package:swol/shared/structs/range.dart';
 import 'package:swol/shared/methods/theme.dart';
 

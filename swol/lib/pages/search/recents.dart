@@ -1,6 +1,11 @@
+//flutter
 import 'package:flutter/material.dart';
+
+//internal
+import 'package:swol/pages/selection/widgets/workoutSection.dart';
 import 'package:swol/pages/search/searchesData.dart';
 
+//widget
 class NoRecentSearches extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -83,69 +88,75 @@ class RecentSearches extends StatelessWidget {
         begin: 0,
         end: 1, 
       ).animate(animation), 
-      child: ListTile(
-        contentPadding: EdgeInsets.only(left: 16),
-        dense: true,
-        onTap: (){
-          search.text = searchTerm;
-          SearchesData.addToSearches(searchTerm);
-        },
-        title: Text(
-          searchTerm,
-          style: TextStyle(
-            fontSize: 18,
-          ),
-        ),
-        trailing: Material(
-          color: Colors.transparent,
-          child: InkWell(
+      child: Column(
+        children: <Widget>[
+          ListTile(
+            contentPadding: EdgeInsets.only(left: 16),
+            dense: true,
             onTap: (){
-              //NOTE: this should allow other deletions to complete
-              //and therefore letting us confirm lock our or not
-              WidgetsBinding.instance.addPostFrameCallback((_){
-                if(removalLocked.value == false){
-                  //lock removal
-                  removalLocked.value = true;
-
-                  //make removal
-                  AnimatedList.of(context).removeItem(
-                    index,
-                    (context, animation){
-                      return buildSearch(
-                        context, 
-                        index, 
-                        animation,
-                        passedTerm: searchTerm,
-                      );
-                    },
-                    duration: removeDuration,
-                  );
-
-                  //remove the contact
-                  SearchesData.removeFromSearchesAtIndex(index);
-
-                  //NOTE: using a listener doesn't work for some reason
-                  Future.delayed(removeDuration, (){
-                    //cover edge case
-                    if(SearchesData.getRecentSearches().length == 0){
-                      updateState();
-                    }
-
-                    //unlock removal
-                    removalLocked.value = false;
-                  });
-                }
-              });
+              search.text = searchTerm;
+              SearchesData.addToSearches(searchTerm);
             },
-            child: Container(
-              padding: EdgeInsets.symmetric(
-                horizontal: 16,
-                vertical: 12,
+            title: Text(
+              searchTerm,
+              style: TextStyle(
+                fontSize: 18,
               ),
-              child: Icon(Icons.close),
+            ),
+            trailing: Material(
+              color: Colors.transparent,
+              child: InkWell(
+                onTap: (){
+                  //NOTE: this should allow other deletions to complete
+                  //and therefore letting us confirm lock our or not
+                  WidgetsBinding.instance.addPostFrameCallback((_){
+                    if(removalLocked.value == false){
+                      //lock removal
+                      removalLocked.value = true;
+
+                      //make removal
+                      AnimatedList.of(context).removeItem(
+                        index,
+                        (context, animation){
+                          return buildSearch(
+                            context, 
+                            index, 
+                            animation,
+                            passedTerm: searchTerm,
+                          );
+                        },
+                        duration: removeDuration,
+                      );
+
+                      //remove the contact
+                      SearchesData.removeFromSearchesAtIndex(index);
+
+                      //NOTE: using a listener doesn't work for some reason
+                      Future.delayed(removeDuration, (){
+                        //cover edge case
+                        if(SearchesData.getRecentSearches().length == 0){
+                          updateState();
+                        }
+
+                        //unlock removal
+                        removalLocked.value = false;
+                      });
+                    }
+                  });
+                },
+                child: Container(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 12,
+                  ),
+                  child: Icon(Icons.close),
+                ),
+              ),
             ),
           ),
-        ),
+          //NOTE: the last divider separate the tile from the clear all button
+          ListTileDivider(),
+        ],
       ),
     );
   }
@@ -153,9 +164,11 @@ class RecentSearches extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Radius cardRadius = Radius.circular(24);
-    return Column(
+    return ListView(
+      /*
       crossAxisAlignment: CrossAxisAlignment.stretch,
       mainAxisSize: MainAxisSize.min,
+      */
       children: <Widget>[
         ClipRRect(
           borderRadius: BorderRadius.only(
@@ -193,10 +206,10 @@ class RecentSearches extends StatelessWidget {
               },
               child: Padding(
                 padding: EdgeInsets.symmetric(
-                  vertical: 8.0,
+                  vertical: 16.0,
                 ),
                 child: Text(
-                  "Clear search history",
+                  "Clear Search History",
                   style: TextStyle(
                     color: Theme.of(context).accentColor,
                     fontSize: 18,

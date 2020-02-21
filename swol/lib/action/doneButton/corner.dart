@@ -1,7 +1,12 @@
 
 
+//flutter
 import 'package:flutter/material.dart';
 
+//internal
+import 'package:swol/shared/widgets/simple/curvedCorner.dart';
+
+//widget
 class DoneCorner extends StatelessWidget {
   DoneCorner({
     @required this.show,
@@ -67,26 +72,3 @@ class DoneCorner extends StatelessWidget {
   }
 }
 
-//modification of inverted circle clipper taken from somewhere on the internet
-class CornerClipper extends CustomClipper<Path> {
-  CornerClipper({
-    @required this.top,
-    this.left: true,
-  });
-
-  final bool top;
-  final bool left;
-  
-  @override
-  Path getClip(Size size) {
-    return new Path()
-      ..addOval(new Rect.fromCircle(
-          center: new Offset((left ? size.width : 0), (top ? 0 : size.height)),
-          radius: size.width * 1))
-      ..addRect(new Rect.fromLTWH(0.0, 0.0, size.width, size.height))
-      ..fillType = PathFillType.evenOdd;
-  }
-
-  @override
-  bool shouldReclip(CustomClipper<Path> oldClipper) => false;
-}

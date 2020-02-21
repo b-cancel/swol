@@ -108,7 +108,7 @@ class SectionBody extends StatelessWidget {
                 borderRadius: BorderRadius.circular(24.0),
               ),
               clipBehavior: Clip.antiAlias,
-              child: ListView.builder(
+              child: ListView.separated(
                 shrinkWrap: true,
                 physics: ClampingScrollPhysics(),
                 itemCount: thisGroup.length,
@@ -119,11 +119,32 @@ class SectionBody extends StatelessWidget {
                     excercise: thisGroup[index],
                   );
                 },
+                separatorBuilder : (context, index) => ListTileDivider(),
               ),
             ),
           ],
         ),
       ]),
+    );
+  }
+}
+
+class ListTileDivider extends StatelessWidget {
+  const ListTileDivider({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.only(
+        left: 16,
+        right: 16,
+      ),
+      child: Container(
+        height: 1,
+        color: Theme.of(context).scaffoldBackgroundColor,
+      )
     );
   }
 }
