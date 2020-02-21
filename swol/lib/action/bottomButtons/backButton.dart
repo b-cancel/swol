@@ -94,7 +94,7 @@ class BottomRight extends StatelessWidget {
       right: 0,
       child: CurvedCorner(
         size: 12,
-        isTop: true, 
+        isTop: false, 
         isLeft: false, 
         cornerColor: color,
       ),

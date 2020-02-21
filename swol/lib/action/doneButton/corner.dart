@@ -52,7 +52,7 @@ class DoneCorner extends StatelessWidget {
           fit: BoxFit.contain,
           child: ClipPath(
             clipper: CornerClipper(
-              isTop: isTop,
+              isTop: isTop == false,
             ),
             child: AnimatedContainer(
               curve: animationCurve,
