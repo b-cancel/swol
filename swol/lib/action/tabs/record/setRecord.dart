@@ -139,12 +139,7 @@ class SetRecord extends StatelessWidget {
                       excercise: excercise,
                     ),
                   ),
-                  Padding(
-                    padding: EdgeInsets.only(
-                      bottom: 24.0,
-                    ),
-                    child: recordSetFields,
-                  ),
+                  recordSetFields,
                   buttonsOnBottom,
                 ],
               ),

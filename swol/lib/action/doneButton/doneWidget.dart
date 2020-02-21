@@ -68,19 +68,8 @@ class _FloatingDoneButtonState extends State<FloatingDoneButton> {
     }
   }
 
-  //runs after a change in pageNumber is detected
-  updateButton(){
-    //NOTE: we wait for the transition to complete...
-    //primarily because the if we reset the timer immediately
-    //then while the transition is occuring you will have a scary flash or red
-    //so we start the transition, wait a bit, then make the change
-    //which means we have to wait for the change ATLEAST
-    //in order to properly update the done button with the pageNumber
-    bool shouldShowAfterDelay = shouldShow();
-    Future.delayed(widget.showOrHideDuration * (3/4), (){
-      bool shouldStillShow = shouldShow();
-      if(shouldShowAfterDelay == shouldStillShow){
-        if(shouldStillShow){ //should animate in
+  updateButtonVisually(bool shouldStillShow){
+    if(shouldStillShow){ //should animate in
           //start animation position to hidden
           showButton = false;
           //fully unhide so animation can play
@@ -107,9 +96,27 @@ class _FloatingDoneButtonState extends State<FloatingDoneButton> {
             setState(() {});
           });
         }
-      }
-      //ELSE this function has been called for the opposite thing
-    });
+  }
+
+  //runs after a change in pageNumber is detected
+  updateButton(){
+    //NOTE: we wait for the transition to complete...
+    //primarily because the if we reset the timer immediately
+    //then while the transition is occuring you will have a scary flash or red
+    //so we start the transition, wait a bit, then make the change
+    //which means we have to wait for the change ATLEAST
+    //in order to properly update the done button with the pageNumber
+    bool shouldShowAfterDelay = shouldShow();
+    if(ExcercisePage.pageNumber.value == 0){
+      Future.delayed(widget.showOrHideDuration, (){
+        bool shouldStillShow = shouldShow();
+        if(shouldShowAfterDelay == shouldStillShow){
+          updateButtonVisually(shouldShowAfterDelay);
+        }
+        //ELSE this function has been called for the opposite thing
+      });
+    }
+    else updateButtonVisually(shouldShowAfterDelay);
   }
 
   @override
@@ -189,7 +196,9 @@ class _FloatingDoneButtonState extends State<FloatingDoneButton> {
     
     //determine button color based on sets passed
     Color cardColor = Theme.of(context).cardColor;
-    if(completionType == Complete.DeleteNewSet){
+    //NOTE: we also check if showButton is false because 
+    //we don't want to scare the user with RED while the button is closing
+    if(completionType == Complete.DeleteNewSet && showButton){
       cardColor = Colors.red;
     }
     else{
