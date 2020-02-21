@@ -22,15 +22,25 @@ class DoneCorner extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double size = show ? 24 : 0;
+    //just enough to show both animations
+    //without the weird spikes
+    double portionOfScreen = 12; 
+    double xOffset = show ? 0 : -portionOfScreen;
+    Matrix4 newTransform = Matrix4.translationValues(
+      xOffset,
+      0,
+      0,
+    );
+
     return Container(
       height: 24,
       width: 24,
       alignment: isTop ? Alignment.bottomLeft : Alignment.topLeft,
       child: AnimatedContainer(
         curve: animationCurve,
-        //NOTE: although one thing should animate faster than the other it makes very little diference
         duration: showOrHideDuration,
         //this is what primarily animates
+        transform: newTransform,
         height: size,
         width: size,
         child: FittedBox(
@@ -39,12 +49,16 @@ class DoneCorner extends StatelessWidget {
             clipper: CornerClipper(
               top: isTop,
             ),
-            child: Container(
-              height: 1,
-              width: 1,
+            child: AnimatedContainer(
+              curve: animationCurve,
+              duration: showOrHideDuration,
+              //color switch to match button
               decoration: new BoxDecoration(
                 color: color,
               ),
+              //this is what primarily animates
+              height: 1,
+              width: 1,
             ),
           ),
         ),
@@ -57,15 +71,17 @@ class DoneCorner extends StatelessWidget {
 class CornerClipper extends CustomClipper<Path> {
   CornerClipper({
     @required this.top,
+    this.left: true,
   });
 
   final bool top;
+  final bool left;
   
   @override
   Path getClip(Size size) {
     return new Path()
       ..addOval(new Rect.fromCircle(
-          center: new Offset(size.width, (top ? 0 : size.height)),
+          center: new Offset((left ? size.width : 0), (top ? 0 : size.height)),
           radius: size.width * 1))
       ..addRect(new Rect.fromLTWH(0.0, 0.0, size.width, size.height))
       ..fillType = PathFillType.evenOdd;

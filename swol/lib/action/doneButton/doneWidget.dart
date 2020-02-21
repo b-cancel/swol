@@ -31,7 +31,7 @@ enum Complete {ForgotToFinish, DeleteNewSet, Normal}
 class FloatingDoneButton extends StatefulWidget {
   FloatingDoneButton({
     @required this.excercise,
-    this.showOrHideDuration: const Duration(milliseconds: 300),
+    @required this.showOrHideDuration,
     @required this.animationCurve,
   });
 
@@ -44,7 +44,7 @@ class FloatingDoneButton extends StatefulWidget {
 }
 
 class _FloatingDoneButtonState extends State<FloatingDoneButton> {
-  bool showButton;
+  bool showButton; //show and hides entire button
   bool fullyHidden; //required so gestures wouldn't be registered by the hidden box
 
   //whether or not this particular page wants the button to show
@@ -68,7 +68,6 @@ class _FloatingDoneButtonState extends State<FloatingDoneButton> {
     }
   }
 
-  //TODO: handle canceling mid animation if needed
   //runs after a change in pageNumber is detected
   updateButton(){
     //NOTE: we wait for the transition to complete...
@@ -77,37 +76,40 @@ class _FloatingDoneButtonState extends State<FloatingDoneButton> {
     //so we start the transition, wait a bit, then make the change
     //which means we have to wait for the change ATLEAST
     //in order to properly update the done button with the pageNumber
-
-    if(shouldShow()){ //we should show our button
-      //NOTE: our button may or may not already be hidden
-
-      //unfully hide it so the animation can play
-      fullyHidden = false;
-      setState(() {});
-
-      //after the 1 frame the change will register and the animatio will play
-      WidgetsBinding.instance.addPostFrameCallback((_){
-        if(shouldShow()){
-          showButton = true;
-        }
-        //TODO ELSE?
-      });
-    }
-    else{ //we should hide our button
-      //hide the button
-      showButton = false;
-      setState(() {});
-      
-      //let the animation play out before fully hiding
-      Future.delayed(widget.showOrHideDuration, (){
-        //if its still false then fully hide it
-        if(shouldShow() == false){
-          fullyHidden = true;
+    bool shouldShowAfterDelay = shouldShow();
+    Future.delayed(widget.showOrHideDuration * (3/4), (){
+      bool shouldStillShow = shouldShow();
+      if(shouldShowAfterDelay == shouldStillShow){
+        if(shouldStillShow){ //should animate in
+          //start animation position to hidden
+          showButton = false;
+          //fully unhide so animation can play
+          fullyHidden = false;
+          //reflect both of these changes
           setState(() {});
+          
+          //wait a frame for fully hidden to regsiter
+          //so animation can then play
+          WidgetsBinding.instance.addPostFrameCallback((_){
+            showButton = true;
+            setState(() {});
+          });
         }
-        //TODO ELSE?
-      });
-    }
+        else{ //should animate out
+          //start the animation that hides
+          showButton = false;
+          setState(() {});
+
+          //wait for the animation to complete
+          Future.delayed(widget.showOrHideDuration, (){
+            //fully hide
+            fullyHidden = true;
+            setState(() {});
+          });
+        }
+      }
+      //ELSE this function has been called for the opposite thing
+    });
   }
 
   @override
@@ -115,8 +117,11 @@ class _FloatingDoneButtonState extends State<FloatingDoneButton> {
     //super init
     super.initState();
     
-    //create notifiers (with non defaults)
+    //how the button reacts on init
     bool shouldBeShowing = shouldShow();
+    //init should be immidiate since
+    //if hidden we want it to be immediately hidden
+    //if shown then we want the hero
     showButton = shouldBeShowing;
     fullyHidden = shouldBeShowing == false;
 
@@ -191,6 +196,8 @@ class _FloatingDoneButtonState extends State<FloatingDoneButton> {
       bool shouldCompleteHere = (setsPassedFromHere >= widget.excercise.setTarget.value);
       if(shouldCompleteHere) cardColor = Theme.of(context).accentColor;
     }
+
+    print("show button: " + showButton.toString() + " fully hidden: " + fullyHidden.toString());
 
     //position
     return Positioned(

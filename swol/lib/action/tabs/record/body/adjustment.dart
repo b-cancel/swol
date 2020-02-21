@@ -2,6 +2,7 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:swol/action/doneButton/corner.dart';
 import 'package:swol/action/page.dart';
 import 'package:swol/action/popUps/textValid.dart';
 import 'package:swol/action/shared/changeFunction.dart';
@@ -38,7 +39,7 @@ class _MakeFunctionAdjustmentState extends State<MakeFunctionAdjustment> {
 
   //update the goal set based on init
   //and changed valus
-  updateGoal(){
+  updateGoal() {
     //we use 1m and weight to get reps
     //this is bause maybe we wanted them to do 125 for 5 but they only had 120
     //so ideally we want to match their weight here and take it from ther
@@ -48,37 +49,38 @@ class _MakeFunctionAdjustmentState extends State<MakeFunctionAdjustment> {
 
     //check conditions
     List<int> repEstimates = new List<int>(8);
-    if(weightUseValid){ //if the weight is valid you can estimate reps
+    if (weightUseValid) {
+      //if the weight is valid you can estimate reps
       //calculate all the rep-estimates for all functions
-      for(int thisFunctionID = 0; thisFunctionID < 8; thisFunctionID++){
+      for (int thisFunctionID = 0; thisFunctionID < 8; thisFunctionID++) {
         //calc the 1 rep max if we go this route
         double oneRM = To1RM.fromWeightAndReps(
-          widget.excercise.lastWeight.toDouble(), 
-          widget.excercise.lastReps.toDouble(), 
+          widget.excercise.lastWeight.toDouble(),
+          widget.excercise.lastReps.toDouble(),
           thisFunctionID,
         );
 
         //calc the rep estimate
         repEstimates[thisFunctionID] = ToReps.from1RMandWeight(
-          oneRM, 
+          oneRM,
           //use recorded weight
-          //since we are assuming 
+          //since we are assuming
           //that's what the user couldn't change
-          weight, 
+          weight,
           thisFunctionID,
         ).round();
       }
 
       //make sure all yield valid resuls
-      for(int thisFunctionID = 0; thisFunctionID < 8; thisFunctionID++){
+      for (int thisFunctionID = 0; thisFunctionID < 8; thisFunctionID++) {
         int estimate = repEstimates[thisFunctionID];
         bool zeroOrLess = (estimate <= 0);
         //NOTE: our encouraged upperbound is 35
-        //but we don't want to limit things too much 
+        //but we don't want to limit things too much
         //so that this bit is never usefull
         //so we set it at a 100
-        bool aboveUpperBound  = (101 < estimate);
-        if(zeroOrLess || aboveUpperBound){
+        bool aboveUpperBound = (101 < estimate);
+        if (zeroOrLess || aboveUpperBound) {
           weightUseValid = false;
           break;
         }
@@ -86,29 +88,30 @@ class _MakeFunctionAdjustmentState extends State<MakeFunctionAdjustment> {
     }
 
     print(repEstimates.toString());
-    
+
     //only if all conditions are met do we use our inverse guess
     //this should only happen under very specific circumstances
-    if(weightUseValid){ //calculate reps
+    if (weightUseValid) {
+      //calculate reps
       ExcercisePage.setGoalReps.value = repEstimates[predictionID.value];
       ExcercisePage.setGoalWeight.value = weight.round();
-    }
-    else{ //calculate weight
+    } else {
+      //calculate weight
       double oneRM = To1RM.fromWeightAndReps(
-        widget.excercise.lastWeight.toDouble(), 
-        widget.excercise.lastReps.toDouble(), 
+        widget.excercise.lastWeight.toDouble(),
+        widget.excercise.lastReps.toDouble(),
         widget.excercise.predictionID,
       );
 
       ExcercisePage.setGoalReps.value = widget.excercise.repTarget;
       ExcercisePage.setGoalWeight.value = ToWeight.fromRepAnd1Rm(
-        ExcercisePage.setGoalReps.value.toDouble(), 
-        oneRM, 
+        ExcercisePage.setGoalReps.value.toDouble(),
+        oneRM,
         widget.excercise.predictionID,
       ).round();
     }
   }
-  
+
   updatePredictionID() {
     widget.excercise.predictionID = predictionID.value;
     updateGoal();
@@ -131,7 +134,7 @@ class _MakeFunctionAdjustmentState extends State<MakeFunctionAdjustment> {
   }
 
   @override
-  void dispose() { 
+  void dispose() {
     //remove listeners
     predictionID.removeListener(updatePredictionID);
     ExcercisePage.setWeight.removeListener(updateGoal);
@@ -142,34 +145,109 @@ class _MakeFunctionAdjustmentState extends State<MakeFunctionAdjustment> {
 
   @override
   Widget build(BuildContext context) {
+    Widget topBit = Container(
+      width: MediaQuery.of(context).size.width,
+      height:widget.topColor == Theme.of(context).accentColor ? 24 : 4,
+      color: widget.topColor,
+    );
+
+    Widget goalSet = SetDisplay(
+      useAccent: false,
+      title: "Goal Set",
+      heroUp: widget.heroUp,
+      heroAnimDuration: widget.heroAnimDuration,
+      heroAnimTravel: widget.heroAnimTravel,
+    );
+
     return Container(
       width: MediaQuery.of(context).size.width,
       child: Column(
         mainAxisSize: MainAxisSize.max,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Container(
-            width: MediaQuery.of(context).size.width,
-            height: widget.topColor == Theme.of(context).accentColor ? 24 : 4,
-            color: widget.topColor,
-          ),
-          TopBackgroundColored(
-            color: widget.topColor,
-            child: Container(
-              decoration: BoxDecoration(
-                color: Theme.of(context).cardColor,
-                borderRadius: BorderRadius.all(
-                  Radius.circular(24),
+          Stack(
+            children: <Widget>[
+              //the widget below is only for height
+              Column(
+                children: [
+                  topBit,
+                  TopBackgroundColored(
+                    color: widget.topColor,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).cardColor,
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(24),
+                        ),
+                      ),
+                      child: Opacity(
+                        opacity: 0,
+                        child: goalSet,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Positioned(
+                bottom: 0,
+                child: goalSet,
+              ), 
+              Positioned(
+                top: 0,
+                left: 0,
+                right: 0,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    topBit,
+                    Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children:[
+                        Container(
+                          color: Colors.transparent,
+                          height: 24,
+                          width: 24,
+                          child: FittedBox(
+                            fit: BoxFit.contain,
+                            child: ClipPath(
+                              clipper: CornerClipper(
+                                top: false,
+                                left: true,
+                              ),
+                              child: Container(
+                                color: widget.topColor,
+                                height: 1,
+                                width: 1,
+                              ),
+                            ),
+                          ),
+                        ),
+                        Container(
+                          color: Colors.transparent,
+                          height: 24,
+                          width: 24,
+                          child: FittedBox(
+                            fit: BoxFit.contain,
+                            child: ClipPath(
+                              clipper: CornerClipper(
+                                top: false,
+                                left: false,
+                              ),
+                              child: Container(
+                                color: widget.topColor,
+                                height: 1,
+                                width: 1,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ]
+                    )
+                  ],
                 ),
               ),
-              child: SetDisplay(
-                useAccent: false,
-                title: "Goal Set",
-                heroUp: widget.heroUp,
-                heroAnimDuration: widget.heroAnimDuration,
-                heroAnimTravel: widget.heroAnimTravel,
-              ),
-            ),
+            ],
           ),
           Expanded(
             child: InaccuracyCalculator(
@@ -198,8 +276,8 @@ class InaccuracyCalculator extends StatefulWidget {
 }
 
 class _InaccuracyCalculatorState extends State<InaccuracyCalculator> {
-  updateState(){
-    if(mounted) setState(() {});
+  updateState() {
+    if (mounted) setState(() {});
   }
 
   @override
@@ -236,11 +314,11 @@ class _InaccuracyCalculatorState extends State<InaccuracyCalculator> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Conditional(
-            condition: setValid, 
+            condition: setValid,
             ifTrue: PercentOff(
               excercise: widget.excercise,
               predictionID: widget.predictionID,
-            ), 
+            ),
             ifFalse: WaitingForValid(),
           ),
           Transform.translate(
@@ -269,12 +347,12 @@ class WaitingForValid extends StatelessWidget {
         child: Column(
           children: [
             Container(
-                width: MediaQuery.of(context).size.width / 4,
-                child: Image(
-                  image: new AssetImage("assets/impatient.gif"),
-                  color: Theme.of(context).accentColor,
-                ),
+              width: MediaQuery.of(context).size.width / 4,
+              child: Image(
+                image: new AssetImage("assets/impatient.gif"),
+                color: Theme.of(context).accentColor,
               ),
+            ),
             Container(
               width: MediaQuery.of(context).size.width / 1.75,
               child: FittedBox(
@@ -310,8 +388,8 @@ class PercentOff extends StatefulWidget {
 }
 
 class _PercentOffState extends State<PercentOff> {
-  updateState(){
-    if(mounted) setState(() {});
+  updateState() {
+    if (mounted) setState(() {});
   }
 
   @override
@@ -350,30 +428,30 @@ class _PercentOffState extends State<PercentOff> {
 
     //calculate our 1 rep maxes and compare them
     int last1RM = To1RM.fromWeightAndReps(
-      widget.excercise.lastWeight.toDouble(), 
-      widget.excercise.lastReps.toDouble(), 
+      widget.excercise.lastWeight.toDouble(),
+      widget.excercise.lastReps.toDouble(),
       widget.predictionID.value, //use PASSED predictionID
     ).round();
 
     int this1RM = To1RM.fromWeightAndReps(
-      double.parse(ExcercisePage.setWeight.value), 
-      double.parse(ExcercisePage.setReps.value), 
+      double.parse(ExcercisePage.setWeight.value),
+      double.parse(ExcercisePage.setReps.value),
       widget.predictionID.value, //use PASSED predictionID
     ).round();
 
     print("before: " + last1RM.toString() + " now: " + this1RM.toString());
 
     int change = last1RM - this1RM;
-    if(change < 0) change *= -1;
+    if (change < 0) change *= -1;
     print("dif: " + change.toString());
     double percentOff = (change / last1RM) * 100;
     int visualPercentOff = percentOff.round();
-    
+
     //build
     return Column(
       children: <Widget>[
         Conditional(
-          condition: this1RM == last1RM, 
+          condition: this1RM == last1RM,
           ifTrue: Padding(
             padding: EdgeInsets.only(
               bottom: 8.0,
@@ -387,46 +465,45 @@ class _PercentOffState extends State<PercentOff> {
             ),
           ),
           ifFalse: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Container(
-              child: Text(
-                visualPercentOff.toString(),
-                style: GoogleFonts.robotoMono(
-                  color: color,
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Container(
+                child: Text(
+                  visualPercentOff.toString(),
+                  style: GoogleFonts.robotoMono(
+                    color: color,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 96,
+                    wordSpacing: 0,
+                  ),
+                ),
+              ),
+              DefaultTextStyle(
+                style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  fontSize: 96,
-                  wordSpacing: 0,
                 ),
-              ),
-            ),
-            DefaultTextStyle(
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-              ),
-              child: Center(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment:
-                      CrossAxisAlignment.start,
-                  children: [
-                    Icon(
-                      FontAwesomeIcons.percentage,
-                      color: color,
-                      size: 42,
-                    ),
-                    Text(
-                      (this1RM > last1RM) ? "higher" : "lower",
-                      style: TextStyle(
-                        fontSize: 42,
+                child: Center(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Icon(
+                        FontAwesomeIcons.percentage,
+                        color: color,
+                        size: 42,
                       ),
-                    ),
-                  ],
+                      Text(
+                        (this1RM > last1RM) ? "higher" : "lower",
+                        style: TextStyle(
+                          fontSize: 42,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
-        ),
+            ],
+          ),
         ),
         Center(
           child: Transform.translate(

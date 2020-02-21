@@ -1,5 +1,6 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
+import 'package:swol/action/doneButton/corner.dart';
 import 'package:swol/action/page.dart';
 import 'package:swol/shared/widgets/simple/ourToolTip.dart';
 
@@ -56,9 +57,7 @@ class BottomBackButton extends StatelessWidget {
                 ),
                 child: Stack(
                   children: <Widget>[
-                    BottomRightCorner(
-                      color: color,
-                    ),
+                    BottomRight(color: color),
                     ActualBackButton(
                       verticalPadding: verticalPadding,
                       hidden: backAction == null,
@@ -74,10 +73,10 @@ class BottomBackButton extends StatelessWidget {
   }
 }
 
-class BottomRightCorner extends StatelessWidget {
-  const BottomRightCorner({
-    @required this.color,
+class BottomRight extends StatelessWidget {
+  const BottomRight({
     Key key,
+    @required this.color,
   }) : super(key: key);
 
   final Color color;
@@ -87,28 +86,24 @@ class BottomRightCorner extends StatelessWidget {
     return Positioned(
       bottom: 0,
       right: 0,
-      child: Stack(
-        children: <Widget>[
-          Positioned(
-            bottom: 0,
-            right: 0,
+      child: Container(
+        color: Colors.transparent,
+        height: 12,
+        width: 12,
+        child: FittedBox(
+          fit: BoxFit.contain,
+          child: ClipPath(
+            clipper: CornerClipper(
+              top: true,
+              left: false,
+            ),
             child: Container(
               color: color,
-              height: 12,
-              width: 12,
+              height: 1,
+              width: 1,
             ),
           ),
-          Container(
-            decoration: BoxDecoration(
-              color: Theme.of(context).primaryColorDark,
-              borderRadius: BorderRadius.only(
-                bottomRight: Radius.circular(12),
-              ),
-            ),
-            height: 24,
-            width: 24,
-          ),
-        ],
+        ),
       ),
     );
   }
