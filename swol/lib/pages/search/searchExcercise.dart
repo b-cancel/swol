@@ -157,20 +157,29 @@ class _SearchExcerciseState extends State<SearchExcercise> {
                     ],
                   ),
                 ),
-                (noRecentsToShow) ? Container() : RecentsOrResultsHeader(
-                  showRecentsSearches: showRecentsSearches, 
-                  resultCount: queryResults.length,
-                ),
                 Expanded(
-                  child: SearchBody(
-                    noRecentsToShow: noRecentsToShow, 
-                    showRecentsSearches: showRecentsSearches, 
-                    search: search, 
-                    queryResults: queryResults, 
-                    excercises: excercises,
-                    updateState: () => setState(() {}),
-                  ),
-                )
+                  child: Stack(
+                    children: [
+                      SearchBody(
+                        noRecentsToShow: noRecentsToShow, 
+                        showRecentsSearches: showRecentsSearches, 
+                        search: search, 
+                        queryResults: queryResults, 
+                        excercises: excercises,
+                        updateState: () => setState(() {}),
+                      ),
+                      Positioned(
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        child: (noRecentsToShow) ? Container() : RecentsOrResultsHeader(
+                          showRecentsSearches: showRecentsSearches, 
+                          resultCount: queryResults.length,
+                        ),
+                      ),
+                    ]
+                  )
+                ),
               ],
             ),
           ),
@@ -233,29 +242,37 @@ class SearchResults extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Radius cardRadius = Radius.circular(24);
-    return ListView.builder(
-      shrinkWrap: true,
-      physics: ClampingScrollPhysics(),
-      itemCount: queryResults.length,
-      itemBuilder: (context, index){
-        return ClipRRect(
-          borderRadius: BorderRadius.only(
-            //top
-            topLeft: index == 0 ? cardRadius : Radius.zero,
-            topRight: index == 0 ? cardRadius : Radius.zero,
-            //bottom
-            bottomLeft: index == (queryResults.length - 1) ? cardRadius : Radius.zero,
-            bottomRight: index == (queryResults.length - 1) ? cardRadius : Radius.zero,
-          ),
-          child: Container(
-            color: Theme.of(context).cardColor,
-            child: ExcerciseTile(
-              excercise: excercises[queryResults[index]],
-              tileInSearch: true,
-            ),
-          ),
-        );
-      },
+    return ListView(
+      children: <Widget>[
+        //spacer for header so that the stack thing lets the curves stay above
+        Container(
+          height: 56,
+        ),
+        ListView.builder(
+          shrinkWrap: true,
+          physics: ClampingScrollPhysics(),
+          itemCount: queryResults.length,
+          itemBuilder: (context, index){
+            return ClipRRect(
+              borderRadius: BorderRadius.only(
+                //top
+                topLeft: index == 0 ? cardRadius : Radius.zero,
+                topRight: index == 0 ? cardRadius : Radius.zero,
+                //bottom
+                bottomLeft: index == (queryResults.length - 1) ? cardRadius : Radius.zero,
+                bottomRight: index == (queryResults.length - 1) ? cardRadius : Radius.zero,
+              ),
+              child: Container(
+                color: Theme.of(context).cardColor,
+                child: ExcerciseTile(
+                  excercise: excercises[queryResults[index]],
+                  tileInSearch: true,
+                ),
+              ),
+            );
+          },
+        ),
+      ],
     );
   }
 }

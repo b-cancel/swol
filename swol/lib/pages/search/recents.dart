@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 //internal
 import 'package:swol/pages/selection/widgets/workoutSection.dart';
 import 'package:swol/pages/search/searchesData.dart';
+import 'package:swol/shared/widgets/simple/curvedCorner.dart';
 
 //widget
 class NoRecentSearches extends StatelessWidget {
@@ -25,26 +26,57 @@ class RecentsOrResultsHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Theme.of(context).primaryColorDark,
-      padding: EdgeInsets.fromLTRB(16, 32, 16, 8),
-      child: DefaultTextStyle(
-        style: TextStyle(
-          color: Colors.white,
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Text(
-              (showRecentsSearches) ? "Recent searches" : "Excercises",
+    return Stack(
+      children: <Widget>[
+        Container(
+          color: Theme.of(context).primaryColorDark,
+          padding: EdgeInsets.fromLTRB(16, 32, 16, 8),
+          child: DefaultTextStyle(
+            style: TextStyle(
+              color: Colors.white,
             ),
-            (showRecentsSearches) ? Container()
-            : Text(
-              resultCount.toString() + " Found",
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Text(
+                  (showRecentsSearches) ? "Recent searches" : "Excercises",
+                ),
+                (showRecentsSearches) ? Container()
+                : Text(
+                  resultCount.toString() + " Found",
+                ),
+              ],
             ),
-          ],
+          ),
         ),
-      ),
+        Positioned(
+          left: 0,
+          right: 0,
+          bottom: 0,
+          child: Container(
+            width: MediaQuery.of(context).size.width,
+            child: Transform.translate(
+              offset: Offset(0, 24),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  CurvedCorner(
+                    isTop: true, 
+                    isLeft: true, 
+                    cornerColor: Theme.of(context).primaryColorDark,
+                  ),
+                  CurvedCorner(
+                    isTop: true, 
+                    isLeft: false, 
+                    cornerColor: Theme.of(context).primaryColorDark,
+                  ),
+                ],
+              ),
+            ),
+          )
+        ),
+      ],
     );
   }
 }
@@ -165,11 +197,11 @@ class RecentSearches extends StatelessWidget {
   Widget build(BuildContext context) {
     Radius cardRadius = Radius.circular(24);
     return ListView(
-      /*
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      mainAxisSize: MainAxisSize.min,
-      */
       children: <Widget>[
+        //spacer for header so that the stack thing lets the curves stay above
+        Container(
+          height: 56,
+        ),
         ClipRRect(
           borderRadius: BorderRadius.only(
             topLeft: cardRadius,
