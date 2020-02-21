@@ -41,6 +41,8 @@ class SetRecord extends StatelessWidget {
   //build
   @override
   Widget build(BuildContext context) {
+    print(ExcercisePage.oneRepMaxes.toString());
+    
     double fullHeight = MediaQuery.of(context).size.height;
     double appBarHeight = 56; //constant according to flutter docs
     double spaceToRedistribute =

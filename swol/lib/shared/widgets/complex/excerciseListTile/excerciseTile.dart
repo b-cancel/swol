@@ -55,6 +55,7 @@ class ExcerciseTile extends StatelessWidget {
             data: MyTheme.light,
             child: ExcercisePage(
               excercise: excercise,
+              transitionDuration: transitionDuration,
             ),
           ),
         );

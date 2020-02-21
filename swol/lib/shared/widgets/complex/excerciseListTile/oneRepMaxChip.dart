@@ -94,7 +94,7 @@ class _ExcerciseTileSubtitleState extends State<ExcerciseTileSubtitle> {
 
         //update onRepMaxWidget
         oneRepMaxWidget = Text(
-          oneRepMaxValues[0][widget.excercise.predictionID].toInt().toString(),
+          oneRepMaxValues[0][widget.excercise.predictionID].round().toString(),
           style: BOLD,
         );
 

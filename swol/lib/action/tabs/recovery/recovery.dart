@@ -206,16 +206,7 @@ class RecoveryButtonsWithWhiteContext extends StatelessWidget {
   }
 
   goToNextSet(){
-    //move onto the next set
-    ExcercisePage.pageNumber.value = 0;
-
-    //we want to let atleast half of the animation play out
-    //that we will will have passed all of page 2
-    //and half of page 1
-    //so the timer wont update given the changes and look ugly while transitioning
-    Future.delayed(transitionDuration * (1/2), (){
-      //move onto next set
-      ExcercisePage.nextSet.value = true;
-    });
+    //will also handle navigation
+    ExcercisePage.nextSet.value = true;
   }
 }

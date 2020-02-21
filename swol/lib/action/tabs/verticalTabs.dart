@@ -13,10 +13,12 @@ import 'package:swol/shared/structs/anExcercise.dart';
 class VerticalTabs extends StatefulWidget {
   final AnExcercise excercise;
   final double statusBarHeight;
+  final Duration transitionDuration;
 
   VerticalTabs({
     @required this.excercise,
     @required this.statusBarHeight,
+    @required this.transitionDuration,
   });
 
   @override
@@ -24,8 +26,6 @@ class VerticalTabs extends StatefulWidget {
 }
 
 class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMixin {
-  Duration transitionDuration = Duration(milliseconds: 300);
-
   //for the "hero" widget (if not up then down)
   ValueNotifier<bool> goalSetUp;
 
@@ -110,18 +110,18 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
             Suggestion( 
               excercise: widget.excercise,
               heroUp: goalSetUp,
-              heroAnimDuration: transitionDuration,
+              heroAnimDuration: widget.transitionDuration,
               heroAnimTravel: totalTravel,
             ),
             SetRecord(
               excercise: widget.excercise,
               statusBarHeight: widget.statusBarHeight,
               heroUp: goalSetUp,
-              heroAnimDuration: transitionDuration,
+              heroAnimDuration: widget.transitionDuration,
               heroAnimTravel: totalTravel,
             ),
             Recovery(
-              transtionDuration: transitionDuration,
+              transtionDuration: widget.transitionDuration,
               excercise: widget.excercise,
             ),
           ],
@@ -129,7 +129,7 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
         //must be on top... other wise it isnt clickable
         FloatingDoneButton(
           excercise: widget.excercise,
-          showOrHideDuration: transitionDuration,
+          showOrHideDuration: widget.transitionDuration,
           animationCurve: Curves.easeInOut,
         ),
       ],
@@ -148,7 +148,7 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
     //animated to right page
     pageViewController.animateToPage(
       ExcercisePage.pageNumber.value, 
-      duration: transitionDuration, 
+      duration: widget.transitionDuration, 
       curve: Curves.easeInOut,
     );
   }

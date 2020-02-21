@@ -206,8 +206,6 @@ class _FloatingDoneButtonState extends State<FloatingDoneButton> {
       if(shouldCompleteHere) cardColor = Theme.of(context).accentColor;
     }
 
-    print("show button: " + showButton.toString() + " fully hidden: " + fullyHidden.toString());
-
     //position
     return Positioned(
       bottom: 0,

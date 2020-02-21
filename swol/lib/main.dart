@@ -110,40 +110,43 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMixin{
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Column(
-        mainAxisSize: MainAxisSize.max,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          //NOTE: only 2 expands (the logo must always be centered)
-          Expanded(
-            child: Container(),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(24.0),
-            child: Image.asset(
-              "assets/splash/splashCut.png",
-              //width: 1080/2, //1080,
-              //height: 1462/2 , //1462,
+    return Container(
+      color: Theme.of(context).primaryColorDark,
+      child: SafeArea(
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            //NOTE: only 2 expands (the logo must always be centered)
+            Expanded(
+              child: Container(),
             ),
-          ),
-          Expanded(
-            child: Center(
-              child: Padding(
-                padding: EdgeInsets.all(8),
-                child: Center(
-                  child: Container(
-                    height: 50,
-                    width: 50,
-                    child: FittedBox(
-                      fit: BoxFit.contain,
-                      child: PumpingHeart( 
-                        color: Colors.red,
-                        size: 75.0,
-                        controller: AnimationController(
-                          vsync: this, 
-                          //80 bpm / 60 seconds = 1.3 beat per second
-                          duration: const Duration(milliseconds: 1333),
+            Padding(
+              padding: const EdgeInsets.all(24.0),
+              child: Image.asset(
+                "assets/splash/splashCut.png",
+                //width: 1080/2, //1080,
+                //height: 1462/2 , //1462,
+              ),
+            ),
+            Expanded(
+              child: Center(
+                child: Padding(
+                  padding: EdgeInsets.all(8),
+                  child: Center(
+                    child: Container(
+                      height: 50,
+                      width: 50,
+                      child: FittedBox(
+                        fit: BoxFit.contain,
+                        child: PumpingHeart( 
+                          color: Colors.red,
+                          size: 75.0,
+                          controller: AnimationController(
+                            vsync: this, 
+                            //80 bpm / 60 seconds = 1.3 beat per second
+                            duration: const Duration(milliseconds: 1333),
+                          ),
                         ),
                       ),
                     ),
@@ -151,8 +154,8 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

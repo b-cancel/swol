@@ -79,6 +79,8 @@ class _SuggestionState extends State<Suggestion> {
   void initState() {
     //super init
     super.initState();
+
+    print(ExcercisePage.oneRepMaxes.toString());
     
     //set inits
     predictionID.value = widget.excercise.predictionID;

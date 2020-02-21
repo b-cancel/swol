@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 //plugin
 import 'package:page_transition/page_transition.dart';
+import 'package:swol/other/functions/W&R=1RM.dart';
 import 'package:swol/shared/functions/defaultDateTimes.dart';
 import 'package:swol/shared/methods/theme.dart';
 
@@ -23,9 +24,11 @@ import 'package:swol/action/popUps/warning.dart';
 class ExcercisePage extends StatelessWidget {
   ExcercisePage({
     @required this.excercise,
+    @required this.transitionDuration,
   });
 
   final AnExcercise excercise;
+  final Duration transitionDuration;
 
   //static vars used through out initializaed with their default values
 
@@ -42,6 +45,9 @@ class ExcercisePage extends StatelessWidget {
   //function trigger that can be accessed from nearly anywhere
   static final ValueNotifier<bool> updateSet = new ValueNotifier<bool>(false); //being listened
   static final ValueNotifier<bool> nextSet = new ValueNotifier<bool>(false); //being listened
+  //keeps track of all 1 rep maxes after they are calculated once 
+  //so we don't have to calculate them literally millions of times
+  static final List<double> oneRepMaxes = new List<double>(8);
 
   //build
   @override
@@ -59,6 +65,7 @@ class ExcercisePage extends StatelessWidget {
         },
         child: ExcercisePageDark(
           excercise: excercise,
+          transitionDuration: transitionDuration,
         ),
       ),
     );
@@ -68,9 +75,11 @@ class ExcercisePage extends StatelessWidget {
 class ExcercisePageDark extends StatefulWidget {
   ExcercisePageDark({
     @required this.excercise,
+    @required this.transitionDuration,
   });
 
   final AnExcercise excercise;
+  final Duration transitionDuration;
 
   @override
   _ExcercisePageDarkState createState() => _ExcercisePageDarkState();
@@ -111,23 +120,40 @@ class _ExcercisePageDarkState extends State<ExcercisePageDark> {
 
   nextSet(){
     if(ExcercisePage.nextSet.value){
-      //reset timer (MUST HAPPEN FIRST)
-      widget.excercise.tempStartTime = ValueNotifier<DateTime>(AnExcercise.nullDateTime);
+      //must be done first 
+      //so that our suggest page has access to right 1 rep maxes
+      updateOneRepMaxes(
+        weight: widget.excercise.tempWeight,
+        reps: widget.excercise.tempReps,
+      );
 
-      //when we end set we KNOW our tempWeight and tempReps are valid 
+      //move onto the next set
+      ExcercisePage.pageNumber.value = 0;
 
-      //handle weight (we KNOW its VALID)
-      widget.excercise.lastWeight = widget.excercise.tempWeight;
-      widget.excercise.tempWeight = null;
-      ExcercisePage.setWeight.value = "";
+      //we want to let atleast half of the animation play out
+      //that we will will have passed all of page 2
+      //and half of page 1
+      //so the timer wont update given the changes and look ugly while transitioning
+      Future.delayed(widget.transitionDuration * (1/2), (){
+        //reset timer (MUST HAPPEN FIRST)
+        //TODO: but why tho?
+        widget.excercise.tempStartTime = ValueNotifier<DateTime>(AnExcercise.nullDateTime);
 
-      //handle reps (we KNOW its VALID)
-      widget.excercise.lastReps = widget.excercise.tempReps;
-      widget.excercise.tempReps = null;
-      ExcercisePage.setReps.value = "";
+        //when we end set we KNOW our tempWeight and tempReps are valid 
 
-      //action complete
-      ExcercisePage.nextSet.value = false;      
+        //handle weight (we KNOW its VALID)
+        widget.excercise.lastWeight = widget.excercise.tempWeight;
+        widget.excercise.tempWeight = null;
+        ExcercisePage.setWeight.value = "";
+
+        //handle reps (we KNOW its VALID)
+        widget.excercise.lastReps = widget.excercise.tempReps;
+        widget.excercise.tempReps = null;
+        ExcercisePage.setReps.value = "";
+
+        //action complete
+        ExcercisePage.nextSet.value = false;    
+      });
     }
   }
 
@@ -152,6 +178,10 @@ class _ExcercisePageDarkState extends State<ExcercisePageDark> {
     //add listeners
     ExcercisePage.updateSet.addListener(updateSet);
     ExcercisePage.nextSet.addListener(nextSet);
+
+    //one rep maxes
+    widget.excercise.tempStartTime.addListener(updateOneRepMaxes);
+    updateOneRepMaxes();
   }
 
   @override
@@ -160,8 +190,23 @@ class _ExcercisePageDarkState extends State<ExcercisePageDark> {
     ExcercisePage.updateSet.removeListener(updateSet);
     ExcercisePage.nextSet.removeListener(nextSet);
 
+    //one rep maxes
+    widget.excercise.tempStartTime.removeListener(updateOneRepMaxes);
+
     //super dispose
     super.dispose();
+  }
+
+  updateOneRepMaxes({int weight, int reps}){
+    weight = weight ?? widget.excercise.lastWeight;
+    reps = reps ?? widget.excercise.lastReps;
+    for(int functionID = 0; functionID < 8; functionID++){
+      ExcercisePage.oneRepMaxes[functionID] = To1RM.fromWeightAndReps(
+        weight.toDouble(), 
+        reps.toDouble(), 
+        functionID,
+      );
+    } 
   }
 
   @override
@@ -190,6 +235,7 @@ class _ExcercisePageDarkState extends State<ExcercisePageDark> {
           //since this is the whole new context after navigation 
           //and the others are within a scaffold
           statusBarHeight: MediaQuery.of(context).padding.top,
+          transitionDuration: widget.transitionDuration,
         ),
       ),
     );
