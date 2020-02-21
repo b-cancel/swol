@@ -24,7 +24,7 @@ class VerticalTabs extends StatefulWidget {
 }
 
 class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMixin {
-  Duration transitionDuration = Duration(milliseconds: 300);
+  Duration transitionDuration = Duration(milliseconds: 10000);
 
   //for the "hero" widget (if not up then down)
   ValueNotifier<bool> goalSetUp;
@@ -121,6 +121,7 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
               heroAnimTravel: totalTravel,
             ),
             Recovery(
+              transtionDuration: transitionDuration,
               excercise: widget.excercise,
             ),
           ],

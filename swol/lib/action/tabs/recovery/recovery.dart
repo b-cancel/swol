@@ -15,9 +15,11 @@ import 'package:swol/shared/structs/anExcercise.dart';
 //widget
 class Recovery extends StatefulWidget {
   Recovery({
+    @required this.transtionDuration,
     @required this.excercise,
   });
 
+  final Duration transtionDuration;
   final AnExcercise excercise;
 
   @override
@@ -129,6 +131,7 @@ class _RecoveryState extends State<Recovery>
           Theme(
             data: MyTheme.light,
             child: RecoveryButtonsWithWhiteContext(
+              transitionDuration: widget.transtionDuration,
               showAreYouSure: showAreYouSure,
               buttonsColor: buttonsColor, 
               excercise: widget.excercise,
@@ -147,6 +150,7 @@ class _RecoveryState extends State<Recovery>
 class RecoveryButtonsWithWhiteContext extends StatelessWidget {
   const RecoveryButtonsWithWhiteContext({
     Key key,
+    @required this.transitionDuration,
     @required this.showAreYouSure,
     @required this.buttonsColor,
     @required this.excercise,
@@ -154,6 +158,7 @@ class RecoveryButtonsWithWhiteContext extends StatelessWidget {
     @required this.headerColor,
   }) : super(key: key);
 
+  final Duration transitionDuration;
   final ValueNotifier<bool> showAreYouSure;
   final Color buttonsColor;
   final AnExcercise excercise;
@@ -208,7 +213,7 @@ class RecoveryButtonsWithWhiteContext extends StatelessWidget {
     //that we will will have passed all of page 2
     //and half of page 1
     //so the timer wont update given the changes and look ugly while transitioning
-    Future.delayed(Duration(milliseconds: 150), (){
+    Future.delayed(transitionDuration * (1/2), (){
       //move onto next set
       ExcercisePage.nextSet.value = true;
     });

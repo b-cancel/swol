@@ -28,7 +28,9 @@ class DoneCorner extends StatelessWidget {
       alignment: isTop ? Alignment.bottomLeft : Alignment.topLeft,
       child: AnimatedContainer(
         curve: animationCurve,
-        duration: (showOrHideDuration * (0.5)),
+        //NOTE: although one thing should animate faster than the other it makes very little diference
+        duration: showOrHideDuration,
+        //this is what primarily animates
         height: size,
         width: size,
         child: FittedBox(

@@ -44,8 +44,7 @@ class FloatingDoneButton extends StatefulWidget {
 }
 
 class _FloatingDoneButtonState extends State<FloatingDoneButton> {
-  ValueNotifier<bool> showButton;
-  bool showCorners;
+  bool showButton;
   bool fullyHidden; //required so gestures wouldn't be registered by the hidden box
 
   //whether or not this particular page wants the button to show
@@ -69,29 +68,44 @@ class _FloatingDoneButtonState extends State<FloatingDoneButton> {
     }
   }
 
+  //TODO: handle canceling mid animation if needed
   //runs after a change in pageNumber is detected
   updateButton(){
-    showButton.value = shouldShow();
-    if(showButton.value) fullyHidden = false;
-    setState(() {});
-  }
+    //NOTE: we wait for the transition to complete...
+    //primarily because the if we reset the timer immediately
+    //then while the transition is occuring you will have a scary flash or red
+    //so we start the transition, wait a bit, then make the change
+    //which means we have to wait for the change ATLEAST
+    //in order to properly update the done button with the pageNumber
 
-  //runs after a change in showButton is detected
-  //TODO: handle edge case of doing false before true finishes
-  //NOTE: I'll handle the above if it becomes a problem
-  updateCorners(){
-    if(showButton.value){ //delay then show
-      Future.delayed(widget.showOrHideDuration * 0.5, (){
-        showCorners = true;
-        setState(() {});
+    if(shouldShow()){ //we should show our button
+      //NOTE: our button may or may not already be hidden
+
+      //unfully hide it so the animation can play
+      fullyHidden = false;
+      setState(() {});
+
+      //after the 1 frame the change will register and the animatio will play
+      WidgetsBinding.instance.addPostFrameCallback((_){
+        if(shouldShow()){
+          showButton = true;
+        }
+        //TODO ELSE?
       });
     }
-    else{ //immediately hide with button
-      showCorners = false;
+    else{ //we should hide our button
+      //hide the button
+      showButton = false;
       setState(() {});
+      
+      //let the animation play out before fully hiding
       Future.delayed(widget.showOrHideDuration, (){
-        fullyHidden = true;
-        setState(() {});
+        //if its still false then fully hide it
+        if(shouldShow() == false){
+          fullyHidden = true;
+          setState(() {});
+        }
+        //TODO ELSE?
       });
     }
   }
@@ -103,12 +117,9 @@ class _FloatingDoneButtonState extends State<FloatingDoneButton> {
     
     //create notifiers (with non defaults)
     bool shouldBeShowing = shouldShow();
-    showButton = new ValueNotifier<bool>(shouldBeShowing);
-    showCorners = shouldBeShowing;
+    showButton = shouldBeShowing;
     fullyHidden = shouldBeShowing == false;
 
-    //whenever button updates corners get updated
-    showButton.addListener(updateCorners);
     //whenever page updates button get updated
     ExcercisePage.pageNumber.addListener(updateButton);
   }
@@ -117,8 +128,6 @@ class _FloatingDoneButtonState extends State<FloatingDoneButton> {
   void dispose() {
     //remove listener from page to button
     ExcercisePage.pageNumber.removeListener(updateButton);
-    //remove listener from button to corners
-    showButton.removeListener(updateCorners);
 
     //super dispose
     super.dispose();
@@ -193,10 +202,10 @@ class _FloatingDoneButtonState extends State<FloatingDoneButton> {
       child: Visibility(
         visible: fullyHidden ? false : true,
         child: Tooltip(
-          message: showButton.value == false ? "hiding" : message,
+          message: showButton == false ? "hiding" : message,
           child: GestureDetector(
-            behavior: showButton.value == false ? HitTestBehavior.translucent : HitTestBehavior.opaque,
-            onTap: showButton.value == false ? null : (){
+            behavior: showButton == false ? HitTestBehavior.translucent : HitTestBehavior.opaque,
+            onTap: showButton == false ? null : (){
               completeSets(
                 setsPassedFromHere,
                 //only if we forgot to finish are temps ALREADY null
@@ -215,14 +224,14 @@ class _FloatingDoneButtonState extends State<FloatingDoneButton> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   DoneCorner(
-                    show: showCorners,
+                    show: showButton,
                     color: cardColor,
                     animationCurve: widget.animationCurve,
                     showOrHideDuration: widget.showOrHideDuration,
                     isTop: true,
                   ),
                   DoneButton(
-                    show: showButton.value,
+                    show: showButton,
                     color: cardColor,
                     setsPassed: setsPassedFromHere,
                     excerciseID: widget.excercise.id,
@@ -230,7 +239,7 @@ class _FloatingDoneButtonState extends State<FloatingDoneButton> {
                     showOrHideDuration: widget.showOrHideDuration,
                   ),
                   DoneCorner(
-                    show: showCorners,
+                    show: showButton,
                     color: cardColor,
                     animationCurve: widget.animationCurve,
                     showOrHideDuration: widget.showOrHideDuration,
