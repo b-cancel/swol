@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 
 //internal
-import 'package:swol/action/shared/setToolTips.dart';
+import 'package:swol/action/shared/tooltips/setToolTips.dart';
 
 //widget
 class TappableIcon extends StatefulWidget {

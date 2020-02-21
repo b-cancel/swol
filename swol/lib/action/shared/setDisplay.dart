@@ -2,7 +2,10 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:swol/action/page.dart';
-import 'package:swol/action/shared/setToolTips.dart';
+import 'package:swol/action/shared/tooltips/repTargetAsPivot.dart';
+import 'package:swol/action/shared/tooltips/repsAsPivot.dart';
+import 'package:swol/action/shared/tooltips/setToolTips.dart';
+import 'package:swol/action/shared/tooltips/weightAsPivot.dart';
 import 'package:swol/shared/structs/anExcercise.dart';
 
 //plugin
@@ -11,6 +14,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 //internal
 import 'package:swol/shared/functions/goldenRatio.dart';
+
+enum Pivot {Weight, Reps, RepTarget}
 
 //widget
 class SetDisplay extends StatefulWidget {
@@ -50,17 +55,36 @@ class _SetDisplayState extends State<SetDisplay> {
 
   @override
   void initState() {
+    //super init
+    super.initState();
+
+    //if not excercise passed we may use 1 of three pivots to calculate our goal set
+    if(widget.excercise == null){
+      ExcercisePage.setGoalWeight.addListener(updateState);
+      ExcercisePage.setGoalReps.addListener(updateState);
+    }
+
+    //change hero position
     if(widget.heroUp != null){
       widget.heroUp.addListener(updateState);
     }
-    super.initState();
+    
   }
 
   @override
   void dispose() { 
+    //remove change hero position
     if(widget.heroUp != null){
       widget.heroUp.removeListener(updateState);
     }
+
+    //remove pivot change detectors
+    if(widget.excercise == null){
+      ExcercisePage.setGoalWeight.removeListener(updateState);
+      ExcercisePage.setGoalReps.removeListener(updateState);
+    }
+
+    //super dipose
     super.dispose();
   }
 
@@ -85,6 +109,27 @@ class _SetDisplayState extends State<SetDisplay> {
       if(widget.useAccent) movementY = widget.heroUp.value ? 0 : widget.heroAnimTravel;
       else movementY = widget.heroUp.value ? -widget.heroAnimTravel : 0;
     }
+
+    //what is our pivot
+    Pivot goalSetPivot;
+    if(widget.excercise == null){
+      int recordingWeight = int.parse(ExcercisePage?.setWeight?.value ?? "0") ?? 0;
+      int calculatedGoalWeight = ExcercisePage?.setGoalWeight?.value ?? 0;
+      if(recordingWeight != 0 && recordingWeight == calculatedGoalWeight){
+        //we are using our GOAL WEIGHT as our pivot
+        goalSetPivot = Pivot.Weight;
+      }
+      else{
+        int recordingReps = int.parse(ExcercisePage?.setReps?.value ?? "0") ?? 0;
+        int calculatedReps = ExcercisePage?.setGoalReps?.value ?? 0;
+        if(recordingReps != 0 && recordingReps == calculatedReps){
+          //we are using our GOAL WEIGHT as our pivot
+          goalSetPivot = Pivot.Reps;
+        }
+        else goalSetPivot = Pivot.RepTarget;
+      }
+    }
+    //ELSE we are just show our last set
 
     //widget
     return AnimatedContainer(
@@ -150,7 +195,20 @@ class _SetDisplayState extends State<SetDisplay> {
                       ),
                       GestureDetector(
                         behavior: HitTestBehavior.opaque,
-                        onTap: () => showWeightToolTip(context, direction: PreferDirection.topLeft),
+                        onTap: (){
+                          if(goalSetPivot == null){
+                            showWeightToolTip(context, direction: PreferDirection.topCenter);
+                          }
+                          else{
+                            if(goalSetPivot == Pivot.Weight){
+                              showWeightWeightAsPivotToolTip(context);
+                            }
+                            else if(goalSetPivot == Pivot.Reps){
+                              showWeightRepsAsPivotToolTip(context);
+                            }
+                            else showWeightRepTargetAsPivotToolTip(context);
+                          }
+                        },
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
@@ -185,7 +243,20 @@ class _SetDisplayState extends State<SetDisplay> {
                       ),
                       GestureDetector(
                         behavior: HitTestBehavior.opaque,
-                        onTap: () => showRepsToolTip(context, direction: PreferDirection.topRight),
+                        onTap: (){
+                          if(goalSetPivot == null){
+                            showRepsToolTip(context, direction: PreferDirection.topRight);
+                          }
+                          else{
+                            if(goalSetPivot == Pivot.Weight){
+                              showRepsWeightAsPivotToolTip(context);
+                            }
+                            else if(goalSetPivot == Pivot.Reps){
+                              showRepsRepsAsPivotToolTip(context);
+                            }
+                            else showRepsRepTargetAsPivotToolTip(context);
+                          }
+                        },
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [

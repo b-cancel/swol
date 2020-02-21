@@ -2,7 +2,8 @@ import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:swol/shared/widgets/simple/ourToolTip.dart';
 
-showRepsToolTip(BuildContext context, {
+showRepsToolTip(
+  BuildContext context, {
   PreferDirection direction: PreferDirection.bottomCenter,
 }) {
   showWidgetToolTip(
@@ -14,7 +15,7 @@ showRepsToolTip(BuildContext context, {
       },
       child: RichText(
         text: TextSpan(children: [
-          TextSpan(text: "How many times you lifted the weight\n"),
+          TextSpan(text: "how many times you lifted the weight\n"),
           TextSpan(
             style: TextStyle(
               fontWeight: FontWeight.bold,
@@ -37,7 +38,8 @@ showRepsToolTip(BuildContext context, {
   );
 }
 
-showWeightToolTip(BuildContext context, {
+showWeightToolTip(
+  BuildContext context, {
   PreferDirection direction: PreferDirection.topCenter,
 }) {
   showWidgetToolTip(
@@ -48,32 +50,32 @@ showWeightToolTip(BuildContext context, {
         BotToast.cleanAll();
       },
       child: RichText(
-        text: TextSpan(children: [
-          TextSpan(text: "It doesn't matter\nif you use"),
-          TextSpan(
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
+        text: TextSpan(
+          children: [
+            TextSpan(text: "the weight you lifted\n"),
+            TextSpan(
+              text: "(",
             ),
-            text: " LBS",
-          ),
-          TextSpan(
-            text: " or ",
-          ),
-          TextSpan(
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
+            TextSpan(
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+              text: "LBS",
             ),
-            text: "KG\n",
-          ),
-          TextSpan(text: "As long as you keep things "),
-          TextSpan(
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
+            TextSpan(
+              text: " or ",
             ),
-            text: "consistent\n",
-          ),
-          TextSpan(text: "the math will work as expected"),
-        ]),
+            TextSpan(
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+              text: "KG",
+            ),
+            TextSpan(
+              text: ")",
+            ),
+          ],
+        ),
       ),
     ),
     direction: direction,
