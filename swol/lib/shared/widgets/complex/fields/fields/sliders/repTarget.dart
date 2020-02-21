@@ -32,18 +32,12 @@ class RepTargetField extends StatefulWidget {
 
 class _RepTargetFieldState extends State<RepTargetField> {
   ValueNotifier<Duration> repTargetDuration;
-  ValueNotifier<int> sectionID = new ValueNotifier(0);
 
   repTargetUpdate(){
     //update duration that is used by tick slider
     repTargetDuration.value = Duration(
       seconds: widget.repTarget.value * 5,
     );
-    
-    //update section ID used by trainig type card slider
-    if(widget.repTarget.value <= 6) sectionID.value = 0;
-    else if(widget.repTarget.value <= 12) sectionID.value = 1;
-    else sectionID.value = 2;
   }
 
   @override
@@ -76,44 +70,14 @@ class _RepTargetFieldState extends State<RepTargetField> {
       lastTick: 35,
       subtle: widget.subtle,
       value: widget.repTarget,
-      header: widget.subtle ? Container(
-        height: 24,
-      ) : RepTargetHeader(subtle: widget.subtle),
-      indicator: Column(
-        children: <Widget>[
-          Visibility(
-            visible: widget.subtle,
-            child: Theme(
-              data: MyTheme.dark.copyWith(
-                cardColor: MyTheme.dark.scaffoldBackgroundColor,
-              ),
-              child: Padding(
-                padding: EdgeInsets.only(
-                  bottom: 8.0,
-                ),
-                child: TrainingTypeSections(
-                  shadowColor: Theme.of(context).cardColor,
-                  cardBackground: false,
-                  highlightField: 3,
-                  sections: [
-                    [2],
-                    [1],
-                    [0],
-                  ],
-                  sectionID: sectionID,
-                ),
-              ),
-            ),
-          ),
-          Theme(
-            data: MyTheme.light,
-            child: AnimRepTargetInfoWhite(
-              changeDuration: Duration(milliseconds: 300), 
-              repTargetDuration: repTargetDuration,
-              darkTheme: widget.subtle == false,
-            ),
-          ),
-        ],
+      header: RepTargetHeader(subtle: widget.subtle),
+      indicator: Theme(
+        data: MyTheme.light,
+        child: AnimRepTargetInfoWhite(
+          changeDuration: Duration(milliseconds: 300), 
+          repTargetDuration: repTargetDuration,
+          darkTheme: widget.subtle == false,
+        ),
       ),
     );
   }
@@ -139,7 +103,7 @@ class AnimRepTargetInfoWhite extends StatelessWidget {
       selectedDuration: repTargetDuration,
       bigTickNumber: 25,
       darkTheme: darkTheme,
-      hideNameButtons: true,
+      hideNameButtons: false,
       ranges: [
         Range(
           name: "Strength Training",

@@ -33,74 +33,6 @@ class SuggestionChanger extends StatelessWidget {
       mainAxisSize: MainAxisSize.max,
       children: <Widget>[
         Expanded(
-          child: Stack(
-            children: <Widget>[
-              TextWithCorners(
-                text: "", 
-                radius: arrowRadius,
-              ),
-              Positioned.fill(
-                child: Container(
-                  child: Row(
-                    children: <Widget>[
-                      Container(
-                        color: Theme.of(context).primaryColorDark,
-                        width: 24,
-                      ),
-                      Expanded(
-                        child: Container(),
-                      ),
-                      Container(
-                        color: Theme.of(context).primaryColorDark,
-                        width: 24,
-                      )
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-        Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: 24.0,
-          ),
-          child: Container(
-            width: MediaQuery.of(context).size.width,
-            decoration: BoxDecoration(
-              color: Theme.of(context).cardColor,
-              borderRadius: BorderRadius.only(
-                bottomRight: arrowRadius,
-                bottomLeft: arrowRadius,
-              ),
-            ),
-            child: Padding(
-              padding: EdgeInsets.only(
-                bottom: 8.0,
-              ),
-              child: RepTargetField(
-                changeDuration: Duration(milliseconds: 300),
-                repTarget: repTarget,
-                subtle: true,
-              ),
-            ),
-          ),
-        ),
-        Expanded(
-          child: TextWithCorners(
-            useAccent: true,
-            text: "",
-            radius: arrowRadius,
-          ),
-        ),
-      ],
-    );
-
-    /*
-    return Column(
-      mainAxisSize: MainAxisSize.max,
-      children: <Widget>[
-        Expanded(
           child: PredictionFormulaSpacer(
             arrowRadius: arrowRadius,
           ),
@@ -185,7 +117,6 @@ class SuggestionChanger extends StatelessWidget {
         ),
       ],
     );
-    */
   }
 }
 
