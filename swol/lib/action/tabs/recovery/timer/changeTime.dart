@@ -53,7 +53,7 @@ class ActualButton extends StatelessWidget {
                 top: 16,
               ),
               child: ChangeRecoveryTimeWidget(
-                changeDuration: Duration(milliseconds: 250),
+                changeDuration: Duration(milliseconds: 300),
                 recoveryPeriod: possibleRecoveryDuration,
               ),
             ),
