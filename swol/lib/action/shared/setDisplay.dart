@@ -8,6 +8,7 @@ import 'package:swol/action/shared/tooltips/setToolTips.dart';
 import 'package:swol/action/shared/tooltips/weightAsPivot.dart';
 import 'package:swol/shared/structs/anExcercise.dart';
 import 'package:swol/shared/widgets/simple/conditional.dart';
+import 'package:swol/shared/widgets/simple/curvedCorner.dart';
 
 //plugin
 import 'package:vector_math/vector_math_64.dart' as vect;
@@ -122,7 +123,7 @@ class _SetDisplayState extends State<SetDisplay> {
     //what is our pivot
     Pivot goalSetPivot;
     if (widget.excercise == null) {
-      goalSetPivot = Pivot.Reps;
+      goalSetPivot = Pivot.RepTarget;
       /*
       int recordingWeight = int.parse(ExcercisePage?.setWeight?.value ?? "0") ?? 0;
       int calculatedGoalWeight = ExcercisePage?.setGoalWeight?.value ?? 0;
@@ -228,38 +229,22 @@ class _SetDisplayState extends State<SetDisplay> {
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Conditional(
-                                condition: goalSetPivot != null && goalSetPivot == Pivot.Weight, 
-                                ifTrue: Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(6.0),
-                                  ),
-                                  border: Border.all(
-                                    width: 1,
-                                    color: foregroundColor,
-                                  ),
-                                ),
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: 4,
-                                  vertical: 2,
-                                ),
-                                margin: EdgeInsets.only(
-                                  right: 2,
-                                ),
-                                child: FittedBox(
-                                  fit: BoxFit.contain,
+                                condition: goalSetPivot != null &&
+                                    goalSetPivot == Pivot.Weight,
+                                ifTrue: ButtonWrapper(
                                   child: UpdatingSetText(
                                     isWeight: true,
                                     excercise: widget.excercise,
                                   ),
+                                  //NOTE: this is correct
+                                  backgroundColor: foregroundColor,
+                                  foregroundColor: backgroundColor,
                                 ),
-                              ), 
                                 ifFalse: UpdatingSetText(
-                                    isWeight: true,
-                                    excercise: widget.excercise,
-                                  ),
+                                  isWeight: true,
+                                  excercise: widget.excercise,
+                                ),
                               ),
-                              
                               Container(
                                 alignment: Alignment.topLeft,
                                 padding: EdgeInsets.only(
@@ -304,37 +289,23 @@ class _SetDisplayState extends State<SetDisplay> {
                           },
                           child: Row(mainAxisSize: MainAxisSize.min, children: [
                             Conditional(
-                                condition: goalSetPivot != null && goalSetPivot != Pivot.Weight, 
-                                ifTrue: Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(6.0),
-                                  ),
-                                  border: Border.all(
-                                    width: 1,
-                                    color: foregroundColor,
-                                  ),
+                              condition: goalSetPivot != null &&
+                                  goalSetPivot != Pivot.Weight,
+                              ifTrue: ButtonWrapper(
+                                usingRT: goalSetPivot == Pivot.RepTarget,
+                                child: UpdatingSetText(
+                                  isWeight: false,
+                                  excercise: widget.excercise,
                                 ),
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: 4,
-                                  vertical: 2,
-                                ),
-                                margin: EdgeInsets.only(
-                                  right: 2,
-                                ),
-                                child: FittedBox(
-                                  fit: BoxFit.contain,
-                                  child: UpdatingSetText(
-                                    isWeight: false,
-                                    excercise: widget.excercise,
-                                  ),
-                                ),
-                              ), 
-                                ifFalse: UpdatingSetText(
-                                    isWeight: false,
-                                    excercise: widget.excercise,
-                                  ),
+                                //NOTE: this is correct
+                                backgroundColor: foregroundColor,
+                                foregroundColor: backgroundColor,
                               ),
+                              ifFalse: UpdatingSetText(
+                                isWeight: false,
+                                excercise: widget.excercise,
+                              ),
+                            ),
                             Container(
                               alignment: Alignment.topLeft,
                               padding: EdgeInsets.only(
@@ -425,5 +396,131 @@ class _UpdatingSetTextState extends State<UpdatingSetText> {
 
     //widget
     return Text(value.toString());
+  }
+}
+
+class ButtonWrapper extends StatelessWidget {
+  ButtonWrapper({
+    @required this.child,
+    @required this.backgroundColor,
+    @required this.foregroundColor,
+    this.usingRT: false,
+  });
+
+  final Widget child;
+  final Color backgroundColor;
+  final Color foregroundColor;
+  final bool usingRT;
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: <Widget>[
+        //bottom right black corner
+        Positioned(
+          bottom: 0,
+          right: 0,
+          child: Padding(
+            padding: EdgeInsets.only(
+              right: 2.0,
+            ),
+            child: CurvedCorner(
+              isTop: false,
+              isLeft: false,
+              size: 6,
+              cornerColor: backgroundColor,
+            ),
+          ),
+        ),
+        //the actual button
+        Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(
+              Radius.circular(6.0),
+            ),
+            border: Border.all(
+              width: 1,
+              color: backgroundColor,
+            ),
+          ),
+          padding: EdgeInsets.symmetric(
+            horizontal: 4,
+            vertical: 2,
+          ),
+          margin: EdgeInsets.only(
+            right: 2,
+          ),
+          child: FittedBox(
+            fit: BoxFit.contain,
+            child: child,
+          ),
+        ),
+        Positioned(
+          top: 0,
+          bottom: 0,
+          right: 0,
+          child: Padding(
+            padding: EdgeInsets.only(
+              right: 2.0,
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                Expanded(
+                  child: Container(
+                    color: Colors.red,
+                  ),
+                ),
+                Expanded(
+                  child: Container(
+                    child: FractionalTranslation(
+                      translation: Offset(1, 0),
+                      child: FittedBox(
+                        fit: BoxFit.contain,
+                        child: Container(
+                          width: 24,
+                          height: 24,
+                          padding: EdgeInsets.only(
+                            top: 2,
+                            right: 2,
+                          ),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: backgroundColor,
+                              borderRadius: BorderRadius.only(
+                                topRight: Radius.circular(6.0),
+                                bottomRight: Radius.circular(6.0),
+                              ),
+                            ),
+                            padding: EdgeInsets.all(2),
+                            child: FittedBox(
+                              fit: BoxFit.contain,
+                              child: Conditional(
+                                condition: usingRT, 
+                                ifTrue: Text(
+                                  "RT",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: foregroundColor,
+                                  ),
+                                ), 
+                                ifFalse: Icon(
+                                  Icons.lock,
+                                  color: foregroundColor,
+                                ),
+                              ),
+                            ),
+                          )
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
   }
 }
