@@ -53,21 +53,18 @@ class _MakeFunctionAdjustmentState extends State<MakeFunctionAdjustment> {
     updateGoal();
   }
 
+  //when the weight updates
+  //we update the rep estimates
   weightWasUpdated({bool updateTheGoal: true}){
-    //when the weight updates
-    //we update the rep estimates
-    //TODO: complete
-    /*
-    //we use 1m and weight to get reps
+    //we use 1RM and weight to get reps
     //this is bause maybe we wanted them to do 125 for 5 but they only had 120
     //so ideally we want to match their weight here and take it from ther
     String setWeightString = ExcercisePage?.setWeight?.value ?? "";
-    bool weightUseValid = isTextValid(setWeightString);
-    double weight = weightUseValid ? double.parse(setWeightString) : 0;
+    bool weightRecordedValid = isTextValid(setWeightString);
+    double weight = weightRecordedValid != null ? double.parse(setWeightString) : 0;
 
     //check conditions
-    List<int> repEstimates = new List<int>(8);
-    if (weightUseValid){
+    if (weightRecordedValid){
       //if the weight is valid you can estimate reps
       //calculate all the rep-estimates for all functions
       for (int thisFunctionID = 0; thisFunctionID < 8; thisFunctionID++) {
@@ -91,24 +88,54 @@ class _MakeFunctionAdjustmentState extends State<MakeFunctionAdjustment> {
         //so we set it at a 100
         bool aboveUpperBound = (101 < estimate);
         if (zeroOrLess || aboveUpperBound) {
-          weightUseValid = false;
+          weightRecordedValid = false;
           break;
         }
       }
+
+      //if weight is still valid, then all rep estimates valid
+      allRepsEstimatesValid.value = weightRecordedValid;
     }
-
-    print(repEstimates.toString());
-
-    */
+    else allRepsEstimatesValid.value = false;
 
     //update the goal
     if(updateTheGoal) updateGoal();
   }
 
+  //when the rep updates
+  //we update the weight estimates
   repsWereUpdated({bool updateTheGoal: true}){
-    //when the rep updates
-    //we update the weight estimates
-    //TODO: complete
+    //we use 1RM and reps to get weights
+    String setRepsString = ExcercisePage?.setReps?.value ?? "";
+    bool repsRecordedValid = isTextValid(setRepsString);
+    int reps = repsRecordedValid != null ? int.parse(setRepsString) : 0;
+
+    //reps are valid so if we can use them
+    if(repsRecordedValid){
+      //calculate are weight estimates
+      for(int thisFunctionID = 0; thisFunctionID < 8; thisFunctionID++){
+        weightEstimates[thisFunctionID] = ToWeight.fromRepAnd1Rm(
+          reps.toDouble(), 
+          ExcercisePage.oneRepMaxes[thisFunctionID],
+          thisFunctionID,
+        ).round();
+      }
+
+      //make sure all yield valid results
+      for(int thisFunctionID = 0; thisFunctionID < 8; thisFunctionID++){
+        int estimate = weightEstimates[thisFunctionID];
+        bool zeroOrLess = (estimate <= 0);
+        bool aboveUpperBound = (999 < estimate);
+        if(zeroOrLess || aboveUpperBound){
+          repsRecordedValid = false;
+          break;
+        }
+      }
+
+      //if reps is still valid, then all weight estimates are valid
+      allWeightEstimatesValid.value = repsRecordedValid;
+    }
+    else allWeightEstimatesValid.value = false;
 
     //update the goal
     if(updateTheGoal) updateGoal();
