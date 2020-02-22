@@ -5,20 +5,19 @@ import 'package:flutter/material.dart';
 import 'package:swol/action/bottomButtons/backButton.dart';
 import 'package:swol/action/bottomButtons/nextButton.dart';
 import 'package:swol/shared/methods/theme.dart';
-import 'package:swol/shared/structs/anExcercise.dart';
 
 //widget
 class BottomButtons extends StatelessWidget {
   BottomButtons({
     @required this.color,
-    @required this.excercise,
+    @required this.excerciseID,
     @required this.forwardAction,
     @required this.forwardActionWidget,
     this.backAction,
   });
 
   final Color color;
-  final AnExcercise excercise;
+  final int excerciseID;
   final Function forwardAction;
   final Widget forwardActionWidget;
   final Function backAction;
@@ -46,7 +45,7 @@ class BottomButtons extends StatelessWidget {
           ),
           //the buttons that are larger than they seem to be
           Buttons(
-            excercise: excercise,
+            excerciseID: excerciseID,
             forwardAction: forwardAction,
             forwardActionWidget: forwardActionWidget,
             backAction: backAction,
@@ -60,14 +59,14 @@ class BottomButtons extends StatelessWidget {
 
 class Buttons extends StatelessWidget {
   const Buttons({
-    @required this.excercise,
+    @required this.excerciseID,
     @required this.forwardAction,
     @required this.forwardActionWidget,
     this.backAction,
     this.color,
   });
 
-  final AnExcercise excercise;
+  final int excerciseID;
   final Function forwardAction;
   final Widget forwardActionWidget;
   final Function backAction;
@@ -95,7 +94,7 @@ class Buttons extends StatelessWidget {
             forwardAction: forwardAction, 
             forwardActionWidget: forwardActionWidget,
             verticalPadding: extraVerticalPadding,
-            excercise: excercise,
+            excerciseID: excerciseID,
             color: color,
           ),
         ],

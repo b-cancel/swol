@@ -54,11 +54,6 @@ class SetDisplay extends StatefulWidget {
 class _SetDisplayState extends State<SetDisplay> {
   updateState() {
     if (mounted) setState(() {});
-    /*
-    WidgetsBinding.instance.addPostFrameCallback((_){
-      
-    });
-    */
   }
 
   @override
@@ -335,7 +330,7 @@ class _SetDisplayState extends State<SetDisplay> {
   }
 }
 
-class UpdatingSetText extends StatefulWidget {
+class UpdatingSetText extends StatelessWidget {
   UpdatingSetText({
     @required this.isWeight,
     this.excercise,
@@ -345,57 +340,18 @@ class UpdatingSetText extends StatefulWidget {
   final bool isWeight;
 
   @override
-  _UpdatingSetTextState createState() => _UpdatingSetTextState();
-}
-
-class _UpdatingSetTextState extends State<UpdatingSetText> {
-  updateState() {
-    if (mounted)setState(() {});
-    /*
-    //rebuild next frame to not cause issues elsewhere
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      
-    });
-    */
-  }
-
-  @override
-  void initState() {
-    //super init
-    super.initState();
-
-    //add listners if necessary
-    if (widget.excercise == null) {
-      ExcercisePage.setGoalWeight.addListener(updateState);
-      ExcercisePage.setGoalReps.addListener(updateState);
-    }
-  }
-
-  @override
-  void dispose() {
-    //remove listeners if necessary
-    if (widget.excercise == null) {
-      ExcercisePage.setGoalWeight.removeListener(updateState);
-      ExcercisePage.setGoalReps.removeListener(updateState);
-    }
-
-    //super dispose
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     int value;
-    if (widget.excercise == null) {
-      if (widget.isWeight)
+    if (excercise == null) {
+      if (isWeight)
         value = ExcercisePage.setGoalWeight.value;
       else
         value = ExcercisePage.setGoalReps.value;
     } else {
-      if (widget.isWeight)
-        value = widget.excercise.lastWeight;
+      if (isWeight)
+        value = excercise.lastWeight;
       else
-        value = widget.excercise.lastReps;
+        value = excercise.lastReps;
     }
 
     //widget

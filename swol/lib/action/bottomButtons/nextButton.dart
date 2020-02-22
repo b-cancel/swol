@@ -9,14 +9,14 @@ class BottomNextButton extends StatelessWidget {
     @required this.forwardAction,
     @required this.forwardActionWidget,
     @required this.verticalPadding,
-    @required this.excercise,
+    @required this.excerciseID,
   }) : super(key: key);
 
   final Color color;
   final Function forwardAction;
   final Widget forwardActionWidget;
   final double verticalPadding;
-  final AnExcercise excercise;
+  final int excerciseID;
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +41,7 @@ class BottomNextButton extends StatelessWidget {
           ),
           //this is the actuall button with stuff in it
           child: Hero(
-            tag: "excerciseContinue" + excercise.id.toString(),
+            tag: "excerciseContinue" + excerciseID.toString(),
             createRectTween: (begin, end) {
               return CustomRectTween(a: begin, b: end);
             },

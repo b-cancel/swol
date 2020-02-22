@@ -16,14 +16,12 @@ class SuggestionChanger extends StatelessWidget {
     Key key,
     @required this.predictionID,
     @required this.repTarget,
-    @required this.excercise,
     @required this.arrowRadius,
     @required this.cardRadius,
   }) : super(key: key);
 
   final ValueNotifier<int> predictionID;
   final ValueNotifier<int> repTarget;
-  final AnExcercise excercise;
   final Radius arrowRadius;
   final Radius cardRadius;
 

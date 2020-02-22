@@ -47,7 +47,7 @@ class ExcercisePage extends StatelessWidget {
   static final ValueNotifier<bool> nextSet = new ValueNotifier<bool>(false); //being listened
   //keeps track of all 1 rep maxes after they are calculated once 
   //so we don't have to calculate them literally millions of times
-  static final ValueNotifier<List<double>> oneRepMaxes = new ValueNotifier<List<double>>(List<double>(8)); //not being listened to
+  static final List<double> oneRepMaxes = new List<double>(8); //not being listened to
 
   //build
   @override
@@ -206,7 +206,7 @@ class _ExcercisePageDarkState extends State<ExcercisePageDark> {
     weight = weight ?? (widget?.excercise?.lastWeight ?? 0);
     reps = reps ?? (widget?.excercise?.lastReps ?? 0);
     for(int functionID = 0; functionID < 8; functionID++){
-      ExcercisePage.oneRepMaxes.value[functionID] = To1RM.fromWeightAndReps(
+      ExcercisePage.oneRepMaxes[functionID] = To1RM.fromWeightAndReps(
         weight.toDouble(), 
         reps.toDouble(), 
         functionID,

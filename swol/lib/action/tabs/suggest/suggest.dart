@@ -48,7 +48,7 @@ class _SuggestionState extends State<Suggestion> {
       //rep target used
       (widget.excercise.repTarget).toDouble(), 
       //one rep max that uses the same function as below
-      ExcercisePage.oneRepMaxes.value[
+      ExcercisePage.oneRepMaxes[
         widget.excercise.predictionID //TODO: not notifier?
       ], 
       //function index to use
@@ -71,7 +71,7 @@ class _SuggestionState extends State<Suggestion> {
     //super init
     super.initState();
 
-    print(ExcercisePage.oneRepMaxes.value.toString());
+    print(ExcercisePage.oneRepMaxes.toString());
     
     //set inits
     predictionID.value = widget.excercise.predictionID;
@@ -140,7 +140,6 @@ class _SuggestionState extends State<Suggestion> {
                       child: SuggestionChanger(
                         predictionID: predictionID,
                         repTarget: repTarget,
-                        excercise: widget.excercise,
                         arrowRadius: arrowRadius,
                         cardRadius: cardRadius,
                       ),
@@ -169,7 +168,7 @@ class _SuggestionState extends State<Suggestion> {
           ),
           BottomButtons(
             color: buttonsColor,
-            excercise: widget.excercise,
+            excerciseID: widget.excercise.id,
             forwardAction: () {
               ExcercisePage.pageNumber.value = 1;
             },
