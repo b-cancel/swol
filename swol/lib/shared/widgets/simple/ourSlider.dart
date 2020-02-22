@@ -77,7 +77,7 @@ class CustomSlider extends StatelessWidget {
         ),
         Padding(
           padding: EdgeInsets.only(
-            bottom: 14.75, //TODO: adjust for final product
+            bottom: 14.75,
             left: 16,
             right: 16,
           ),
@@ -132,9 +132,6 @@ class CustomSlider extends StatelessWidget {
                   borderRadius: BorderRadius.circular(25),
                 ),
                 child: Center(
-                  //TODO: have the icon change depending on what excercise mode you are on
-                  //NOTE: the above is a super minor improvement 
-                  //and more of an unoticible flex / waste of time than anything
                   child: Icon(
                     Icons.repeat, 
                     size: 25,

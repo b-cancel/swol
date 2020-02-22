@@ -8,9 +8,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:bot_toast/bot_toast.dart';
-import 'package:swol/other/functions/1RM&R=W.dart';
-import 'package:swol/other/functions/W&R=1RM.dart';
-import 'package:swol/other/functions/helper.dart';
 
 //internal: shared
 import 'package:swol/shared/methods/extensions/sharedPreferences.dart';

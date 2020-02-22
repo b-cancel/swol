@@ -188,9 +188,6 @@ class _PillState extends State<Pill> {
                     bottomRight: rightRadius,
                   ),
                   border: Border(
-                    //TODO: understand why making LEFT the way it should be
-                    //TODO: (first borderSide is actually BorderSide.none)
-                    //TODO: breaks stuff (and logically so the same would happen with RIGHT)
                     left: widget.leftMultiplier == 0 ? borderSide : borderSide,
                     right: widget.rightMultiplier == 0 ? BorderSide.none : borderSide,
                     //defaults

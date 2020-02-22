@@ -48,7 +48,7 @@ class _SuggestionState extends State<Suggestion> {
       //rep target used
       (widget.excercise.repTarget).toDouble(), 
       //one rep max that uses the same function as below
-      ExcercisePage.oneRepMaxes[
+      ExcercisePage.oneRepMaxes.value[
         widget.excercise.predictionID //TODO: not notifier?
       ], 
       //function index to use
@@ -71,7 +71,7 @@ class _SuggestionState extends State<Suggestion> {
     //super init
     super.initState();
 
-    print(ExcercisePage.oneRepMaxes.toString());
+    print(ExcercisePage.oneRepMaxes.value.toString());
     
     //set inits
     predictionID.value = widget.excercise.predictionID;

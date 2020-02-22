@@ -32,8 +32,11 @@ class _ExcerciseTileSubtitleState extends State<ExcerciseTileSubtitle> {
   updateState(){
     //a set was just completed so there WILL be a new last set
     if(widget.excercise.tempStartTime.value == AnExcercise.nullDateTime){
+      print("*****************************************new last last set");
+      print(widget.excercise.lastWeight.toString() + " x " + widget.excercise.lastReps.toString());
       if(mounted) setState(() {});
     }
+    else print("******************************************started a set");
   }
 
   @override
@@ -119,13 +122,14 @@ class _ExcerciseTileSubtitleState extends State<ExcerciseTileSubtitle> {
           //    a. sureness string
           //    b. suggestions to improve
           double mean = oneRepMaxValues[1];
-          int percentOfDeviation =
-              ((mean == 0 || standardDevaition.toInt() == 0)
-                      ? 0
-                      : (standardDevaition / mean) * 100)
-                  .toInt();
+          int percentOfDeviation;
+          if(mean.toInt() == 0 || standardDevaition.toInt() == 0){
+            percentOfDeviation = 0;
+          }
+          else{
+            percentOfDeviation = ((standardDevaition / mean) * 100).toInt();
+          }
 
-          //TODO: improvable by actually using Maps
           //"Map" percent devaition to all its respective components
           //red, orange, yellow, green, blue, purple
           String surenessString;

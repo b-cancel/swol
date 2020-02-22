@@ -46,7 +46,6 @@ class Functions{
     functions[7] : 7,
   };
 
-  //TODO: one rep max of 1 rep is well... already calculated
   //NOTE: returns array with [0] all 1 rep maxes, [1] theMean, [2] stdDeviation 
   static List getOneRepMaxValues(int weight, int reps, {bool onlyIfNoBackUp: true}){
     List<double> possibleOneRepMaxes = new List<double>();

@@ -47,7 +47,7 @@ class ExcercisePage extends StatelessWidget {
   static final ValueNotifier<bool> nextSet = new ValueNotifier<bool>(false); //being listened
   //keeps track of all 1 rep maxes after they are calculated once 
   //so we don't have to calculate them literally millions of times
-  static final List<double> oneRepMaxes = new List<double>(8);
+  static final ValueNotifier<List<double>> oneRepMaxes = new ValueNotifier<List<double>>(List<double>(8)); //not being listened to
 
   //build
   @override
@@ -134,10 +134,8 @@ class _ExcercisePageDarkState extends State<ExcercisePageDark> {
       //that we will will have passed all of page 2
       //and half of page 1
       //so the timer wont update given the changes and look ugly while transitioning
-      Future.delayed(widget.transitionDuration, (){ 
-        //reset timer (MUST HAPPEN FIRST)
-        //TODO: but why tho?
-        widget.excercise.tempStartTime = ValueNotifier<DateTime>(AnExcercise.nullDateTime);
+      Future.delayed(widget.transitionDuration * (1/2), (){ 
+        //TODO: for the subtitle to work right, timer reseting must happen last
 
         //when we end set we KNOW our tempWeight and tempReps are valid 
 
@@ -150,6 +148,13 @@ class _ExcercisePageDarkState extends State<ExcercisePageDark> {
         widget.excercise.lastReps = widget.excercise.tempReps;
         widget.excercise.tempReps = null;
         ExcercisePage.setReps.value = "";
+
+        print("***********************************************************************************");
+        print(widget.excercise.lastWeight.toString() + " x " + widget.excercise.lastReps.toString());
+        print("***********************************************************************************");
+
+        //reset timer
+        widget.excercise.tempStartTime = ValueNotifier<DateTime>(AnExcercise.nullDateTime);
 
         //action complete
         ExcercisePage.nextSet.value = false;    
@@ -201,7 +206,7 @@ class _ExcercisePageDarkState extends State<ExcercisePageDark> {
     weight = weight ?? (widget?.excercise?.lastWeight ?? 0);
     reps = reps ?? (widget?.excercise?.lastReps ?? 0);
     for(int functionID = 0; functionID < 8; functionID++){
-      ExcercisePage.oneRepMaxes[functionID] = To1RM.fromWeightAndReps(
+      ExcercisePage.oneRepMaxes.value[functionID] = To1RM.fromWeightAndReps(
         weight.toDouble(), 
         reps.toDouble(), 
         functionID,

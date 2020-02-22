@@ -11,12 +11,6 @@ import 'package:swol/shared/widgets/simple/ourLearnPopUp.dart';
 import 'package:swol/shared/widgets/simple/toLearnPage.dart';
 import 'package:swol/shared/methods/theme.dart';
 
-//TODO: combine this with the sliders
-//since they are technically used in more places than just add excercise
-//1. suggest page uses rep target slider
-//2. NOT recovery page, since to change the time we are using a whole seperate bit of UI
-//    the seperate bit of UI, WILL NOT have a pop up, because it will be a pop up itself
-
 //enum to make it easier to pass the "Icon"
 enum FitIcons {Endurance, Hypertrophy, HypAndStr, Strength}
 

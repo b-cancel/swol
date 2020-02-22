@@ -161,7 +161,6 @@ class _TextFieldWithClearButtonState extends State<TextFieldWithClearButton> {
                         keyboardType: TextInputType.text,
                         textInputAction: textInputAction,
                         decoration: InputDecoration(
-                          //TODO: figure out why all of a sudden this was required to not cause some ugly overflow problem
                           contentPadding: EdgeInsets.only(
                             top: 12,
                             bottom: 18,
@@ -222,7 +221,6 @@ class _TextFieldWithClearButtonState extends State<TextFieldWithClearButton> {
       });
     }
     else{
-      //TODO: know if "has" or "maybe have" is more correct and cover potential edge case
       //you know FOCUS SWITCH has been triggered IF 
       //1. isEditing.value == false (here)
       //2. widget.editOneAtAtime && focusNodeVN.value.hasFocus == false (else below)

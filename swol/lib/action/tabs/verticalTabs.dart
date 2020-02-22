@@ -162,7 +162,6 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
   //    until the transition begins no other navigation buttons are expose
   //3. if we are moving towards the "suggest page"
   //    the next button is immediately hidden
-  //    TODO: can cover case where somehow maggically pressed but not worth
   waitForTransitionBegin(double startOffset){
     WidgetsBinding.instance.addPostFrameCallback((_){
       double currentOffset = pageViewController.offset;

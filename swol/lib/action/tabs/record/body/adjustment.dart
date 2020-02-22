@@ -69,7 +69,7 @@ class _MakeFunctionAdjustmentState extends State<MakeFunctionAdjustment> {
       //calculate all the rep-estimates for all functions
       for (int thisFunctionID = 0; thisFunctionID < 8; thisFunctionID++) {
         repEstimates[thisFunctionID] = ToReps.from1RMandWeight(
-          ExcercisePage.oneRepMaxes[thisFunctionID],
+          ExcercisePage.oneRepMaxes.value[thisFunctionID],
           //use recorded weight
           //since we are assuming
           //that's what the user couldn't change
@@ -116,7 +116,7 @@ class _MakeFunctionAdjustmentState extends State<MakeFunctionAdjustment> {
       for(int thisFunctionID = 0; thisFunctionID < 8; thisFunctionID++){
         weightEstimates[thisFunctionID] = ToWeight.fromRepAnd1Rm(
           reps.toDouble(), 
-          ExcercisePage.oneRepMaxes[thisFunctionID],
+          ExcercisePage.oneRepMaxes.value[thisFunctionID],
           thisFunctionID,
         ).round();
       }
@@ -280,7 +280,7 @@ class _MakeFunctionAdjustmentState extends State<MakeFunctionAdjustment> {
           //rep target used
           (widget.excercise.repTarget).toDouble(), 
           //one rep max that uses the same function as below
-          ExcercisePage.oneRepMaxes[
+          ExcercisePage.oneRepMaxes.value[
             widget.excercise.predictionID //TODO: not notifier?
           ], 
           //function index to use

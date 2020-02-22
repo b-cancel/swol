@@ -99,11 +99,11 @@ class LastTimeStamp{
   //-------------------------Archiving-------------------------
 
   static bool isHidden(DateTime lastTimeStamp){
-    print("checking if hidden: " + lastTimeStamp.toString());
+    //print("checking if hidden: " + lastTimeStamp.toString());
     if((lastTimeStamp).isBefore(DateTime.now())){
-      print("is after so may be hidden but check");
+      //print("is after so may be hidden but check");
       Duration timeSince = (DateTime.now()).difference(lastTimeStamp);
-      print("time since is: " + timeSince.toString());
+      //print("time since is: " + timeSince.toString());
       return (archivedLifeSpans <= timeSince); 
     }
     else return false;

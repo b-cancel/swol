@@ -28,7 +28,7 @@ class AddExcerciseButton extends StatelessWidget {
         child: FeatureWrapper(
           featureID: AFeature.AddExcercise.toString(),
           tapTarget: FloatingActionButton(
-            onPressed: null, //TODO: check
+            onPressed: null, 
             backgroundColor: Theme.of(context).accentColor,
             child: Icon(Icons.add),
           ),

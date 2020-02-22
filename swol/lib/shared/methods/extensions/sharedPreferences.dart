@@ -17,7 +17,7 @@ enum ValueName {
 //we a refraining from making it official
 class SharedPrefsExt {
   //variables
-  //TODO: always make sure each ValueName has a default
+  //each ValueName should make sure each ValueName has a default
   static Map<ValueName, dynamic> _nameToDefaultValue = {
     ValueName.IsDark: true,
     ValueName.TermsAgreed: false,

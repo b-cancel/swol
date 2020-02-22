@@ -65,7 +65,6 @@ class SetDescription extends StatelessWidget {
         ),
         children: [
           TextSpan(
-            //TODO: perhaps update this message different for all the condition
             //error & new
             //error & update
             //not error & new

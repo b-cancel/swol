@@ -27,9 +27,11 @@ class ExcerciseTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Duration transitionDuration = Duration(milliseconds: 300);
+
+    //widget
     return ListTile(
       onTap: (){
-        //TODO: remove all this testing code
         //-----
         print("id:" + excercise.id.toString());
         print("time stamp: " + excercise.lastTimeStamp.value.toString());
@@ -46,7 +48,6 @@ class ExcerciseTile extends StatelessWidget {
         App.navSpread.value = true;
 
         //page transition
-        Duration transitionDuration = Duration(milliseconds: 300);
         PageTransition page = PageTransition(
           duration: transitionDuration,
           type: PageTransitionType.rightToLeft, 
@@ -78,10 +79,13 @@ class ExcerciseTile extends StatelessWidget {
       subtitle: ExcerciseTileSubtitle(
         excercise: excercise,
       ),
-      trailing: ExcerciseTileLeading(
+      trailing: Icon(Icons.arrow_right),
+      
+      /*ExcerciseTileLeading(
         excercise: excercise,
         tileInSearch: tileInSearch,
       ),
+      */
     );
   }
 }

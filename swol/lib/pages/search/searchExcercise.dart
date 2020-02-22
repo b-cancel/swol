@@ -44,7 +44,6 @@ class _SearchExcerciseState extends State<SearchExcercise> {
 
     //find matching results
     if(searchString.length > 0){
-      //TODO: there is a much better way to do this if this slows things down
       //iterate through keys
       List<int> keys = excercises.keys.toList();
       for(int key = 0; key < keys.length; key++){
