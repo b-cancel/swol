@@ -134,7 +134,7 @@ class _ExcercisePageDarkState extends State<ExcercisePageDark> {
       //that we will will have passed all of page 2
       //and half of page 1
       //so the timer wont update given the changes and look ugly while transitioning
-      Future.delayed(widget.transitionDuration * (1/2), (){
+      Future.delayed(widget.transitionDuration, (){ 
         //reset timer (MUST HAPPEN FIRST)
         //TODO: but why tho?
         widget.excercise.tempStartTime = ValueNotifier<DateTime>(AnExcercise.nullDateTime);
