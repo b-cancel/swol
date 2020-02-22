@@ -2,6 +2,7 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:swol/action/page.dart';
+import 'package:swol/action/popUps/textValid.dart';
 import 'package:swol/action/shared/tooltips/repTargetAsPivot.dart';
 import 'package:swol/action/shared/tooltips/repsAsPivot.dart';
 import 'package:swol/action/shared/tooltips/setToolTips.dart';
@@ -53,6 +54,11 @@ class SetDisplay extends StatefulWidget {
 class _SetDisplayState extends State<SetDisplay> {
   updateState() {
     if (mounted) setState(() {});
+    /*
+    WidgetsBinding.instance.addPostFrameCallback((_){
+      
+    });
+    */
   }
 
   @override
@@ -122,17 +128,17 @@ class _SetDisplayState extends State<SetDisplay> {
 
     //what is our pivot
     Pivot goalSetPivot;
-    if (widget.excercise == null) {
-      int recordingWeight = int.parse(ExcercisePage?.setWeight?.value ?? "0") ?? 0;
+    if (widget.excercise == null) { //we aren't showing the last set
+      bool weightValid = isTextValid(ExcercisePage.setWeight.value);
       int calculatedGoalWeight = ExcercisePage?.setGoalWeight?.value ?? 0;
-      if(recordingWeight != 0 && recordingWeight == calculatedGoalWeight){
+      if(weightValid && int.parse(ExcercisePage.setWeight.value) == calculatedGoalWeight){
         //we are using our GOAL WEIGHT as our pivot
         goalSetPivot = Pivot.Weight;
       }
       else{
-        int recordingReps = int.parse(ExcercisePage?.setReps?.value ?? "0") ?? 0;
+        bool repsValid = isTextValid(ExcercisePage.setReps.value);
         int calculatedReps = ExcercisePage?.setGoalReps?.value ?? 0;
-        if(recordingReps != 0 && recordingReps == calculatedReps){
+        if(repsValid && int.parse(ExcercisePage.setReps.value) == calculatedReps){
           //we are using our GOAL WEIGHT as our pivot
           goalSetPivot = Pivot.Reps;
         }

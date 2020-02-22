@@ -198,8 +198,8 @@ class _ExcercisePageDarkState extends State<ExcercisePageDark> {
   }
 
   updateOneRepMaxes({int weight, int reps}){
-    weight = weight ?? widget.excercise.lastWeight;
-    reps = reps ?? widget.excercise.lastReps;
+    weight = weight ?? (widget?.excercise?.lastWeight ?? 0);
+    reps = reps ?? (widget?.excercise?.lastReps ?? 0);
     for(int functionID = 0; functionID < 8; functionID++){
       ExcercisePage.oneRepMaxes[functionID] = To1RM.fromWeightAndReps(
         weight.toDouble(), 
