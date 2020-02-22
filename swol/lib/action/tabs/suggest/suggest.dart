@@ -49,10 +49,10 @@ class _SuggestionState extends State<Suggestion> {
       (widget.excercise.repTarget).toDouble(), 
       //one rep max that uses the same function as below
       ExcercisePage.oneRepMaxes[
-        predictionID.value
+        widget.excercise.predictionID //TODO: not notifier?
       ], 
       //function index to use
-      predictionID.value,
+      widget.excercise.predictionID, //TODO: not notifier?
     ).round();
   }
 

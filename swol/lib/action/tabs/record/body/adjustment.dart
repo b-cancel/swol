@@ -48,7 +48,7 @@ class _MakeFunctionAdjustmentState extends State<MakeFunctionAdjustment> {
   final List<int> weightEstimates = new List<int>(8);
   final ValueNotifier<bool> allWeightEstimatesValid = new ValueNotifier<bool>(false);
 
-  updatePredictionID(){
+  updatePredictionID(){ 
     widget.excercise.predictionID = predictionID.value;
     updateGoal();
   }
@@ -61,7 +61,7 @@ class _MakeFunctionAdjustmentState extends State<MakeFunctionAdjustment> {
     //so ideally we want to match their weight here and take it from ther
     String setWeightString = ExcercisePage?.setWeight?.value ?? "";
     bool weightRecordedValid = isTextValid(setWeightString);
-    double weight = weightRecordedValid != null ? double.parse(setWeightString) : 0;
+    double weight = weightRecordedValid ? double.parse(setWeightString) : 0;
 
     //check conditions
     if (weightRecordedValid){
@@ -108,7 +108,7 @@ class _MakeFunctionAdjustmentState extends State<MakeFunctionAdjustment> {
     //we use 1RM and reps to get weights
     String setRepsString = ExcercisePage?.setReps?.value ?? "";
     bool repsRecordedValid = isTextValid(setRepsString);
-    int reps = repsRecordedValid != null ? int.parse(setRepsString) : 0;
+    int reps = repsRecordedValid ? int.parse(setRepsString) : 0;
 
     //reps are valid so if we can use them
     if(repsRecordedValid){
@@ -261,12 +261,12 @@ class _MakeFunctionAdjustmentState extends State<MakeFunctionAdjustment> {
   //update the goal set based on init
   //and changed valus
   updateGoal() {
-    if (allWeightEstimatesValid.value) {
+    if (allRepsEstimatesValid.value) {
       //get calculated reps
       ExcercisePage.setGoalReps.value = repEstimates[predictionID.value];
       ExcercisePage.setGoalWeight.value = int.parse(ExcercisePage.setWeight.value);
     } else {
-      if(allRepsEstimatesValid.value){
+      if(allWeightEstimatesValid.value){
         //get calculatd weight
         ExcercisePage.setGoalWeight.value = weightEstimates[predictionID.value];
         ExcercisePage.setGoalReps.value = int.parse(ExcercisePage.setReps.value);
@@ -281,10 +281,10 @@ class _MakeFunctionAdjustmentState extends State<MakeFunctionAdjustment> {
           (widget.excercise.repTarget).toDouble(), 
           //one rep max that uses the same function as below
           ExcercisePage.oneRepMaxes[
-            predictionID.value
+            widget.excercise.predictionID //TODO: not notifier?
           ], 
           //function index to use
-          predictionID.value,
+          widget.excercise.predictionID, //TODO: not notifier?
         ).round();
       }
     }

@@ -256,7 +256,7 @@ class _SetDisplayState extends State<SetDisplay> {
                                 ),
                                 child: Icon(
                                   FontAwesomeIcons.dumbbell,
-                                  size: 12,
+                                  size: 8.5,
                                   color: foregroundColor,
                                 ),
                               ),
@@ -350,12 +350,13 @@ class UpdatingSetText extends StatefulWidget {
 
 class _UpdatingSetTextState extends State<UpdatingSetText> {
   updateState() {
-    if (mounted) {
-      //rebuild next frame to not cause issues elsewhere
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        setState(() {});
-      });
-    }
+    if (mounted)setState(() {});
+    /*
+    //rebuild next frame to not cause issues elsewhere
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      
+    });
+    */
   }
 
   @override
@@ -484,7 +485,7 @@ class ButtonWrapper extends StatelessWidget {
                           width: 24,
                           height: 24,
                           padding: EdgeInsets.only(
-                            top: 2,
+                            top: 4,
                             right: 2,
                           ),
                           child: Container(
@@ -498,6 +499,7 @@ class ButtonWrapper extends StatelessWidget {
                             padding: EdgeInsets.all(2),
                             child: FittedBox(
                               fit: BoxFit.contain,
+                              alignment: Alignment.center,
                               child: Conditional(
                                 condition: usingRT, 
                                 ifTrue: Text(

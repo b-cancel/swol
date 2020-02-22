@@ -133,7 +133,6 @@ class SetRecord extends StatelessWidget {
                       excercise: excercise,
                     ),
                   ),
-                  Expanded(child: Container()),
                   recordSetFields,
                   buttonsOnBottom,
                 ],

@@ -51,11 +51,11 @@ class Functions{
   static List getOneRepMaxValues(int weight, int reps, {bool onlyIfNoBackUp: true}){
     List<double> possibleOneRepMaxes = new List<double>();
     List<double> possibleDifferentFunctionOneRepMaxes = new List<double>();
-    for(int i = 0; i < 8; i++){
+    for(int functionID = 0; functionID < 8; functionID++){
       double oneRepMax = To1RM.fromWeightAndReps(
         weight.toDouble(), 
         reps.toDouble(), 
-        i,
+        functionID,
       );
 
       //add all
@@ -65,9 +65,9 @@ class Functions{
         bool usingBackUpFunction = true;
 
         //if we are using one of the 3 functions that use backups, make sure we aren't going to
-        if(i == 0 && brzyckiUsefull(reps.toDouble())) usingBackUpFunction = false;
-        else if(i == 1 && mcGlothinOrLandersUsefull(reps.toDouble())) usingBackUpFunction = false;
-        else if(i == 2 && almazanUsefull(reps.toDouble())) usingBackUpFunction = false;
+        if(functionID == 0 && brzyckiUsefull(reps.toDouble())) usingBackUpFunction = false;
+        else if(functionID == 1 && mcGlothinOrLandersUsefull(reps.toDouble())) usingBackUpFunction = false;
+        else if(functionID == 2 && almazanUsefull(reps.toDouble())) usingBackUpFunction = false;
         else usingBackUpFunction = false; //any function without a limit
         
         //add only those that didn't use a back up function
