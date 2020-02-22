@@ -28,7 +28,7 @@ import 'package:swol/shared/widgets/simple/scrollToTop.dart';
 //  so if you did legs on monday and 3 other work outs
 //  when its monday again you expect that workout to be on top with the first workout you did to be on top in the section
 
-class ExcerciseSelectStateless extends StatelessWidget {
+class ExcerciseSelectStateless extends StatelessWidget { 
   @override
   Widget build(BuildContext context) {
     return ExcerciseSelect();
