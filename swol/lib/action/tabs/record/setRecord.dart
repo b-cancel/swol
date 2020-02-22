@@ -16,12 +16,6 @@ import 'package:swol/action/page.dart';
 import 'package:swol/shared/structs/anExcercise.dart';
 import 'package:swol/shared/methods/theme.dart';
 
-//TODO: on set init AND on resume we focus on first (if there is anything to focus on obvi)
-//TODO: this includes pop ups
-
-//TODO: the set should also be shown the revert button
-//TODO: make sure that we refocus on the problematic field
-
 //widget
 class SetRecord extends StatelessWidget {
   SetRecord({
@@ -41,8 +35,6 @@ class SetRecord extends StatelessWidget {
   //build
   @override
   Widget build(BuildContext context) {
-    print(ExcercisePage.oneRepMaxes.toString());
-    
     double fullHeight = MediaQuery.of(context).size.height;
     double appBarHeight = 56; //constant according to flutter docs
     double spaceToRedistribute =

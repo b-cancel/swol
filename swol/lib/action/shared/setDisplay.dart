@@ -123,8 +123,6 @@ class _SetDisplayState extends State<SetDisplay> {
     //what is our pivot
     Pivot goalSetPivot;
     if (widget.excercise == null) {
-      goalSetPivot = Pivot.RepTarget;
-      /*
       int recordingWeight = int.parse(ExcercisePage?.setWeight?.value ?? "0") ?? 0;
       int calculatedGoalWeight = ExcercisePage?.setGoalWeight?.value ?? 0;
       if(recordingWeight != 0 && recordingWeight == calculatedGoalWeight){
@@ -140,7 +138,6 @@ class _SetDisplayState extends State<SetDisplay> {
         }
         else goalSetPivot = Pivot.RepTarget;
       }
-      */
     }
     //ELSE we are just show our last set
 

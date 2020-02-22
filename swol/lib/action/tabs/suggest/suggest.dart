@@ -8,17 +8,9 @@ import 'package:swol/action/tabs/suggest/changeSuggestion.dart';
 import 'package:swol/action/bottomButtons/button.dart';
 import 'package:swol/action/page.dart';
 import 'package:swol/other/functions/1RM&R=W.dart';
-import 'package:swol/other/functions/W&R=1RM.dart';
 
 //internal: other
 import 'package:swol/shared/structs/anExcercise.dart';
-
-//TODO: from set record page
-//we don't care if we are BEFORE or AFTER our set target
-//either way the user has decided to continue
-//we should respect that
-//and there are no other bottom buttons to click or distract
-//so we simply highligt the bottom next button at all times
 
 //widget
 class Suggestion extends StatefulWidget {
@@ -48,20 +40,19 @@ class _SuggestionState extends State<Suggestion> {
   //update the goal set based on init
   //and changed valus
   updateGoal(){
+    //update goal reps
     ExcercisePage.setGoalReps.value = widget.excercise.repTarget;
-
-    //calc oneRM based on previous
-    double oneRM = To1RM.fromWeightAndReps(
-      widget.excercise.lastWeight.toDouble(), 
-      widget.excercise.lastReps.toDouble(), 
-      widget.excercise.predictionID,
-    );
 
     //calc goal weight based on goal reps
     ExcercisePage.setGoalWeight.value = ToWeight.fromRepAnd1Rm(
-      ExcercisePage.setGoalReps.value.toDouble(), 
-      oneRM, 
-      widget.excercise.predictionID,
+      //rep target used
+      (widget.excercise.repTarget).toDouble(), 
+      //one rep max that uses the same function as below
+      ExcercisePage.oneRepMaxes[
+        predictionID.value
+      ], 
+      //function index to use
+      predictionID.value,
     ).round();
   }
 
