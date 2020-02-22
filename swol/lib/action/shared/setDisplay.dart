@@ -53,7 +53,9 @@ class SetDisplay extends StatefulWidget {
 
 class _SetDisplayState extends State<SetDisplay> {
   updateState() {
-    if (mounted) setState(() {});
+    WidgetsBinding.instance.addPostFrameCallback((_){
+      if (mounted) setState(() {});
+    });
   }
 
   @override

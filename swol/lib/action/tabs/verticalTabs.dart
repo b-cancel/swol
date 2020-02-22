@@ -38,6 +38,21 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
     //super init
     super.initState();
 
+    //set the first page we will be at based on startTimerValue
+    int initialPage;
+    bool timerNotStarted = widget.excercise.tempStartTime.value == AnExcercise.nullDateTime;
+    if(timerNotStarted){
+      if(widget.excercise.lastWeight == null) initialPage = 1;
+      else initialPage = 0;
+    }
+    else initialPage = 2;
+    
+    //set hero position depending on start page (updated when pages switch)
+    goalSetUp = new ValueNotifier<bool>(initialPage == 0);
+
+    //update value globally
+    ExcercisePage.pageNumber.value = initialPage;
+
     //initally set the notifiers
     //after this our notifiers initially set our controllers
     //our controllers update our notifiers
@@ -47,19 +62,6 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
     //extra step needed because null.toString() isn't null
     ExcercisePage.setWeight.value = (tempWeight != null) ? tempWeight.toString() : "";
     ExcercisePage.setReps.value = (tempReps != null) ? tempReps.toString() : "";
-
-    //set the first page we will be at based on startTimerValue
-    int initialPage;
-    bool timerNotStarted = widget.excercise.tempStartTime.value == AnExcercise.nullDateTime;
-    if(timerNotStarted){
-      if(widget.excercise.lastWeight == null) initialPage = 1;
-      else initialPage = 0;
-    }
-    else initialPage = 2;
-    ExcercisePage.pageNumber.value = initialPage; //update globally
-
-    //set hero position depending on start page (updated when pages switch)
-    goalSetUp = new ValueNotifier<bool>(initialPage == 0);
 
     //have the page controller go to that initial page
     pageViewController = PageController(
