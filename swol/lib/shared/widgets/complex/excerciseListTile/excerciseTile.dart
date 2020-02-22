@@ -79,13 +79,10 @@ class ExcerciseTile extends StatelessWidget {
       subtitle: ExcerciseTileSubtitle(
         excercise: excercise,
       ),
-      trailing: Icon(Icons.arrow_right),
-      
-      /*ExcerciseTileLeading(
+      trailing: ExcerciseTileLeading(
         excercise: excercise,
         tileInSearch: tileInSearch,
       ),
-      */
     );
   }
 }

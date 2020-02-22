@@ -104,14 +104,17 @@ class _ExcercisePageDarkState extends State<ExcercisePageDark> {
           widget.excercise.tempSetCount.value + 1,
         );
 
-        //we are recording our FIRST set so may go back to it 
-        //if we delete it instead of deciding to continue
-        if(widget.excercise.tempSetCount.value == 1){ 
-          widget.excercise.backUpTimeStamp = widget.excercise.lastTimeStamp.value;
-        }
-        //set in progress time stamp
-        widget.excercise.lastTimeStamp = ValueNotifier<DateTime>(LastTimeStamp.inProgressDateTime());
+        
       }
+
+      //we are recording our FIRST set so may go back to it 
+      //if we delete it instead of deciding to continue
+      if(widget.excercise.tempSetCount.value == 1){ 
+        widget.excercise.backUpTimeStamp = widget.excercise.lastTimeStamp.value;
+      }
+
+      //set or update in progress time stamp so the order is kept with focus on the top item
+      widget.excercise.lastTimeStamp = ValueNotifier<DateTime>(LastTimeStamp.inProgressDateTime());
 
       //action complete
       ExcercisePage.updateSet.value = false;
