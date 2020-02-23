@@ -20,10 +20,12 @@ import 'package:swol/other/functions/helper.dart';
 class ExcerciseTileSubtitle extends StatefulWidget {
   ExcerciseTileSubtitle({
     @required this.excercise,
+    @required this.transitionDuration,
     @required this.dtTimerStarted,
   });
 
   final AnExcercise excercise;
+  final Duration transitionDuration;
   final ValueNotifier<DateTime> dtTimerStarted;
 
   @override

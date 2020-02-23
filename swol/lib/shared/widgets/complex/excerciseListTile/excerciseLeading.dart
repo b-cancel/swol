@@ -18,24 +18,40 @@ class ExcerciseTileLeading extends StatefulWidget {
     @required this.excercise,
     @required this.tileInSearch,
     @required this.dtTimerStarted,
+    @required this.transitionDuration,
   });
 
   final AnExcercise excercise;
   final bool tileInSearch;
   final ValueNotifier<DateTime> dtTimerStarted;
+  final Duration transitionDuration;
 
   @override
   _ExcerciseTileLeadingState createState() => _ExcerciseTileLeadingState();
 }
 
 class _ExcerciseTileLeadingState extends State<ExcerciseTileLeading> {
-  actualUpdate(Duration randomDuration){
+  //TODO: figure out wherethe random notifier identifiers are comming from
+  //we start with: 74fe0
+  //then change to: d515f AND 74fe0
+  //then go back to: 74fe0
+  //because we go back this whole thing works but it shouldn't change IDs in the first place
+  /*
+  before wait: ValueNotifier<DateTime>#74fe0(1969-12-31 18:00:00.000)
+  I/flutter ( 1512): build: ValueNotifier<DateTime>#74fe0(1969-12-31 18:00:00.000)
+  I/flutter ( 1512): build: ValueNotifier<DateTime>#d515f(1969-12-31 18:00:00.000)
+  I/flutter ( 1512): after wait: ValueNotifier<DateTime>#74fe0(1969-12-31 18:00:00.000)
+  I/flutter ( 1512): build: ValueNotifier<DateTime>#74fe0(1969-12-31 18:00:00.000)
+  */
+  actualUpdate(){
+    print("after wait: " + widget.dtTimerStarted.toString());
     if(mounted) setState(() {});
   }
 
   updateState(){
-    //wait one frame for things to update
-    WidgetsBinding.instance.addPostFrameCallback(actualUpdate);
+    print("before wait: " + widget.dtTimerStarted.toString());
+    //NOTE: just waiting a single frame isn't enough
+    Future.delayed(widget.transitionDuration, actualUpdate);
   }
 
   @override
@@ -59,6 +75,8 @@ class _ExcerciseTileLeadingState extends State<ExcerciseTileLeading> {
   //and also 
   @override
   Widget build(BuildContext context) {
+    print("build: " + widget.dtTimerStarted.toString());
+
     //NOTE: timer takes precendence over regular inprogress
     if(widget.dtTimerStarted.value != AnExcercise.nullDateTime){
       return AnimatedMiniNormalTimer(

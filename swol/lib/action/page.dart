@@ -139,6 +139,7 @@ class _ExcercisePageDarkState extends State<ExcercisePageDark> {
       //NOTE: that at the moment I should wait for lastWeight and lastReps to update 
       //before reacting to the change here in the one rep max chip
       widget.dtTimerStarted.value = AnExcercise.nullDateTime;
+      print("******************************updated DT to " + widget.dtTimerStarted.value.toString());
 
       //save values (that we know are valid)
       widget.excercise.lastWeight = widget.excercise.tempWeight;

@@ -31,7 +31,7 @@ class ExcerciseTile extends StatefulWidget {
 
 class _ExcerciseTileState extends State<ExcerciseTile> {
   //the value notifiers passed all over the place in the widgets below
-  final ValueNotifier<DateTime> dtTimerStarted = new ValueNotifier(AnExcercise.nullDateTime);
+  final ValueNotifier<DateTime> dtTimerStarted = ValueNotifier(AnExcercise.nullDateTime);
 
   updateTempStartTime(){
     if(dtTimerStarted.value == AnExcercise.nullDateTime){
@@ -113,10 +113,12 @@ class _ExcerciseTileState extends State<ExcerciseTile> {
       //because otherwise it will yeild alot of wasted space
       subtitle: ExcerciseTileSubtitle(
         excercise: widget.excercise,
+        transitionDuration: transitionDuration,
         dtTimerStarted: dtTimerStarted,
       ),
       trailing: ExcerciseTileLeading(
         excercise: widget.excercise,
+        transitionDuration: transitionDuration,
         tileInSearch: widget.tileInSearch,
         dtTimerStarted: dtTimerStarted,
       ),
