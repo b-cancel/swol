@@ -66,7 +66,7 @@ class _ExcerciseTileLeadingState extends State<ExcerciseTileLeading> {
       );
     }
     else if(LastTimeStamp.isInProgress(widget.excercise.lastTimeStamp)){
-      bool isLastSet = widget.excercise.tempSetCount >= widget.excercise.setTarget;
+      bool isLastSet = (widget.excercise.tempSetCount ?? 0) >= widget.excercise.setTarget;
       return Hero(
         tag: "excercise" + (isLastSet ? "Complete" : "Continue") + widget.excercise.id.toString(),
         createRectTween: (begin, end) {

@@ -155,7 +155,7 @@ class _FloatingDoneButtonState extends State<FloatingDoneButton> {
     String message = "";
 
     //handle page changes
-    int setsPassedFromHere = widget.excercise.tempSetCount;
+    int setsPassedFromHere = widget.excercise.tempSetCount ?? 0;
     Complete completionType;
     if(ExcercisePage.pageNumber.value != 2){
       //for page 0 and 1 

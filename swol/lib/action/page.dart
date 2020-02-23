@@ -108,7 +108,10 @@ class _ExcercisePageDarkState extends State<ExcercisePageDark> {
         ExcercisePage.dtTimerStartedS.value = DateTime.now(); 
 
         //indicate you have started the set
-        widget.excercise.tempSetCount += 1;
+        if(widget.excercise.tempSetCount == null){
+          widget.excercise.tempSetCount = 1;
+        }
+        else widget.excercise.tempSetCount += 1;
 
         //we are recording our FIRST set so may go back to it 
         //if we delete it instead of deciding to continue
