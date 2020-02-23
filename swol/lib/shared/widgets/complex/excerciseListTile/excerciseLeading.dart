@@ -34,6 +34,7 @@ class _ExcerciseTileLeadingState extends State<ExcerciseTileLeading> {
   }
 
   updateState(){
+    //wait one frame for things to update
     WidgetsBinding.instance.addPostFrameCallback(actualUpdate);
   }
 

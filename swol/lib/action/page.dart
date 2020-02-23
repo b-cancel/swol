@@ -138,19 +138,21 @@ class _ExcercisePageDarkState extends State<ExcercisePageDark> {
       );
 
       //reset timer
-      //NOTE: must happen first for leading widget to update properly (both bits)
+      //TODO: figure out why at some point I marked that this NEEDED to be BEFORE everything else
+      //NOTE: that at the moment I should wait for lastWeight and lastReps to update 
+      //before reacting to the change here in the one rep max chip
       ExcercisePage.dtTimerStartedS.value = AnExcercise.nullDateTime;
 
-      //when we end set we KNOW our tempWeight and tempReps are valid 
-
-      //handle weight (we KNOW its VALID)
+      //save values (that we know are valid)
       widget.excercise.lastWeight = widget.excercise.tempWeight;
-      widget.excercise.tempWeight = null;
-      ExcercisePage.setWeight.value = "";
-
-      //handle reps (we KNOW its VALID)
       widget.excercise.lastReps = widget.excercise.tempReps;
+
+      //wipe temps
+      widget.excercise.tempWeight = null;
       widget.excercise.tempReps = null;
+
+      //reset notifiers
+      ExcercisePage.setWeight.value = "";
       ExcercisePage.setReps.value = "";
 
       //move onto the next set
