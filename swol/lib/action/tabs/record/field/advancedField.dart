@@ -51,7 +51,7 @@ class _RecordFieldsState extends State<RecordFields> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       //NOTE: if you don't wait until transition things begin to break
       Future.delayed(widget.heroAnimDuration, () {
-        focusOnFirstInvalid();
+        if(mounted) focusOnFirstInvalid();
       });
     });
 

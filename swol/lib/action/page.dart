@@ -103,12 +103,12 @@ class _ExcercisePageDarkState extends State<ExcercisePageDark> {
         widget.excercise.tempSetCount = ValueNotifier<int>(
           widget.excercise.tempSetCount.value + 1,
         );
-      }
 
-      //we are recording our FIRST set so may go back to it 
-      //if we delete it instead of deciding to continue
-      if(widget.excercise.tempSetCount.value == 1){ 
-        widget.excercise.backUpTimeStamp = widget.excercise.lastTimeStamp.value;
+        //we are recording our FIRST set so may go back to it 
+        //if we delete it instead of deciding to continue
+        if(widget.excercise.tempSetCount.value == 1){ 
+          widget.excercise.backUpTimeStamp = widget.excercise.lastTimeStamp.value;
+        }
       }
 
       //set or update in progress time stamp so the order is kept with focus on the top item
@@ -121,8 +121,6 @@ class _ExcercisePageDarkState extends State<ExcercisePageDark> {
 
   nextSet(){
     if(ExcercisePage.nextSet.value){
-      print("BEFORE: " + ExcercisePage.oneRepMaxes.toString());
-
       //must be done first 
       //so that our suggest page has access to right 1 rep maxes
       updateOneRepMaxes(
@@ -130,13 +128,9 @@ class _ExcercisePageDarkState extends State<ExcercisePageDark> {
         reps: widget.excercise.tempReps,
       );
 
-      print("AFTER 1: " + ExcercisePage.oneRepMaxes.toString());
-
       //reset timer
       //NOTE: must happen first for leading widget to update properly (both bits)
       widget.excercise.tempStartTime = ValueNotifier<DateTime>(AnExcercise.nullDateTime);
-
-      print("AFTER 1a: " + ExcercisePage.oneRepMaxes.toString());
 
       //when we end set we KNOW our tempWeight and tempReps are valid 
 
@@ -145,21 +139,15 @@ class _ExcercisePageDarkState extends State<ExcercisePageDark> {
       widget.excercise.tempWeight = null;
       ExcercisePage.setWeight.value = "";
 
-      print("AFTER 1b: " + ExcercisePage.oneRepMaxes.toString());
-
       //handle reps (we KNOW its VALID)
       widget.excercise.lastReps = widget.excercise.tempReps;
       widget.excercise.tempReps = null;
       ExcercisePage.setReps.value = "";
 
-      print("AFTER 2: " + ExcercisePage.oneRepMaxes.toString());
-
       //move onto the next set
       //NOTE: must happen after all variables updates
       //since the suggest page will use the variables in their calculations
       ExcercisePage.pageNumber.value = 0;
-
-      print("AFTER 3: " + ExcercisePage.oneRepMaxes.toString());
 
       //action complete
       ExcercisePage.nextSet.value = false;
@@ -189,7 +177,6 @@ class _ExcercisePageDarkState extends State<ExcercisePageDark> {
     ExcercisePage.nextSet.addListener(nextSet);
 
     //one rep maxes
-    widget.excercise.tempStartTime.addListener(updateOneRepMaxes);
     updateOneRepMaxes();
   }
 
@@ -198,9 +185,6 @@ class _ExcercisePageDarkState extends State<ExcercisePageDark> {
     //remove listeners
     ExcercisePage.updateSet.removeListener(updateSet);
     ExcercisePage.nextSet.removeListener(nextSet);
-
-    //one rep maxes
-    widget.excercise.tempStartTime.removeListener(updateOneRepMaxes);
 
     //super dispose
     super.dispose();
