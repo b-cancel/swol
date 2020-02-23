@@ -9,12 +9,12 @@ import 'package:swol/other/otherHelper.dart';
 class CircleProgress extends StatelessWidget {
   CircleProgress({
     @required this.fullRed,
-    @required this.tempStartTime,
+    @required this.startTime,
     @required this.recoveryPeriod,
   });
 
   final bool fullRed;
-  final DateTime tempStartTime;
+  final DateTime startTime;
   final Duration recoveryPeriod;
 
   @override
@@ -28,7 +28,7 @@ class CircleProgress extends StatelessWidget {
     }
     else{
       //time calcs
-      DateTime timerStarted = tempStartTime;
+      DateTime timerStarted = startTime;
       Duration timePassed = DateTime.now().difference(timerStarted);
 
       //set basic variables

@@ -51,7 +51,7 @@ class ProgressCircle extends StatelessWidget {
                     fit: BoxFit.contain,
                     child: CircleProgress(
                       fullRed: controller.value == 1,
-                      tempStartTime: startTime,
+                      startTime: startTime,
                       recoveryPeriod: excercise.recoveryPeriod,
                     ),
                   ),

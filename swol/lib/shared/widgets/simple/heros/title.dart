@@ -95,6 +95,7 @@ class ExcerciseTitleHeroHelper extends StatelessWidget {
   }
 }
 
+//TODO: im pretty sure we can remove this
 //NOTE: this reloads simply because its stateful
 class ReloadingTitle extends StatefulWidget {
   ReloadingTitle({

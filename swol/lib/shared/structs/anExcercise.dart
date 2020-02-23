@@ -157,10 +157,6 @@ class AnExcercise{
   ){
     //NOTE: for all notifier variables we must first create them with some default
 
-    //variables that have notifiers 
-    //that are required to have atleast a default value
-    _tempStartTime = new ValueNotifier<DateTime>(nullDateTime);
-
     //required to pass variables
     _name = name;
     _url = url;
@@ -215,9 +211,7 @@ class AnExcercise{
 
     _tempWeight = map["tempWeight"];
     _tempReps = map["tempReps"];
-    _tempStartTime = new ValueNotifier<DateTime>(
-      _stringToDateTime(map["tempStartTime"])
-    );
+    _tempStartTime = _stringToDateTime(map["tempStartTime"]);
     var tsc = map["tempSetCount"];
     _tempSetCount = new ValueNotifier<int>(
       tsc == null ? nullInt : tsc,
@@ -264,13 +258,13 @@ class AnExcercise{
 
       "tempWeight": tempWeight,
       "tempReps": tempReps,
-      "tempStartTime": _dateTimeToString(tempStartTime.value),
+      "tempStartTime": _dateTimeToString(tempStartTime),
       "tempSetCount": tempSetCount.value,
     };
   }
 
   static String _dateTimeToString(DateTime dt){
-    if(dt == nullDateTime) return null;
+    if(dt == nullDateTime) return null; //NOTE: legacy code
     else return dt?.toIso8601String() ?? null;
   }
 

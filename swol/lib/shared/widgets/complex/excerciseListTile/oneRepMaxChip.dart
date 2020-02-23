@@ -20,9 +20,11 @@ import 'package:swol/other/functions/helper.dart';
 class ExcerciseTileSubtitle extends StatefulWidget {
   ExcerciseTileSubtitle({
     @required this.excercise,
+    @required this.dtTimerStarted,
   });
 
   final AnExcercise excercise;
+  final ValueNotifier<DateTime> dtTimerStarted;
 
   @override
   _ExcerciseTileSubtitleState createState() => _ExcerciseTileSubtitleState();
@@ -31,16 +33,12 @@ class ExcerciseTileSubtitle extends StatefulWidget {
 class _ExcerciseTileSubtitleState extends State<ExcerciseTileSubtitle> {
   actualUpdate(Duration randomDuration){
     //a set was just completed so there WILL be a new last set
-    if(widget.excercise.tempStartTime.value == AnExcercise.nullDateTime){
+    if(widget.dtTimerStarted.value == AnExcercise.nullDateTime){
       print("*****************************************new last last set");
       print(widget.excercise.lastWeight.toString() + " x " + widget.excercise.lastReps.toString());
       if(mounted) setState(() {});
     }
     else print("******************************************started a set");
-  }
-
-  justPrint(){
-    print("just printing****************************************");
   }
 
   updateState(){
@@ -57,15 +55,13 @@ class _ExcerciseTileSubtitleState extends State<ExcerciseTileSubtitle> {
     super.initState();
 
     //only changes when started or ended
-    widget.excercise.tempStartTime.addListener(updateState);
-    widget.excercise.tempStartTime.addListener(justPrint);
+    widget.dtTimerStarted.addListener(updateState);
   }
 
   @override
   void dispose() { 
     //only changes when started or ended
-    widget.excercise.tempStartTime.removeListener(updateState);
-    widget.excercise.tempStartTime.removeListener(justPrint);
+    widget.dtTimerStarted.removeListener(updateState);
 
     //super dispose
     super.dispose();

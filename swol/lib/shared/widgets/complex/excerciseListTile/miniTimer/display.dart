@@ -74,7 +74,7 @@ class WatchUI extends StatelessWidget {
                   noTimeLeft: noTimeLeft,
                 ),
                 //-----circle that show progress
-                ProgressCircle(
+                ProgressCircle( 
                   excercise: excercise,
                   controller: controller,
                   startTime: startTime,
