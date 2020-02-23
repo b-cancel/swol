@@ -121,6 +121,8 @@ class _ExcercisePageDarkState extends State<ExcercisePageDark> {
 
   nextSet(){
     if(ExcercisePage.nextSet.value){
+      print("BEFORE: " + ExcercisePage.oneRepMaxes.toString());
+
       //must be done first 
       //so that our suggest page has access to right 1 rep maxes
       updateOneRepMaxes(
@@ -128,12 +130,13 @@ class _ExcercisePageDarkState extends State<ExcercisePageDark> {
         reps: widget.excercise.tempReps,
       );
 
-      //move onto the next set
-      ExcercisePage.pageNumber.value = 0;
+      print("AFTER 1: " + ExcercisePage.oneRepMaxes.toString());
 
       //reset timer
       //NOTE: must happen first for leading widget to update properly (both bits)
       widget.excercise.tempStartTime = ValueNotifier<DateTime>(AnExcercise.nullDateTime);
+
+      print("AFTER 1a: " + ExcercisePage.oneRepMaxes.toString());
 
       //when we end set we KNOW our tempWeight and tempReps are valid 
 
@@ -142,10 +145,21 @@ class _ExcercisePageDarkState extends State<ExcercisePageDark> {
       widget.excercise.tempWeight = null;
       ExcercisePage.setWeight.value = "";
 
+      print("AFTER 1b: " + ExcercisePage.oneRepMaxes.toString());
+
       //handle reps (we KNOW its VALID)
       widget.excercise.lastReps = widget.excercise.tempReps;
       widget.excercise.tempReps = null;
       ExcercisePage.setReps.value = "";
+
+      print("AFTER 2: " + ExcercisePage.oneRepMaxes.toString());
+
+      //move onto the next set
+      //NOTE: must happen after all variables updates
+      //since the suggest page will use the variables in their calculations
+      ExcercisePage.pageNumber.value = 0;
+
+      print("AFTER 3: " + ExcercisePage.oneRepMaxes.toString());
 
       //action complete
       ExcercisePage.nextSet.value = false;
