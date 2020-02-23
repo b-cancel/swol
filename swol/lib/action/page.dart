@@ -103,8 +103,6 @@ class _ExcercisePageDarkState extends State<ExcercisePageDark> {
         widget.excercise.tempSetCount = ValueNotifier<int>(
           widget.excercise.tempSetCount.value + 1,
         );
-
-        
       }
 
       //we are recording our FIRST set so may go back to it 
@@ -133,35 +131,24 @@ class _ExcercisePageDarkState extends State<ExcercisePageDark> {
       //move onto the next set
       ExcercisePage.pageNumber.value = 0;
 
-      //we want to let atleast half of the animation play out
-      //that we will will have passed all of page 2
-      //and half of page 1
-      //so the timer wont update given the changes and look ugly while transitioning
-      Future.delayed(widget.transitionDuration * (1/2), (){ 
-        //TODO: for the subtitle to work right, timer reseting must happen last
+      //reset timer
+      //NOTE: must happen first for leading widget to update properly (both bits)
+      widget.excercise.tempStartTime = ValueNotifier<DateTime>(AnExcercise.nullDateTime);
 
-        //when we end set we KNOW our tempWeight and tempReps are valid 
+      //when we end set we KNOW our tempWeight and tempReps are valid 
 
-        //handle weight (we KNOW its VALID)
-        widget.excercise.lastWeight = widget.excercise.tempWeight;
-        widget.excercise.tempWeight = null;
-        ExcercisePage.setWeight.value = "";
+      //handle weight (we KNOW its VALID)
+      widget.excercise.lastWeight = widget.excercise.tempWeight;
+      widget.excercise.tempWeight = null;
+      ExcercisePage.setWeight.value = "";
 
-        //handle reps (we KNOW its VALID)
-        widget.excercise.lastReps = widget.excercise.tempReps;
-        widget.excercise.tempReps = null;
-        ExcercisePage.setReps.value = "";
+      //handle reps (we KNOW its VALID)
+      widget.excercise.lastReps = widget.excercise.tempReps;
+      widget.excercise.tempReps = null;
+      ExcercisePage.setReps.value = "";
 
-        print("***********************************************************************************");
-        print(widget.excercise.lastWeight.toString() + " x " + widget.excercise.lastReps.toString());
-        print("***********************************************************************************");
-
-        //reset timer
-        widget.excercise.tempStartTime = ValueNotifier<DateTime>(AnExcercise.nullDateTime);
-
-        //action complete
-        ExcercisePage.nextSet.value = false;    
-      });
+      //action complete
+      ExcercisePage.nextSet.value = false;
     }
   }
 

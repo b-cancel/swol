@@ -98,6 +98,8 @@ class _MakeFunctionAdjustmentState extends State<MakeFunctionAdjustment> {
     }
     else allRepsEstimatesValid.value = false;
 
+    print("estimatedReps:  " + repEstimates.toString());
+
     //update the goal
     if(updateTheGoal) updateGoal();
   }
@@ -125,7 +127,7 @@ class _MakeFunctionAdjustmentState extends State<MakeFunctionAdjustment> {
       for(int thisFunctionID = 0; thisFunctionID < 8; thisFunctionID++){
         int estimate = weightEstimates[thisFunctionID];
         bool zeroOrLess = (estimate <= 0);
-        bool aboveUpperBound = (999 < estimate);
+        bool aboveUpperBound = (35 < estimate);
         if(zeroOrLess || aboveUpperBound){
           repsRecordedValid = false;
           break;
@@ -136,6 +138,8 @@ class _MakeFunctionAdjustmentState extends State<MakeFunctionAdjustment> {
       allWeightEstimatesValid.value = repsRecordedValid;
     }
     else allWeightEstimatesValid.value = false;
+
+    print("estimatedWeights:  " + weightEstimates.toString());
 
     //update the goal
     if(updateTheGoal) updateGoal();

@@ -112,7 +112,6 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
       child: SafeArea(
         child: Column(
           mainAxisSize: MainAxisSize.max,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             //NOTE: only 2 expands (the logo must always be centered)
             Expanded(

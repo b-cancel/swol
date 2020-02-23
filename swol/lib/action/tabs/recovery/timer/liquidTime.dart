@@ -63,6 +63,11 @@ class Timer extends StatefulWidget {
 }
 
 class _TimerState extends State<Timer> with TickerProviderStateMixin {
+  //we grab how much time has passed initially and never grab it again
+  //so that when we are transitioning to the next page
+  //and the timerStart time changes to null the whole screen doesn't go red
+  ValueNotifier<DateTime> timerStart = new ValueNotifier(AnExcercise.nullDateTime);
+
   //color constants
   final Color greyBackground = const Color(0xFFBFBFBF);
 
@@ -89,8 +94,7 @@ class _TimerState extends State<Timer> with TickerProviderStateMixin {
   //------------------------------inspect below-------------------------
   updateTimerDuration() {
     chosenBreakController.removeStatusListener(vibrateOnComplete);
-    Duration timePassed =
-        DateTime.now().difference(widget.excercise.tempStartTime.value);
+    Duration timePassed = DateTime.now().difference(timerStart.value);
     chosenBreakController.duration = widget.changeableTimerDuration.value;
     chosenBreakController.addStatusListener(vibrateOnComplete);
     chosenBreakController.forward(
@@ -123,6 +127,9 @@ class _TimerState extends State<Timer> with TickerProviderStateMixin {
     //super init
     super.initState();
 
+    //grab timer start initially
+    timerStart.value = widget.excercise.tempStartTime.value;
+
     //---Create Animation Controllers
     maxTimerController = AnimationController(
       vsync: this,
@@ -148,8 +155,7 @@ class _TimerState extends State<Timer> with TickerProviderStateMixin {
     widget.changeableTimerDuration.addListener(updateTimerDuration);
 
     //how much has already passed in the background
-    Duration timePassed =
-        DateTime.now().difference(widget.excercise.tempStartTime.value);
+    Duration timePassed = DateTime.now().difference(timerStart.value);
 
     //---default vibration starts after controllers end
     maxTimerController.addStatusListener(vibrateOnComplete);
@@ -197,9 +203,8 @@ class _TimerState extends State<Timer> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     String generatedHeroTag = "timer" + widget.excercise.id.toString();
 
-    //show UI depending on how much time has passed
-    DateTime timerStart = widget.excercise.tempStartTime.value;
-    Duration totalDurationPassed = DateTime.now().difference(timerStart);
+    //calc total duration passed
+    Duration totalDurationPassed = DateTime.now().difference(timerStart.value);
 
     //the information button
     Widget infoButton = Theme(
