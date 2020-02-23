@@ -27,16 +27,16 @@ class ExcerciseTileLeading extends StatefulWidget {
 }
 
 class _ExcerciseTileLeadingState extends State<ExcerciseTileLeading> {
+  actualUpdate(Duration randomDuration){
+    if(mounted) setState(() {});
+  }
+
   updateState(){
-    if(mounted){
-      //when opening to the timer widget things might break
-      //that only really for testing
-      //but this delay doesn't really break anything
-      //so its here and will probably stay here
-      WidgetsBinding.instance.addPostFrameCallback((_){
-        if(mounted) setState(() {});
-      });
-    } 
+    //when opening to the timer widget things might break
+    //that only really for testing
+    //but this delay doesn't really break anything
+    //so its here and will probably stay here
+    WidgetsBinding.instance.addPostFrameCallback(actualUpdate);
   }
 
   @override

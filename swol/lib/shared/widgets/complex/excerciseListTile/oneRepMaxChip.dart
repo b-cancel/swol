@@ -29,7 +29,7 @@ class ExcerciseTileSubtitle extends StatefulWidget {
 }
 
 class _ExcerciseTileSubtitleState extends State<ExcerciseTileSubtitle> {
-  updateState(){
+  actualUpdate(Duration randomDuration){
     //a set was just completed so there WILL be a new last set
     if(widget.excercise.tempStartTime.value == AnExcercise.nullDateTime){
       print("*****************************************new last last set");
@@ -37,6 +37,14 @@ class _ExcerciseTileSubtitleState extends State<ExcerciseTileSubtitle> {
       if(mounted) setState(() {});
     }
     else print("******************************************started a set");
+  }
+
+  updateState(){
+    print("will update state maybe?");
+    //NOTE: we CANT just still the after delay function into the afterDelay variable
+    //because the references won't be the same
+    //I frankly have no idea why this is, but it is
+    WidgetsBinding.instance.addPostFrameCallback(actualUpdate);
   }
 
   @override

@@ -144,6 +144,8 @@ class _ExcercisePageDarkState extends State<ExcercisePageDark> {
       widget.excercise.tempReps = null;
       ExcercisePage.setReps.value = "";
 
+      print("h: " + widget.excercise.lastWeight.toString() + " x " + widget.excercise.lastReps.toString());
+
       //move onto the next set
       //NOTE: must happen after all variables updates
       //since the suggest page will use the variables in their calculations
