@@ -18,15 +18,17 @@ class WatchUI extends StatelessWidget {
   WatchUI({
     @required this.controller,
     @required this.excercise,
+    @required this.startTime,
   });
 
   final AnimationController controller;
   final AnExcercise excercise;
+  final DateTime startTime;
 
   @override
   Widget build(BuildContext context) {
-    //NOTE: by now we already know the timer tempStartTime isn't null
-    DateTime timerStarted = excercise.tempStartTime.value;
+    //NOTE: by now we already know the timer startTime isn't null
+    DateTime timerStarted = startTime;
     Duration timePassed = DateTime.now().difference(timerStarted);
     bool noTimeLeft = timePassed > excercise.recoveryPeriod;
 
@@ -75,6 +77,7 @@ class WatchUI extends StatelessWidget {
                 ProgressCircle(
                   excercise: excercise,
                   controller: controller,
+                  startTime: startTime,
                 ),
                 //-----Shaking alarm clock that shows up on top at the end
                 Visibility(

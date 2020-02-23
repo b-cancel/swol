@@ -143,8 +143,6 @@ class _RecoveryState extends State<Recovery>
       ),
     );
   }
-
-  
 }
 
 class RecoveryButtonsWithWhiteContext extends StatelessWidget {

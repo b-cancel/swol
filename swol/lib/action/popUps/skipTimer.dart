@@ -6,7 +6,12 @@ import 'package:swol/shared/methods/theme.dart';
 import 'package:swol/shared/structs/anExcercise.dart';
 import 'package:swol/shared/widgets/complex/excerciseListTile/miniTimer/wrapper.dart';
 
-maybeSkipTimer(BuildContext context, AnExcercise excercise, Function ifSkip, Color headerColor) {
+maybeSkipTimer(
+  BuildContext context, 
+  AnExcercise excercise, 
+  Function ifSkip, 
+  Color headerColor,
+) {
   //remove focus so the pop up doesnt bring it back
   FocusScope.of(context).unfocus();
 

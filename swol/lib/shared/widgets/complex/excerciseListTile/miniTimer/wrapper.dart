@@ -21,6 +21,7 @@ class AnimatedMiniNormalTimer extends StatefulWidget {
 class _AnimatedMiniNormalTimerState extends State<AnimatedMiniNormalTimer> with SingleTickerProviderStateMixin{
   final Duration maxDuration = const Duration(minutes: 5);
   AnimationController controller; 
+  DateTime startTime;
 
   //function removable from listeners
   updateState(){
@@ -45,8 +46,9 @@ class _AnimatedMiniNormalTimerState extends State<AnimatedMiniNormalTimer> with 
 
     //start animation
     //NOTICE: this value never really changes, once its started... its started...
-    //NOTE: again by now we know tempStartTime isnt null
-    Duration timePassed = DateTime.now().difference(widget.excercise.tempStartTime.value);
+    //NOTE: again by now we know timerStart isnt null
+    startTime = widget.excercise.tempStartTime.value;
+    Duration timePassed = DateTime.now().difference(startTime);
     controller.forward(
       from: timeToLerpValue(timePassed),
     );
@@ -73,6 +75,7 @@ class _AnimatedMiniNormalTimerState extends State<AnimatedMiniNormalTimer> with 
     return WatchUI(
       controller: controller,
       excercise: widget.excercise,
+      startTime: startTime,
     );
   }
 }

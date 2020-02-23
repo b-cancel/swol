@@ -8,15 +8,17 @@ import 'package:swol/shared/widgets/simple/triangleAngle.dart';
 class ProgressCircle extends StatelessWidget {
   ProgressCircle({
     @required this.excercise,
+    @required this.startTime,
     @required this.controller,
   });
 
   final AnExcercise excercise;
+  final DateTime startTime;
   final AnimationController controller;
 
   @override
   Widget build(BuildContext context) {
-    Duration timePassed = DateTime.now().difference(excercise.tempStartTime.value);
+    Duration timePassed = DateTime.now().difference(startTime);
     bool stillTimer = timePassed <= excercise.recoveryPeriod;
 
     return Positioned.fill(
@@ -49,7 +51,7 @@ class ProgressCircle extends StatelessWidget {
                     fit: BoxFit.contain,
                     child: CircleProgress(
                       fullRed: controller.value == 1,
-                      tempStartTime: excercise.tempStartTime.value,
+                      tempStartTime: startTime,
                       recoveryPeriod: excercise.recoveryPeriod,
                     ),
                   ),
