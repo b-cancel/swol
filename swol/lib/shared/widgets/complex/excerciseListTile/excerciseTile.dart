@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 
 //plugin
 import 'package:page_transition/page_transition.dart';
-import 'package:swol/shared/methods/theme.dart';
 
 //internal: shared
 import 'package:swol/shared/widgets/complex/excerciseListTile/excerciseLeading.dart';
 import 'package:swol/shared/widgets/complex/excerciseListTile/oneRepMaxChip.dart';
 import 'package:swol/shared/widgets/simple/heros/title.dart';
 import 'package:swol/shared/structs/anExcercise.dart';
+import 'package:swol/shared/methods/theme.dart';
 
 //internal: other
 import 'package:swol/action/page.dart';

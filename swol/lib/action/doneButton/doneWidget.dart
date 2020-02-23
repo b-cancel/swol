@@ -1,7 +1,12 @@
+//flutter
 import 'package:flutter/material.dart';
+
+//internal: action
 import 'package:swol/action/doneButton/button.dart';
 import 'package:swol/action/doneButton/corner.dart';
 import 'package:swol/action/page.dart';
+
+//internal
 import 'package:swol/shared/structs/anExcercise.dart';
 
 //NOTE: we have a couple of timestamp types

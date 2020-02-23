@@ -3,18 +3,18 @@ import 'package:flutter/material.dart';
 
 //plugin
 import 'package:page_transition/page_transition.dart';
-import 'package:swol/other/functions/W&R=1RM.dart';
-import 'package:swol/shared/functions/defaultDateTimes.dart';
-import 'package:swol/shared/methods/theme.dart';
 
 //internal: excercise
 import 'package:swol/shared/widgets/simple/heros/leading.dart';
+import 'package:swol/shared/functions/defaultDateTimes.dart';
 import 'package:swol/shared/widgets/simple/heros/title.dart';
 import 'package:swol/shared/structs/anExcercise.dart';
+import 'package:swol/shared/methods/theme.dart';
 
 //internal
 import 'package:swol/pages/notes/excerciseNotes.dart';
 import 'package:swol/action/tabs/verticalTabs.dart';
+import 'package:swol/other/functions/W&R=1RM.dart';
 import 'package:swol/action/popUps/warning.dart';
 
 //used to 
@@ -151,9 +151,6 @@ class _ExcercisePageDarkState extends State<ExcercisePageDark> {
       widget.excercise.lastReps = widget.excercise.tempReps;
       widget.excercise.tempReps = null;
       ExcercisePage.setReps.value = "";
-
-      print("h: " + widget.excercise.lastWeight.toString() + " x " + widget.excercise.lastReps.toString()
-      + "****************************************");
 
       //move onto the next set
       //NOTE: must happen after all variables updates

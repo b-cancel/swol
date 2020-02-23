@@ -1,10 +1,16 @@
+//dart
 import 'dart:math' as math;
-import 'package:flutter/material.dart';
-import 'package:swol/shared/structs/anExcercise.dart';
-import 'package:swol/shared/widgets/complex/excerciseListTile/miniTimer/circles.dart';
-import 'package:swol/shared/widgets/complex/excerciseListTile/miniTimer/invertedCircleClipper.dart';
-import 'package:swol/shared/widgets/simple/triangleAngle.dart';
 
+//flutter
+import 'package:flutter/material.dart';
+
+//internal
+import 'package:swol/shared/widgets/complex/excerciseListTile/miniTimer/invertedCircleClipper.dart';
+import 'package:swol/shared/widgets/complex/excerciseListTile/miniTimer/circles.dart';
+import 'package:swol/shared/widgets/simple/triangleAngle.dart';
+import 'package:swol/shared/structs/anExcercise.dart';
+
+//shared
 class ProgressCircle extends StatelessWidget {
   ProgressCircle({
     @required this.excercise,

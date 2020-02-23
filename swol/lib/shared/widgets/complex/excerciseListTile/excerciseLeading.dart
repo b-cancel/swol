@@ -34,11 +34,6 @@ class _ExcerciseTileLeadingState extends State<ExcerciseTileLeading> {
   }
 
   updateState(){
-    //TODO: is this true?
-    //when opening to the timer widget things might break
-    //that only really for testing
-    //but this delay doesn't really break anything
-    //so its here and will probably stay here
     WidgetsBinding.instance.addPostFrameCallback(actualUpdate);
   }
 

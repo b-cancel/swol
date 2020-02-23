@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:swol/shared/widgets/simple/triangleAngle.dart';
 import 'package:swol/other/otherHelper.dart';
 
-
+//widget
 class CircleProgress extends StatelessWidget {
   CircleProgress({
     @required this.fullRed,

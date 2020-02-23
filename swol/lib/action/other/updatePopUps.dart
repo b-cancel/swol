@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:swol/action/page.dart';
 
 //internal
 import 'package:swol/shared/structs/anExcercise.dart';
 import 'package:swol/shared/methods/theme.dart';
+import 'package:swol/action/page.dart';
 
 //TODO: this isn't even close to finish, i jump all the guns
 

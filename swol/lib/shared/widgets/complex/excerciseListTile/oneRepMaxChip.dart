@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 
 //plugin
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:swol/shared/structs/anExcercise.dart';
 
 //internal
 import 'package:swol/shared/widgets/simple/oneOrTheOtherIcon.dart';
 import 'package:swol/shared/widgets/simple/ourSnackBar.dart';
+import 'package:swol/shared/structs/anExcercise.dart';
 import 'package:swol/other/functions/helper.dart';
 
 //given the
@@ -34,18 +34,11 @@ class _ExcerciseTileSubtitleState extends State<ExcerciseTileSubtitle> {
   actualUpdate(Duration randomDuration){
     //a set was just completed so there WILL be a new last set
     if(widget.dtTimerStarted.value == AnExcercise.nullDateTime){
-      print("*****************************************new last last set");
-      print(widget.excercise.lastWeight.toString() + " x " + widget.excercise.lastReps.toString());
       if(mounted) setState(() {});
     }
-    else print("******************************************started a set");
   }
 
   updateState(){
-    print("******************************************will update state maybe?");
-    //NOTE: we CANT just still the after delay function into the afterDelay variable
-    //because the references won't be the same
-    //I frankly have no idea why this is, but it is
     WidgetsBinding.instance.addPostFrameCallback(actualUpdate);
   }
 

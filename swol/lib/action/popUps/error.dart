@@ -1,11 +1,17 @@
-import 'package:awesome_dialog/awesome_dialog.dart';
+//flutter
 import 'package:flutter/material.dart';
-import 'package:swol/action/page.dart';
-import 'package:swol/action/popUps/button.dart';
-import 'package:swol/action/popUps/reusable.dart';
-import 'package:swol/action/popUps/textValid.dart';
-import 'package:swol/shared/structs/anExcercise.dart';
 
+//plugin
+import 'package:awesome_dialog/awesome_dialog.dart';
+
+//internal
+import 'package:swol/shared/structs/anExcercise.dart';
+import 'package:swol/action/popUps/textValid.dart';
+import 'package:swol/action/popUps/reusable.dart';
+import 'package:swol/action/popUps/button.dart';
+import 'package:swol/action/page.dart';
+
+//function
 maybeError(BuildContext context, AnExcercise excercise) {
   //grab data
   String weight = ExcercisePage.setWeight.value;

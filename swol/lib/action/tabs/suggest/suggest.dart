@@ -1,16 +1,16 @@
 //flutter
 import 'package:flutter/material.dart';
-import 'package:swol/action/shared/halfColored.dart';
-import 'package:swol/action/shared/setDisplay.dart';
 
 //internal: action
 import 'package:swol/action/tabs/suggest/changeSuggestion.dart';
 import 'package:swol/action/bottomButtons/button.dart';
+import 'package:swol/action/shared/halfColored.dart';
+import 'package:swol/action/shared/setDisplay.dart';
 import 'package:swol/action/page.dart';
-import 'package:swol/other/functions/1RM&R=W.dart';
 
 //internal: other
 import 'package:swol/shared/structs/anExcercise.dart';
+import 'package:swol/other/functions/1RM&R=W.dart';
 
 //widget
 class Suggestion extends StatefulWidget {
@@ -70,8 +70,6 @@ class _SuggestionState extends State<Suggestion> {
   void initState() {
     //super init
     super.initState();
-
-    print(ExcercisePage.oneRepMaxes.toString());
     
     //set inits
     predictionID.value = widget.excercise.predictionID;

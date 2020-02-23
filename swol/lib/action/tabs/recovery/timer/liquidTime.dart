@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 
 //packages
 import 'package:liquid_progress_indicator/liquid_progress_indicator.dart';
-import 'package:swol/action/page.dart';
 
 //internal
 import 'package:swol/action/tabs/recovery/timer/puslingBackground.dart';
@@ -12,12 +11,13 @@ import 'package:swol/action/tabs/recovery/secondary/timeDisplay.dart';
 import 'package:swol/action/tabs/recovery/timer/onlyEditButton.dart';
 import 'package:swol/action/tabs/recovery/timer/information.dart';
 import 'package:swol/action/tabs/recovery/timer/changeTime.dart';
+import 'package:swol/action/page.dart';
 
 //internal: shared
+import 'package:swol/shared/widgets/simple/conditional.dart';
 import 'package:swol/shared/structs/anExcercise.dart';
 import 'package:swol/shared/methods/vibrate.dart';
 import 'package:swol/shared/methods/theme.dart';
-import 'package:swol/shared/widgets/simple/conditional.dart';
 
 //NOTE: never ask wether we should change the timer
 //if they stop at less time than expected the pop up will annoy them

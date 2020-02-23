@@ -2,12 +2,12 @@
 import 'package:flutter/material.dart';
 
 //internal
+import 'package:swol/shared/structs/anExcercise.dart';
 import 'package:swol/action/doneButton/doneWidget.dart';
 import 'package:swol/action/tabs/record/setRecord.dart';
 import 'package:swol/action/tabs/recovery/recovery.dart';
 import 'package:swol/action/tabs/suggest/suggest.dart';
 import 'package:swol/action/page.dart';
-import 'package:swol/shared/structs/anExcercise.dart';
 
 /// A vertical tab widget for flutter
 class VerticalTabs extends StatefulWidget {
