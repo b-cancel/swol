@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 //plugins
 import 'package:diacritic/diacritic.dart';
+import 'package:swol/pages/selection/widgets/workoutSection.dart';
 
 //internal: shared
 import 'package:swol/shared/widgets/complex/excerciseListTile/excerciseTile.dart';
@@ -25,17 +26,17 @@ class _SearchExcerciseState extends State<SearchExcercise> {
   List<int> queryResults = new List<int>();
   TextEditingController search = new TextEditingController();
 
-  //NOTE: since they don't change while we are searching 
+  //NOTE: since they don't change while we are searching
   //we can grab them once and done
   Map<int, AnExcercise> excercises = ExcerciseData.getExcercises();
 
   //use the text field
-  performQuery(){
+  performQuery() {
     query(search.text);
   }
 
   //async search
-  query(String searchString) async{
+  query(String searchString) async {
     //make the search string easier to work with
     searchString = removeDiacritics(searchString).toLowerCase().trim();
 
@@ -43,17 +44,18 @@ class _SearchExcerciseState extends State<SearchExcercise> {
     queryResults.clear();
 
     //find matching results
-    if(searchString.length > 0){
+    if (searchString.length > 0) {
       //iterate through keys
       List<int> keys = excercises.keys.toList();
-      for(int key = 0; key < keys.length; key++){
+      for (int key = 0; key < keys.length; key++) {
         //grab basic data
         int keyIsID = keys[key];
-        AnExcercise thisExcercise = excercises[keyIsID]; 
-        
+        AnExcercise thisExcercise = excercises[keyIsID];
+
         //extract thing we are searching for
-        String excerciseName = removeDiacritics(thisExcercise.name).toLowerCase().trim(); 
-        if(excerciseName.contains(searchString)){
+        String excerciseName =
+            removeDiacritics(thisExcercise.name).toLowerCase().trim();
+        if (excerciseName.contains(searchString)) {
           queryResults.add(keyIsID);
         }
       }
@@ -71,20 +73,20 @@ class _SearchExcerciseState extends State<SearchExcercise> {
   }
 
   @override
-  void dispose() { 
+  void dispose() {
     search.removeListener(performQuery);
     super.dispose();
   }
 
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     bool showRecentsSearches = (search.text == null || search.text == "");
     bool noRecentSearches = (SearchesData.getRecentSearches().length == 0);
     bool noRecentsToShow = (showRecentsSearches && noRecentSearches);
 
     //build
     return WillPopScope(
-      onWillPop: () async{
+      onWillPop: () async {
         FocusScope.of(context).unfocus();
         App.navSpread.value = false;
         return true; //can still pop
@@ -112,8 +114,8 @@ class _SearchExcerciseState extends State<SearchExcercise> {
                   child: Row(
                     children: <Widget>[
                       InkWell(
-                        onTap: (){
-                          App.navSpread.value= false;
+                        onTap: () {
+                          App.navSpread.value = false;
                           FocusScope.of(context).unfocus();
                           Navigator.pop(context);
                         },
@@ -128,8 +130,8 @@ class _SearchExcerciseState extends State<SearchExcercise> {
                           child: TextField(
                             scrollPadding: EdgeInsets.all(0),
                             textInputAction: TextInputAction.search,
-                            onSubmitted: (str){
-                              if(search.text != null && search.text != ""){
+                            onSubmitted: (str) {
+                              if (search.text != null && search.text != "") {
                                 SearchesData.addToSearches(search.text);
                               }
                             },
@@ -143,42 +145,41 @@ class _SearchExcerciseState extends State<SearchExcercise> {
                           ),
                         ),
                       ),
-                      (search.text == "") ? Icon(
-                        Icons.search,
-                      )
-                      : GestureDetector(
-                        behavior: HitTestBehavior.opaque,
-                        onTap: (){
-                          search.text = "";
-                        },
-                        child: Icon(Icons.close)
-                      ),
+                      (search.text == "")
+                          ? Icon(
+                              Icons.search,
+                            )
+                          : GestureDetector(
+                              behavior: HitTestBehavior.opaque,
+                              onTap: () {
+                                search.text = "";
+                              },
+                              child: Icon(Icons.close)),
                     ],
                   ),
                 ),
                 Expanded(
-                  child: Stack(
-                    children: [
-                      SearchBody(
-                        noRecentsToShow: noRecentsToShow, 
-                        showRecentsSearches: showRecentsSearches, 
-                        search: search, 
-                        queryResults: queryResults, 
-                        excercises: excercises,
-                        updateState: () => setState(() {}),
-                      ),
-                      Positioned(
-                        top: 0,
-                        left: 0,
-                        right: 0,
-                        child: (noRecentsToShow) ? Container() : RecentsOrResultsHeader(
-                          showRecentsSearches: showRecentsSearches, 
-                          resultCount: queryResults.length,
-                        ),
-                      ),
-                    ]
-                  )
-                ),
+                    child: Stack(children: [
+                  SearchBody(
+                    noRecentsToShow: noRecentsToShow,
+                    showRecentsSearches: showRecentsSearches,
+                    search: search,
+                    queryResults: queryResults,
+                    excercises: excercises,
+                    updateState: () => setState(() {}),
+                  ),
+                  Positioned(
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    child: (noRecentsToShow)
+                        ? Container()
+                        : RecentsOrResultsHeader(
+                            showRecentsSearches: showRecentsSearches,
+                            resultCount: queryResults.length,
+                          ),
+                  ),
+                ])),
               ],
             ),
           ),
@@ -197,7 +198,6 @@ class SearchBody extends StatelessWidget {
     @required this.excercises,
     @required this.queryResults,
     @required this.updateState,
-    
   }) : super(key: key);
 
   final bool noRecentsToShow;
@@ -206,21 +206,20 @@ class SearchBody extends StatelessWidget {
   final TextEditingController search;
   final List<int> queryResults;
   final Function updateState;
-  
 
   @override
   Widget build(BuildContext context) {
-    if(noRecentsToShow) return NoRecentSearches();
-    else{
-      if(showRecentsSearches){
+    if (noRecentsToShow)
+      return NoRecentSearches();
+    else {
+      if (showRecentsSearches) {
         return RecentSearches(
           updateState: () => updateState(),
           search: search,
         );
-      }
-      else{
+      } else {
         return SearchResults(
-          queryResults: queryResults, 
+          queryResults: queryResults,
           excercises: excercises,
         );
       }
@@ -247,29 +246,24 @@ class SearchResults extends StatelessWidget {
         Container(
           height: 56,
         ),
-        ListView.builder(
-          shrinkWrap: true,
-          physics: ClampingScrollPhysics(),
-          itemCount: queryResults.length,
-          itemBuilder: (context, index){
-            return ClipRRect(
-              borderRadius: BorderRadius.only(
-                //top
-                topLeft: index == 0 ? cardRadius : Radius.zero,
-                topRight: index == 0 ? cardRadius : Radius.zero,
-                //bottom
-                bottomLeft: index == (queryResults.length - 1) ? cardRadius : Radius.zero,
-                bottomRight: index == (queryResults.length - 1) ? cardRadius : Radius.zero,
-              ),
-              child: Container(
-                color: Theme.of(context).cardColor,
-                child: ExcerciseTile(
-                  excercise: excercises[queryResults[index]],
-                  tileInSearch: true,
-                ),
-              ),
-            );
-          },
+        Card(
+          margin: EdgeInsets.all(0),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(24.0),
+          ),
+          clipBehavior: Clip.antiAlias,
+          child: ListView.separated(
+            shrinkWrap: true,
+            physics: ClampingScrollPhysics(),
+            itemCount: queryResults.length,
+            itemBuilder: (context, index) {
+              return ExcerciseTile(
+                excercise: excercises[queryResults[index]],
+                tileInSearch: true,
+              );
+            },
+            separatorBuilder: (context, index) => ListTileDivider(),
+          ),
         ),
       ],
     );

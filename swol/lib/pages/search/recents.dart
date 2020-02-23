@@ -122,66 +122,69 @@ class RecentSearches extends StatelessWidget {
       ).animate(animation), 
       child: Column(
         children: <Widget>[
-          ListTile(
-            contentPadding: EdgeInsets.only(left: 16),
-            dense: true,
-            onTap: (){
-              search.text = searchTerm;
-              SearchesData.addToSearches(searchTerm);
-            },
-            title: Text(
-              searchTerm,
-              style: TextStyle(
-                fontSize: 18,
+          Card(
+            margin: EdgeInsets.all(0),
+            child: ListTile(
+              contentPadding: EdgeInsets.only(left: 16),
+              dense: true,
+              onTap: (){
+                search.text = searchTerm;
+                SearchesData.addToSearches(searchTerm);
+              },
+              title: Text(
+                searchTerm,
+                style: TextStyle(
+                  fontSize: 18,
+                ),
               ),
-            ),
-            trailing: Material(
-              color: Colors.transparent,
-              child: InkWell(
-                onTap: (){
-                  //NOTE: this should allow other deletions to complete
-                  //and therefore letting us confirm lock our or not
-                  WidgetsBinding.instance.addPostFrameCallback((_){
-                    if(removalLocked.value == false){
-                      //lock removal
-                      removalLocked.value = true;
+              trailing: Material(
+                color: Colors.transparent,
+                child: InkWell(
+                  onTap: (){
+                    //NOTE: this should allow other deletions to complete
+                    //and therefore letting us confirm lock our or not
+                    WidgetsBinding.instance.addPostFrameCallback((_){
+                      if(removalLocked.value == false){
+                        //lock removal
+                        removalLocked.value = true;
 
-                      //make removal
-                      AnimatedList.of(context).removeItem(
-                        index,
-                        (context, animation){
-                          return buildSearch(
-                            context, 
-                            index, 
-                            animation,
-                            passedTerm: searchTerm,
-                          );
-                        },
-                        duration: removeDuration,
-                      );
+                        //make removal
+                        AnimatedList.of(context).removeItem(
+                          index,
+                          (context, animation){
+                            return buildSearch(
+                              context, 
+                              index, 
+                              animation,
+                              passedTerm: searchTerm,
+                            );
+                          },
+                          duration: removeDuration,
+                        );
 
-                      //remove the contact
-                      SearchesData.removeFromSearchesAtIndex(index);
+                        //remove the contact
+                        SearchesData.removeFromSearchesAtIndex(index);
 
-                      //NOTE: using a listener doesn't work for some reason
-                      Future.delayed(removeDuration, (){
-                        //cover edge case
-                        if(SearchesData.getRecentSearches().length == 0){
-                          updateState();
-                        }
+                        //NOTE: using a listener doesn't work for some reason
+                        Future.delayed(removeDuration, (){
+                          //cover edge case
+                          if(SearchesData.getRecentSearches().length == 0){
+                            updateState();
+                          }
 
-                        //unlock removal
-                        removalLocked.value = false;
-                      });
-                    }
-                  });
-                },
-                child: Container(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 12,
+                          //unlock removal
+                          removalLocked.value = false;
+                        });
+                      }
+                    });
+                  },
+                  child: Container(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 12,
+                    ),
+                    child: Icon(Icons.close),
                   ),
-                  child: Icon(Icons.close),
                 ),
               ),
             ),
