@@ -105,10 +105,9 @@ class ExcerciseData{
   static deleteExcercise(int id){
     if(_excercises.containsKey(id)){
       _excercises.remove(id);
-      excercisesOrder.value.remove(id);
 
       //update file
-      updateOrder(); //TODO: don't do all this work
+      updateOrder();
       updateFile();
     }
     else print("EXCERCISE DOESN'T EXIST");
