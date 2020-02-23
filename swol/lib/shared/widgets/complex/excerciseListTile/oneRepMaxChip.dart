@@ -39,8 +39,12 @@ class _ExcerciseTileSubtitleState extends State<ExcerciseTileSubtitle> {
     else print("******************************************started a set");
   }
 
+  justPrint(){
+    print("just printing****************************************");
+  }
+
   updateState(){
-    print("will update state maybe?");
+    print("******************************************will update state maybe?");
     //NOTE: we CANT just still the after delay function into the afterDelay variable
     //because the references won't be the same
     //I frankly have no idea why this is, but it is
@@ -53,13 +57,15 @@ class _ExcerciseTileSubtitleState extends State<ExcerciseTileSubtitle> {
     super.initState();
 
     //only changes when started or ended
-    widget.excercise.tempStartTime.addListener(updateState);
+    //widget.excercise.tempStartTime.addListener(updateState);
+    widget.excercise.tempStartTime.addListener(justPrint);
   }
 
   @override
   void dispose() { 
     //only changes when started or ended
-    widget.excercise.tempStartTime.removeListener(updateState);
+    //widget.excercise.tempStartTime.removeListener(updateState);
+    widget.excercise.tempStartTime.removeListener(justPrint);
 
     //super dispose
     super.dispose();

@@ -281,7 +281,7 @@ class _FloatingDoneButtonState extends State<FloatingDoneButton> {
 
     //temp start time
     if(setTempsToNull){
-      widget.excercise.tempStartTime = new ValueNotifier<DateTime>(AnExcercise.nullDateTime); 
+      widget.excercise.tempStartTime = ValueNotifier<DateTime>(AnExcercise.nullDateTime); 
     }
 
     //weight
