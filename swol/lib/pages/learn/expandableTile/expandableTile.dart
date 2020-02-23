@@ -85,7 +85,6 @@ class _ExpandableTileState extends State<ExpandableTile> {
                     theOnlyException: widget.theOnlyException,
                   )
                   : Container(
-                    key: UniqueKey(),
                     height: 0,
                     width: MediaQuery.of(context).size.width,
                   ),

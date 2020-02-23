@@ -38,7 +38,6 @@ class LearnExcercise extends StatefulWidget {
 }
 
 class _LearnExcerciseState extends State<LearnExcercise> {
-  final GlobalKey listKey = new GlobalKey();
   final AutoScrollController autoScrollController = new AutoScrollController();
 
   //animation speed
@@ -193,7 +192,6 @@ class _LearnExcerciseState extends State<LearnExcercise> {
             fontSize: 16,
           ),
           child: CustomScrollView(
-            key: listKey,
             controller: autoScrollController,
             slivers: [
               ExpandableTile(
