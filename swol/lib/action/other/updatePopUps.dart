@@ -204,7 +204,7 @@ bool maybeUpdateSetTarget(
   Function afterDone,
 ){
   int setTarget = excercise.setTarget;
-  int newSetTarget = excercise.tempSetCount.value;
+  int newSetTarget = excercise.tempSetCount;
   if(setTarget == newSetTarget) return false;
   else{
     String content = "You were aiming for " + setTarget.toString() + " sets\n";

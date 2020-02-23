@@ -55,7 +55,7 @@ class _FloatingDoneButtonState extends State<FloatingDoneButton> {
   //whether or not this particular page wants the button to show
   bool shouldShow(){
     bool pageWithButton = ExcercisePage.pageNumber.value != 1;
-    bool nullTSC = widget.excercise.tempSetCount.value == AnExcercise.nullInt;
+    bool nullTSC = widget.excercise.tempSetCount == null;
 
     //NOTE: because our tempSetCount is increase when we start the timer
     //if we start the timer
@@ -155,7 +155,7 @@ class _FloatingDoneButtonState extends State<FloatingDoneButton> {
     String message = "";
 
     //handle page changes
-    int setsPassedFromHere = widget.excercise.tempSetCount.value;
+    int setsPassedFromHere = widget.excercise.tempSetCount;
     Complete completionType;
     if(ExcercisePage.pageNumber.value != 2){
       //for page 0 and 1 
@@ -314,13 +314,13 @@ class _FloatingDoneButtonState extends State<FloatingDoneButton> {
       //TODO: the pop up should also pop this page
 
       //TODO: remove test code
-      widget.excercise.tempSetCount = ValueNotifier<int>(AnExcercise.nullInt);
+      widget.excercise.tempSetCount = null;
       Navigator.of(context).pop();
     }
     else{
       //the set target doesn't need to be updated
       //but the tempSetCount MUST be nullified
-      widget.excercise.tempSetCount = ValueNotifier<int>(AnExcercise.nullInt);
+      widget.excercise.tempSetCount = null;
       Navigator.of(context).pop();
     }
   }

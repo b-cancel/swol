@@ -50,7 +50,7 @@ class SetRecord extends StatelessWidget {
     }
 
     //calc sets passed for bottom buttons
-    int setsPassed = excercise.tempSetCount.value;
+    int setsPassed = excercise.tempSetCount;
     bool timerNotStarted = ExcercisePage.dtTimerStartedS.value == AnExcercise.nullDateTime;
     if(timerNotStarted) setsPassed += 1;
 

@@ -16,7 +16,6 @@ class AnExcercise{
 
   //default value notifier values
   static DateTime nullDateTime = DateTime.fromMicrosecondsSinceEpoch(0);
-  static int nullInt = 0;
 
   //---Settings
 
@@ -132,9 +131,9 @@ class AnExcercise{
     ExcerciseData.updateFile();
   }
   
-  ValueNotifier<int> _tempSetCount;
-  ValueNotifier<int> get tempSetCount => _tempSetCount;
-  set tempSetCount(ValueNotifier<int> newTempSetCount){
+  int _tempSetCount;
+  int get tempSetCount => _tempSetCount;
+  set tempSetCount(int newTempSetCount){
     _tempSetCount = newTempSetCount;
     ExcerciseData.updateFile();
   }
@@ -166,9 +165,6 @@ class AnExcercise{
     _repTarget = repTarget;
     _recoveryPeriod = recoveryPeriod;
     _setTarget = setTarget;
-
-    //required to have a null value
-    _tempSetCount = new ValueNotifier<int>(nullInt);
 
     //NOTE: the update to the file should only happen after everything else
     this.lastTimeStamp = lastTimeStamp;
@@ -207,10 +203,7 @@ class AnExcercise{
     _tempWeight = map["tempWeight"];
     _tempReps = map["tempReps"];
     _tempStartTime = _stringToDateTime(map["tempStartTime"]);
-    var tsc = map["tempSetCount"];
-    _tempSetCount = new ValueNotifier<int>(
-      tsc == null ? nullInt : tsc,
-    );
+    _tempSetCount = map["tempSetCount"];
   }
 
   DateTime _stringToDateTime(String json){
@@ -254,7 +247,7 @@ class AnExcercise{
       "tempWeight": tempWeight,
       "tempReps": tempReps,
       "tempStartTime": _dateTimeToString(tempStartTime),
-      "tempSetCount": tempSetCount.value,
+      "tempSetCount": tempSetCount,
     };
   }
 

@@ -101,7 +101,7 @@ class _SuggestionState extends State<Suggestion> {
     Radius cardRadius = Radius.circular(24);
 
     //calc sets passed for bottom buttons
-    int setsPassed = widget.excercise.tempSetCount.value;
+    int setsPassed = widget.excercise.tempSetCount;
     bool timerNotStarted = ExcercisePage.dtTimerStartedS.value == AnExcercise.nullDateTime;
     if(timerNotStarted) setsPassed += 1;
 

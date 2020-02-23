@@ -1,7 +1,10 @@
+//flutter
 import 'package:flutter/material.dart';
-import 'package:swol/shared/structs/anExcercise.dart';
+
+//internal
 import 'package:swol/shared/widgets/simple/heros/curveMod.dart';
 
+//widget
 class BottomNextButton extends StatelessWidget {
   const BottomNextButton({
     Key key,

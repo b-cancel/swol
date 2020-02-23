@@ -62,7 +62,7 @@ class _RecoveryState extends State<Recovery>
     Radius cardRadius = Radius.circular(24);
 
     //calc sets passed for bottom buttons
-    int setsPassed = widget.excercise.tempSetCount.value + 1;
+    int setsPassed = widget.excercise.tempSetCount + 1;
 
     //color for bottom buttons
     bool lastSetOrBefore = setsPassed <= widget.excercise.setTarget;
