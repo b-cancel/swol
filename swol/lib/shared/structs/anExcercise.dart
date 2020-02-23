@@ -67,9 +67,9 @@ class AnExcercise{
     ExcerciseData.updateFile();
   }
   
-  ValueNotifier<int> _setTarget;
-  ValueNotifier<int> get setTarget => _setTarget;
-  set setTarget(ValueNotifier<int> newSetTarget){
+  int _setTarget;
+  int get setTarget => _setTarget;
+  set setTarget(int newSetTarget){
     _setTarget = newSetTarget;
     ExcerciseData.updateFile();
   }
@@ -165,7 +165,7 @@ class AnExcercise{
     _predictionID = predictionID;
     _repTarget = repTarget;
     _recoveryPeriod = recoveryPeriod;
-    _setTarget = new ValueNotifier<int>(setTarget);
+    _setTarget = setTarget;
 
     //required to have a null value
     _tempSetCount = new ValueNotifier<int>(nullInt);
@@ -192,9 +192,7 @@ class AnExcercise{
     _predictionID = map["predictionID"];
     _repTarget = map["repTarget"];
     _recoveryPeriod = _stringToDuration(map["recoveryPeriod"]);
-    _setTarget = new ValueNotifier<int>(
-      map["setTarget"]
-    );
+    _setTarget = map["setTarget"];
 
     //---Recorded
 
@@ -245,7 +243,7 @@ class AnExcercise{
       "predictionID": predictionID,
       "repTarget": repTarget,
       "recoveryPeriod": _durationToString(recoveryPeriod),
-      "setTarget": setTarget.value,
+      "setTarget": setTarget,
 
       //---Recorded
 

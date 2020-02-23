@@ -172,7 +172,7 @@ class _FloatingDoneButtonState extends State<FloatingDoneButton> {
     }
     else completionType = Complete.Normal;
 
-    int setTarget = widget.excercise.setTarget.value;
+    int setTarget = widget.excercise.setTarget;
     int setsLeft = setTarget - setsPassedFromHere;
 
     //do we have values left?
@@ -207,7 +207,7 @@ class _FloatingDoneButtonState extends State<FloatingDoneButton> {
       cardColor = Colors.red;
     }
     else{
-      bool shouldCompleteHere = (setsPassedFromHere >= widget.excercise.setTarget.value);
+      bool shouldCompleteHere = (setsPassedFromHere >= widget.excercise.setTarget);
       if(shouldCompleteHere) cardColor = Theme.of(context).accentColor;
     }
 
@@ -309,7 +309,7 @@ class _FloatingDoneButtonState extends State<FloatingDoneButton> {
     //NOTE: if we start record a set, are like naw, and don't want to record it
     //we aren't going to show the pop up 
     //and half suggest that they update their setTarget to 0
-    if(setsPassed != 0 && setsPassed != widget.excercise.setTarget.value){
+    if(setsPassed != 0 && setsPassed != widget.excercise.setTarget){
       //TODO: bring the pop up that asks us if we want to update our set target
       //TODO: the pop up should also pop this page
 

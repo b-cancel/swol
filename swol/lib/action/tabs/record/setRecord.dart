@@ -55,7 +55,7 @@ class SetRecord extends StatelessWidget {
     if(timerNotStarted) setsPassed += 1;
 
     //color for bottom buttons
-    bool lastSetOrBefore = setsPassed <= excercise.setTarget.value;
+    bool lastSetOrBefore = setsPassed <= excercise.setTarget;
     Color buttonsColor =  lastSetOrBefore ? Theme.of(context).accentColor : Theme.of(context).cardColor;
 
     //widget

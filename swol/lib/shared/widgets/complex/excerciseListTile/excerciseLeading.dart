@@ -47,7 +47,6 @@ class _ExcerciseTileLeadingState extends State<ExcerciseTileLeading> {
 
     //TODO: all of the ones below are non working
     widget.excercise.lastTimeStamp.addListener(updateState);
-    widget.excercise.setTarget.addListener(updateState);
     widget.excercise.tempSetCount.addListener(updateState);
   }
 
@@ -58,7 +57,6 @@ class _ExcerciseTileLeadingState extends State<ExcerciseTileLeading> {
 
     //TODO: all of the ones below are non working
     widget.excercise.lastTimeStamp.removeListener(updateState);
-    widget.excercise.setTarget.removeListener(updateState);
     widget.excercise.tempSetCount.removeListener(updateState);
 
     //super dispose
@@ -76,7 +74,7 @@ class _ExcerciseTileLeadingState extends State<ExcerciseTileLeading> {
       );
     }
     else if(LastTimeStamp.isInProgress(widget.excercise.lastTimeStamp.value)){
-      bool isLastSet = widget.excercise.tempSetCount.value >= widget.excercise.setTarget.value;
+      bool isLastSet = widget.excercise.tempSetCount.value >= widget.excercise.setTarget;
       return Hero(
         tag: "excercise" + (isLastSet ? "Complete" : "Continue") + widget.excercise.id.toString(),
         createRectTween: (begin, end) {

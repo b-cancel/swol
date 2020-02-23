@@ -106,7 +106,7 @@ class _SuggestionState extends State<Suggestion> {
     if(timerNotStarted) setsPassed += 1;
 
     //color for bottom buttons
-    bool lastSetOrBefore = setsPassed <= widget.excercise.setTarget.value;
+    bool lastSetOrBefore = setsPassed <= widget.excercise.setTarget;
     Color buttonsColor =  lastSetOrBefore ? Theme.of(context).accentColor : Theme.of(context).cardColor;
 
     //build
@@ -183,7 +183,7 @@ class _SuggestionState extends State<Suggestion> {
                     ),
                   ),
                   TextSpan(
-                    text: "/" + widget.excercise.setTarget.value.toString(),
+                    text: "/" + widget.excercise.setTarget.toString(),
                   ),
                 ],
               ),

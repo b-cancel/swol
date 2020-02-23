@@ -65,7 +65,7 @@ class _RecoveryState extends State<Recovery>
     int setsPassed = widget.excercise.tempSetCount.value + 1;
 
     //color for bottom buttons
-    bool lastSetOrBefore = setsPassed <= widget.excercise.setTarget.value;
+    bool lastSetOrBefore = setsPassed <= widget.excercise.setTarget;
     Color buttonsColor =  lastSetOrBefore ? Theme.of(context).accentColor : Theme.of(context).cardColor;
 
     //build
@@ -192,7 +192,7 @@ class RecoveryButtonsWithWhiteContext extends StatelessWidget {
               ),
             ),
             TextSpan(
-              text: "/" + excercise.setTarget.value.toString(),
+              text: "/" + excercise.setTarget.toString(),
             ),
           ],
         ),
