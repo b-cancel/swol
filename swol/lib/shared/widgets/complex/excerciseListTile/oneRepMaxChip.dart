@@ -57,14 +57,14 @@ class _ExcerciseTileSubtitleState extends State<ExcerciseTileSubtitle> {
     super.initState();
 
     //only changes when started or ended
-    //widget.excercise.tempStartTime.addListener(updateState);
+    widget.excercise.tempStartTime.addListener(updateState);
     widget.excercise.tempStartTime.addListener(justPrint);
   }
 
   @override
   void dispose() { 
     //only changes when started or ended
-    //widget.excercise.tempStartTime.removeListener(updateState);
+    widget.excercise.tempStartTime.removeListener(updateState);
     widget.excercise.tempStartTime.removeListener(justPrint);
 
     //super dispose

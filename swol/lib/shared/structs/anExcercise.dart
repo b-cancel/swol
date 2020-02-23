@@ -124,22 +124,11 @@ class AnExcercise{
     ExcerciseData.updateFile();
   }
   
-  //notifiers can never be null, because they must be listened to
-  //but we do have a default value 
-  //for each notifier type
-  ValueNotifier<DateTime> _tempStartTime;
-
-  //needs to be listened to by excerciseTileLeading
-  //might return default datetime value
-  ValueNotifier<DateTime> get tempStartTime => _tempStartTime;
-
-  //for the setting we ONLY GRAB THE NOTIFIERS VALUE
-  //since the private notifier may already have things attached
-  //ALSO on init of the excercise the value notifier MUST BE initialized
-  //so we don't have to do that here
-  set tempStartTime(ValueNotifier<DateTime> newTempStartTime){
-    DateTime newValue = newTempStartTime.value;
-    _tempStartTime.value = newValue;
+  DateTime _tempStartTime;
+  DateTime get tempStartTime => _tempStartTime;
+  set tempStartTime(DateTime newTempStartTime){
+    DateTime newValue = newTempStartTime;
+    _tempStartTime = newValue;
     ExcerciseData.updateFile();
   }
   
