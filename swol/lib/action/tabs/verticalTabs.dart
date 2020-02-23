@@ -14,11 +14,13 @@ class VerticalTabs extends StatefulWidget {
   final AnExcercise excercise;
   final double statusBarHeight;
   final Duration transitionDuration;
+  final ValueNotifier<DateTime> dtTimerStarted;
 
   VerticalTabs({
     @required this.excercise,
     @required this.statusBarHeight,
     @required this.transitionDuration,
+    @required this.dtTimerStarted,
   });
 
   @override
@@ -40,7 +42,7 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
 
     //set the first page we will be at based on startTimerValue
     int initialPage;
-    bool timerNotStarted = ExcercisePage.dtTimerStartedS.value == AnExcercise.nullDateTime;
+    bool timerNotStarted = widget.dtTimerStarted.value == AnExcercise.nullDateTime;
     if(timerNotStarted){
       if(widget.excercise.lastWeight == null) initialPage = 1;
       else initialPage = 0;
@@ -111,12 +113,14 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
           children: <Widget>[
             Suggestion( 
               excercise: widget.excercise,
+              dtTimerStarted: widget.dtTimerStarted,
               heroUp: goalSetUp,
               heroAnimDuration: widget.transitionDuration,
               heroAnimTravel: totalTravel,
             ),
             SetRecord(
               excercise: widget.excercise,
+              dtTimerStarted: widget.dtTimerStarted,
               statusBarHeight: widget.statusBarHeight,
               heroUp: goalSetUp,
               heroAnimDuration: widget.transitionDuration,
@@ -125,12 +129,14 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
             Recovery(
               transtionDuration: widget.transitionDuration,
               excercise: widget.excercise,
+              dtTimerStarted: widget.dtTimerStarted,
             ),
           ],
         ),
         //must be on top... other wise it isnt clickable
         FloatingDoneButton(
           excercise: widget.excercise,
+          dtTimerStarted: widget.dtTimerStarted,
           showOrHideDuration: widget.transitionDuration,
           animationCurve: Curves.easeInOut,
         ),

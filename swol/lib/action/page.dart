@@ -51,9 +51,6 @@ class ExcercisePage extends StatelessWidget {
   //so we don't have to calculate them literally millions of times
   static final List<double> oneRepMaxes = new List<double>(8); //not being listened to
 
-  //statics that we link to notifiers on init
-  static ValueNotifier<DateTime> dtTimerStartedS;
-
   //build
   @override
   Widget build(BuildContext context) {
@@ -103,9 +100,9 @@ class _ExcercisePageDarkState extends State<ExcercisePageDark> {
       widget.excercise.tempReps = int.parse(setReps);
     
       //only if begin
-      if(ExcercisePage.dtTimerStartedS.value == AnExcercise.nullDateTime){
+      if(widget.dtTimerStarted.value == AnExcercise.nullDateTime){
         //start the timer
-        ExcercisePage.dtTimerStartedS.value = DateTime.now(); 
+        widget.dtTimerStarted.value = DateTime.now(); 
 
         //indicate you have started the set
         if(widget.excercise.tempSetCount == null){
@@ -141,7 +138,7 @@ class _ExcercisePageDarkState extends State<ExcercisePageDark> {
       //TODO: figure out why at some point I marked that this NEEDED to be BEFORE everything else
       //NOTE: that at the moment I should wait for lastWeight and lastReps to update 
       //before reacting to the change here in the one rep max chip
-      ExcercisePage.dtTimerStartedS.value = AnExcercise.nullDateTime;
+      widget.dtTimerStarted.value = AnExcercise.nullDateTime;
 
       //save values (that we know are valid)
       widget.excercise.lastWeight = widget.excercise.tempWeight;
@@ -182,10 +179,6 @@ class _ExcercisePageDarkState extends State<ExcercisePageDark> {
     ExcercisePage.causeRefocusIfInvalid.value = false;
     ExcercisePage.updateSet.value = false;
     ExcercisePage.nextSet.value = false;
-
-    //initial links ups to static
-    //should make variable accessible from everywhere
-    ExcercisePage.dtTimerStartedS = widget.dtTimerStarted;
 
     //add listeners
     ExcercisePage.updateSet.addListener(updateSet);
@@ -244,6 +237,7 @@ class _ExcercisePageDarkState extends State<ExcercisePageDark> {
           //and the others are within a scaffold
           statusBarHeight: MediaQuery.of(context).padding.top,
           transitionDuration: widget.transitionDuration,
+          dtTimerStarted: widget.dtTimerStarted,
         ),
       ),
     );

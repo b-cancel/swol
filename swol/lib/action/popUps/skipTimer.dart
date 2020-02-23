@@ -18,6 +18,7 @@ import 'package:swol/action/page.dart';
 maybeSkipTimer(
   BuildContext context, 
   AnExcercise excercise, 
+  DateTime timerStarted,
   Function ifSkip, 
   Color headerColor,
 ) {
@@ -62,7 +63,7 @@ maybeSkipTimer(
                 padding: EdgeInsets.all(8),
                 child: AnimatedMiniNormalTimer(
                   excercise: excercise,
-                  dtTimerStarted: ExcercisePage.dtTimerStartedS.value,
+                  dtTimerStarted: timerStarted,
                 ),
               ),
             ),
@@ -129,6 +130,7 @@ maybeSkipTimer(
             UpdatingBreakSet(
               trainingName: trainingSelected,
               excercise: excercise,
+              timerStarted: timerStarted,
               selectedWaitTime: DurationFormat.format(
                 excercise.recoveryPeriod,
                 //no longer
@@ -214,15 +216,17 @@ class UpdatingBreakSet extends StatelessWidget {
     @required this.trainingName,
     @required this.selectedWaitTime,
     @required this.excercise,
+    @required this.timerStarted,
   });
 
   final String trainingName;
   final String selectedWaitTime;
   final AnExcercise excercise;
+  final DateTime timerStarted;
 
   @override
   Widget build(BuildContext context) {
-    Duration timePassed =  DateTime.now().difference(ExcercisePage.dtTimerStartedS.value);
+    Duration timePassed =  DateTime.now().difference(timerStarted);
     String trainingBreakGoodFor = durationToTrainingType(
       timePassed,
       zeroIsEndurance: false,

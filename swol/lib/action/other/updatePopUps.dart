@@ -26,6 +26,7 @@ import 'package:swol/action/page.dart';
 //  IF pop up open (pressed "done" and sets don't match)
 //    IF update -> update
 
+/*
 //Start point
 maybePopUpsBeforeNext(
   BuildContext context,
@@ -261,6 +262,7 @@ bool maybeUpdateSetTarget(
     return true;
   }
 }
+*/
 
 /*
 Pop up tested when tapping a form

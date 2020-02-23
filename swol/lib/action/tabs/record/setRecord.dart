@@ -20,6 +20,7 @@ import 'package:swol/shared/methods/theme.dart';
 class SetRecord extends StatelessWidget {
   SetRecord({
     @required this.excercise,
+    @required this.dtTimerStarted,
     @required this.statusBarHeight,
     @required this.heroUp,
     @required this.heroAnimDuration,
@@ -27,6 +28,7 @@ class SetRecord extends StatelessWidget {
   });
 
   final AnExcercise excercise;
+  final ValueNotifier<DateTime> dtTimerStarted;
   final double statusBarHeight;
   final ValueNotifier<bool> heroUp;
   final Duration heroAnimDuration;
@@ -51,7 +53,7 @@ class SetRecord extends StatelessWidget {
 
     //calc sets passed for bottom buttons
     int setsPassed = excercise.tempSetCount ?? 0;
-    bool timerNotStarted = ExcercisePage.dtTimerStartedS.value == AnExcercise.nullDateTime;
+    bool timerNotStarted = dtTimerStarted.value == AnExcercise.nullDateTime;
     if(timerNotStarted) setsPassed += 1;
 
     //color for bottom buttons
@@ -72,6 +74,7 @@ class SetRecord extends StatelessWidget {
       child: SetRecordButtonsWithWhiteContext(
         buttonsColor: buttonsColor, 
         excercise: excercise, 
+        dtTimerStarted: dtTimerStarted,
         timerNotStarted: timerNotStarted, 
         backAction: backAction,
       ),
@@ -150,12 +153,14 @@ class SetRecordButtonsWithWhiteContext extends StatelessWidget {
     Key key,
     @required this.buttonsColor,
     @required this.excercise,
+    @required this.dtTimerStarted,
     @required this.timerNotStarted,
     @required this.backAction,
   }) : super(key: key);
 
   final Color buttonsColor;
   final AnExcercise excercise;
+  final ValueNotifier<DateTime> dtTimerStarted;
   final bool timerNotStarted;
   final Function backAction;
 
@@ -168,6 +173,7 @@ class SetRecordButtonsWithWhiteContext extends StatelessWidget {
         maybeError(
           context, 
           excercise,
+          dtTimerStarted.value,
         );
       },
       forwardActionWidget: Text(

@@ -12,7 +12,7 @@ import 'package:swol/action/popUps/button.dart';
 import 'package:swol/action/page.dart';
 
 //function
-maybeError(BuildContext context, AnExcercise excercise) {
+maybeError(BuildContext context, AnExcercise excercise, DateTime startTime) {
   //grab data
   String weight = ExcercisePage.setWeight.value;
   String reps = ExcercisePage.setReps.value;
@@ -29,8 +29,7 @@ maybeError(BuildContext context, AnExcercise excercise) {
   } else {
     //NOTE: this assumes the user CANT type anything except digits of the right size
 
-    //change the buttons shows a the wording a tad
-    DateTime startTime = ExcercisePage.dtTimerStartedS.value;
+    //change the buttons shows a the wording a tad\
     bool timerNotStarted = startTime == AnExcercise.nullDateTime;
     String continueString =
         (timerNotStarted) ? "Begin Your Set Break" : "Return To Your Break";

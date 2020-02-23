@@ -45,6 +45,7 @@ import 'package:swol/shared/methods/theme.dart';
 class Timer extends StatefulWidget {
   Timer({
     @required this.excercise,
+    @required this.timeStarted,
     @required this.changeableTimerDuration,
     @required this.showAreYouSure,
     this.showArrows: true,
@@ -52,6 +53,7 @@ class Timer extends StatefulWidget {
   });
 
   final AnExcercise excercise;
+  final DateTime timeStarted;
   //time before we go any level of red
   final ValueNotifier<Duration> changeableTimerDuration;
   final ValueNotifier<bool> showAreYouSure;
@@ -129,7 +131,7 @@ class _TimerState extends State<Timer> with TickerProviderStateMixin {
     super.initState();
 
     //grab timer start initially
-    timerStart.value = ExcercisePage.dtTimerStartedS.value;
+    timerStart.value = widget.timeStarted;
 
     //---Create Animation Controllers
     maxTimerController = AnimationController(
