@@ -68,7 +68,7 @@ class _ExcerciseTileState extends State<ExcerciseTile> {
       onTap: (){
         //-----
         print("id:" + widget.excercise.id.toString());
-        print("time stamp: " + widget.excercise.lastTimeStamp.value.toString());
+        print("time stamp: " + widget.excercise.lastTimeStamp.toString());
         print("name: " +  widget.excercise.name.toString());
         print("url: " + widget.excercise.url.toString());
         print("note: " + widget.excercise.note.toString());

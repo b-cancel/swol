@@ -78,11 +78,11 @@ class AnExcercise{
 
   //NOTE: this MUST ALWAYS BE FILLED since its used to sort everything
   //and taking an alternative approach would be a pain
-  ValueNotifier<DateTime> _lastTimeStamp;
-  ValueNotifier<DateTime> get lastTimeStamp => _lastTimeStamp;
-  set lastTimeStamp(ValueNotifier<DateTime> newLastTimeStamp){
-    DateTime newValue = newLastTimeStamp.value;
-    _lastTimeStamp.value = newValue;
+  DateTime _lastTimeStamp;
+  DateTime get lastTimeStamp => _lastTimeStamp;
+  set lastTimeStamp(DateTime newLastTimeStamp){
+    DateTime newValue = newLastTimeStamp;
+    _lastTimeStamp = newValue;
     ExcerciseData.updateFile();
     ExcerciseData.updateOrder();
   }
@@ -171,8 +171,7 @@ class AnExcercise{
     _tempSetCount = new ValueNotifier<int>(nullInt);
 
     //NOTE: the update to the file should only happen after everything else
-    _lastTimeStamp = new ValueNotifier<DateTime>(nullDateTime);
-    this.lastTimeStamp = ValueNotifier<DateTime>(lastTimeStamp);
+    this.lastTimeStamp = lastTimeStamp;
   }
 
   //NOTE: from here we MUST set things directly to the private variables
@@ -199,9 +198,7 @@ class AnExcercise{
     _backUpTimeStamp = _stringToDateTime(
       map["backUpTimeStamp"],
     );
-    _lastTimeStamp = new ValueNotifier<DateTime>(
-      _stringToDateTime(map["lastTimeStamp"])
-    );
+    _lastTimeStamp = _stringToDateTime(map["lastTimeStamp"]);
     _lastWeight = map["lastWeight"];
     _lastReps = map["lastReps"];
 
@@ -248,7 +245,7 @@ class AnExcercise{
       //---Recorded
 
       "backUpTimeStamp": _dateTimeToString(backUpTimeStamp),
-      "lastTimeStamp": _dateTimeToString(lastTimeStamp.value),
+      "lastTimeStamp": _dateTimeToString(lastTimeStamp),
       "lastWeight": lastWeight,
       "lastReps": lastReps,
 

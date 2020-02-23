@@ -44,20 +44,12 @@ class _ExcerciseTileLeadingState extends State<ExcerciseTileLeading> {
 
     //working listeners
     widget.dtTimerStarted.addListener(updateState);
-
-    //TODO: all of the ones below are non working
-    widget.excercise.lastTimeStamp.addListener(updateState);
-    widget.excercise.tempSetCount.addListener(updateState);
   }
 
   @override
   void dispose() { 
     //remove working listeners
     widget.dtTimerStarted.removeListener(updateState);
-
-    //TODO: all of the ones below are non working
-    widget.excercise.lastTimeStamp.removeListener(updateState);
-    widget.excercise.tempSetCount.removeListener(updateState);
 
     //super dispose
     super.dispose();
@@ -73,7 +65,7 @@ class _ExcerciseTileLeadingState extends State<ExcerciseTileLeading> {
         dtTimerStarted: widget.dtTimerStarted.value,
       );
     }
-    else if(LastTimeStamp.isInProgress(widget.excercise.lastTimeStamp.value)){
+    else if(LastTimeStamp.isInProgress(widget.excercise.lastTimeStamp)){
       bool isLastSet = widget.excercise.tempSetCount.value >= widget.excercise.setTarget;
       return Hero(
         tag: "excercise" + (isLastSet ? "Complete" : "Continue") + widget.excercise.id.toString(),
@@ -95,7 +87,7 @@ class _ExcerciseTileLeadingState extends State<ExcerciseTileLeading> {
       //since we are starting off the excercise we don't need to worry about suggesting an action
       //so we don't need to worry about anything being a hero
       if(widget.tileInSearch){
-        if(LastTimeStamp.isNew(widget.excercise.lastTimeStamp.value)){
+        if(LastTimeStamp.isNew(widget.excercise.lastTimeStamp)){
           return ListTileChipShell(
             chip: MyChip(
               chipString: 'NEW',
@@ -103,7 +95,7 @@ class _ExcerciseTileLeadingState extends State<ExcerciseTileLeading> {
           );
         }
         else{
-          if(LastTimeStamp.isHidden(widget.excercise.lastTimeStamp.value)){
+          if(LastTimeStamp.isHidden(widget.excercise.lastTimeStamp)){
             return ListTileChipShell(
               chip: MyChip(
                 chipString: 'HIDDEN',
@@ -113,7 +105,7 @@ class _ExcerciseTileLeadingState extends State<ExcerciseTileLeading> {
           else{
             return Text(
               DurationFormat.format(
-                DateTime.now().difference(widget.excercise.lastTimeStamp.value),
+                DateTime.now().difference(widget.excercise.lastTimeStamp),
                 showMinutes: false,
                 showSeconds: false,
                 showMilliseconds: false,

@@ -282,7 +282,7 @@ class _FloatingDoneButtonState extends State<FloatingDoneButton> {
     if(setsPassed == 0){ //we didn't care to even save this set
       newTimeStamp = widget.excercise.backUpTimeStamp;
     }
-    widget.excercise.lastTimeStamp = new ValueNotifier<DateTime>(newTimeStamp);
+    widget.excercise.lastTimeStamp = newTimeStamp;
 
     //temp start time
     if(setTempsToNull){
