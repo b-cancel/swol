@@ -104,7 +104,7 @@ class _SuggestionState extends State<Suggestion> {
 
     //calc sets passed for bottom buttons
     int setsPassed = widget.excercise.tempSetCount.value;
-    bool timerNotStarted = widget.excercise.tempStartTime.value == AnExcercise.nullDateTime;
+    bool timerNotStarted = ExcercisePage.dtTimerStartedS.value == AnExcercise.nullDateTime;
     if(timerNotStarted) setsPassed += 1;
 
     //color for bottom buttons

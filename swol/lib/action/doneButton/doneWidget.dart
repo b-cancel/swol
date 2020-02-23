@@ -155,7 +155,7 @@ class _FloatingDoneButtonState extends State<FloatingDoneButton> {
     if(ExcercisePage.pageNumber.value != 2){
       //for page 0 and 1 
       //although page 1 shouldn't have the button
-      DateTime tempStartTime = widget.excercise.tempStartTime.value;
+      DateTime tempStartTime = ExcercisePage.dtTimerStartedS.value;
       if(tempStartTime == AnExcercise.nullDateTime){
         completionType = Complete.ForgotToFinish;
       }
@@ -281,7 +281,7 @@ class _FloatingDoneButtonState extends State<FloatingDoneButton> {
 
     //temp start time
     if(setTempsToNull){
-      widget.excercise.tempStartTime = ValueNotifier<DateTime>(AnExcercise.nullDateTime); 
+      ExcercisePage.dtTimerStartedS.value = AnExcercise.nullDateTime;
     }
 
     //weight

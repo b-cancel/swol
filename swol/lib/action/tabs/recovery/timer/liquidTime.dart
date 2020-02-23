@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 //packages
 import 'package:liquid_progress_indicator/liquid_progress_indicator.dart';
+import 'package:swol/action/page.dart';
 
 //internal
 import 'package:swol/action/tabs/recovery/timer/puslingBackground.dart';
@@ -128,7 +129,7 @@ class _TimerState extends State<Timer> with TickerProviderStateMixin {
     super.initState();
 
     //grab timer start initially
-    timerStart.value = widget.excercise.tempStartTime.value;
+    timerStart.value = ExcercisePage.dtTimerStartedS.value;
 
     //---Create Animation Controllers
     maxTimerController = AnimationController(

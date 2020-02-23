@@ -40,7 +40,7 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
 
     //set the first page we will be at based on startTimerValue
     int initialPage;
-    bool timerNotStarted = widget.excercise.tempStartTime.value == AnExcercise.nullDateTime;
+    bool timerNotStarted = ExcercisePage.dtTimerStartedS.value == AnExcercise.nullDateTime;
     if(timerNotStarted){
       if(widget.excercise.lastWeight == null) initialPage = 1;
       else initialPage = 0;

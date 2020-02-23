@@ -91,6 +91,7 @@ class _ExcerciseTileState extends State<ExcerciseTile> {
             child: ExcercisePage(
               excercise: widget.excercise,
               transitionDuration: transitionDuration, 
+              dtTimerStarted: dtTimerStarted,
             ),
           ),
         );

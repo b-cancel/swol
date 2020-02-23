@@ -24,7 +24,7 @@ maybeError(BuildContext context, AnExcercise excercise) {
     //NOTE: this assumes the user CANT type anything except digits of the right size
 
     //change the buttons shows a the wording a tad
-    DateTime startTime = excercise.tempStartTime.value;
+    DateTime startTime = ExcercisePage.dtTimerStartedS.value;
     bool timerNotStarted = startTime == AnExcercise.nullDateTime;
     String continueString =
         (timerNotStarted) ? "Begin Your Set Break" : "Return To Your Break";

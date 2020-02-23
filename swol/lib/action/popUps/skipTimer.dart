@@ -1,5 +1,6 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:swol/action/page.dart';
 import 'package:swol/action/tabs/recovery/secondary/explained.dart';
 import 'package:swol/other/durationFormat.dart';
 import 'package:swol/shared/methods/theme.dart';
@@ -53,6 +54,7 @@ maybeSkipTimer(
                 padding: EdgeInsets.all(8),
                 child: AnimatedMiniNormalTimer(
                   excercise: excercise,
+                  dtTimerStarted: ExcercisePage.dtTimerStartedS.value,
                 ),
               ),
             ),
@@ -212,7 +214,7 @@ class UpdatingBreakSet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Duration timePassed =  DateTime.now().difference(excercise.tempStartTime.value);
+    Duration timePassed =  DateTime.now().difference(ExcercisePage.dtTimerStartedS.value);
     String trainingBreakGoodFor = durationToTrainingType(
       timePassed,
       zeroIsEndurance: false,

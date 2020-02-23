@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:swol/action/page.dart';
 
 //internal
 import 'package:swol/shared/structs/anExcercise.dart';
@@ -53,7 +54,7 @@ maybeAreYouSurePopUp(
   );
 
   //Are you sure
-  Duration timerRuntime = DateTime.now().difference(excercise.tempStartTime.value);
+  Duration timerRuntime = DateTime.now().difference(ExcercisePage.dtTimerStartedS.value);
   if(timerRuntime > excercise.recoveryPeriod) next();
   else{
     //round to nearest 5 seconds (to avoid problems later)

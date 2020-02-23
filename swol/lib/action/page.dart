@@ -25,10 +25,12 @@ class ExcercisePage extends StatelessWidget {
   ExcercisePage({
     @required this.excercise,
     @required this.transitionDuration,
+    @required this.dtTimerStarted,
   });
 
   final AnExcercise excercise;
   final Duration transitionDuration;
+  final ValueNotifier<DateTime> dtTimerStarted;
 
   //static vars used through out initializaed with their default values
 
@@ -49,6 +51,9 @@ class ExcercisePage extends StatelessWidget {
   //so we don't have to calculate them literally millions of times
   static final List<double> oneRepMaxes = new List<double>(8); //not being listened to
 
+  //statics that we link to notifiers on init
+  static ValueNotifier<DateTime> dtTimerStartedS;
+
   //build
   @override
   Widget build(BuildContext context) {
@@ -66,6 +71,7 @@ class ExcercisePage extends StatelessWidget {
         child: ExcercisePageDark(
           excercise: excercise,
           transitionDuration: transitionDuration,
+          dtTimerStarted: dtTimerStarted,
         ),
       ),
     );
@@ -76,10 +82,12 @@ class ExcercisePageDark extends StatefulWidget {
   ExcercisePageDark({
     @required this.excercise,
     @required this.transitionDuration,
+    @required this.dtTimerStarted,
   });
 
   final AnExcercise excercise;
   final Duration transitionDuration;
+  final ValueNotifier<DateTime> dtTimerStarted;
 
   @override
   _ExcercisePageDarkState createState() => _ExcercisePageDarkState();
@@ -95,9 +103,9 @@ class _ExcercisePageDarkState extends State<ExcercisePageDark> {
       widget.excercise.tempReps = int.parse(setReps);
     
       //only if begin
-      if(widget.excercise.tempStartTime.value == AnExcercise.nullDateTime){
+      if(ExcercisePage.dtTimerStartedS.value == AnExcercise.nullDateTime){
         //start the timer
-        widget.excercise.tempStartTime = ValueNotifier<DateTime>(DateTime.now()); 
+        ExcercisePage.dtTimerStartedS.value = DateTime.now(); 
 
         //indicate you have started the set
         widget.excercise.tempSetCount = ValueNotifier<int>(
@@ -130,7 +138,7 @@ class _ExcercisePageDarkState extends State<ExcercisePageDark> {
 
       //reset timer
       //NOTE: must happen first for leading widget to update properly (both bits)
-      widget.excercise.tempStartTime = ValueNotifier<DateTime>(AnExcercise.nullDateTime);
+      ExcercisePage.dtTimerStartedS.value = AnExcercise.nullDateTime;
 
       //when we end set we KNOW our tempWeight and tempReps are valid 
 
@@ -174,6 +182,10 @@ class _ExcercisePageDarkState extends State<ExcercisePageDark> {
     ExcercisePage.causeRefocusIfInvalid.value = false;
     ExcercisePage.updateSet.value = false;
     ExcercisePage.nextSet.value = false;
+
+    //initial links ups to static
+    //should make variable accessible from everywhere
+    ExcercisePage.dtTimerStartedS = widget.dtTimerStarted;
 
     //add listeners
     ExcercisePage.updateSet.addListener(updateSet);
