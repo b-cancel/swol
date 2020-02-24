@@ -64,6 +64,7 @@ class _ExcerciseTileState extends State<ExcerciseTile> {
 
   @override
   void initState(){
+    print("*************************" + widget.key.toString() + "*************************");
     dtTimerStarted = ValueNotifier(AnExcercise.nullDateTime);
     print(widget.excercise.id.toString() + " " + dtTimerStarted.toString() + "***********");
 
