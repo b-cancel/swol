@@ -107,6 +107,13 @@ class AddExcercise extends StatelessWidget {
       NonReloadingCard(
         child: LinkField(url: url),
       ),
+      SliderCard(
+        child: RepTargetField(
+          changeDuration: sectionTransitionDuration,
+          repTarget: repTarget,
+          subtle: false,
+        ),
+      ),
       RecoveryTimeCard(
         changeDuration: sectionTransitionDuration,
         recoveryPeriod: recoveryPeriod, 
@@ -114,13 +121,6 @@ class AddExcercise extends StatelessWidget {
       SliderCard(
         child: SetTargetField(
           setTarget: setTarget,
-        ),
-      ),
-      SliderCard(
-        child: RepTargetField(
-          changeDuration: sectionTransitionDuration,
-          repTarget: repTarget,
-          subtle: false,
         ),
       ),
       NonReloadingCard(
