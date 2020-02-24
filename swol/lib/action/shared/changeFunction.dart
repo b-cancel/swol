@@ -25,6 +25,8 @@ class ChangeFunction extends StatefulWidget {
 class _ChangeFunctionState extends State<ChangeFunction> {
   final ValueNotifier<bool> lastFunction = new ValueNotifier<bool>(false);
   final ValueNotifier<bool> firstFunction = new ValueNotifier<bool>(false);
+  //TODO: eventually use this order
+  ValueNotifier<List<int>> functionIndicesOrder = new ValueNotifier<List<int>>(List<int>(8));
 
   var carousel;
 
@@ -37,6 +39,19 @@ class _ChangeFunctionState extends State<ChangeFunction> {
     if (mounted) setState(() {});
   }
 
+  //TODO: update the carousel variable
+  updateCarousel(){
+    //TODO: after updating the carousel setState
+  }
+
+  //TODO: do this bruh
+  //the repTarget has changed so we want to recalculate all possible weight
+  //order them
+  //and then set the variable and allow it to remake the carousel if needed
+  maybeNewOrder(){
+
+  }
+
   @override
   void initState() {
     //super init
@@ -45,10 +60,17 @@ class _ChangeFunctionState extends State<ChangeFunction> {
     //set values
     updateFirstLast();
 
-    //create listeners
+    //create button show/hide listeners
     lastFunction.addListener(updateState);
     firstFunction.addListener(updateState);
 
+    //set the initial order of the functions
+    //which will generate a new order because right now none exists
+    maybeNewOrder();
+
+    //TODO: add listener to repTarget so we know when we might need to recalculate
+
+    //TODO: instead make the carousel with the function that update it
     //make carousel
     carousel = CarouselSlider(
       initialPage: widget.predictionID.value,
@@ -109,15 +131,18 @@ class _ChangeFunctionState extends State<ChangeFunction> {
         );
       }).toList(),
     );
+
+    //if the order changes the carousel changes
+    functionIndicesOrder.addListener(updateCarousel);
   }
 
   @override
   void dispose() {
-    //remove listeners
+    //remove button show/hide listeners
     lastFunction.removeListener(updateState);
     firstFunction.removeListener(updateState);
 
-    //dispose notifiers
+    //dispose button show/hide notifiers
     lastFunction.dispose();
     firstFunction.dispose();
 
