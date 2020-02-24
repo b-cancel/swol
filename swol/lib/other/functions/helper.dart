@@ -22,7 +22,8 @@ class Functions{
   //    2. and because 104 does work here whereas 105 does not
   static bool almazanUsefull(double reps) => (reps < 105);
 
-  static const int defaultFunctionIndex = 4; 
+  //based on average order of functions
+  static const int defaultFunctionIndex = 3; 
 
   static List<String> functions = [
     "Brzycki Formula", // 0

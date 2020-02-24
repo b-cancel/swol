@@ -130,6 +130,7 @@ class AddExcercise extends StatelessWidget {
         child: PredictionField(
           functionIndex: functionIndex, 
           functionString: functionString,
+          repTarget: repTarget,
         ),
       ),
       TipSpacing(
