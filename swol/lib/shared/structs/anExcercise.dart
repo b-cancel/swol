@@ -9,7 +9,7 @@ import 'package:swol/shared/methods/excerciseData.dart';
 //but doesn't update the file
 class AnExcercise{ 
   //constants
-  static const int defaultFunctionID = Functions.defaultFunctionIndex;
+  static const int defaultFunctionID = Functions.defaultFunctionID;
   static const int defaultRepTarget = 8;
   static const Duration defaultRecovery = const Duration(minutes: 1, seconds: 30);
   static const int defaultSetTarget = 4;

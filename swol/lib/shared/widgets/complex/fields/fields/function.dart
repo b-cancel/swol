@@ -14,14 +14,12 @@ import 'package:swol/shared/widgets/simple/toLearnPage.dart';
 class PredictionField extends StatelessWidget {
   const PredictionField({
     Key key,
-    @required this.functionIndex,
-    @required this.functionString,
+    @required this.functionID,
     @required this.repTarget,
     this.subtle: false,
   }) : super(key: key);
 
-  final ValueNotifier<int> functionIndex;
-  final ValueNotifier<String> functionString;
+  final ValueNotifier<int> functionID;
   final ValueNotifier<int> repTarget;
   final bool subtle;
 
@@ -34,7 +32,7 @@ class PredictionField extends StatelessWidget {
           subtle: subtle,
         ),
         FunctionDropDown(
-          functionIndex: functionIndex,
+          functionID: functionID,
           repTarget: repTarget,
         ),
       ],
@@ -129,11 +127,11 @@ class PredictionFormulasPopUpBody extends StatelessWidget {
 
 class FunctionDropDown extends StatefulWidget {
   FunctionDropDown({
-    @required this.functionIndex,
+    @required this.functionID,
     @required this.repTarget,
   });
 
-  final ValueNotifier<int> functionIndex;
+  final ValueNotifier<int> functionID;
   final ValueNotifier<int> repTarget;
 
   @override
@@ -142,25 +140,6 @@ class FunctionDropDown extends StatefulWidget {
 
 class _FunctionDropDownState extends State<FunctionDropDown> {
   ValueNotifier<int> selectedFunctionOrder = new ValueNotifier(AnExcercise.defaultRepTarget);
-  static final Map<int, List<int>> repTargetToFunctionOrder = {
-    1 : [2,	  0,    7, 	5, 	1,  4, 	3, 	6], //chose 0 location
-    2 : [0,	  2,    1, 	4, 	5,  3, 	7, 	6],
-    3 : [0,	  1,    4, 	2, 	5,  3, 	7, 	6],
-    4 : [0,	  4,    1, 	5, 	2,  3, 	7, 	6],
-    5 : [4,	  0, 	  1, 	5, 	3,  7, 	2, 	6], //chose 0 location
-    6 : [4,	  0,    1, 	7, 	3, 	5, 	6,	2],
-    7 : [4,	  0,    1, 	7, 	3,  6, 	5, 	2],
-    8 : [4,	  7,    0, 	1, 	6,	3, 	5,	2],
-    //missing 9
-    10 : [4,	7,   	6, 	0,	3, 	1, 	5, 	2], //chose 0 location
-    11 : [7,	4,   	6, 	3, 	5,  0,	1,	2],
-    //missing 12 and 13
-    14 : [7,	4,   	6, 	3, 	5,  0,	1,	2],
-    //missing 15, 16, and 17
-    17 : [7,	4,   	6, 	5,	3,	2,	1,	0],
-    //missing 18 through 21
-    22 : [7,	6,	  4, 	5, 	3,	2,	1,	0],
-  };
 
   updateState(){
     if(mounted) setState(() {});
@@ -192,7 +171,6 @@ class _FunctionDropDownState extends State<FunctionDropDown> {
   void initState() {
     //super init
     super.initState();
-    
     //listen to rep target change
     widget.repTarget.addListener(maybeUpdateFunctionOrder);
     selectedFunctionOrder.addListener(updateState);
@@ -215,7 +193,7 @@ class _FunctionDropDownState extends State<FunctionDropDown> {
         canvasColor: MyTheme.dark.primaryColorDark,
       ),
       child: DropdownButton<int>(
-        value: widget.functionIndex.value,
+        value: widget.functionID.value, //the ID selected
         icon: Icon(Icons.arrow_drop_down),
         isExpanded: true,
         iconSize: 24,
@@ -223,15 +201,17 @@ class _FunctionDropDownState extends State<FunctionDropDown> {
         onChanged: (int newValue) {
           Vibrator.vibrateOnce();
           setState(() {
-            widget.functionIndex.value = newValue;
+            widget.functionID.value = newValue;
           });
         },
-        items: Functions.functionIndices.map<DropdownMenuItem<int>>((int value) {
-          bool selected = value == widget.functionIndex.value;
+        items: Functions.repTargetToFunctionIndicesOrder[selectedFunctionOrder.value].map<DropdownMenuItem<int>>((int functionID) {
+          bool selected = (functionID == widget.functionID.value);
+          String thisFunctionString = Functions.functions[functionID];
           return DropdownMenuItem<int>(
-            value: value,
+            value: functionID,
             child: Text(
-              Functions.functions[value],
+              //what in the currently selected position
+              thisFunctionString,
               style: TextStyle(
                 fontWeight: selected ? FontWeight.bold : FontWeight.normal,
                 color: selected ? Colors.white : Colors.white.withOpacity(0.75),

@@ -61,11 +61,8 @@ class AddExcercise extends StatelessWidget {
   final ValueNotifier<String> note = new ValueNotifier("");
   final ValueNotifier<String> url = new ValueNotifier("");
 
-  final ValueNotifier<int> functionIndex = new ValueNotifier(
+  final ValueNotifier<int> functionID = new ValueNotifier(
     AnExcercise.defaultFunctionID,
-  );
-  final ValueNotifier<String> functionString = new ValueNotifier(
-    Functions.functions[AnExcercise.defaultFunctionID],
   );
 
   final ValueNotifier<Duration> recoveryPeriod = new ValueNotifier(
@@ -128,8 +125,7 @@ class AddExcercise extends StatelessWidget {
       ),
       NonReloadingCard(
         child: PredictionField(
-          functionIndex: functionIndex, 
-          functionString: functionString,
+          functionID: functionID, 
           repTarget: repTarget,
         ),
       ),
@@ -186,7 +182,7 @@ class AddExcercise extends StatelessWidget {
                           name: name, 
                           url: url, 
                           note: note, 
-                          functionIndex: functionIndex, 
+                          functionIndex: functionID, 
                           repTarget: repTarget, 
                           recoveryPeriod: recoveryPeriod, 
                           setTarget: setTarget, 

@@ -4,6 +4,27 @@ import 'package:swol/other/functions/W&R=1RM.dart';
 import 'dart:math' as math;
 
 class Functions{
+  //only for 1RM calculation
+  static final Map<int, List<int>> repTargetToFunctionIndicesOrder = {
+    1 : [2,	  0,    7, 	5, 	1,  4, 	3, 	6], //chose 0 location
+    2 : [0,	  2,    1, 	4, 	5,  3, 	7, 	6],
+    3 : [0,	  1,    4, 	2, 	5,  3, 	7, 	6],
+    4 : [0,	  4,    1, 	5, 	2,  3, 	7, 	6],
+    5 : [4,	  0, 	  1, 	5, 	3,  7, 	2, 	6], //chose 0 location
+    6 : [4,	  0,    1, 	7, 	3, 	5, 	6,	2],
+    7 : [4,	  0,    1, 	7, 	3,  6, 	5, 	2],
+    8 : [4,	  7,    0, 	1, 	6,	3, 	5,	2],
+    //missing 9
+    10 : [4,	7,   	6, 	0,	3, 	1, 	5, 	2], //chose 0 location
+    11 : [7,	4,   	6, 	3, 	5,  0,	1,	2],
+    //missing 12 and 13
+    14 : [7,	4,   	6, 	3, 	5,  0,	1,	2],
+    //missing 15, 16, and 17
+    17 : [7,	4,   	6, 	5,	3,	2,	1,	0],
+    //missing 18 through 21
+    22 : [7,	6,	  4, 	5, 	3,	2,	1,	0],
+  };
+
   //r: must not be 37 (for sure)
   //r: must not be anything above 37 (logically)
   static bool brzyckiUsefull(double reps) => (reps < 37);
@@ -23,7 +44,7 @@ class Functions{
   static bool almazanUsefull(double reps) => (reps < 105);
 
   //based on average order of functions
-  static const int defaultFunctionIndex = 3; 
+  static const int defaultFunctionID = 3; 
 
   static List<String> functions = [
     "Brzycki Formula", // 0
