@@ -21,13 +21,11 @@ class ExcerciseTileSubtitle extends StatefulWidget {
   ExcerciseTileSubtitle({
     @required this.excercise,
     @required this.transitionDuration,
-    @required this.dtTimerStarted,
     @required Key key,
   }) : super(key: key);
 
   final AnExcercise excercise;
   final Duration transitionDuration;
-  final ValueNotifier<DateTime> dtTimerStarted;
 
   @override
   _ExcerciseTileSubtitleState createState() => _ExcerciseTileSubtitleState();
@@ -36,7 +34,7 @@ class ExcerciseTileSubtitle extends StatefulWidget {
 class _ExcerciseTileSubtitleState extends State<ExcerciseTileSubtitle> {
   actualUpdate(Duration randomDuration){
     //a set was just completed so there WILL be a new last set
-    if(widget.dtTimerStarted.value == AnExcercise.nullDateTime){
+    if(widget.excercise.tempStartTime.value == AnExcercise.nullDateTime){
       if(mounted) setState(() {});
     }
   }
@@ -52,13 +50,13 @@ class _ExcerciseTileSubtitleState extends State<ExcerciseTileSubtitle> {
     super.initState();
 
     //only changes when started or ended
-    widget.dtTimerStarted.addListener(updateState);
+    widget.excercise.tempStartTime.addListener(updateState);
   }
 
   @override
   void dispose() { 
     //only changes when started or ended
-    widget.dtTimerStarted.removeListener(updateState);
+    widget.excercise.tempStartTime.removeListener(updateState);
 
     //super dispose
     super.dispose();

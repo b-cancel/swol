@@ -16,14 +16,12 @@ import 'package:swol/other/functions/1RM&R=W.dart';
 class Suggestion extends StatefulWidget {
   Suggestion({
     @required this.excercise,
-    @required this.dtTimerStarted,
     @required this.heroUp,
     @required this.heroAnimDuration,
     @required this.heroAnimTravel,
   });
 
   final AnExcercise excercise;
-  final ValueNotifier<DateTime> dtTimerStarted;
   final ValueNotifier<bool> heroUp;
   final Duration heroAnimDuration;
   final double heroAnimTravel;
@@ -104,7 +102,7 @@ class _SuggestionState extends State<Suggestion> {
 
     //calc sets passed for bottom buttons
     int setsPassed = widget.excercise.tempSetCount ?? 0;
-    bool timerNotStarted = widget.dtTimerStarted.value == AnExcercise.nullDateTime;
+    bool timerNotStarted = widget.excercise.tempStartTime.value == AnExcercise.nullDateTime;
     if(timerNotStarted) setsPassed += 1;
 
     //color for bottom buttons

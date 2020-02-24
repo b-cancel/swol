@@ -52,39 +52,6 @@ class ExcerciseTile extends StatefulWidget {
 }
 
 class _ExcerciseTileState extends State<ExcerciseTile> {
-  //the value notifiers passed all over the place in the widgets below
-  ValueNotifier<DateTime> dtTimerStarted;
-
-  updateTempStartTime(){
-    if(dtTimerStarted.value == AnExcercise.nullDateTime){
-      widget.excercise.tempStartTime = null;
-    }
-    else widget.excercise.tempStartTime = dtTimerStarted.value;
-  }
-
-  @override
-  void initState(){
-    print("*************************" + widget.key.toString() + "*************************");
-    dtTimerStarted = ValueNotifier(AnExcercise.nullDateTime);
-    print(widget.excercise.id.toString() + " " + dtTimerStarted.toString() + "***********");
-
-    //super init
-    super.initState();
-
-    //set initial value
-    dtTimerStarted.value = widget.excercise.tempStartTime ?? AnExcercise.nullDateTime;
-    dtTimerStarted.addListener(updateTempStartTime);
-  }
-
-  @override
-  void dispose(){
-    //notify
-    dtTimerStarted.removeListener(updateTempStartTime);
-
-    //super dipose
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
     Duration transitionDuration = Duration(milliseconds: 300);
@@ -119,7 +86,6 @@ class _ExcerciseTileState extends State<ExcerciseTile> {
             child: ExcercisePage(
               excercise: widget.excercise,
               transitionDuration: transitionDuration, 
-              dtTimerStarted: dtTimerStarted,
             ),
           ),
         );
@@ -143,14 +109,12 @@ class _ExcerciseTileState extends State<ExcerciseTile> {
         key: widget.key,
         excercise: widget.excercise,
         transitionDuration: transitionDuration,
-        dtTimerStarted: dtTimerStarted,
       ),
       trailing: ExcerciseTileLeading(
         key: widget.key,
         excercise: widget.excercise,
         transitionDuration: transitionDuration,
         tileInSearch: widget.tileInSearch,
-        dtTimerStarted: dtTimerStarted,
       ),
     );
   }

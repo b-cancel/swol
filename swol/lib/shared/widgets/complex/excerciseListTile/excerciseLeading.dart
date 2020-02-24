@@ -17,14 +17,12 @@ class ExcerciseTileLeading extends StatefulWidget {
   ExcerciseTileLeading({
     @required this.excercise,
     @required this.tileInSearch,
-    @required this.dtTimerStarted,
     @required this.transitionDuration,
     @required Key key,
   }) : super(key: key);
 
   final AnExcercise excercise;
   final bool tileInSearch;
-  final ValueNotifier<DateTime> dtTimerStarted;
   final Duration transitionDuration;
 
   @override
@@ -45,12 +43,12 @@ class _ExcerciseTileLeadingState extends State<ExcerciseTileLeading> {
   I/flutter ( 1512): build: ValueNotifier<DateTime>#74fe0(1969-12-31 18:00:00.000)
   */
   actualUpdate(){
-    print(widget.excercise.id.toString() +" after wait: " + widget.dtTimerStarted.toString());
+    print(widget.excercise.id.toString() +" after wait: " + widget.excercise.tempStartTime.toString());
     if(mounted) setState(() {});
   }
 
   updateState(){
-    print(widget.excercise.id.toString() +" before wait: " + widget.dtTimerStarted.toString());
+    print(widget.excercise.id.toString() +" before wait: " + widget.excercise.tempStartTime.toString());
     //NOTE: just waiting a single frame isn't enough
     Future.delayed(widget.transitionDuration, actualUpdate);
   }
@@ -61,13 +59,13 @@ class _ExcerciseTileLeadingState extends State<ExcerciseTileLeading> {
     super.initState();
 
     //working listeners
-    widget.dtTimerStarted.addListener(updateState);
+    widget.excercise.tempStartTime.addListener(updateState);
   }
 
   @override
   void dispose() { 
     //remove working listeners
-    widget.dtTimerStarted.removeListener(updateState);
+    widget.excercise.tempStartTime.removeListener(updateState);
 
     //super dispose
     super.dispose();
@@ -76,13 +74,12 @@ class _ExcerciseTileLeadingState extends State<ExcerciseTileLeading> {
   //and also 
   @override
   Widget build(BuildContext context) {
-    print(widget.excercise.id.toString() + " build: " + widget.dtTimerStarted.toString());
+    print(widget.excercise.id.toString() + " build: " + widget.excercise.tempStartTime.toString());
 
     //NOTE: timer takes precendence over regular inprogress
-    if(widget.dtTimerStarted.value != AnExcercise.nullDateTime){
+    if(widget.excercise.tempStartTime.value != AnExcercise.nullDateTime){
       return AnimatedMiniNormalTimer(
         excercise: widget.excercise,
-        dtTimerStarted: widget.dtTimerStarted.value,
       );
     }
     else if(LastTimeStamp.isInProgress(widget.excercise.lastTimeStamp)){

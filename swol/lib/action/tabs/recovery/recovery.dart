@@ -17,12 +17,10 @@ class Recovery extends StatefulWidget {
   Recovery({
     @required this.transtionDuration,
     @required this.excercise,
-    @required this.dtTimerStarted,
   });
 
   final Duration transtionDuration;
   final AnExcercise excercise;
-  final ValueNotifier<DateTime> dtTimerStarted;
 
   @override
   _RecoveryState createState() => _RecoveryState();
@@ -104,7 +102,7 @@ class _RecoveryState extends State<Recovery>
                   ),
                   child: Timer(
                     excercise: widget.excercise,
-                    timeStarted: widget.dtTimerStarted.value,
+                    timeStarted: widget.excercise.tempStartTime.value,
                     changeableTimerDuration: recoveryDuration,
                     showAreYouSure: showAreYouSure,
                     showIcon: false,
@@ -138,7 +136,6 @@ class _RecoveryState extends State<Recovery>
               showAreYouSure: showAreYouSure,
               buttonsColor: buttonsColor, 
               excercise: widget.excercise,
-              timerStarted: widget.dtTimerStarted.value,
               setsPassed: setsPassed,
               headerColor: Theme.of(context).cardColor,
             ),
@@ -156,7 +153,6 @@ class RecoveryButtonsWithWhiteContext extends StatelessWidget {
     @required this.showAreYouSure,
     @required this.buttonsColor,
     @required this.excercise,
-    @required this.timerStarted,
     @required this.setsPassed,
     @required this.headerColor,
   }) : super(key: key);
@@ -165,7 +161,6 @@ class RecoveryButtonsWithWhiteContext extends StatelessWidget {
   final ValueNotifier<bool> showAreYouSure;
   final Color buttonsColor;
   final AnExcercise excercise;
-  final DateTime timerStarted;
   final int setsPassed;
   final Color headerColor;
 
@@ -179,7 +174,6 @@ class RecoveryButtonsWithWhiteContext extends StatelessWidget {
           maybeSkipTimer( 
             context, 
             excercise, 
-            timerStarted,
             goToNextSet,
             headerColor,
           );

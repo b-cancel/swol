@@ -25,12 +25,10 @@ class ExcercisePage extends StatelessWidget {
   ExcercisePage({
     @required this.excercise,
     @required this.transitionDuration,
-    @required this.dtTimerStarted,
   });
 
   final AnExcercise excercise;
   final Duration transitionDuration;
-  final ValueNotifier<DateTime> dtTimerStarted;
 
   //static vars used through out initializaed with their default values
 
@@ -54,7 +52,7 @@ class ExcercisePage extends StatelessWidget {
   //build
   @override
   Widget build(BuildContext context) {
-    print(excercise.id.toString() + " " +  dtTimerStarted.toString() + "***********");
+    print(excercise.id.toString() + " " +  excercise.tempStartTime.toString() + "***********");
 
     return Theme(
       data: MyTheme.dark,
@@ -70,7 +68,6 @@ class ExcercisePage extends StatelessWidget {
         child: ExcercisePageDark(
           excercise: excercise,
           transitionDuration: transitionDuration,
-          dtTimerStarted: dtTimerStarted,
         ),
       ),
     );
@@ -81,12 +78,10 @@ class ExcercisePageDark extends StatefulWidget {
   ExcercisePageDark({
     @required this.excercise,
     @required this.transitionDuration,
-    @required this.dtTimerStarted,
   });
 
   final AnExcercise excercise;
   final Duration transitionDuration;
-  final ValueNotifier<DateTime> dtTimerStarted;
 
   @override
   _ExcercisePageDarkState createState() => _ExcercisePageDarkState();
@@ -102,9 +97,9 @@ class _ExcercisePageDarkState extends State<ExcercisePageDark> {
       widget.excercise.tempReps = int.parse(setReps);
     
       //only if begin
-      if(widget.dtTimerStarted.value == AnExcercise.nullDateTime){
+      if(widget.excercise.tempStartTime.value == AnExcercise.nullDateTime){
         //start the timer
-        widget.dtTimerStarted.value = DateTime.now(); 
+        widget.excercise.tempStartTime = new ValueNotifier<DateTime>(DateTime.now()); 
 
         //indicate you have started the set
         if(widget.excercise.tempSetCount == null){
@@ -140,8 +135,8 @@ class _ExcercisePageDarkState extends State<ExcercisePageDark> {
       //TODO: figure out why at some point I marked that this NEEDED to be BEFORE everything else
       //NOTE: that at the moment I should wait for lastWeight and lastReps to update 
       //before reacting to the change here in the one rep max chip
-      widget.dtTimerStarted.value = AnExcercise.nullDateTime;
-      print(widget.excercise.id.toString() +  "******************************updated DT to " + widget.dtTimerStarted.toString());
+      widget.excercise.tempStartTime = new ValueNotifier<DateTime>(AnExcercise.nullDateTime);
+      print(widget.excercise.id.toString() +  "******************************updated DT to " + widget.excercise.tempStartTime.toString());
 
       //save values (that we know are valid)
       widget.excercise.lastWeight = widget.excercise.tempWeight;
@@ -240,7 +235,6 @@ class _ExcercisePageDarkState extends State<ExcercisePageDark> {
           //and the others are within a scaffold
           statusBarHeight: MediaQuery.of(context).padding.top,
           transitionDuration: widget.transitionDuration,
-          dtTimerStarted: widget.dtTimerStarted,
         ),
       ),
     );

@@ -122,12 +122,13 @@ class AnExcercise{
     _tempReps = newTempReps;
     ExcerciseData.updateFile();
   }
-  
-  DateTime _tempStartTime;
-  DateTime get tempStartTime => _tempStartTime;
-  set tempStartTime(DateTime newTempStartTime){
-    DateTime newValue = newTempStartTime;
-    _tempStartTime = newValue;
+
+  //temp start time
+  ValueNotifier<DateTime> _tempStartTime;
+  ValueNotifier<DateTime> get tempStartTime => _tempStartTime;
+  set tempStartTime(ValueNotifier<DateTime> newTempStartTime){
+    DateTime newValue = newTempStartTime.value;
+    _tempStartTime.value = newValue;
     ExcerciseData.updateFile();
   }
   
@@ -154,7 +155,9 @@ class AnExcercise{
     //date time
     DateTime lastTimeStamp,
   ){
-    //NOTE: for all notifier variables we must first create them with some default
+    //variables that have notifiers 
+    //that are required to have atleast a default value
+    _tempStartTime = new ValueNotifier<DateTime>(nullDateTime);
 
     //required to pass variables
     _name = name;
@@ -202,7 +205,9 @@ class AnExcercise{
 
     _tempWeight = map["tempWeight"];
     _tempReps = map["tempReps"];
-    _tempStartTime = _stringToDateTime(map["tempStartTime"]);
+    _tempStartTime = new ValueNotifier<DateTime>(
+      _stringToDateTime(map["tempStartTime"])
+    );
     _tempSetCount = map["tempSetCount"];
   }
 
@@ -246,7 +251,7 @@ class AnExcercise{
 
       "tempWeight": tempWeight,
       "tempReps": tempReps,
-      "tempStartTime": _dateTimeToString(tempStartTime),
+      "tempStartTime": _dateTimeToString(tempStartTime.value),
       "tempSetCount": tempSetCount,
     };
   }

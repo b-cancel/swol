@@ -10,11 +10,9 @@ import 'package:swol/other/otherHelper.dart';
 class AnimatedMiniNormalTimer extends StatefulWidget {
   AnimatedMiniNormalTimer({
     @required this.excercise,
-    @required this.dtTimerStarted,
   });
 
   final AnExcercise excercise;
-  final DateTime dtTimerStarted;
 
   @override
   _AnimatedMiniNormalTimerState createState() => _AnimatedMiniNormalTimerState();
@@ -48,7 +46,7 @@ class _AnimatedMiniNormalTimerState extends State<AnimatedMiniNormalTimer> with 
     //start animation
     //NOTICE: this value never really changes, once its started... its started...
     //NOTE: again by now we know timerStart isnt null
-    Duration timePassed = DateTime.now().difference(widget.dtTimerStarted);
+    Duration timePassed = DateTime.now().difference(widget.excercise.tempStartTime.value);
     controller.forward(
       from: timeToLerpValue(timePassed),
     );
@@ -75,7 +73,7 @@ class _AnimatedMiniNormalTimerState extends State<AnimatedMiniNormalTimer> with 
     return WatchUI(
       controller: controller,
       excercise: widget.excercise,
-      startTime: widget.dtTimerStarted,
+      startTime: widget.excercise.tempStartTime.value,
     );
   }
 }

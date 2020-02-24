@@ -36,13 +36,11 @@ enum Complete {ForgotToFinish, DeleteNewSet, Normal}
 class FloatingDoneButton extends StatefulWidget {
   FloatingDoneButton({
     @required this.excercise,
-    @required this.dtTimerStarted,
     @required this.showOrHideDuration,
     @required this.animationCurve,
   });
 
   final AnExcercise excercise;
-  final ValueNotifier<DateTime> dtTimerStarted;
   final Curve animationCurve;
   final Duration showOrHideDuration;
 
@@ -162,7 +160,7 @@ class _FloatingDoneButtonState extends State<FloatingDoneButton> {
     if(ExcercisePage.pageNumber.value != 2){
       //for page 0 and 1 
       //although page 1 shouldn't have the button
-      DateTime tempStartTime = widget.dtTimerStarted.value;
+      DateTime tempStartTime = widget.excercise.tempStartTime.value;
       if(tempStartTime == AnExcercise.nullDateTime){
         completionType = Complete.ForgotToFinish;
       }
@@ -288,7 +286,7 @@ class _FloatingDoneButtonState extends State<FloatingDoneButton> {
 
     //temp start time
     if(setTempsToNull){
-      widget.dtTimerStarted.value = AnExcercise.nullDateTime;
+      widget.excercise.tempStartTime = new ValueNotifier<DateTime>(AnExcercise.nullDateTime);
     }
 
     //weight
