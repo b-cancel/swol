@@ -41,7 +41,7 @@ class ExcerciseTile extends StatefulWidget {
   ExcerciseTile({
     @required this.excercise,
     this.tileInSearch: false,
-    Key key
+    @required Key key
   }) : super(key: key); 
 
   final AnExcercise excercise;
@@ -53,7 +53,7 @@ class ExcerciseTile extends StatefulWidget {
 
 class _ExcerciseTileState extends State<ExcerciseTile> {
   //the value notifiers passed all over the place in the widgets below
-  final ValueNotifier<DateTime> dtTimerStarted = ValueNotifier(AnExcercise.nullDateTime);
+  ValueNotifier<DateTime> dtTimerStarted;
 
   updateTempStartTime(){
     if(dtTimerStarted.value == AnExcercise.nullDateTime){
@@ -64,6 +64,9 @@ class _ExcerciseTileState extends State<ExcerciseTile> {
 
   @override
   void initState(){
+    dtTimerStarted = ValueNotifier(AnExcercise.nullDateTime);
+    print(widget.excercise.id.toString() + " " + dtTimerStarted.toString() + "***********");
+
     //super init
     super.initState();
 
@@ -88,6 +91,7 @@ class _ExcerciseTileState extends State<ExcerciseTile> {
     //widget
     return ListTile(
       onTap: (){
+        /*
         //-----
         print("id:" + widget.excercise.id.toString());
         print("time stamp: " + widget.excercise.lastTimeStamp.toString());
@@ -99,6 +103,7 @@ class _ExcerciseTileState extends State<ExcerciseTile> {
         print("rep target: " + widget.excercise.repTarget.toString());
         print("recovery: " + widget.excercise.recoveryPeriod.toString());
         print("set target: " + widget.excercise.setTarget.toString());
+        */
 
         //travel to page
         App.navSpread.value = true;
@@ -134,11 +139,13 @@ class _ExcerciseTileState extends State<ExcerciseTile> {
       //NOTE: this must output to null if there isn't a weight 
       //because otherwise it will yeild alot of wasted space
       subtitle: ExcerciseTileSubtitle(
+        key: widget.key,
         excercise: widget.excercise,
         transitionDuration: transitionDuration,
         dtTimerStarted: dtTimerStarted,
       ),
       trailing: ExcerciseTileLeading(
+        key: widget.key,
         excercise: widget.excercise,
         transitionDuration: transitionDuration,
         tileInSearch: widget.tileInSearch,

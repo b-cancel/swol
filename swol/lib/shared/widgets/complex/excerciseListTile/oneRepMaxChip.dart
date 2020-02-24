@@ -22,7 +22,8 @@ class ExcerciseTileSubtitle extends StatefulWidget {
     @required this.excercise,
     @required this.transitionDuration,
     @required this.dtTimerStarted,
-  });
+    @required Key key,
+  }) : super(key: key);
 
   final AnExcercise excercise;
   final Duration transitionDuration;

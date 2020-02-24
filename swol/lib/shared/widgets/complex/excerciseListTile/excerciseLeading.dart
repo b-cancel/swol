@@ -19,7 +19,8 @@ class ExcerciseTileLeading extends StatefulWidget {
     @required this.tileInSearch,
     @required this.dtTimerStarted,
     @required this.transitionDuration,
-  });
+    @required Key key,
+  }) : super(key: key);
 
   final AnExcercise excercise;
   final bool tileInSearch;
@@ -44,12 +45,12 @@ class _ExcerciseTileLeadingState extends State<ExcerciseTileLeading> {
   I/flutter ( 1512): build: ValueNotifier<DateTime>#74fe0(1969-12-31 18:00:00.000)
   */
   actualUpdate(){
-    print("after wait: " + widget.dtTimerStarted.toString());
+    print(widget.excercise.id.toString() +" after wait: " + widget.dtTimerStarted.toString());
     if(mounted) setState(() {});
   }
 
   updateState(){
-    print("before wait: " + widget.dtTimerStarted.toString());
+    print(widget.excercise.id.toString() +" before wait: " + widget.dtTimerStarted.toString());
     //NOTE: just waiting a single frame isn't enough
     Future.delayed(widget.transitionDuration, actualUpdate);
   }
@@ -75,7 +76,7 @@ class _ExcerciseTileLeadingState extends State<ExcerciseTileLeading> {
   //and also 
   @override
   Widget build(BuildContext context) {
-    print("build: " + widget.dtTimerStarted.toString());
+    print(widget.excercise.id.toString() + " build: " + widget.dtTimerStarted.toString());
 
     //NOTE: timer takes precendence over regular inprogress
     if(widget.dtTimerStarted.value != AnExcercise.nullDateTime){

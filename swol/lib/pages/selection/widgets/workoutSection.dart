@@ -147,9 +147,10 @@ class SectionBody extends StatelessWidget {
                 //ONLY false IF Hidden Section
                 reverse: (sectionType != TimeStampType.Hidden),
                 itemBuilder: (context, index){
+                  AnExcercise excercise = thisGroup[index];
                   return ExcerciseTile(
-                    key: UniqueKey(),
-                    excercise: thisGroup[index],
+                    key: ValueKey(excercise.id),
+                    excercise: excercise,
                   );
                 },
                 separatorBuilder : (context, index) => ListTileDivider(),

@@ -257,8 +257,10 @@ class SearchResults extends StatelessWidget {
             physics: ClampingScrollPhysics(),
             itemCount: queryResults.length,
             itemBuilder: (context, index) {
+              AnExcercise excercise = excercises[queryResults[index]];
               return ExcerciseTile(
-                excercise: excercises[queryResults[index]],
+                key: ValueKey(excercise.id),
+                excercise: excercise,
                 tileInSearch: true,
               );
             },
