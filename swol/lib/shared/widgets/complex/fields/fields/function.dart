@@ -35,7 +35,6 @@ class PredictionField extends StatelessWidget {
         ),
         FunctionDropDown(
           functionIndex: functionIndex,
-          functionString: functionString,
           repTarget: repTarget,
         ),
       ],
@@ -130,12 +129,10 @@ class PredictionFormulasPopUpBody extends StatelessWidget {
 
 class FunctionDropDown extends StatefulWidget {
   FunctionDropDown({
-    @required this.functionString,
     @required this.functionIndex,
     @required this.repTarget,
   });
 
-  final ValueNotifier<String> functionString;
   final ValueNotifier<int> functionIndex;
   final ValueNotifier<int> repTarget;
 
@@ -217,26 +214,24 @@ class _FunctionDropDownState extends State<FunctionDropDown> {
       data: Theme.of(context).copyWith(
         canvasColor: MyTheme.dark.primaryColorDark,
       ),
-      child: DropdownButton<String>(
-        value: widget.functionString.value,
+      child: DropdownButton<int>(
+        value: widget.functionIndex.value,
         icon: Icon(Icons.arrow_drop_down),
         isExpanded: true,
         iconSize: 24,
         elevation: 16,
-        onChanged: (String newValue) {
+        onChanged: (int newValue) {
           Vibrator.vibrateOnce();
           setState(() {
-            widget.functionString.value = newValue;
-            widget.functionIndex.value =
-                Functions.functionToIndex[widget.functionString.value];
+            widget.functionIndex.value = newValue;
           });
         },
-        items: Functions.functions.map<DropdownMenuItem<String>>((String value) {
-          bool selected = value == widget.functionString.value;
-          return DropdownMenuItem<String>(
+        items: Functions.functionIndices.map<DropdownMenuItem<int>>((int value) {
+          bool selected = value == widget.functionIndex.value;
+          return DropdownMenuItem<int>(
             value: value,
             child: Text(
-              value,
+              Functions.functions[value],
               style: TextStyle(
                 fontWeight: selected ? FontWeight.bold : FontWeight.normal,
                 color: selected ? Colors.white : Colors.white.withOpacity(0.75),

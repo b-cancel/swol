@@ -47,6 +47,17 @@ class Functions{
     functions[7] : 7,
   };
 
+  static List<int> functionIndices = [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+  ];
+
   //NOTE: returns array with [0] all 1 rep maxes, [1] theMean, [2] stdDeviation 
   static List getOneRepMaxValues(int weight, int reps, {bool onlyIfNoBackUp: true}){
     List<double> possibleOneRepMaxes = new List<double>();
