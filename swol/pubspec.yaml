@@ -20,14 +20,29 @@ dependencies:
   flutter:
     sdk: flutter
 
-  #for what we expected on resume to do
-  flutter_widgets: ^0.1.11
+  #PICKER (for time picking)
+  flutter_picker: ^1.1.0 #WEB ISSUES
 
-  #for monospaced font
-  google_fonts: ^0.3.3
+  #get application path for android and IOS
+  path_provider: ^1.6.1 #PROBABLY WILL CAUSE WEB ISSUES
 
   #used so that gifs only play once
-  flutter_gifimage: ^1.0.1
+  flutter_gifimage: ^1.0.1 #PROBABLY WILL CAUSE WEB ISSUES
+
+  #LAUNCH URL
+  url_launcher: ^5.4.1 #MAYBE WEB ISSUES
+
+  #STATUS AND NAVIGATION BAR
+  flutter_statusbarcolor: ^0.2.2 #MAYBE WEB ISSUES
+
+  #ICONS
+  font_awesome_flutter: ^8.4.0 #MAYBE WEB ISSUES (repair know)
+
+  #feature discovery
+  feature_discovery: ^0.6.0 #I THINK MAY CAUSE WEB ISSUES
+
+  #SETTINGS
+  shared_preferences: ^0.5.6+2 #CONFIRMED NO ISSUES AFTER 0.5.6
 
   #double chevron shimmer
   shimmer: ^1.0.1
@@ -44,15 +59,9 @@ dependencies:
   #custom clipper
   flutter_custom_clippers: ^1.1.0
 
-  #feature discovery
-  feature_discovery: ^0.6.0
-  highlighter_coachmark: ^0.0.3
-
   #swiper
   #flutter_swiper: ^1.1.6 #100rated (alternate)
   carousel_slider: ^1.4.1 #100rated
-
-  #flutter_local_notifications: ^0.8.4+3
 
   #progress indicators (pulse)
   progress_indicators: ^0.1.4
@@ -63,24 +72,15 @@ dependencies:
   #ANIMATION (for rotating arrow in expandable tile)
   animator: ^1.0.0+1
 
-  #STATUS AND NAVIGATION BAR
-  flutter_statusbarcolor: ^0.2.2
-
   #AUTO SIZE TEXT (might need it later)
   auto_size_text: ^2.1.0
 
   #STRING PROCESS (for search)
   diacritic: ^0.1.1
-  
-  #LAUNCH URL
-  url_launcher: ^5.4.1
 
   #SLIDER
   flutter_xlider: ^2.5.2
-  intl: ^0.15.8 #so it works with xlider
-
-  #SETTINGS
-  shared_preferences: ^0.5.3+4
+  intl: ^0.15.8
 
   #STICKY HEADERS (nothing older works)
   flutter_sticky_header: ^0.4.0 
@@ -94,11 +94,7 @@ dependencies:
   #LOADING (for big timer)
   liquid_progress_indicator: ^0.3.2
 
-  #PICKER (for time picking)
-  flutter_picker: ^1.1.0 
-
-  #ICONS
-  font_awesome_flutter: ^8.4.0
+  #regular old icon
   flutter_icons: ^0.3.1
 
   #TRANSITIONS

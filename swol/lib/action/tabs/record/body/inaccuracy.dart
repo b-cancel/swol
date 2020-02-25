@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 
 //plugin
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 //internal: action
 import 'package:swol/action/page.dart';
@@ -225,7 +224,7 @@ class _PercentOffState extends State<PercentOff> {
               Container(
                 child: Text(
                   visualPercentOff.toString(),
-                  style: GoogleFonts.robotoMono(
+                  style: TextStyle(
                     color: color,
                     fontWeight: FontWeight.bold,
                     fontSize: 96,
