@@ -204,7 +204,7 @@ class _ExcercisePageDarkState extends State<ExcercisePageDark> {
     for(int functionID = 0; functionID < 8; functionID++){
       ExcercisePage.oneRepMaxes[functionID] = To1RM.fromWeightAndReps(
         weight.toDouble(), 
-        reps.toDouble(), 
+        reps, 
         functionID,
       );
     } 

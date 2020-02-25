@@ -1,5 +1,6 @@
 //flutter
 import 'package:flutter/material.dart';
+import 'package:swol/action/shared/toFunctionOrder.dart';
 
 //internal: action
 import 'package:swol/action/tabs/record/body/inaccuracy.dart';
@@ -117,7 +118,7 @@ class _MakeFunctionAdjustmentState extends State<MakeFunctionAdjustment> {
       //calculate are weight estimates
       for(int thisFunctionID = 0; thisFunctionID < 8; thisFunctionID++){
         weightEstimates[thisFunctionID] = ToWeight.fromRepAnd1Rm(
-          reps.toDouble(), 
+          reps, 
           ExcercisePage.oneRepMaxes[thisFunctionID],
           thisFunctionID,
         ).round();
@@ -280,16 +281,11 @@ class _MakeFunctionAdjustmentState extends State<MakeFunctionAdjustment> {
         ExcercisePage.setGoalReps.value = widget.excercise.repTarget;
 
         //calc goal weight based on goal reps
-        ExcercisePage.setGoalWeight.value = ToWeight.fromRepAnd1Rm(
-          //rep target used
-          (widget.excercise.repTarget).toDouble(), 
-          //one rep max that uses the same function as below
-          ExcercisePage.oneRepMaxes[
-            widget.excercise.predictionID //TODO: not notifier?
-          ], 
-          //function index to use
-          widget.excercise.predictionID, //TODO: not notifier?
-        ).round();
+        ExcercisePage.setGoalWeight.value = calcAllWeightsWithReps(
+          widget.excercise.repTarget,
+        )[
+          widget.excercise.predictionID
+        ].round();
       }
     }
   }

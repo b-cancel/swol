@@ -1,10 +1,9 @@
 //flutter
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 
 //internal: action
 import 'package:swol/action/tabs/suggest/changeSuggestion.dart';
+import 'package:swol/action/shared/toFunctionOrder.dart';
 import 'package:swol/action/bottomButtons/button.dart';
 import 'package:swol/action/shared/halfColored.dart';
 import 'package:swol/action/shared/setDisplay.dart';
@@ -12,7 +11,6 @@ import 'package:swol/action/page.dart';
 
 //internal: other
 import 'package:swol/shared/structs/anExcercise.dart';
-import 'package:swol/other/functions/1RM&R=W.dart';
 
 //widget
 class Suggestion extends StatefulWidget {
@@ -33,7 +31,7 @@ class Suggestion extends StatefulWidget {
 }
 
 class _SuggestionState extends State<Suggestion> {
-  final List<double> calculatedWeights = new List<double>(8);
+  final ValueNotifier<List<double>> functionIDToWeight = new ValueNotifier<List<double>>(new List<double>(8));
 
   //function select
   final ValueNotifier<int> predictionID = new ValueNotifier<int>(0);
@@ -43,66 +41,31 @@ class _SuggestionState extends State<Suggestion> {
 
   //update the goal set based on init
   //and changed valus
-  updateGoal(){
-    //update goal reps
-    ExcercisePage.setGoalReps.value = widget.excercise.repTarget;
-
-    //calc goal weight based on goal reps
-    ExcercisePage.setGoalWeight.value = calculatedWeights[
+  updateGoalWeight(){
+    //grab correct goal weight
+    ExcercisePage.setGoalWeight.value = functionIDToWeight.value[
       widget.excercise.predictionID
     ].round();
   }
 
   updatePredictionID(){
     widget.excercise.predictionID = predictionID.value;
-    updateGoal();
+    //retreive new weight
+    updateGoalWeight();
   }
 
   updateRepTarget(){
     //update it in the file
     widget.excercise.repTarget = repTarget.value;
+    ExcercisePage.setGoalReps.value = repTarget.value; //TODO: notifier not value?
 
-    //recalculate all the potential values for function order
-    Map<double,int> weightFromRepTargetToIndex = new Map<double,int>();
-    for(int functionID = 0; functionID < 8; functionID++){
-      double weight = ToWeight.fromRepAnd1Rm(
-        //rep target used
-        (widget.excercise.repTarget).toDouble(), 
-        //one rep max that uses the same function as below
-        ExcercisePage.oneRepMaxes[
-          functionID
-        ], 
-        //function index to use
-        functionID,
-      );
-
-      //add to map
-      calculatedWeights[functionID] = weight;
-      weightFromRepTargetToIndex[weight] = functionID;
-    }
-
-    //grab the keys and sort them
-    List<double> weights = weightFromRepTargetToIndex.keys.toList();
-    weights.sort();
-    List<int> orderedIDs = new List<int>(8);
-    for(int i = 0; i < weights.length; i++){
-      double weight = weights[i];
-      int id = weightFromRepTargetToIndex[weight];
-      orderedIDs[i] = id;
-      stdout.write(id.toString() + ", ");
-    }
-    
-    //set the value so all notifies get notified
-    ExcercisePage.orderedIDs.value = orderedIDs;
-
-    print(calculatedWeights.toString());
-    print("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
-    print(weights.toString());
-    print("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
-    print(ExcercisePage.orderedIDs.value.toString());
+    //recalculate all weight with new rep target
+    functionIDToWeight.value = calcAllWeightsWithReps(
+      repTarget.value, //TODO: notifier not value?
+    );
 
     //update the goal by chosing from everything we
-    updateGoal();
+    updateGoalWeight();
   }
 
   @override

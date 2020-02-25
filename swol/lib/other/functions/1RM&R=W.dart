@@ -7,10 +7,9 @@ class ToWeight{
   //at all weight ranges, the function that approximate the one failing the most
   //is the one to its right
   //BACKUP ORDER: brzycki, mcGlothinOrLander, almazan, epleyOrBaechle [non failing]
-  static double fromRepAnd1Rm(double reps, double max, int predictionID){
+  static double fromRepAnd1Rm(int reps, double max, int predictionID){
     bool positiveWeight = (max > 0);
-    bool repsInt = ((reps.toInt()).toDouble() == reps);
-    if(positiveWeight && repsInt){
+    if(positiveWeight){
       switch(predictionID){
         case 0: return brzycki(reps, max); break;
         case 1: return mcGlothinOrLanders(reps, max); break;
@@ -28,9 +27,9 @@ class ToWeight{
   //1 Brzycki Function
   //[m * (37- r)] / 36
   //same limits as To1RM
-  static double brzycki(double reps, double max){
+  static double brzycki(int reps, double max){
     if(Functions.brzyckiUsefull(reps)){
-      double a = 37 - reps;
+      double a = 37.0 - reps;
       double b = max * a;
       double c = b / 36;
       return c;
@@ -41,7 +40,7 @@ class ToWeight{
   //2 McGlothin (or Landers) Function
   //[m * (101.3 - [2.67123 * r])] / 100
   //same limits as To1RM
-  static double mcGlothinOrLanders(double reps, double max){
+  static double mcGlothinOrLanders(int reps, double max){
     if(Functions.mcGlothinOrLandersUsefull(reps)){
       double a = 2.67123 * reps;
       double b = 101.3 - a;
@@ -63,7 +62,7 @@ class ToWeight{
   ln(2)
   */
   //same limits as To1RM
-  static double almazan(double reps, double max){
+  static double almazan(int reps, double max){
     if(Functions.almazanUsefull(reps)){
       double a = reps + 4.99195;
       double b = a / 109.3355;
@@ -78,14 +77,14 @@ class ToWeight{
   //4 Epley (or Baechle) Function
   //(30 * m) / (30 + r)
   //NOTE: no positive limits
-  static double epleyOrBaechle(double reps, double max){
+  static double epleyOrBaechle(int reps, double max){
     return _helperOne(reps, max, 30);
   }
 
   //5 O`Conner Function
   //(40 * m) / (40 + r)
   //NOTE: no positive limits
-  static double oConner(double reps, double max){
+  static double oConner(int reps, double max){
     return _helperOne(reps, max, 40);
   }
 
@@ -97,7 +96,7 @@ class ToWeight{
   -----------------------
   100
   */
-  static double wathan(double reps, double max){
+  static double wathan(int reps, double max){
    return _helperTwo(reps, max, 48.8, 53.8, 0.075);
   }
 
@@ -109,13 +108,13 @@ class ToWeight{
   -----------------------
   100
   */
-  static double mayhew(double reps, double max){
+  static double mayhew(int reps, double max){
     return _helperTwo(reps, max, 52.2, 41.9, 0.055);
   }
 
   //8 Lombardi Function
   //m / [r^(0.1)]
-  static double lombardi(double reps, double max){
+  static double lombardi(int reps, double max){
     double a = math.pow(reps,0.1);
     double b = max / a;
     return b;
@@ -123,7 +122,7 @@ class ToWeight{
 
   //-------------------------Helpers-------------------------
 
-  static double _helperOne(double reps, double max, double constant){
+  static double _helperOne(int reps, double max, double constant){
     double a = constant * max;
     double b = constant + reps;
     double c = a / b;
@@ -131,7 +130,7 @@ class ToWeight{
   }
 
   static double _helperTwo(
-    double reps, 
+    int reps, 
     double max, 
     double const1,
     double const2,

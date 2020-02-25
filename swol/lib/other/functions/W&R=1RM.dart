@@ -7,10 +7,9 @@ class To1RM{
   //at all weight ranges, the function that approximate the one failing the most
   //is the one to its right
   //BACKUP ORDER: brzycki, mcGlothinOrLander, almazan, epleyOrBaechle [non failing]
-  static double fromWeightAndReps(double weight, double reps, int predictionID){
+  static double fromWeightAndReps(double weight, int reps, int predictionID){
     bool positiveWeight = (weight > 0);
-    bool repsInt = ((reps.toInt()).toDouble() == reps);
-    if(positiveWeight && repsInt){
+    if(positiveWeight){
       switch(predictionID){
         case 0: return brzycki(weight, reps); break;
         case 1: return mcGlothinOrLanders(weight, reps); break;
@@ -27,9 +26,9 @@ class To1RM{
 
   //1 Brzycki Function
   //w * (36 / [37 - r]) 
-  static double brzycki(double weight, double reps){
+  static double brzycki(double weight, int reps){
     if(Functions.brzyckiUsefull(reps)){
-      double a = 37 - reps;
+      double a = 37.0 - reps;
       double b = 36 / a;
       double c = weight * b;
       return c;
@@ -43,7 +42,7 @@ class To1RM{
   ------------------------
   (101.3 - [2.67123 * r])
   */
-  static double mcGlothinOrLanders(double weight, double reps){
+  static double mcGlothinOrLanders(double weight, int reps){
     if(Functions.mcGlothinOrLandersUsefull(reps)){
       double a = 100 * weight;
       double b = 2.67123 * reps;
@@ -62,7 +61,7 @@ class To1RM{
     (r + 4.99195) / 109.3355
   ])
   */ 
-  static double almazan(double weight, double reps){ 
+  static double almazan(double weight, int reps){ 
     if(Functions.almazanUsefull(reps)){
       double a = math.log(2);
       double b = a * weight;
@@ -80,13 +79,13 @@ class To1RM{
 
   //4 Epley (or Baechle) Function
   //w * (1 + [r / 30])
-  static double epleyOrBaechle(double weight, double reps){
+  static double epleyOrBaechle(double weight, int reps){
     return _helperOne(weight, reps, 30);
   }
 
   //5 O`Conner Function
   //w * (1 + [r / 40])
-  static double oConner(double weight, double reps){
+  static double oConner(double weight, int reps){
     return _helperOne(weight, reps, 40);
   }
 
@@ -98,7 +97,7 @@ class To1RM{
     -0.075 * r
   ])
   */
-  static double wathan(double weight, double reps){
+  static double wathan(double weight, int reps){
     return _helperTwo(
       weight, 
       reps, 
@@ -116,7 +115,7 @@ class To1RM{
     -0.055 * r
   ])
   */
-  static double mayhew(double weight, double reps){
+  static double mayhew(double weight, int reps){
     return _helperTwo(
       weight, 
       reps, 
@@ -128,7 +127,7 @@ class To1RM{
 
   //8 Lombardi Function
   //w * (r ^ [0.10])
-  static double lombardi(double weight, double reps){
+  static double lombardi(double weight, int reps){
     double a = math.pow(reps, 0.10);
     double b = weight * a;
     return b;
@@ -137,7 +136,7 @@ class To1RM{
   //-------------------------Helpers-------------------------
 
   //w * (1 + [r / constant])
-  static double _helperOne(double weight, double reps, double constant){
+  static double _helperOne(double weight, int reps, double constant){
     double a = reps / constant;
     double b = 1 + a;
     double c = weight * b;
@@ -153,7 +152,7 @@ class To1RM{
   */
   static double _helperTwo(
     double weight, 
-    double reps, 
+    int reps, 
     double const1,
     double const2,
     double const3,

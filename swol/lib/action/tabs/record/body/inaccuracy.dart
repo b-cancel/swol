@@ -183,13 +183,13 @@ class _PercentOffState extends State<PercentOff> {
     //calculate our 1 rep maxes and compare them
     int last1RM = To1RM.fromWeightAndReps(
       widget.excercise.lastWeight.toDouble(),
-      widget.excercise.lastReps.toDouble(),
+      widget.excercise.lastReps,
       widget.predictionID.value, //use PASSED predictionID
     ).round();
 
     int this1RM = To1RM.fromWeightAndReps(
       double.parse(ExcercisePage.setWeight.value),
-      double.parse(ExcercisePage.setReps.value),
+      int.parse(ExcercisePage.setReps.value),
       widget.predictionID.value, //use PASSED predictionID
     ).round();
 
