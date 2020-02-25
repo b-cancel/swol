@@ -192,7 +192,6 @@ class _PercentOffState extends State<PercentOff> {
       int.parse(ExcercisePage.setReps.value),
       widget.predictionID.value, //use PASSED predictionID
     ).round();
-
     print("before: " + last1RM.toString() + " now: " + this1RM.toString());
 
     int change = last1RM - this1RM;
