@@ -48,7 +48,8 @@ class ExcercisePage extends StatelessWidget {
   //keeps track of all 1 rep maxes after they are calculated once 
   //so we don't have to calculate them literally millions of times
   static final List<double> oneRepMaxes = new List<double>(8); //not being listened to
-  //static final ValueNotifier<List<double>> 
+  //function order calcualted by suggest or set record once and then used to generate the carousel
+  static final ValueNotifier<List<int>> orderedIDs = new ValueNotifier<List<int>>(new List<int>(8));
 
   //build
   @override
