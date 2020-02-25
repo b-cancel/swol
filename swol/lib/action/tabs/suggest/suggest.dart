@@ -34,7 +34,7 @@ class Suggestion extends StatefulWidget {
 
 class _SuggestionState extends State<Suggestion> {
   //function select
-  final ValueNotifier<int> predictionID = new ValueNotifier<int>(0);
+  final ValueNotifier<int> functionID = new ValueNotifier<int>(0);
 
   //set target set
   final ValueNotifier<int> repTarget = new ValueNotifier<int>(0);
@@ -44,12 +44,12 @@ class _SuggestionState extends State<Suggestion> {
   updateGoalWeight(){
     //grab correct goal weight
     ExcercisePage.setGoalWeight.value = widget.functionIDToWeightFromRT.value[
-      predictionID.value //NOTE: before we used the excercise value here
+      functionID.value //NOTE: before we used the excercise value here
     ].round();
   }
 
   updatePredictionID(){
-    widget.excercise.predictionID = predictionID.value;
+    widget.excercise.predictionID = functionID.value;
     //retreive new weight
     updateGoalWeight();
   }
@@ -92,22 +92,22 @@ class _SuggestionState extends State<Suggestion> {
     super.initState();
     
     //set inits
-    predictionID.value = widget.excercise.predictionID;
+    functionID.value = widget.excercise.predictionID;
     repTarget.value = widget.excercise.repTarget;
     updateRepTarget();
 
     //add listeners
-    predictionID.addListener(updatePredictionID);
+    functionID.addListener(updatePredictionID);
     repTarget.addListener(updateRepTarget);
   }
 
   @override
   void dispose() {
-    predictionID.removeListener(updatePredictionID);
+    functionID.removeListener(updatePredictionID);
     repTarget.removeListener(updateRepTarget);
 
     //dipose stuffs
-    predictionID.dispose();
+    functionID.dispose();
     repTarget.dispose();
 
     //super dispose
@@ -156,7 +156,7 @@ class _SuggestionState extends State<Suggestion> {
                     ),
                     Expanded(
                       child: SuggestionChanger(
-                        predictionID: predictionID,
+                        functionID: functionID,
                         repTarget: repTarget,
                         arrowRadius: arrowRadius,
                         cardRadius: cardRadius,

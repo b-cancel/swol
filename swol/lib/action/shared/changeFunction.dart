@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 //plugin
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:swol/action/page.dart';
 
 //internal
 import 'package:swol/other/functions/helper.dart';
@@ -11,11 +12,11 @@ import 'package:swol/shared/methods/vibrate.dart';
 //NOTE: should not dispose predictionID since the value was passed
 class ChangeFunction extends StatefulWidget {
   ChangeFunction({
-    @required this.predictionID,
+    @required this.functionID,
     @required this.middleArrows,
   });
 
-  final ValueNotifier<int> predictionID;
+  final ValueNotifier<int> functionID;
   final bool middleArrows;
 
   @override
@@ -28,42 +29,26 @@ class _ChangeFunctionState extends State<ChangeFunction> {
 
   var carousel;
 
-  updateFirstLast() {
-    firstFunction.value = (widget.predictionID.value == 0);
-    lastFunction.value = (widget.predictionID.value == Functions.functions.length - 1);
-  }
-
-  updateState() {
-    if (mounted) setState(() {});
-  }
-
-  @override
-  void initState() {
-    //super init
-    super.initState();
-
-    //set values
+  updateCarousel(){
     updateFirstLast();
 
-    //create listeners
-    lastFunction.addListener(updateState);
-    firstFunction.addListener(updateState);
+    print("working with order: " + ExcercisePage.orderedIDs.value.toString());
 
-    //make carousel
+    int idIsAtHighest = ExcercisePage.orderedIDs.value[0];
+    int idIsAtLowest = ExcercisePage.orderedIDs.value[7];
     carousel = CarouselSlider(
-      initialPage: widget.predictionID.value,
+      initialPage: ExcercisePage.orderedIDs.value.indexOf(widget.functionID.value),
       height: 36,
       enableInfiniteScroll: false,
       autoPlay: false,
-      reverse: true,
       scrollDirection: Axis.vertical,
       viewportFraction: 1.0,
-      onPageChanged: (int val) {
+      onPageChanged: (int selectedIndex) { //the index of the page not the ID of the function
         Vibrator.vibrateOnce();
-        widget.predictionID.value = val;
+        widget.functionID.value = ExcercisePage.orderedIDs.value[selectedIndex];
         updateFirstLast();
       },
-      items: Functions.functions.map((functionName) {
+      items: ExcercisePage.orderedIDs.value.map((functionID) {
         return Builder(
           builder: (BuildContext context) {
             return Center(
@@ -77,13 +62,13 @@ class _ChangeFunctionState extends State<ChangeFunction> {
                         visible: widget.middleArrows,
                         child: Icon(
                           Icons.arrow_drop_down,
-                          color: functionName != Functions.functions[0]
+                          color: functionID != idIsAtLowest
                               ? null
                               : Theme.of(context).cardColor,
                         ),
                       ),
                       Text(
-                        functionName,
+                        Functions.functions[functionID],
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
@@ -93,9 +78,7 @@ class _ChangeFunctionState extends State<ChangeFunction> {
                         visible: widget.middleArrows,
                         child: Icon(
                           Icons.arrow_drop_up,
-                          color: functionName != Functions.functions[
-                            Functions.functions.length - 1
-                          ]
+                          color: functionID != idIsAtHighest
                               ? null
                               : Theme.of(context).cardColor,
                         ),
@@ -109,6 +92,33 @@ class _ChangeFunctionState extends State<ChangeFunction> {
         );
       }).toList(),
     );
+
+    setState(() {});
+  }
+
+  updateFirstLast() {
+    int idIsAtHighest = ExcercisePage.orderedIDs.value[0];
+    int idIsAtLowest = ExcercisePage.orderedIDs.value[7];
+    firstFunction.value = (widget.functionID.value == idIsAtLowest);
+    lastFunction.value = (widget.functionID.value == idIsAtHighest);
+  }
+
+  updateState() {
+    if (mounted) setState(() {});
+  }
+
+  @override
+  void initState() {
+    //super init
+    super.initState();
+
+    //make carousel (and also sets first and last)
+    updateCarousel();
+
+    //create listeners
+    ExcercisePage.orderedIDs.addListener(updateCarousel);
+    lastFunction.addListener(updateState);
+    firstFunction.addListener(updateState);
   }
 
   @override
@@ -141,25 +151,6 @@ class _ChangeFunctionState extends State<ChangeFunction> {
 
   @override
   Widget build(BuildContext context) {
-    //TODO: use the stuff below to determine what order to use
-    //since ultimately the order depends on what im using as pivot
-    /*
-    bool weightValid = isTextValid(ExcercisePage.setWeight.value);
-      int calculatedGoalWeight = ExcercisePage?.setGoalWeight?.value ?? 0;
-      if(weightValid && int.parse(ExcercisePage.setWeight.value) == calculatedGoalWeight){
-        //we are using our GOAL WEIGHT as our pivot
-        goalSetPivot = Pivot.Weight;
-      }
-      else{
-        bool repsValid = isTextValid(ExcercisePage.setReps.value);
-        int calculatedReps = ExcercisePage?.setGoalReps?.value ?? 0;
-        if(repsValid && int.parse(ExcercisePage.setReps.value) == calculatedReps){
-          //we are using our GOAL WEIGHT as our pivot
-          goalSetPivot = Pivot.Reps;
-        }
-        else goalSetPivot = Pivot.RepTarget;
-      }
-    */
     return ClipRRect(
       borderRadius: BorderRadius.only(
         bottomRight: Radius.circular(12),
@@ -203,14 +194,14 @@ class _ChangeFunctionState extends State<ChangeFunction> {
                   Expanded(
                     child: GestureDetector(
                       behavior: HitTestBehavior.translucent,
-                      onTap: firstFunction.value ? null : () => prevFunction(),
+                      onTap: firstFunction.value ? null : () => nextFunction(),
                       child: Container(),
                     ),
                   ),
                   Expanded(
                     child: GestureDetector(
                       behavior: HitTestBehavior.translucent,
-                      onTap: lastFunction.value ? null : () => nextFunction(),
+                      onTap: lastFunction.value ? null : () => prevFunction(),
                       child: Container(),
                     ),
                   )

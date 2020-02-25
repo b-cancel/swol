@@ -8,19 +8,18 @@ import 'package:swol/action/shared/changeFunction.dart';
 //internal: shared
 import 'package:swol/shared/widgets/complex/fields/fields/sliders/repTarget.dart';
 import 'package:swol/shared/widgets/complex/fields/fields/function.dart';
-import 'package:swol/shared/structs/anExcercise.dart';
 
 //widget
 class SuggestionChanger extends StatelessWidget {
   const SuggestionChanger({
     Key key,
-    @required this.predictionID,
+    @required this.functionID,
     @required this.repTarget,
     @required this.arrowRadius,
     @required this.cardRadius,
   }) : super(key: key);
 
-  final ValueNotifier<int> predictionID;
+  final ValueNotifier<int> functionID;
   final ValueNotifier<int> repTarget;
   final Radius arrowRadius;
   final Radius cardRadius;
@@ -63,7 +62,7 @@ class SuggestionChanger extends StatelessWidget {
                       bottom: 8.0,
                     ),
                     child: ChangeFunction(
-                      predictionID: predictionID,
+                      functionID: functionID,
                       middleArrows: false,
                     ),
                   ),

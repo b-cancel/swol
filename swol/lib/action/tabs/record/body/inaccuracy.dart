@@ -81,7 +81,7 @@ class _InaccuracyCalculatorState extends State<InaccuracyCalculator> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 ChangeFunction(
-                  predictionID: widget.predictionID,
+                  functionID: widget.predictionID,
                   middleArrows: true,
                 ),
               ],
