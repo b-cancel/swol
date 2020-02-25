@@ -7,6 +7,7 @@ import 'package:swol/shared/structs/anExcercise.dart';
 //internal
 import 'package:swol/shared/widgets/complex/fields/headers/fieldHeader.dart';
 import 'package:swol/other/functions/helper.dart';
+import 'package:swol/shared/widgets/simple/conditional.dart';
 import 'package:swol/shared/widgets/simple/functionTable.dart';
 import 'package:swol/shared/widgets/simple/toLearnPage.dart';
 
@@ -207,15 +208,52 @@ class _FunctionDropDownState extends State<FunctionDropDown> {
         items: Functions.repTargetToFunctionIndicesOrder[selectedFunctionOrder.value].map<DropdownMenuItem<int>>((int functionID) {
           bool selected = (functionID == widget.functionID.value);
           String thisFunctionString = Functions.functions[functionID];
+
+          //indices
+          int idAtEnd = Functions.repTargetToFunctionIndicesOrder[selectedFunctionOrder.value][0];
+          int idAtStart = Functions.repTargetToFunctionIndicesOrder[selectedFunctionOrder.value][7];
+
+          //widget
           return DropdownMenuItem<int>(
             value: functionID,
-            child: Text(
-              //what in the currently selected position
-              thisFunctionString,
-              style: TextStyle(
-                fontWeight: selected ? FontWeight.bold : FontWeight.normal,
-                color: selected ? Colors.white : Colors.white.withOpacity(0.75),
-              ),
+            child: Row(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Text(
+                  //what in the currently selected position
+                  thisFunctionString,
+                  style: TextStyle(
+                    fontWeight: selected ? FontWeight.bold : FontWeight.normal,
+                    color: selected ? Colors.white : Colors.white.withOpacity(0.75),
+                  ),
+                ),
+                Visibility(
+                  visible: selected == false && (functionID == idAtStart || functionID == idAtEnd),
+                  child: Padding(
+                    padding: EdgeInsets.only(
+                      right: 8.0,
+                    ),
+                    child: Conditional(
+                      condition: functionID == idAtEnd, 
+                      ifTrue: Text(
+                        "Higher 1RM Estimates",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ), 
+                      ifFalse: Text(
+                      "Lower 1RM Estimates",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
           );
         }).toList(),

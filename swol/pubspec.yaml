@@ -24,25 +24,35 @@ dependencies:
   flutter_picker: ^1.1.0 #WEB ISSUES
 
   #get application path for android and IOS
-  path_provider: ^1.6.1 #PROBABLY WILL CAUSE WEB ISSUES
+  #seems to only work for mobile
+  #find alternative for web (https://pub.dev/packages/async_resource)
+  path_provider: ^1.6.1 
+
+  #-------------------------ABOVE PROBLEMATIC-------------------------
 
   #used so that gifs only play once
-  flutter_gifimage: ^1.0.1 #PROBABLY WILL CAUSE WEB ISSUES
-
-  #LAUNCH URL
-  url_launcher: ^5.4.1 #MAYBE WEB ISSUES
+  #PROBABLY WILL CAUSE WEB ISSUES 
+  #but since only Flutter Tag maybe Flutter also works?
+  flutter_gifimage: ^1.0.1 
 
   #STATUS AND NAVIGATION BAR
   flutter_statusbarcolor: ^0.2.2 #MAYBE WEB ISSUES
 
+  #feature discovery
+  feature_discovery: ^0.6.0 #I THINK MAY CAUSE WEB ISSUES (wait on response)
+
+  #-------------------------ABOVE MAYBE PROBLEMATIC-------------------------
+
+  #LAUNCH URL (has web method but I need to implement and test)
+  #https://github.com/flutter/plugins/tree/master/packages/url_launcher/url_launcher_web
+  #NOTE: alternative methods exist
+  url_launcher: ^5.4.1 #NO WEB SUPPORT
+
   #ICONS
   font_awesome_flutter: ^8.4.0 #MAYBE WEB ISSUES (repair know)
 
-  #feature discovery
-  feature_discovery: ^0.6.0 #I THINK MAY CAUSE WEB ISSUES
-
   #SETTINGS
-  shared_preferences: ^0.5.6+2 #CONFIRMED NO ISSUES AFTER 0.5.6
+  shared_preferences: ^0.5.6+2 #CONFIRMED NO ISSUES AFTER 0.5.6 (m)
 
   #double chevron shimmer
   shimmer: ^1.0.1
