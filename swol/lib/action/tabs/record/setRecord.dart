@@ -24,6 +24,7 @@ class SetRecord extends StatelessWidget {
     @required this.heroUp,
     @required this.heroAnimDuration,
     @required this.heroAnimTravel,
+    @required this.functionIDToWeightFromRT,
   });
 
   final AnExcercise excercise;
@@ -31,6 +32,7 @@ class SetRecord extends StatelessWidget {
   final ValueNotifier<bool> heroUp;
   final Duration heroAnimDuration;
   final double heroAnimTravel;
+  final ValueNotifier<List<double>> functionIDToWeightFromRT;
 
   //build
   @override

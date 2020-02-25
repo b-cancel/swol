@@ -19,20 +19,20 @@ class Suggestion extends StatefulWidget {
     @required this.heroUp,
     @required this.heroAnimDuration,
     @required this.heroAnimTravel,
+    @required this.functionIDToWeightFromRT,
   });
 
   final AnExcercise excercise;
   final ValueNotifier<bool> heroUp;
   final Duration heroAnimDuration;
   final double heroAnimTravel;
+  final ValueNotifier<List<double>> functionIDToWeightFromRT;
 
   @override
   _SuggestionState createState() => _SuggestionState();
 }
 
 class _SuggestionState extends State<Suggestion> {
-  final ValueNotifier<List<double>> functionIDToWeight = new ValueNotifier<List<double>>(new List<double>(8));
-
   //function select
   final ValueNotifier<int> predictionID = new ValueNotifier<int>(0);
 
@@ -43,8 +43,8 @@ class _SuggestionState extends State<Suggestion> {
   //and changed valus
   updateGoalWeight(){
     //grab correct goal weight
-    ExcercisePage.setGoalWeight.value = functionIDToWeight.value[
-      widget.excercise.predictionID
+    ExcercisePage.setGoalWeight.value = widget.functionIDToWeightFromRT.value[
+      predictionID.value //NOTE: before we used the excercise value here
     ].round();
   }
 
@@ -57,11 +57,11 @@ class _SuggestionState extends State<Suggestion> {
   updateRepTarget(){
     //update it in the file
     widget.excercise.repTarget = repTarget.value;
-    ExcercisePage.setGoalReps.value = repTarget.value; //TODO: notifier not value?
+    ExcercisePage.setGoalReps.value = repTarget.value;
 
     //recalculate all weight with new rep target
-    functionIDToWeight.value = calcAllWeightsWithReps(
-      repTarget.value, //TODO: notifier not value?
+    widget.functionIDToWeightFromRT.value = calcAllWeightsWithReps(
+      repTarget.value, //NOTE: before we used the excercise value here
     );
 
     //update the goal by chosing from everything we

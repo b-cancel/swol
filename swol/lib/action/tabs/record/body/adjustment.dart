@@ -1,6 +1,5 @@
 //flutter
 import 'package:flutter/material.dart';
-import 'package:swol/action/shared/toFunctionOrder.dart';
 
 //internal: action
 import 'package:swol/action/tabs/record/body/inaccuracy.dart';
@@ -26,6 +25,7 @@ class MakeFunctionAdjustment extends StatefulWidget {
     @required this.heroAnimDuration,
     @required this.heroAnimTravel,
     @required this.excercise,
+    @required this.functionIDToWeightFromRT,
   }) : super(key: key);
 
   final Color topColor;
@@ -33,6 +33,7 @@ class MakeFunctionAdjustment extends StatefulWidget {
   final ValueNotifier<bool> heroUp;
   final Duration heroAnimDuration;
   final double heroAnimTravel;
+  final ValueNotifier<List<double>> functionIDToWeightFromRT;
 
   @override
   _MakeFunctionAdjustmentState createState() => _MakeFunctionAdjustmentState();
@@ -43,11 +44,11 @@ class _MakeFunctionAdjustmentState extends State<MakeFunctionAdjustment> {
 
   //rep estimates
   final List<int> repEstimates = new List<int>(8);
-  final ValueNotifier<bool> allRepsEstimatesValid = new ValueNotifier<bool>(false);
+  bool allRepsEstimatesValid = false;
 
   //weight estimates
   final List<int> weightEstimates = new List<int>(8);
-  final ValueNotifier<bool> allWeightEstimatesValid = new ValueNotifier<bool>(false);
+  bool allWeightEstimatesValid = false;
 
   updatePredictionID(){ 
     widget.excercise.predictionID = predictionID.value;
@@ -95,9 +96,9 @@ class _MakeFunctionAdjustmentState extends State<MakeFunctionAdjustment> {
       }
 
       //if weight is still valid, then all rep estimates valid
-      allRepsEstimatesValid.value = weightRecordedValid;
+      allRepsEstimatesValid = weightRecordedValid;
     }
-    else allRepsEstimatesValid.value = false;
+    else allRepsEstimatesValid = false;
 
     print("estimatedReps:  " + repEstimates.toString());
 
@@ -136,9 +137,9 @@ class _MakeFunctionAdjustmentState extends State<MakeFunctionAdjustment> {
       }
 
       //if reps is still valid, then all weight estimates are valid
-      allWeightEstimatesValid.value = repsRecordedValid;
+      allWeightEstimatesValid = repsRecordedValid;
     }
-    else allWeightEstimatesValid.value = false;
+    else allWeightEstimatesValid = false;
 
     print("estimatedWeights:  " + weightEstimates.toString());
 
@@ -266,12 +267,12 @@ class _MakeFunctionAdjustmentState extends State<MakeFunctionAdjustment> {
   //update the goal set based on init
   //and changed valus
   updateGoal() {
-    if (allRepsEstimatesValid.value) {
+    if (allRepsEstimatesValid) {
       //get calculated reps
       ExcercisePage.setGoalReps.value = repEstimates[predictionID.value];
       ExcercisePage.setGoalWeight.value = int.parse(ExcercisePage.setWeight.value);
     } else {
-      if(allWeightEstimatesValid.value){
+      if(allWeightEstimatesValid){
         //get calculatd weight
         ExcercisePage.setGoalWeight.value = weightEstimates[predictionID.value];
         ExcercisePage.setGoalReps.value = int.parse(ExcercisePage.setReps.value);
@@ -281,10 +282,8 @@ class _MakeFunctionAdjustmentState extends State<MakeFunctionAdjustment> {
         ExcercisePage.setGoalReps.value = widget.excercise.repTarget;
 
         //calc goal weight based on goal reps
-        ExcercisePage.setGoalWeight.value = calcAllWeightsWithReps(
-          widget.excercise.repTarget,
-        )[
-          widget.excercise.predictionID
+        ExcercisePage.setGoalWeight.value = widget.functionIDToWeightFromRT.value[
+          predictionID.value //NOTE: before we used the excercise value here
         ].round();
       }
     }

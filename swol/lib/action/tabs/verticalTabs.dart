@@ -26,6 +26,10 @@ class VerticalTabs extends StatefulWidget {
 }
 
 class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMixin {
+  //updated by suggest, reused by adjustment widget
+  final ValueNotifier<List<double>> functionIDToWeightFromRT
+   = new ValueNotifier<List<double>>(new List<double>(8));
+
   //for the "hero" widget (if not up then down)
   ValueNotifier<bool> goalSetUp;
 
@@ -114,6 +118,7 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
               heroUp: goalSetUp,
               heroAnimDuration: widget.transitionDuration,
               heroAnimTravel: totalTravel,
+              functionIDToWeightFromRT: functionIDToWeightFromRT,
             ),
             SetRecord(
               excercise: widget.excercise,
@@ -121,6 +126,7 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
               heroUp: goalSetUp,
               heroAnimDuration: widget.transitionDuration,
               heroAnimTravel: totalTravel,
+              functionIDToWeightFromRT: functionIDToWeightFromRT,
             ),
             Recovery(
               transtionDuration: widget.transitionDuration,
