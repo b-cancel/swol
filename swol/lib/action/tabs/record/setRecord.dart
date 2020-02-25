@@ -128,6 +128,7 @@ class SetRecord extends StatelessWidget {
                 children: <Widget>[
                   Expanded(
                     child: MakeFunctionAdjustment(
+                      functionIDToWeightFromRT: functionIDToWeightFromRT,
                       topColor: buttonsColor,
                       heroUp: heroUp,
                       heroAnimDuration: heroAnimDuration,

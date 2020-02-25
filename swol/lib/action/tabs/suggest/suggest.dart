@@ -8,6 +8,7 @@ import 'package:swol/action/bottomButtons/button.dart';
 import 'package:swol/action/shared/halfColored.dart';
 import 'package:swol/action/shared/setDisplay.dart';
 import 'package:swol/action/page.dart';
+import 'package:swol/other/functions/1RM&R=W.dart';
 
 //internal: other
 import 'package:swol/shared/structs/anExcercise.dart';
@@ -60,8 +61,26 @@ class _SuggestionState extends State<Suggestion> {
     ExcercisePage.setGoalReps.value = repTarget.value;
 
     //recalculate all weight with new rep target
-    widget.functionIDToWeightFromRT.value = calcAllWeightsWithReps(
-      repTarget.value, //NOTE: before we used the excercise value here
+    List<double> functionIDToWeight = new List<double>(8);
+    for(int functionID = 0; functionID < 8; functionID++){
+      double weight = ToWeight.fromRepAnd1Rm(
+        //rep target used
+        repTarget.value, 
+        //one rep max that uses the same function as below
+        ExcercisePage.oneRepMaxes[
+          functionID
+        ], 
+        //function index to use
+        functionID,
+      );
+
+      functionIDToWeight[functionID] = weight;
+    }
+    widget.functionIDToWeightFromRT.value = functionIDToWeight;
+    
+    //based on new results update order
+    updateOrderOfIDs(
+      functionIDToWeight
     );
 
     //update the goal by chosing from everything we
