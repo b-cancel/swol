@@ -30,14 +30,23 @@ class _ChangeFunctionState extends State<ChangeFunction> {
   var carousel;
 
   updateCarousel(){
-    updateFirstLast();
-
     print("working with order: " + ExcercisePage.orderedIDs.value.toString());
 
+    //update first last without setting state
     int idIsAtHighest = ExcercisePage.orderedIDs.value[0];
     int idIsAtLowest = ExcercisePage.orderedIDs.value[7];
+    firstFunction.value = (widget.functionID.value == idIsAtLowest);
+    lastFunction.value = (widget.functionID.value == idIsAtHighest);
+
+    int selectedID = widget.functionID.value;
+    print("selected function: " + selectedID.toString());
+    int sub = ExcercisePage.orderedIDs.value.indexOf(selectedID);
+    //print("sub: " + sub.toString());
+    int selectedPage = sub; //7 - sub;
+    print("located in page: " + selectedPage.toString());
     carousel = CarouselSlider(
-      initialPage: ExcercisePage.orderedIDs.value.indexOf(widget.functionID.value),
+      //TODO: this seems to be working with a constant value but not with a passed value
+      initialPage: 0, //selectedPage,
       height: 36,
       enableInfiniteScroll: false,
       autoPlay: false,
@@ -49,6 +58,7 @@ class _ChangeFunctionState extends State<ChangeFunction> {
         updateFirstLast();
       },
       items: ExcercisePage.orderedIDs.value.map((functionID) {
+        //print("function id: " + functionID.toString());
         return Builder(
           builder: (BuildContext context) {
             return Center(
@@ -126,6 +136,7 @@ class _ChangeFunctionState extends State<ChangeFunction> {
     //remove listeners
     lastFunction.removeListener(updateState);
     firstFunction.removeListener(updateState);
+    ExcercisePage.orderedIDs.removeListener(updateCarousel);
 
     //dispose notifiers
     lastFunction.dispose();
