@@ -143,17 +143,4 @@ class Functions{
 
     return math.sqrt(massiveSum / values.length);
   }
-
-  static List<int> orderIndices(List<double> list){
-    HashMap<double,int> valueToIndex = new HashMap<double,int>();
-    for(int i = 0; i < list.length; i++){
-      valueToIndex[list[i]] = i;
-    }
-    list.sort();
-    List<int> sortedIndices = new List<int>(list.length);
-    for(int i = 0; i < list.length; i++){
-      sortedIndices[i] = valueToIndex[list[i]];
-    }
-    return sortedIndices;
-  }
 }
