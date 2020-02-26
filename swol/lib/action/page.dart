@@ -51,8 +51,8 @@ class ExcercisePage extends StatelessWidget {
   static ValueNotifier<int> closestIndex = new ValueNotifier<int>(-1);
   //NOTE: these are shown as INTs but are actually DOUBLEs to avoid issues with calculations and sorting later
   //used so that we can set the goal set from both the suggest and record page
-  static final ValueNotifier<int> setGoalWeight = new ValueNotifier<int>(0); //being listened
-  static final ValueNotifier<int> setGoalReps = new ValueNotifier<int>(0); //being listened
+  static final ValueNotifier<double> setGoalWeight = new ValueNotifier<double>(0); //being listened
+  static final ValueNotifier<double> setGoalReps = new ValueNotifier<double>(0); //being listened
 
   //build
   @override

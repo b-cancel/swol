@@ -147,6 +147,8 @@ class _PercentOffState extends State<PercentOff> {
     for(int functionID = 0; functionID < 8; functionID++){
       //calc
       double calculated1RM = To1RM.fromWeightAndReps(
+        //TODO: should we be using these values (to make the set) all this time?
+        //I suspect the problem is comming from here
         double.parse(ExcercisePage.setWeight.value),
         int.parse(ExcercisePage.setReps.value),
         functionID, 
@@ -157,8 +159,8 @@ class _PercentOffState extends State<PercentOff> {
 
       //calc
       double calculatedDifference = calcPercentDifference(
-        ExcercisePage.oneRepMaxes[functionID].roundToDouble(), 
-        calculated1RM.roundToDouble(),
+        ExcercisePage.oneRepMaxes[functionID], 
+        calculated1RM,
       );
 
       //minor calcs

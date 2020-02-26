@@ -131,15 +131,17 @@ class _SetDisplayState extends State<SetDisplay> {
       }
       else{
         bool weightValid = isTextValid(ExcercisePage.setWeight.value);
-        int calculatedGoalWeight = ExcercisePage?.setGoalWeight?.value ?? 0;
-        if(weightValid && int.parse(ExcercisePage.setWeight.value) == calculatedGoalWeight){
+        double calculatedGoalWeight = ExcercisePage?.setGoalWeight?.value ?? 0;
+        //NOTE: here we do round since setWeight will ALWAYS BE an integer
+        if(weightValid && int.parse(ExcercisePage.setWeight.value) == calculatedGoalWeight.round()){
           //we are using our GOAL WEIGHT as our pivot
           goalSetPivot = Pivot.Weight;
         }
         else{
           bool repsValid = isTextValid(ExcercisePage.setReps.value);
-          int calculatedReps = ExcercisePage?.setGoalReps?.value ?? 0;
-          if(repsValid && int.parse(ExcercisePage.setReps.value) == calculatedReps){
+          double calculatedReps = ExcercisePage?.setGoalReps?.value ?? 0;
+          //NOTE: here we do round since setWeight will ALWAYS BE an integer
+          if(repsValid && int.parse(ExcercisePage.setReps.value) == calculatedReps.round()){
             //we are using our GOAL WEIGHT as our pivot
             goalSetPivot = Pivot.Reps;
           }
@@ -350,10 +352,11 @@ class UpdatingSetText extends StatelessWidget {
   Widget build(BuildContext context) {
     int value;
     if (excercise == null) {
+      //NOTE: we CAN round here since the value is simply being used for display
       if (isWeight)
-        value = ExcercisePage.setGoalWeight.value;
+        value = ExcercisePage.setGoalWeight.value.round();
       else
-        value = ExcercisePage.setGoalReps.value;
+        value = ExcercisePage.setGoalReps.value.round();
     } else {
       if (isWeight)
         value = excercise.lastWeight;

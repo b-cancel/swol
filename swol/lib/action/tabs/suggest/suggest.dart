@@ -45,7 +45,7 @@ class _SuggestionState extends State<Suggestion> {
     //grab correct goal weight
     ExcercisePage.setGoalWeight.value = widget.functionIDToWeightFromRT.value[
       functionID.value //NOTE: before we used the excercise value here
-    ].round();
+    ];
   }
 
   updatePredictionID(){
@@ -57,7 +57,7 @@ class _SuggestionState extends State<Suggestion> {
   updateRepTarget(){
     //update it in the file
     widget.excercise.repTarget = repTarget.value;
-    ExcercisePage.setGoalReps.value = repTarget.value;
+    ExcercisePage.setGoalReps.value = repTarget.value.toDouble();
 
     //recalculate all weight with new rep target
     List<double> functionIDToWeight = new List<double>(8);

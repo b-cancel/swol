@@ -289,35 +289,41 @@ class _MakeFunctionAdjustmentState extends State<MakeFunctionAdjustment> {
   updateGoal() {
     if (allRepsEstimatesValid) {
       print("*****Using recorded weight");
+      print(repEstimates.toString());
       updateOrderOfIDs(repEstimates);
 
       //get calculated reps
+      //NOTE: may be a double
       ExcercisePage.setGoalReps.value =
-          repEstimates[predictionID.value].round();
+          repEstimates[predictionID.value];
+      
       ExcercisePage.setGoalWeight.value =
-          int.parse(ExcercisePage.setWeight.value);
+          int.parse(ExcercisePage.setWeight.value).toDouble();
     } else {
       if (allWeightEstimatesValid) {
         print("*****Using recorded reps");
+        print(weightEstimates.toString());
         updateOrderOfIDs(weightEstimates);
 
-        //get calculatd weight
+        //get calculatd weight might be double
         ExcercisePage.setGoalWeight.value =
-            weightEstimates[predictionID.value].round();
+            weightEstimates[predictionID.value];
+
+        //NOTE: will only ever be integers
         ExcercisePage.setGoalReps.value =
-            int.parse(ExcercisePage.setReps.value);
+          int.parse(ExcercisePage.setReps.value).toDouble();
       } else {
         print("*****Using rep target");
+        print(widget.functionIDToWeightFromRT.value.toString());
         updateOrderOfIDs(widget.functionIDToWeightFromRT.value);
 
-        //update calculated weight
-        ExcercisePage.setGoalReps.value = widget.excercise.repTarget;
-        ExcercisePage.setGoalWeight
-            .value = (widget.functionIDToWeightFromRT.value[predictionID
-                        .value //NOTE: before we used the excercise value here
-                    ] ??
-                0)
-            .round();
+        //NOTE: will only ever be integers
+        ExcercisePage.setGoalReps.value 
+        = widget.excercise.repTarget.toDouble();
+
+        //avoid init issue
+        double weight = widget?.functionIDToWeightFromRT?.value[predictionID.value] ?? 0;
+        ExcercisePage.setGoalWeight.value = weight;
       }
     }
   }
