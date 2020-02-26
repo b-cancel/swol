@@ -128,14 +128,21 @@ class PercentOff extends StatefulWidget {
 
 class _PercentOffState extends State<PercentOff> {
   List<double> oneRepMaxes = new List<double>(8);
-  List<double> percentDifferences = new List<double>(8);
+  List<int> percentDifferences = new List<int>(8);
+  List<int> percentDifferencesAbsolute = new List<int>(8);
+  Map<int,List<int>> absDifferenceTofunctionID = new Map<int,List<int>>();
+  int smallestDifference;
+  int ourIndex;
 
   double calcPercentDifference(double last, double current){
     double change = last - current;
-    return (change / last) * 100;
+    //so doing better than expected yeilds positive values
+    return ((change / last) * 100) * -1;
   }
 
   updateOneRepMaxes(){
+    absDifferenceTofunctionID.clear();
+
     //do new calculations
     for(int functionID = 0; functionID < 8; functionID++){
       //calc
@@ -150,26 +157,56 @@ class _PercentOffState extends State<PercentOff> {
 
       //calc
       double calculatedDifference = calcPercentDifference(
-        ExcercisePage.oneRepMaxes[functionID], 
-        calculated1RM,
+        ExcercisePage.oneRepMaxes[functionID].roundToDouble(), 
+        calculated1RM.roundToDouble(),
       );
 
+      //minor calcs
+      int difference = calculatedDifference.round();
+      int absDifference = difference < 0 ? -1 : 1;
+      absDifference *= difference;
+
       //save
-      percentDifferences[functionID] = calculatedDifference;
-    }
+      percentDifferences[functionID] = difference;
+      percentDifferencesAbsolute[functionID] = absDifference;
 
-    //find closest match
-    double smallestPercent = double.infinity;
-    int functionIDwithSmallestPercent = -1;
-    for(int functionID = 0; functionID < 8; functionID++){
-      double percentForFunction = percentDifferences[functionID];
-      if(percentForFunction < smallestPercent){
-        smallestPercent = percentForFunction;
-        functionIDwithSmallestPercent = functionID;
+      //keep counter
+      if(absDifferenceTofunctionID.containsKey(absDifference) == false){
+        absDifferenceTofunctionID[absDifference] = new List<int>();
       }
+      absDifferenceTofunctionID[absDifference].add(functionID);
     }
 
-    print("function with closest match has ID: " + functionIDwithSmallestPercent.toString());
+    print("differences: " + percentDifferences.toString());
+    print("map: " + absDifferenceTofunctionID.toString());
+
+    //get the smallest difference
+    List<int> differences = absDifferenceTofunctionID.keys.toList();
+    differences.sort();
+    smallestDifference = differences[0];
+    
+    //will eventually set state
+    updatePredictionID();
+  }
+
+  updatePredictionID(){
+    int ourPercentDifference = percentDifferencesAbsolute[widget.predictionID.value];
+    ourIndex = ExcercisePage.orderedIDs.value.indexOf(widget.predictionID.value);
+    print("index of : " + widget.predictionID.value.toString() + " is " + ourIndex.toString());
+
+    //based on the smallest difference see if another index is closer
+    if(ourPercentDifference == smallestDifference){
+      print("updated to ourselves");
+      ExcercisePage.closestIndex.value = ourIndex;
+    }
+    else{
+      //TODO: finish
+      print("we need to iterate through all indices that hold the smallest");
+      ExcercisePage.closestIndex.value = 3;
+    }
+
+    //now that we have the proper value everywhere
+    updateState();
   }
 
   updateState() {
@@ -189,7 +226,7 @@ class _PercentOffState extends State<PercentOff> {
     ExcercisePage.setReps.addListener(updateOneRepMaxes);
 
     //listeners to update percentages
-    widget.predictionID.addListener(updateState);
+    widget.predictionID.addListener(updatePredictionID);
   }
 
   @override
@@ -199,7 +236,7 @@ class _PercentOffState extends State<PercentOff> {
     ExcercisePage.setReps.removeListener(updateOneRepMaxes);
 
     //remove percentage update listener
-    widget.predictionID.removeListener(updateState);
+    widget.predictionID.removeListener(updatePredictionID);
 
     //super dipose
     super.dispose();
@@ -207,33 +244,35 @@ class _PercentOffState extends State<PercentOff> {
 
   @override
   Widget build(BuildContext context) {
-    Color color = Colors.white;
-    /*
-    int id = 0;
-    if (id == 1)
-      color = Colors.red.withOpacity(0.33);
-    else if (id == 2)
-      color = Colors.red.withOpacity(0.66);
-    else if (id == 3) color = Colors.red;
-    */
+    Color overlayColor = Colors.white;
+    //we are some distance from where we should be
+    int dif = ourIndex - ExcercisePage.closestIndex.value;
+    print("dif: " + dif.toString());
+    if(dif != 0){ 
+      if(dif < 0) dif *= -1;
+      switch(dif){
+        case 1: 
+          overlayColor = Colors.red.withOpacity(0.33); 
+          break;
+        case 2: 
+          overlayColor = Colors.red.withOpacity(0.66); 
+          break;
+        default: overlayColor = Colors.red;
+      }
+    }
 
-    //calculate our 1 rep maxes and compare them
-
-    int last1RM = ExcercisePage.oneRepMaxes[widget.predictionID.value].round();
-    int this1RM = oneRepMaxes[widget.predictionID.value].round();
-    bool same1RM = last1RM == this1RM;
-
-    print("before: " + last1RM.toString() + " now: " + this1RM.toString());
-
-    double percentOff = percentDifferences[widget.predictionID.value];
-    //absolute value
+    //grab how much this prediction ID is away from target
+    int percentOff = percentDifferences[widget.predictionID.value];
+    //if met or exceeded
+    bool metExpectations = percentOff > 0;
+    //display just a number
     percentOff = (percentOff < 0) ? percentOff * -1 : percentOff;     
 
     //build
     return Column(
       children: <Widget>[
         Conditional(
-          condition: same1RM,
+          condition: percentOff == 0,
           ifTrue: Padding(
             padding: EdgeInsets.only(
               bottom: 8.0,
@@ -250,14 +289,28 @@ class _PercentOffState extends State<PercentOff> {
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               Container(
-                child: Text(
-                  percentOff.round().toString(),
-                  style: TextStyle(
-                    color: color,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 96,
-                    wordSpacing: 0,
-                  ),
+                child: Stack(
+                  children: <Widget>[
+                    Text(
+                      percentOff.toString(),
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 96,
+                        wordSpacing: 0,
+                      ),
+                    ),
+                    //warns the user that they should change functions
+                    Text(
+                      percentOff.toString(),
+                      style: TextStyle(
+                        color: overlayColor,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 96,
+                        wordSpacing: 0,
+                      ),
+                    ),
+                  ],
                 ),
               ),
               DefaultTextStyle(
@@ -269,13 +322,22 @@ class _PercentOffState extends State<PercentOff> {
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Icon(
-                        FontAwesomeIcons.percentage,
-                        color: color,
-                        size: 42,
+                      Stack(
+                        children: <Widget>[
+                          Icon(
+                            FontAwesomeIcons.percentage,
+                            color: Colors.white,
+                            size: 42,
+                          ),
+                          Icon(
+                            FontAwesomeIcons.percentage,
+                            color: overlayColor,
+                            size: 42,
+                          ),
+                        ],
                       ),
                       Text(
-                        (this1RM > last1RM) ? "higher" : "lower",
+                       (metExpectations) ? "higher" : "lower",
                         style: TextStyle(
                           fontSize: 42,
                         ),
@@ -289,9 +351,9 @@ class _PercentOffState extends State<PercentOff> {
         ),
         Center(
           child: Transform.translate(
-            offset: Offset(0, (same1RM) ? -12 : -16),
+            offset: Offset(0, (percentOff == 0) ? -12 : -16),
             child: Text(
-              (same1RM ? "as" : "than") + " calculated by the",
+              (percentOff == 0 ? "as" : "than") + " calculated by the",
               style: TextStyle(
                 fontSize: 22,
               ),
