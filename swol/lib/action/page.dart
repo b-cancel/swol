@@ -378,5 +378,8 @@ updateOrderOfIDs(List<double> functionIDToValue){
   print(orderedIDs.toString());
   
   //set the value so all notifies get notified
-  ExcercisePage.orderedIDs.value = orderedIDs;
+  //only if there is a difference (avoid weird setState while build BUG)
+  if(orderedIDs.toString() != ExcercisePage.orderedIDs.value.toString()){
+    ExcercisePage.orderedIDs.value = orderedIDs;
+  }
 }

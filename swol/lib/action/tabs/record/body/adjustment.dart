@@ -191,6 +191,8 @@ class _MakeFunctionAdjustmentState extends State<MakeFunctionAdjustment> {
       heroAnimTravel: widget.heroAnimTravel,
     );
 
+    print("---------------build");
+
     return Container(
       width: MediaQuery.of(context).size.width,
       child: Column(

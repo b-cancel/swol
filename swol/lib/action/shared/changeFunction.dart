@@ -8,6 +8,7 @@ import 'package:swol/action/page.dart';
 //internal
 import 'package:swol/other/functions/helper.dart';
 import 'package:swol/shared/methods/vibrate.dart';
+import 'package:swol/shared/widgets/simple/conditional.dart';
 
 //NOTE: should not dispose predictionID since the value was passed
 class ChangeFunction extends StatefulWidget {
@@ -29,9 +30,7 @@ class _ChangeFunctionState extends State<ChangeFunction> {
 
   var carousel;
 
-  updateCarousel(){
-    print("working with order: " + ExcercisePage.orderedIDs.value.toString());
-
+  updateCarousel({bool alsoSetState: true}){
     //update first last without setting state
     int idIsAtHighest = ExcercisePage.orderedIDs.value[0];
     int idIsAtLowest = ExcercisePage.orderedIDs.value[7];
@@ -51,47 +50,54 @@ class _ChangeFunctionState extends State<ChangeFunction> {
       scrollDirection: Axis.vertical,
       viewportFraction: 1.0,
       onPageChanged: (int selectedIndex) { //the index of the page not the ID of the function
-        Vibrator.vibrateOnce();
-        widget.functionID.value = ExcercisePage.orderedIDs.value[selectedIndex];
-        updateFirstLast();
+        int selectedID = ExcercisePage.orderedIDs.value[selectedIndex];
+        if(widget.functionID.value != selectedID){
+          Vibrator.vibrateOnce();
+          widget.functionID.value = selectedID;
+        }
+
+        //updates outer arrows
+        int idIsAtHighest = ExcercisePage.orderedIDs.value[0];
+        int idIsAtLowest = ExcercisePage.orderedIDs.value[7];
+        firstFunction.value = (widget.functionID.value == idIsAtLowest);
+        lastFunction.value = (widget.functionID.value == idIsAtHighest);
       },
       items: ExcercisePage.orderedIDs.value.map((functionID) {
         return Builder(
           builder: (BuildContext context) {
+            //no matter what this is going to span the entirety of the space
             return Center(
               child: Container(
                 height: 36,
-                child: Center(
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      Visibility(
-                        visible: widget.middleArrows,
-                        child: Icon(
-                          Icons.arrow_drop_down,
-                          color: functionID != idIsAtLowest
-                              ? null
-                              : Theme.of(context).cardColor,
-                        ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Visibility(
+                      visible: widget.middleArrows,
+                      child: Icon(
+                        Icons.arrow_drop_down,
+                        color: functionID != idIsAtLowest
+                            ? null
+                            : Theme.of(context).cardColor,
                       ),
-                      Text(
-                        Functions.functions[functionID],
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
+                    ),
+                    Text(
+                      Functions.functions[functionID],
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
                       ),
-                      Visibility(
-                        visible: widget.middleArrows,
-                        child: Icon(
-                          Icons.arrow_drop_up,
-                          color: functionID != idIsAtHighest
-                              ? null
-                              : Theme.of(context).cardColor,
-                        ),
+                    ),
+                    Visibility(
+                      visible: widget.middleArrows,
+                      child: Icon(
+                        Icons.arrow_drop_up,
+                        color: functionID != idIsAtHighest
+                            ? null
+                            : Theme.of(context).cardColor,
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             );
@@ -100,25 +106,18 @@ class _ChangeFunctionState extends State<ChangeFunction> {
       }).toList(),
     );
 
-    //show this new carousel
-    setState(() {});
+    //set state if needed
+    if(alsoSetState){
+      //show this new carousel
+      setState(() {});
 
-    //TODO: figure out why I need this
-    //wait one frame to set the initial page since the initial page parameter doesn't work
-    WidgetsBinding.instance.addPostFrameCallback((_){
-      carousel.jumpToPage(selectedPage);
-    });
-  }
-
-  updateFirstLast() {
-    int idIsAtHighest = ExcercisePage.orderedIDs.value[0];
-    int idIsAtLowest = ExcercisePage.orderedIDs.value[7];
-    firstFunction.value = (widget.functionID.value == idIsAtLowest);
-    lastFunction.value = (widget.functionID.value == idIsAtHighest);
-  }
-
-  updateState() {
-    if (mounted) setState(() {});
+      //TODO: figure out why I need this
+      //wait one frame to set the initial page since the initial page parameter doesn't work
+      WidgetsBinding.instance.addPostFrameCallback((_){
+        carousel.jumpToPage(selectedPage);
+      });
+    }
+    //ELSE: the carousel is being build in init
   }
 
   @override
@@ -127,24 +126,16 @@ class _ChangeFunctionState extends State<ChangeFunction> {
     super.initState();
 
     //make carousel (and also sets first and last)
-    updateCarousel();
+    updateCarousel(alsoSetState: false);
 
     //create listeners
     ExcercisePage.orderedIDs.addListener(updateCarousel);
-    lastFunction.addListener(updateState);
-    firstFunction.addListener(updateState);
   }
 
   @override
   void dispose() {
     //remove listeners
-    lastFunction.removeListener(updateState);
-    firstFunction.removeListener(updateState);
     ExcercisePage.orderedIDs.removeListener(updateCarousel);
-
-    //dispose notifiers
-    lastFunction.dispose();
-    firstFunction.dispose();
 
     //super dispose
     super.dispose();
@@ -173,59 +164,98 @@ class _ChangeFunctionState extends State<ChangeFunction> {
       ),
       child: Material(
         color: Colors.transparent,
-        child: Stack(
-          children: <Widget>[
-            Container(
-              width: MediaQuery.of(context).size.width,
-              child: Row(
-                children: <Widget>[
-                  Visibility(
-                    visible: widget.middleArrows == false,
-                    child: Icon(
-                      Icons.arrow_drop_down,
-                      color: firstFunction.value
-                          ? Theme.of(context).primaryColorDark
-                          : null,
+        child: Container(
+          width: MediaQuery.of(context).size.width,
+          child: Stack(
+            children: <Widget>[
+              Conditional(
+                condition: widget.middleArrows, 
+                ifTrue: carousel,
+                ifFalse: Row(
+                  children: <Widget>[
+                    SelfUpdatingArrows(
+                      disabled: firstFunction, 
+                      icon: Icons.arrow_drop_down,
                     ),
-                  ),
-                  Expanded(
-                    child: carousel,
-                  ),
-                  Visibility(
-                    visible: widget.middleArrows == false,
-                    child: Icon(
-                      Icons.arrow_drop_up,
-                      color: lastFunction.value
-                          ? Theme.of(context).primaryColorDark
-                          : null,
+                    Expanded(
+                      child: carousel,
                     ),
-                  )
-                ],
+                    SelfUpdatingArrows(
+                      disabled: lastFunction, 
+                      icon: Icons.arrow_drop_up,
+                    ),
+                  ],
+                ),
               ),
-            ),
-            Positioned.fill(
-              child: Row(
-                children: <Widget>[
-                  Expanded(
-                    child: GestureDetector(
-                      behavior: HitTestBehavior.translucent,
-                      onTap: firstFunction.value ? null : () => nextFunction(),
-                      child: Container(),
+              Positioned.fill(
+                child: Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: GestureDetector(
+                        behavior: HitTestBehavior.translucent,
+                        onTap: firstFunction.value ? null : () => nextFunction(),
+                        child: Container(),
+                      ),
                     ),
-                  ),
-                  Expanded(
-                    child: GestureDetector(
-                      behavior: HitTestBehavior.translucent,
-                      onTap: lastFunction.value ? null : () => prevFunction(),
-                      child: Container(),
-                    ),
-                  )
-                ],
+                    Expanded(
+                      child: GestureDetector(
+                        behavior: HitTestBehavior.translucent,
+                        onTap: lastFunction.value ? null : () => prevFunction(),
+                        child: Container(),
+                      ),
+                    )
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
+    );
+  }
+}
+
+class SelfUpdatingArrows extends StatefulWidget {
+  SelfUpdatingArrows({
+    @required this.disabled,
+    @required this.icon,
+  });
+
+  final ValueNotifier<bool> disabled;
+  final IconData icon;
+
+  @override
+  _SelfUpdatingArrowsState createState() => _SelfUpdatingArrowsState();
+}
+
+class _SelfUpdatingArrowsState extends State<SelfUpdatingArrows> {
+  updateState(){
+    if(mounted) setState(() {});
+  }
+
+  @override
+  void initState() {
+    //super init
+    super.initState();
+
+    //listne to changes
+    widget.disabled.addListener(updateState);
+  }
+
+  @override
+  void dispose() { 
+    //stop listening
+    widget.disabled.removeListener(updateState);
+
+    //super dispose
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Icon(
+      widget.icon,
+      color: widget.disabled.value ? Theme.of(context).primaryColorDark : null,
     );
   }
 }
