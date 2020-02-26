@@ -65,7 +65,26 @@ class _ChangeFunctionState extends State<ChangeFunction> {
         firstFunction.value = (widget.functionID.value == idIsAtLowest);
         lastFunction.value = (widget.functionID.value == idIsAtHighest);
       },
-      items: ExcercisePage.orderedIDs.value.map((functionID) {
+      items: ExcercisePage.orderedIDs.value.map((functionID){
+        //get stuff
+        int closestIndex = ExcercisePage.closestIndex.value;
+        int closestFunctionID = ExcercisePage.orderedIDs.value[closestIndex];
+
+        //get clickable color
+        Color clickableColorUp;
+        Color clickableColorDown;
+        //we are not the closest function
+        if(functionID != closestFunctionID){
+          int ourIndex = ExcercisePage.orderedIDs.value.indexOf(functionID);
+          if(ourIndex < closestIndex){
+            clickableColorDown = Colors.red;
+          }
+          else{
+            clickableColorUp = Colors.red;
+          }
+        }
+
+        //build
         return Builder(
           builder: (BuildContext context) {
             //no matter what this is going to span the entirety of the space
@@ -79,9 +98,9 @@ class _ChangeFunctionState extends State<ChangeFunction> {
                       visible: widget.middleArrows,
                       child: Icon(
                         Icons.arrow_drop_down,
-                        color: functionID != idIsAtLowest
-                            ? null
-                            : Theme.of(context).cardColor,
+                        color: functionID == idIsAtLowest
+                            ? Theme.of(context).cardColor
+                            : clickableColorDown,
                       ),
                     ),
                     Text(
@@ -95,9 +114,9 @@ class _ChangeFunctionState extends State<ChangeFunction> {
                       visible: widget.middleArrows,
                       child: Icon(
                         Icons.arrow_drop_up,
-                        color: functionID != idIsAtHighest
-                            ? null
-                            : Theme.of(context).cardColor,
+                        color: functionID == idIsAtHighest
+                            ? Theme.of(context).cardColor
+                            : clickableColorUp,
                       ),
                     ),
                   ],
