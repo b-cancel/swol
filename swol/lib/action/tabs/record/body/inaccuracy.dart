@@ -66,10 +66,12 @@ class _InaccuracyCalculatorState extends State<InaccuracyCalculator> {
       offset: Offset(0, (setValid) ? 16 : 0),
       child: Conditional(
         condition: setValid,
+        //sets the closestIndex to ?
         ifTrue: PercentOff(
           excercise: widget.excercise,
           predictionID: widget.predictionID,
         ),
+        //sets the closestIndex to -1
         ifFalse: WaitingForValid(),
       ),
     );
@@ -125,6 +127,51 @@ class PercentOff extends StatefulWidget {
 }
 
 class _PercentOffState extends State<PercentOff> {
+  List<double> oneRepMaxes = new List<double>(8);
+  List<double> percentDifferences = new List<double>(8);
+
+  double calcPercentDifference(double last, double current){
+    double change = last - current;
+    return (change / last) * 100;
+  }
+
+  updateOneRepMaxes(){
+    //do new calculations
+    for(int functionID = 0; functionID < 8; functionID++){
+      //calc
+      double calculated1RM = To1RM.fromWeightAndReps(
+        double.parse(ExcercisePage.setWeight.value),
+        int.parse(ExcercisePage.setReps.value),
+        functionID, 
+      );
+
+      //save
+      oneRepMaxes[functionID] = calculated1RM;
+
+      //calc
+      double calculatedDifference = calcPercentDifference(
+        ExcercisePage.oneRepMaxes[functionID], 
+        calculated1RM,
+      );
+
+      //save
+      percentDifferences[functionID] = calculatedDifference;
+    }
+
+    //find closest match
+    double smallestPercent = double.infinity;
+    int functionIDwithSmallestPercent = -1;
+    for(int functionID = 0; functionID < 8; functionID++){
+      double percentForFunction = percentDifferences[functionID];
+      if(percentForFunction < smallestPercent){
+        smallestPercent = percentForFunction;
+        functionIDwithSmallestPercent = functionID;
+      }
+    }
+
+    print("function with closest match has ID: " + functionIDwithSmallestPercent.toString());
+  }
+
   updateState() {
     if (mounted) setState(() {});
   }
@@ -134,17 +181,24 @@ class _PercentOffState extends State<PercentOff> {
     //super init
     super.initState();
 
-    //listeners
-    ExcercisePage.setWeight.addListener(updateState);
-    ExcercisePage.setReps.addListener(updateState);
+    //get init values for proper display
+    updateOneRepMaxes();
+
+    //listeners to update 1rm
+    ExcercisePage.setWeight.addListener(updateOneRepMaxes);
+    ExcercisePage.setReps.addListener(updateOneRepMaxes);
+
+    //listeners to update percentages
     widget.predictionID.addListener(updateState);
   }
 
   @override
   void dispose() {
-    //listeners
-    ExcercisePage.setWeight.removeListener(updateState);
-    ExcercisePage.setReps.removeListener(updateState);
+    //listeners to update 1rm
+    ExcercisePage.setWeight.removeListener(updateOneRepMaxes);
+    ExcercisePage.setReps.removeListener(updateOneRepMaxes);
+
+    //remove percentage update listener
     widget.predictionID.removeListener(updateState);
 
     //super dipose
@@ -164,30 +218,22 @@ class _PercentOffState extends State<PercentOff> {
     */
 
     //calculate our 1 rep maxes and compare them
-    int last1RM = To1RM.fromWeightAndReps(
-      widget.excercise.lastWeight.toDouble(),
-      widget.excercise.lastReps,
-      widget.predictionID.value, //use PASSED predictionID
-    ).round();
 
-    int this1RM = To1RM.fromWeightAndReps(
-      double.parse(ExcercisePage.setWeight.value),
-      int.parse(ExcercisePage.setReps.value),
-      widget.predictionID.value, //use PASSED predictionID
-    ).round();
+    int last1RM = ExcercisePage.oneRepMaxes[widget.predictionID.value].round();
+    int this1RM = oneRepMaxes[widget.predictionID.value].round();
+    bool same1RM = last1RM == this1RM;
+
     print("before: " + last1RM.toString() + " now: " + this1RM.toString());
 
-    int change = last1RM - this1RM;
-    if (change < 0) change *= -1;
-    print("dif: " + change.toString());
-    double percentOff = (change / last1RM) * 100;
-    int visualPercentOff = percentOff.round();
+    double percentOff = percentDifferences[widget.predictionID.value];
+    //absolute value
+    percentOff = (percentOff < 0) ? percentOff * -1 : percentOff;     
 
     //build
     return Column(
       children: <Widget>[
         Conditional(
-          condition: this1RM == last1RM,
+          condition: same1RM,
           ifTrue: Padding(
             padding: EdgeInsets.only(
               bottom: 8.0,
@@ -205,7 +251,7 @@ class _PercentOffState extends State<PercentOff> {
             children: <Widget>[
               Container(
                 child: Text(
-                  visualPercentOff.toString(),
+                  percentOff.round().toString(),
                   style: TextStyle(
                     color: color,
                     fontWeight: FontWeight.bold,
@@ -243,9 +289,9 @@ class _PercentOffState extends State<PercentOff> {
         ),
         Center(
           child: Transform.translate(
-            offset: Offset(0, (this1RM == last1RM) ? -12 : -16),
+            offset: Offset(0, (same1RM) ? -12 : -16),
             child: Text(
-              (this1RM == last1RM ? "as" : "than") + " calculated by the",
+              (same1RM ? "as" : "than") + " calculated by the",
               style: TextStyle(
                 fontSize: 22,
               ),

@@ -50,6 +50,8 @@ class ExcercisePage extends StatelessWidget {
   static final List<double> oneRepMaxes = new List<double>(8); //not being listened to
   //function order calcualted by suggest or set record once and then used to generate the carousel
   static final ValueNotifier<List<int>> orderedIDs = new ValueNotifier<List<int>>(new List<int>(8));
+  //keeps track of the index in the SORTED list of IDs that gives us a result that mostly matches our set
+  static ValueNotifier<int> closestIndex = new ValueNotifier<int>(-1);
 
   //build
   @override

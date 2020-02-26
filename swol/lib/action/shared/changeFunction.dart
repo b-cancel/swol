@@ -10,6 +10,9 @@ import 'package:swol/other/functions/helper.dart';
 import 'package:swol/shared/methods/vibrate.dart';
 import 'package:swol/shared/widgets/simple/conditional.dart';
 
+//TODO: use ExcercisePage.closestIndex.value to color the right arrows
+//TODO: only use it IF middleArrows == true
+
 //NOTE: should not dispose predictionID since the value was passed
 class ChangeFunction extends StatefulWidget {
   ChangeFunction({
