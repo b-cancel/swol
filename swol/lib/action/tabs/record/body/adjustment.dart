@@ -77,7 +77,7 @@ class _MakeFunctionAdjustmentState extends State<MakeFunctionAdjustment> {
           //that's what the user couldn't change
           weight,
           thisFunctionID,
-        );
+        ); //no such thing as 9.5 reps
       }
 
       //make sure all yield valid resuls
@@ -291,9 +291,9 @@ class _MakeFunctionAdjustmentState extends State<MakeFunctionAdjustment> {
 
         //update calculated weight
         ExcercisePage.setGoalReps.value = widget.excercise.repTarget;
-        ExcercisePage.setGoalWeight.value = widget.functionIDToWeightFromRT.value[
+        ExcercisePage.setGoalWeight.value = (widget.functionIDToWeightFromRT.value[
           predictionID.value //NOTE: before we used the excercise value here
-        ].round();
+        ] ?? 0).round();
       }
     }
   }
