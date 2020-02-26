@@ -126,20 +126,25 @@ class _SetDisplayState extends State<SetDisplay> {
     //what is our pivot
     Pivot goalSetPivot;
     if (widget.excercise == null) { //we aren't showing the last set
-      bool weightValid = isTextValid(ExcercisePage.setWeight.value);
-      int calculatedGoalWeight = ExcercisePage?.setGoalWeight?.value ?? 0;
-      if(weightValid && int.parse(ExcercisePage.setWeight.value) == calculatedGoalWeight){
-        //we are using our GOAL WEIGHT as our pivot
-        goalSetPivot = Pivot.Weight;
+      if(ExcercisePage.pageNumber.value == 0){
+        goalSetPivot = Pivot.RepTarget;
       }
       else{
-        bool repsValid = isTextValid(ExcercisePage.setReps.value);
-        int calculatedReps = ExcercisePage?.setGoalReps?.value ?? 0;
-        if(repsValid && int.parse(ExcercisePage.setReps.value) == calculatedReps){
+        bool weightValid = isTextValid(ExcercisePage.setWeight.value);
+        int calculatedGoalWeight = ExcercisePage?.setGoalWeight?.value ?? 0;
+        if(weightValid && int.parse(ExcercisePage.setWeight.value) == calculatedGoalWeight){
           //we are using our GOAL WEIGHT as our pivot
-          goalSetPivot = Pivot.Reps;
+          goalSetPivot = Pivot.Weight;
         }
-        else goalSetPivot = Pivot.RepTarget;
+        else{
+          bool repsValid = isTextValid(ExcercisePage.setReps.value);
+          int calculatedReps = ExcercisePage?.setGoalReps?.value ?? 0;
+          if(repsValid && int.parse(ExcercisePage.setReps.value) == calculatedReps){
+            //we are using our GOAL WEIGHT as our pivot
+            goalSetPivot = Pivot.Reps;
+          }
+          else goalSetPivot = Pivot.RepTarget;
+        }
       }
     }
     //ELSE we are just show our last set
