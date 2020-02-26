@@ -110,6 +110,9 @@ dependencies:
   #TRANSITIONS
   page_transition: ^1.1.5
 
+  #KEYBOARD IS VISIBLE CHECK (for timer glimpse)
+  keyboard_visibility: ^0.5.6
+
 flutter_native_splash:
   image: assets/splash/splashCut.png
   color: "000000"

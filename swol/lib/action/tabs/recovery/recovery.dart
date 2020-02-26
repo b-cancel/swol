@@ -59,8 +59,6 @@ class _RecoveryState extends State<Recovery>
 
   @override
   Widget build(BuildContext context) {
-    Radius cardRadius = Radius.circular(24);
-
     //calc sets passed for bottom buttons
     int setsPassed = (widget.excercise.tempSetCount ?? 0) + 1;
 
@@ -76,40 +74,15 @@ class _RecoveryState extends State<Recovery>
         crossAxisAlignment: CrossAxisAlignment.center,
         //everything including bottom button and spacing
         children: <Widget>[
-          Stack(
-            children: [
-              Positioned.fill(
-                child: Column(
-                  mainAxisSize: MainAxisSize.max,
-                  children: <Widget>[
-                    Expanded(
-                      child: Container(
-                        color: buttonsColor,
-                      ),
-                    ),
-                    Expanded(child: Container()),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.only(
-                  top: (buttonsColor == Theme.of(context).accentColor) ? 16 : 0,
-                ),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).cardColor,
-                    borderRadius: BorderRadius.all(cardRadius),
-                  ),
-                  child: Timer(
-                    excercise: widget.excercise,
-                    timeStarted: widget.excercise.tempStartTime.value,
-                    changeableTimerDuration: recoveryDuration,
-                    showAreYouSure: showAreYouSure,
-                    showIcon: false,
-                  ),
-                ),
-              ),
-            ],
+          TimerWrapper(
+            buttonsColor: buttonsColor, 
+            child: Timer(
+              excercise: widget.excercise,
+              timeStarted: widget.excercise.tempStartTime.value,
+              changeableTimerDuration: recoveryDuration,
+              showAreYouSure: showAreYouSure,
+              showIcon: false,
+            ),
           ),
           Expanded(
             child: Container(
@@ -142,6 +115,50 @@ class _RecoveryState extends State<Recovery>
           )
         ],
       ),
+    );
+  }
+}
+
+class TimerWrapper extends StatelessWidget {
+  const TimerWrapper({
+    Key key,
+    @required this.buttonsColor,
+    @required this.child,
+  }) : super(key: key);
+
+  final Color buttonsColor;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        Positioned.fill(
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            children: <Widget>[
+              Expanded(
+                child: Container(
+                  color: buttonsColor,
+                ),
+              ),
+              Expanded(child: Container()),
+            ],
+          ),
+        ),
+        Container(
+          padding: EdgeInsets.only(
+            top: (buttonsColor == Theme.of(context).accentColor) ? 16 : 0,
+          ),
+          child: Container(
+            decoration: BoxDecoration(
+              color: Theme.of(context).cardColor,
+              borderRadius: BorderRadius.all(Radius.circular(24)),
+            ),
+            child: child,
+          ),
+        ),
+      ],
     );
   }
 }
