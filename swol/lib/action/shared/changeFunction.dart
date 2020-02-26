@@ -38,15 +38,13 @@ class _ChangeFunctionState extends State<ChangeFunction> {
     firstFunction.value = (widget.functionID.value == idIsAtLowest);
     lastFunction.value = (widget.functionID.value == idIsAtHighest);
 
+    //calc inital page
     int selectedID = widget.functionID.value;
-    print("selected function: " + selectedID.toString());
-    int sub = ExcercisePage.orderedIDs.value.indexOf(selectedID);
-    //print("sub: " + sub.toString());
-    int selectedPage = sub; //7 - sub;
-    print("located in page: " + selectedPage.toString());
+    int selectedPage = ExcercisePage.orderedIDs.value.indexOf(selectedID);
+    
+    //new carousel
     carousel = CarouselSlider(
-      //TODO: this seems to be working with a constant value but not with a passed value
-      initialPage: 0, //selectedPage,
+      initialPage: selectedPage, //DOES NOT WORK initially after the first time
       height: 36,
       enableInfiniteScroll: false,
       autoPlay: false,
@@ -58,7 +56,6 @@ class _ChangeFunctionState extends State<ChangeFunction> {
         updateFirstLast();
       },
       items: ExcercisePage.orderedIDs.value.map((functionID) {
-        //print("function id: " + functionID.toString());
         return Builder(
           builder: (BuildContext context) {
             return Center(
@@ -103,7 +100,14 @@ class _ChangeFunctionState extends State<ChangeFunction> {
       }).toList(),
     );
 
+    //show this new carousel
     setState(() {});
+
+    //TODO: figure out why I need this
+    //wait one frame to set the initial page since the initial page parameter doesn't work
+    WidgetsBinding.instance.addPostFrameCallback((_){
+      carousel.jumpToPage(selectedPage);
+    });
   }
 
   updateFirstLast() {

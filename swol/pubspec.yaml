@@ -110,9 +110,6 @@ dependencies:
   #TRANSITIONS
   page_transition: ^1.1.5
 
-  #STABLE SORT
-  collection: ^1.14.12
-
 flutter_native_splash:
   image: assets/splash/splashCut.png
   color: "000000"
