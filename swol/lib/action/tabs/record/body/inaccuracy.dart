@@ -62,32 +62,15 @@ class _InaccuracyCalculatorState extends State<InaccuracyCalculator> {
     bool setValid = weightValid && repsValid;
 
     //build
-    return Center(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Conditional(
-            condition: setValid,
-            ifTrue: PercentOff(
-              excercise: widget.excercise,
-              predictionID: widget.predictionID,
-            ),
-            ifFalse: WaitingForValid(),
-          ),
-          Transform.translate(
-            offset: Offset(0, (setValid) ? -16 : 0),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                ChangeFunction(
-                  functionID: widget.predictionID,
-                  middleArrows: true,
-                ),
-              ],
-            ),
-          ),
-        ],
+    return Transform.translate(
+      offset: Offset(0, (setValid) ? 16 : 0),
+      child: Conditional(
+        condition: setValid,
+        ifTrue: PercentOff(
+          excercise: widget.excercise,
+          predictionID: widget.predictionID,
+        ),
+        ifFalse: WaitingForValid(),
       ),
     );
   }

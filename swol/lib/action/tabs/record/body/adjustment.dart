@@ -1,5 +1,6 @@
 //flutter
 import 'package:flutter/material.dart';
+import 'package:swol/action/shared/changeFunction.dart';
 
 //internal: action
 import 'package:swol/action/tabs/record/body/inaccuracy.dart';
@@ -50,14 +51,14 @@ class _MakeFunctionAdjustmentState extends State<MakeFunctionAdjustment> {
   final List<double> weightEstimates = new List<double>(8);
   bool allWeightEstimatesValid = false;
 
-  updatePredictionID(){ 
+  updatePredictionID() {
     widget.excercise.predictionID = predictionID.value;
     updateGoal();
   }
 
   //when the weight updates
   //we update the rep estimates
-  weightWasUpdated({bool updateTheGoal: true}){
+  weightWasUpdated({bool updateTheGoal: true}) {
     //we use 1RM and weight to get reps
     //this is bause maybe we wanted them to do 125 for 5 but they only had 120
     //so ideally we want to match their weight here and take it from ther
@@ -66,7 +67,7 @@ class _MakeFunctionAdjustmentState extends State<MakeFunctionAdjustment> {
     double weight = weightRecordedValid ? double.parse(setWeightString) : 0;
 
     //check conditions
-    if (weightRecordedValid){
+    if (weightRecordedValid) {
       //if the weight is valid you can estimate reps
       //calculate all the rep-estimates for all functions
       for (int thisFunctionID = 0; thisFunctionID < 8; thisFunctionID++) {
@@ -97,40 +98,43 @@ class _MakeFunctionAdjustmentState extends State<MakeFunctionAdjustment> {
 
       //if weight is still valid, then all rep estimates valid
       allRepsEstimatesValid = weightRecordedValid;
-    }
-    else allRepsEstimatesValid = false;
+    } else
+      allRepsEstimatesValid = false;
 
-    print("estimatedReps:  " + allRepsEstimatesValid.toString() + " => " + repEstimates.toString());
+    print("estimatedReps:  " +
+        allRepsEstimatesValid.toString() +
+        " => " +
+        repEstimates.toString());
 
     //update the goal
-    if(updateTheGoal) updateGoal();
+    if (updateTheGoal) updateGoal();
   }
 
   //when the rep updates
   //we update the weight estimates
-  repsWereUpdated({bool updateTheGoal: true}){
+  repsWereUpdated({bool updateTheGoal: true}) {
     //we use 1RM and reps to get weights
     String setRepsString = ExcercisePage?.setReps?.value ?? "";
     bool repsRecordedValid = isTextValid(setRepsString);
     int reps = repsRecordedValid ? int.parse(setRepsString) : 0;
 
     //reps are valid so if we can use them
-    if(repsRecordedValid){
+    if (repsRecordedValid) {
       //calculate are weight estimates
-      for(int thisFunctionID = 0; thisFunctionID < 8; thisFunctionID++){
+      for (int thisFunctionID = 0; thisFunctionID < 8; thisFunctionID++) {
         weightEstimates[thisFunctionID] = ToWeight.fromRepAnd1Rm(
-          reps, 
+          reps,
           ExcercisePage.oneRepMaxes[thisFunctionID],
           thisFunctionID,
         );
       }
 
       //make sure all yield valid results
-      for(int thisFunctionID = 0; thisFunctionID < 8; thisFunctionID++){
+      for (int thisFunctionID = 0; thisFunctionID < 8; thisFunctionID++) {
         int weightEstimate = weightEstimates[thisFunctionID].round();
         bool zeroOrLess = (weightEstimate <= 0);
         bool aboveUpperBound = (999 < weightEstimate);
-        if(zeroOrLess || aboveUpperBound){
+        if (zeroOrLess || aboveUpperBound) {
           repsRecordedValid = false;
           break;
         }
@@ -138,13 +142,16 @@ class _MakeFunctionAdjustmentState extends State<MakeFunctionAdjustment> {
 
       //if reps is still valid, then all weight estimates are valid
       allWeightEstimatesValid = repsRecordedValid;
-    }
-    else allWeightEstimatesValid = false;
+    } else
+      allWeightEstimatesValid = false;
 
-    print("estimatedWeights: " + allWeightEstimatesValid.toString() + " => " + weightEstimates.toString());
+    print("estimatedWeights: " +
+        allWeightEstimatesValid.toString() +
+        " => " +
+        weightEstimates.toString());
 
     //update the goal
-    if(updateTheGoal) updateGoal();
+    if (updateTheGoal) updateGoal();
   }
 
   @override
@@ -179,7 +186,7 @@ class _MakeFunctionAdjustmentState extends State<MakeFunctionAdjustment> {
   Widget build(BuildContext context) {
     Widget topBit = Container(
       width: MediaQuery.of(context).size.width,
-      height:widget.topColor == Theme.of(context).accentColor ? 24 : 4,
+      height: widget.topColor == Theme.of(context).accentColor ? 24 : 4,
       color: widget.topColor,
     );
 
@@ -225,7 +232,7 @@ class _MakeFunctionAdjustmentState extends State<MakeFunctionAdjustment> {
               Positioned(
                 bottom: 0,
                 child: goalSet,
-              ), 
+              ),
               Positioned(
                 top: 0,
                 left: 0,
@@ -235,30 +242,41 @@ class _MakeFunctionAdjustmentState extends State<MakeFunctionAdjustment> {
                   children: <Widget>[
                     topBit,
                     Row(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children:[
-                        CurvedCorner(
-                          isTop: true, 
-                          isLeft: true, //left
-                          cornerColor: widget.topColor,
-                        ),
-                        CurvedCorner(
-                          isTop: true, 
-                          isLeft: false, //right 
-                          cornerColor: widget.topColor,
-                        ),
-                      ]
-                    )
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          CurvedCorner(
+                            isTop: true,
+                            isLeft: true, //left
+                            cornerColor: widget.topColor,
+                          ),
+                          CurvedCorner(
+                            isTop: true,
+                            isLeft: false, //right
+                            cornerColor: widget.topColor,
+                          ),
+                        ])
                   ],
                 ),
               ),
             ],
           ),
           Expanded(
-            child: InaccuracyCalculator(
-              excercise: widget.excercise,
-              predictionID: predictionID,
+            child: Center(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  InaccuracyCalculator(
+                    excercise: widget.excercise,
+                    predictionID: predictionID,
+                  ),
+                  ChangeFunction(
+                    functionID: predictionID,
+                    middleArrows: true,
+                  ),
+                ],
+              ),
             ),
           ),
         ],
@@ -274,26 +292,32 @@ class _MakeFunctionAdjustmentState extends State<MakeFunctionAdjustment> {
       updateOrderOfIDs(repEstimates);
 
       //get calculated reps
-      ExcercisePage.setGoalReps.value = repEstimates[predictionID.value].round();
-      ExcercisePage.setGoalWeight.value = int.parse(ExcercisePage.setWeight.value);
+      ExcercisePage.setGoalReps.value =
+          repEstimates[predictionID.value].round();
+      ExcercisePage.setGoalWeight.value =
+          int.parse(ExcercisePage.setWeight.value);
     } else {
-      if(allWeightEstimatesValid){
+      if (allWeightEstimatesValid) {
         print("*****Using recorded reps");
         updateOrderOfIDs(weightEstimates);
 
         //get calculatd weight
-        ExcercisePage.setGoalWeight.value = weightEstimates[predictionID.value].round();
-        ExcercisePage.setGoalReps.value = int.parse(ExcercisePage.setReps.value);
-      }
-      else{
+        ExcercisePage.setGoalWeight.value =
+            weightEstimates[predictionID.value].round();
+        ExcercisePage.setGoalReps.value =
+            int.parse(ExcercisePage.setReps.value);
+      } else {
         print("*****Using rep target");
         updateOrderOfIDs(widget.functionIDToWeightFromRT.value);
 
         //update calculated weight
         ExcercisePage.setGoalReps.value = widget.excercise.repTarget;
-        ExcercisePage.setGoalWeight.value = (widget.functionIDToWeightFromRT.value[
-          predictionID.value //NOTE: before we used the excercise value here
-        ] ?? 0).round();
+        ExcercisePage.setGoalWeight
+            .value = (widget.functionIDToWeightFromRT.value[predictionID
+                        .value //NOTE: before we used the excercise value here
+                    ] ??
+                0)
+            .round();
       }
     }
   }
