@@ -192,7 +192,7 @@ class _PercentOffState extends State<PercentOff> {
   updatePredictionID(){
     int ourPercentDifference = percentDifferencesAbsolute[widget.predictionID.value];
     ourIndex = ExcercisePage.orderedIDs.value.indexOf(widget.predictionID.value);
-    print("index of : " + widget.predictionID.value.toString() + " is " + ourIndex.toString());
+    print("index of : " + widget.predictionID.value.toString() + " is " + ourIndex.toString()); 
 
     //based on the smallest difference see if another index is closer
     if(ourPercentDifference == smallestDifference){
