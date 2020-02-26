@@ -141,18 +141,22 @@ class _ChangeFunctionState extends State<ChangeFunction> {
     super.dispose();
   }
 
-  nextFunction() {
-    carousel.nextPage(
-      duration: Duration(milliseconds: 300),
-      curve: Curves.bounceIn,
-    );
+  upOneFunction() {
+    if(firstFunction.value == false){
+      carousel.nextPage(
+        duration: Duration(milliseconds: 300),
+        curve: Curves.bounceIn,
+      );
+    }
   }
 
-  prevFunction() {
-    carousel.previousPage(
-      duration: Duration(milliseconds: 300),
-      curve: Curves.bounceIn,
-    );
+  downOneFunction() {
+    if(lastFunction.value == false){
+      carousel.previousPage(
+        duration: Duration(milliseconds: 300),
+        curve: Curves.bounceIn,
+      );
+    }
   }
 
   @override
@@ -193,14 +197,14 @@ class _ChangeFunctionState extends State<ChangeFunction> {
                     Expanded(
                       child: GestureDetector(
                         behavior: HitTestBehavior.translucent,
-                        onTap: firstFunction.value ? null : () => nextFunction(),
+                        onTap: () => upOneFunction(),
                         child: Container(),
                       ),
                     ),
                     Expanded(
                       child: GestureDetector(
                         behavior: HitTestBehavior.translucent,
-                        onTap: lastFunction.value ? null : () => prevFunction(),
+                        onTap: () => downOneFunction(),
                         child: Container(),
                       ),
                     )
