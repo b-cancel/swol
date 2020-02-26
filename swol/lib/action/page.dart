@@ -34,9 +34,6 @@ class ExcercisePage extends StatelessWidget {
 
   //used so that we can change the page number from anywhere
   static final ValueNotifier<int> pageNumber = new ValueNotifier<int>(0); //being listened
-  //used so that we can set the goal set from both the suggest and record page
-  static final ValueNotifier<int> setGoalWeight = new ValueNotifier<int>(0); //being listened
-  static final ValueNotifier<int> setGoalReps = new ValueNotifier<int>(0); //being listened
   //used so that we can save the set locally before saving it in temps
   static final ValueNotifier<String> setWeight = new ValueNotifier<String>(""); //being listened
   static final ValueNotifier<String> setReps = new ValueNotifier<String>(""); //being listened
@@ -52,6 +49,10 @@ class ExcercisePage extends StatelessWidget {
   static final ValueNotifier<List<int>> orderedIDs = new ValueNotifier<List<int>>(new List<int>(8));
   //keeps track of the index in the SORTED list of IDs that gives us a result that mostly matches our set
   static ValueNotifier<int> closestIndex = new ValueNotifier<int>(-1);
+  //NOTE: these are shown as INTs but are actually DOUBLEs to avoid issues with calculations and sorting later
+  //used so that we can set the goal set from both the suggest and record page
+  static final ValueNotifier<int> setGoalWeight = new ValueNotifier<int>(0); //being listened
+  static final ValueNotifier<int> setGoalReps = new ValueNotifier<int>(0); //being listened
 
   //build
   @override
@@ -381,6 +382,7 @@ updateOrderOfIDs(List<double> functionIDToValue){
   
   //set the value so all notifies get notified
   //only if there is a difference (avoid weird setState while build BUG)
+  //NOTE: you must to .toString() to compare properly
   if(orderedIDs.toString() != ExcercisePage.orderedIDs.value.toString()){
     ExcercisePage.orderedIDs.value = orderedIDs;
   }

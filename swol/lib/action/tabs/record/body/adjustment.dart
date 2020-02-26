@@ -89,7 +89,7 @@ class _MakeFunctionAdjustmentState extends State<MakeFunctionAdjustment> {
         //but we don't want to limit things too much
         //so that this bit is never usefull
         //so we set it at a 100
-        bool aboveUpperBound = (101 < repsEstimate);
+        bool aboveUpperBound = (999 < repsEstimate);
         if (zeroOrLess || aboveUpperBound) {
           weightRecordedValid = false;
           break;
@@ -133,7 +133,7 @@ class _MakeFunctionAdjustmentState extends State<MakeFunctionAdjustment> {
       for (int thisFunctionID = 0; thisFunctionID < 8; thisFunctionID++) {
         int weightEstimate = weightEstimates[thisFunctionID].round();
         bool zeroOrLess = (weightEstimate <= 0);
-        bool aboveUpperBound = (999 < weightEstimate);
+        bool aboveUpperBound = (9999 < weightEstimate);
         if (zeroOrLess || aboveUpperBound) {
           repsRecordedValid = false;
           break;
