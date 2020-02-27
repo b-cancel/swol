@@ -10,9 +10,6 @@ import 'package:swol/other/functions/helper.dart';
 import 'package:swol/shared/methods/vibrate.dart';
 import 'package:swol/shared/widgets/simple/conditional.dart';
 
-//TODO: use ExcercisePage.closestIndex.value to color the right arrows
-//TODO: only use it IF middleArrows == true
-
 //NOTE: should not dispose predictionID since the value was passed
 class ChangeFunction extends StatefulWidget {
   ChangeFunction({
@@ -66,23 +63,29 @@ class _ChangeFunctionState extends State<ChangeFunction> {
         lastFunction.value = (widget.functionID.value == idIsAtHighest);
       },
       items: ExcercisePage.orderedIDs.value.map((functionID){
+        //TODO: the inner arrows have to react to the closest index changing to recolor themeselves
         //get stuff
-        int closestIndex = ExcercisePage.closestIndex.value;
-        int closestFunctionID = ExcercisePage.orderedIDs.value[closestIndex];
+        int lastClosestIndex = ExcercisePage.closestIndex.value;
+        int closestFunctionID;
+        if(lastClosestIndex != -1){
+          closestFunctionID = ExcercisePage.orderedIDs.value[lastClosestIndex];
+        }
 
         //get clickable color
         Color clickableColorUp;
         Color clickableColorDown;
+        //TODO: shift into middle arrows
+        /*
         //we are not the closest function
-        if(functionID != closestFunctionID){
+        if(widget.middleArrows && lastClosestIndex != -1 && functionID != closestFunctionID){
           int ourIndex = ExcercisePage.orderedIDs.value.indexOf(functionID);
-          if(ourIndex < closestIndex){
+          if(ourIndex < lastClosestIndex){
             clickableColorDown = Colors.red;
           }
           else{
             clickableColorUp = Colors.red;
           }
-        }
+        }*/
 
         //build
         return Builder(

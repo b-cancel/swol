@@ -8,6 +8,7 @@ import 'package:swol/action/shared/halfColored.dart';
 import 'package:swol/action/shared/setDisplay.dart';
 import 'package:swol/action/popUps/textValid.dart';
 import 'package:swol/action/page.dart';
+import 'package:swol/other/functions/W&R=1RM.dart';
 
 //internal: shared
 import 'package:swol/shared/widgets/simple/curvedCorner.dart';
@@ -287,44 +288,77 @@ class _MakeFunctionAdjustmentState extends State<MakeFunctionAdjustment> {
   //update the goal set based on init
   //and changed valus
   updateGoal() {
+    List<double> valuesToSortWith;
+    
+    //upate the goal set
     if (allRepsEstimatesValid) {
       print("*****Using recorded weight");
-      print(repEstimates.toString());
-      updateOrderOfIDs(repEstimates);
+      valuesToSortWith = repEstimates;
+
+      //use recorded weight
+      ExcercisePage.setGoalWeight.value =
+          int.parse(ExcercisePage.setWeight.value).toDouble();
 
       //get calculated reps
       //NOTE: may be a double
-      ExcercisePage.setGoalReps.value =
-          repEstimates[predictionID.value];
-      
-      ExcercisePage.setGoalWeight.value =
-          int.parse(ExcercisePage.setWeight.value).toDouble();
+      ExcercisePage.setGoalReps.value = repEstimates[predictionID.value];
     } else {
       if (allWeightEstimatesValid) {
         print("*****Using recorded reps");
-        print(weightEstimates.toString());
-        updateOrderOfIDs(weightEstimates);
+        valuesToSortWith = weightEstimates;
 
-        //get calculatd weight might be double
-        ExcercisePage.setGoalWeight.value =
-            weightEstimates[predictionID.value];
+        //get calculatd weight
+        ExcercisePage.setGoalWeight.value = weightEstimates[predictionID.value];
 
-        //NOTE: will only ever be integers
+        //use recorded reps
+        //NOTE: will only ever be integer
         ExcercisePage.setGoalReps.value =
-          int.parse(ExcercisePage.setReps.value).toDouble();
+            int.parse(ExcercisePage.setReps.value).toDouble();
       } else {
         print("*****Using rep target");
-        print(widget.functionIDToWeightFromRT.value.toString());
-        updateOrderOfIDs(widget.functionIDToWeightFromRT.value);
-
-        //NOTE: will only ever be integers
-        ExcercisePage.setGoalReps.value 
-        = widget.excercise.repTarget.toDouble();
+        valuesToSortWith = widget.functionIDToWeightFromRT.value;
 
         //avoid init issue
-        double weight = widget?.functionIDToWeightFromRT?.value[predictionID.value] ?? 0;
+        double weight =
+            widget?.functionIDToWeightFromRT?.value[predictionID.value] ?? 0;
+        //get calculated weight
         ExcercisePage.setGoalWeight.value = weight;
+
+        //use recorded reps
+        //NOTE: will only ever be integer
+        ExcercisePage.setGoalReps.value = widget.excercise.repTarget.toDouble();
       }
     }
+
+    //update the sorting of things
+    bool weightValid = isTextValid(ExcercisePage.setWeight.value);
+    bool repsValid = isTextValid(ExcercisePage.setReps.value);
+    bool setValid = weightValid && repsValid;
+    //if(setValid) valuesToSortWith = getPercentDifferences();
+    print("sorting with values: " + valuesToSortWith.toString());
+    updateOrderOfIDs(valuesToSortWith);
+  }
+
+  getPercentDifferences() {
+    //get the values we will use to sort the function IDs
+    List<double> percentDifferences = new List<double>(8);
+    for (int functionID = 0; functionID < 8; functionID++) {
+      //get the 1RM from this Set
+      double calculated1RM = To1RM.fromWeightAndReps(
+        double.parse(ExcercisePage.setWeight.value),
+        int.parse(ExcercisePage.setReps.value),
+        functionID,
+      );
+
+      //get the difference between this and what was expected
+      double calculatedDifference = calcPercentDifference(
+        ExcercisePage.oneRepMaxes[functionID],
+        calculated1RM,
+      );
+
+      //add for use later
+      percentDifferences[functionID] = calculatedDifference;
+    }
+    return percentDifferences;
   }
 }

@@ -134,21 +134,14 @@ class _PercentOffState extends State<PercentOff> {
   int smallestDifference;
   int ourIndex;
 
-  double calcPercentDifference(double last, double current){
-    double change = last - current;
-    //so doing better than expected yeilds positive values
-    return ((change / last) * 100) * -1;
-  }
-
   updateOneRepMaxes(){
     absDifferenceTofunctionID.clear();
 
     //do new calculations
     for(int functionID = 0; functionID < 8; functionID++){
       //calc
+      //NOTE: must calculate with these values since thats what the user typed
       double calculated1RM = To1RM.fromWeightAndReps(
-        //TODO: should we be using these values (to make the set) all this time?
-        //I suspect the problem is comming from here
         double.parse(ExcercisePage.setWeight.value),
         int.parse(ExcercisePage.setReps.value),
         functionID, 
@@ -248,6 +241,8 @@ class _PercentOffState extends State<PercentOff> {
   Widget build(BuildContext context) {
     Color overlayColor = Colors.white;
     //we are some distance from where we should be
+    //TODO: uncomment this when things are being sorted properly
+    /*
     int dif = ourIndex - ExcercisePage.closestIndex.value;
     print("dif: " + dif.toString());
     if(dif != 0){ 
@@ -262,6 +257,7 @@ class _PercentOffState extends State<PercentOff> {
         default: overlayColor = Colors.red;
       }
     }
+    */
 
     //grab how much this prediction ID is away from target
     int percentOff = percentDifferences[widget.predictionID.value];
@@ -365,4 +361,10 @@ class _PercentOffState extends State<PercentOff> {
       ],
     );
   }
+}
+
+double calcPercentDifference(double last, double current){
+  double change = last - current;
+  //so doing better than expected yeilds positive values
+  return ((change / last) * 100) * -1;
 }
