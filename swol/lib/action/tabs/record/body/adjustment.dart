@@ -334,8 +334,7 @@ class _MakeFunctionAdjustmentState extends State<MakeFunctionAdjustment> {
     bool weightValid = isTextValid(ExcercisePage.setWeight.value);
     bool repsValid = isTextValid(ExcercisePage.setReps.value);
     bool setValid = weightValid && repsValid;
-    //if(setValid) valuesToSortWith = getPercentDifferences();
-    print("sorting with values: " + valuesToSortWith.toString());
+    if(setValid) valuesToSortWith = getPercentDifferences();
     updateOrderOfIDs(valuesToSortWith);
   }
 
@@ -356,8 +355,8 @@ class _MakeFunctionAdjustmentState extends State<MakeFunctionAdjustment> {
         calculated1RM,
       );
 
-      //add for use later
-      percentDifferences[functionID] = calculatedDifference;
+      //add for use later (-1 for right order)
+      percentDifferences[functionID] = calculatedDifference * -1;
     }
     return percentDifferences;
   }
