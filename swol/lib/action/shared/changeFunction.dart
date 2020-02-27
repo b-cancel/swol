@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 //plugin
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:swol/action/page.dart';
+import 'package:swol/action/popUps/textValid.dart';
 
 //internal
 import 'package:swol/other/functions/helper.dart';
@@ -63,31 +64,6 @@ class _ChangeFunctionState extends State<ChangeFunction> {
         lastFunction.value = (widget.functionID.value == idIsAtHighest);
       },
       items: ExcercisePage.orderedIDs.value.map((functionID){
-        //TODO: the inner arrows have to react to the closest index changing to recolor themeselves
-        //get stuff
-        int lastClosestIndex = ExcercisePage.closestIndex.value;
-        int closestFunctionID;
-        if(lastClosestIndex != -1){
-          closestFunctionID = ExcercisePage.orderedIDs.value[lastClosestIndex];
-        }
-
-        //get clickable color
-        Color clickableColorUp;
-        Color clickableColorDown;
-        //TODO: shift into middle arrows
-        /*
-        //we are not the closest function
-        if(widget.middleArrows && lastClosestIndex != -1 && functionID != closestFunctionID){
-          int ourIndex = ExcercisePage.orderedIDs.value.indexOf(functionID);
-          if(ourIndex < lastClosestIndex){
-            clickableColorDown = Colors.red;
-          }
-          else{
-            clickableColorUp = Colors.red;
-          }
-        }*/
-
-        //build
         return Builder(
           builder: (BuildContext context) {
             //no matter what this is going to span the entirety of the space
@@ -99,11 +75,10 @@ class _ChangeFunctionState extends State<ChangeFunction> {
                   children: <Widget>[
                     Visibility(
                       visible: widget.middleArrows,
-                      child: Icon(
-                        Icons.arrow_drop_down,
-                        color: functionID == idIsAtLowest
-                            ? Theme.of(context).cardColor
-                            : clickableColorDown,
+                      child: InnerArrows(
+                        hideArrow: functionID == idIsAtLowest,
+                        functionID: functionID,
+                        isUpArrow: false,
                       ),
                     ),
                     Text(
@@ -115,11 +90,10 @@ class _ChangeFunctionState extends State<ChangeFunction> {
                     ),
                     Visibility(
                       visible: widget.middleArrows,
-                      child: Icon(
-                        Icons.arrow_drop_up,
-                        color: functionID == idIsAtHighest
-                            ? Theme.of(context).cardColor
-                            : clickableColorUp,
+                      child: InnerArrows(
+                        hideArrow: functionID == idIsAtHighest,
+                        functionID: functionID,
+                        isUpArrow: true,
                       ),
                     ),
                   ],
@@ -202,14 +176,14 @@ class _ChangeFunctionState extends State<ChangeFunction> {
                 ifTrue: carousel,
                 ifFalse: Row(
                   children: <Widget>[
-                    SelfUpdatingArrows(
+                    OuterArrows(
                       disabled: firstFunction, 
                       icon: Icons.arrow_drop_down,
                     ),
                     Expanded(
                       child: carousel,
                     ),
-                    SelfUpdatingArrows(
+                    OuterArrows(
                       disabled: lastFunction, 
                       icon: Icons.arrow_drop_up,
                     ),
@@ -244,8 +218,8 @@ class _ChangeFunctionState extends State<ChangeFunction> {
   }
 }
 
-class SelfUpdatingArrows extends StatefulWidget {
-  SelfUpdatingArrows({
+class OuterArrows extends StatefulWidget {
+  OuterArrows({
     @required this.disabled,
     @required this.icon,
   });
@@ -254,10 +228,10 @@ class SelfUpdatingArrows extends StatefulWidget {
   final IconData icon;
 
   @override
-  _SelfUpdatingArrowsState createState() => _SelfUpdatingArrowsState();
+  _OuterArrowsState createState() => _OuterArrowsState();
 }
 
-class _SelfUpdatingArrowsState extends State<SelfUpdatingArrows> {
+class _OuterArrowsState extends State<OuterArrows> {
   updateState(){
     if(mounted) setState(() {});
   }
@@ -285,6 +259,72 @@ class _SelfUpdatingArrowsState extends State<SelfUpdatingArrows> {
     return Icon(
       widget.icon,
       color: widget.disabled.value ? Theme.of(context).primaryColorDark : null,
+    );
+  }
+}
+
+class InnerArrows extends StatefulWidget {
+  InnerArrows({
+    @required this.functionID,
+    @required this.isUpArrow,
+    @required this.hideArrow,
+  });
+
+  final int functionID;
+  final bool isUpArrow;
+  final bool hideArrow;
+
+  @override
+  _InnerArrowsState createState() => _InnerArrowsState();
+}
+
+class _InnerArrowsState extends State<InnerArrows> {
+  updateState(){
+    if(mounted) setState(() {});
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    ExcercisePage.closestIndex.addListener(updateState);
+  }
+
+  @override
+  void dispose() { 
+    ExcercisePage.closestIndex.removeListener(updateState);
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    Color arrowColor;
+
+    //check if the set is valid
+    bool weightValid = isTextValid(ExcercisePage.setWeight.value);
+    bool repsValid = isTextValid(ExcercisePage.setReps.value);
+    bool setValid = weightValid && repsValid;
+
+    //if it is then we may have a closestIndex
+    if(setValid){
+      //if the closestIndex is something valid
+      int lastClosestIndex = ExcercisePage.closestIndex.value;
+      if(lastClosestIndex != -1){ 
+        //if we arent the closest function then prompt the user to change
+        int closestFunctionID = ExcercisePage.orderedIDs.value[lastClosestIndex];
+        if(widget.functionID != closestFunctionID){
+          print("*****************not matching");
+          int ourIndex = ExcercisePage.orderedIDs.value.indexOf(widget.functionID);
+          bool targetIsDown = (lastClosestIndex > ourIndex);
+          //color arrow if called for
+          if(widget.isUpArrow && targetIsDown == false) arrowColor = Colors.red;
+          else if(widget.isUpArrow == false && targetIsDown) arrowColor = Colors.red;
+        }
+      }
+    }
+    
+    return Icon(
+      widget.isUpArrow ?  Icons.arrow_drop_up : Icons.arrow_drop_down,
+      color: widget.hideArrow ? Theme.of(context).cardColor : arrowColor,
     );
   }
 }

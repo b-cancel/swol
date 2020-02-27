@@ -182,6 +182,8 @@ class _ExcercisePageDarkState extends State<ExcercisePageDark> {
     ExcercisePage.causeRefocusIfInvalid.value = false;
     ExcercisePage.updateSet.value = false;
     ExcercisePage.nextSet.value = false;
+    //closest index reset
+    ExcercisePage.closestIndex.value = -1;
 
     //add listeners
     ExcercisePage.updateSet.addListener(updateSet);
