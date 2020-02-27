@@ -197,6 +197,7 @@ class _PercentOffState extends State<PercentOff> {
     
     //based on the smallest difference see if another index is closer
     if(ourAbsPercentDifference == smallestAbsDifference){
+      print("we are gg");
       ExcercisePage.closestIndex.value = ourIndex;
     }
     else{
@@ -215,7 +216,7 @@ class _PercentOffState extends State<PercentOff> {
         //so we need to keep track of a list
 
         //iterate to map out how far each index is
-        Map<int,List<int>> distToIndices = new Map<int,List<int>>();
+        Map<int,List<int>> distToFunctionIDs = new Map<int,List<int>>();
         for(int i = 0; i < potentialClosestFunctionIDs.length; i++){
           int potentialFunction = potentialClosestFunctionIDs[i];
           int potentialIndex = ExcercisePage.orderedIDs.value.indexOf(potentialFunction);
@@ -225,31 +226,46 @@ class _PercentOffState extends State<PercentOff> {
           distanceFromUs *= (ourIndex - potentialIndex);
 
           //initialize list
-          if(distToIndices.containsKey(distanceFromUs) == false){
-            distToIndices[distanceFromUs] = new List<int>();
+          if(distToFunctionIDs.containsKey(distanceFromUs) == false){
+            distToFunctionIDs[distanceFromUs] = new List<int>();
           }
 
           //add to list
-          distToIndices[distanceFromUs].add(potentialIndex);
+          distToFunctionIDs[distanceFromUs].add(potentialFunction);
         }
+
+        print("dist to IDs: " + distToFunctionIDs.toString());
 
         //now we pick the smallest distance
-        List<int> distances = distToIndices.keys.toList();
+        List<int> distances = distToFunctionIDs.keys.toList();
         distances.sort(); //smallest to largest
         int smallestDistance = distances[0];
-        List<int> indicesSmallestValueAndDistance = distToIndices[smallestDistance];
+        print("smallest distance is: " + smallestDistance.toString());
+
+        List<int> validFunctionIDs = distToFunctionIDs[smallestDistance];
+        print("valid IDs: " + validFunctionIDs.toString());
 
         //if only one then great!
-        if(indicesSmallestValueAndDistance.length == 1){
-          ExcercisePage.closestIndex.value = indicesSmallestValueAndDistance[0];
+        if(validFunctionIDs.length == 1){
+          int closestFunctionID = validFunctionIDs[0];
+          ExcercisePage.closestIndex.value = ExcercisePage.orderedIDs.value.indexOf(closestFunctionID);
         }
         else{
+          //get all the indices of the valid function
+          List<int> validIndices = new List<int>(validFunctionIDs.length);
+          for(int index = 0; index < validFunctionIDs.length; index++){
+            int functionID = validFunctionIDs[index];
+            validIndices[index] = ExcercisePage.orderedIDs.value.indexOf(functionID);
+          }
+          print("valid Indices: " + validIndices.toString());
+
           //pick the one that aims higher or the smallest one
-          int smallestIndex = indicesSmallestValueAndDistance[0];
+          //for the sake of consistency
+          int smallestIndex = validIndices[0];
           //cover edge case of edge case
           //start at 1 since 0 handled
-          for(int i = 1; i < indicesSmallestValueAndDistance.length ; i++){
-            int thisIndex = indicesSmallestValueAndDistance[i];
+          for(int i = 1; i < validIndices.length ; i++){
+            int thisIndex = validIndices[i];
             if(thisIndex < smallestIndex){
               smallestIndex = thisIndex;
             }
