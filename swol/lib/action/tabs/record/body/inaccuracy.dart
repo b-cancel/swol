@@ -128,10 +128,10 @@ class PercentOff extends StatefulWidget {
 
 class _PercentOffState extends State<PercentOff> {
   List<double> oneRepMaxes = new List<double>(8);
-  List<int> percentDifferences = new List<int>(8);
-  List<int> percentDifferencesAbsolute = new List<int>(8);
+  List<int> functionIdToPercentDifferences = new List<int>(8);
+  List<int> functionIdToPercentDifferencesAbsolute = new List<int>(8);
   Map<int,List<int>> absDifferenceTofunctionID = new Map<int,List<int>>();
-  int smallestDifference;
+  int smallestAbsDifference;
   int ourIndex;
 
   updateOneRepMaxes(){
@@ -162,8 +162,8 @@ class _PercentOffState extends State<PercentOff> {
       absDifference *= difference;
 
       //save
-      percentDifferences[functionID] = difference;
-      percentDifferencesAbsolute[functionID] = absDifference;
+      functionIdToPercentDifferences[functionID] = difference;
+      functionIdToPercentDifferencesAbsolute[functionID] = absDifference;
 
       //keep counter
       if(absDifferenceTofunctionID.containsKey(absDifference) == false){
@@ -172,33 +172,98 @@ class _PercentOffState extends State<PercentOff> {
       absDifferenceTofunctionID[absDifference].add(functionID);
     }
 
-    print("differences: " + percentDifferences.toString());
+    print("differences: " + functionIdToPercentDifferences.toString());
     print("map: " + absDifferenceTofunctionID.toString());
 
     //get the smallest difference
     List<int> differences = absDifferenceTofunctionID.keys.toList();
     differences.sort();
-    smallestDifference = differences[0];
+    smallestAbsDifference = differences[0];
     
     //will eventually set state
     updatePredictionID();
   }
 
   updatePredictionID(){
-    int ourPercentDifference = percentDifferencesAbsolute[widget.predictionID.value];
-    ourIndex = ExcercisePage.orderedIDs.value.indexOf(widget.predictionID.value);
-    print("index of : " + widget.predictionID.value.toString() + " is " + ourIndex.toString()); 
+    int ourID = widget.predictionID.value;
+    int ourAbsPercentDifference = functionIdToPercentDifferencesAbsolute[ourID];
+    print("our id: " + ourID.toString());
+    print("our abs dif: " + ourAbsPercentDifference.toString());
 
+    print("function id to abs dif: " + functionIdToPercentDifferencesAbsolute.toString());
+    print("smallest abs dif: " + smallestAbsDifference.toString());
+
+    ourIndex = ExcercisePage.orderedIDs.value.indexOf(ourID);
+    
     //based on the smallest difference see if another index is closer
-    if(ourPercentDifference == smallestDifference){
-      print("updated to ourselves");
+    if(ourAbsPercentDifference == smallestAbsDifference){
       ExcercisePage.closestIndex.value = ourIndex;
     }
     else{
-      //TODO: finish
-      print("we need to iterate through all indices that hold the smallest");
-      ExcercisePage.closestIndex.value = 3;
+      List<int> potentialClosestFunctionIDs = absDifferenceTofunctionID[smallestAbsDifference];
+      print("potential closest function IDs " + potentialClosestFunctionIDs.toString());
+      if(potentialClosestFunctionIDs.length == 1){
+        int closestFunctionID = potentialClosestFunctionIDs[0];
+        ExcercisePage.closestIndex.value = ExcercisePage.orderedIDs.value.indexOf(closestFunctionID);
+      }
+      else{
+        //there are multiple indicies that hold the smallest percent
+        //NOTE: the smallest could be 3... and 4 functions could have it
+        //we narrow things down further by checking how far these indices are from me
+
+        //NOTE: I suspect there are edge cases where there can be two that are the same distance as well
+        //so we need to keep track of a list
+
+        //iterate to map out how far each index is
+        Map<int,List<int>> distToIndices = new Map<int,List<int>>();
+        for(int i = 0; i < potentialClosestFunctionIDs.length; i++){
+          int potentialFunction = potentialClosestFunctionIDs[i];
+          int potentialIndex = ExcercisePage.orderedIDs.value.indexOf(potentialFunction);
+
+          //calculate distance
+          int distanceFromUs = (ourIndex > potentialIndex) ? 1 : -1;
+          distanceFromUs *= (ourIndex - potentialIndex);
+
+          //initialize list
+          if(distToIndices.containsKey(distanceFromUs) == false){
+            distToIndices[distanceFromUs] = new List<int>();
+          }
+
+          //add to list
+          distToIndices[distanceFromUs].add(potentialIndex);
+        }
+
+        //now we pick the smallest distance
+        List<int> distances = distToIndices.keys.toList();
+        distances.sort(); //smallest to largest
+        int smallestDistance = distances[0];
+        List<int> indicesSmallestValueAndDistance = distToIndices[smallestDistance];
+
+        //if only one then great!
+        if(indicesSmallestValueAndDistance.length == 1){
+          ExcercisePage.closestIndex.value = indicesSmallestValueAndDistance[0];
+        }
+        else{
+          //pick the one that aims higher or the smallest one
+          int smallestIndex = indicesSmallestValueAndDistance[0];
+          //cover edge case of edge case
+          //start at 1 since 0 handled
+          for(int i = 1; i < indicesSmallestValueAndDistance.length ; i++){
+            int thisIndex = indicesSmallestValueAndDistance[i];
+            if(thisIndex < smallestIndex){
+              smallestIndex = thisIndex;
+            }
+          }
+
+          ExcercisePage.closestIndex.value = smallestIndex;
+        }
+      }
     }
+
+    print("closest index: " + ExcercisePage.closestIndex.value.toString());
+    print("function there: " + ExcercisePage.orderedIDs.value[
+      ExcercisePage.closestIndex.value
+    ].toString());
 
     //now that we have the proper value everywhere
     updateState();
@@ -241,8 +306,6 @@ class _PercentOffState extends State<PercentOff> {
   Widget build(BuildContext context) {
     Color overlayColor = Colors.white;
     //we are some distance from where we should be
-    //TODO: uncomment this when things are being sorted properly
-    /*
     int dif = ourIndex - ExcercisePage.closestIndex.value;
     print("dif: " + dif.toString());
     if(dif != 0){ 
@@ -257,10 +320,9 @@ class _PercentOffState extends State<PercentOff> {
         default: overlayColor = Colors.red;
       }
     }
-    */
 
     //grab how much this prediction ID is away from target
-    int percentOff = percentDifferences[widget.predictionID.value];
+    int percentOff = functionIdToPercentDifferences[widget.predictionID.value];
     //if met or exceeded
     bool metExpectations = percentOff > 0;
     //display just a number

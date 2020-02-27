@@ -378,7 +378,7 @@ updateOrderOfIDs(List<double> functionIDToValue){
     }
   }
 
-  print(orderedIDs.toString());
+  print("IDs in order: " + orderedIDs.toString());
   
   //set the value so all notifies get notified
   //only if there is a difference (avoid weird setState while build BUG)
