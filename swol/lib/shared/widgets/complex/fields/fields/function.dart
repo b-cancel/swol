@@ -57,7 +57,7 @@ class PredictionFormulaHeader extends StatelessWidget {
         title: "Prediction Formulas",
         subtitle: "Not sure? Keep the default",
         body: PredictionFormulasPopUpBody(),
-        isDense: true,
+        isDense: false,
         subtle: subtle,
       ),
     );
@@ -80,30 +80,37 @@ class PredictionFormulasPopUpBody extends StatelessWidget {
           alignment: Alignment.centerLeft,
           child: RichText(
             text: TextSpan(
-                style: TextStyle(
-                  color: Colors.black,
+              style: TextStyle(
+                color: Colors.black,
+              ),
+              children: [
+                TextSpan(
+                  text: "Select the formula that" + " you would like to ",
                 ),
-                children: [
-                  TextSpan(
-                    text: "Select the formula that you ",
+                TextSpan(
+                  text: "Estimate",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
                   ),
-                  TextSpan(
-                    text: "beleive",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
+                ),
+                TextSpan(
+                  text: " your ",
+                ),
+                TextSpan(
+                  text: "One Rep Max",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
                   ),
-                  TextSpan(
-                    text: " will predict your ",
+                ),
+                TextSpan(text: " and your "),
+                TextSpan(
+                  text: "Goal Set\n",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
                   ),
-                  TextSpan(
-                    text: "ability",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  TextSpan(text: " for this exercise\n"),
-                ]),
+                ),
+              ],
+            ),
           ),
         ),
         Theme(
@@ -140,32 +147,29 @@ class FunctionDropDown extends StatefulWidget {
 }
 
 class _FunctionDropDownState extends State<FunctionDropDown> {
-  ValueNotifier<int> selectedFunctionOrder = new ValueNotifier(AnExercise.defaultRepTarget);
+  ValueNotifier<int> selectedFunctionOrder =
+      new ValueNotifier(AnExercise.defaultRepTarget);
 
-  updateState(){
-    if(mounted) setState(() {});
+  updateState() {
+    if (mounted) setState(() {});
   }
 
-  //IF it updates function order 
+  //IF it updates function order
   //we will hear the change and update state
-  maybeUpdateFunctionOrder(){
+  maybeUpdateFunctionOrder() {
     int newValue = widget.repTarget.value;
-    if(newValue <= 8 || newValue == 10){
+    if (newValue <= 8 || newValue == 10) {
       selectedFunctionOrder.value = widget.repTarget.value;
-    }
-    else if(newValue == 9){
+    } else if (newValue == 9) {
       selectedFunctionOrder.value = 8;
-    }
-    else if(newValue < 14){
+    } else if (newValue < 14) {
       selectedFunctionOrder.value = 11;
-    }
-    else if(newValue < 17){
+    } else if (newValue < 17) {
       selectedFunctionOrder.value = 14;
-    }
-    else if(newValue < 22){
+    } else if (newValue < 22) {
       selectedFunctionOrder.value = 17;
-    }
-    else selectedFunctionOrder.value = 22;
+    } else
+      selectedFunctionOrder.value = 22;
   }
 
   @override
@@ -178,7 +182,7 @@ class _FunctionDropDownState extends State<FunctionDropDown> {
   }
 
   @override
-  void dispose() { 
+  void dispose() {
     //remove listeners
     widget.repTarget.removeListener(maybeUpdateFunctionOrder);
     selectedFunctionOrder.removeListener(updateState);
@@ -205,13 +209,17 @@ class _FunctionDropDownState extends State<FunctionDropDown> {
             widget.functionID.value = newValue;
           });
         },
-        items: Functions.repTargetToFunctionIndicesOrder[selectedFunctionOrder.value].map<DropdownMenuItem<int>>((int functionID) {
+        items: Functions
+            .repTargetToFunctionIndicesOrder[selectedFunctionOrder.value]
+            .map<DropdownMenuItem<int>>((int functionID) {
           bool selected = (functionID == widget.functionID.value);
           String thisFunctionString = Functions.functions[functionID];
 
           //indices
-          int idAtEnd = Functions.repTargetToFunctionIndicesOrder[selectedFunctionOrder.value][0];
-          int idAtStart = Functions.repTargetToFunctionIndicesOrder[selectedFunctionOrder.value][7];
+          int idAtEnd = Functions
+              .repTargetToFunctionIndicesOrder[selectedFunctionOrder.value][0];
+          int idAtStart = Functions
+              .repTargetToFunctionIndicesOrder[selectedFunctionOrder.value][7];
 
           //widget
           return DropdownMenuItem<int>(
@@ -225,26 +233,29 @@ class _FunctionDropDownState extends State<FunctionDropDown> {
                   thisFunctionString,
                   style: TextStyle(
                     fontWeight: selected ? FontWeight.bold : FontWeight.normal,
-                    color: selected ? Colors.white : Colors.white.withOpacity(0.75),
+                    color: selected
+                        ? Colors.white
+                        : Colors.white.withOpacity(0.75),
                   ),
                 ),
                 Visibility(
-                  visible: selected == false && (functionID == idAtStart || functionID == idAtEnd),
+                  visible: selected == false &&
+                      (functionID == idAtStart || functionID == idAtEnd),
                   child: Padding(
                     padding: EdgeInsets.only(
                       right: 8.0,
                     ),
                     child: Conditional(
-                      condition: functionID == idAtEnd, 
+                      condition: functionID == idAtEnd,
                       ifTrue: Text(
                         "Higher 1RM Estimates",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
                         ),
-                      ), 
+                      ),
                       ifFalse: Text(
-                      "Lower 1RM Estimates",
+                        "Lower 1RM Estimates",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           color: Colors.white,

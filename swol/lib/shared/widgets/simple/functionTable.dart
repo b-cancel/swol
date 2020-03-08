@@ -27,18 +27,33 @@ class FunctionCardTable extends StatelessWidget {
           child: Padding(
             padding: EdgeInsets.symmetric(
               vertical: 8,
+              horizontal: 24,
             ),
             child: Padding(
               padding: EdgeInsets.only(
                 left: leftAligned == false ? 24 : 0,
                 right: 16,
               ),
-              child: Text(
-                items[i],
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: (i == 0) ? FontWeight.bold : FontWeight.normal,
-                ),
+              child: Row(
+                children: <Widget>[
+                  Text(
+                    items[i],
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: (i == 0) ? FontWeight.bold : FontWeight.normal,
+                    ),
+                  ),
+                  Visibility(
+                    visible: i == 3,
+                    child: Text(
+                      " (Our Own)",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
@@ -53,54 +68,28 @@ class FunctionCardTable extends StatelessWidget {
   Widget build(BuildContext context) {
     return ClipRRect(
       borderRadius: BorderRadius.circular(25),
-      child: Row(
-        children: <Widget>[
-          Container(
-            color: Theme.of(context).cardColor,
-            child: IntrinsicWidth(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.end,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: buildFields(context, [
-                  "Limitation Level",
-                  "BEGINNER 8",
-                  "7",
-                  "6",
-                  "5",
-                  "AVG 4",
-                  "3",
-                  "2",
-                  "PRO 1",
-                ], leftAligned: false),
-              ),
-            ),
+      child: Container(
+        color: Theme.of(context).cardColor,
+        width: MediaQuery.of(context).size.width,
+        child: IntrinsicWidth(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: buildFields(context, [
+              "One Rep Max Formulas",
+              "Brzycki",
+              "McGlothin (or Landers)",
+              "Almazan",
+              "Epley (or Baechle)",
+              "O`Conner",
+              "Wathan",
+              "Mayhew",
+              "Lombardi",
+            ]),
           ),
-          Expanded(
-            child: Container(
-              color: Theme.of(context).cardColor,
-              child: IntrinsicWidth(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: buildFields(context, [
-                    "Ability Formulas",
-                    "Brzycki",
-                    "McGlothin (or Landers)",
-                    "Almazan *our own*",
-                    "Epley (or Baechle)",
-                    "O`Conner",
-                    "Wathan",
-                    "Mayhew",
-                    "Lombardi",
-                  ]),
-                ),
-              ),
-            ),
-          ),
-        ],
+        ),
       ),
-    );
+);
   }
 }
