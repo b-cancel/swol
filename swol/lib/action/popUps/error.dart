@@ -11,31 +11,41 @@ import 'package:swol/action/popUps/reusable.dart';
 import 'package:swol/action/popUps/button.dart';
 import 'package:swol/action/page.dart';
 
+toNextSet(){
+  ExercisePage.updateSet.value = true; //start the set
+  ExercisePage.pageNumber.value = 2; //shift to the timer page
+}
+
 //function
-maybeError(BuildContext context, AnExercise exercise, DateTime startTime) {
-  //grab data
-  String weight = ExercisePage.setWeight.value;
-  String reps = ExercisePage.setReps.value;
+maybeError(
+  BuildContext context, 
+  AnExercise exercise, 
+  DateTime startTime,
+) {
+  //TODO: ideally we let the user skip the step
+  bool keyboardOpen = FocusScope.of(context).hasFocus;
+  if(keyboardOpen){
+    FocusScope.of(context).unfocus();
+  }
+  else{
+    //grab data
+    String weight = ExercisePage.setWeight.value;
+    String reps = ExercisePage.setReps.value;
 
-  //validity
-  bool weightValid = isTextValid(weight);
-  bool repsValid = isTextValid(reps);
-  bool setValid = weightValid && repsValid;
+    //validity
+    bool weightValid = isTextValid(weight);
+    bool repsValid = isTextValid(reps);
+    bool setValid = weightValid && repsValid;
 
-  //bring up the pop up if needed
-  if (setValid) {
-    ExercisePage.updateSet.value = true; //start the set
-    ExercisePage.pageNumber.value = 2; //shift to the timer page
-  } else {
-    //NOTE: this assumes the user CANT type anything except digits of the right size
-
-    //change the buttons shows a the wording a tad\
+    //we are valid and can therefore move on
+    if(setValid){
+      toNextSet();
+    }
+    else{
+      //change the buttons shows a the wording a tad\
     bool timerNotStarted = startTime == AnExercise.nullDateTime;
     String continueString =
         (timerNotStarted) ? "Begin Your Set Break" : "Return To Your Break";
-
-    //remove focus so the pop up doesnt bring it back
-    FocusScope.of(context).unfocus();
 
     //show the dialog
     AwesomeDialog(
@@ -147,11 +157,8 @@ maybeError(BuildContext context, AnExercise exercise, DateTime startTime) {
           ExercisePage.setReps.value = exercise.tempReps.toString();
 
           //pop ourselves
-          Navigator.of(context).pop();
+          toNextSet();
           //will call "onDissmissCallback"
-
-          //continue as expected
-          ExercisePage.pageNumber.value = 2; //shift to the timer page
         },
       ),
       btnOk: timerNotStarted ? null : AwesomeButton(
@@ -165,5 +172,6 @@ maybeError(BuildContext context, AnExercise exercise, DateTime startTime) {
         },
       ),
     ).show();
+    }
   }
 }
