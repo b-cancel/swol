@@ -24,7 +24,7 @@ import 'package:swol/pages/selection/widgets/addNewHero.dart';
 import 'package:swol/main.dart';
 
 //main widget
-class AddExercise extends StatelessWidget {
+class AddExercise extends StatefulWidget {
   AddExercise({
     Key key,
 
@@ -50,14 +50,21 @@ class AddExercise extends StatelessWidget {
 
   final Duration sectionTransitionDuration;
 
-  //-------------------------extra variables
+  @override
+  _AddExerciseState createState() => _AddExerciseState();
+}
+
+class _AddExerciseState extends State<AddExercise> {
   final ValueNotifier<bool> showSaveButton = new ValueNotifier(false);
+
   final ValueNotifier<bool> namePresent = new ValueNotifier(false);
+
   final ValueNotifier<bool> nameError = new ValueNotifier(false);
 
-  //-------------------------exercise variables-------------------------
   final ValueNotifier<String> name = new ValueNotifier("");
+
   final ValueNotifier<String> note = new ValueNotifier("");
+
   final ValueNotifier<String> url = new ValueNotifier("");
 
   final ValueNotifier<int> functionID = new ValueNotifier(
@@ -78,9 +85,56 @@ class AddExercise extends StatelessWidget {
 
   final ValueNotifier<bool> tipIsShowing = new ValueNotifier(false);
 
-  //-------------------------Focus Nodes-------------------------
   final FocusNode nameFocusNode = FocusNode();
+
   final FocusNode noteFocusNode = FocusNode();
+
+  //TODO: make functional, decided to skip since we can't current do this
+  //TODO: since we can't make the time picker update this way unless we do some hacks
+  //TODO: the hack would be simply to have a manual reload that builds a different picker
+  //TODO: but ONLY if the picker is being set by something else
+  //TODO: figuring that out is what can suck up my time
+  //update the others if they haven't already been edited manually
+  final ValueNotifier<bool> recoverySet = new ValueNotifier<bool>(false);
+  final ValueNotifier<bool> setSet = new ValueNotifier(false)
+  updateOthers(){
+    //rep target
+    //strength 1 to 6
+    //hypertrophy 7 to 12
+    //endurance 13 and 35
+
+    //recovery period
+    //strength 3:05 to 5
+    //str/hype 3 to 2:05
+    //hypertrophy 2 to 1:05
+    //endurance 1 to 0
+    //---recovery period with just basics
+    //strength 2:35 -> 5        mid: 3:45
+    //hypertrohpy 1:05 -> 2:30  mid: 1:45
+    //endurance 0 -> 1          mid: 30 seconds
+
+    //set target
+    //end 1 to 2
+    //end/hyp 3
+    //hyp/str 4, 5
+    //str 6
+    //---set target with just basics
+    //strength: 5,6     mid: 5
+    //hypertrohpy: 3,4  mid: 3
+    //endurance: 1,2    mid: 2
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    repTarget.addListener(updateOthers);
+  }
+
+  @override
+  void dispose() { 
+    repTarget.removeListener(updateOthers);
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -108,13 +162,13 @@ class AddExercise extends StatelessWidget {
       ),
       SliderCard(
         child: RepTargetField(
-          changeDuration: sectionTransitionDuration,
+          changeDuration: widget.sectionTransitionDuration,
           repTarget: repTarget,
           subtle: false,
         ),
       ),
       RecoveryTimeCard(
-        changeDuration: sectionTransitionDuration,
+        changeDuration: widget.sectionTransitionDuration,
         recoveryPeriod: recoveryPeriod, 
       ),
       SliderCard(
@@ -170,12 +224,12 @@ class AddExercise extends StatelessWidget {
                           right: 8.0,
                         ),
                         child: SaveButton(
-                          delay: showPageDuration + delayBeforeSaveShow,
+                          delay: widget.showPageDuration + widget.delayBeforeSaveShow,
                           showSaveButton: showSaveButton, 
                           nameFocusNode: nameFocusNode,
                           nameError: nameError,
                           //transition duration
-                          showSaveDuration: showSaveDuration,
+                          showSaveDuration: widget.showSaveDuration,
                           //variables
                           namePresent: namePresent, 
                           name: name, 
@@ -213,8 +267,8 @@ class AddExercise extends StatelessWidget {
                 return AnimationConfiguration.staggeredList(
                   position: index,
                   //500 (page slide in) + 250 (save button show)
-                  delay: (delayBetweenListItems),
-                  duration: showListDuration,
+                  delay: (widget.delayBetweenListItems),
+                  duration: widget.showListDuration,
                   child: SlideAnimation(
                     verticalOffset: 50.0,
                     child: FadeInAnimation(
