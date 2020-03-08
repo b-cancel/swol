@@ -66,7 +66,7 @@ class ConfirmActionMessage extends StatelessWidget {
                     fontSize: 24,
                     color: Colors.black,
                   ),
-                  child: Text(actionString + " Excercise?"),
+                  child: Text(actionString + " Exercise?"),
                 ),
               ),
             ),
@@ -99,7 +99,7 @@ class ConfirmActionMessage extends StatelessWidget {
               //get rid of this pop up
               Navigator.of(context).pop();
 
-              //go back to our excercise page
+              //go back to our exercise page
               Navigator.of(context).pop();
 
               //go back to our list
@@ -153,13 +153,13 @@ class HideMessage extends StatelessWidget {
            ),
          ),
          TextSpan(
-           text: " at the bottom of your list of excercises\n\n",
+           text: " at the bottom of your list of exercises\n\n",
          ),
          TextSpan(
            text: "If you ",
          ),
          TextSpan(
-           text: "want to delete your excercise,\n",
+           text: "want to delete your exercise,\n",
            style: TextStyle(
              fontWeight: FontWeight.bold
            ),
@@ -214,7 +214,7 @@ class DeleteMessage extends StatelessWidget {
             ),
           ),
           TextSpan(
-            text: " from your list of excercises\n\n",
+            text: " from your list of exercises\n\n",
           ),
           TextSpan(
             text: "If you ",

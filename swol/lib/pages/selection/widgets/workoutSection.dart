@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 
 //internal
-import 'package:swol/shared/widgets/complex/excerciseListTile/excerciseTile.dart';
+import 'package:swol/shared/widgets/complex/exerciseListTile/exerciseTile.dart';
 import 'package:swol/shared/functions/defaultDateTimes.dart';
 import 'package:swol/shared/structs/anExercise.dart';
 import 'package:swol/shared/widgets/simple/chip.dart';
@@ -148,9 +148,9 @@ class SectionBody extends StatelessWidget {
                 reverse: (sectionType != TimeStampType.Hidden),
                 itemBuilder: (context, index){
                   AnExercise excercise = thisGroup[index];
-                  return ExcerciseTile(
+                  return ExerciseTile(
                     key: ValueKey(excercise.id),
-                    excercise: excercise,
+                    exercise: excercise,
                   );
                 },
                 separatorBuilder : (context, index) => ListTileDivider(),

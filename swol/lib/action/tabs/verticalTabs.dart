@@ -11,12 +11,12 @@ import 'package:swol/action/page.dart';
 
 /// A vertical tab widget for flutter
 class VerticalTabs extends StatefulWidget {
-  final AnExercise excercise;
+  final AnExercise exercise;
   final double statusBarHeight;
   final Duration transitionDuration;
 
   VerticalTabs({
-    @required this.excercise,
+    @required this.exercise,
     @required this.statusBarHeight,
     @required this.transitionDuration,
   });
@@ -44,9 +44,9 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
 
     //set the first page we will be at based on startTimerValue
     int initialPage;
-    bool timerNotStarted = widget.excercise.tempStartTime.value == AnExercise.nullDateTime;
+    bool timerNotStarted = widget.exercise.tempStartTime.value == AnExercise.nullDateTime;
     if(timerNotStarted){
-      if(widget.excercise.lastWeight == null) initialPage = 1;
+      if(widget.exercise.lastWeight == null) initialPage = 1;
       else initialPage = 0;
     }
     else initialPage = 2;
@@ -61,8 +61,8 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
     //after this our notifiers initially set our controllers
     //our controllers update our notifiers
     //and then our notifiers ONLY update our temps under very specific conditions
-    int tempWeight = widget?.excercise?.tempWeight;
-    int tempReps = widget?.excercise?.tempReps;
+    int tempWeight = widget?.exercise?.tempWeight;
+    int tempReps = widget?.exercise?.tempReps;
     //extra step needed because null.toString() isn't null
     ExercisePage.setWeight.value = (tempWeight != null) ? tempWeight.toString() : "";
     ExercisePage.setReps.value = (tempReps != null) ? tempReps.toString() : "";
@@ -118,14 +118,14 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
           scrollDirection: Axis.vertical,
           children: <Widget>[
             Suggestion( 
-              excercise: widget.excercise,
+              exercise: widget.exercise,
               heroUp: goalSetUp,
               heroAnimDuration: widget.transitionDuration,
               heroAnimTravel: totalTravel,
               functionIDToWeightFromRT: functionIDToWeightFromRT,
             ),
             SetRecord(
-              excercise: widget.excercise,
+              exercise: widget.exercise,
               statusBarHeight: widget.statusBarHeight,
               heroUp: goalSetUp,
               heroAnimDuration: widget.transitionDuration,
@@ -136,13 +136,13 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
             ),
             Recovery(
               transtionDuration: widget.transitionDuration,
-              excercise: widget.excercise,
+              exercise: widget.exercise,
             ),
           ],
         ),
         //must be on top... other wise it isnt clickable
         FloatingDoneButton(
-          exercise: widget.excercise,
+          exercise: widget.exercise,
           showOrHideDuration: widget.transitionDuration,
           animationCurve: Curves.easeInOut,
         ),

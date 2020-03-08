@@ -4,24 +4,24 @@ import 'dart:math' as math;
 import 'package:swol/shared/structs/anExercise.dart';
 import 'package:swol/shared/widgets/simple/heros/curveMod.dart';
 
-class ExcerciseBegin extends StatelessWidget {
-  ExcerciseBegin({
+class ExerciseBegin extends StatelessWidget {
+  ExerciseBegin({
     @required this.inAppBar,
-    @required this.excercise,
+    @required this.exercise,
   });
 
   final bool inAppBar;
-  final AnExercise excercise;
+  final AnExercise exercise;
 
   @override
   Widget build(BuildContext context) {
-    if(excercise == null){
-      return ExcerciseTitleBeginHelper(
+    if(exercise == null){
+      return ExerciseTitleBeginHelper(
         percentToAppBar: (inAppBar) ? 1 : 0,
       );
     }
     else{
-      String generatedTag = "excerciseBegin" + excercise.id.toString();
+      String generatedTag = "exerciseBegin" + exercise.id.toString();
       return Hero(
         tag: generatedTag,
         createRectTween: (begin, end) {
@@ -37,13 +37,13 @@ class ExcerciseBegin extends StatelessWidget {
           return AnimatedBuilder(
             animation: animation,
             builder: (context, child){
-              return ExcerciseTitleBeginHelper(
+              return ExerciseTitleBeginHelper(
                 percentToAppBar: animation.value,
               );
             },
           );
         },
-        child: ExcerciseTitleBeginHelper(
+        child: ExerciseTitleBeginHelper(
           percentToAppBar: (inAppBar) ? 1 : 0,
         ),
       );
@@ -51,8 +51,8 @@ class ExcerciseBegin extends StatelessWidget {
   }
 }
 
-class ExcerciseTitleBeginHelper extends StatelessWidget {
-  ExcerciseTitleBeginHelper({
+class ExerciseTitleBeginHelper extends StatelessWidget {
+  ExerciseTitleBeginHelper({
     @required this.percentToAppBar,
   });
 

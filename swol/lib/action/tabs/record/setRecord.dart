@@ -21,7 +21,7 @@ import 'package:swol/shared/methods/theme.dart';
 //widget
 class SetRecord extends StatelessWidget {
   SetRecord({
-    @required this.excercise,
+    @required this.exercise,
     @required this.statusBarHeight,
     @required this.heroUp,
     @required this.heroAnimDuration,
@@ -31,7 +31,7 @@ class SetRecord extends StatelessWidget {
     @required this.repsFocusNode,
   });
 
-  final AnExercise excercise;
+  final AnExercise exercise;
   final double statusBarHeight;
   final ValueNotifier<bool> heroUp;
   final Duration heroAnimDuration;
@@ -48,7 +48,7 @@ class SetRecord extends StatelessWidget {
     double spaceToRedistribute = fullHeight - appBarHeight - statusBarHeight;
 
     //determine what page we are showing
-    bool calibrationRequired = excercise.lastWeight == null;
+    bool calibrationRequired = exercise.lastWeight == null;
     Function backAction;
     if (calibrationRequired == false) {
       backAction = () {
@@ -57,13 +57,13 @@ class SetRecord extends StatelessWidget {
     }
 
     //calc sets passed for bottom buttons
-    int setsPassed = excercise.tempSetCount ?? 0;
+    int setsPassed = exercise.tempSetCount ?? 0;
     bool timerNotStarted =
-        excercise.tempStartTime.value == AnExercise.nullDateTime;
+        exercise.tempStartTime.value == AnExercise.nullDateTime;
     if (timerNotStarted) setsPassed += 1;
 
     //color for bottom buttons
-    bool lastSetOrBefore = setsPassed <= excercise.setTarget;
+    bool lastSetOrBefore = setsPassed <= exercise.setTarget;
     Color buttonsColor = lastSetOrBefore
         ? Theme.of(context).accentColor
         : Theme.of(context).cardColor;
@@ -84,7 +84,7 @@ class SetRecord extends StatelessWidget {
       child: SetRecordButtonsWithWhiteContext(
         cardColor: Theme.of(context).cardColor,
         buttonsColor: buttonsColor,
-        excercise: excercise,
+        exercise: exercise,
         timerNotStarted: timerNotStarted,
         backAction: backAction,
         weightFocusNode: weightFocusNode,
@@ -141,7 +141,7 @@ class SetRecord extends StatelessWidget {
                     heroUp: heroUp,
                     heroAnimDuration: heroAnimDuration,
                     heroAnimTravel: heroAnimTravel,
-                    excercise: excercise,
+                    exercise: exercise,
                   ),
                 ),
                 recordSetFields,
@@ -163,7 +163,7 @@ class SetRecordButtonsWithWhiteContext extends StatelessWidget {
     Key key,
     @required this.cardColor,
     @required this.buttonsColor,
-    @required this.excercise,
+    @required this.exercise,
     @required this.timerNotStarted,
     @required this.backAction,
     @required this.weightFocusNode,
@@ -172,7 +172,7 @@ class SetRecordButtonsWithWhiteContext extends StatelessWidget {
 
   final Color cardColor;
   final Color buttonsColor;
-  final AnExercise excercise;
+  final AnExercise exercise;
   final bool timerNotStarted;
   final Function backAction;
   final FocusNode weightFocusNode;
@@ -234,7 +234,7 @@ class SetRecordButtonsWithWhiteContext extends StatelessWidget {
                             child: FittedBox(
                               fit: BoxFit.contain,
                               child: TimerGlimpse(
-                                excercise: excercise,
+                                exercise: exercise,
                                 weightFocusNode: weightFocusNode,
                                 repsFocusNode: repsFocusNode,
                               ),
@@ -249,12 +249,12 @@ class SetRecordButtonsWithWhiteContext extends StatelessWidget {
         ),
         BottomButtons(
           color: buttonsColor,
-          exerciseID: excercise.id,
+          exerciseID: exercise.id,
           forwardAction: () {
             maybeError(
               context,
-              excercise,
-              excercise.tempStartTime.value,
+              exercise,
+              exercise.tempStartTime.value,
             );
           },
           forwardActionWidget: Text(
@@ -270,13 +270,13 @@ class SetRecordButtonsWithWhiteContext extends StatelessWidget {
 //alert the user if neccesary
 class TimerGlimpse extends StatefulWidget {
   const TimerGlimpse({
-    @required this.excercise,
+    @required this.exercise,
     @required this.weightFocusNode,
     @required this.repsFocusNode,
     Key key,
   }) : super(key: key);
 
-  final AnExercise excercise;
+  final AnExercise exercise;
   final FocusNode weightFocusNode;
   final FocusNode repsFocusNode;
 
@@ -311,13 +311,13 @@ class _TimerGlimpseState extends State<TimerGlimpse> {
   Widget build(BuildContext context) {
     //get glimpse color
     Color circleGlimpseColor;
-    DateTime startTime = widget.excercise.tempStartTime.value;
+    DateTime startTime = widget.exercise.tempStartTime.value;
     if(startTime == AnExercise.nullDateTime){
       circleGlimpseColor = Color(0xFFBFBFBF); //same grey as timer
     }
     else{
       Duration timePassed = DateTime.now().difference(startTime);
-      if(timePassed <= widget.excercise.recoveryPeriod){
+      if(timePassed <= widget.exercise.recoveryPeriod){
         circleGlimpseColor = Theme.of(context).accentColor;
       }
       else circleGlimpseColor = Colors.red;

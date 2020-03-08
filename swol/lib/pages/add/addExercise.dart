@@ -24,8 +24,8 @@ import 'package:swol/pages/selection/widgets/addNewHero.dart';
 import 'package:swol/main.dart';
 
 //main widget
-class AddExcercise extends StatelessWidget {
-  AddExcercise({
+class AddExercise extends StatelessWidget {
+  AddExercise({
     Key key,
 
     //NOTE: 200 ms above the norm so they can see the sweat animation
@@ -55,7 +55,7 @@ class AddExcercise extends StatelessWidget {
   final ValueNotifier<bool> namePresent = new ValueNotifier(false);
   final ValueNotifier<bool> nameError = new ValueNotifier(false);
 
-  //-------------------------excercise variables-------------------------
+  //-------------------------exercise variables-------------------------
   final ValueNotifier<String> name = new ValueNotifier("");
   final ValueNotifier<String> note = new ValueNotifier("");
   final ValueNotifier<String> url = new ValueNotifier("");

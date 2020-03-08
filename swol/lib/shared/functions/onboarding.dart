@@ -12,9 +12,9 @@ import 'package:feature_discovery/feature_discovery.dart';
 enum AFeature {
   SwolLogo, 
   LearnPage, 
-  AddExcercise, 
-  SaveExcercise,
-  SearchExcercise,
+  AddExercise, 
+  SaveExercise,
+  SearchExercise,
 }
 
 //classes
@@ -27,16 +27,16 @@ class OnBoarding{
     _discoverSet(context, AFeature.LearnPage);
   }
 
-  static discoverAddExcercise(BuildContext context){
-    _discoverSet(context, AFeature.AddExcercise);
+  static discoverAddExercise(BuildContext context){
+    _discoverSet(context, AFeature.AddExercise);
   }
 
-  static discoverSaveExcercise(BuildContext context){
-    _discoverSet(context, AFeature.SaveExcercise);
+  static discoverSaveExercise(BuildContext context){
+    _discoverSet(context, AFeature.SaveExercise);
   }
 
-  static discoverSearchExcercise(BuildContext context){
-    _discoverSet(context, AFeature.SearchExcercise);
+  static discoverSearchExercise(BuildContext context){
+    _discoverSet(context, AFeature.SearchExercise);
   }
 
   //utility function because Feature discovery seems to prefer sets

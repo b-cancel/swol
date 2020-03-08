@@ -17,24 +17,24 @@ import 'package:swol/other/functions/helper.dart';
 //we
 //1. calculate the 1 rep max or estimated 1 rep max
 //2. generate a message to show if the user taps the chipd
-class ExcerciseTileSubtitle extends StatefulWidget {
-  ExcerciseTileSubtitle({
-    @required this.excercise,
+class ExerciseTileSubtitle extends StatefulWidget {
+  ExerciseTileSubtitle({
+    @required this.exercise,
     @required this.transitionDuration,
     @required Key key,
   }) : super(key: key);
 
-  final AnExercise excercise;
+  final AnExercise exercise;
   final Duration transitionDuration;
 
   @override
-  _ExcerciseTileSubtitleState createState() => _ExcerciseTileSubtitleState();
+  _ExerciseTileSubtitleState createState() => _ExerciseTileSubtitleState();
 }
 
-class _ExcerciseTileSubtitleState extends State<ExcerciseTileSubtitle> {
+class _ExerciseTileSubtitleState extends State<ExerciseTileSubtitle> {
   actualUpdate(Duration randomDuration){
     //a set was just completed so there WILL be a new last set
-    if(widget.excercise.tempStartTime.value == AnExercise.nullDateTime){
+    if(widget.exercise.tempStartTime.value == AnExercise.nullDateTime){
       if(mounted) setState(() {});
     }
   }
@@ -50,13 +50,13 @@ class _ExcerciseTileSubtitleState extends State<ExcerciseTileSubtitle> {
     super.initState();
 
     //only changes when started or ended
-    widget.excercise.tempStartTime.addListener(updateState);
+    widget.exercise.tempStartTime.addListener(updateState);
   }
 
   @override
   void dispose() { 
     //only changes when started or ended
-    widget.excercise.tempStartTime.removeListener(updateState);
+    widget.exercise.tempStartTime.removeListener(updateState);
 
     //super dispose
     super.dispose();
@@ -64,7 +64,7 @@ class _ExcerciseTileSubtitleState extends State<ExcerciseTileSubtitle> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.excercise.lastWeight == null) {
+    if (widget.exercise.lastWeight == null) {
       //used so all tiles are the same height
       //and can properly show the mini timer
       return Container(
@@ -84,25 +84,25 @@ class _ExcerciseTileSubtitleState extends State<ExcerciseTileSubtitle> {
       bool isOneRepMaxEstimated = false;
       Widget oneRepMaxWidget = Text(
         //we KNOW its not null
-        widget.excercise.lastWeight.toString(),
+        widget.exercise.lastWeight.toString(),
         style: BOLD,
       );
       String snackbarMessage = "Your 1 Rep Max";
 
       //only calculate the 1 rep max and all its related values if you must
-      if (widget.excercise.lastReps != 1) { //we KNOW its not null
+      if (widget.exercise.lastReps != 1) { //we KNOW its not null
         isOneRepMaxEstimated = true;
 
         //estimate one rep max
         List oneRepMaxValues = Functions.getOneRepMaxValues(
           //we KNOW both are VALID
-          widget.excercise.lastWeight,
-          widget.excercise.lastReps,
+          widget.exercise.lastWeight,
+          widget.exercise.lastReps,
         );
 
         //update onRepMaxWidget
         oneRepMaxWidget = Text(
-          oneRepMaxValues[0][widget.excercise.predictionID].round().toString(),
+          oneRepMaxValues[0][widget.exercise.predictionID].round().toString(),
           style: BOLD,
         );
 

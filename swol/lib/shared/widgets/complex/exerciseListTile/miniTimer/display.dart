@@ -8,8 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 
 //internal
-import 'package:swol/shared/widgets/complex/excerciseListTile/miniTimer/progress.dart';
-import 'package:swol/shared/widgets/complex/excerciseListTile/miniTimer/shaking.dart';
+import 'package:swol/shared/widgets/complex/exerciseListTile/miniTimer/progress.dart';
+import 'package:swol/shared/widgets/complex/exerciseListTile/miniTimer/shaking.dart';
 import 'package:swol/shared/structs/anExercise.dart';
 
 //widget
@@ -17,12 +17,12 @@ class WatchUI extends StatelessWidget {
   //NOTE: defaults is the mini version of the watch
   WatchUI({
     @required this.controller,
-    @required this.excercise,
+    @required this.exercise,
     @required this.startTime,
   });
 
   final AnimationController controller;
-  final AnExercise excercise;
+  final AnExercise exercise;
   final DateTime startTime;
 
   @override
@@ -30,12 +30,12 @@ class WatchUI extends StatelessWidget {
     //NOTE: by now we already know the timer startTime isn't null
     DateTime timerStarted = startTime;
     Duration timePassed = DateTime.now().difference(timerStarted);
-    bool noTimeLeft = timePassed > excercise.recoveryPeriod;
+    bool noTimeLeft = timePassed > exercise.recoveryPeriod;
 
     //sizes
     double size = 56;
     
-    String generatedTag = "timer" + excercise.id.toString();
+    String generatedTag = "timer" + exercise.id.toString();
 
     //the box I think will be in the hero
     //so that the fitted box within it can grow the widget inside of it
@@ -75,7 +75,7 @@ class WatchUI extends StatelessWidget {
                 ),
                 //-----circle that show progress
                 ProgressCircle( 
-                  excercise: excercise,
+                  exercise: exercise,
                   controller: controller,
                   startTime: startTime,
                 ),

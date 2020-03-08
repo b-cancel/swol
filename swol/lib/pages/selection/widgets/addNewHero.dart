@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 
 //internal
-import 'package:swol/pages/add/addExcercise.dart';
+import 'package:swol/pages/add/addExercise.dart';
 import 'package:swol/main.dart';
 import 'package:swol/other/otherHelper.dart';
 import 'package:swol/shared/widgets/simple/heros/curveMod.dart';
@@ -81,7 +81,7 @@ class AddNewHeroHelper extends StatelessWidget {
             PageTransition(
               duration: transitionDuration,
               type: PageTransitionType.downToUp, 
-              child: AddExcercise(
+              child: AddExercise(
                 showPageDuration: transitionDuration,
               ),
             ),

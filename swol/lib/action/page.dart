@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 //plugin
 import 'package:page_transition/page_transition.dart';
 
-//internal: excercise
+//internal: exercise
 import 'package:swol/shared/widgets/simple/heros/leading.dart';
 import 'package:swol/shared/functions/defaultDateTimes.dart';
 import 'package:swol/shared/widgets/simple/heros/title.dart';
@@ -12,7 +12,7 @@ import 'package:swol/shared/structs/anExercise.dart';
 import 'package:swol/shared/methods/theme.dart';
 
 //internal
-import 'package:swol/pages/notes/excerciseNotes.dart';
+import 'package:swol/pages/notes/exerciseNotes.dart';
 import 'package:swol/action/tabs/verticalTabs.dart';
 import 'package:swol/other/functions/W&R=1RM.dart';
 import 'package:swol/action/popUps/warning.dart';
@@ -23,11 +23,11 @@ import 'package:swol/action/popUps/warning.dart';
 //3. but also wrap the rest of the widgets in the dark theme
 class ExercisePage extends StatelessWidget {
   ExercisePage({
-    @required this.excercise,
+    @required this.exercise,
     @required this.transitionDuration,
   });
 
-  final AnExercise excercise;
+  final AnExercise exercise;
   final Duration transitionDuration;
 
   //static vars used through out initializaed with their default values
@@ -57,7 +57,7 @@ class ExercisePage extends StatelessWidget {
   //build
   @override
   Widget build(BuildContext context) {
-    print(excercise.id.toString() + " " +  excercise.tempStartTime.toString() + "***********");
+    print(exercise.id.toString() + " " +  exercise.tempStartTime.toString() + "***********");
 
     return Theme(
       data: MyTheme.dark,
@@ -65,13 +65,13 @@ class ExercisePage extends StatelessWidget {
         onWillPop: () async{
           return warningThenAllowPop(
             context, 
-            excercise,
+            exercise,
             //false since return true here will pop
             alsoPop: false,
           );
         },
-        child: ExcercisePageDark(
-          excercise: excercise,
+        child: ExercisePageDark(
+          exercise: exercise,
           transitionDuration: transitionDuration,
         ),
       ),
@@ -79,48 +79,48 @@ class ExercisePage extends StatelessWidget {
   }
 }
 
-class ExcercisePageDark extends StatefulWidget {
-  ExcercisePageDark({
-    @required this.excercise,
+class ExercisePageDark extends StatefulWidget {
+  ExercisePageDark({
+    @required this.exercise,
     @required this.transitionDuration,
   });
 
-  final AnExercise excercise;
+  final AnExercise exercise;
   final Duration transitionDuration;
 
   @override
-  _ExcercisePageDarkState createState() => _ExcercisePageDarkState();
+  _ExercisePageDarkState createState() => _ExercisePageDarkState();
 }
 
-class _ExcercisePageDarkState extends State<ExcercisePageDark> {
+class _ExercisePageDarkState extends State<ExercisePageDark> {
   updateSet(){ //also cover resume case
     if(ExercisePage.updateSet.value){
       //whenever we begin or resume the set we KNOW our setWeight and setReps are valid
       String setWeight = ExercisePage.setWeight.value;
       String setReps = ExercisePage.setReps.value;
-      widget.excercise.tempWeight = int.parse(setWeight);
-      widget.excercise.tempReps = int.parse(setReps);
+      widget.exercise.tempWeight = int.parse(setWeight);
+      widget.exercise.tempReps = int.parse(setReps);
     
       //only if begin
-      if(widget.excercise.tempStartTime.value == AnExercise.nullDateTime){
+      if(widget.exercise.tempStartTime.value == AnExercise.nullDateTime){
         //start the timer
-        widget.excercise.tempStartTime = new ValueNotifier<DateTime>(DateTime.now()); 
+        widget.exercise.tempStartTime = new ValueNotifier<DateTime>(DateTime.now()); 
 
         //indicate you have started the set
-        if(widget.excercise.tempSetCount == null){
-          widget.excercise.tempSetCount = 1;
+        if(widget.exercise.tempSetCount == null){
+          widget.exercise.tempSetCount = 1;
         }
-        else widget.excercise.tempSetCount += 1;
+        else widget.exercise.tempSetCount += 1;
 
         //we are recording our FIRST set so may go back to it 
         //if we delete it instead of deciding to continue
-        if(widget.excercise.tempSetCount == 1){ 
-          widget.excercise.backUpTimeStamp = widget.excercise.lastTimeStamp;
+        if(widget.exercise.tempSetCount == 1){ 
+          widget.exercise.backUpTimeStamp = widget.exercise.lastTimeStamp;
         }
       }
 
       //set or update in progress time stamp so the order is kept with focus on the top item
-      widget.excercise.lastTimeStamp = LastTimeStamp.inProgressDateTime();
+      widget.exercise.lastTimeStamp = LastTimeStamp.inProgressDateTime();
 
       //action complete
       ExercisePage.updateSet.value = false;
@@ -132,24 +132,24 @@ class _ExcercisePageDarkState extends State<ExcercisePageDark> {
       //must be done first 
       //so that our suggest page has access to right 1 rep maxes
       updateOneRepMaxes(
-        weight: widget.excercise.tempWeight,
-        reps: widget.excercise.tempReps,
+        weight: widget.exercise.tempWeight,
+        reps: widget.exercise.tempReps,
       );
 
       //reset timer
       //TODO: figure out why at some point I marked that this NEEDED to be BEFORE everything else
       //NOTE: that at the moment I should wait for lastWeight and lastReps to update 
       //before reacting to the change here in the one rep max chip
-      widget.excercise.tempStartTime = new ValueNotifier<DateTime>(AnExercise.nullDateTime);
-      print(widget.excercise.id.toString() +  "******************************updated DT to " + widget.excercise.tempStartTime.toString());
+      widget.exercise.tempStartTime = new ValueNotifier<DateTime>(AnExercise.nullDateTime);
+      print(widget.exercise.id.toString() +  "******************************updated DT to " + widget.exercise.tempStartTime.toString());
 
       //save values (that we know are valid)
-      widget.excercise.lastWeight = widget.excercise.tempWeight;
-      widget.excercise.lastReps = widget.excercise.tempReps;
+      widget.exercise.lastWeight = widget.exercise.tempWeight;
+      widget.exercise.lastReps = widget.exercise.tempReps;
 
       //wipe temps
-      widget.excercise.tempWeight = null;
-      widget.excercise.tempReps = null;
+      widget.exercise.tempWeight = null;
+      widget.exercise.tempReps = null;
 
       //reset notifiers
       ExercisePage.setWeight.value = "";
@@ -204,8 +204,8 @@ class _ExcercisePageDarkState extends State<ExcercisePageDark> {
   }
 
   updateOneRepMaxes({int weight, int reps}){
-    weight = weight ?? (widget?.excercise?.lastWeight ?? 0);
-    reps = reps ?? (widget?.excercise?.lastReps ?? 0);
+    weight = weight ?? (widget?.exercise?.lastWeight ?? 0);
+    reps = reps ?? (widget?.exercise?.lastReps ?? 0);
     for(int functionID = 0; functionID < 8; functionID++){
       ExercisePage.oneRepMaxes[functionID] = To1RM.fromWeightAndReps(
         weight.toDouble(), 
@@ -228,7 +228,7 @@ class _ExcercisePageDarkState extends State<ExcercisePageDark> {
             child: Theme(
               data: MyTheme.light,
               child: PageTitle(
-                excercise: widget.excercise,
+                exercise: widget.exercise,
               ),
             ),
           ),
@@ -236,7 +236,7 @@ class _ExcercisePageDarkState extends State<ExcercisePageDark> {
       ),
       body: ClipRRect( //clipping so the done button doesnt show out of screen
         child: VerticalTabs(
-          excercise: widget.excercise,
+          exercise: widget.exercise,
           //this the only place this works from
           //since this is the whole new context after navigation 
           //and the others are within a scaffold
@@ -250,10 +250,10 @@ class _ExcercisePageDarkState extends State<ExcercisePageDark> {
 
 class PageTitle extends StatelessWidget {
   PageTitle({
-    @required this.excercise,
+    @required this.exercise,
   });
 
-  final AnExercise excercise;
+  final AnExercise exercise;
 
   @override
   Widget build(BuildContext context) {
@@ -267,9 +267,9 @@ class PageTitle extends StatelessWidget {
             bottom: 0,
             top: 0,
             right: 0,
-            child: ExcerciseTitleHero(
+            child: ExerciseTitleHero(
               inAppBar: true,
-              excercise: excercise,
+              exercise: exercise,
               onTap: () => toNotes(context),
             ),
           ),
@@ -280,16 +280,16 @@ class PageTitle extends StatelessWidget {
             child: FittedBox(
               fit: BoxFit.contain,
               child: IconButton(
-                icon: ExcerciseBegin(
+                icon: ExerciseBegin(
                   inAppBar: true,
-                  excercise: excercise,
+                  exercise: exercise,
                 ),
                 color: Colors.white,
                 tooltip: backToolTip(),
                 onPressed: (){
                   warningThenAllowPop(
                     context, 
-                    excercise, 
+                    exercise, 
                     alsoPop: true,
                   );
                 },
@@ -329,8 +329,8 @@ class PageTitle extends StatelessWidget {
       PageTransition(
         type: PageTransitionType.rightToLeft,
         duration: Duration(milliseconds: 300),
-        child: ExcerciseNotes(
-          excercise: excercise,
+        child: ExerciseNotes(
+          exercise: exercise,
         ),
       ),
     );

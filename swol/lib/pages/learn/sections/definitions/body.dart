@@ -160,12 +160,12 @@ class DefinitionBody extends StatelessWidget {
                   )
                 ],
               ),
-              //-------------------------Excercise
+              //-------------------------Exercise
               ADefinition(
-                word: "Excercise",
+                word: "Exercise",
                 definition: [
                   TextSpan(
-                    text: "An excercise is a type of movement.",
+                    text: "An exercise is a type of movement.",
                   ),
                 ],
                 extra: [
@@ -179,7 +179,7 @@ class DefinitionBody extends StatelessWidget {
                     text: " should be done ",
                   ),
                   TextSpan(
-                    text: "per excercise",
+                    text: "per exercise",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                     ),

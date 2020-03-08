@@ -11,7 +11,7 @@ import 'package:swol/shared/methods/theme.dart';
 import 'package:swol/shared/structs/range.dart';
 
 //guides the users and instructs them all at once with minimal UI
-//used 2 times, both in add excercise... 
+//used 2 times, both in add exercise... 
 //1. recovery time info
 //2. rep target info
 //in change recovery time... recovery time info

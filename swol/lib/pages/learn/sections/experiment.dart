@@ -42,7 +42,7 @@ class ExperimentBody extends StatelessWidget {
                 But every formula gives different results.
                 And the difference between the results grows as you do more reps.
 
-                1. So we automatically calculate your Estimated One Rep Max (E-1RM) for every excercise
+                1. So we automatically calculate your Estimated One Rep Max (E-1RM) for every exercise
                 and give you a measure of how sure you can be about this estimate
                 based on how different the results from all the formulas are
 

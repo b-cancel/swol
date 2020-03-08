@@ -3,20 +3,20 @@ import 'package:swol/other/otherHelper.dart';
 import 'package:swol/shared/structs/anExercise.dart';
 import 'package:swol/shared/widgets/simple/heros/curveMod.dart';
 
-class ExcerciseTitleHero extends StatelessWidget {
-  ExcerciseTitleHero({
-    @required this.excercise,
+class ExerciseTitleHero extends StatelessWidget {
+  ExerciseTitleHero({
+    @required this.exercise,
     @required this.inAppBar,
     this.onTap,
   });
 
-  final AnExercise excercise;
+  final AnExercise exercise;
   final bool inAppBar;
   final Function onTap;
 
   @override
   Widget build(BuildContext context) {
-    String generatedTag = "excerciseTitle" + excercise.id.toString();
+    String generatedTag = "exerciseTitle" + exercise.id.toString();
     return Hero(
       tag: generatedTag,
       createRectTween: (begin, end) {
@@ -32,9 +32,9 @@ class ExcerciseTitleHero extends StatelessWidget {
         return AnimatedBuilder(
           animation: animation,
           builder: (context, child) {
-            return ExcerciseTitleHeroHelper(
+            return ExerciseTitleHeroHelper(
               percentToAppBar: animation.value,
-              excercise: excercise,
+              exercise: exercise,
               //during transition
               //no action can be taken
               //so we guarantee it by not passing onTap
@@ -42,24 +42,24 @@ class ExcerciseTitleHero extends StatelessWidget {
           },
         );
       },
-      child: ExcerciseTitleHeroHelper(
+      child: ExerciseTitleHeroHelper(
         percentToAppBar: (inAppBar) ? 1 : 0,
-        excercise: excercise,
+        exercise: exercise,
         onTap: onTap,
       ),
     );
   }
 }
 
-class ExcerciseTitleHeroHelper extends StatelessWidget {
-  ExcerciseTitleHeroHelper({
+class ExerciseTitleHeroHelper extends StatelessWidget {
+  ExerciseTitleHeroHelper({
     @required this.percentToAppBar,
-    @required this.excercise,
+    @required this.exercise,
     this.onTap,
   });
 
   final double percentToAppBar;
-  final AnExercise excercise;
+  final AnExercise exercise;
   final Function onTap;
 
   @override
@@ -86,7 +86,7 @@ class ExcerciseTitleHeroHelper extends StatelessWidget {
               ),
             ),
             child: ReloadingTitle(
-              excercise: excercise,
+              exercise: exercise,
             )
           ),
         ),
@@ -99,10 +99,10 @@ class ExcerciseTitleHeroHelper extends StatelessWidget {
 //NOTE: this reloads simply because its stateful
 class ReloadingTitle extends StatefulWidget {
   ReloadingTitle({
-    @required this.excercise,
+    @required this.exercise,
   });
 
-  final AnExercise excercise;
+  final AnExercise exercise;
 
   @override
   _ReloadingTitleState createState() => _ReloadingTitleState();
@@ -112,7 +112,7 @@ class _ReloadingTitleState extends State<ReloadingTitle> {
   @override
   Widget build(BuildContext context) {
     return Text(
-      widget.excercise.name,
+      widget.exercise.name,
       overflow: TextOverflow.ellipsis,
       style: TextStyle(
         fontSize: 18,

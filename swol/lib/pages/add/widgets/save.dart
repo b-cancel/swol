@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:swol/shared/methods/extensions/sharedPreferences.dart';
 import 'package:swol/shared/widgets/complex/onBoarding/wrapper.dart';
 import 'package:swol/shared/functions/defaultDateTimes.dart';
-import 'package:swol/shared/methods/excerciseData.dart';
+import 'package:swol/shared/methods/exerciseData.dart';
 import 'package:swol/shared/functions/onboarding.dart';
 import 'package:swol/shared/structs/anExercise.dart';
 import 'package:swol/main.dart';
@@ -65,7 +65,7 @@ class _SaveButtonState extends State<SaveButton> {
     //start onbaording if needed
     if(SharedPrefsExt.getSaveShown().value == false){
       //NOTE: this will eventually request the focus of name
-      OnBoarding.discoverSaveExcercise(context);
+      OnBoarding.discoverSaveExercise(context);
 
       //the user already knows where the save button is
       widget.showSaveButton.value = true;
@@ -99,7 +99,7 @@ class _SaveButtonState extends State<SaveButton> {
   @override
   Widget build(BuildContext context) {
     return FeatureWrapper(
-      featureID: AFeature.SaveExcercise.toString(),
+      featureID: AFeature.SaveExercise.toString(),
       tapTarget: Container(
         width: 72,
         child: RaisedButton(
@@ -112,7 +112,7 @@ class _SaveButtonState extends State<SaveButton> {
           ),
         ),
       ),
-      text: "Only after naming the excercise\n"
+      text: "Only after naming the exercise\n"
       + "will the button become active\n"
       + "and allow you to save",
       child: AnimatedContainer(
@@ -138,7 +138,7 @@ class _SaveButtonState extends State<SaveButton> {
                 print("the new date time is: " + theNewDateTime.toString());
 
                 //add workout to our list
-                await ExcerciseData.addExcercise(
+                await ExerciseData.addExercise(
                   AnExercise(
                     //basic
                     widget.name.value,

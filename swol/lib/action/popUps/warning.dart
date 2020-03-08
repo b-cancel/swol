@@ -15,7 +15,7 @@ import 'package:swol/shared/structs/anExercise.dart';
 import 'package:swol/main.dart';
 
 //determine whether we should warn the user
-warningThenAllowPop(BuildContext context, AnExercise excercise,
+warningThenAllowPop(BuildContext context, AnExercise exercise,
     {bool alsoPop: false}) {
   //NOTE: we can assume TEMPS ARE ALWAYS VALID
   //IF they ARENT EMPTY
@@ -41,8 +41,8 @@ warningThenAllowPop(BuildContext context, AnExercise excercise,
   //  NOTE: assuming we allow manually updating temps after initially set
 
   //grab temps
-  int tempWeightString = excercise?.tempWeight;
-  int tempRepsString = excercise?.tempReps;
+  int tempWeightString = exercise?.tempWeight;
+  int tempRepsString = exercise?.tempReps;
   //extra step needed because null.toString() isn't null
   String tempWeight =
       (tempWeightString != null) ? tempWeightString.toString() : "";
@@ -65,7 +65,7 @@ warningThenAllowPop(BuildContext context, AnExercise excercise,
     //allow the user to go to where they wanted to
     //IF (also pop), will pop
     //ELSE will return true and pop then
-    backToExcercises(context, alsoPop);
+    backToExercises(context, alsoPop);
     //allow poping if called by back button
     return true;
   } else {
@@ -94,7 +94,7 @@ warningThenAllowPop(BuildContext context, AnExercise excercise,
       //allow the user to go to where they wanted to
       //IF (also pop), will pop
       //ELSE will return true and pop then
-      backToExcercises(context, alsoPop);
+      backToExercises(context, alsoPop);
 
       //allow poping if called by back button
       return true;
@@ -153,7 +153,7 @@ warningThenAllowPop(BuildContext context, AnExercise excercise,
                     Visibility(
                       visible: newSet == false,
                       child: RevertToPrevious(
-                        exercise: excercise,
+                        exercise: exercise,
                       ),
                     ),
                   ],
@@ -178,7 +178,7 @@ warningThenAllowPop(BuildContext context, AnExercise excercise,
 
             //do the action the user initially wanted
             //regardless of where this function was called from
-            backToExcercises(context, true);
+            backToExercises(context, true);
           },
         ),
         btnOk: AwesomeButton(
@@ -206,7 +206,7 @@ warningThenAllowPop(BuildContext context, AnExercise excercise,
   }
 }
 
-backToExcercises(BuildContext context, bool alsoPop) {
+backToExercises(BuildContext context, bool alsoPop) {
   //may have to unfocus
   FocusScope.of(context).unfocus();
   //animate the header

@@ -4,14 +4,14 @@ import 'package:swol/shared/structs/anExercise.dart';
 class HeaderForOneHandedUse extends StatelessWidget {
   const HeaderForOneHandedUse({
     Key key,
-    @required this.listOfGroupOfExcercises,
+    @required this.listOfGroupOfExercises,
     @required this.openHeight,
     @required this.newWorkoutSection,
     @required this.hiddenWorkoutSection,
     @required this.inprogressWorkoutSection,
   }) : super(key: key);
 
-  final List<List<AnExercise>> listOfGroupOfExcercises;
+  final List<List<AnExercise>> listOfGroupOfExercises;
   final double openHeight;
   final bool newWorkoutSection;
   final bool hiddenWorkoutSection;
@@ -29,7 +29,7 @@ class HeaderForOneHandedUse extends StatelessWidget {
         //since it SEEMS like it belong to the top thingy and therefore should be excluded
         openHeight: openHeight,
         closedHeight: 0,
-        workoutCount: listOfGroupOfExcercises.length 
+        workoutCount: listOfGroupOfExercises.length 
         //exclude new workouts
         - (newWorkoutSection ? 1 : 0) 
         //exclude hidden workouts
@@ -65,7 +65,7 @@ class PersistentHeaderDelegate extends SliverPersistentHeaderDelegate {
       if(workoutCount > 1) subtitle += "s";
     }
 
-    //-----Used to clip the Excercises Title
+    //-----Used to clip the Exercises Title
     return Card(
       clipBehavior: Clip.hardEdge,
       margin: EdgeInsets.all(0),

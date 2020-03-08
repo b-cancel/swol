@@ -11,7 +11,6 @@ import 'package:swol/action/tabs/recovery/secondary/timeDisplay.dart';
 import 'package:swol/action/tabs/recovery/timer/onlyEditButton.dart';
 import 'package:swol/action/tabs/recovery/timer/information.dart';
 import 'package:swol/action/tabs/recovery/timer/changeTime.dart';
-import 'package:swol/action/page.dart';
 
 //internal: shared
 import 'package:swol/shared/widgets/simple/conditional.dart';
@@ -44,7 +43,7 @@ import 'package:swol/shared/methods/theme.dart';
 //build
 class Timer extends StatefulWidget {
   Timer({
-    @required this.excercise,
+    @required this.exercise,
     @required this.timeStarted,
     @required this.changeableTimerDuration,
     @required this.showAreYouSure,
@@ -52,7 +51,7 @@ class Timer extends StatefulWidget {
     this.showIcon: true,
   });
 
-  final AnExercise excercise;
+  final AnExercise exercise;
   final DateTime timeStarted;
   //time before we go any level of red
   final ValueNotifier<Duration> changeableTimerDuration;
@@ -204,7 +203,7 @@ class _TimerState extends State<Timer> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    String generatedHeroTag = "timer" + widget.excercise.id.toString();
+    String generatedHeroTag = "timer" + widget.exercise.id.toString();
 
     //calc total duration passed
     Duration totalDurationPassed = DateTime.now().difference(timerStart.value);
@@ -215,14 +214,14 @@ class _TimerState extends State<Timer> with TickerProviderStateMixin {
       child: InfoOutlineWhiteButton(
         showAreYouSure: widget.showAreYouSure,
         totalDurationPassed: totalDurationPassed,
-        selectedDuration: widget.excercise.recoveryPeriod,
+        selectedDuration: widget.exercise.recoveryPeriod,
         isWhite: maxTimerController.value != 1,
       ),
     );
 
     //show how much time we have selected
     List<String> breakTimeStrings =
-        durationToCustomDisplay(widget.excercise.recoveryPeriod);
+        durationToCustomDisplay(widget.exercise.recoveryPeriod);
     String breakTimeString = breakTimeStrings[0] + ":" + breakTimeStrings[1];
 
     //-------------------------Optimize Below-------------------------
@@ -258,7 +257,7 @@ class _TimerState extends State<Timer> with TickerProviderStateMixin {
       waveColor = AlwaysStoppedAnimation(greenTimerAccent);
 
       //calculate top number (+1 second handles a rounded error)
-      Duration durationLeft = widget.excercise.recoveryPeriod -
+      Duration durationLeft = widget.exercise.recoveryPeriod -
           totalDurationPassed +
           Duration(seconds: 1);
 

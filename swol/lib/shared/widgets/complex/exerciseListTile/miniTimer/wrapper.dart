@@ -2,17 +2,17 @@
 import 'package:flutter/material.dart';
 
 //internal
-import 'package:swol/shared/widgets/complex/excerciseListTile/miniTimer/display.dart';
+import 'package:swol/shared/widgets/complex/exerciseListTile/miniTimer/display.dart';
 import 'package:swol/shared/structs/anExercise.dart';
 import 'package:swol/other/otherHelper.dart';
 
 //NOTE: we must switch between this fella and the above so that our reloading of the leading widget works
 class AnimatedMiniNormalTimer extends StatefulWidget {
   AnimatedMiniNormalTimer({
-    @required this.excercise,
+    @required this.exercise,
   });
 
-  final AnExercise excercise;
+  final AnExercise exercise;
 
   @override
   _AnimatedMiniNormalTimerState createState() => _AnimatedMiniNormalTimerState();
@@ -46,7 +46,7 @@ class _AnimatedMiniNormalTimerState extends State<AnimatedMiniNormalTimer> with 
     //start animation
     //NOTICE: this value never really changes, once its started... its started...
     //NOTE: again by now we know timerStart isnt null
-    Duration timePassed = DateTime.now().difference(widget.excercise.tempStartTime.value);
+    Duration timePassed = DateTime.now().difference(widget.exercise.tempStartTime.value);
     controller.forward(
       from: timeToLerpValue(timePassed),
     );
@@ -72,8 +72,8 @@ class _AnimatedMiniNormalTimerState extends State<AnimatedMiniNormalTimer> with 
   Widget build(BuildContext context) {
     return WatchUI(
       controller: controller,
-      excercise: widget.excercise,
-      startTime: widget.excercise.tempStartTime.value,
+      exercise: widget.exercise,
+      startTime: widget.exercise.tempStartTime.value,
     );
   }
 }

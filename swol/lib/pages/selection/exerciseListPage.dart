@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 //plugin
 import 'package:scroll_to_index/scroll_to_index.dart';
 
-//internal: excercise selection
+//internal: exercise selection
 import 'package:swol/pages/selection/widgets/animatedTitle.dart';
-import 'package:swol/pages/selection/excerciseList.dart';
+import 'package:swol/pages/selection/exerciseList.dart';
 import 'package:swol/pages/selection/widgets/uela.dart';
 
 //internal: shared
@@ -18,7 +18,7 @@ import 'package:swol/shared/widgets/simple/scrollToTop.dart';
 //New => newest additions on bottom
 //  since you would probably add your new routine and then work it
 //Hidden => newest addition on top [EXCEPTION]
-//  since the excercises you most recently archived are the ones most likely to be searched for again
+//  since the exercises you most recently archived are the ones most likely to be searched for again
 //In Progress => newest additions on bottom
 //  since we want to push people to doing super sets with atmost like 3 workouts
 //  and while doing super sets you are doing set 1 A, then set 1 B, then set 1 C
@@ -28,20 +28,20 @@ import 'package:swol/shared/widgets/simple/scrollToTop.dart';
 //  so if you did legs on monday and 3 other work outs
 //  when its monday again you expect that workout to be on top with the first workout you did to be on top in the section
 
-class ExcerciseSelectStateless extends StatelessWidget { 
+class ExerciseSelectStateless extends StatelessWidget { 
   @override
   Widget build(BuildContext context) {
-    return ExcerciseSelect();
+    return ExerciseSelect();
   }
 }
 
 //main widget
-class ExcerciseSelect extends StatefulWidget {
+class ExerciseSelect extends StatefulWidget {
   @override
-  _ExcerciseSelectState createState() => _ExcerciseSelectState();
+  _ExerciseSelectState createState() => _ExerciseSelectState();
 }
 
-class _ExcerciseSelectState extends State<ExcerciseSelect> {
+class _ExerciseSelectState extends State<ExerciseSelect> {
   final AutoScrollController autoScrollController = new AutoScrollController();
   final ValueNotifier<bool> onTop = new ValueNotifier(true);
 
@@ -122,9 +122,9 @@ class _ExcerciseSelectState extends State<ExcerciseSelect> {
         color: Theme.of(context).primaryColor,
         child: Stack(
           children: <Widget>[
-            //the list or lack of excercises
+            //the list or lack of exercises
             //and the search button under certain conditions
-            ExcerciseList(
+            ExerciseList(
               autoScrollController: autoScrollController,
               statusBarHeight: statusBarHeight,
               onTop: onTop,

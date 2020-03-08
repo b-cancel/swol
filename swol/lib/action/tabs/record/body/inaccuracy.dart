@@ -7,7 +7,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 //internal: action
 import 'package:swol/action/page.dart';
 import 'package:swol/action/popUps/textValid.dart';
-import 'package:swol/action/shared/changeFunction.dart';
 
 //internal: shared/other
 import 'package:swol/shared/structs/anExercise.dart';
@@ -18,11 +17,11 @@ import 'package:swol/other/functions/W&R=1RM.dart';
 class InaccuracyCalculator extends StatefulWidget {
   const InaccuracyCalculator({
     Key key,
-    @required this.excercise,
+    @required this.exercise,
     @required this.predictionID,
   }) : super(key: key);
 
-  final AnExercise excercise;
+  final AnExercise exercise;
   final ValueNotifier<int> predictionID;
 
   @override
@@ -68,7 +67,7 @@ class _InaccuracyCalculatorState extends State<InaccuracyCalculator> {
         condition: setValid,
         //sets the closestIndex to ?
         ifTrue: PercentOff(
-          excercise: widget.excercise,
+          exercise: widget.exercise,
           predictionID: widget.predictionID,
         ),
         //sets the closestIndex to -1
@@ -115,11 +114,11 @@ class WaitingForValid extends StatelessWidget {
 //and when we go into this we KNOW that our last set stuff is set
 class PercentOff extends StatefulWidget {
   PercentOff({
-    @required this.excercise,
+    @required this.exercise,
     @required this.predictionID,
   });
 
-  final AnExercise excercise;
+  final AnExercise exercise;
   final ValueNotifier<int> predictionID;
 
   @override

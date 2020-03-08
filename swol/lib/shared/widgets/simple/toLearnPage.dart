@@ -13,7 +13,7 @@ import 'package:swol/main.dart';
 //all we have to do is pass to this widget the amount of time we have to pop
 //every page should react accordingly to its pop
 
-//in the case of the add excercise page 
+//in the case of the add exercise page 
 //the pop OF THIS TYPE should cause settings to be saved for reloading later
 
 //the simply navigate to the learn page
@@ -35,7 +35,7 @@ class SuggestToLearnPage extends StatelessWidget {
         rootContext, 
         PageTransition(
           type: PageTransitionType.rightToLeft, 
-          child: LearnExcercise(),
+          child: LearnExercise(),
         ),
       );
     }

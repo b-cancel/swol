@@ -36,7 +36,7 @@ class NameField extends StatelessWidget {
           data: MyTheme.light,
           child: HeaderWithInfo(
             header: "Name",
-            title: "Excercise Name",
+            title: "Exercise Name",
             subtitle: "Choose a unique name",
             body: _NamePopUpBody(),
           ),
@@ -87,7 +87,7 @@ class _NamePopUpBody extends StatelessWidget {
                   text: "You can have ",
                 ),
                 TextSpan(
-                  text: "multiple excercises",
+                  text: "multiple exercises",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                   ),
@@ -144,7 +144,7 @@ class _NamePopUpBody extends StatelessWidget {
                 ),
                 TextSpan(
                   text: " when you do the "
-                  + "same excercise, multiple times, in the same workout"
+                  + "same exercise, multiple times, in the same workout"
                   + " but with a ",
                 ),
                 TextSpan(

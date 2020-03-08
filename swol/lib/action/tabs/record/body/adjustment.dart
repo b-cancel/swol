@@ -26,12 +26,12 @@ class MakeFunctionAdjustment extends StatefulWidget {
     @required this.heroUp,
     @required this.heroAnimDuration,
     @required this.heroAnimTravel,
-    @required this.excercise,
+    @required this.exercise,
     @required this.functionIDToWeightFromRT,
   }) : super(key: key);
 
   final Color topColor;
-  final AnExercise excercise;
+  final AnExercise exercise;
   final ValueNotifier<bool> heroUp;
   final Duration heroAnimDuration;
   final double heroAnimTravel;
@@ -53,7 +53,7 @@ class _MakeFunctionAdjustmentState extends State<MakeFunctionAdjustment> {
   bool allWeightEstimatesValid = false;
 
   updatePredictionID() {
-    widget.excercise.predictionID = predictionID.value;
+    widget.exercise.predictionID = predictionID.value;
     updateGoal();
   }
 
@@ -161,7 +161,7 @@ class _MakeFunctionAdjustmentState extends State<MakeFunctionAdjustment> {
     super.initState();
 
     //init values
-    predictionID.value = widget.excercise.predictionID;
+    predictionID.value = widget.exercise.predictionID;
     weightWasUpdated(updateTheGoal: false);
     repsWereUpdated(updateTheGoal: false);
     updateGoal();
@@ -269,7 +269,7 @@ class _MakeFunctionAdjustmentState extends State<MakeFunctionAdjustment> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   InaccuracyCalculator(
-                    excercise: widget.excercise,
+                    exercise: widget.exercise,
                     predictionID: predictionID,
                   ),
                   ChangeFunction(
@@ -326,7 +326,7 @@ class _MakeFunctionAdjustmentState extends State<MakeFunctionAdjustment> {
 
         //use recorded reps
         //NOTE: will only ever be integer
-        ExercisePage.setGoalReps.value = widget.excercise.repTarget.toDouble();
+        ExercisePage.setGoalReps.value = widget.exercise.repTarget.toDouble();
       }
     }
 

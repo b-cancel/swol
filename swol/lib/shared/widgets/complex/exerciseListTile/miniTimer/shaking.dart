@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 //internal
-import 'package:swol/shared/widgets/complex/excerciseListTile/miniTimer/invertedCircleClipper.dart';
+import 'package:swol/shared/widgets/complex/exerciseListTile/miniTimer/invertedCircleClipper.dart';
 
 //widget
 class ShakingAlarm extends StatelessWidget {

@@ -50,7 +50,7 @@ class AnimatedTitleAction extends StatelessWidget {
                   context, 
                   PageTransition(
                     type: PageTransitionType.rightToLeft, 
-                    child: LearnExcercise(),
+                    child: LearnExercise(),
                   ),
                 );
               },
@@ -62,7 +62,7 @@ class AnimatedTitleAction extends StatelessWidget {
               OnBoarding.discoverSwolLogo(context);
             },
             nextFeature: (){
-              OnBoarding.discoverAddExcercise(context);
+              OnBoarding.discoverAddExercise(context);
             },
           ),
         );

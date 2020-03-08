@@ -5,31 +5,31 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:swol/action/page.dart';
 
-//internl: excercise
+//internl: exercise
 import 'package:swol/shared/widgets/complex/fields/fields/linkField/link.dart';
 import 'package:swol/shared/widgets/complex/fields/fields/text/nameField.dart';
 import 'package:swol/shared/widgets/complex/fields/fields/text/notesField.dart';
 import 'package:swol/shared/widgets/simple/playOnceGif.dart';
 import 'package:swol/shared/functions/defaultDateTimes.dart';
-import 'package:swol/shared/methods/excerciseData.dart';
+import 'package:swol/shared/methods/exerciseData.dart';
 import 'package:swol/shared/structs/anExercise.dart';
 
 //internal: other
-import 'package:swol/pages/notes/excerciseMessages.dart';
+import 'package:swol/pages/notes/exerciseMessages.dart';
 
 //widget
-class ExcerciseNotes extends StatefulWidget {
-  ExcerciseNotes({
-    @required this.excercise,
+class ExerciseNotes extends StatefulWidget {
+  ExerciseNotes({
+    @required this.exercise,
   });
 
-  final AnExercise excercise;
+  final AnExercise exercise;
 
   @override
-  _ExcerciseNotesState createState() => _ExcerciseNotesState();
+  _ExerciseNotesState createState() => _ExerciseNotesState();
 }
 
-class _ExcerciseNotesState extends State<ExcerciseNotes> {
+class _ExerciseNotesState extends State<ExerciseNotes> {
   //basics
   ValueNotifier<bool> nameError = new ValueNotifier(false);
   ValueNotifier<String> name = new ValueNotifier("");
@@ -37,9 +37,9 @@ class _ExcerciseNotesState extends State<ExcerciseNotes> {
   ValueNotifier<String> url = new ValueNotifier("");
 
   //listener functions
-  updateName() => widget.excercise.name = name.value;
-  updateNote() => widget.excercise.note = note.value;
-  updateUrl() => widget.excercise.url = url.value;
+  updateName() => widget.exercise.name = name.value;
+  updateNote() => widget.exercise.note = note.value;
+  updateUrl() => widget.exercise.url = url.value;
 
   //init
   @override
@@ -48,9 +48,9 @@ class _ExcerciseNotesState extends State<ExcerciseNotes> {
     super.initState();
 
     //set initial values of ValueNotifiers
-    name.value = widget.excercise.name;
-    note.value = widget.excercise.note;
-    url.value = widget.excercise.url;
+    name.value = widget.exercise.name;
+    note.value = widget.exercise.note;
+    url.value = widget.exercise.url;
 
     //listen to changes
     name.addListener(updateName);
@@ -71,7 +71,7 @@ class _ExcerciseNotesState extends State<ExcerciseNotes> {
 
   final FocusNode noteFocusNode = FocusNode();
 
-  goBackToExcercisePage(){
+  goBackToExercisePage(){
     //close any keyboard that may be open
     FocusScope.of(context).unfocus();
     //indicate that we should refocus inf needed
@@ -82,7 +82,7 @@ class _ExcerciseNotesState extends State<ExcerciseNotes> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async{
-        goBackToExcercisePage();
+        goBackToExercisePage();
         return true;
       },
       child: Scaffold(
@@ -96,7 +96,7 @@ class _ExcerciseNotesState extends State<ExcerciseNotes> {
               color: Theme.of(context).iconTheme.color,
               tooltip: MaterialLocalizations.of(context).backButtonTooltip,
               onPressed: () {
-                goBackToExcercisePage();
+                goBackToExercisePage();
                 Navigator.of(context).pop();
               },
             ),
@@ -104,11 +104,11 @@ class _ExcerciseNotesState extends State<ExcerciseNotes> {
           title: Text("Notes"),
           actions: [
             BigActionButton(
-              excercise: widget.excercise,
+              exercise: widget.exercise,
               delete: false,
             ),
             BigActionButton(
-              excercise: widget.excercise,
+              exercise: widget.exercise,
               delete: true,
             ),
           ],
@@ -151,20 +151,20 @@ class _ExcerciseNotesState extends State<ExcerciseNotes> {
 
 class BigActionButton extends StatelessWidget {
   BigActionButton({
-    @required this.excercise,
+    @required this.exercise,
     @required this.delete,
   });
 
-  final AnExercise excercise;
+  final AnExercise exercise;
   final bool delete;
 
   //functions
-  deleteFunc() => ExcerciseData.deleteExcercise(excercise.id);
-  hideFunc() => excercise.lastTimeStamp = LastTimeStamp.hiddenDateTime();
+  deleteFunc() => ExerciseData.deleteExercise(exercise.id);
+  hideFunc() => exercise.lastTimeStamp = LastTimeStamp.hiddenDateTime();
 
   //pop ups for archiving or deleting
   areyouSurePopUp(BuildContext context, {Color color, IconData icon}){
-    String name = "\"" + excercise.name + "\"";
+    String name = "\"" + exercise.name + "\"";
     showDialog<void>(
       context: context,
       barrierDismissible: true,

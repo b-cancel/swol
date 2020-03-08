@@ -28,7 +28,7 @@ class NotesField extends StatelessWidget {
           data: MyTheme.light,
           child: HeaderWithInfo(
             header: "Notes",
-            title: "Excercise Note",
+            title: "Exercise Note",
             subtitle: "Details",
             body: _NotePopUpBody(),
           ),
@@ -80,7 +80,7 @@ class _NotePopUpBody extends StatelessWidget {
                   ),
                 ),
                 TextSpan(
-                  text: " that you may want to keep in mind before starting the excercise",
+                  text: " that you may want to keep in mind before starting the exercise",
                 ),
               ],
             ),

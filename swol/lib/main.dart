@@ -11,11 +11,11 @@ import 'package:bot_toast/bot_toast.dart';
 
 //internal: shared
 import 'package:swol/shared/methods/extensions/sharedPreferences.dart';
-import 'package:swol/shared/methods/excerciseData.dart';
+import 'package:swol/shared/methods/exerciseData.dart';
 import 'package:swol/shared/methods/theme.dart';
 
 //internal
-import 'package:swol/pages/selection/excerciseListPage.dart';
+import 'package:swol/pages/selection/exerciseListPage.dart';
 import 'package:swol/pages/search/searchesData.dart';
 
 //app start
@@ -74,7 +74,7 @@ class _GrabSystemDataState extends State<GrabSystemData> {
 
   asyncInit()async{
     await SearchesData.searchesInit();
-    await ExcerciseData.excercisesInit();
+    await ExerciseData.exercisesInit();
     preferences = await SharedPreferences.getInstance();
     SharedPrefsExt.init(preferences);
     setState(() {});
@@ -83,7 +83,7 @@ class _GrabSystemDataState extends State<GrabSystemData> {
   @override
   Widget build(BuildContext context) {
     if(preferences == null) return SplashScreen();
-    else return ExcerciseSelectStateless();
+    else return ExerciseSelectStateless();
   }
 }
 

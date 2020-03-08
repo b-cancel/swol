@@ -15,14 +15,14 @@ import 'package:swol/other/functions/1RM&R=W.dart';
 //widget
 class Suggestion extends StatefulWidget {
   Suggestion({
-    @required this.excercise,
+    @required this.exercise,
     @required this.heroUp,
     @required this.heroAnimDuration,
     @required this.heroAnimTravel,
     @required this.functionIDToWeightFromRT,
   });
 
-  final AnExercise excercise;
+  final AnExercise exercise;
   final ValueNotifier<bool> heroUp;
   final Duration heroAnimDuration;
   final double heroAnimTravel;
@@ -44,19 +44,19 @@ class _SuggestionState extends State<Suggestion> {
   updateGoalWeight(){
     //grab correct goal weight
     ExercisePage.setGoalWeight.value = widget.functionIDToWeightFromRT.value[
-      functionID.value //NOTE: before we used the excercise value here
+      functionID.value //NOTE: before we used the exercise value here
     ];
   }
 
   updatePredictionID(){
-    widget.excercise.predictionID = functionID.value;
+    widget.exercise.predictionID = functionID.value;
     //retreive new weight
     updateGoalWeight();
   }
 
   updateRepTarget(){
     //update it in the file
-    widget.excercise.repTarget = repTarget.value;
+    widget.exercise.repTarget = repTarget.value;
     ExercisePage.setGoalReps.value = repTarget.value.toDouble();
 
     //recalculate all weight with new rep target
@@ -92,8 +92,8 @@ class _SuggestionState extends State<Suggestion> {
     super.initState();
     
     //set inits
-    functionID.value = widget.excercise.predictionID;
-    repTarget.value = widget.excercise.repTarget;
+    functionID.value = widget.exercise.predictionID;
+    repTarget.value = widget.exercise.repTarget;
     updateRepTarget();
 
     //add listeners
@@ -121,12 +121,12 @@ class _SuggestionState extends State<Suggestion> {
     Radius cardRadius = Radius.circular(24);
 
     //calc sets passed for bottom buttons
-    int setsPassed = widget.excercise.tempSetCount ?? 0;
-    bool timerNotStarted = widget.excercise.tempStartTime.value == AnExercise.nullDateTime;
+    int setsPassed = widget.exercise.tempSetCount ?? 0;
+    bool timerNotStarted = widget.exercise.tempStartTime.value == AnExercise.nullDateTime;
     if(timerNotStarted) setsPassed += 1;
 
     //color for bottom buttons
-    bool lastSetOrBefore = setsPassed <= widget.excercise.setTarget;
+    bool lastSetOrBefore = setsPassed <= widget.exercise.setTarget;
     Color buttonsColor =  lastSetOrBefore ? Theme.of(context).accentColor : Theme.of(context).cardColor;
 
     //build
@@ -148,7 +148,7 @@ class _SuggestionState extends State<Suggestion> {
                     TopBackgroundColored(
                       color: Theme.of(context).cardColor,
                       child: SetDisplay(
-                        excercise: widget.excercise,
+                        exercise: widget.exercise,
                         useAccent: false,
                         extraCurvy: true,
                         title: "Last Set",
@@ -186,7 +186,7 @@ class _SuggestionState extends State<Suggestion> {
           ),
           BottomButtons(
             color: buttonsColor,
-            exerciseID: widget.excercise.id,
+            exerciseID: widget.exercise.id,
             forwardAction: () {
               ExercisePage.pageNumber.value = 1;
             },
@@ -203,7 +203,7 @@ class _SuggestionState extends State<Suggestion> {
                     ),
                   ),
                   TextSpan(
-                    text: "/" + widget.excercise.setTarget.toString(),
+                    text: "/" + widget.exercise.setTarget.toString(),
                   ),
                 ],
               ),

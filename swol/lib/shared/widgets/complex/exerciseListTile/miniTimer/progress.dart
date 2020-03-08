@@ -5,27 +5,27 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 
 //internal
-import 'package:swol/shared/widgets/complex/excerciseListTile/miniTimer/invertedCircleClipper.dart';
-import 'package:swol/shared/widgets/complex/excerciseListTile/miniTimer/circles.dart';
+import 'package:swol/shared/widgets/complex/exerciseListTile/miniTimer/invertedCircleClipper.dart';
+import 'package:swol/shared/widgets/complex/exerciseListTile/miniTimer/circles.dart';
 import 'package:swol/shared/widgets/simple/triangleAngle.dart';
 import 'package:swol/shared/structs/anExercise.dart';
 
 //shared
 class ProgressCircle extends StatelessWidget {
   ProgressCircle({
-    @required this.excercise,
+    @required this.exercise,
     @required this.startTime,
     @required this.controller,
   });
 
-  final AnExercise excercise;
+  final AnExercise exercise;
   final DateTime startTime;
   final AnimationController controller;
 
   @override
   Widget build(BuildContext context) {
     Duration timePassed = DateTime.now().difference(startTime);
-    bool stillTimer = timePassed <= excercise.recoveryPeriod;
+    bool stillTimer = timePassed <= exercise.recoveryPeriod;
 
     return Positioned.fill(
       child: Padding(
@@ -58,7 +58,7 @@ class ProgressCircle extends StatelessWidget {
                     child: CircleProgress(
                       fullRed: controller.value == 1,
                       startTime: startTime,
-                      recoveryPeriod: excercise.recoveryPeriod,
+                      recoveryPeriod: exercise.recoveryPeriod,
                     ),
                   ),
                 ),

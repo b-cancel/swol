@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 
 //internal: shared
-import 'package:swol/shared/widgets/complex/excerciseListTile/miniTimer/wrapper.dart';
+import 'package:swol/shared/widgets/complex/exerciseListTile/miniTimer/wrapper.dart';
 import 'package:swol/shared/structs/anExercise.dart';
 import 'package:swol/shared/methods/theme.dart';
 
@@ -16,7 +16,7 @@ import 'package:swol/other/durationFormat.dart';
 //function
 maybeSkipTimer(
   BuildContext context, 
-  AnExercise excercise, 
+  AnExercise exercise, 
   Function ifSkip, 
   Color headerColor,
 ) {
@@ -25,7 +25,7 @@ maybeSkipTimer(
 
   //are we way off? or are we atleast within the range for this type of workout
   String trainingSelected = durationToTrainingType(
-    excercise.recoveryPeriod,
+    exercise.recoveryPeriod,
     zeroIsEndurance: false,
   );
 
@@ -60,7 +60,7 @@ maybeSkipTimer(
               child: Padding(
                 padding: EdgeInsets.all(8),
                 child: AnimatedMiniNormalTimer(
-                  excercise: excercise,
+                  exercise: exercise,
                 ),
               ),
             ),
@@ -126,9 +126,9 @@ maybeSkipTimer(
             ),
             UpdatingBreakSet(
               trainingName: trainingSelected,
-              excercise: excercise,
+              exercise: exercise,
               selectedWaitTime: DurationFormat.format(
-                excercise.recoveryPeriod,
+                exercise.recoveryPeriod,
                 //no longer
                 showYears: false,
                 showMonths: false,
@@ -211,16 +211,16 @@ class UpdatingBreakSet extends StatelessWidget {
   UpdatingBreakSet({
     @required this.trainingName,
     @required this.selectedWaitTime,
-    @required this.excercise,
+    @required this.exercise,
   });
 
   final String trainingName;
   final String selectedWaitTime;
-  final AnExercise excercise;
+  final AnExercise exercise;
 
   @override
   Widget build(BuildContext context) {
-    Duration timePassed =  DateTime.now().difference(excercise.tempStartTime.value);
+    Duration timePassed =  DateTime.now().difference(exercise.tempStartTime.value);
     String trainingBreakGoodFor = durationToTrainingType(
       timePassed,
       zeroIsEndurance: false,

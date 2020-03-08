@@ -16,11 +16,11 @@ import 'package:swol/shared/structs/anExercise.dart';
 class Recovery extends StatefulWidget {
   Recovery({
     @required this.transtionDuration,
-    @required this.excercise,
+    @required this.exercise,
   });
 
   final Duration transtionDuration;
-  final AnExercise excercise;
+  final AnExercise exercise;
 
   @override
   _RecoveryState createState() => _RecoveryState();
@@ -33,14 +33,14 @@ class _RecoveryState extends State<Recovery>
 
   //function that is removable from listener
   updateRecoveryDuration() {
-    widget.excercise.recoveryPeriod = recoveryDuration.value;
+    widget.exercise.recoveryPeriod = recoveryDuration.value;
   }
 
   //init
   @override
   void initState() {
     //setup things to make recovery duration changeable
-    recoveryDuration = new ValueNotifier(widget.excercise.recoveryPeriod);
+    recoveryDuration = new ValueNotifier(widget.exercise.recoveryPeriod);
     recoveryDuration.addListener(updateRecoveryDuration);
     showAreYouSure = new ValueNotifier<bool>(true);
 
@@ -60,10 +60,10 @@ class _RecoveryState extends State<Recovery>
   @override
   Widget build(BuildContext context) {
     //calc sets passed for bottom buttons
-    int setsPassed = (widget.excercise.tempSetCount ?? 0) + 1;
+    int setsPassed = (widget.exercise.tempSetCount ?? 0) + 1;
 
     //color for bottom buttons
-    bool lastSetOrBefore = setsPassed <= widget.excercise.setTarget;
+    bool lastSetOrBefore = setsPassed <= widget.exercise.setTarget;
     Color buttonsColor =  lastSetOrBefore ? Theme.of(context).accentColor : Theme.of(context).cardColor;
 
     //build
@@ -77,8 +77,8 @@ class _RecoveryState extends State<Recovery>
           TimerWrapper(
             buttonsColor: buttonsColor, 
             child: Timer(
-              excercise: widget.excercise,
-              timeStarted: widget.excercise.tempStartTime.value,
+              exercise: widget.exercise,
+              timeStarted: widget.exercise.tempStartTime.value,
               changeableTimerDuration: recoveryDuration,
               showAreYouSure: showAreYouSure,
               showIcon: false,
@@ -108,7 +108,7 @@ class _RecoveryState extends State<Recovery>
               transitionDuration: widget.transtionDuration,
               showAreYouSure: showAreYouSure,
               buttonsColor: buttonsColor, 
-              excercise: widget.excercise,
+              exercise: widget.exercise,
               setsPassed: setsPassed,
               headerColor: Theme.of(context).cardColor,
             ),
@@ -169,7 +169,7 @@ class RecoveryButtonsWithWhiteContext extends StatelessWidget {
     @required this.transitionDuration,
     @required this.showAreYouSure,
     @required this.buttonsColor,
-    @required this.excercise,
+    @required this.exercise,
     @required this.setsPassed,
     @required this.headerColor,
   }) : super(key: key);
@@ -177,7 +177,7 @@ class RecoveryButtonsWithWhiteContext extends StatelessWidget {
   final Duration transitionDuration;
   final ValueNotifier<bool> showAreYouSure;
   final Color buttonsColor;
-  final AnExercise excercise;
+  final AnExercise exercise;
   final int setsPassed;
   final Color headerColor;
 
@@ -185,12 +185,12 @@ class RecoveryButtonsWithWhiteContext extends StatelessWidget {
   Widget build(BuildContext context) {
     return BottomButtons(
       color: buttonsColor,
-      exerciseID: excercise.id,
+      exerciseID: exercise.id,
       forwardAction: () {
         if(showAreYouSure.value){
           maybeSkipTimer( 
             context, 
-            excercise, 
+            exercise, 
             goToNextSet,
             headerColor,
           );
@@ -210,7 +210,7 @@ class RecoveryButtonsWithWhiteContext extends StatelessWidget {
               ),
             ),
             TextSpan(
-              text: "/" + excercise.setTarget.toString(),
+              text: "/" + exercise.setTarget.toString(),
             ),
           ],
         ),

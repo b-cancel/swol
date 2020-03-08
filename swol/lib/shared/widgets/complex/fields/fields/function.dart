@@ -102,7 +102,7 @@ class PredictionFormulasPopUpBody extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  TextSpan(text: " for this excercise\n"),
+                  TextSpan(text: " for this exercise\n"),
                 ]),
           ),
         ),

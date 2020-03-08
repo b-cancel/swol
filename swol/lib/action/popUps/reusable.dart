@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:swol/action/popUps/textValid.dart';
 
 //internal
 import 'package:swol/shared/structs/anExercise.dart';
+import 'package:swol/action/popUps/textValid.dart';
 
 //widgets reused in multiple pop ups
 class SetTitle extends StatelessWidget {
@@ -132,7 +132,7 @@ class SetProblem extends StatelessWidget {
             TextSpan(
               text: (weightValid)
                   ? ""
-                  : "But for body weight excercises you should instead ",
+                  : "But for body weight exercises you should instead ",
             ),
             TextSpan(
               text: (weightValid)

@@ -26,7 +26,7 @@ class SetDisplay extends StatefulWidget {
     Key key,
     //if its passed then use LAST
     //else use locals updated by stuff all over
-    this.excercise,
+    this.exercise,
     //other
     @required this.title,
     this.extraCurvy: false,
@@ -37,7 +37,7 @@ class SetDisplay extends StatefulWidget {
     this.heroAnimTravel,
   }) : super(key: key);
 
-  final AnExercise excercise;
+  final AnExercise exercise;
   //other
   final String title;
   final bool extraCurvy;
@@ -63,8 +63,8 @@ class _SetDisplayState extends State<SetDisplay> {
     //super init
     super.initState();
 
-    //if not excercise passed we may use 1 of three pivots to calculate our goal set
-    if (widget.excercise == null) {
+    //if not exercise passed we may use 1 of three pivots to calculate our goal set
+    if (widget.exercise == null) {
       ExercisePage.setGoalWeight.addListener(updateState);
       ExercisePage.setGoalReps.addListener(updateState);
     }
@@ -83,7 +83,7 @@ class _SetDisplayState extends State<SetDisplay> {
     }
 
     //remove pivot change detectors
-    if (widget.excercise == null) {
+    if (widget.exercise == null) {
       ExercisePage.setGoalWeight.removeListener(updateState);
       ExercisePage.setGoalReps.removeListener(updateState);
     }
@@ -125,7 +125,7 @@ class _SetDisplayState extends State<SetDisplay> {
 
     //what is our pivot
     Pivot goalSetPivot;
-    if (widget.excercise == null) { //we aren't showing the last set
+    if (widget.exercise == null) { //we aren't showing the last set
       if(ExercisePage.pageNumber.value == 0){
         goalSetPivot = Pivot.RepTarget;
       }
@@ -241,7 +241,7 @@ class _SetDisplayState extends State<SetDisplay> {
                                 ifTrue: ButtonWrapper(
                                   child: UpdatingSetText(
                                     isWeight: true,
-                                    excercise: widget.excercise,
+                                    exercise: widget.exercise,
                                   ),
                                   //NOTE: this is correct
                                   backgroundColor: foregroundColor,
@@ -249,7 +249,7 @@ class _SetDisplayState extends State<SetDisplay> {
                                 ),
                                 ifFalse: UpdatingSetText(
                                   isWeight: true,
-                                  excercise: widget.excercise,
+                                  exercise: widget.exercise,
                                 ),
                               ),
                               Container(
@@ -302,7 +302,7 @@ class _SetDisplayState extends State<SetDisplay> {
                                 usingRT: goalSetPivot == Pivot.RepTarget,
                                 child: UpdatingSetText(
                                   isWeight: false,
-                                  excercise: widget.excercise,
+                                  exercise: widget.exercise,
                                 ),
                                 //NOTE: this is correct
                                 backgroundColor: foregroundColor,
@@ -310,7 +310,7 @@ class _SetDisplayState extends State<SetDisplay> {
                               ),
                               ifFalse: UpdatingSetText(
                                 isWeight: false,
-                                excercise: widget.excercise,
+                                exercise: widget.exercise,
                               ),
                             ),
                             Container(
@@ -342,16 +342,16 @@ class _SetDisplayState extends State<SetDisplay> {
 class UpdatingSetText extends StatelessWidget {
   UpdatingSetText({
     @required this.isWeight,
-    this.excercise,
+    this.exercise,
   });
 
-  final AnExercise excercise;
+  final AnExercise exercise;
   final bool isWeight;
 
   @override
   Widget build(BuildContext context) {
     int value;
-    if (excercise == null) {
+    if (exercise == null) {
       //NOTE: we CAN round here since the value is simply being used for display
       if (isWeight)
         value = ExercisePage.setGoalWeight.value.round();
@@ -359,9 +359,9 @@ class UpdatingSetText extends StatelessWidget {
         value = ExercisePage.setGoalReps.value.round();
     } else {
       if (isWeight)
-        value = excercise.lastWeight;
+        value = exercise.lastWeight;
       else
-        value = excercise.lastReps;
+        value = exercise.lastReps;
     }
 
     //widget

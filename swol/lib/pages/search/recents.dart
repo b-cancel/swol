@@ -39,7 +39,7 @@ class RecentsOrResultsHeader extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Text(
-                  (showRecentsSearches) ? "Recent searches" : "Excercises",
+                  (showRecentsSearches) ? "Recent searches" : "Exercises",
                 ),
                 (showRecentsSearches) ? Container()
                 : Text(

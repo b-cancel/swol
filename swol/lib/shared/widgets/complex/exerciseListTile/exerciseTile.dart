@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 
 //internal: shared
-import 'package:swol/shared/widgets/complex/excerciseListTile/excerciseLeading.dart';
-import 'package:swol/shared/widgets/complex/excerciseListTile/oneRepMaxChip.dart';
+import 'package:swol/shared/widgets/complex/exerciseListTile/exerciseLeading.dart';
+import 'package:swol/shared/widgets/complex/exerciseListTile/oneRepMaxChip.dart';
 import 'package:swol/shared/widgets/simple/heros/title.dart';
 import 'package:swol/shared/structs/anExercise.dart';
 import 'package:swol/shared/methods/theme.dart';
@@ -37,21 +37,21 @@ https://medium.com/flutter/keys-what-are-they-good-for-13cb51742e7d
 //    you must not have the same value or object repeat
 
 //widget
-class ExcerciseTile extends StatefulWidget { 
-  ExcerciseTile({
-    @required this.excercise,
+class ExerciseTile extends StatefulWidget { 
+  ExerciseTile({
+    @required this.exercise,
     this.tileInSearch: false,
     @required Key key
   }) : super(key: key); 
 
-  final AnExercise excercise;
+  final AnExercise exercise;
   final bool tileInSearch;
 
   @override
-  _ExcerciseTileState createState() => _ExcerciseTileState();
+  _ExerciseTileState createState() => _ExerciseTileState();
 }
 
-class _ExcerciseTileState extends State<ExcerciseTile> {
+class _ExerciseTileState extends State<ExerciseTile> {
   @override
   Widget build(BuildContext context) {
     Duration transitionDuration = Duration(milliseconds: 300);
@@ -61,19 +61,19 @@ class _ExcerciseTileState extends State<ExcerciseTile> {
       onTap: (){
         /*
         //-----
-        print("id:" + widget.excercise.id.toString());
-        print("time stamp: " + widget.excercise.lastTimeStamp.toString());
-        print("name: " +  widget.excercise.name.toString());
-        print("url: " + widget.excercise.url.toString());
-        print("note: " + widget.excercise.note.toString());
+        print("id:" + widget.exercise.id.toString());
+        print("time stamp: " + widget.exercise.lastTimeStamp.toString());
+        print("name: " +  widget.exercise.name.toString());
+        print("url: " + widget.exercise.url.toString());
+        print("note: " + widget.exercise.note.toString());
         //-----
-        print("prediction ID: " + widget.excercise.predictionID.toString());
-        print("rep target: " + widget.excercise.repTarget.toString());
-        print("recovery: " + widget.excercise.recoveryPeriod.toString());
-        print("set target: " + widget.excercise.setTarget.toString());
+        print("prediction ID: " + widget.exercise.predictionID.toString());
+        print("rep target: " + widget.exercise.repTarget.toString());
+        print("recovery: " + widget.exercise.recoveryPeriod.toString());
+        print("set target: " + widget.exercise.setTarget.toString());
         */
 
-        print("prediction ID: " + widget.excercise.predictionID.toString());
+        print("prediction ID: " + widget.exercise.predictionID.toString());
 
         //travel to page
         App.navSpread.value = true;
@@ -86,7 +86,7 @@ class _ExcerciseTileState extends State<ExcerciseTile> {
           child: Theme(
             data: MyTheme.light,
             child: ExercisePage(
-              excercise: widget.excercise,
+              exercise: widget.exercise,
               transitionDuration: transitionDuration, 
             ),
           ),
@@ -101,20 +101,20 @@ class _ExcerciseTileState extends State<ExcerciseTile> {
         }
         else Navigator.push(context, page);
       },
-      title: ExcerciseTitleHero(
-        excercise: widget.excercise,
+      title: ExerciseTitleHero(
+        exercise: widget.exercise,
         inAppBar: false,
       ),
       //NOTE: this must output to null if there isn't a weight 
       //because otherwise it will yeild alot of wasted space
-      subtitle: ExcerciseTileSubtitle(
+      subtitle: ExerciseTileSubtitle(
         key: widget.key,
-        excercise: widget.excercise,
+        exercise: widget.exercise,
         transitionDuration: transitionDuration,
       ),
-      trailing: ExcerciseTileLeading(
+      trailing: ExerciseTileLeading(
         key: widget.key,
-        excercise: widget.excercise,
+        exercise: widget.exercise,
         transitionDuration: transitionDuration,
         tileInSearch: widget.tileInSearch,
       ),

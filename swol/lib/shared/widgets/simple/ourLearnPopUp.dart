@@ -16,7 +16,7 @@ showCustomPopUp(
   Widget btnOk,
 }) {
   //unfocus so whatever was focused before doesnt annoying scroll us back
-  //for some reason this only happens in addExcercise
+  //for some reason this only happens in addExercise
   //when opening popups for name, notes, link, and recovery time
   //still its annoying and hence must die
   FocusScope.of(context).unfocus(); 

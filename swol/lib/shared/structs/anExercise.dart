@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:swol/other/functions/helper.dart';
-import 'package:swol/shared/methods/excerciseData.dart';
+import 'package:swol/shared/methods/exerciseData.dart';
 
 //TODO: there are some variables that are updated in tandem
 //as in alot of variables are updated all together
@@ -19,7 +19,7 @@ class AnExercise{
 
   //---Settings
 
-  //NOTE: this is saved by the addExcercise function
+  //NOTE: this is saved by the addExercise function
   int id;
 
   //basic
@@ -27,21 +27,21 @@ class AnExercise{
   String get name => _name;
   set name(String newName){
     _name = newName;
-    ExcerciseData.updateFile();
+    ExerciseData.updateFile();
   }
   
   String _url;
   String get url => _url;
   set url(String newUrl){
     _url = newUrl;
-    ExcerciseData.updateFile();
+    ExerciseData.updateFile();
   }
   
   String _note;
   String get note => _note;
   set note(String newNote){
     _note = newNote;
-    ExcerciseData.updateFile();
+    ExerciseData.updateFile();
   }
   
   //other
@@ -49,28 +49,28 @@ class AnExercise{
   int get predictionID => _predictionID;
   set predictionID(int newPredictionID){
     _predictionID = newPredictionID;
-    ExcerciseData.updateFile();
+    ExerciseData.updateFile();
   }
   
   int _repTarget;
   int get repTarget => _repTarget;
   set repTarget(int newRepTarget){
     _repTarget = newRepTarget;
-    ExcerciseData.updateFile();
+    ExerciseData.updateFile();
   }
   
   Duration _recoveryPeriod;
   Duration get recoveryPeriod => _recoveryPeriod;
   set recoveryPeriod(Duration newRecoveryPeriod){
     _recoveryPeriod = newRecoveryPeriod;
-    ExcerciseData.updateFile();
+    ExerciseData.updateFile();
   }
   
   int _setTarget;
   int get setTarget => _setTarget;
   set setTarget(int newSetTarget){
     _setTarget = newSetTarget;
-    ExcerciseData.updateFile();
+    ExerciseData.updateFile();
   }
 
   //---Recorded
@@ -82,29 +82,29 @@ class AnExercise{
   set lastTimeStamp(DateTime newLastTimeStamp){
     DateTime newValue = newLastTimeStamp;
     _lastTimeStamp = newValue;
-    ExcerciseData.updateFile();
-    ExcerciseData.updateOrder();
+    ExerciseData.updateFile();
+    ExerciseData.updateOrder();
   }
 
   DateTime _backUpTimeStamp;
   DateTime get backUpTimeStamp => _backUpTimeStamp;
   set backUpTimeStamp(DateTime newBackUpTimeStamp){
     _backUpTimeStamp = newBackUpTimeStamp;
-    ExcerciseData.updateFile();
+    ExerciseData.updateFile();
   }
   
   int _lastWeight;
   int get lastWeight => _lastWeight;
   set lastWeight(int newLastWeight){
     _lastWeight = newLastWeight;
-    ExcerciseData.updateFile();
+    ExerciseData.updateFile();
   }
   
   int _lastReps;
   int get lastReps => _lastReps;
   set lastReps(int newLastReps){
     _lastReps = newLastReps;
-    ExcerciseData.updateFile();
+    ExerciseData.updateFile();
   }
 
   //---Temporary
@@ -113,14 +113,14 @@ class AnExercise{
   int get tempWeight => _tempWeight;
   set tempWeight(int newTempWeight){
     _tempWeight = newTempWeight;
-    ExcerciseData.updateFile();
+    ExerciseData.updateFile();
   }
   
   int _tempReps;
   int get tempReps => _tempReps;
   set tempReps(int newTempReps){
     _tempReps = newTempReps;
-    ExcerciseData.updateFile();
+    ExerciseData.updateFile();
   }
 
   //temp start time
@@ -129,14 +129,14 @@ class AnExercise{
   set tempStartTime(ValueNotifier<DateTime> newTempStartTime){
     DateTime newValue = newTempStartTime.value;
     _tempStartTime.value = newValue;
-    ExcerciseData.updateFile();
+    ExerciseData.updateFile();
   }
   
   int _tempSetCount;
   int get tempSetCount => _tempSetCount;
   set tempSetCount(int newTempSetCount){
     _tempSetCount = newTempSetCount;
-    ExcerciseData.updateFile();
+    ExerciseData.updateFile();
   }
 
   //build

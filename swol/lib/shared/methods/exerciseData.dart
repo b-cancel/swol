@@ -11,50 +11,51 @@ import 'package:swol/shared/functions/safeSave.dart';
 import 'package:swol/other/otherHelper.dart';
 
 //class that 
-//1. grabs excercises from storage
-//2. places excercises to storage
-class ExcerciseData{
+//1. grabs exercises from storage
+//2. places exercises to storage
+class ExerciseData{
   static int nextID;
-  static File _excerciseFile;
+  static File _exerciseFile;
 
-  //main struct we are maintaining (id -> excercise)
+  //main struct we are maintaining (id -> exercise)
   //NOTE: we could use hashset but its slower than a map for deletion 
   //and accessing specific items
-  static Map<int, AnExercise> _excercises; 
+  static Map<int, AnExercise> _exercises; 
   //NOTE: value notifier here is required since 
   //we listen to order to determine whether we need to update the list
   //NOTE: silly mistake but we need a list, hash set doesn't maintain order
   //TODO: look into perhaps using "LinkedHashSet"
-  static ValueNotifier<List<int>> excercisesOrder;
+  static ValueNotifier<List<int>> exercisesOrder;
 
   //lets us control add and removing from the list with more precision
-  static Map<int,AnExercise> getExcercises(){
-    return _excercises;
+  static Map<int,AnExercise> getExercises(){
+    return _exercises;
   }
 
   //we need to make sure that our structure only ever has more than what storage has
-  static excercisesInit() async{
-    if(_excerciseFile == null){
+  static exercisesInit() async{
+    if(_exerciseFile == null){
       //get what the file reference should be
-      _excerciseFile = await StringJson.nameToFileReference("excercises");
+      //todo keeping this one mispelled so I can keep my workouts...
+      _exerciseFile = await StringJson.nameToFileReference("excercises");
 
       //get access to the file
-      bool exists = await _excerciseFile.exists();
+      bool exists = await _exerciseFile.exists();
 
       //read in file data
       String fileData;
       if(exists == false){
-        await _excerciseFile.create();
+        await _exerciseFile.create();
         //NOTE: don't use safeSave here because 
         //1. we need this to complete before continuing
         //2. we know this file hasn't been written to before 
         //  - since this is its init function
-        await _excerciseFile.writeAsString("[]");
+        await _exerciseFile.writeAsString("[]");
       }
 
       //read in our data
-      fileData = await _excerciseFile.readAsString();
-      _excercises = Map<int,AnExercise>();
+      fileData = await _exerciseFile.readAsString();
+      _exercises = Map<int,AnExercise>();
 
       //print("-----start");
       //StringPrint.printWrapped(fileData);
@@ -65,10 +66,10 @@ class ExcerciseData{
       List<dynamic> map = json.decode(fileData);
       //print("---items: " + map.length.toString());
       for(int i = 0; i < map.length; i++){
-        AnExercise thisExcercise = AnExercise.fromJson(map[i]);
-        maxID = (thisExcercise.id > maxID) ? thisExcercise.id : maxID; 
-        await addExcercise(
-          thisExcercise, 
+        AnExercise thisExercise = AnExercise.fromJson(map[i]);
+        maxID = (thisExercise.id > maxID) ? thisExercise.id : maxID; 
+        await addExercise(
+          thisExercise, 
           updateOrderAndFile: false, //we update the order at the end
         );
       }
@@ -77,22 +78,22 @@ class ExcerciseData{
     }
   }
 
-  //when we are adding all the excercises in on init
+  //when we are adding all the exercises in on init
   //we dont care to update order until the end
   //and we dont care to update the file since the info came from the file
-  static addExcercise(AnExercise theExcercise, {
+  static addExercise(AnExercise theExercise, {
     bool updateOrderAndFile: true, 
   })async{
     //give it an ID (IF needed)
-    if(theExcercise.id == null){
-      theExcercise.id = nextID;
+    if(theExercise.id == null){
+      theExercise.id = nextID;
       nextID += 1;
     }
 
-    //print("Adding: " + theExcercise.id.toString() + "---------------");
+    //print("Adding: " + theExercise.id.toString() + "---------------");
 
-    //add to excercises
-    _excercises[theExcercise.id] = theExcercise;
+    //add to exercises
+    _exercises[theExercise.id] = theExercise;
 
     //NOTE: since inprogress items are to be viewed above new items
     //we do have to update order
@@ -102,26 +103,26 @@ class ExcerciseData{
     }
   }
 
-  static deleteExcercise(int id){
-    if(_excercises.containsKey(id)){
-      _excercises.remove(id);
+  static deleteExercise(int id){
+    if(_exercises.containsKey(id)){
+      _exercises.remove(id);
 
       //update file
       updateOrder();
       updateFile();
     }
-    else print("EXCERCISE DOESN'T EXIST");
+    else print("EXERCISE DOESN'T EXIST");
   }
 
   //TODO: there is a better way to do this
   static updateOrder(){
     //modify to then sort
     Map<DateTime, int> dateTimeToID = new Map<DateTime, int>();
-    List<int> keys = _excercises.keys.toList();
+    List<int> keys = _exercises.keys.toList();
     for(int i = 0; i < keys.length; i++){
       int keyIsID = keys[i];
-      AnExercise excercise = _excercises[keyIsID];
-      dateTimeToID[excercise.lastTimeStamp] = keyIsID;
+      AnExercise exercise = _exercises[keyIsID];
+      dateTimeToID[exercise.lastTimeStamp] = keyIsID;
     }
 
     //sort
@@ -131,12 +132,12 @@ class ExcerciseData{
     //NOTE: dates are now sorted
 
     //initialize the structure we use if needed
-    if(excercisesOrder == null){
-      excercisesOrder = new ValueNotifier(new List<int>());
+    if(exercisesOrder == null){
+      exercisesOrder = new ValueNotifier(new List<int>());
     }
 
     //find the place the new id in its position
-    bool allMatch = dates.length == (excercisesOrder?.value ?? 0);
+    bool allMatch = dates.length == (exercisesOrder?.value ?? 0);
     List<int> newOrder = new List<int>();
     for(int i = 0; i < dates.length; i++){
       DateTime thisDate = dates[i];
@@ -144,33 +145,33 @@ class ExcerciseData{
   
       //check if order matches
       //if it does we save ourselves an extra reload
-      allMatch = (allMatch && thisID == excercisesOrder.value[i]);
+      allMatch = (allMatch && thisID == exercisesOrder.value[i]);
 
       //add this id in case not everything matches
       newOrder.add(thisID);
     }
 
     //official update
-    if(allMatch == false) excercisesOrder.value = newOrder;
+    if(allMatch == false) exercisesOrder.value = newOrder;
   }
 
   //should never have to update from anywhere else
   static updateFile() async {
-    String newFileData = _excercisesToString();
+    String newFileData = _exercisesToString();
     //print("-----------to be written");
     //StringPrint.printWrapped(newFileData);
     //print("--------will write now");
-    SafeWrite.write(_excerciseFile, newFileData);
+    SafeWrite.write(_exerciseFile, newFileData);
   }
 
-  static String _excercisesToString(){
-    List<AnExercise> excercises = _excercises.values.toList();
+  static String _exercisesToString(){
+    List<AnExercise> exercises = _exercises.values.toList();
     String string = "[";
-    //print("------------updating: " + excercises.length.toString());
-    for(int i = 0; i < excercises.length; i++){
-      String str = json.encode(excercises[i].toJson());
+    //print("------------updating: " + exercises.length.toString());
+    for(int i = 0; i < exercises.length; i++){
+      String str = json.encode(exercises[i].toJson());
       string += str;
-      if(i < (excercises.length - 1)) string += ",";
+      if(i < (exercises.length - 1)) string += ",";
     }
     string += "]";
     return string;

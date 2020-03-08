@@ -6,8 +6,8 @@ import 'package:diacritic/diacritic.dart';
 import 'package:swol/pages/selection/widgets/workoutSection.dart';
 
 //internal: shared
-import 'package:swol/shared/widgets/complex/excerciseListTile/excerciseTile.dart';
-import 'package:swol/shared/methods/excerciseData.dart';
+import 'package:swol/shared/widgets/complex/exerciseListTile/exerciseTile.dart';
+import 'package:swol/shared/methods/exerciseData.dart';
 import 'package:swol/shared/structs/anExercise.dart';
 
 //internal: other
@@ -16,19 +16,19 @@ import 'package:swol/pages/search/recents.dart';
 import 'package:swol/main.dart';
 
 //widget
-class SearchExcercise extends StatefulWidget {
+class SearchExercise extends StatefulWidget {
   @override
-  _SearchExcerciseState createState() => _SearchExcerciseState();
+  _SearchExerciseState createState() => _SearchExerciseState();
 }
 
-class _SearchExcerciseState extends State<SearchExcercise> {
+class _SearchExerciseState extends State<SearchExercise> {
   //query vars
   List<int> queryResults = new List<int>();
   TextEditingController search = new TextEditingController();
 
   //NOTE: since they don't change while we are searching
   //we can grab them once and done
-  Map<int, AnExercise> excercises = ExcerciseData.getExcercises();
+  Map<int, AnExercise> exercises = ExerciseData.getExercises();
 
   //use the text field
   performQuery() {
@@ -46,16 +46,16 @@ class _SearchExcerciseState extends State<SearchExcercise> {
     //find matching results
     if (searchString.length > 0) {
       //iterate through keys
-      List<int> keys = excercises.keys.toList();
+      List<int> keys = exercises.keys.toList();
       for (int key = 0; key < keys.length; key++) {
         //grab basic data
         int keyIsID = keys[key];
-        AnExercise thisExcercise = excercises[keyIsID];
+        AnExercise thisExercise = exercises[keyIsID];
 
         //extract thing we are searching for
-        String excerciseName =
-            removeDiacritics(thisExcercise.name).toLowerCase().trim();
-        if (excerciseName.contains(searchString)) {
+        String exerciseName =
+            removeDiacritics(thisExercise.name).toLowerCase().trim();
+        if (exerciseName.contains(searchString)) {
           queryResults.add(keyIsID);
         }
       }
@@ -165,7 +165,7 @@ class _SearchExcerciseState extends State<SearchExcercise> {
                     showRecentsSearches: showRecentsSearches,
                     search: search,
                     queryResults: queryResults,
-                    excercises: excercises,
+                    exercises: exercises,
                     updateState: () => setState(() {}),
                   ),
                   Positioned(
@@ -195,14 +195,14 @@ class SearchBody extends StatelessWidget {
     @required this.noRecentsToShow,
     @required this.showRecentsSearches,
     @required this.search,
-    @required this.excercises,
+    @required this.exercises,
     @required this.queryResults,
     @required this.updateState,
   }) : super(key: key);
 
   final bool noRecentsToShow;
   final bool showRecentsSearches;
-  final Map<int, AnExercise> excercises;
+  final Map<int, AnExercise> exercises;
   final TextEditingController search;
   final List<int> queryResults;
   final Function updateState;
@@ -220,7 +220,7 @@ class SearchBody extends StatelessWidget {
       } else {
         return SearchResults(
           queryResults: queryResults,
-          excercises: excercises,
+          exercises: exercises,
         );
       }
     }
@@ -231,11 +231,11 @@ class SearchResults extends StatelessWidget {
   const SearchResults({
     Key key,
     @required this.queryResults,
-    @required this.excercises,
+    @required this.exercises,
   }) : super(key: key);
 
   final List<int> queryResults;
-  final Map<int, AnExercise> excercises;
+  final Map<int, AnExercise> exercises;
 
   @override
   Widget build(BuildContext context) {
@@ -257,10 +257,10 @@ class SearchResults extends StatelessWidget {
             physics: ClampingScrollPhysics(),
             itemCount: queryResults.length,
             itemBuilder: (context, index) {
-              AnExercise excercise = excercises[queryResults[index]];
-              return ExcerciseTile(
-                key: ValueKey(excercise.id),
-                excercise: excercise,
+              AnExercise exercise = exercises[queryResults[index]];
+              return ExerciseTile(
+                key: ValueKey(exercise.id),
+                exercise: exercise,
                 tileInSearch: true,
               );
             },

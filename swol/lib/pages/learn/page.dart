@@ -32,12 +32,12 @@ import 'package:swol/shared/methods/extensions/sharedPreferences.dart';
 //3. scrollToIndex doesnt work with solid heights
 
 //build
-class LearnExcercise extends StatefulWidget {
+class LearnExercise extends StatefulWidget {
   @override
-  _LearnExcerciseState createState() => _LearnExcerciseState();
+  _LearnExerciseState createState() => _LearnExerciseState();
 }
 
-class _LearnExcerciseState extends State<LearnExcercise> {
+class _LearnExerciseState extends State<LearnExercise> {
   final AutoScrollController autoScrollController = new AutoScrollController();
 
   //animation speed

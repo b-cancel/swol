@@ -2,7 +2,7 @@
 //but it simplifies the code enough to be worth it
 
 /*
-Our Excercises should be sorted as such
+Our Exercises should be sorted as such
 1. in progress
 2. new
 3. other

@@ -1,9 +1,9 @@
 //flutter
 import 'package:flutter/material.dart';
-import 'package:swol/shared/widgets/simple/conditional.dart';
 
 //internal
 import 'package:swol/shared/widgets/simple/heros/curveMod.dart';
+import 'package:swol/shared/widgets/simple/conditional.dart';
 
 //widget
 class DoneButton extends StatelessWidget {
