@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 
 //internal
 import 'package:swol/shared/widgets/complex/exerciseListTile/exerciseTile.dart';
-import 'package:swol/shared/functions/defaultDateTimes.dart';
-import 'package:swol/shared/structs/anExercise.dart';
-import 'package:swol/shared/widgets/simple/chip.dart';
 import 'package:swol/shared/widgets/simple/curvedCorner.dart';
+import 'package:swol/shared/functions/defaultDateTimes.dart';
+import 'package:swol/shared/widgets/simple/chip.dart';
+import 'package:swol/shared/structs/anExercise.dart';
 
 //widget
 class SectionHeader extends StatelessWidget {
@@ -147,10 +147,10 @@ class SectionBody extends StatelessWidget {
                 //ONLY false IF Hidden Section
                 reverse: (sectionType != TimeStampType.Hidden),
                 itemBuilder: (context, index){
-                  AnExercise excercise = thisGroup[index];
+                  AnExercise exercise = thisGroup[index];
                   return ExerciseTile(
-                    key: ValueKey(excercise.id),
-                    exercise: excercise,
+                    key: ValueKey(exercise.id),
+                    exercise: exercise,
                   );
                 },
                 separatorBuilder : (context, index) => ListTileDivider(),

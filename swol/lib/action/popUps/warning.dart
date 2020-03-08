@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 
 //plugin
 import 'package:awesome_dialog/awesome_dialog.dart';
-import 'package:swol/action/popUps/button.dart';
 
 //internal: action
-import 'package:swol/action/popUps/reusable.dart';
-import 'package:swol/action/page.dart';
 import 'package:swol/action/popUps/textValid.dart';
+import 'package:swol/action/popUps/reusable.dart';
+import 'package:swol/action/popUps/button.dart';
+import 'package:swol/action/page.dart';
 
 //internal: other
 import 'package:swol/shared/structs/anExercise.dart';

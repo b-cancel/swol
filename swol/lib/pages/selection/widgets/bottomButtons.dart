@@ -3,15 +3,15 @@ import 'package:flutter/material.dart';
 
 //plugin
 import 'package:page_transition/page_transition.dart';
-import 'package:swol/pages/selection/widgets/addNewHero.dart';
-import 'package:swol/shared/methods/exerciseData.dart';
 
 //internal: shared
 import 'package:swol/shared/methods/extensions/sharedPreferences.dart';
 import 'package:swol/shared/widgets/complex/onBoarding/wrapper.dart';
 import 'package:swol/shared/functions/onboarding.dart';
+import 'package:swol/shared/methods/exerciseData.dart';
 
 //internal: other
+import 'package:swol/pages/selection/widgets/addNewHero.dart';
 import 'package:swol/pages/search/searchExercise.dart';
 import 'package:swol/main.dart';
 

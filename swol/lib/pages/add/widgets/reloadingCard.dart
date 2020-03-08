@@ -78,7 +78,7 @@ class SliderCard extends StatelessWidget {
       margin: EdgeInsets.all(8),
       child: Padding(
         padding: const EdgeInsets.only(
-          top: 8, //8 is default spacing for add excercsie
+          top: 8, //8 is default spacing for add exercsie
           bottom: 8,
         ),
         child: child,

@@ -1,7 +1,13 @@
-import 'package:bot_toast/bot_toast.dart';
+//flutter
 import 'package:flutter/material.dart';
+
+//plugin
+import 'package:bot_toast/bot_toast.dart';
+
+//internal
 import 'package:swol/shared/widgets/simple/ourToolTip.dart';
 
+//function
 showWeightToolTip(
   BuildContext context, {
   PreferDirection direction: PreferDirection.topCenter,

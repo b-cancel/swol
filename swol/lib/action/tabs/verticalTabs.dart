@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 
 //internal
 import 'package:swol/shared/structs/anExercise.dart';
+import 'package:swol/action/tabs/recovery/recovery.dart';
 import 'package:swol/action/doneButton/doneWidget.dart';
 import 'package:swol/action/tabs/record/setRecord.dart';
-import 'package:swol/action/tabs/recovery/recovery.dart';
 import 'package:swol/action/tabs/suggest/suggest.dart';
 import 'package:swol/action/page.dart';
 

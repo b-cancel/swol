@@ -1,6 +1,5 @@
 //flutter
 import 'package:flutter/material.dart';
-import 'package:swol/shared/structs/range.dart';
 
 //internal
 import 'package:swol/shared/widgets/complex/fields/headers/fieldHeader.dart';
@@ -10,6 +9,7 @@ import 'package:swol/shared/widgets/complex/recoveryTime/picker.dart';
 import 'package:swol/shared/widgets/simple/sliderTipButton.dart';
 import 'package:swol/shared/functions/trainingPopUps.dart';
 import 'package:swol/shared/methods/theme.dart';
+import 'package:swol/shared/structs/range.dart';
 
 //widget
 class RecoveryTimeCard extends StatelessWidget {

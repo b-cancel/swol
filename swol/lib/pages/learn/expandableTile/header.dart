@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 
 //plugin
 import 'package:animator/animator.dart';
+
+//internal
 import 'package:swol/shared/widgets/simple/curvedCorner.dart';
 
 //widget

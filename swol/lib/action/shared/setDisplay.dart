@@ -1,23 +1,26 @@
 //flutter
-import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
-import 'package:swol/action/page.dart';
-import 'package:swol/action/popUps/textValid.dart';
-import 'package:swol/action/shared/tooltips/repTargetAsPivot.dart';
-import 'package:swol/action/shared/tooltips/repsAsPivot.dart';
-import 'package:swol/action/shared/tooltips/setToolTips.dart';
-import 'package:swol/action/shared/tooltips/weightAsPivot.dart';
-import 'package:swol/shared/structs/anExercise.dart';
-import 'package:swol/shared/widgets/simple/conditional.dart';
-import 'package:swol/shared/widgets/simple/curvedCorner.dart';
 
 //plugin
-import 'package:vector_math/vector_math_64.dart' as vect;
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:vector_math/vector_math_64.dart' as vect;
+import 'package:bot_toast/bot_toast.dart';
 
-//internal
+//internal: action
+import 'package:swol/action/shared/tooltips/repTargetAsPivot.dart';
+import 'package:swol/action/shared/tooltips/weightAsPivot.dart';
+import 'package:swol/action/shared/tooltips/repsAsPivot.dart';
+import 'package:swol/action/shared/tooltips/setToolTips.dart';
+import 'package:swol/action/popUps/textValid.dart';
+import 'package:swol/action/page.dart';
+
+//internal: other
+import 'package:swol/shared/widgets/simple/curvedCorner.dart';
+import 'package:swol/shared/widgets/simple/conditional.dart';
 import 'package:swol/shared/functions/goldenRatio.dart';
+import 'package:swol/shared/structs/anExercise.dart';
 
+//what we use to do the goal set math
 enum Pivot { Weight, Reps, RepTarget }
 
 //widget

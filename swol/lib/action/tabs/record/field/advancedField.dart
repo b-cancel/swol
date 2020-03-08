@@ -1,12 +1,20 @@
+//flutter
 import 'package:flutter/material.dart';
+
+//plugin
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:swol/action/page.dart';
-import 'package:swol/action/popUps/textValid.dart';
+
+//internal: action
 import 'package:swol/action/tabs/record/field/customField.dart';
 import 'package:swol/action/tabs/record/field/fieldIcon.dart';
+import 'package:swol/action/popUps/textValid.dart';
+import 'package:swol/action/page.dart';
+
+//internal: shared
 import 'package:swol/shared/functions/goldenRatio.dart';
 import 'package:swol/shared/methods/theme.dart';
 
+//widget
 class RecordFields extends StatefulWidget { 
   RecordFields({
     @required this.heroAnimDuration,

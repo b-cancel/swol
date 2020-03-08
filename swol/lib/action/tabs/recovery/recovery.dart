@@ -1,16 +1,16 @@
 //flutter
 import 'package:flutter/material.dart';
-import 'package:swol/action/popUps/skipTimer.dart';
 
 //internal: action
 import 'package:swol/action/tabs/recovery/secondary/breath.dart';
 import 'package:swol/action/tabs/recovery/timer/liquidTime.dart';
 import 'package:swol/action/bottomButtons/button.dart';
+import 'package:swol/action/popUps/skipTimer.dart';
 import 'package:swol/action/page.dart';
-import 'package:swol/shared/methods/theme.dart';
 
 //internal: shared
 import 'package:swol/shared/structs/anExercise.dart';
+import 'package:swol/shared/methods/theme.dart';
 
 //widget
 class Recovery extends StatefulWidget {

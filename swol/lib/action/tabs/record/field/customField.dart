@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 
 //for white listing characters
 import 'package:flutter/services.dart';
+
+//internal
 import 'package:swol/action/popUps/textValid.dart';
 
 //widget

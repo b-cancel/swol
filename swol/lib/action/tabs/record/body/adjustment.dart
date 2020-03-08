@@ -1,14 +1,13 @@
 //flutter
 import 'package:flutter/material.dart';
-import 'package:swol/action/shared/changeFunction.dart';
 
 //internal: action
 import 'package:swol/action/tabs/record/body/inaccuracy.dart';
+import 'package:swol/action/shared/changeFunction.dart';
 import 'package:swol/action/shared/halfColored.dart';
 import 'package:swol/action/shared/setDisplay.dart';
 import 'package:swol/action/popUps/textValid.dart';
 import 'package:swol/action/page.dart';
-import 'package:swol/other/functions/W&R=1RM.dart';
 
 //internal: shared
 import 'package:swol/shared/widgets/simple/curvedCorner.dart';
@@ -17,6 +16,7 @@ import 'package:swol/shared/structs/anExercise.dart';
 //internal: other
 import 'package:swol/other/functions/1RM&R=W.dart';
 import 'package:swol/other/functions/1RM&W=R.dart';
+import 'package:swol/other/functions/W&R=1RM.dart';
 
 //widget
 class MakeFunctionAdjustment extends StatefulWidget {

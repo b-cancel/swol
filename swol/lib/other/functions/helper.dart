@@ -1,5 +1,3 @@
-import 'dart:collection';
-
 import 'package:swol/other/functions/W&R=1RM.dart';
 import 'dart:math' as math;
 

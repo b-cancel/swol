@@ -3,13 +3,15 @@ import 'package:flutter/material.dart';
 
 //plugin
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:swol/action/page.dart';
+
+//internal: action
 import 'package:swol/action/popUps/textValid.dart';
+import 'package:swol/action/page.dart';
 
 //internal
-import 'package:swol/other/functions/helper.dart';
-import 'package:swol/shared/methods/vibrate.dart';
 import 'package:swol/shared/widgets/simple/conditional.dart';
+import 'package:swol/shared/methods/vibrate.dart';
+import 'package:swol/other/functions/helper.dart';
 
 //NOTE: should not dispose predictionID since the value was passed
 class ChangeFunction extends StatefulWidget {

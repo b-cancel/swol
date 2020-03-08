@@ -1,15 +1,19 @@
 //flutter
-import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
-import 'package:swol/action/popUps/button.dart';
-import 'package:swol/pages/add/widgets/recoveryTime.dart';
+
+//plguin
+import 'package:awesome_dialog/awesome_dialog.dart';
 
 //internal: time picker
 import 'package:swol/shared/widgets/complex/trainingTypeTables/trainingTypes.dart';
 import 'package:swol/shared/widgets/complex/RecoveryTime/minSecs.dart';
 import 'package:swol/shared/widgets/complex/recoveryTime/picker.dart';
-import 'package:swol/shared/methods/theme.dart';
 import 'package:swol/shared/widgets/simple/ourLearnPopUp.dart';
+import 'package:swol/shared/methods/theme.dart';
+
+//internal: other
+import 'package:swol/pages/add/widgets/recoveryTime.dart';
+import 'package:swol/action/popUps/button.dart';
 
 class ActualButton extends StatelessWidget {
   const ActualButton({

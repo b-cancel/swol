@@ -1,9 +1,9 @@
 //flutter
 import 'package:flutter/material.dart';
-import 'package:swol/action/tabs/suggest/corners.dart';
 
 //plugin
 import 'package:swol/action/shared/changeFunction.dart';
+import 'package:swol/action/tabs/suggest/corners.dart';
 
 //internal: shared
 import 'package:swol/shared/widgets/complex/fields/fields/sliders/repTarget.dart';
