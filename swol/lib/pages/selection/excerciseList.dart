@@ -10,7 +10,7 @@ import 'package:swol/main.dart';
 import 'package:swol/shared/functions/defaultDateTimes.dart';
 import 'package:swol/shared/functions/goldenRatio.dart';
 import 'package:swol/shared/methods/excerciseData.dart';
-import 'package:swol/shared/structs/anExcercise.dart';
+import 'package:swol/shared/structs/anExercise.dart';
 
 //internal: other
 import 'package:swol/pages/selection/widgets/persistentHeaderDelegate.dart';
@@ -78,7 +78,7 @@ class _ExcerciseListState extends State<ExcerciseList> {
     print("manual build");
 
     List<Widget> sliverList = new List<Widget>();
-    List<List<AnExcercise>> listOfGroupOfExcercises = new List<List<AnExcercise>>();
+    List<List<AnExercise>> listOfGroupOfExcercises = new List<List<AnExercise>>();
 
     //a little bit of math
     List<double> goldenBS = measurementToGoldenRatioBS(MediaQuery.of(context).size.height);
@@ -91,7 +91,7 @@ class _ExcerciseListState extends State<ExcerciseList> {
     }
     else{
       //NOTE: I don't need to call this pretty much ever again since I should be able to pass and update the reference
-      Map<int, AnExcercise> excercises = ExcerciseData.getExcercises();
+      Map<int, AnExercise> excercises = ExcerciseData.getExcercises();
 
       //seperate excercise into their groups bassed on the max distance
       DateTime lastDateTime; //MUST NOT COLLIDE WITH EVEN ARCHIVED DATE TIMES
@@ -99,7 +99,7 @@ class _ExcerciseListState extends State<ExcerciseList> {
         int excerciseID = excerciseOrder[i];
 
         //easy to access vars
-        AnExcercise thisExcercise = excercises[excerciseID];
+        AnExercise thisExcercise = excercises[excerciseID];
         TimeStampType thisExcerciseType = LastTimeStamp.returnTimeStampType(thisExcercise.lastTimeStamp);
 
         //determine if we have any of the special section
@@ -119,12 +119,12 @@ class _ExcerciseListState extends State<ExcerciseList> {
         bool makeNewGroup;
         if(lastDateTime == null) makeNewGroup = true;
         else{
-          List<AnExcercise> lastGroup = listOfGroupOfExcercises[listOfGroupOfExcercises.length - 1];
+          List<AnExercise> lastGroup = listOfGroupOfExcercises[listOfGroupOfExcercises.length - 1];
 
           //its not the first excercise we check so we MIGHT need a new group
           //we know we process things in order... so we only need to check the last group added
           //and even further really just the last item added to that group
-          AnExcercise lastExcercise = lastGroup[lastGroup.length - 1];
+          AnExercise lastExcercise = lastGroup[lastGroup.length - 1];
           TimeStampType lastExcerciseType = LastTimeStamp.returnTimeStampType(lastExcercise.lastTimeStamp);
 
           //we are a different kind of excercise that the previous one so we KNOW we need a new group
@@ -140,7 +140,7 @@ class _ExcerciseListState extends State<ExcerciseList> {
 
         //add a new group because its needed
         if(makeNewGroup){
-          listOfGroupOfExcercises.add(new List<AnExcercise>());
+          listOfGroupOfExcercises.add(new List<AnExercise>());
         }
 
         //add this excercise to our 1. newly created group 2. OR old group
@@ -155,7 +155,7 @@ class _ExcerciseListState extends State<ExcerciseList> {
       //fill sliver list
       for(int i = 0; i < listOfGroupOfExcercises.length; i++){
         //create header text
-        List<AnExcercise> thisGroup = listOfGroupOfExcercises[i];
+        List<AnExercise> thisGroup = listOfGroupOfExcercises[i];
         DateTime oldestDT = thisGroup[0].lastTimeStamp;
         TimeStampType sectionType = LastTimeStamp.returnTimeStampType(oldestDT);
 

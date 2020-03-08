@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 //internal
 import 'package:swol/shared/widgets/complex/excerciseListTile/excerciseTile.dart';
 import 'package:swol/shared/functions/defaultDateTimes.dart';
-import 'package:swol/shared/structs/anExcercise.dart';
+import 'package:swol/shared/structs/anExercise.dart';
 import 'package:swol/shared/widgets/simple/chip.dart';
 import 'package:swol/shared/widgets/simple/curvedCorner.dart';
 
@@ -106,7 +106,7 @@ class SectionBody extends StatelessWidget {
 
   final Color topColor;
   final Color bottomColor;
-  final List<AnExcercise> thisGroup;
+  final List<AnExercise> thisGroup;
   final TimeStampType sectionType;
 
   @override
@@ -147,7 +147,7 @@ class SectionBody extends StatelessWidget {
                 //ONLY false IF Hidden Section
                 reverse: (sectionType != TimeStampType.Hidden),
                 itemBuilder: (context, index){
-                  AnExcercise excercise = thisGroup[index];
+                  AnExercise excercise = thisGroup[index];
                   return ExcerciseTile(
                     key: ValueKey(excercise.id),
                     excercise: excercise,

@@ -6,18 +6,17 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 
 //internal: shared
 import 'package:swol/shared/widgets/complex/excerciseListTile/miniTimer/wrapper.dart';
-import 'package:swol/shared/structs/anExcercise.dart';
+import 'package:swol/shared/structs/anExercise.dart';
 import 'package:swol/shared/methods/theme.dart';
 
 //internal: shared
 import 'package:swol/action/tabs/recovery/secondary/explained.dart';
 import 'package:swol/other/durationFormat.dart';
-import 'package:swol/action/page.dart';
 
 //function
 maybeSkipTimer(
   BuildContext context, 
-  AnExcercise excercise, 
+  AnExercise excercise, 
   Function ifSkip, 
   Color headerColor,
 ) {
@@ -217,7 +216,7 @@ class UpdatingBreakSet extends StatelessWidget {
 
   final String trainingName;
   final String selectedWaitTime;
-  final AnExcercise excercise;
+  final AnExercise excercise;
 
   @override
   Widget build(BuildContext context) {

@@ -33,14 +33,14 @@ class _ChangeFunctionState extends State<ChangeFunction> {
 
   updateCarousel({bool alsoSetState: true}){
     //update first last without setting state
-    int idIsAtHighest = ExcercisePage.orderedIDs.value[0];
-    int idIsAtLowest = ExcercisePage.orderedIDs.value[7];
+    int idIsAtHighest = ExercisePage.orderedIDs.value[0];
+    int idIsAtLowest = ExercisePage.orderedIDs.value[7];
     firstFunction.value = (widget.functionID.value == idIsAtLowest);
     lastFunction.value = (widget.functionID.value == idIsAtHighest);
 
     //calc inital page
     int selectedID = widget.functionID.value;
-    int selectedPage = ExcercisePage.orderedIDs.value.indexOf(selectedID);
+    int selectedPage = ExercisePage.orderedIDs.value.indexOf(selectedID);
     
     //new carousel
     carousel = CarouselSlider(
@@ -51,19 +51,19 @@ class _ChangeFunctionState extends State<ChangeFunction> {
       scrollDirection: Axis.vertical,
       viewportFraction: 1.0,
       onPageChanged: (int selectedIndex) { //the index of the page not the ID of the function
-        int selectedID = ExcercisePage.orderedIDs.value[selectedIndex];
+        int selectedID = ExercisePage.orderedIDs.value[selectedIndex];
         if(widget.functionID.value != selectedID){
           Vibrator.vibrateOnce();
           widget.functionID.value = selectedID;
         }
 
         //updates outer arrows
-        int idIsAtHighest = ExcercisePage.orderedIDs.value[0];
-        int idIsAtLowest = ExcercisePage.orderedIDs.value[7];
+        int idIsAtHighest = ExercisePage.orderedIDs.value[0];
+        int idIsAtLowest = ExercisePage.orderedIDs.value[7];
         firstFunction.value = (widget.functionID.value == idIsAtLowest);
         lastFunction.value = (widget.functionID.value == idIsAtHighest);
       },
-      items: ExcercisePage.orderedIDs.value.map((functionID){
+      items: ExercisePage.orderedIDs.value.map((functionID){
         return Builder(
           builder: (BuildContext context) {
             //no matter what this is going to span the entirety of the space
@@ -128,13 +128,13 @@ class _ChangeFunctionState extends State<ChangeFunction> {
     updateCarousel(alsoSetState: false);
 
     //create listeners
-    ExcercisePage.orderedIDs.addListener(updateCarousel);
+    ExercisePage.orderedIDs.addListener(updateCarousel);
   }
 
   @override
   void dispose() {
     //remove listeners
-    ExcercisePage.orderedIDs.removeListener(updateCarousel);
+    ExercisePage.orderedIDs.removeListener(updateCarousel);
 
     //super dispose
     super.dispose();
@@ -286,12 +286,12 @@ class _InnerArrowsState extends State<InnerArrows> {
   @override
   void initState() {
     super.initState();
-    ExcercisePage.closestIndex.addListener(updateState);
+    ExercisePage.closestIndex.addListener(updateState);
   }
 
   @override
   void dispose() { 
-    ExcercisePage.closestIndex.removeListener(updateState);
+    ExercisePage.closestIndex.removeListener(updateState);
     super.dispose();
   }
 
@@ -300,20 +300,20 @@ class _InnerArrowsState extends State<InnerArrows> {
     Color arrowColor;
 
     //check if the set is valid
-    bool weightValid = isTextValid(ExcercisePage.setWeight.value);
-    bool repsValid = isTextValid(ExcercisePage.setReps.value);
+    bool weightValid = isTextValid(ExercisePage.setWeight.value);
+    bool repsValid = isTextValid(ExercisePage.setReps.value);
     bool setValid = weightValid && repsValid;
 
     //if it is then we may have a closestIndex
     if(setValid){
       //if the closestIndex is something valid
-      int lastClosestIndex = ExcercisePage.closestIndex.value;
+      int lastClosestIndex = ExercisePage.closestIndex.value;
       if(lastClosestIndex != -1){ 
         //if we arent the closest function then prompt the user to change
-        int closestFunctionID = ExcercisePage.orderedIDs.value[lastClosestIndex];
+        int closestFunctionID = ExercisePage.orderedIDs.value[lastClosestIndex];
         if(widget.functionID != closestFunctionID){
           print("*****************not matching");
-          int ourIndex = ExcercisePage.orderedIDs.value.indexOf(widget.functionID);
+          int ourIndex = ExercisePage.orderedIDs.value.indexOf(widget.functionID);
           bool targetIsDown = (lastClosestIndex > ourIndex);
           //color arrow if called for
           if(widget.isUpArrow && targetIsDown == false) arrowColor = Colors.red;

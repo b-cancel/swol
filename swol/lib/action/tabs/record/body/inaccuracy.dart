@@ -10,7 +10,7 @@ import 'package:swol/action/popUps/textValid.dart';
 import 'package:swol/action/shared/changeFunction.dart';
 
 //internal: shared/other
-import 'package:swol/shared/structs/anExcercise.dart';
+import 'package:swol/shared/structs/anExercise.dart';
 import 'package:swol/shared/widgets/simple/conditional.dart';
 import 'package:swol/other/functions/W&R=1RM.dart';
 
@@ -22,7 +22,7 @@ class InaccuracyCalculator extends StatefulWidget {
     @required this.predictionID,
   }) : super(key: key);
 
-  final AnExcercise excercise;
+  final AnExercise excercise;
   final ValueNotifier<int> predictionID;
 
   @override
@@ -40,15 +40,15 @@ class _InaccuracyCalculatorState extends State<InaccuracyCalculator> {
     super.initState();
 
     //listeners
-    ExcercisePage.setWeight.addListener(updateState);
-    ExcercisePage.setReps.addListener(updateState);
+    ExercisePage.setWeight.addListener(updateState);
+    ExercisePage.setReps.addListener(updateState);
   }
 
   @override
   void dispose() {
     //listeners
-    ExcercisePage.setWeight.removeListener(updateState);
-    ExcercisePage.setReps.removeListener(updateState);
+    ExercisePage.setWeight.removeListener(updateState);
+    ExercisePage.setReps.removeListener(updateState);
 
     //super dipose
     super.dispose();
@@ -57,8 +57,8 @@ class _InaccuracyCalculatorState extends State<InaccuracyCalculator> {
   @override
   Widget build(BuildContext context) {
     //check if we can show how far off they were from the target
-    bool weightValid = isTextValid(ExcercisePage.setWeight.value);
-    bool repsValid = isTextValid(ExcercisePage.setReps.value);
+    bool weightValid = isTextValid(ExercisePage.setWeight.value);
+    bool repsValid = isTextValid(ExercisePage.setReps.value);
     bool setValid = weightValid && repsValid;
 
     //build
@@ -119,7 +119,7 @@ class PercentOff extends StatefulWidget {
     @required this.predictionID,
   });
 
-  final AnExcercise excercise;
+  final AnExercise excercise;
   final ValueNotifier<int> predictionID;
 
   @override
@@ -142,8 +142,8 @@ class _PercentOffState extends State<PercentOff> {
       //calc
       //NOTE: must calculate with these values since thats what the user typed
       double calculated1RM = To1RM.fromWeightAndReps(
-        double.parse(ExcercisePage.setWeight.value),
-        int.parse(ExcercisePage.setReps.value),
+        double.parse(ExercisePage.setWeight.value),
+        int.parse(ExercisePage.setReps.value),
         functionID, 
       );
 
@@ -152,7 +152,7 @@ class _PercentOffState extends State<PercentOff> {
 
       //calc
       double calculatedDifference = calcPercentDifference(
-        ExcercisePage.oneRepMaxes[functionID], 
+        ExercisePage.oneRepMaxes[functionID], 
         calculated1RM,
       );
 
@@ -193,19 +193,19 @@ class _PercentOffState extends State<PercentOff> {
     print("function id to abs dif: " + functionIdToPercentDifferencesAbsolute.toString());
     print("smallest abs dif: " + smallestAbsDifference.toString());
 
-    ourIndex = ExcercisePage.orderedIDs.value.indexOf(ourID);
+    ourIndex = ExercisePage.orderedIDs.value.indexOf(ourID);
     
     //based on the smallest difference see if another index is closer
     if(ourAbsPercentDifference == smallestAbsDifference){
       print("we are gg");
-      ExcercisePage.closestIndex.value = ourIndex;
+      ExercisePage.closestIndex.value = ourIndex;
     }
     else{
       List<int> potentialClosestFunctionIDs = absDifferenceTofunctionID[smallestAbsDifference];
       print("potential closest function IDs " + potentialClosestFunctionIDs.toString());
       if(potentialClosestFunctionIDs.length == 1){
         int closestFunctionID = potentialClosestFunctionIDs[0];
-        ExcercisePage.closestIndex.value = ExcercisePage.orderedIDs.value.indexOf(closestFunctionID);
+        ExercisePage.closestIndex.value = ExercisePage.orderedIDs.value.indexOf(closestFunctionID);
       }
       else{
         //there are multiple indicies that hold the smallest percent
@@ -219,7 +219,7 @@ class _PercentOffState extends State<PercentOff> {
         Map<int,List<int>> distToFunctionIDs = new Map<int,List<int>>();
         for(int i = 0; i < potentialClosestFunctionIDs.length; i++){
           int potentialFunction = potentialClosestFunctionIDs[i];
-          int potentialIndex = ExcercisePage.orderedIDs.value.indexOf(potentialFunction);
+          int potentialIndex = ExercisePage.orderedIDs.value.indexOf(potentialFunction);
 
           //calculate distance
           int distanceFromUs = (ourIndex > potentialIndex) ? 1 : -1;
@@ -248,14 +248,14 @@ class _PercentOffState extends State<PercentOff> {
         //if only one then great!
         if(validFunctionIDs.length == 1){
           int closestFunctionID = validFunctionIDs[0];
-          ExcercisePage.closestIndex.value = ExcercisePage.orderedIDs.value.indexOf(closestFunctionID);
+          ExercisePage.closestIndex.value = ExercisePage.orderedIDs.value.indexOf(closestFunctionID);
         }
         else{
           //get all the indices of the valid function
           List<int> validIndices = new List<int>(validFunctionIDs.length);
           for(int index = 0; index < validFunctionIDs.length; index++){
             int functionID = validFunctionIDs[index];
-            validIndices[index] = ExcercisePage.orderedIDs.value.indexOf(functionID);
+            validIndices[index] = ExercisePage.orderedIDs.value.indexOf(functionID);
           }
           print("valid Indices: " + validIndices.toString());
 
@@ -271,14 +271,14 @@ class _PercentOffState extends State<PercentOff> {
             }
           }
 
-          ExcercisePage.closestIndex.value = smallestIndex;
+          ExercisePage.closestIndex.value = smallestIndex;
         }
       }
     }
 
-    print("closest index: " + ExcercisePage.closestIndex.value.toString());
-    print("function there: " + ExcercisePage.orderedIDs.value[
-      ExcercisePage.closestIndex.value
+    print("closest index: " + ExercisePage.closestIndex.value.toString());
+    print("function there: " + ExercisePage.orderedIDs.value[
+      ExercisePage.closestIndex.value
     ].toString());
 
     //now that we have the proper value everywhere
@@ -298,8 +298,8 @@ class _PercentOffState extends State<PercentOff> {
     updateOneRepMaxes();
 
     //listeners to update 1rm
-    ExcercisePage.setWeight.addListener(updateOneRepMaxes);
-    ExcercisePage.setReps.addListener(updateOneRepMaxes);
+    ExercisePage.setWeight.addListener(updateOneRepMaxes);
+    ExercisePage.setReps.addListener(updateOneRepMaxes);
 
     //listeners to update percentages
     widget.predictionID.addListener(updatePredictionID);
@@ -308,8 +308,8 @@ class _PercentOffState extends State<PercentOff> {
   @override
   void dispose() {
     //listeners to update 1rm
-    ExcercisePage.setWeight.removeListener(updateOneRepMaxes);
-    ExcercisePage.setReps.removeListener(updateOneRepMaxes);
+    ExercisePage.setWeight.removeListener(updateOneRepMaxes);
+    ExercisePage.setReps.removeListener(updateOneRepMaxes);
 
     //remove percentage update listener
     widget.predictionID.removeListener(updatePredictionID);
@@ -322,7 +322,7 @@ class _PercentOffState extends State<PercentOff> {
   Widget build(BuildContext context) {
     Color overlayColor = Colors.white;
     //we are some distance from where we should be
-    int dif = ourIndex - ExcercisePage.closestIndex.value;
+    int dif = ourIndex - ExercisePage.closestIndex.value;
     print("dif: " + dif.toString());
     if(dif != 0){ 
       if(dif < 0) dif *= -1;

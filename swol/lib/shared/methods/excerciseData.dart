@@ -6,7 +6,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 
 //internal
-import 'package:swol/shared/structs/anExcercise.dart';
+import 'package:swol/shared/structs/anExercise.dart';
 import 'package:swol/shared/functions/safeSave.dart';
 import 'package:swol/other/otherHelper.dart';
 
@@ -20,7 +20,7 @@ class ExcerciseData{
   //main struct we are maintaining (id -> excercise)
   //NOTE: we could use hashset but its slower than a map for deletion 
   //and accessing specific items
-  static Map<int, AnExcercise> _excercises; 
+  static Map<int, AnExercise> _excercises; 
   //NOTE: value notifier here is required since 
   //we listen to order to determine whether we need to update the list
   //NOTE: silly mistake but we need a list, hash set doesn't maintain order
@@ -28,7 +28,7 @@ class ExcerciseData{
   static ValueNotifier<List<int>> excercisesOrder;
 
   //lets us control add and removing from the list with more precision
-  static Map<int,AnExcercise> getExcercises(){
+  static Map<int,AnExercise> getExcercises(){
     return _excercises;
   }
 
@@ -54,7 +54,7 @@ class ExcerciseData{
 
       //read in our data
       fileData = await _excerciseFile.readAsString();
-      _excercises = Map<int,AnExcercise>();
+      _excercises = Map<int,AnExercise>();
 
       //print("-----start");
       //StringPrint.printWrapped(fileData);
@@ -65,7 +65,7 @@ class ExcerciseData{
       List<dynamic> map = json.decode(fileData);
       //print("---items: " + map.length.toString());
       for(int i = 0; i < map.length; i++){
-        AnExcercise thisExcercise = AnExcercise.fromJson(map[i]);
+        AnExercise thisExcercise = AnExercise.fromJson(map[i]);
         maxID = (thisExcercise.id > maxID) ? thisExcercise.id : maxID; 
         await addExcercise(
           thisExcercise, 
@@ -80,7 +80,7 @@ class ExcerciseData{
   //when we are adding all the excercises in on init
   //we dont care to update order until the end
   //and we dont care to update the file since the info came from the file
-  static addExcercise(AnExcercise theExcercise, {
+  static addExcercise(AnExercise theExcercise, {
     bool updateOrderAndFile: true, 
   })async{
     //give it an ID (IF needed)
@@ -120,7 +120,7 @@ class ExcerciseData{
     List<int> keys = _excercises.keys.toList();
     for(int i = 0; i < keys.length; i++){
       int keyIsID = keys[i];
-      AnExcercise excercise = _excercises[keyIsID];
+      AnExercise excercise = _excercises[keyIsID];
       dateTimeToID[excercise.lastTimeStamp] = keyIsID;
     }
 
@@ -164,7 +164,7 @@ class ExcerciseData{
   }
 
   static String _excercisesToString(){
-    List<AnExcercise> excercises = _excercises.values.toList();
+    List<AnExercise> excercises = _excercises.values.toList();
     String string = "[";
     //print("------------updating: " + excercises.length.toString());
     for(int i = 0; i < excercises.length; i++){

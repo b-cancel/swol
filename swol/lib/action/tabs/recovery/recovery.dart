@@ -10,7 +10,7 @@ import 'package:swol/action/page.dart';
 import 'package:swol/shared/methods/theme.dart';
 
 //internal: shared
-import 'package:swol/shared/structs/anExcercise.dart';
+import 'package:swol/shared/structs/anExercise.dart';
 
 //widget
 class Recovery extends StatefulWidget {
@@ -20,7 +20,7 @@ class Recovery extends StatefulWidget {
   });
 
   final Duration transtionDuration;
-  final AnExcercise excercise;
+  final AnExercise excercise;
 
   @override
   _RecoveryState createState() => _RecoveryState();
@@ -177,7 +177,7 @@ class RecoveryButtonsWithWhiteContext extends StatelessWidget {
   final Duration transitionDuration;
   final ValueNotifier<bool> showAreYouSure;
   final Color buttonsColor;
-  final AnExcercise excercise;
+  final AnExercise excercise;
   final int setsPassed;
   final Color headerColor;
 
@@ -185,7 +185,7 @@ class RecoveryButtonsWithWhiteContext extends StatelessWidget {
   Widget build(BuildContext context) {
     return BottomButtons(
       color: buttonsColor,
-      excerciseID: excercise.id,
+      exerciseID: excercise.id,
       forwardAction: () {
         if(showAreYouSure.value){
           maybeSkipTimer( 
@@ -216,13 +216,13 @@ class RecoveryButtonsWithWhiteContext extends StatelessWidget {
         ),
       ),
       backAction: (){
-        ExcercisePage.pageNumber.value = 1;
+        ExercisePage.pageNumber.value = 1;
       },
     );
   }
 
   goToNextSet(){
     //will also handle navigation
-    ExcercisePage.nextSet.value = true;
+    ExercisePage.nextSet.value = true;
   }
 }

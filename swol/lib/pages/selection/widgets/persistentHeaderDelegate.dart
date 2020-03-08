@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:swol/shared/structs/anExcercise.dart';
+import 'package:swol/shared/structs/anExercise.dart';
 
 class HeaderForOneHandedUse extends StatelessWidget {
   const HeaderForOneHandedUse({
@@ -11,7 +11,7 @@ class HeaderForOneHandedUse extends StatelessWidget {
     @required this.inprogressWorkoutSection,
   }) : super(key: key);
 
-  final List<List<AnExcercise>> listOfGroupOfExcercises;
+  final List<List<AnExercise>> listOfGroupOfExcercises;
   final double openHeight;
   final bool newWorkoutSection;
   final bool hiddenWorkoutSection;

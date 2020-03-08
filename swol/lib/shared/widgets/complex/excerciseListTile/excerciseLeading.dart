@@ -6,7 +6,7 @@ import 'package:swol/shared/widgets/complex/excerciseListTile/miniTimer/wrapper.
 import 'package:swol/shared/widgets/simple/heros/curveMod.dart';
 import 'package:swol/shared/widgets/simple/heros/leading.dart';
 import 'package:swol/shared/functions/defaultDateTimes.dart';
-import 'package:swol/shared/structs/anExcercise.dart';
+import 'package:swol/shared/structs/anExercise.dart';
 import 'package:swol/shared/widgets/simple/chip.dart';
 
 //internal: other
@@ -21,7 +21,7 @@ class ExcerciseTileLeading extends StatefulWidget {
     @required Key key,
   }) : super(key: key);
 
-  final AnExcercise excercise;
+  final AnExercise excercise;
   final bool tileInSearch;
   final Duration transitionDuration;
 
@@ -77,7 +77,7 @@ class _ExcerciseTileLeadingState extends State<ExcerciseTileLeading> {
     print(widget.excercise.id.toString() + " build: " + widget.excercise.tempStartTime.toString());
 
     //NOTE: timer takes precendence over regular inprogress
-    if(widget.excercise.tempStartTime.value != AnExcercise.nullDateTime){
+    if(widget.excercise.tempStartTime.value != AnExercise.nullDateTime){
       return AnimatedMiniNormalTimer(
         excercise: widget.excercise,
       );

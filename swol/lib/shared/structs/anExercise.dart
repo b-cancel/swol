@@ -7,11 +7,11 @@ import 'package:swol/shared/methods/excerciseData.dart';
 //so we can update the file at the end in some cases
 //perhaps by providing some alternative update method that is more tedious
 //but doesn't update the file
-class AnExcercise{ 
+class AnExercise{ 
   //constants
   static const int defaultFunctionID = Functions.defaultFunctionID;
   static const int defaultRepTarget = 8;
-  static const Duration defaultRecovery = const Duration(minutes: 1, seconds: 30);
+  static const Duration defaultRecovery = const Duration(minutes: 2, seconds: 30);
   static const int defaultSetTarget = 4;
 
   //default value notifier values
@@ -140,7 +140,7 @@ class AnExcercise{
   }
 
   //build
-  AnExcercise(
+  AnExercise(
     //basic data
     String name, 
     String url, 
@@ -174,7 +174,7 @@ class AnExcercise{
   }
 
   //NOTE: from here we MUST set things directly to the private variables
-  AnExcercise.fromJson(Map<String,dynamic> map){
+  AnExercise.fromJson(Map<String,dynamic> map){
     //---Auto Set
 
     id = map["id"];

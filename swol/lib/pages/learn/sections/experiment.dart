@@ -37,9 +37,39 @@ class ExperimentBody extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text(
-                  "Based on our limited experience and experimentation we believe\n",
-                ),
+                /*
+                One Rep Max Formulas predict your One Rep Max based on any other set.
+                But every formula gives different results.
+                And the difference between the results grows as you do more reps.
+
+                1. So we automatically calculate your Estimated One Rep Max (E-1RM) for every excercise
+                and give you a measure of how sure you can be about this estimate
+                based on how different the results from all the formulas are
+
+                Additionally, some formulas have limits, 
+                for example the "Brzycki Formula" 
+                can't give you a One Rep Max Estimate 
+                if you do more than 37 rep
+
+                2. So we automatically switch to the formula 
+                that most closely matches the selected one in the background, 
+                its just one less thing to worry about!
+
+                We also beleive that if the formulas can predict your One Rep Max based on any other
+                then they should also be able to predict any other set based on your One Rep Max
+
+                3. So before the begining of every set, 
+                we grab your last set, calculate your one rep max,
+                and then use your rep target, to calculate what your body should be able to lift
+
+                This helps you always workout at your desired rep target
+                and know exactly what weight to grab without having to do any guesswork
+                and without following some routine that may be too much or too little for you
+
+                SWOL equips you with the math you need to listen to your body,
+                and adjust your workouts on the fly,
+                to always improve as fast as possible without injuring yourself
+                */
                 ListItem(
                   circleColor: Theme.of(context).accentColor,
                   circleText: "1",

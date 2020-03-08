@@ -7,7 +7,7 @@ import 'package:swol/shared/widgets/complex/onBoarding/wrapper.dart';
 import 'package:swol/shared/functions/defaultDateTimes.dart';
 import 'package:swol/shared/methods/excerciseData.dart';
 import 'package:swol/shared/functions/onboarding.dart';
-import 'package:swol/shared/structs/anExcercise.dart';
+import 'package:swol/shared/structs/anExercise.dart';
 import 'package:swol/main.dart';
 
 //widget
@@ -139,7 +139,7 @@ class _SaveButtonState extends State<SaveButton> {
 
                 //add workout to our list
                 await ExcerciseData.addExcercise(
-                  AnExcercise(
+                  AnExercise(
                     //basic
                     widget.name.value,
                     widget.url.value,

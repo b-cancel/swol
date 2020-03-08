@@ -10,7 +10,7 @@ import 'package:swol/pages/learn/page.dart';
 import 'package:swol/main.dart';
 
 //we don't need to do anything complex to get to the main page
-//all we have to do is pass to this widget the ammount of time we have to pop
+//all we have to do is pass to this widget the amount of time we have to pop
 //every page should react accordingly to its pop
 
 //in the case of the add excercise page 

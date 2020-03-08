@@ -47,7 +47,7 @@ class DefinitionBody extends StatelessWidget {
                   ),
                   TextSpan(
                     text: " is an abbreviation of repetitions. "
-                    + "It refers to the ammount of ",
+                    + "It refers to the amount of ",
                   ),
                   TextSpan(
                     text: "times you were able to lift",
@@ -230,7 +230,7 @@ class DefinitionBody extends StatelessWidget {
                     ),
                   ),
                   TextSpan(
-                    text: " ammount of ",
+                    text: " amount of ",
                   ),
                   TextSpan(
                     text: "weight",

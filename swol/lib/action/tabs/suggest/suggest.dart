@@ -9,7 +9,7 @@ import 'package:swol/action/shared/setDisplay.dart';
 import 'package:swol/action/page.dart';
 
 //internal: other
-import 'package:swol/shared/structs/anExcercise.dart';
+import 'package:swol/shared/structs/anExercise.dart';
 import 'package:swol/other/functions/1RM&R=W.dart';
 
 //widget
@@ -22,7 +22,7 @@ class Suggestion extends StatefulWidget {
     @required this.functionIDToWeightFromRT,
   });
 
-  final AnExcercise excercise;
+  final AnExercise excercise;
   final ValueNotifier<bool> heroUp;
   final Duration heroAnimDuration;
   final double heroAnimTravel;
@@ -43,7 +43,7 @@ class _SuggestionState extends State<Suggestion> {
   //and changed valus
   updateGoalWeight(){
     //grab correct goal weight
-    ExcercisePage.setGoalWeight.value = widget.functionIDToWeightFromRT.value[
+    ExercisePage.setGoalWeight.value = widget.functionIDToWeightFromRT.value[
       functionID.value //NOTE: before we used the excercise value here
     ];
   }
@@ -57,7 +57,7 @@ class _SuggestionState extends State<Suggestion> {
   updateRepTarget(){
     //update it in the file
     widget.excercise.repTarget = repTarget.value;
-    ExcercisePage.setGoalReps.value = repTarget.value.toDouble();
+    ExercisePage.setGoalReps.value = repTarget.value.toDouble();
 
     //recalculate all weight with new rep target
     List<double> functionIDToWeight = new List<double>(8);
@@ -66,7 +66,7 @@ class _SuggestionState extends State<Suggestion> {
         //rep target used
         repTarget.value, 
         //one rep max that uses the same function as below
-        ExcercisePage.oneRepMaxes[
+        ExercisePage.oneRepMaxes[
           functionID
         ], 
         //function index to use
@@ -122,7 +122,7 @@ class _SuggestionState extends State<Suggestion> {
 
     //calc sets passed for bottom buttons
     int setsPassed = widget.excercise.tempSetCount ?? 0;
-    bool timerNotStarted = widget.excercise.tempStartTime.value == AnExcercise.nullDateTime;
+    bool timerNotStarted = widget.excercise.tempStartTime.value == AnExercise.nullDateTime;
     if(timerNotStarted) setsPassed += 1;
 
     //color for bottom buttons
@@ -186,9 +186,9 @@ class _SuggestionState extends State<Suggestion> {
           ),
           BottomButtons(
             color: buttonsColor,
-            excerciseID: widget.excercise.id,
+            exerciseID: widget.excercise.id,
             forwardAction: () {
-              ExcercisePage.pageNumber.value = 1;
+              ExercisePage.pageNumber.value = 1;
             },
             forwardActionWidget: RichText(
               text: TextSpan(

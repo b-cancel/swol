@@ -85,7 +85,7 @@ class CalibrationCard extends StatelessWidget {
                       ),
                     ),
                     TextSpan(
-                      text: " 10 reps",
+                      text: " 5 reps",
                     ),
                   ]),
                 ),

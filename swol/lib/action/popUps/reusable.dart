@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:swol/action/popUps/textValid.dart';
 
 //internal
-import 'package:swol/shared/structs/anExcercise.dart';
+import 'package:swol/shared/structs/anExercise.dart';
 
 //widgets reused in multiple pop ups
 class SetTitle extends StatelessWidget {
@@ -77,7 +77,7 @@ class SetDescription extends StatelessWidget {
           //-------------------------Weight-------------------------
           TextSpan(
             text: invalidWeight ? 
-            ((weight.length == 0 || weight == "0") ? "Nothing" : "An Invalid Ammount of Weight") 
+            ((weight.length == 0 || weight == "0") ? "Nothing" : "An Invalid Amount of Weight") 
             : weight,
             style: TextStyle(
               fontWeight: FontWeight.bold,
@@ -91,7 +91,7 @@ class SetDescription extends StatelessWidget {
           ),
           TextSpan(
             text: invalidReps ? 
-            ((reps.length == 0 || reps == "0") ? "Zero" : "An Invalid Ammount of Reps") 
+            ((reps.length == 0 || reps == "0") ? "Zero" : "An Invalid Amount of Reps") 
             : reps,
             style: TextStyle(
               fontWeight: FontWeight.bold,
@@ -215,10 +215,10 @@ class GoBackAndFix extends StatelessWidget {
 class RevertToPrevious extends StatelessWidget {
   const RevertToPrevious({
     Key key,
-    @required this.excercise,
+    @required this.exercise,
   }) : super(key: key);
 
-  final AnExcercise excercise;
+  final AnExercise exercise;
 
   @override
   Widget build(BuildContext context) {
@@ -240,7 +240,7 @@ class RevertToPrevious extends StatelessWidget {
           ),
           TextSpan(
             //we KNOW any widget that calls this has VALID tempWeight
-            text: excercise.tempWeight.toString(),
+            text: exercise.tempWeight.toString(),
             style: TextStyle(
               fontWeight: FontWeight.bold,
             ),
@@ -250,14 +250,14 @@ class RevertToPrevious extends StatelessWidget {
           ),
           TextSpan(
             //we KNOW any widget that calls this has VALID tempReps
-            text: excercise.tempReps.toString(),
+            text: exercise.tempReps.toString(),
             style: TextStyle(
               fontWeight: FontWeight.bold,
             ),
           ),
           TextSpan(
             //we KNOW any widget that calls this has VALID tempReps
-            text: " rep" + (excercise.tempReps == 1 ? "" : "s"),
+            text: " rep" + (exercise.tempReps == 1 ? "" : "s"),
           ),
         ],
       ),

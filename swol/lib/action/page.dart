@@ -8,7 +8,7 @@ import 'package:page_transition/page_transition.dart';
 import 'package:swol/shared/widgets/simple/heros/leading.dart';
 import 'package:swol/shared/functions/defaultDateTimes.dart';
 import 'package:swol/shared/widgets/simple/heros/title.dart';
-import 'package:swol/shared/structs/anExcercise.dart';
+import 'package:swol/shared/structs/anExercise.dart';
 import 'package:swol/shared/methods/theme.dart';
 
 //internal
@@ -21,13 +21,13 @@ import 'package:swol/action/popUps/warning.dart';
 //1. keep track of all the variables and be able to access them from everywhere
 //2. and generate the functions to show the warning when needed
 //3. but also wrap the rest of the widgets in the dark theme
-class ExcercisePage extends StatelessWidget {
-  ExcercisePage({
+class ExercisePage extends StatelessWidget {
+  ExercisePage({
     @required this.excercise,
     @required this.transitionDuration,
   });
 
-  final AnExcercise excercise;
+  final AnExercise excercise;
   final Duration transitionDuration;
 
   //static vars used through out initializaed with their default values
@@ -85,7 +85,7 @@ class ExcercisePageDark extends StatefulWidget {
     @required this.transitionDuration,
   });
 
-  final AnExcercise excercise;
+  final AnExercise excercise;
   final Duration transitionDuration;
 
   @override
@@ -94,15 +94,15 @@ class ExcercisePageDark extends StatefulWidget {
 
 class _ExcercisePageDarkState extends State<ExcercisePageDark> {
   updateSet(){ //also cover resume case
-    if(ExcercisePage.updateSet.value){
+    if(ExercisePage.updateSet.value){
       //whenever we begin or resume the set we KNOW our setWeight and setReps are valid
-      String setWeight = ExcercisePage.setWeight.value;
-      String setReps = ExcercisePage.setReps.value;
+      String setWeight = ExercisePage.setWeight.value;
+      String setReps = ExercisePage.setReps.value;
       widget.excercise.tempWeight = int.parse(setWeight);
       widget.excercise.tempReps = int.parse(setReps);
     
       //only if begin
-      if(widget.excercise.tempStartTime.value == AnExcercise.nullDateTime){
+      if(widget.excercise.tempStartTime.value == AnExercise.nullDateTime){
         //start the timer
         widget.excercise.tempStartTime = new ValueNotifier<DateTime>(DateTime.now()); 
 
@@ -123,12 +123,12 @@ class _ExcercisePageDarkState extends State<ExcercisePageDark> {
       widget.excercise.lastTimeStamp = LastTimeStamp.inProgressDateTime();
 
       //action complete
-      ExcercisePage.updateSet.value = false;
+      ExercisePage.updateSet.value = false;
     }
   }
 
   nextSet(){
-    if(ExcercisePage.nextSet.value){
+    if(ExercisePage.nextSet.value){
       //must be done first 
       //so that our suggest page has access to right 1 rep maxes
       updateOneRepMaxes(
@@ -140,7 +140,7 @@ class _ExcercisePageDarkState extends State<ExcercisePageDark> {
       //TODO: figure out why at some point I marked that this NEEDED to be BEFORE everything else
       //NOTE: that at the moment I should wait for lastWeight and lastReps to update 
       //before reacting to the change here in the one rep max chip
-      widget.excercise.tempStartTime = new ValueNotifier<DateTime>(AnExcercise.nullDateTime);
+      widget.excercise.tempStartTime = new ValueNotifier<DateTime>(AnExercise.nullDateTime);
       print(widget.excercise.id.toString() +  "******************************updated DT to " + widget.excercise.tempStartTime.toString());
 
       //save values (that we know are valid)
@@ -152,16 +152,16 @@ class _ExcercisePageDarkState extends State<ExcercisePageDark> {
       widget.excercise.tempReps = null;
 
       //reset notifiers
-      ExcercisePage.setWeight.value = "";
-      ExcercisePage.setReps.value = "";
+      ExercisePage.setWeight.value = "";
+      ExercisePage.setReps.value = "";
 
       //move onto the next set
       //NOTE: must happen after all variables updates
       //since the suggest page will use the variables in their calculations
-      ExcercisePage.pageNumber.value = 0;
+      ExercisePage.pageNumber.value = 0;
 
       //action complete
-      ExcercisePage.nextSet.value = false;
+      ExercisePage.nextSet.value = false;
     }
   }
 
@@ -171,23 +171,23 @@ class _ExcercisePageDarkState extends State<ExcercisePageDark> {
     super.initState();
     
     //reset all statics to defaults
-    ExcercisePage.pageNumber.value = 0; //this will properly update itself later
+    ExercisePage.pageNumber.value = 0; //this will properly update itself later
     //goals
-    ExcercisePage.setGoalWeight.value = 0;
-    ExcercisePage.setGoalReps.value = 0;
+    ExercisePage.setGoalWeight.value = 0;
+    ExercisePage.setGoalReps.value = 0;
     //notifiers
-    ExcercisePage.setWeight.value = "";
-    ExcercisePage.setReps.value = "";
+    ExercisePage.setWeight.value = "";
+    ExercisePage.setReps.value = "";
     //functions
-    ExcercisePage.causeRefocusIfInvalid.value = false;
-    ExcercisePage.updateSet.value = false;
-    ExcercisePage.nextSet.value = false;
+    ExercisePage.causeRefocusIfInvalid.value = false;
+    ExercisePage.updateSet.value = false;
+    ExercisePage.nextSet.value = false;
     //closest index reset
-    ExcercisePage.closestIndex.value = -1;
+    ExercisePage.closestIndex.value = -1;
 
     //add listeners
-    ExcercisePage.updateSet.addListener(updateSet);
-    ExcercisePage.nextSet.addListener(nextSet);
+    ExercisePage.updateSet.addListener(updateSet);
+    ExercisePage.nextSet.addListener(nextSet);
 
     //one rep maxes
     updateOneRepMaxes();
@@ -196,8 +196,8 @@ class _ExcercisePageDarkState extends State<ExcercisePageDark> {
   @override
   void dispose() { 
     //remove listeners
-    ExcercisePage.updateSet.removeListener(updateSet);
-    ExcercisePage.nextSet.removeListener(nextSet);
+    ExercisePage.updateSet.removeListener(updateSet);
+    ExercisePage.nextSet.removeListener(nextSet);
 
     //super dispose
     super.dispose();
@@ -207,7 +207,7 @@ class _ExcercisePageDarkState extends State<ExcercisePageDark> {
     weight = weight ?? (widget?.excercise?.lastWeight ?? 0);
     reps = reps ?? (widget?.excercise?.lastReps ?? 0);
     for(int functionID = 0; functionID < 8; functionID++){
-      ExcercisePage.oneRepMaxes[functionID] = To1RM.fromWeightAndReps(
+      ExercisePage.oneRepMaxes[functionID] = To1RM.fromWeightAndReps(
         weight.toDouble(), 
         reps, 
         functionID,
@@ -253,7 +253,7 @@ class PageTitle extends StatelessWidget {
     @required this.excercise,
   });
 
-  final AnExcercise excercise;
+  final AnExercise excercise;
 
   @override
   Widget build(BuildContext context) {
@@ -385,7 +385,7 @@ updateOrderOfIDs(List<double> functionIDToValue){
   //set the value so all notifies get notified
   //only if there is a difference (avoid weird setState while build BUG)
   //NOTE: you must to .toString() to compare properly
-  if(orderedIDs.toString() != ExcercisePage.orderedIDs.value.toString()){
-    ExcercisePage.orderedIDs.value = orderedIDs;
+  if(orderedIDs.toString() != ExercisePage.orderedIDs.value.toString()){
+    ExercisePage.orderedIDs.value = orderedIDs;
   }
 }

@@ -7,7 +7,7 @@ import 'package:swol/action/shared/tooltips/repTargetAsPivot.dart';
 import 'package:swol/action/shared/tooltips/repsAsPivot.dart';
 import 'package:swol/action/shared/tooltips/setToolTips.dart';
 import 'package:swol/action/shared/tooltips/weightAsPivot.dart';
-import 'package:swol/shared/structs/anExcercise.dart';
+import 'package:swol/shared/structs/anExercise.dart';
 import 'package:swol/shared/widgets/simple/conditional.dart';
 import 'package:swol/shared/widgets/simple/curvedCorner.dart';
 
@@ -37,7 +37,7 @@ class SetDisplay extends StatefulWidget {
     this.heroAnimTravel,
   }) : super(key: key);
 
-  final AnExcercise excercise;
+  final AnExercise excercise;
   //other
   final String title;
   final bool extraCurvy;
@@ -65,8 +65,8 @@ class _SetDisplayState extends State<SetDisplay> {
 
     //if not excercise passed we may use 1 of three pivots to calculate our goal set
     if (widget.excercise == null) {
-      ExcercisePage.setGoalWeight.addListener(updateState);
-      ExcercisePage.setGoalReps.addListener(updateState);
+      ExercisePage.setGoalWeight.addListener(updateState);
+      ExercisePage.setGoalReps.addListener(updateState);
     }
 
     //change hero position
@@ -84,8 +84,8 @@ class _SetDisplayState extends State<SetDisplay> {
 
     //remove pivot change detectors
     if (widget.excercise == null) {
-      ExcercisePage.setGoalWeight.removeListener(updateState);
-      ExcercisePage.setGoalReps.removeListener(updateState);
+      ExercisePage.setGoalWeight.removeListener(updateState);
+      ExercisePage.setGoalReps.removeListener(updateState);
     }
 
     //super dipose
@@ -126,22 +126,22 @@ class _SetDisplayState extends State<SetDisplay> {
     //what is our pivot
     Pivot goalSetPivot;
     if (widget.excercise == null) { //we aren't showing the last set
-      if(ExcercisePage.pageNumber.value == 0){
+      if(ExercisePage.pageNumber.value == 0){
         goalSetPivot = Pivot.RepTarget;
       }
       else{
-        bool weightValid = isTextValid(ExcercisePage.setWeight.value);
-        double calculatedGoalWeight = ExcercisePage?.setGoalWeight?.value ?? 0;
+        bool weightValid = isTextValid(ExercisePage.setWeight.value);
+        double calculatedGoalWeight = ExercisePage?.setGoalWeight?.value ?? 0;
         //NOTE: here we do round since setWeight will ALWAYS BE an integer
-        if(weightValid && int.parse(ExcercisePage.setWeight.value) == calculatedGoalWeight.round()){
+        if(weightValid && int.parse(ExercisePage.setWeight.value) == calculatedGoalWeight.round()){
           //we are using our GOAL WEIGHT as our pivot
           goalSetPivot = Pivot.Weight;
         }
         else{
-          bool repsValid = isTextValid(ExcercisePage.setReps.value);
-          double calculatedReps = ExcercisePage?.setGoalReps?.value ?? 0;
+          bool repsValid = isTextValid(ExercisePage.setReps.value);
+          double calculatedReps = ExercisePage?.setGoalReps?.value ?? 0;
           //NOTE: here we do round since setWeight will ALWAYS BE an integer
-          if(repsValid && int.parse(ExcercisePage.setReps.value) == calculatedReps.round()){
+          if(repsValid && int.parse(ExercisePage.setReps.value) == calculatedReps.round()){
             //we are using our GOAL WEIGHT as our pivot
             goalSetPivot = Pivot.Reps;
           }
@@ -345,7 +345,7 @@ class UpdatingSetText extends StatelessWidget {
     this.excercise,
   });
 
-  final AnExcercise excercise;
+  final AnExercise excercise;
   final bool isWeight;
 
   @override
@@ -354,9 +354,9 @@ class UpdatingSetText extends StatelessWidget {
     if (excercise == null) {
       //NOTE: we CAN round here since the value is simply being used for display
       if (isWeight)
-        value = ExcercisePage.setGoalWeight.value.round();
+        value = ExercisePage.setGoalWeight.value.round();
       else
-        value = ExcercisePage.setGoalReps.value.round();
+        value = ExercisePage.setGoalReps.value.round();
     } else {
       if (isWeight)
         value = excercise.lastWeight;

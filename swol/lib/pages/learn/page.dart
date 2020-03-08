@@ -247,8 +247,8 @@ class _LearnExcerciseState extends State<LearnExcercise> {
                 autoScrollController: autoScrollController,
                 index: 5,
                 isOpen: experimentIsOpen,
-                headerIcon: FontAwesomeIcons.flask, 
-                headerText: "The Experiment",
+                headerIcon: FontAwesomeIcons.calculator, 
+                headerText: "The SWOL Calculator",
                 expandedChild: ExperimentBody(),
               ),
               ExpandableTile(

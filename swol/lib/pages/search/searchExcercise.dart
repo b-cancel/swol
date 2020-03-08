@@ -8,7 +8,7 @@ import 'package:swol/pages/selection/widgets/workoutSection.dart';
 //internal: shared
 import 'package:swol/shared/widgets/complex/excerciseListTile/excerciseTile.dart';
 import 'package:swol/shared/methods/excerciseData.dart';
-import 'package:swol/shared/structs/anExcercise.dart';
+import 'package:swol/shared/structs/anExercise.dart';
 
 //internal: other
 import 'package:swol/pages/search/searchesData.dart';
@@ -28,7 +28,7 @@ class _SearchExcerciseState extends State<SearchExcercise> {
 
   //NOTE: since they don't change while we are searching
   //we can grab them once and done
-  Map<int, AnExcercise> excercises = ExcerciseData.getExcercises();
+  Map<int, AnExercise> excercises = ExcerciseData.getExcercises();
 
   //use the text field
   performQuery() {
@@ -50,7 +50,7 @@ class _SearchExcerciseState extends State<SearchExcercise> {
       for (int key = 0; key < keys.length; key++) {
         //grab basic data
         int keyIsID = keys[key];
-        AnExcercise thisExcercise = excercises[keyIsID];
+        AnExercise thisExcercise = excercises[keyIsID];
 
         //extract thing we are searching for
         String excerciseName =
@@ -202,7 +202,7 @@ class SearchBody extends StatelessWidget {
 
   final bool noRecentsToShow;
   final bool showRecentsSearches;
-  final Map<int, AnExcercise> excercises;
+  final Map<int, AnExercise> excercises;
   final TextEditingController search;
   final List<int> queryResults;
   final Function updateState;
@@ -235,7 +235,7 @@ class SearchResults extends StatelessWidget {
   }) : super(key: key);
 
   final List<int> queryResults;
-  final Map<int, AnExcercise> excercises;
+  final Map<int, AnExercise> excercises;
 
   @override
   Widget build(BuildContext context) {
@@ -257,7 +257,7 @@ class SearchResults extends StatelessWidget {
             physics: ClampingScrollPhysics(),
             itemCount: queryResults.length,
             itemBuilder: (context, index) {
-              AnExcercise excercise = excercises[queryResults[index]];
+              AnExercise excercise = excercises[queryResults[index]];
               return ExcerciseTile(
                 key: ValueKey(excercise.id),
                 excercise: excercise,

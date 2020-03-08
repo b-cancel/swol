@@ -17,11 +17,10 @@ import 'package:swol/shared/widgets/complex/fields/fields/text/notesField.dart';
 import 'package:swol/shared/widgets/complex/fields/fields/linkField/link.dart';
 import 'package:swol/shared/widgets/complex/fields/fields/text/nameField.dart';
 import 'package:swol/shared/widgets/complex/fields/fields/function.dart';
-import 'package:swol/shared/structs/anExcercise.dart';
+import 'package:swol/shared/structs/anExercise.dart';
 
 //internal: other
 import 'package:swol/pages/selection/widgets/addNewHero.dart';
-import 'package:swol/other/functions/helper.dart';
 import 'package:swol/main.dart';
 
 //main widget
@@ -62,19 +61,19 @@ class AddExcercise extends StatelessWidget {
   final ValueNotifier<String> url = new ValueNotifier("");
 
   final ValueNotifier<int> functionID = new ValueNotifier(
-    AnExcercise.defaultFunctionID,
+    AnExercise.defaultFunctionID,
   );
 
   final ValueNotifier<Duration> recoveryPeriod = new ValueNotifier(
-    AnExcercise.defaultRecovery,
+    AnExercise.defaultRecovery,
   );
 
   final ValueNotifier<int> setTarget = new ValueNotifier(
-    AnExcercise.defaultSetTarget,
+    AnExercise.defaultSetTarget,
   );
 
   final ValueNotifier<int> repTarget = new ValueNotifier(
-    AnExcercise.defaultRepTarget,
+    AnExercise.defaultRepTarget,
   );
 
   final ValueNotifier<bool> tipIsShowing = new ValueNotifier(false);

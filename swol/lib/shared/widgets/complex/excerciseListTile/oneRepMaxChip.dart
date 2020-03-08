@@ -7,7 +7,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 //internal
 import 'package:swol/shared/widgets/simple/oneOrTheOtherIcon.dart';
 import 'package:swol/shared/widgets/simple/ourSnackBar.dart';
-import 'package:swol/shared/structs/anExcercise.dart';
+import 'package:swol/shared/structs/anExercise.dart';
 import 'package:swol/other/functions/helper.dart';
 
 //given the
@@ -24,7 +24,7 @@ class ExcerciseTileSubtitle extends StatefulWidget {
     @required Key key,
   }) : super(key: key);
 
-  final AnExcercise excercise;
+  final AnExercise excercise;
   final Duration transitionDuration;
 
   @override
@@ -34,7 +34,7 @@ class ExcerciseTileSubtitle extends StatefulWidget {
 class _ExcerciseTileSubtitleState extends State<ExcerciseTileSubtitle> {
   actualUpdate(Duration randomDuration){
     //a set was just completed so there WILL be a new last set
-    if(widget.excercise.tempStartTime.value == AnExcercise.nullDateTime){
+    if(widget.excercise.tempStartTime.value == AnExercise.nullDateTime){
       if(mounted) setState(() {});
     }
   }

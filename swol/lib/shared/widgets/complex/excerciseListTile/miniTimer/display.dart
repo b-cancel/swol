@@ -10,7 +10,7 @@ import 'package:loading_indicator/loading_indicator.dart';
 //internal
 import 'package:swol/shared/widgets/complex/excerciseListTile/miniTimer/progress.dart';
 import 'package:swol/shared/widgets/complex/excerciseListTile/miniTimer/shaking.dart';
-import 'package:swol/shared/structs/anExcercise.dart';
+import 'package:swol/shared/structs/anExercise.dart';
 
 //widget
 class WatchUI extends StatelessWidget {
@@ -22,7 +22,7 @@ class WatchUI extends StatelessWidget {
   });
 
   final AnimationController controller;
-  final AnExcercise excercise;
+  final AnExercise excercise;
   final DateTime startTime;
 
   @override

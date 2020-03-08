@@ -5,17 +5,17 @@ import 'package:flutter/material.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 
 //internal
-import 'package:swol/shared/structs/anExcercise.dart';
+import 'package:swol/shared/structs/anExercise.dart';
 import 'package:swol/action/popUps/textValid.dart';
 import 'package:swol/action/popUps/reusable.dart';
 import 'package:swol/action/popUps/button.dart';
 import 'package:swol/action/page.dart';
 
 //function
-maybeError(BuildContext context, AnExcercise excercise, DateTime startTime) {
+maybeError(BuildContext context, AnExercise exercise, DateTime startTime) {
   //grab data
-  String weight = ExcercisePage.setWeight.value;
-  String reps = ExcercisePage.setReps.value;
+  String weight = ExercisePage.setWeight.value;
+  String reps = ExercisePage.setReps.value;
 
   //validity
   bool weightValid = isTextValid(weight);
@@ -24,13 +24,13 @@ maybeError(BuildContext context, AnExcercise excercise, DateTime startTime) {
 
   //bring up the pop up if needed
   if (setValid) {
-    ExcercisePage.updateSet.value = true; //start the set
-    ExcercisePage.pageNumber.value = 2; //shift to the timer page
+    ExercisePage.updateSet.value = true; //start the set
+    ExercisePage.pageNumber.value = 2; //shift to the timer page
   } else {
     //NOTE: this assumes the user CANT type anything except digits of the right size
 
     //change the buttons shows a the wording a tad\
-    bool timerNotStarted = startTime == AnExcercise.nullDateTime;
+    bool timerNotStarted = startTime == AnExercise.nullDateTime;
     String continueString =
         (timerNotStarted) ? "Begin Your Set Break" : "Return To Your Break";
 
@@ -45,7 +45,7 @@ maybeError(BuildContext context, AnExcercise excercise, DateTime startTime) {
         //If the pop up came up the values typed are not valid
         //if we reverted then the refocus will do nothing
         //since the function will see that both values are valid
-        ExcercisePage.causeRefocusIfInvalid.value = true;
+        ExercisePage.causeRefocusIfInvalid.value = true;
       },
       dismissOnTouchOutside: true,
       dialogType: DialogType.ERROR,
@@ -123,7 +123,7 @@ maybeError(BuildContext context, AnExcercise excercise, DateTime startTime) {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         RevertToPrevious(
-                          excercise: excercise,
+                          exercise: exercise,
                         ),
                       ],
                     ),
@@ -143,15 +143,15 @@ maybeError(BuildContext context, AnExcercise excercise, DateTime startTime) {
           //revert back (no need to update set)
           //we KNOW the temps are VALID
           //else the timer would not have started
-          ExcercisePage.setWeight.value = excercise.tempWeight.toString();
-          ExcercisePage.setReps.value = excercise.tempReps.toString();
+          ExercisePage.setWeight.value = exercise.tempWeight.toString();
+          ExercisePage.setReps.value = exercise.tempReps.toString();
 
           //pop ourselves
           Navigator.of(context).pop();
           //will call "onDissmissCallback"
 
           //continue as expected
-          ExcercisePage.pageNumber.value = 2; //shift to the timer page
+          ExercisePage.pageNumber.value = 2; //shift to the timer page
         },
       ),
       btnOk: timerNotStarted ? null : AwesomeButton(

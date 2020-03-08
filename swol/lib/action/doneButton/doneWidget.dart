@@ -7,7 +7,7 @@ import 'package:swol/action/doneButton/corner.dart';
 import 'package:swol/action/page.dart';
 
 //internal
-import 'package:swol/shared/structs/anExcercise.dart';
+import 'package:swol/shared/structs/anExercise.dart';
 
 //NOTE: we have a couple of timestamp types
 //inprogress (on top), new, normal, hidden
@@ -15,7 +15,7 @@ import 'package:swol/shared/structs/anExcercise.dart';
 //we are trying to cover X edge case
 
 //case 1 of edge case
-//if we are doing the calibration set for an excercise, it will be categorized as "NEW"
+//if we are doing the calibration set for an exercise, it will be categorized as "NEW"
 //if we don't complete this set and move onto our 2nd set (with suggestions) -> good
 //else we dont complete this first set and SHOULD RETURN TO "NEW"
 
@@ -27,7 +27,7 @@ import 'package:swol/shared/structs/anExcercise.dart';
 
 //in all cases we don't want to officially update the timestamp type UNTIL we finish our first set
 //so we can revert back to our location if needed
-//so we need to keep track of an extra variable in the excercise
+//so we need to keep track of an extra variable in the exercise
 //ONLY when recording the first set do we want to set it so we can use it
 //and ONLY when deleting the first set do we want to reinstate it vs simply using the default DateTime.now()
 
@@ -35,12 +35,12 @@ enum Complete {ForgotToFinish, DeleteNewSet, Normal}
 
 class FloatingDoneButton extends StatefulWidget {
   FloatingDoneButton({
-    @required this.excercise,
+    @required this.exercise,
     @required this.showOrHideDuration,
     @required this.animationCurve,
   });
 
-  final AnExcercise excercise;
+  final AnExercise exercise;
   final Curve animationCurve;
   final Duration showOrHideDuration;
 
@@ -54,8 +54,8 @@ class _FloatingDoneButtonState extends State<FloatingDoneButton> {
 
   //whether or not this particular page wants the button to show
   bool shouldShow(){
-    bool pageWithButton = ExcercisePage.pageNumber.value != 1;
-    bool nullTSC = widget.excercise.tempSetCount == null;
+    bool pageWithButton = ExercisePage.pageNumber.value != 1;
+    bool nullTSC = widget.exercise.tempSetCount == null;
 
     //NOTE: because our tempSetCount is increase when we start the timer
     //if we start the timer
@@ -68,7 +68,7 @@ class _FloatingDoneButtonState extends State<FloatingDoneButton> {
     else{ //the page that usually doesn't have a done button
       //does have the done button but only for the calibration set
       //and only if all other conditions are met
-      bool inCalibrationSet = widget.excercise.lastWeight == null;
+      bool inCalibrationSet = widget.exercise.lastWeight == null;
       return inCalibrationSet && (nullTSC == false);
     }
   }
@@ -112,7 +112,7 @@ class _FloatingDoneButtonState extends State<FloatingDoneButton> {
     //which means we have to wait for the change ATLEAST
     //in order to properly update the done button with the pageNumber
     bool shouldShowAfterDelay = shouldShow();
-    if(ExcercisePage.pageNumber.value == 0){
+    if(ExercisePage.pageNumber.value == 0){
       Future.delayed(widget.showOrHideDuration, (){
         bool shouldStillShow = shouldShow();
         if(shouldShowAfterDelay == shouldStillShow){
@@ -138,13 +138,13 @@ class _FloatingDoneButtonState extends State<FloatingDoneButton> {
     fullyHidden = shouldBeShowing == false;
 
     //whenever page updates button get updated
-    ExcercisePage.pageNumber.addListener(updateButton);
+    ExercisePage.pageNumber.addListener(updateButton);
   }
 
   @override
   void dispose() {
     //remove listener from page to button
-    ExcercisePage.pageNumber.removeListener(updateButton);
+    ExercisePage.pageNumber.removeListener(updateButton);
 
     //super dispose
     super.dispose();
@@ -155,13 +155,13 @@ class _FloatingDoneButtonState extends State<FloatingDoneButton> {
     String message = "";
 
     //handle page changes
-    int setsPassedFromHere = widget.excercise.tempSetCount ?? 0;
+    int setsPassedFromHere = widget.exercise.tempSetCount ?? 0;
     Complete completionType;
-    if(ExcercisePage.pageNumber.value != 2){
+    if(ExercisePage.pageNumber.value != 2){
       //for page 0 and 1 
       //although page 1 shouldn't have the button
-      DateTime tempStartTime = widget.excercise.tempStartTime.value;
-      if(tempStartTime == AnExcercise.nullDateTime){
+      DateTime tempStartTime = widget.exercise.tempStartTime.value;
+      if(tempStartTime == AnExercise.nullDateTime){
         completionType = Complete.ForgotToFinish;
       }
       else{
@@ -172,7 +172,7 @@ class _FloatingDoneButtonState extends State<FloatingDoneButton> {
     }
     else completionType = Complete.Normal;
 
-    int setTarget = widget.excercise.setTarget;
+    int setTarget = widget.exercise.setTarget;
     int setsLeft = setTarget - setsPassedFromHere;
 
     //do we have values left?
@@ -207,7 +207,7 @@ class _FloatingDoneButtonState extends State<FloatingDoneButton> {
       cardColor = Colors.red;
     }
     else{
-      bool shouldCompleteHere = (setsPassedFromHere >= widget.excercise.setTarget);
+      bool shouldCompleteHere = (setsPassedFromHere >= widget.exercise.setTarget);
       if(shouldCompleteHere) cardColor = Theme.of(context).accentColor;
     }
 
@@ -253,7 +253,7 @@ class _FloatingDoneButtonState extends State<FloatingDoneButton> {
                     show: showButton,
                     color: cardColor,
                     setsPassed: setsPassedFromHere,
-                    excerciseID: widget.excercise.id,
+                    exerciseID: widget.exercise.id,
                     animationCurve: widget.animationCurve,
                     showOrHideDuration: widget.showOrHideDuration,
                   ),
@@ -280,47 +280,47 @@ class _FloatingDoneButtonState extends State<FloatingDoneButton> {
     //time stamp
     DateTime newTimeStamp = DateTime.now();
     if(setsPassed == 0){ //we didn't care to even save this set
-      newTimeStamp = widget.excercise.backUpTimeStamp;
+      newTimeStamp = widget.exercise.backUpTimeStamp;
     }
-    widget.excercise.lastTimeStamp = newTimeStamp;
+    widget.exercise.lastTimeStamp = newTimeStamp;
 
     //temp start time
     if(setTempsToNull){
-      widget.excercise.tempStartTime = new ValueNotifier<DateTime>(AnExcercise.nullDateTime);
+      widget.exercise.tempStartTime = new ValueNotifier<DateTime>(AnExercise.nullDateTime);
     }
 
     //weight
     if(tempToLast){ //we KNOW tempWeight is VALID
-      widget.excercise.lastWeight = widget.excercise.tempWeight;
+      widget.exercise.lastWeight = widget.exercise.tempWeight;
     }
     if(setTempsToNull){
-      widget.excercise.tempWeight = null;
+      widget.exercise.tempWeight = null;
     }
 
     //reps
     if(tempToLast){ //we KNOW tempReps is VALID
-      widget.excercise.lastReps = widget.excercise.tempReps;
+      widget.exercise.lastReps = widget.exercise.tempReps;
     }
     if(setTempsToNull){
-      widget.excercise.tempReps = null;
+      widget.exercise.tempReps = null;
     }
 
     //set target
     //NOTE: if we start record a set, are like naw, and don't want to record it
     //we aren't going to show the pop up 
     //and half suggest that they update their setTarget to 0
-    if(setsPassed != 0 && setsPassed != widget.excercise.setTarget){
+    if(setsPassed != 0 && setsPassed != widget.exercise.setTarget){
       //TODO: bring the pop up that asks us if we want to update our set target
       //TODO: the pop up should also pop this page
 
       //TODO: remove test code
-      widget.excercise.tempSetCount = null;
+      widget.exercise.tempSetCount = null;
       Navigator.of(context).pop();
     }
     else{
       //the set target doesn't need to be updated
       //but the tempSetCount MUST be nullified
-      widget.excercise.tempSetCount = null;
+      widget.exercise.tempSetCount = null;
       Navigator.of(context).pop();
     }
   }

@@ -12,7 +12,7 @@ import 'package:swol/shared/widgets/complex/fields/fields/text/notesField.dart';
 import 'package:swol/shared/widgets/simple/playOnceGif.dart';
 import 'package:swol/shared/functions/defaultDateTimes.dart';
 import 'package:swol/shared/methods/excerciseData.dart';
-import 'package:swol/shared/structs/anExcercise.dart';
+import 'package:swol/shared/structs/anExercise.dart';
 
 //internal: other
 import 'package:swol/pages/notes/excerciseMessages.dart';
@@ -23,7 +23,7 @@ class ExcerciseNotes extends StatefulWidget {
     @required this.excercise,
   });
 
-  final AnExcercise excercise;
+  final AnExercise excercise;
 
   @override
   _ExcerciseNotesState createState() => _ExcerciseNotesState();
@@ -75,7 +75,7 @@ class _ExcerciseNotesState extends State<ExcerciseNotes> {
     //close any keyboard that may be open
     FocusScope.of(context).unfocus();
     //indicate that we should refocus inf needed
-    ExcercisePage.causeRefocusIfInvalid.value = true;
+    ExercisePage.causeRefocusIfInvalid.value = true;
   }
 
   @override
@@ -155,7 +155,7 @@ class BigActionButton extends StatelessWidget {
     @required this.delete,
   });
 
-  final AnExcercise excercise;
+  final AnExercise excercise;
   final bool delete;
 
   //functions

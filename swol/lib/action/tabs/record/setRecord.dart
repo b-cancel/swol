@@ -2,7 +2,6 @@
 import 'package:flutter/material.dart';
 
 //plugins
-import 'package:keyboard_visibility/keyboard_visibility.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -16,7 +15,7 @@ import 'package:swol/action/popUps/error.dart';
 import 'package:swol/action/page.dart';
 
 //internal: shared
-import 'package:swol/shared/structs/anExcercise.dart';
+import 'package:swol/shared/structs/anExercise.dart';
 import 'package:swol/shared/methods/theme.dart';
 
 //widget
@@ -28,14 +27,18 @@ class SetRecord extends StatelessWidget {
     @required this.heroAnimDuration,
     @required this.heroAnimTravel,
     @required this.functionIDToWeightFromRT,
+    @required this.weightFocusNode,
+    @required this.repsFocusNode,
   });
 
-  final AnExcercise excercise;
+  final AnExercise excercise;
   final double statusBarHeight;
   final ValueNotifier<bool> heroUp;
   final Duration heroAnimDuration;
   final double heroAnimTravel;
   final ValueNotifier<List<double>> functionIDToWeightFromRT;
+  final FocusNode weightFocusNode;
+  final FocusNode repsFocusNode;
 
   //build
   @override
@@ -49,14 +52,14 @@ class SetRecord extends StatelessWidget {
     Function backAction;
     if (calibrationRequired == false) {
       backAction = () {
-        ExcercisePage.pageNumber.value = 0;
+        ExercisePage.pageNumber.value = 0;
       };
     }
 
     //calc sets passed for bottom buttons
     int setsPassed = excercise.tempSetCount ?? 0;
     bool timerNotStarted =
-        excercise.tempStartTime.value == AnExcercise.nullDateTime;
+        excercise.tempStartTime.value == AnExercise.nullDateTime;
     if (timerNotStarted) setsPassed += 1;
 
     //color for bottom buttons
@@ -71,6 +74,8 @@ class SetRecord extends StatelessWidget {
       aLittleSmaller: true,
       child: RecordFields(
         heroAnimDuration: heroAnimDuration,
+        weightFocusNode: weightFocusNode,
+        repsFocusNode: repsFocusNode,
       ),
     );
 
@@ -82,6 +87,8 @@ class SetRecord extends StatelessWidget {
         excercise: excercise,
         timerNotStarted: timerNotStarted,
         backAction: backAction,
+        weightFocusNode: weightFocusNode,
+        repsFocusNode: repsFocusNode,
       ),
     );
 
@@ -159,13 +166,17 @@ class SetRecordButtonsWithWhiteContext extends StatelessWidget {
     @required this.excercise,
     @required this.timerNotStarted,
     @required this.backAction,
+    @required this.weightFocusNode,
+    @required this.repsFocusNode,
   }) : super(key: key);
 
   final Color cardColor;
   final Color buttonsColor;
-  final AnExcercise excercise;
+  final AnExercise excercise;
   final bool timerNotStarted;
   final Function backAction;
+  final FocusNode weightFocusNode;
+  final FocusNode repsFocusNode;
 
   @override
   Widget build(BuildContext context) {
@@ -224,6 +235,8 @@ class SetRecordButtonsWithWhiteContext extends StatelessWidget {
                               fit: BoxFit.contain,
                               child: TimerGlimpse(
                                 excercise: excercise,
+                                weightFocusNode: weightFocusNode,
+                                repsFocusNode: repsFocusNode,
                               ),
                             ),
                           )
@@ -236,7 +249,7 @@ class SetRecordButtonsWithWhiteContext extends StatelessWidget {
         ),
         BottomButtons(
           color: buttonsColor,
-          excerciseID: excercise.id,
+          exerciseID: excercise.id,
           forwardAction: () {
             maybeError(
               context,
@@ -258,10 +271,14 @@ class SetRecordButtonsWithWhiteContext extends StatelessWidget {
 class TimerGlimpse extends StatefulWidget {
   const TimerGlimpse({
     @required this.excercise,
+    @required this.weightFocusNode,
+    @required this.repsFocusNode,
     Key key,
   }) : super(key: key);
 
-  final AnExcercise excercise;
+  final AnExercise excercise;
+  final FocusNode weightFocusNode;
+  final FocusNode repsFocusNode;
 
   @override
   _TimerGlimpseState createState() => _TimerGlimpseState();
@@ -270,25 +287,23 @@ class TimerGlimpse extends StatefulWidget {
 class _TimerGlimpseState extends State<TimerGlimpse> {
   int subscribeID;
 
+  updateState(){
+    if(mounted){
+      setState(() {});
+    }
+  }
+
   @override
   void initState() {
-    //super init
     super.initState();
-
-    //add listener so we can give the user a proper glimpse
-    subscribeID = KeyboardVisibilityNotification().addNewListener(
-      onHide: (bool visible) {
-        setState(() {});
-      },
-    );
+    widget.weightFocusNode.addListener(updateState);
+    widget.repsFocusNode.addListener(updateState);
   }
 
   @override
   void dispose() { 
-    //remove listeners
-    KeyboardVisibilityNotification().removeListener(subscribeID);
-
-    //super dipose
+    widget.weightFocusNode.removeListener(updateState);
+    widget.repsFocusNode.removeListener(updateState);
     super.dispose();
   }
 
@@ -297,7 +312,7 @@ class _TimerGlimpseState extends State<TimerGlimpse> {
     //get glimpse color
     Color circleGlimpseColor;
     DateTime startTime = widget.excercise.tempStartTime.value;
-    if(startTime == AnExcercise.nullDateTime){
+    if(startTime == AnExercise.nullDateTime){
       circleGlimpseColor = Color(0xFFBFBFBF); //same grey as timer
     }
     else{

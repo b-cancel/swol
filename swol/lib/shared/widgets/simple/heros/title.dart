@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:swol/other/otherHelper.dart';
-import 'package:swol/shared/structs/anExcercise.dart';
+import 'package:swol/shared/structs/anExercise.dart';
 import 'package:swol/shared/widgets/simple/heros/curveMod.dart';
 
 class ExcerciseTitleHero extends StatelessWidget {
@@ -10,7 +10,7 @@ class ExcerciseTitleHero extends StatelessWidget {
     this.onTap,
   });
 
-  final AnExcercise excercise;
+  final AnExercise excercise;
   final bool inAppBar;
   final Function onTap;
 
@@ -59,7 +59,7 @@ class ExcerciseTitleHeroHelper extends StatelessWidget {
   });
 
   final double percentToAppBar;
-  final AnExcercise excercise;
+  final AnExercise excercise;
   final Function onTap;
 
   @override
@@ -102,7 +102,7 @@ class ReloadingTitle extends StatefulWidget {
     @required this.excercise,
   });
 
-  final AnExcercise excercise;
+  final AnExercise excercise;
 
   @override
   _ReloadingTitleState createState() => _ReloadingTitleState();

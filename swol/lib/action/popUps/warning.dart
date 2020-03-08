@@ -11,11 +11,11 @@ import 'package:swol/action/page.dart';
 import 'package:swol/action/popUps/textValid.dart';
 
 //internal: other
-import 'package:swol/shared/structs/anExcercise.dart';
+import 'package:swol/shared/structs/anExercise.dart';
 import 'package:swol/main.dart';
 
 //determine whether we should warn the user
-warningThenAllowPop(BuildContext context, AnExcercise excercise,
+warningThenAllowPop(BuildContext context, AnExercise excercise,
     {bool alsoPop: false}) {
   //NOTE: we can assume TEMPS ARE ALWAYS VALID
   //IF they ARENT EMPTY
@@ -49,8 +49,8 @@ warningThenAllowPop(BuildContext context, AnExcercise excercise,
   String tempReps = (tempRepsString != null) ? tempRepsString.toString() : "";
 
   //grab news
-  String newWeight = ExcercisePage.setWeight.value;
-  String newReps = ExcercisePage.setReps.value;
+  String newWeight = ExercisePage.setWeight.value;
+  String newReps = ExercisePage.setReps.value;
 
   //check if matching
   bool matchingWeight = (newWeight == tempWeight);
@@ -89,7 +89,7 @@ warningThenAllowPop(BuildContext context, AnExcercise excercise,
 
     if (newSetValid) {
       //will start or update the set
-      ExcercisePage.updateSet.value = true;
+      ExercisePage.updateSet.value = true;
 
       //allow the user to go to where they wanted to
       //IF (also pop), will pop
@@ -116,7 +116,7 @@ warningThenAllowPop(BuildContext context, AnExcercise excercise,
           //If the pop up came up the values typed are not valid
           //if we reverted then the refocus will do nothing
           //since the function will see that both values are valid
-          ExcercisePage.causeRefocusIfInvalid.value = true;
+          ExercisePage.causeRefocusIfInvalid.value = true;
         },
         dismissOnTouchOutside: true,
         dialogType: DialogType.WARNING,
@@ -153,7 +153,7 @@ warningThenAllowPop(BuildContext context, AnExcercise excercise,
                     Visibility(
                       visible: newSet == false,
                       child: RevertToPrevious(
-                        excercise: excercise,
+                        exercise: excercise,
                       ),
                     ),
                   ],
@@ -195,7 +195,7 @@ warningThenAllowPop(BuildContext context, AnExcercise excercise,
             //  the "onDissmissCallback" will refocus
             //ELSE we will move to the right page
             //  and the init function of set record will refocus
-            ExcercisePage.pageNumber.value = 1;
+            ExercisePage.pageNumber.value = 1;
           },
         ),
       ).show();

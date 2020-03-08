@@ -36,7 +36,7 @@ dependencies:
   flutter_gifimage: ^1.0.1 
 
   #STATUS AND NAVIGATION BAR
-  flutter_statusbarcolor: ^0.2.2 #MAYBE WEB ISSUES
+  #flutter_statusbarcolor: ^0.2.3 #MAYBE WEB ISSUES
 
   #feature discovery
   feature_discovery: ^0.6.0 #I THINK MAY CAUSE WEB ISSUES (wait on response)
@@ -109,9 +109,10 @@ dependencies:
 
   #TRANSITIONS
   page_transition: ^1.1.5
+  #animations: ^1.0.0+5 #TODO use for improvements later
 
   #KEYBOARD IS VISIBLE CHECK (for timer glimpse)
-  keyboard_visibility: ^0.5.6
+  #keyboard_visibility: ^0.5.6
 
 flutter_native_splash:
   image: assets/splash/splashCut.png

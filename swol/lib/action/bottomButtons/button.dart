@@ -10,14 +10,14 @@ import 'package:swol/shared/methods/theme.dart';
 class BottomButtons extends StatelessWidget {
   BottomButtons({
     @required this.color,
-    @required this.excerciseID,
+    @required this.exerciseID,
     @required this.forwardAction,
     @required this.forwardActionWidget,
     this.backAction,
   });
 
   final Color color;
-  final int excerciseID;
+  final int exerciseID;
   final Function forwardAction;
   final Widget forwardActionWidget;
   final Function backAction;
@@ -45,7 +45,7 @@ class BottomButtons extends StatelessWidget {
           ),
           //the buttons that are larger than they seem to be
           Buttons(
-            excerciseID: excerciseID,
+            exerciseID: exerciseID,
             forwardAction: forwardAction,
             forwardActionWidget: forwardActionWidget,
             backAction: backAction,
@@ -59,14 +59,14 @@ class BottomButtons extends StatelessWidget {
 
 class Buttons extends StatelessWidget {
   const Buttons({
-    @required this.excerciseID,
+    @required this.exerciseID,
     @required this.forwardAction,
     @required this.forwardActionWidget,
     this.backAction,
     this.color,
   });
 
-  final int excerciseID;
+  final int exerciseID;
   final Function forwardAction;
   final Widget forwardActionWidget;
   final Function backAction;
@@ -94,7 +94,7 @@ class Buttons extends StatelessWidget {
             forwardAction: forwardAction, 
             forwardActionWidget: forwardActionWidget,
             verticalPadding: extraVerticalPadding,
-            excerciseID: excerciseID,
+            exerciseID: exerciseID,
             color: color,
           ),
         ],

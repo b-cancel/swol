@@ -10,9 +10,13 @@ import 'package:swol/shared/methods/theme.dart';
 class RecordFields extends StatefulWidget { 
   RecordFields({
     @required this.heroAnimDuration,
+    @required this.weightFocusNode,
+    @required this.repsFocusNode,
   });
 
   final Duration heroAnimDuration;
+  final FocusNode weightFocusNode;
+  final FocusNode repsFocusNode;
 
   //weight field
   @override
@@ -21,17 +25,15 @@ class RecordFields extends StatefulWidget {
 
 class _RecordFieldsState extends State<RecordFields> {
   final TextEditingController weightController = new TextEditingController();
-  final FocusNode weightFocusNode = new FocusNode();
 
   final TextEditingController repsController = new TextEditingController();
-  final FocusNode repsFocusNode = new FocusNode();
 
   updateWeightNotifier() {
-    ExcercisePage.setWeight.value = weightController.text;
+    ExercisePage.setWeight.value = weightController.text;
   }
 
   updateRepsNotifier() {
-    ExcercisePage.setReps.value = repsController.text;
+    ExercisePage.setReps.value = repsController.text;
   }
 
   @override
@@ -40,8 +42,8 @@ class _RecordFieldsState extends State<RecordFields> {
     super.initState();
 
     //NOTE: set the initial values of our controllers from notifiers
-    weightController.text = ExcercisePage.setWeight.value;
-    repsController.text = ExcercisePage.setReps.value;
+    weightController.text = ExercisePage.setWeight.value;
+    repsController.text = ExercisePage.setReps.value;
 
     //add listeners
     weightController.addListener(updateWeightNotifier);
@@ -50,20 +52,20 @@ class _RecordFieldsState extends State<RecordFields> {
     //autofocus if possible
     WidgetsBinding.instance.addPostFrameCallback((_) {
       //NOTE: if you don't wait until transition things begin to break
-      Future.delayed(widget.heroAnimDuration, () {
+      Future.delayed(widget.heroAnimDuration * 1.5, () {
         if(mounted) focusOnFirstInvalid();
       });
     });
 
     //attach a listener so a change in it will cause a refocus
     //done from warning, error, and notes page
-    ExcercisePage.causeRefocusIfInvalid.addListener(focusOnFirstInvalid);
+    ExercisePage.causeRefocusIfInvalid.addListener(focusOnFirstInvalid);
   }
 
   @override
   void dispose() {
     //remove listeners
-    ExcercisePage.causeRefocusIfInvalid.removeListener(focusOnFirstInvalid);
+    ExercisePage.causeRefocusIfInvalid.removeListener(focusOnFirstInvalid);
 
     //remove notifiers
     weightController.removeListener(updateWeightNotifier);
@@ -82,21 +84,21 @@ class _RecordFieldsState extends State<RecordFields> {
       //clear with value that could be nothing but invalid
       if(weightController.text == "0") weightController.clear();
       //request focus
-      FocusScope.of(context).requestFocus(weightFocusNode);
+      FocusScope.of(context).requestFocus(widget.weightFocusNode);
       //NOTE: cursor automatically gets shifted to the end
     } else { //maybe focus on reps
       if (isTextValid(repsController.text) == false) {
         //clear with value that could be nothing but invalid
         if(repsController.text == "0") repsController.clear();
         //request focus
-        FocusScope.of(context).requestFocus(repsFocusNode);
+        FocusScope.of(context).requestFocus(widget.repsFocusNode);
         //NOTE: cursor automatically gets shifted to the end
       }
     }
 
     //whatever cause the refocusing
     //no longer needs it
-    ExcercisePage.causeRefocusIfInvalid.value = false;
+    ExercisePage.causeRefocusIfInvalid.value = false;
   }
 
   @override
@@ -125,17 +127,17 @@ class _RecordFieldsState extends State<RecordFields> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             RecordField(
-              focusNode: weightFocusNode,
+              focusNode: widget.weightFocusNode,
               controller: weightController,
               isLeft: true,
               borderSize: borderSize,
-              otherFocusNode: repsFocusNode,
+              otherFocusNode: widget.repsFocusNode,
               otherController: repsController
             ),
             Column(
               children: <Widget>[
                 TappableIcon(
-                  focusNode: weightFocusNode,
+                  focusNode: widget.weightFocusNode,
                   iconSize: iconSize,
                   borderSize: borderSize,
                   icon: Padding(
@@ -149,7 +151,7 @@ class _RecordFieldsState extends State<RecordFields> {
                   isLeft: true,
                 ),
                 TappableIcon(
-                  focusNode: repsFocusNode,
+                  focusNode: widget.repsFocusNode,
                   iconSize: iconSize,
                   borderSize: borderSize,
                   icon: Icon(Icons.repeat),
@@ -158,11 +160,11 @@ class _RecordFieldsState extends State<RecordFields> {
               ],
             ),
             RecordField(
-              focusNode: repsFocusNode,
+              focusNode: widget.repsFocusNode,
               controller: repsController,
               isLeft: false,
               borderSize: borderSize,
-              otherFocusNode: weightFocusNode,
+              otherFocusNode: widget.weightFocusNode,
               otherController: weightController,
             ),
           ],

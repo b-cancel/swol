@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:swol/shared/widgets/complex/excerciseListTile/miniTimer/invertedCircleClipper.dart';
 import 'package:swol/shared/widgets/complex/excerciseListTile/miniTimer/circles.dart';
 import 'package:swol/shared/widgets/simple/triangleAngle.dart';
-import 'package:swol/shared/structs/anExcercise.dart';
+import 'package:swol/shared/structs/anExercise.dart';
 
 //shared
 class ProgressCircle extends StatelessWidget {
@@ -18,7 +18,7 @@ class ProgressCircle extends StatelessWidget {
     @required this.controller,
   });
 
-  final AnExcercise excercise;
+  final AnExercise excercise;
   final DateTime startTime;
   final AnimationController controller;
 

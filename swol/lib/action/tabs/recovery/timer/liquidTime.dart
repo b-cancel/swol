@@ -15,7 +15,7 @@ import 'package:swol/action/page.dart';
 
 //internal: shared
 import 'package:swol/shared/widgets/simple/conditional.dart';
-import 'package:swol/shared/structs/anExcercise.dart';
+import 'package:swol/shared/structs/anExercise.dart';
 import 'package:swol/shared/methods/vibrate.dart';
 import 'package:swol/shared/methods/theme.dart';
 
@@ -52,7 +52,7 @@ class Timer extends StatefulWidget {
     this.showIcon: true,
   });
 
-  final AnExcercise excercise;
+  final AnExercise excercise;
   final DateTime timeStarted;
   //time before we go any level of red
   final ValueNotifier<Duration> changeableTimerDuration;
@@ -69,7 +69,7 @@ class _TimerState extends State<Timer> with TickerProviderStateMixin {
   //we grab how much time has passed initially and never grab it again
   //so that when we are transitioning to the next page
   //and the timerStart time changes to null the whole screen doesn't go red
-  ValueNotifier<DateTime> timerStart = new ValueNotifier(AnExcercise.nullDateTime);
+  ValueNotifier<DateTime> timerStart = new ValueNotifier(AnExercise.nullDateTime);
 
   //color constants
   final Color greyBackground = const Color(0xFFBFBFBF);

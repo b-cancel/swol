@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 //internal
 import 'package:swol/shared/widgets/complex/excerciseListTile/miniTimer/display.dart';
-import 'package:swol/shared/structs/anExcercise.dart';
+import 'package:swol/shared/structs/anExercise.dart';
 import 'package:swol/other/otherHelper.dart';
 
 //NOTE: we must switch between this fella and the above so that our reloading of the leading widget works
@@ -12,7 +12,7 @@ class AnimatedMiniNormalTimer extends StatefulWidget {
     @required this.excercise,
   });
 
-  final AnExcercise excercise;
+  final AnExercise excercise;
 
   @override
   _AnimatedMiniNormalTimerState createState() => _AnimatedMiniNormalTimerState();

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
 
-import 'package:swol/shared/structs/anExcercise.dart';
+import 'package:swol/shared/structs/anExercise.dart';
 import 'package:swol/shared/widgets/simple/heros/curveMod.dart';
 
 class ExcerciseBegin extends StatelessWidget {
@@ -11,7 +11,7 @@ class ExcerciseBegin extends StatelessWidget {
   });
 
   final bool inAppBar;
-  final AnExcercise excercise;
+  final AnExercise excercise;
 
   @override
   Widget build(BuildContext context) {

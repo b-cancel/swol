@@ -12,7 +12,7 @@ class DoneButton extends StatelessWidget {
     @required this.color,
     @required this.setsPassed,
     //stay the same throughout
-    @required this.excerciseID,
+    @required this.exerciseID,
     @required this.animationCurve,
     @required this.showOrHideDuration,
   });
@@ -21,7 +21,7 @@ class DoneButton extends StatelessWidget {
   final Color color;
   final int setsPassed;
   //stay the same throughout
-  final int excerciseID;
+  final int exerciseID;
   final Curve animationCurve;
   final Duration showOrHideDuration;
 
@@ -62,7 +62,7 @@ class DoneButton extends StatelessWidget {
           ),
         ),
         Hero(
-          tag: "excerciseComplete" + excerciseID.toString(),
+          tag: "exerciseComplete" + exerciseID.toString(),
           createRectTween: (begin, end) {
             return CustomRectTween(a: begin, b: end);
           },

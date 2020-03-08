@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 
 //internal
-import 'package:swol/shared/structs/anExcercise.dart';
+import 'package:swol/shared/structs/anExercise.dart';
 import 'package:swol/action/doneButton/doneWidget.dart';
 import 'package:swol/action/tabs/record/setRecord.dart';
 import 'package:swol/action/tabs/recovery/recovery.dart';
@@ -11,7 +11,7 @@ import 'package:swol/action/page.dart';
 
 /// A vertical tab widget for flutter
 class VerticalTabs extends StatefulWidget {
-  final AnExcercise excercise;
+  final AnExercise excercise;
   final double statusBarHeight;
   final Duration transitionDuration;
 
@@ -44,7 +44,7 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
 
     //set the first page we will be at based on startTimerValue
     int initialPage;
-    bool timerNotStarted = widget.excercise.tempStartTime.value == AnExcercise.nullDateTime;
+    bool timerNotStarted = widget.excercise.tempStartTime.value == AnExercise.nullDateTime;
     if(timerNotStarted){
       if(widget.excercise.lastWeight == null) initialPage = 1;
       else initialPage = 0;
@@ -55,7 +55,7 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
     goalSetUp = new ValueNotifier<bool>(initialPage == 0);
 
     //update value globally
-    ExcercisePage.pageNumber.value = initialPage;
+    ExercisePage.pageNumber.value = initialPage;
 
     //initally set the notifiers
     //after this our notifiers initially set our controllers
@@ -64,8 +64,8 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
     int tempWeight = widget?.excercise?.tempWeight;
     int tempReps = widget?.excercise?.tempReps;
     //extra step needed because null.toString() isn't null
-    ExcercisePage.setWeight.value = (tempWeight != null) ? tempWeight.toString() : "";
-    ExcercisePage.setReps.value = (tempReps != null) ? tempReps.toString() : "";
+    ExercisePage.setWeight.value = (tempWeight != null) ? tempWeight.toString() : "";
+    ExercisePage.setReps.value = (tempReps != null) ? tempReps.toString() : "";
 
     //have the page controller go to that initial page
     pageViewController = PageController(
@@ -74,14 +74,14 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
     );
 
     //listen to changes on pageNumber to then go to that page
-    ExcercisePage.pageNumber.addListener(updatePage);
+    ExercisePage.pageNumber.addListener(updatePage);
   }
 
   //dipose
   @override
   void dispose() { 
     //remove listener
-    ExcercisePage.pageNumber.removeListener(updatePage);
+    ExercisePage.pageNumber.removeListener(updatePage);
 
     //remove controller
     pageViewController.dispose();
@@ -92,6 +92,10 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
     //super dispose
     super.dispose();
   }
+
+  //here so a break in connection isnt made
+  final FocusNode weightFocusNode = new FocusNode();
+  final FocusNode repsFocusNode = new FocusNode();
 
   //build
   @override
@@ -127,6 +131,8 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
               heroAnimDuration: widget.transitionDuration,
               heroAnimTravel: totalTravel,
               functionIDToWeightFromRT: functionIDToWeightFromRT,
+              weightFocusNode: weightFocusNode,
+              repsFocusNode: repsFocusNode,
             ),
             Recovery(
               transtionDuration: widget.transitionDuration,
@@ -136,7 +142,7 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
         ),
         //must be on top... other wise it isnt clickable
         FloatingDoneButton(
-          excercise: widget.excercise,
+          exercise: widget.excercise,
           showOrHideDuration: widget.transitionDuration,
           animationCurve: Curves.easeInOut,
         ),
@@ -155,7 +161,7 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
 
     //animated to right page
     pageViewController.animateToPage(
-      ExcercisePage.pageNumber.value, 
+      ExercisePage.pageNumber.value, 
       duration: widget.transitionDuration, 
       curve: Curves.easeInOut,
     );
@@ -176,7 +182,7 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
       if(currentOffset == startOffset) waitForTransitionBegin(startOffset);
       else{
         //get the goal set animation to begin
-        goalSetUp.value = (ExcercisePage.pageNumber.value == 0);
+        goalSetUp.value = (ExercisePage.pageNumber.value == 0);
         //NOTE: although it seems like it
         //we can't use this to also autofocus on the field
         //AS FAST AS POSSIBLE because of how the carousel works

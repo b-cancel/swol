@@ -8,7 +8,7 @@ import 'package:page_transition/page_transition.dart';
 import 'package:swol/shared/widgets/complex/excerciseListTile/excerciseLeading.dart';
 import 'package:swol/shared/widgets/complex/excerciseListTile/oneRepMaxChip.dart';
 import 'package:swol/shared/widgets/simple/heros/title.dart';
-import 'package:swol/shared/structs/anExcercise.dart';
+import 'package:swol/shared/structs/anExercise.dart';
 import 'package:swol/shared/methods/theme.dart';
 
 //internal: other
@@ -44,7 +44,7 @@ class ExcerciseTile extends StatefulWidget {
     @required Key key
   }) : super(key: key); 
 
-  final AnExcercise excercise;
+  final AnExercise excercise;
   final bool tileInSearch;
 
   @override
@@ -85,7 +85,7 @@ class _ExcerciseTileState extends State<ExcerciseTile> {
           //wrap in light so warning pop up works well
           child: Theme(
             data: MyTheme.light,
-            child: ExcercisePage(
+            child: ExercisePage(
               excercise: widget.excercise,
               transitionDuration: transitionDuration, 
             ),

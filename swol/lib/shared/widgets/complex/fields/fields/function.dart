@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:swol/shared/methods/theme.dart';
 import 'package:swol/shared/methods/vibrate.dart';
-import 'package:swol/shared/structs/anExcercise.dart';
+import 'package:swol/shared/structs/anExercise.dart';
 
 //internal
 import 'package:swol/shared/widgets/complex/fields/headers/fieldHeader.dart';
@@ -140,7 +140,7 @@ class FunctionDropDown extends StatefulWidget {
 }
 
 class _FunctionDropDownState extends State<FunctionDropDown> {
-  ValueNotifier<int> selectedFunctionOrder = new ValueNotifier(AnExcercise.defaultRepTarget);
+  ValueNotifier<int> selectedFunctionOrder = new ValueNotifier(AnExercise.defaultRepTarget);
 
   updateState(){
     if(mounted) setState(() {});

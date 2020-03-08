@@ -12,7 +12,7 @@ import 'package:swol/other/functions/W&R=1RM.dart';
 
 //internal: shared
 import 'package:swol/shared/widgets/simple/curvedCorner.dart';
-import 'package:swol/shared/structs/anExcercise.dart';
+import 'package:swol/shared/structs/anExercise.dart';
 
 //internal: other
 import 'package:swol/other/functions/1RM&R=W.dart';
@@ -31,7 +31,7 @@ class MakeFunctionAdjustment extends StatefulWidget {
   }) : super(key: key);
 
   final Color topColor;
-  final AnExcercise excercise;
+  final AnExercise excercise;
   final ValueNotifier<bool> heroUp;
   final Duration heroAnimDuration;
   final double heroAnimTravel;
@@ -63,7 +63,7 @@ class _MakeFunctionAdjustmentState extends State<MakeFunctionAdjustment> {
     //we use 1RM and weight to get reps
     //this is bause maybe we wanted them to do 125 for 5 but they only had 120
     //so ideally we want to match their weight here and take it from ther
-    String setWeightString = ExcercisePage?.setWeight?.value ?? "";
+    String setWeightString = ExercisePage?.setWeight?.value ?? "";
     bool weightRecordedValid = isTextValid(setWeightString);
     double weight = weightRecordedValid ? double.parse(setWeightString) : 0;
 
@@ -73,7 +73,7 @@ class _MakeFunctionAdjustmentState extends State<MakeFunctionAdjustment> {
       //calculate all the rep-estimates for all functions
       for (int thisFunctionID = 0; thisFunctionID < 8; thisFunctionID++) {
         repEstimates[thisFunctionID] = ToReps.from1RMandWeight(
-          ExcercisePage.oneRepMaxes[thisFunctionID],
+          ExercisePage.oneRepMaxes[thisFunctionID],
           //use recorded weight
           //since we are assuming
           //that's what the user couldn't change
@@ -115,7 +115,7 @@ class _MakeFunctionAdjustmentState extends State<MakeFunctionAdjustment> {
   //we update the weight estimates
   repsWereUpdated({bool updateTheGoal: true}) {
     //we use 1RM and reps to get weights
-    String setRepsString = ExcercisePage?.setReps?.value ?? "";
+    String setRepsString = ExercisePage?.setReps?.value ?? "";
     bool repsRecordedValid = isTextValid(setRepsString);
     int reps = repsRecordedValid ? int.parse(setRepsString) : 0;
 
@@ -125,7 +125,7 @@ class _MakeFunctionAdjustmentState extends State<MakeFunctionAdjustment> {
       for (int thisFunctionID = 0; thisFunctionID < 8; thisFunctionID++) {
         weightEstimates[thisFunctionID] = ToWeight.fromRepAnd1Rm(
           reps,
-          ExcercisePage.oneRepMaxes[thisFunctionID],
+          ExercisePage.oneRepMaxes[thisFunctionID],
           thisFunctionID,
         );
       }
@@ -168,16 +168,16 @@ class _MakeFunctionAdjustmentState extends State<MakeFunctionAdjustment> {
 
     //add listeners
     predictionID.addListener(updatePredictionID);
-    ExcercisePage.setWeight.addListener(weightWasUpdated);
-    ExcercisePage.setReps.addListener(repsWereUpdated);
+    ExercisePage.setWeight.addListener(weightWasUpdated);
+    ExercisePage.setReps.addListener(repsWereUpdated);
   }
 
   @override
   void dispose() {
     //remove listeners
     predictionID.removeListener(updatePredictionID);
-    ExcercisePage.setWeight.removeListener(weightWasUpdated);
-    ExcercisePage.setReps.removeListener(repsWereUpdated);
+    ExercisePage.setWeight.removeListener(weightWasUpdated);
+    ExercisePage.setReps.removeListener(repsWereUpdated);
 
     //super dispose
     super.dispose();
@@ -296,24 +296,24 @@ class _MakeFunctionAdjustmentState extends State<MakeFunctionAdjustment> {
       valuesToSortWith = repEstimates;
 
       //use recorded weight
-      ExcercisePage.setGoalWeight.value =
-          int.parse(ExcercisePage.setWeight.value).toDouble();
+      ExercisePage.setGoalWeight.value =
+          int.parse(ExercisePage.setWeight.value).toDouble();
 
       //get calculated reps
       //NOTE: may be a double
-      ExcercisePage.setGoalReps.value = repEstimates[predictionID.value];
+      ExercisePage.setGoalReps.value = repEstimates[predictionID.value];
     } else {
       if (allWeightEstimatesValid) {
         print("*****Using recorded reps");
         valuesToSortWith = weightEstimates;
 
         //get calculatd weight
-        ExcercisePage.setGoalWeight.value = weightEstimates[predictionID.value];
+        ExercisePage.setGoalWeight.value = weightEstimates[predictionID.value];
 
         //use recorded reps
         //NOTE: will only ever be integer
-        ExcercisePage.setGoalReps.value =
-            int.parse(ExcercisePage.setReps.value).toDouble();
+        ExercisePage.setGoalReps.value =
+            int.parse(ExercisePage.setReps.value).toDouble();
       } else {
         print("*****Using rep target");
         valuesToSortWith = widget.functionIDToWeightFromRT.value;
@@ -322,17 +322,17 @@ class _MakeFunctionAdjustmentState extends State<MakeFunctionAdjustment> {
         double weight =
             widget?.functionIDToWeightFromRT?.value[predictionID.value] ?? 0;
         //get calculated weight
-        ExcercisePage.setGoalWeight.value = weight;
+        ExercisePage.setGoalWeight.value = weight;
 
         //use recorded reps
         //NOTE: will only ever be integer
-        ExcercisePage.setGoalReps.value = widget.excercise.repTarget.toDouble();
+        ExercisePage.setGoalReps.value = widget.excercise.repTarget.toDouble();
       }
     }
 
     //update the sorting of things
-    bool weightValid = isTextValid(ExcercisePage.setWeight.value);
-    bool repsValid = isTextValid(ExcercisePage.setReps.value);
+    bool weightValid = isTextValid(ExercisePage.setWeight.value);
+    bool repsValid = isTextValid(ExercisePage.setReps.value);
     bool setValid = weightValid && repsValid;
     if(setValid) valuesToSortWith = getPercentDifferences();
     updateOrderOfIDs(valuesToSortWith);
@@ -344,14 +344,14 @@ class _MakeFunctionAdjustmentState extends State<MakeFunctionAdjustment> {
     for (int functionID = 0; functionID < 8; functionID++) {
       //get the 1RM from this Set
       double calculated1RM = To1RM.fromWeightAndReps(
-        double.parse(ExcercisePage.setWeight.value),
-        int.parse(ExcercisePage.setReps.value),
+        double.parse(ExercisePage.setWeight.value),
+        int.parse(ExercisePage.setReps.value),
         functionID,
       );
 
       //get the difference between this and what was expected
       double calculatedDifference = calcPercentDifference(
-        ExcercisePage.oneRepMaxes[functionID],
+        ExercisePage.oneRepMaxes[functionID],
         calculated1RM,
       );
 

@@ -28,7 +28,7 @@ class BottomBackButton extends StatelessWidget {
       mainAxisSize: MainAxisSize.max,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
-        //the section that the "finish with this excercise"
+        //the section that the "finish with this exercise"
         //button might be at
         Expanded(
           child: Container(),
@@ -36,14 +36,14 @@ class BottomBackButton extends StatelessWidget {
         //the button that looks small but is actually very tall
         Container(
           child: Tooltip(
-            message: ExcercisePage.pageNumber.value == 2 
+            message: ExercisePage.pageNumber.value == 2 
             ? "going back won't reset the timer" 
             : "back",
             child: GestureDetector(
               behavior: HitTestBehavior.opaque,
               onTap: backAction == null ? null : (){
                 //notify users that the timer did not reset
-                if(ExcercisePage.pageNumber.value == 2){
+                if(ExercisePage.pageNumber.value == 2){
                   showToolTip(
                     context, 
                     "the timer won't reset",

@@ -174,10 +174,12 @@ class _RecordFieldState extends State<RecordField> {
                         //cut, copy, past, and select all are not necessary
                         //and because of scaling up and sizing they might not look right either
                         toolbarOptions: ToolbarOptions(),
+                        /*
                         //adding dashing intelligently is not needed in IOS
                         smartDashesType: SmartDashesType.disabled,
                         //ditto but for quote is not needed in IOS
                         smartQuotesType: SmartQuotesType.disabled,
+                        */
                         //so your eyes dont burn
                         keyboardAppearance: Brightness.dark,
                         //balance

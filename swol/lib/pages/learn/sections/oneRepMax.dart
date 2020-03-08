@@ -71,7 +71,7 @@ class OneRepMaxBody extends StatelessWidget {
                         style: boldStyle,
                       ),
                       TextSpan(
-                        text: " were created to help you get a rough idea of ",
+                        text: " can be used to help you get a rough idea of ",
                       ),
                       TextSpan(
                         text: "what your 1RM should be, ",
@@ -117,7 +117,7 @@ class OneRepMaxBody extends StatelessWidget {
                           text: "Some formulas can only give you an estimated 1RM if you plug in a set with ",
                         ),
                         TextSpan(
-                          text: "less than 35 reps",
+                          text: "less than 37 reps",
                           style: boldStyle,
                         ),
                       ]
@@ -149,11 +149,14 @@ class OneRepMaxBody extends StatelessWidget {
                     style: defaultStyle,
                     children: [
                       TextSpan(
-                        text: "We tried to fix all of this in ",
+                        text: "We created  ",
                       ),
                       TextSpan(
-                        text: "\"The Experiment\"",
+                        text: "\"SWOL\"",
                         style: boldStyle,
+                      ),
+                      TextSpan(
+                        text: " to work with the limitations of One Rep Max Formulas",
                       ),
                     ]
                   ),
