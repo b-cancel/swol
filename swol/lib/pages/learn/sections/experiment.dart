@@ -14,6 +14,14 @@ class ExperimentBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    TextStyle defaul = TextStyle(
+      fontSize: 16,
+    );
+
+    TextStyle bold = TextStyle(
+      fontWeight: FontWeight.bold,
+    );
+
     return Column(
       children: <Widget>[
         SectionDescription(
@@ -70,174 +78,205 @@ class ExperimentBody extends StatelessWidget {
                 and adjust your workouts on the fly,
                 to always improve as fast as possible without injuring yourself
                 */
+                RichText(
+                  text: TextSpan(
+                    style: defaul,
+                    children: [
+                      TextSpan(
+                        text: "One Rep Max Formulas can predict"
+                        + " your One Rep Max based on any other set.\n\nBut "
+                      ),
+                      TextSpan(
+                        text: "every formula will give you different results.",
+                        style: bold,
+                      ),
+                      TextSpan(
+                        text: "\n\nAnd ", 
+                      ),
+                      TextSpan(
+                        text: "the difference",
+                        style: bold,
+                      ),
+                      TextSpan(
+                        text: " between those results ",
+                      ),
+                      TextSpan(
+                        text: "will grow",
+                        style: bold,
+                      ),
+                      TextSpan(
+                        text: " as you do more reps. "
+                        + "To work with that limitation we\n",
+                      ),
+                    ]
+                  ),
+                ),
                 ListItem(
                   circleColor: Theme.of(context).accentColor,
                   circleText: "1",
-                  content: Text(
-                    "The "
-                    + "ABILITY"
-                    + " of a set of muscles is the "
-                    + "maximum amount of weight"
-                    + " they can lift at "
-                    + "all rep range"
-                    + " targets (below 35)",
-                  ),
-                ),
-                ListItem(
-                  circleColor: Theme.of(context).accentColor,
-                  circleText: "2",
-                  content: Text(
-                    "The "
-                    + "ABILITY"
-                    + " of a set of muscles can therefore be "
-                    + "represented by a formula"
-                    + " (one of the one rep max formulas)",
-                  ),
-                ),
-                ListItem(
-                  circleColor: Theme.of(context).accentColor,
-                  circleText: "3",
-                  content: Text(
-                    "Additionally, the "
-                    + "ABILITY"
-                    + " of a set of muscles does not just "
-                    + "depend"
-                    + " on how strong those muscles are, but "
-                    + "also on how much of them you can voluntarily activate",
-                  ),
-                ),
-                ListItem(
-                  circleColor: Theme.of(context).accentColor,
-                  circleText: "4",
-                  content: Text(
-                    "Furthermore, because you need "
-                    + "different amounts of control"
-                    + " over your entire nervous system "
-                    + "for different exercises, different ABILITY formulas will be used for different exercises"
-                  ),
-                ),
-                ListItem(
-                  circleColor: Theme.of(context).accentColor,
-                  circleText: "5",
-                  content: Text(
-                    "We believe that "
-                    + "what ABILITY formula each exercise uses, indicates "
-                    + "to what extent you can voluntarily activate your muscles due to "
-                    + "your overall level of nervous system control"
-                  ),
-                ),
-                ListItem(
-                  circleColor: Theme.of(context).accentColor,
-                  circleText: "6",
-                  content: Text(
-                    "So as you continue to train, the "
-                    + "ABILITY formulas that each exercise uses should change to reflect an overall increase in the control"
-                    + " you have over your entire nervous system"
+                  content: RichText(
+                    text: TextSpan(
+                      style: defaul,
+                      children: [
+                        TextSpan(
+                          text: "Automatically Calculate",
+                          style: bold,
+                        ),
+                        TextSpan(
+                          text: " your Estimated One Rep Max "
+                        ),
+                        TextSpan(
+                          text: "(E-1RM)",
+                          style: bold,
+                        ),
+                        TextSpan(
+                          text: " for every excercise, and"
+                          + " give you an idea of ",
+                        ),
+                        TextSpan(
+                          text: "how sure you can be about this estimate",
+                          style: bold,
+                        ),
+                        TextSpan(
+                          text: " based on how different the results from all the formulas are",
+                        ),
+                      ],
+                    ),
                   ),
                 ),
                 RichText(
                   text: TextSpan(
-                    style: TextStyle(
-                      fontSize: 16,
-                    ),
+                    style: defaul,
                     children: [
                       TextSpan(
-                        text: "If we make these assumptions, for each exercise,",
+                        text: "But in order to do that ",
                       ),
                       TextSpan(
-                        text: "we can ",
+                        text: "we have to address the limits",
+                        style: bold,
                       ),
                       TextSpan(
-                        text: "\tuse the 1RM formulas to give you a goal to work towards\t",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                        ),
+                        text: " of each formula.\n\n"
                       ),
                       TextSpan(
-                        text: " for your next set by using\n",
+                        text: "For Example,",
+                        style: bold,
+                      ),
+                      TextSpan(
+                        text: " the Brzycki Formula can't give you a One Rep Max Estimate"
+                        + " if the set being used to do that math has more than 36 reps."
+                        + " To work with that limitation we\n"
                       ),
                     ],
                   ),
                 ),
                 ListItem(
                   circleColor: Theme.of(context).accentColor,
-                  circleText: "1",
-                  content: Text(
-                    "your previous set ",
+                  circleText: "2",
+                  content: RichText(
+                    text: TextSpan(
+                      style: defaul,
+                      children: [
+                        TextSpan(
+                          text: "Automatically Switch",
+                          style: bold,
+                        ),
+                        TextSpan(
+                          text: " to the next closest formula in the background"
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-                ListItem(
-                  circleColor: Theme.of(context).accentColor,
-                  circleText: "2",
-                  content: Text(
-                    "your prefered or suggested ability formula",
+                RichText(
+                  text: TextSpan(
+                    style: defaul,
+                    children: [
+                      TextSpan(
+                        text: "Additionally, we beleive",
+                        style: bold,
+                      ),
+                      TextSpan(
+                        text: " that if the formulas can predict your one rep max"
+                        + " based on any other set, then"
+                      ),
+                      TextSpan(
+                        text: " they should be able to predict"
+                        + " any other set based on your one rep max\n",
+                        style: bold,
+                      ),
+                    ],
                   ),
                 ),
                 ListItem(
                   circleColor: Theme.of(context).accentColor,
                   circleText: "3",
-                  content: Text(
-                    "and your rep target",
+                  content: RichText(
+                    text: TextSpan(
+                      style: defaul,
+                      children: [
+                        TextSpan(
+                          text: "So before beginning your set,"
+                          + " we grab your last set,"
+                          + " calculate your one rep max"
+                          + " using the selected formula, "
+                          + " and then use your rep target, to "
+                        ),
+                        TextSpan(
+                          text: "Calculate what your body should be able to lift",
+                          style: bold,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
                 RichText(
                   text: TextSpan(
-                    style: TextStyle(
-                      fontSize: 16,
-                    ),
+                    style: defaul,
                     children: [
                       TextSpan(
-                        text: "As new sets are recorded ",
+                        text: "This is going to help you ",
                       ),
                       TextSpan(
-                        text: "\twe can also switch to a formula that more accurately reflects your results\n\n",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      //-------------------------
-                      TextSpan(
-                        text: "We believe this will help you ",
+                        text: "stay at your desired rep target"
+                        + " and know exactly what weight to grab",
+                        style: bold,
                       ),
                       TextSpan(
-                        text: "\timprove as fast as possible, regardless of what type of training\t",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                        ),
+                        text: " without having to do any guesswork",
                       ),
                       TextSpan(
-                        text: " you are using, ",
-                      ),
-                      TextSpan(
-                        text: "\twithout getting injured\n\n",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                        ),
+                        text: " and without following some routine"
+                        + " that may be too easy or too hard on you.\n\n"
                       ),
                       //-------------------------
                       TextSpan(
-                        text: "Below is a chart of all the ",
+                        text: "SWOL",
+                        style: bold,
                       ),
                       TextSpan(
-                        text: "\tAbility Formulas\t",
+                        text: " makes it possible for you to ",
+                      ),
+                      TextSpan(
+                        text: "Listen To Your Body",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       TextSpan(
-                        text: ", previously known as ",
+                        text: " and ",
                       ),
                       TextSpan(
-                        text: "\t1 Rep Max Formulas\t",
+                        text: "Make Adjustements On The Fly",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       TextSpan(
-                        text: ", and what level of "
+                        text: " in order to ",
                       ),
                       TextSpan(
-                        text: "\tlimitation they imply\t",
+                        text: "Improve as fast as possible without injuring yourself",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                         ),

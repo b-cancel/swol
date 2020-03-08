@@ -41,20 +41,47 @@ class MyChip extends StatelessWidget {
 
     return Container(
       alignment: Alignment.topLeft,
-      child: Padding(
-        padding: EdgeInsets.only(
-          right: 4,
+      child: MyCustomChip(
+        chipColor: chipColor, 
+        chipString: chipString, 
+        textColor: textColor,
+      ),
+    );
+  }
+}
+
+class MyCustomChip extends StatelessWidget {
+  const MyCustomChip({
+    Key key,
+    @required this.chipColor,
+    @required this.chipString,
+    @required this.textColor,
+    this.extraPadding,
+  }) : super(key: key);
+
+  final Color chipColor;
+  final String chipString;
+  final Color textColor;
+  final EdgeInsets extraPadding;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.only(
+        right: 4,
+      ),
+      child: Container(
+        padding: EdgeInsets.symmetric(
+          horizontal: 4,
         ),
-        child: Container(
-          padding: EdgeInsets.symmetric(
-            horizontal: 4,
+        decoration: new BoxDecoration(
+          color: chipColor,
+          borderRadius: new BorderRadius.all(
+            Radius.circular(12.0),
           ),
-          decoration: new BoxDecoration(
-            color: chipColor,
-            borderRadius: new BorderRadius.all(
-              Radius.circular(12.0),
-            ),
-          ),
+        ),
+        child: Padding(
+          padding: extraPadding ?? EdgeInsets.all(0),
           child: Text(
             chipString,
             style: TextStyle(
