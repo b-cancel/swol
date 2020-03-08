@@ -200,35 +200,31 @@ class AddExercise extends StatelessWidget {
             ),
           ),
         ),
-        body: Stack(
-          children: <Widget>[
-            Container(
-              color: Theme.of(context).scaffoldBackgroundColor,
-              child: AnimationLimiter(
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  padding: EdgeInsets.symmetric(
-                    vertical: 16,
-                  ),
-                  itemCount: sections.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return AnimationConfiguration.staggeredList(
-                      position: index,
-                      //500 (page slide in) + 250 (save button show)
-                      delay: (delayBetweenListItems),
-                      duration: showListDuration,
-                      child: SlideAnimation(
-                        verticalOffset: 50.0,
-                        child: FadeInAnimation(
-                          child: sections[index],
-                        ),
-                      ),
-                    );
-                  },
-                ),
+        body: Container(
+          color: Theme.of(context).scaffoldBackgroundColor,
+          child: AnimationLimiter(
+            child: ListView.builder(
+              shrinkWrap: true,
+              padding: EdgeInsets.symmetric(
+                vertical: 16,
               ),
+              itemCount: sections.length,
+              itemBuilder: (BuildContext context, int index) {
+                return AnimationConfiguration.staggeredList(
+                  position: index,
+                  //500 (page slide in) + 250 (save button show)
+                  delay: (delayBetweenListItems),
+                  duration: showListDuration,
+                  child: SlideAnimation(
+                    verticalOffset: 50.0,
+                    child: FadeInAnimation(
+                      child: sections[index],
+                    ),
+                  ),
+                );
+              },
             ),
-          ],
+          ),
         ),
       ),
     );

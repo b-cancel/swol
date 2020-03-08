@@ -29,6 +29,7 @@ openSnackBar(
 
   //main content
   Widget content = Row(
+    mainAxisSize: MainAxisSize.max,
     children:[
       Padding(
         padding: const EdgeInsets.only(
@@ -40,12 +41,14 @@ openSnackBar(
           color: color,
         ),
       ),
-      DefaultTextStyle(
-        style: TextStyle(
-          color: Colors.white,
+      Flexible(
+        child: DefaultTextStyle(
+          style: TextStyle(
+            color: Colors.white,
+          ),
+          child: updatingMessage == null ? Text(message)
+          : UpdatingText(updatingText: updatingMessage),
         ),
-        child: updatingMessage == null ? Text(message)
-        : UpdatingText(updatingText: updatingMessage),
       ),
     ]
   );
@@ -106,6 +109,8 @@ class _UpdatingTextState extends State<UpdatingText> {
 
   @override
   Widget build(BuildContext context) {
-    return Text(widget.updatingText.value);
+    return Text(
+      widget.updatingText.value,
+    );
   }
 }

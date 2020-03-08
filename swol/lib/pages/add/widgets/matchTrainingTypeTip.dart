@@ -56,7 +56,7 @@ class TipGenerator extends StatefulWidget {
 }
 
 class _TipGeneratorState extends State<TipGenerator> {
-  ValueNotifier<String> updateableTipMessage;
+  final ValueNotifier<String> updateableTipMessage = new ValueNotifier<String>("");
 
   bool hasEndurance(TrainingID item){
     if(item == TrainingID.All) return true;
@@ -82,19 +82,22 @@ class _TipGeneratorState extends State<TipGenerator> {
     else return false;
   }
 
-  bool trainingIDsEqual(TrainingID a, TrainingID b){
-    if(a == b) return true;
+  //rep target can only be endurance, hypertrophy, or strength
+  bool otherMatchesRepTarget(TrainingID repTarget, TrainingID other){
+    if(repTarget == other) return true;
     else{ //overlaps also count as matching
       //if either cover all 3 trainings then there is an obvious match
-      if(a == TrainingID.All || b == TrainingID.All) return true;
+      if(repTarget == TrainingID.All || other == TrainingID.All) return true;
       else{ 
-        bool aHasEndurance = hasEndurance(a);
-        bool aHasHypertrophy = hasHypertrohpy(a);
-        bool aHasStrength = hasStrength(a);
-        if(aHasEndurance && aHasEndurance == hasEndurance(b)) return true;
-        else if(aHasHypertrophy && aHasHypertrophy == hasHypertrohpy(b)) return true;
-        else if(aHasStrength && aHasStrength == hasStrength(b)) return true;
-        else return false;
+        if(repTarget == TrainingID.Endurance){
+          return hasEndurance(other);
+        }
+        else if(repTarget == TrainingID.Hypertrophy){
+          return hasHypertrohpy(other);
+        }
+        else{
+          return hasStrength(other);
+        }
       }
     }
   }
@@ -124,15 +127,10 @@ class _TipGeneratorState extends State<TipGenerator> {
     }
   }
 
-  //NOTE: this function allows chains for example
-  //recovery: hypertrophy/strength
-  //rep target: THIS CAN BE ANYTHING
-  //set target: endurance/hypertrophy
-  //but its the best solution because if we want them ALL to atleast share 1 value
-  //then we arrive at the problem
-  //we about when a and b share a trainig type and b and c share one
-  //should we suggest that a change or that c change?
-  //and the pop up is already as complex as it has to be
+  //NOTE: we want to make sure that
+  //once the user selects their rep target
+  //their set target and recovery period match
+  //since ultimately the biggest factor is reps
   updateTip(){
     //handle recovery period
     Duration currRecovery = widget.recoveryPeriod.value;
@@ -176,61 +174,54 @@ class _TipGeneratorState extends State<TipGenerator> {
     else repTargetID = TrainingID.Endurance;
 
     //find matches
-    bool recoveryANDsetTarget = trainingIDsEqual(
-      recoveryID,
-      setTargetID,
-    );
-    bool setTargetANDrepTarget = trainingIDsEqual(
-      setTargetID,
-      repTargetID,
-    );
-    bool repTargetANDrecovery = trainingIDsEqual(
+    bool goodRecoveryTarget = otherMatchesRepTarget(
       repTargetID,
       recoveryID,
+    );
+    bool goodSetTarget = otherMatchesRepTarget(
+      repTargetID,
+      setTargetID,
     );
 
     //show tip if needed
-    int matches = 0;
-    matches += (recoveryANDsetTarget) ? 1 : 0;
-    matches += (setTargetANDrepTarget) ? 1 : 0;
-    matches += (repTargetANDrecovery) ? 1 : 0;
-    if(matches == 3) hideTheTip();
-    else{ //none of them are 3, so no 3 things are matching (at most 2)
-      //NOTE: because set target can be 2 types of training at the same time
-      //we can still match my transitive property
-      //EX: recovery time(end) && set target (end,hype) && rep target (hype)
-      //so we cover this edge case here
-      //NOTE: we also assume that it maybe be possible in the future
-      //for any of the other 2 setting to work the same way
-      if(matches == 2) hideTheTip();
-      else{
-        String tipText = "Recovery Time, Set Target, and Rep Target\n"
-        + "should have matching training types\n";
-
-        //if nothing matches well... tell em
-        if(matches == 0){
-          tipText += "but none of them share the same one";
-        }
-        else{ //2 match so point out the odd man out
-          String settingToChange;
-          if(recoveryANDsetTarget) settingToChange = "Rep Target";
-          else if(setTargetANDrepTarget) settingToChange = "Recovery Time";
-          else settingToChange = "Set Target";
-
-          tipText += "but " + settingToChange + " doesn't match the others";
-        }
-
-        //show or update
-        if(updateableTipMessage.value == "") showTheTip(tipText);
-        else updateTheTip(tipText);
+    if(goodRecoveryTarget && goodSetTarget) hideTheTip();
+    else{ //NOTE: here we point out what change should be made
+      String trainingType;
+      if(repTargetID == TrainingID.Endurance){
+        trainingType = "Endurance";
       }
+      else if(repTargetID == TrainingID.Hypertrophy){
+        trainingType = "Hypertrophy";
+      }
+      else trainingType = "Strength";
+
+      //create tip text
+      String tipText = "You Rep Target indicates"
+      + " that you are doing " + trainingType + " Training\n"
+      + "But you have the wrong ";
+
+      //specifics
+      if(goodRecoveryTarget == false && goodSetTarget == false){
+        tipText += "Recovery Period and Set Target";
+      } 
+      else if(goodRecoveryTarget == false){
+        tipText += "Recovery Period";
+      }
+      else{
+        tipText += "Set Target";
+      }
+
+      //finish
+      tipText += " for that type of training";
+
+      //show or update
+      if(updateableTipMessage.value == "") showTheTip(tipText);
+      else updateTheTip(tipText);
     }
   }
 
   @override
   void initState() {
-    updateableTipMessage = new ValueNotifier("");
-
     //handle listeners
     widget.recoveryPeriod.addListener(updateTip);
     widget.setTarget.addListener(updateTip);
