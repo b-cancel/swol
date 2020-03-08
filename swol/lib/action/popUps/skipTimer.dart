@@ -20,9 +20,6 @@ maybeSkipTimer(
   Function ifSkip, 
   Color headerColor,
 ) {
-  //remove focus so the pop up doesnt bring it back
-  FocusScope.of(context).unfocus();
-
   //are we way off? or are we atleast within the range for this type of workout
   String trainingSelected = durationToTrainingType(
     exercise.recoveryPeriod,

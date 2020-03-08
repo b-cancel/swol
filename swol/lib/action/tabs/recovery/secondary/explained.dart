@@ -118,7 +118,7 @@ class ExplainFunctionality extends StatelessWidget {
 }
 
 String durationToTrainingType(Duration duration, {bool zeroIsEndurance: true}) {
-  if (duration < Duration(minutes: 1)) {
+  if (duration <= Duration(minutes: 1)) {
     if (zeroIsEndurance)
       return "Endurance";
     else {
@@ -127,9 +127,9 @@ String durationToTrainingType(Duration duration, {bool zeroIsEndurance: true}) {
       } else
         return "Endurance";
     }
-  } else if (duration < Duration(minutes: 2))
+  } else if (duration <= Duration(minutes: 2))
     return "Hypertrohpy";
-  else if (duration < Duration(minutes: 3))
+  else if (duration <= Duration(minutes: 3))
     return "Hyp/Str";
   else
     return "Strength";

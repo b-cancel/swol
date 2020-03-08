@@ -99,7 +99,7 @@ class InfoOutlineDarkButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //the two varialbes that will inform  the use what is happening
+    //the two varialbes that will inform the user what is happening
     String primaryMsg;
     String secondaryMsg;
 
@@ -107,20 +107,20 @@ class InfoOutlineDarkButton extends StatelessWidget {
     bool stillTimeLeft = totalDurationPassed < selectedDuration;
     showAreYouSure.value = false; //its false in most cases
     if(stillTimeLeft){
+      //if you are more than 30 seconds away from the selectied time
+      //then bring up the pop up
+      bool within30secondBuffer = (totalDurationPassed + Duration(seconds: 30)) >= selectedDuration;
+      if(within30secondBuffer == false) showAreYouSure.value = true;
+      else showAreYouSure.value = false; //we are within the buffer so don't show the pop up
+
+      //what text to sho
       if(withinTrainingTypeRange == false){
         primaryMsg = "Currently Recovering From";
         secondaryMsg = trainingName + " Training";
-        showAreYouSure.value = true; //still recovering
       }
       else{
         primaryMsg = "You Should Wait For Full Recovery";
         secondaryMsg = "But You Are Ready For " + trainingName + " Training";
-
-        //if you are more than 30 seconds away from the selectied time
-        //then bring up the pop up
-        bool within30secondBuffer = (totalDurationPassed + Duration(seconds: 30)) >= selectedDuration;
-        if(within30secondBuffer == false) showAreYouSure.value = true;
-        else showAreYouSure.value = false; //we are within the buffer so don't show the pop up
       }
     }
     else{ //your timer is over but you still have some time
