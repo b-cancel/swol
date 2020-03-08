@@ -96,7 +96,7 @@ class _AddExerciseState extends State<AddExercise> {
   //TODO: figuring that out is what can suck up my time
   //update the others if they haven't already been edited manually
   final ValueNotifier<bool> recoverySet = new ValueNotifier<bool>(false);
-  final ValueNotifier<bool> setSet = new ValueNotifier(false)
+  final ValueNotifier<bool> setSet = new ValueNotifier(false);
   updateOthers(){
     //rep target
     //strength 1 to 6

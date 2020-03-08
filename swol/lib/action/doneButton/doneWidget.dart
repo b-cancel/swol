@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:swol/action/doneButton/button.dart';
 import 'package:swol/action/doneButton/corner.dart';
 import 'package:swol/action/page.dart';
+import 'package:swol/action/popUps/maybeUpdateSet.dart';
+import 'package:swol/shared/methods/theme.dart';
 
 //internal
 import 'package:swol/shared/structs/anExercise.dart';
@@ -38,11 +40,13 @@ class FloatingDoneButton extends StatefulWidget {
     @required this.exercise,
     @required this.showOrHideDuration,
     @required this.animationCurve,
+    @required this.cardColor,
   });
 
   final AnExercise exercise;
   final Curve animationCurve;
   final Duration showOrHideDuration;
+  final Color cardColor;
 
   @override
   _FloatingDoneButtonState createState() => _FloatingDoneButtonState();
@@ -198,9 +202,11 @@ class _FloatingDoneButtonState extends State<FloatingDoneButton> {
     
     //add spacing
     message = "\n" + message + "\n";
+
+    //need to grab since we are in white context
+    Color cardColor = widget.cardColor;
     
     //determine button color based on sets passed
-    Color cardColor = Theme.of(context).cardColor;
     //NOTE: we also check if showButton is false because 
     //we don't want to scare the user with RED while the button is closing
     if(completionType == Complete.DeleteNewSet && showButton){
@@ -238,33 +244,16 @@ class _FloatingDoneButtonState extends State<FloatingDoneButton> {
               padding: EdgeInsets.only(
                 bottom: 24.0,
               ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  DoneCorner(
-                    show: showButton,
-                    color: cardColor,
-                    animationCurve: widget.animationCurve,
-                    showOrHideDuration: widget.showOrHideDuration,
-                    isTop: true,
-                  ),
-                  DoneButton(
-                    show: showButton,
-                    color: cardColor,
-                    setsPassed: setsPassedFromHere,
-                    exerciseID: widget.exercise.id,
-                    animationCurve: widget.animationCurve,
-                    showOrHideDuration: widget.showOrHideDuration,
-                  ),
-                  DoneCorner(
-                    show: showButton,
-                    color: cardColor,
-                    animationCurve: widget.animationCurve,
-                    showOrHideDuration: widget.showOrHideDuration,
-                    isTop: false,
-                  ),
-                ],
+              child: Theme(
+                data: MyTheme.dark,
+                child: WrappedInDarkness(
+                  showButton: showButton, 
+                  cardColor: cardColor, 
+                  setsPassedFromHere: setsPassedFromHere,
+                  excerciseID: widget.exercise.id,
+                  animationCurve: widget.animationCurve,
+                  showOrHideDuration: widget.showOrHideDuration,
+                ),
               ),
             ),
           ),
@@ -310,12 +299,15 @@ class _FloatingDoneButtonState extends State<FloatingDoneButton> {
     //we aren't going to show the pop up 
     //and half suggest that they update their setTarget to 0
     if(setsPassed != 0 && setsPassed != widget.exercise.setTarget){
-      //TODO: bring the pop up that asks us if we want to update our set target
-      //TODO: the pop up should also pop this page
-
-      //TODO: remove test code
-      widget.exercise.tempSetCount = null;
-      Navigator.of(context).pop();
+      maybeChangeSetTarget(
+        context, 
+        widget.exercise, 
+        (){
+          widget.exercise.tempSetCount = null;
+          Navigator.of(context).pop();
+        }, 
+        widget.cardColor,
+      );
     }
     else{
       //the set target doesn't need to be updated
@@ -323,5 +315,56 @@ class _FloatingDoneButtonState extends State<FloatingDoneButton> {
       widget.exercise.tempSetCount = null;
       Navigator.of(context).pop();
     }
+  }
+}
+
+class WrappedInDarkness extends StatelessWidget {
+  const WrappedInDarkness({
+    Key key,
+    @required this.showButton,
+    @required this.cardColor,
+    @required this.setsPassedFromHere,
+    @required this.excerciseID,
+    @required this.animationCurve,
+    @required this.showOrHideDuration,
+  }) : super(key: key);
+
+  final bool showButton;
+  final Color cardColor;
+  final int setsPassedFromHere;
+  final int excerciseID;
+  final Curve animationCurve;
+  final Duration showOrHideDuration;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        DoneCorner(
+          show: showButton,
+          color: cardColor,
+          animationCurve: animationCurve,
+          showOrHideDuration: showOrHideDuration,
+          isTop: true,
+        ),
+        DoneButton(
+          show: showButton,
+          color: cardColor,
+          setsPassed: setsPassedFromHere,
+          exerciseID: excerciseID,
+          animationCurve: animationCurve,
+          showOrHideDuration: showOrHideDuration,
+        ),
+        DoneCorner(
+          show: showButton,
+          color: cardColor,
+          animationCurve: animationCurve,
+          showOrHideDuration: showOrHideDuration,
+          isTop: false,
+        ),
+      ],
+    );
   }
 }

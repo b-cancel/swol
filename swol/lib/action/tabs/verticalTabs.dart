@@ -1,5 +1,6 @@
 //flutter
 import 'package:flutter/material.dart';
+import 'package:swol/shared/methods/theme.dart';
 
 //internal
 import 'package:swol/shared/structs/anExercise.dart';
@@ -141,10 +142,14 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
           ],
         ),
         //must be on top... other wise it isnt clickable
-        FloatingDoneButton(
-          exercise: widget.exercise,
-          showOrHideDuration: widget.transitionDuration,
-          animationCurve: Curves.easeInOut,
+        Theme(
+          data: MyTheme.light,
+          child: FloatingDoneButton(
+            exercise: widget.exercise,
+            showOrHideDuration: widget.transitionDuration,
+            animationCurve: Curves.easeInOut,
+            cardColor: Theme.of(context).cardColor,
+          ),
         ),
       ],
     );
