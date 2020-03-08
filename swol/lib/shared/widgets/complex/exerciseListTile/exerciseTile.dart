@@ -73,7 +73,7 @@ class _ExerciseTileState extends State<ExerciseTile> {
         print("set target: " + widget.exercise.setTarget.toString());
         */
 
-        print("prediction ID: " + widget.exercise.predictionID.toString());
+        print("time stamp: " + widget.exercise.lastTimeStamp.toString());
 
         //travel to page
         App.navSpread.value = true;
