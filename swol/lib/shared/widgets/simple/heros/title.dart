@@ -76,15 +76,15 @@ class ExerciseTitleHeroHelper extends StatelessWidget {
                   Theme.of(context).primaryColorDark,
                   percentToAppBar,
                 ),
-          child: Container(
-            alignment: Alignment.centerLeft,
-            padding: EdgeInsets.only(
-              left: lerpDouble(
+                padding: EdgeInsets.symmetric(
+                  vertical: lerpDouble(
                 0,
-                56,
+                16,
                 percentToAppBar,
               ),
-            ),
+                ),
+          child: Container(
+            alignment: Alignment.centerLeft,
             child: ReloadingTitle(
               exercise: exercise,
             )

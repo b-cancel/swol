@@ -17,7 +17,7 @@ import 'package:swol/action/tabs/verticalTabs.dart';
 import 'package:swol/other/functions/W&R=1RM.dart';
 import 'package:swol/action/popUps/warning.dart';
 
-//used to 
+//used to
 //1. keep track of all the variables and be able to access them from everywhere
 //2. and generate the functions to show the warning when needed
 //3. but also wrap the rest of the widgets in the dark theme
@@ -33,38 +33,51 @@ class ExercisePage extends StatelessWidget {
   //static vars used through out initializaed with their default values
 
   //used so that we can change the page number from anywhere
-  static final ValueNotifier<int> pageNumber = new ValueNotifier<int>(0); //being listened
+  static final ValueNotifier<int> pageNumber =
+      new ValueNotifier<int>(0); //being listened
   //used so that we can save the set locally before saving it in temps
-  static final ValueNotifier<String> setWeight = new ValueNotifier<String>(""); //being listened
-  static final ValueNotifier<String> setReps = new ValueNotifier<String>(""); //being listened
+  static final ValueNotifier<String> setWeight =
+      new ValueNotifier<String>(""); //being listened
+  static final ValueNotifier<String> setReps =
+      new ValueNotifier<String>(""); //being listened
   //used so that we can cause a field refocusing from different parts of the app
-  static final ValueNotifier<bool> causeRefocusIfInvalid = new ValueNotifier<bool>(false); //being listened
+  static final ValueNotifier<bool> causeRefocusIfInvalid =
+      new ValueNotifier<bool>(false); //being listened
   //function trigger that can be accessed from nearly anywhere
-  static final ValueNotifier<bool> updateSet = new ValueNotifier<bool>(false); //being listened
-  static final ValueNotifier<bool> nextSet = new ValueNotifier<bool>(false); //being listened
-  //keeps track of all 1 rep maxes after they are calculated once 
+  static final ValueNotifier<bool> updateSet =
+      new ValueNotifier<bool>(false); //being listened
+  static final ValueNotifier<bool> nextSet =
+      new ValueNotifier<bool>(false); //being listened
+  //keeps track of all 1 rep maxes after they are calculated once
   //so we don't have to calculate them literally millions of times
-  static final List<double> oneRepMaxes = new List<double>(8); //not being listened to
+  static final List<double> oneRepMaxes =
+      new List<double>(8); //not being listened to
   //function order calcualted by suggest or set record once and then used to generate the carousel
-  static final ValueNotifier<List<int>> orderedIDs = new ValueNotifier<List<int>>(new List<int>(8));
+  static final ValueNotifier<List<int>> orderedIDs =
+      new ValueNotifier<List<int>>(new List<int>(8));
   //keeps track of the index in the SORTED list of IDs that gives us a result that mostly matches our set
   static ValueNotifier<int> closestIndex = new ValueNotifier<int>(-1);
   //NOTE: these are shown as INTs but are actually DOUBLEs to avoid issues with calculations and sorting later
   //used so that we can set the goal set from both the suggest and record page
-  static final ValueNotifier<double> setGoalWeight = new ValueNotifier<double>(0); //being listened
-  static final ValueNotifier<double> setGoalReps = new ValueNotifier<double>(0); //being listened
+  static final ValueNotifier<double> setGoalWeight =
+      new ValueNotifier<double>(0); //being listened
+  static final ValueNotifier<double> setGoalReps =
+      new ValueNotifier<double>(0); //being listened
 
   //build
   @override
   Widget build(BuildContext context) {
-    print(exercise.id.toString() + " " +  exercise.tempStartTime.toString() + "***********");
+    print(exercise.id.toString() +
+        " " +
+        exercise.tempStartTime.toString() +
+        "***********");
 
     return Theme(
       data: MyTheme.dark,
       child: WillPopScope(
-        onWillPop: () async{
+        onWillPop: () async {
           return warningThenAllowPop(
-            context, 
+            context,
             exercise,
             //false since return true here will pop
             alsoPop: false,
@@ -93,28 +106,30 @@ class ExercisePageDark extends StatefulWidget {
 }
 
 class _ExercisePageDarkState extends State<ExercisePageDark> {
-  updateSet(){ //also cover resume case
-    if(ExercisePage.updateSet.value){
+  updateSet() {
+    //also cover resume case
+    if (ExercisePage.updateSet.value) {
       //whenever we begin or resume the set we KNOW our setWeight and setReps are valid
       String setWeight = ExercisePage.setWeight.value;
       String setReps = ExercisePage.setReps.value;
       widget.exercise.tempWeight = int.parse(setWeight);
       widget.exercise.tempReps = int.parse(setReps);
-    
+
       //only if begin
-      if(widget.exercise.tempStartTime.value == AnExercise.nullDateTime){
+      if (widget.exercise.tempStartTime.value == AnExercise.nullDateTime) {
         //start the timer
-        widget.exercise.tempStartTime = new ValueNotifier<DateTime>(DateTime.now()); 
+        widget.exercise.tempStartTime =
+            new ValueNotifier<DateTime>(DateTime.now());
 
         //indicate you have started the set
-        if(widget.exercise.tempSetCount == null){
+        if (widget.exercise.tempSetCount == null) {
           widget.exercise.tempSetCount = 1;
-        }
-        else widget.exercise.tempSetCount += 1;
+        } else
+          widget.exercise.tempSetCount += 1;
 
-        //we are recording our FIRST set so may go back to it 
+        //we are recording our FIRST set so may go back to it
         //if we delete it instead of deciding to continue
-        if(widget.exercise.tempSetCount == 1){ 
+        if (widget.exercise.tempSetCount == 1) {
           widget.exercise.backUpTimeStamp = widget.exercise.lastTimeStamp;
         }
       }
@@ -127,9 +142,9 @@ class _ExercisePageDarkState extends State<ExercisePageDark> {
     }
   }
 
-  nextSet(){
-    if(ExercisePage.nextSet.value){
-      //must be done first 
+  nextSet() {
+    if (ExercisePage.nextSet.value) {
+      //must be done first
       //so that our suggest page has access to right 1 rep maxes
       updateOneRepMaxes(
         weight: widget.exercise.tempWeight,
@@ -138,10 +153,13 @@ class _ExercisePageDarkState extends State<ExercisePageDark> {
 
       //reset timer
       //TODO: figure out why at some point I marked that this NEEDED to be BEFORE everything else
-      //NOTE: that at the moment I should wait for lastWeight and lastReps to update 
+      //NOTE: that at the moment I should wait for lastWeight and lastReps to update
       //before reacting to the change here in the one rep max chip
-      widget.exercise.tempStartTime = new ValueNotifier<DateTime>(AnExercise.nullDateTime);
-      print(widget.exercise.id.toString() +  "******************************updated DT to " + widget.exercise.tempStartTime.toString());
+      widget.exercise.tempStartTime =
+          new ValueNotifier<DateTime>(AnExercise.nullDateTime);
+      print(widget.exercise.id.toString() +
+          "******************************updated DT to " +
+          widget.exercise.tempStartTime.toString());
 
       //save values (that we know are valid)
       widget.exercise.lastWeight = widget.exercise.tempWeight;
@@ -169,7 +187,7 @@ class _ExercisePageDarkState extends State<ExercisePageDark> {
   void initState() {
     //super init
     super.initState();
-    
+
     //reset all statics to defaults
     ExercisePage.pageNumber.value = 0; //this will properly update itself later
     //goals
@@ -194,7 +212,7 @@ class _ExercisePageDarkState extends State<ExercisePageDark> {
   }
 
   @override
-  void dispose() { 
+  void dispose() {
     //remove listeners
     ExercisePage.updateSet.removeListener(updateSet);
     ExercisePage.nextSet.removeListener(nextSet);
@@ -203,16 +221,16 @@ class _ExercisePageDarkState extends State<ExercisePageDark> {
     super.dispose();
   }
 
-  updateOneRepMaxes({int weight, int reps}){
+  updateOneRepMaxes({int weight, int reps}) {
     weight = weight ?? (widget?.exercise?.lastWeight ?? 0);
     reps = reps ?? (widget?.exercise?.lastReps ?? 0);
-    for(int functionID = 0; functionID < 8; functionID++){
+    for (int functionID = 0; functionID < 8; functionID++) {
       ExercisePage.oneRepMaxes[functionID] = To1RM.fromWeightAndReps(
-        weight.toDouble(), 
-        reps, 
+        weight.toDouble(),
+        reps,
         functionID,
       );
-    } 
+    }
   }
 
   @override
@@ -234,11 +252,12 @@ class _ExercisePageDarkState extends State<ExercisePageDark> {
           ),
         ),
       ),
-      body: ClipRRect( //clipping so the done button doesnt show out of screen
+      body: ClipRRect(
+        //clipping so the done button doesnt show out of screen
         child: VerticalTabs(
           exercise: widget.exercise,
           //this the only place this works from
-          //since this is the whole new context after navigation 
+          //since this is the whole new context after navigation
           //and the others are within a scaffold
           statusBarHeight: MediaQuery.of(context).padding.top,
           transitionDuration: widget.transitionDuration,
@@ -259,49 +278,37 @@ class PageTitle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Theme(
       data: MyTheme.dark,
-      child: Stack(
-        alignment: Alignment.center,
-        children: <Widget>[
-          Positioned(
-            left: 0,
-            bottom: 0,
-            top: 0,
-            right: 0,
-            child: ExerciseTitleHero(
-              inAppBar: true,
-              exercise: exercise,
-              onTap: () => toNotes(context),
-            ),
+      child: AppBar(
+        leading: IconButton(
+          icon: ExerciseBegin(
+            inAppBar: true,
+            exercise: exercise,
           ),
-          Positioned(
-            left: 0,
-            top: 0,
-            bottom: 0,
-            child: FittedBox(
-              fit: BoxFit.contain,
-              child: IconButton(
-                icon: ExerciseBegin(
-                  inAppBar: true,
-                  exercise: exercise,
-                ),
-                color: Colors.white,
-                tooltip: backToolTip(),
-                onPressed: (){
-                  warningThenAllowPop(
-                    context, 
-                    exercise, 
-                    alsoPop: true,
-                  );
-                },
-              ),
+          color: Colors.white,
+          tooltip: backToolTip(),
+          onPressed: () {
+            warningThenAllowPop(
+              context,
+              exercise,
+              alsoPop: true,
+            );
+          },
+        ),
+        titleSpacing: 0,
+        title: ExerciseTitleHero(
+          inAppBar: true,
+          exercise: exercise,
+          onTap: () => toNotes(context),
+        ),
+        actions: <Widget>[
+          Padding(
+            padding: EdgeInsets.only(
+              right: 8,
             ),
-          ),
-          Positioned(
-            right: 0,
-            top: 0,
-            bottom: 0,
             child: Padding(
-              padding: EdgeInsets.all(8),
+              padding: EdgeInsets.symmetric(
+                vertical: 8.0,
+              ),
               child: OutlineButton.icon(
                 highlightedBorderColor: Theme.of(context).accentColor,
                 onPressed: () => toNotes(context),
@@ -315,7 +322,7 @@ class PageTitle extends StatelessWidget {
     );
   }
 
-  String backToolTip(){
+  String backToolTip() {
     return "Will Automaticaly Start Or Update Your New Set";
   }
 
@@ -337,12 +344,12 @@ class PageTitle extends StatelessWidget {
   }
 }
 
-updateOrderOfIDs(List<double> functionIDToValue){
+updateOrderOfIDs(List<double> functionIDToValue) {
   //recalculate all the potential values for function order
-  Map<double,List<int>> valueToFunctionIDs = new Map<double,List<int>>();
-  for(int functionID = 0; functionID < 8; functionID++){
+  Map<double, List<int>> valueToFunctionIDs = new Map<double, List<int>>();
+  for (int functionID = 0; functionID < 8; functionID++) {
     double value = functionIDToValue[functionID];
-    if(valueToFunctionIDs.containsKey(value) == false){
+    if (valueToFunctionIDs.containsKey(value) == false) {
       valueToFunctionIDs[value] = new List();
     }
     valueToFunctionIDs[value].add(functionID);
@@ -354,25 +361,25 @@ updateOrderOfIDs(List<double> functionIDToValue){
 
   //build up your ordered IDs
   List<int> orderedIDs = new List<int>(8);
-  if(values.length == functionIDToValue.length){
-    for(int i = 0; i < values.length; i++){
+  if (values.length == functionIDToValue.length) {
+    for (int i = 0; i < values.length; i++) {
       double value = values[i];
       int id = valueToFunctionIDs[value].removeLast();
       orderedIDs[i] = id;
     }
-  }
-  else{ //we have duplicate results
+  } else {
+    //we have duplicate results
     print("***********************EDGE CASE*****************");
     //TODO: handle case where we know why
     //case 1: when using recorded weight, and then recorded weight matches the last weight
     //case 2: when using recorded reps, and the recorded reps match the last reps
     //case 3: when usign rep target, and the rep target matches the last reps
     int position = 0;
-    for(int index = 0; index < values.length; index++){
+    for (int index = 0; index < values.length; index++) {
       double value = values[index];
       //grab all the indices with this value
       List<int> indices = valueToFunctionIDs[value];
-      for(int i = 0; i < indices.length; i++){
+      for (int i = 0; i < indices.length; i++) {
         //add them in order
         orderedIDs[position] = indices[i];
         position++;
@@ -381,11 +388,11 @@ updateOrderOfIDs(List<double> functionIDToValue){
   }
 
   print("IDs in order: " + orderedIDs.toString());
-  
+
   //set the value so all notifies get notified
   //only if there is a difference (avoid weird setState while build BUG)
   //NOTE: you must to .toString() to compare properly
-  if(orderedIDs.toString() != ExercisePage.orderedIDs.value.toString()){
+  if (orderedIDs.toString() != ExercisePage.orderedIDs.value.toString()) {
     ExercisePage.orderedIDs.value = orderedIDs;
   }
 }

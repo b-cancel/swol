@@ -130,10 +130,8 @@ class _ExerciseListState extends State<ExerciseList> {
           //we are a different kind of exercise that the previous one so we KNOW we need a new group
           if(thisExerciseType != lastExerciseType) makeNewGroup = true;
           else{ //we are the same type of exercise
-            print("dont match: " + thisExerciseType.toString());
             if(thisExerciseType == TimeStampType.Other){
               Duration timeBetweenExercises = lastExercise.lastTimeStamp.difference(thisExercise.lastTimeStamp);
-              print("difference: " + timeBetweenExercises.toString());
               makeNewGroup = (timeBetweenExercises > maxTimeBetweenExercises);
             }
             else makeNewGroup = false;
