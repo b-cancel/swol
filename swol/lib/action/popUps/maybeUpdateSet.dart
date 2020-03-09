@@ -1,7 +1,6 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:swol/action/popUps/button.dart';
-import 'package:swol/shared/methods/theme.dart';
 import 'package:swol/shared/structs/anExercise.dart';
 
 maybeChangeSetTarget(
@@ -26,6 +25,7 @@ maybeChangeSetTarget(
     dismissOnTouchOutside: true,
     animType: AnimType.LEFTSLIDE,
     dialogType: DialogType.WARNING,
+    headerAnimationLoop: false,
     body: Column(
       children: <Widget>[
         Padding(

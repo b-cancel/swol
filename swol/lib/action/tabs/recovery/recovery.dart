@@ -1,5 +1,6 @@
 //flutter
 import 'package:flutter/material.dart';
+import 'package:swol/action/popUps/movePastSetTarget.dart';
 
 //internal: action
 import 'package:swol/action/tabs/recovery/secondary/breath.dart';
@@ -187,17 +188,32 @@ class RecoveryButtonsWithWhiteContext extends StatelessWidget {
       color: buttonsColor,
       exerciseID: exercise.id,
       forwardAction: () {
+        Function ifMoveToNextSet = (){
+          if(showAreYouSure.value){
+            maybeSkipTimer( 
+              context, 
+              exercise, 
+              goToNextSet,
+              headerColor,
+            );
+          }
+          else goToNextSet();
+        };
+
         //NOTE: we only bother the user if they match
-        print("check: " + exercise.setTarget.toString() + " vs " + exercise.tempSetCount.toString());
-        if(showAreYouSure.value){
-          maybeSkipTimer( 
+        //because we are warning the user that they are going above their target
+        int target = exercise.setTarget;
+        int current = exercise.tempSetCount;
+        if(target == current){
+          movePastSetTarget(
             context, 
-            exercise, 
-            goToNextSet,
+            ifMoveToNextSet, 
+            target, 
             headerColor,
           );
         }
-        else goToNextSet();
+        else ifMoveToNextSet();
+        
       },
       forwardActionWidget: RichText(
         text: TextSpan(
