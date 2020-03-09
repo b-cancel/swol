@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 //plugins
 import 'package:flutter_xlider/flutter_xlider.dart';
 import 'package:intl/intl.dart' as intl;
+import 'package:swol/shared/methods/theme.dart';
 
 //internal
 import 'package:swol/shared/methods/vibrate.dart';
@@ -12,11 +13,13 @@ class CustomSlider extends StatelessWidget {
   const CustomSlider({
     @required this.value,
     @required this.lastTick,
+    this.isDark: true,
     Key key,
   }) : super(key: key);
 
   final ValueNotifier<int> value;
   final int lastTick;
+  final bool isDark;
 
   onChange(int handlerIndex, dynamic lowerValue, dynamic upperValue){
     double val = lowerValue;
@@ -30,6 +33,8 @@ class CustomSlider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Color tickColor = MyTheme.dark.backgroundColor;
+
     //reusable tick widget
     double tickWidth = 3;
     double sidePadding = 34;
@@ -37,13 +42,13 @@ class CustomSlider extends StatelessWidget {
     Widget littleTick = Container(
       height: 8,
       width: tickWidth,
-      color: Theme.of(context).backgroundColor,
+      color: tickColor,
     );
 
     Widget bigTick = Container(
       height: 16,
       width: tickWidth,
-      color: Theme.of(context).backgroundColor,
+      color: tickColor,
     );
 
     Widget spacer = Expanded(
@@ -99,7 +104,7 @@ class CustomSlider extends StatelessWidget {
               Expanded(
                 child: Container(
                   decoration: BoxDecoration(
-                    color: Theme.of(context).backgroundColor,
+                    color: tickColor,
                     border: Border.all(
                       width: 2, 
                       color: Colors.black,
@@ -128,13 +133,15 @@ class CustomSlider extends StatelessWidget {
             handler: FlutterSliderHandler(
               child: Container(
                 decoration: BoxDecoration(
-                  color: Theme.of(context).primaryColorDark,
-                  borderRadius: BorderRadius.circular(25),
+                  shape: BoxShape.circle,
+                  border: Border.all(width: 2, color: Colors.black),
+                  color: isDark ? Theme.of(context).accentColor : MyTheme.dark.scaffoldBackgroundColor,
                 ),
                 child: Center(
                   child: Icon(
                     Icons.repeat, 
                     size: 25,
+                    color: Colors.white,
                   ),
                 ),
               ),
@@ -145,7 +152,7 @@ class CustomSlider extends StatelessWidget {
               textStyle: TextStyle(
                 fontSize: 16, 
                 fontWeight: FontWeight.bold,
-                color: Colors.white,
+                color: isDark ? Colors.white : Colors.black,
               ),
               boxStyle: FlutterSliderTooltipBox(
                 decoration: BoxDecoration(
@@ -159,7 +166,7 @@ class CustomSlider extends StatelessWidget {
               inactiveTrackBarHeight: 16,
               //NOTE: They need their own outline to cover up mid division of background
               inactiveTrackBar: BoxDecoration(
-                color: Theme.of(context).backgroundColor,
+                color: tickColor,
                 border: Border(
                   top: BorderSide(width: 2, color: Colors.black),
                   bottom: BorderSide(width: 2, color: Colors.black),

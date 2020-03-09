@@ -307,6 +307,7 @@ class _FloatingDoneButtonState extends State<FloatingDoneButton> {
           Navigator.of(context).pop();
         }, 
         widget.cardColor,
+        setsPassed,
       );
     }
     else{

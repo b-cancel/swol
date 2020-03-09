@@ -238,7 +238,7 @@ class _TickState extends State<Tick> {
   Widget build(BuildContext context) {
     return Container(
       width: widget.tickWidth,
-      color: (tickActive) ? Theme.of(context).accentColor : Theme.of(context).backgroundColor,
+      color: (tickActive) ? Theme.of(context).accentColor : MyTheme.dark.backgroundColor,
     );
   }
 }

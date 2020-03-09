@@ -17,22 +17,25 @@ class AwesomeButton extends StatelessWidget {
       padding: EdgeInsets.only(
         bottom: 8.0,
       ),
-      child: Material(
-        color: clear ? Colors.transparent : Theme.of(context).accentColor,
-        child: InkWell(
-          onTap: () => onTap(),
-          child: Container(
-            alignment: Alignment.center,
-            padding: EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(6.0),
-            ),
-            child: DefaultTextStyle(
-              style: TextStyle(
-                color: clear ? Colors.black : Colors.white,
-                fontWeight: FontWeight.bold,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(8.0),
+        child: Material(
+          color: clear ? Colors.transparent : Theme.of(context).accentColor,
+          child: InkWell(
+            onTap: () => onTap(),
+            child: Container(
+              alignment: Alignment.center,
+              padding: EdgeInsets.symmetric(
+                vertical: 12,
+                horizontal: 8,
               ),
-              child: child,
+              child: DefaultTextStyle(
+                style: TextStyle(
+                  color: clear ? Colors.black : Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
+                child: child,
+              ),
             ),
           ),
         ),

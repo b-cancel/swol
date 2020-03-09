@@ -44,7 +44,7 @@ movePastSetTarget(
         ),
         Padding(
           padding: EdgeInsets.symmetric(
-            horizontal: 24.0,
+            horizontal: 16.0,
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
