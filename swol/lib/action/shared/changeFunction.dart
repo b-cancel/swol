@@ -33,7 +33,7 @@ class _ChangeFunctionState extends State<ChangeFunction> {
 
   var carousel;
 
-  updateCarousel({bool alsoSetState: true}){
+  updateCarousel({bool alsoSetState: true}) {
     //update first last without setting state
     int idIsAtHighest = ExercisePage.orderedIDs.value[0];
     int idIsAtLowest = ExercisePage.orderedIDs.value[7];
@@ -43,7 +43,7 @@ class _ChangeFunctionState extends State<ChangeFunction> {
     //calc inital page
     int selectedID = widget.functionID.value;
     int selectedPage = ExercisePage.orderedIDs.value.indexOf(selectedID);
-    
+
     //new carousel
     carousel = CarouselSlider(
       initialPage: selectedPage, //DOES NOT WORK initially after the first time
@@ -52,9 +52,10 @@ class _ChangeFunctionState extends State<ChangeFunction> {
       autoPlay: false,
       scrollDirection: Axis.vertical,
       viewportFraction: 1.0,
-      onPageChanged: (int selectedIndex) { //the index of the page not the ID of the function
+      onPageChanged: (int selectedIndex) {
+        //the index of the page not the ID of the function
         int selectedID = ExercisePage.orderedIDs.value[selectedIndex];
-        if(widget.functionID.value != selectedID){
+        if (widget.functionID.value != selectedID) {
           Vibrator.vibrateOnce();
           widget.functionID.value = selectedID;
         }
@@ -65,7 +66,7 @@ class _ChangeFunctionState extends State<ChangeFunction> {
         firstFunction.value = (widget.functionID.value == idIsAtLowest);
         lastFunction.value = (widget.functionID.value == idIsAtHighest);
       },
-      items: ExercisePage.orderedIDs.value.map((functionID){
+      items: ExercisePage.orderedIDs.value.map((functionID) {
         return Builder(
           builder: (BuildContext context) {
             //no matter what this is going to span the entirety of the space
@@ -107,27 +108,45 @@ class _ChangeFunctionState extends State<ChangeFunction> {
       }).toList(),
     );
 
-    //set state if needed
-    if(alsoSetState){
-      //wait a frame to avoid problems when transitioning to another page
-      WidgetsBinding.instance.addPostFrameCallback((_){
-        if(mounted){
-          //show this new carousel
-          setState(() {});
+    print("order 1: " + ExercisePage.orderedIDs.value.toString());
+    print("type 1: " + carousel.runtimeType.toString());
+    print("here");
 
-          //TODO: figure out why I need this
-          //wait one frame to set the initial page since the initial page parameter doesn't work
-          //NOTE: the order of functions isn't changing
-          //NOTE: neither is the select page working
-          //so the ongoing theory is that its the fault of carousel
-          WidgetsBinding.instance.addPostFrameCallback((_){
-            //TODO isbreaking because we are trying to access a page in the pageview before its built
-            //TODO: duplicatable by simply moving to the next
-            carousel.jumpToPage(selectedPage); 
-          });
+    //set state if needed
+    List<int> beforeWait = ExercisePage.orderedIDs.value;
+    print("before if");
+    if (alsoSetState) {
+      //wait a frame to avoid problems when transitioning to another page
+      print("before wait");
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        print("after wait");
+        if (mounted) {
+          //NOTE: must to string for proper compare
+          if (beforeWait.toString() !=
+              ExercisePage.orderedIDs.value.toString()) {
+            print("order has changed");
+          } else {
+            //show this new carousel
+            setState(() {});
+
+            print("order 2: " + ExercisePage.orderedIDs.value.toString());
+            print("type 2: " + carousel.runtimeType.toString());
+
+            //TODO: figure out why I need this
+            //wait one frame to set the initial page since the initial page parameter doesn't work
+            //NOTE: the order of functions isn't changing
+            //NOTE: neither is the select page working
+            //so the ongoing theory is that its the fault of carousel
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              //TODO isbreaking because we are trying to access a page in the pageview before its built
+              //TODO: duplicatable by simply moving to the next
+              carousel.jumpToPage(selectedPage);
+            });
+          }
         }
       });
     }
+    else print("carousel init*******");
     //ELSE: the carousel is being build in init
   }
 
@@ -153,7 +172,7 @@ class _ChangeFunctionState extends State<ChangeFunction> {
   }
 
   upOneFunction() {
-    if(firstFunction.value == false){
+    if (firstFunction.value == false) {
       carousel.nextPage(
         duration: Duration(milliseconds: 300),
         curve: Curves.bounceIn,
@@ -162,7 +181,7 @@ class _ChangeFunctionState extends State<ChangeFunction> {
   }
 
   downOneFunction() {
-    if(lastFunction.value == false){
+    if (lastFunction.value == false) {
       carousel.previousPage(
         duration: Duration(milliseconds: 300),
         curve: Curves.bounceIn,
@@ -184,19 +203,19 @@ class _ChangeFunctionState extends State<ChangeFunction> {
           child: Stack(
             children: <Widget>[
               Conditional(
-                condition: widget.middleArrows, 
+                condition: widget.middleArrows,
                 ifTrue: carousel,
                 ifFalse: Row(
                   children: <Widget>[
                     OuterArrows(
-                      disabled: firstFunction, 
+                      disabled: firstFunction,
                       icon: Icons.arrow_drop_down,
                     ),
                     Expanded(
                       child: carousel,
                     ),
                     OuterArrows(
-                      disabled: lastFunction, 
+                      disabled: lastFunction,
                       icon: Icons.arrow_drop_up,
                     ),
                   ],
@@ -244,10 +263,10 @@ class OuterArrows extends StatefulWidget {
 }
 
 class _OuterArrowsState extends State<OuterArrows> {
-  updateState(){
+  updateState() {
     //NOTE: wait a frame to avoid reloading issues
-    WidgetsBinding.instance.addPostFrameCallback((_){
-      if(mounted) setState(() {});
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) setState(() {});
     });
   }
 
@@ -261,7 +280,7 @@ class _OuterArrowsState extends State<OuterArrows> {
   }
 
   @override
-  void dispose() { 
+  void dispose() {
     //stop listening
     widget.disabled.removeListener(updateState);
 
@@ -294,12 +313,12 @@ class InnerArrows extends StatefulWidget {
 }
 
 class _InnerArrowsState extends State<InnerArrows> {
-  updateState(){
+  updateState() {
     //NOTE: we wait one frame because while the transition is happening
     //its possible that we get a new function order
     //and therefore closestIndex updates
-    WidgetsBinding.instance.addPostFrameCallback((_){
-      if(mounted) setState(() {});
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) setState(() {});
     });
   }
 
@@ -310,7 +329,7 @@ class _InnerArrowsState extends State<InnerArrows> {
   }
 
   @override
-  void dispose() { 
+  void dispose() {
     ExercisePage.closestIndex.removeListener(updateState);
     super.dispose();
   }
@@ -325,24 +344,27 @@ class _InnerArrowsState extends State<InnerArrows> {
     bool setValid = weightValid && repsValid;
 
     //if it is then we may have a closestIndex
-    if(setValid){
+    if (setValid) {
       //if the closestIndex is something valid
       int lastClosestIndex = ExercisePage.closestIndex.value;
-      if(lastClosestIndex != -1){ 
+      if (lastClosestIndex != -1) {
         //if we arent the closest function then prompt the user to change
         int closestFunctionID = ExercisePage.orderedIDs.value[lastClosestIndex];
-        if(widget.functionID != closestFunctionID){
-          int ourIndex = ExercisePage.orderedIDs.value.indexOf(widget.functionID);
+        if (widget.functionID != closestFunctionID) {
+          int ourIndex =
+              ExercisePage.orderedIDs.value.indexOf(widget.functionID);
           bool targetIsDown = (lastClosestIndex > ourIndex);
           //color arrow if called for
-          if(widget.isUpArrow && targetIsDown == false) arrowColor = Colors.red;
-          else if(widget.isUpArrow == false && targetIsDown) arrowColor = Colors.red;
+          if (widget.isUpArrow && targetIsDown == false)
+            arrowColor = Colors.red;
+          else if (widget.isUpArrow == false && targetIsDown)
+            arrowColor = Colors.red;
         }
       }
     }
-    
+
     return Icon(
-      widget.isUpArrow ?  Icons.arrow_drop_up : Icons.arrow_drop_down,
+      widget.isUpArrow ? Icons.arrow_drop_up : Icons.arrow_drop_down,
       color: widget.hideArrow ? Theme.of(context).cardColor : arrowColor,
     );
   }
