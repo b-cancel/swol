@@ -109,13 +109,23 @@ class _ChangeFunctionState extends State<ChangeFunction> {
 
     //set state if needed
     if(alsoSetState){
-      //show this new carousel
-      setState(() {});
-
-      //TODO: figure out why I need this
-      //wait one frame to set the initial page since the initial page parameter doesn't work
+      //wait a frame to avoid problems when transitioning to another page
       WidgetsBinding.instance.addPostFrameCallback((_){
-        carousel.jumpToPage(selectedPage);
+        if(mounted){
+          //show this new carousel
+          setState(() {});
+
+          //TODO: figure out why I need this
+          //wait one frame to set the initial page since the initial page parameter doesn't work
+          //NOTE: the order of functions isn't changing
+          //NOTE: neither is the select page working
+          //so the ongoing theory is that its the fault of carousel
+          WidgetsBinding.instance.addPostFrameCallback((_){
+            //TODO isbreaking because we are trying to access a page in the pageview before its built
+            //TODO: duplicatable by simply moving to the next
+            carousel.jumpToPage(selectedPage); 
+          });
+        }
       });
     }
     //ELSE: the carousel is being build in init
@@ -235,7 +245,10 @@ class OuterArrows extends StatefulWidget {
 
 class _OuterArrowsState extends State<OuterArrows> {
   updateState(){
-    if(mounted) setState(() {});
+    //NOTE: wait a frame to avoid reloading issues
+    WidgetsBinding.instance.addPostFrameCallback((_){
+      if(mounted) setState(() {});
+    });
   }
 
   @override
@@ -282,7 +295,12 @@ class InnerArrows extends StatefulWidget {
 
 class _InnerArrowsState extends State<InnerArrows> {
   updateState(){
-    if(mounted) setState(() {});
+    //NOTE: we wait one frame because while the transition is happening
+    //its possible that we get a new function order
+    //and therefore closestIndex updates
+    WidgetsBinding.instance.addPostFrameCallback((_){
+      if(mounted) setState(() {});
+    });
   }
 
   @override
@@ -314,7 +332,6 @@ class _InnerArrowsState extends State<InnerArrows> {
         //if we arent the closest function then prompt the user to change
         int closestFunctionID = ExercisePage.orderedIDs.value[lastClosestIndex];
         if(widget.functionID != closestFunctionID){
-          print("*****************not matching");
           int ourIndex = ExercisePage.orderedIDs.value.indexOf(widget.functionID);
           bool targetIsDown = (lastClosestIndex > ourIndex);
           //color arrow if called for

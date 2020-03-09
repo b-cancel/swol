@@ -98,7 +98,7 @@ class SetDescription extends StatelessWidget {
             ),
           ),
           TextSpan(
-            text: " Rep" + repsS + "\n",
+            text: (invalidReps ? "" : " Rep" + repsS) + "\n",
           )
         ],
       ),
