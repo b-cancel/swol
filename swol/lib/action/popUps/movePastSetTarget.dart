@@ -4,15 +4,12 @@ import 'package:swol/action/popUps/button.dart';
 import 'package:swol/shared/methods/theme.dart';
 import 'package:swol/shared/structs/anExercise.dart';
 
-maybeChangeSetTarget(
+movePastSetTarget(
   BuildContext context,
-  AnExercise exercise,
-  Function ifFinish,
+  Function ifMovePast,
+  int setTarget,
   Color headerColor,
 ) {
-  //remove focus so the pop up doesnt bring it back
-  FocusScope.of(context).unfocus();
-
   //reused everywhere
   TextStyle bold = TextStyle(
     fontWeight: FontWeight.bold,
@@ -33,7 +30,7 @@ maybeChangeSetTarget(
             bottom: 16.0,
           ),
           child: Text(
-            "Change Set Target?",
+            "Move Past Set Target?",
             style: TextStyle(
               color: Colors.black,
               fontWeight: FontWeight.bold,
@@ -74,7 +71,7 @@ maybeChangeSetTarget(
     btnCancel: AwesomeButton(
       clear: true,
       child: Text(
-        "Keep Going",
+        "Finished",
       ),
       onTap: () {
         Navigator.pop(context);
@@ -82,14 +79,14 @@ maybeChangeSetTarget(
     ),
     btnOk: AwesomeButton(
       child: Text(
-        "Finish Excercise",
+        "Do Another Set",
       ),
       onTap: () {
         //pop ourselves
         Navigator.pop(context);
 
         //proceed as expected
-        ifFinish();
+        ifMovePast();
       },
     ),
   ).show();

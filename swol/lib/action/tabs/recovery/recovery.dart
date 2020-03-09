@@ -187,6 +187,8 @@ class RecoveryButtonsWithWhiteContext extends StatelessWidget {
       color: buttonsColor,
       exerciseID: exercise.id,
       forwardAction: () {
+        //NOTE: we only bother the user if they match
+        print("check: " + exercise.setTarget.toString() + " vs " + exercise.tempSetCount.toString());
         if(showAreYouSure.value){
           maybeSkipTimer( 
             context, 
