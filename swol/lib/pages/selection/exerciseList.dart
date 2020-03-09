@@ -160,6 +160,7 @@ class _ExerciseListState extends State<ExerciseList> {
         DateTime oldestDT = thisGroup[0].lastTimeStamp;
         TimeStampType sectionType = LastTimeStamp.returnTimeStampType(oldestDT);
 
+        
         //flip all regular sections
         //new and inprogress will be above them
         //but hidden will be below so take that into account when filipping sections
@@ -176,7 +177,7 @@ class _ExerciseListState extends State<ExerciseList> {
 
           //recalc variables used below
           thisGroup = listOfGroupOfExercises[index];
-          thisGroup[0].lastTimeStamp;
+          oldestDT = thisGroup[0].lastTimeStamp;
           sectionType = LastTimeStamp.returnTimeStampType(oldestDT);
         }
 
