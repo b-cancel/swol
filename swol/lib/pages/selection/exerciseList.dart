@@ -35,12 +35,6 @@ class ExerciseList extends StatefulWidget {
 }
 
 class _ExerciseListState extends State<ExerciseList> {
-  //special sections booleans to produce workout count
-  //use in header with count and perhaps also icons of sorts
-  bool inprogressWorkoutSection = false;
-  bool newWorkoutSection = false;
-  bool hiddenWorkoutSection = false;
-
   //other vars
   final Duration maxTimeBetweenExercises = Duration(hours: 1, minutes: 30);
 
@@ -76,6 +70,12 @@ class _ExerciseListState extends State<ExerciseList> {
   List<Widget> slivers;
   beforeManualBuild(){
     print("manual build");
+
+    //special sections booleans to produce workout count
+    //use in header with count and perhaps also icons of sorts
+    bool inprogressWorkoutSection = false;
+    bool newWorkoutSection = false;
+    bool hiddenWorkoutSection = false;
 
     List<Widget> sliverList = new List<Widget>();
     List<List<AnExercise>> listOfGroupOfExercises = new List<List<AnExercise>>();
@@ -155,9 +155,30 @@ class _ExerciseListState extends State<ExerciseList> {
       //fill sliver list
       for(int i = 0; i < listOfGroupOfExercises.length; i++){
         //create header text
-        List<AnExercise> thisGroup = listOfGroupOfExercises[i];
+        int index = i;
+        List<AnExercise> thisGroup = listOfGroupOfExercises[index];
         DateTime oldestDT = thisGroup[0].lastTimeStamp;
         TimeStampType sectionType = LastTimeStamp.returnTimeStampType(oldestDT);
+
+        //flip all regular sections
+        //new and inprogress will be above them
+        //but hidden will be below so take that into account when filipping sections
+        if(sectionType == TimeStampType.Other){
+          //adjust the index
+          int oldIndex = index;
+          if(inprogressWorkoutSection) oldIndex -= 1;
+          if(newWorkoutSection) oldIndex -= 1;
+
+          //adjust last index
+          int lastPossibleIndex = listOfGroupOfExercises.length - 1;
+          if(hiddenWorkoutSection) lastPossibleIndex -= 1;
+          index = lastPossibleIndex - oldIndex;
+
+          //recalc variables used below
+          thisGroup = listOfGroupOfExercises[index];
+          thisGroup[0].lastTimeStamp;
+          sectionType = LastTimeStamp.returnTimeStampType(oldestDT);
+        }
 
         //vars to set
         String title;
@@ -184,17 +205,17 @@ class _ExerciseListState extends State<ExerciseList> {
         }
 
         //set top section Color
-        bool highlightTop = (i == 0 || sectionType == TimeStampType.Hidden);
+        bool highlightTop = (index == 0 || sectionType == TimeStampType.Hidden);
         Color topColor = highlightTop ? Theme.of(context).accentColor : Theme.of(context).primaryColor;
         
         //set bottom section color
         Color bottomColor;
-        if((i + 1) < listOfGroupOfExercises.length){
-          //there is a section below our but is it hidden
-          DateTime prevTS = listOfGroupOfExercises[i+1][0].lastTimeStamp;
-          if(LastTimeStamp.isHidden(prevTS)){
+        if(hiddenWorkoutSection){
+          //NOTE: here MUST use i... NOT INDEX
+          if((i + 2) == listOfGroupOfExercises.length){
             bottomColor = Theme.of(context).accentColor;
           }
+          else bottomColor = Theme.of(context).primaryColor;
         }
         else bottomColor = Theme.of(context).primaryColor;
 

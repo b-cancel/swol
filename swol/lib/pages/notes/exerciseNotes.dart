@@ -160,7 +160,16 @@ class BigActionButton extends StatelessWidget {
 
   //functions
   deleteFunc() => ExerciseData.deleteExercise(exercise.id);
-  hideFunc() => exercise.lastTimeStamp = LastTimeStamp.hiddenDateTime();
+  hideFunc(){
+    //reset all temps
+    exercise.tempWeight = null;
+    exercise.tempReps = null;
+    exercise.tempSetCount = null;
+    exercise.tempStartTime = new ValueNotifier<DateTime>(AnExercise.nullDateTime);
+
+    //mark as hidden
+    exercise.lastTimeStamp = LastTimeStamp.hiddenDateTime();
+  }
 
   //pop ups for archiving or deleting
   areyouSurePopUp(BuildContext context, {Color color, IconData icon}){
