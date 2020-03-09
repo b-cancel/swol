@@ -144,39 +144,46 @@ class _ExercisePageDarkState extends State<ExercisePageDark> {
 
   nextSet() {
     if (ExercisePage.nextSet.value) {
-      //must be done first
-      //so that our suggest page has access to right 1 rep maxes
-      updateOneRepMaxes(
-        weight: widget.exercise.tempWeight,
-        reps: widget.exercise.tempReps,
-      );
+      //in order for the timer to start it has to be a value other than this
+      //cover exception that can happen if the user quick taps the next button
+      //TODO: I suspect the above
+      //worst case scenario this little exception cover won't break anything
+      if (widget.exercise.tempStartTime.value != AnExercise.nullDateTime) {
+        //must be done first
+        //so that our suggest page has access to right 1 rep maxes
+        updateOneRepMaxes(
+          weight: widget.exercise.tempWeight,
+          reps: widget.exercise.tempReps,
+        );
 
-      //reset timer
-      //TODO: figure out why at some point I marked that this NEEDED to be BEFORE everything else
-      //NOTE: that at the moment I should wait for lastWeight and lastReps to update
-      //before reacting to the change here in the one rep max chip
-      widget.exercise.tempStartTime =
-          new ValueNotifier<DateTime>(AnExercise.nullDateTime);
-      print(widget.exercise.id.toString() +
-          "******************************updated DT to " +
-          widget.exercise.tempStartTime.toString());
+        //reset timer
+        //TODO: figure out why at some point I marked that this NEEDED to be BEFORE everything else
+        //NOTE: that at the moment I should wait for lastWeight and lastReps to update
+        //before reacting to the change here in the one rep max chip
+        widget.exercise.tempStartTime =
+            new ValueNotifier<DateTime>(AnExercise.nullDateTime);
+        print(widget.exercise.id.toString() +
+            "******************************updated DT to " +
+            widget.exercise.tempStartTime.toString());
 
-      //save values (that we know are valid)
-      widget.exercise.lastWeight = widget.exercise.tempWeight;
-      widget.exercise.lastReps = widget.exercise.tempReps;
+        //save values (that we know are valid)
+        widget.exercise.lastWeight = widget.exercise.tempWeight;
+        widget.exercise.lastReps = widget.exercise.tempReps;
 
-      //wipe temps
-      widget.exercise.tempWeight = null;
-      widget.exercise.tempReps = null;
+        //wipe temps
+        widget.exercise.tempWeight = null;
+        widget.exercise.tempReps = null;
 
-      //reset notifiers
-      ExercisePage.setWeight.value = "";
-      ExercisePage.setReps.value = "";
+        //reset notifiers
+        ExercisePage.setWeight.value = "";
+        ExercisePage.setReps.value = "";
 
-      //move onto the next set
-      //NOTE: must happen after all variables updates
-      //since the suggest page will use the variables in their calculations
-      ExercisePage.pageNumber.value = 0;
+        //move onto the next set
+        //NOTE: must happen after all variables updates
+        //since the suggest page will use the variables in their calculations
+        ExercisePage.pageNumber.value = 0;
+      }
+      //ELSE: something went wrong but we will only make it worse if we don't stop it here
 
       //action complete
       ExercisePage.nextSet.value = false;

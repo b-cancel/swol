@@ -65,7 +65,7 @@ class _RecoveryTimePickerState extends State<RecoveryTimePicker> {
 
     //delimeter color
     Color delimeterColor = (widget.darkTheme) ? Colors.white : Colors.black;
-    //TODO: fix this if problem
+    //TODO: fix this if problem (headline6 is not supported yet)
     //Color textColor = (widget.darkTheme) ? Theme.of(context).primaryTextTheme.headline6.color : Colors.black;
     Color textColor = (widget.darkTheme) ? Colors.white : Colors.black;
 

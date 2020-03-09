@@ -81,9 +81,6 @@ class Buttons extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
           Expanded(
-            //TODO: should also probably pass something that links to the next buttons activity
-            //because this is the back button but it also hold a peice of the next button
-            //that ofcourse will change colors when PROPERLY active
             child: BottomBackButton( 
               backAction: backAction,
               verticalPadding: extraVerticalPadding,

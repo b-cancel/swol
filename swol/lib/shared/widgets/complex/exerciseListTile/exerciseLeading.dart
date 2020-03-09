@@ -30,18 +30,6 @@ class ExerciseTileLeading extends StatefulWidget {
 }
 
 class _ExerciseTileLeadingState extends State<ExerciseTileLeading> {
-  //TODO: figure out wherethe random notifier identifiers are comming from
-  //we start with: 74fe0
-  //then change to: d515f AND 74fe0
-  //then go back to: 74fe0
-  //because we go back this whole thing works but it shouldn't change IDs in the first place
-  /*
-  before wait: ValueNotifier<DateTime>#74fe0(1969-12-31 18:00:00.000)
-  I/flutter ( 1512): build: ValueNotifier<DateTime>#74fe0(1969-12-31 18:00:00.000)
-  I/flutter ( 1512): build: ValueNotifier<DateTime>#d515f(1969-12-31 18:00:00.000)
-  I/flutter ( 1512): after wait: ValueNotifier<DateTime>#74fe0(1969-12-31 18:00:00.000)
-  I/flutter ( 1512): build: ValueNotifier<DateTime>#74fe0(1969-12-31 18:00:00.000)
-  */
   actualUpdate(){
     print(widget.exercise.id.toString() +" after wait: " + widget.exercise.tempStartTime.toString());
     if(mounted) setState(() {});

@@ -200,50 +200,51 @@ class SetRecordButtonsWithWhiteContext extends StatelessWidget {
               //NOTE: this is pretty much a place holder for the next page
               //a quick glance to once again persuade the user of continuity
               child: Container(
-                  height: MediaQuery.of(context).size.height - topPadding,
-                  width: MediaQuery.of(context).size.width,
-                  color: cardColor,
-                  child: Stack(
-                    children: [
-                      Positioned.fill(
-                        child: Column(
-                          mainAxisSize: MainAxisSize.max,
-                          children: <Widget>[
-                            Expanded(
-                              child: Container(
-                                color: buttonsColor,
-                              ),
+                height: MediaQuery.of(context).size.height - topPadding,
+                width: MediaQuery.of(context).size.width,
+                color: cardColor,
+                child: Stack(
+                  children: [
+                    Positioned.fill(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.max,
+                        children: <Widget>[
+                          Expanded(
+                            child: Container(
+                              color: buttonsColor,
                             ),
-                            Expanded(child: Container()),
-                          ],
-                        ),
-                      ),
-                      Container(
-                        padding: EdgeInsets.only(
-                          top: (buttonsColor == Theme.of(context).accentColor)
-                              ? 16
-                              : 0,
-                        ),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: cardColor,
-                            borderRadius: BorderRadius.all(Radius.circular(24)),
                           ),
-                          child: Padding(
-                            padding: EdgeInsets.all(24.0),
-                            child: FittedBox(
-                              fit: BoxFit.contain,
-                              child: TimerGlimpse(
-                                exercise: exercise,
-                                weightFocusNode: weightFocusNode,
-                                repsFocusNode: repsFocusNode,
-                              ),
+                          Expanded(child: Container()),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      padding: EdgeInsets.only(
+                        top: (buttonsColor == Theme.of(context).accentColor)
+                            ? 16
+                            : 0,
+                      ),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: cardColor,
+                          borderRadius: BorderRadius.all(Radius.circular(24)),
+                        ),
+                        child: Padding(
+                          padding: EdgeInsets.all(24.0),
+                          child: FittedBox(
+                            fit: BoxFit.contain,
+                            child: TimerGlimpse(
+                              exercise: exercise,
+                              weightFocusNode: weightFocusNode,
+                              repsFocusNode: repsFocusNode,
                             ),
-                          )
+                          ),
                         ),
                       ),
-                    ],
-                  )),
+                    ),
+                  ],
+                ),
+              ),
             ),
           ),
         ),
@@ -287,8 +288,8 @@ class TimerGlimpse extends StatefulWidget {
 class _TimerGlimpseState extends State<TimerGlimpse> {
   int subscribeID;
 
-  updateState(){
-    if(mounted){
+  updateState() {
+    if (mounted) {
       setState(() {});
     }
   }
@@ -301,7 +302,7 @@ class _TimerGlimpseState extends State<TimerGlimpse> {
   }
 
   @override
-  void dispose() { 
+  void dispose() {
     widget.weightFocusNode.removeListener(updateState);
     widget.repsFocusNode.removeListener(updateState);
     super.dispose();
@@ -312,15 +313,14 @@ class _TimerGlimpseState extends State<TimerGlimpse> {
     //get glimpse color
     Color circleGlimpseColor;
     DateTime startTime = widget.exercise.tempStartTime.value;
-    if(startTime == AnExercise.nullDateTime){
+    if (startTime == AnExercise.nullDateTime) {
       circleGlimpseColor = Color(0xFFBFBFBF); //same grey as timer
-    }
-    else{
+    } else {
       Duration timePassed = DateTime.now().difference(startTime);
-      if(timePassed <= widget.exercise.recoveryPeriod){
+      if (timePassed <= widget.exercise.recoveryPeriod) {
         circleGlimpseColor = Theme.of(context).accentColor;
-      }
-      else circleGlimpseColor = Colors.red;
+      } else
+        circleGlimpseColor = Colors.red;
     }
 
     //build

@@ -76,46 +76,24 @@ class ExerciseTitleHeroHelper extends StatelessWidget {
                   Theme.of(context).primaryColorDark,
                   percentToAppBar,
                 ),
-                padding: EdgeInsets.symmetric(
-                  vertical: lerpDouble(
-                0,
-                16,
-                percentToAppBar,
-              ),
-                ),
+          padding: EdgeInsets.symmetric(
+            vertical: lerpDouble(
+              0,
+              16,
+              percentToAppBar,
+            ),
+          ),
           child: Container(
             alignment: Alignment.centerLeft,
-            child: ReloadingTitle(
-              exercise: exercise,
-            )
+            child: Text(
+              exercise.name,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                fontSize: 18,
+              ),
+            ),
           ),
         ),
-      ),
-    );
-  }
-}
-
-//TODO: im pretty sure we can remove this
-//NOTE: this reloads simply because its stateful
-class ReloadingTitle extends StatefulWidget {
-  ReloadingTitle({
-    @required this.exercise,
-  });
-
-  final AnExercise exercise;
-
-  @override
-  _ReloadingTitleState createState() => _ReloadingTitleState();
-}
-
-class _ReloadingTitleState extends State<ReloadingTitle> {
-  @override
-  Widget build(BuildContext context) {
-    return Text(
-      widget.exercise.name,
-      overflow: TextOverflow.ellipsis,
-      style: TextStyle(
-        fontSize: 18,
       ),
     );
   }

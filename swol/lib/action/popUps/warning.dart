@@ -112,12 +112,6 @@ warningThenAllowPop(BuildContext context, AnExercise exercise,
       AwesomeDialog(
         context: context,
         isDense: false,
-        onDissmissCallback: () {
-          //If the pop up came up the values typed are not valid
-          //if we reverted then the refocus will do nothing
-          //since the function will see that both values are valid
-          ExercisePage.causeRefocusIfInvalid.value = true;
-        },
         dismissOnTouchOutside: true,
         dialogType: DialogType.WARNING,
         animType: AnimType.LEFTSLIDE,
@@ -174,7 +168,6 @@ warningThenAllowPop(BuildContext context, AnExercise exercise,
 
             //pop ourselves
             Navigator.of(context).pop();
-            //will call "onDissmissCallback"
 
             //do the action the user initially wanted
             //regardless of where this function was called from
@@ -188,7 +181,11 @@ warningThenAllowPop(BuildContext context, AnExercise exercise,
           onTap: () {
             //pop ourselves
             Navigator.of(context).pop();
-            //will call "onDissmissCallback"
+
+            //If the pop up came up the values typed are not valid
+            //if we reverted then the refocus will do nothing
+            //since the function will see that both values are valid
+            ExercisePage.causeRefocusIfInvalid.value = true;
 
             //move to the right page
             //IF we are already there then good

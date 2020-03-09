@@ -239,7 +239,6 @@ class SearchResults extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Radius cardRadius = Radius.circular(24);
     return ListView(
       children: <Widget>[
         //spacer for header so that the stack thing lets the curves stay above

@@ -11,9 +11,14 @@ import 'package:swol/action/popUps/reusable.dart';
 import 'package:swol/action/popUps/button.dart';
 import 'package:swol/action/page.dart';
 
-toNextSet(){
-  ExercisePage.updateSet.value = true; //start the set
-  ExercisePage.pageNumber.value = 2; //shift to the timer page
+toNextPageAfterSetUpdateComplete(){
+  if(ExercisePage.updateSet.value){
+    WidgetsBinding.instance.addPostFrameCallback((_){
+        toNextPageAfterSetUpdateComplete();
+    });
+  } else {
+    ExercisePage.pageNumber.value = 2; //shift to the timer page
+  }
 }
 
 //function
@@ -39,7 +44,9 @@ maybeError(
 
     //we are valid and can therefore move on
     if(setValid){
-      toNextSet();
+      //move onto the next set
+      ExercisePage.updateSet.value = true; //start the set
+      toNextPageAfterSetUpdateComplete();
     }
     else{
       //change the buttons shows a the wording a tad\
@@ -51,12 +58,8 @@ maybeError(
     AwesomeDialog(
       context: context,
       isDense: false,
-      onDissmissCallback: () {
-        //If the pop up came up the values typed are not valid
-        //if we reverted then the refocus will do nothing
-        //since the function will see that both values are valid
-        ExercisePage.causeRefocusIfInvalid.value = true;
-      },
+      //NOTE: dont use dismiss callback since dismissing
+      //from different areas yields different results
       dismissOnTouchOutside: true,
       dialogType: DialogType.ERROR,
       animType: AnimType.BOTTOMSLIDE,
@@ -157,8 +160,13 @@ maybeError(
           ExercisePage.setReps.value = exercise.tempReps.toString();
 
           //pop ourselves
-          toNextSet();
-          //will call "onDissmissCallback"
+          Navigator.of(context).pop();
+
+          //PRECAUTION: wait a frame to wait for setWeight and setReps to update
+          WidgetsBinding.instance.addPostFrameCallback((_){
+            ExercisePage.updateSet.value = true; //start the set
+            toNextPageAfterSetUpdateComplete();
+          });
         },
       ),
       btnOk: timerNotStarted ? null : AwesomeButton(
@@ -168,7 +176,11 @@ maybeError(
         onTap: () {
           //pop ourselves
           Navigator.of(context).pop();
-          //will call "onDissmissCallback"
+
+          //If the pop up came up the values typed are not valid
+          //if we reverted then the refocus will do nothing
+          //since the function will see that both values are valid
+          ExercisePage.causeRefocusIfInvalid.value = true;
         },
       ),
     ).show();
