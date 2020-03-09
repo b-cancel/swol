@@ -138,13 +138,18 @@ class _ChangeFunctionState extends State<ChangeFunction> {
             //NOTE: neither is the select page working
             //so the ongoing theory is that its the fault of carousel
             WidgetsBinding.instance.addPostFrameCallback((_) {
+              //TODO: figure out why sometimes the carousel here has no pages
               print("order 3: " + ExercisePage.orderedIDs.value.toString());
               print("type 3: " + carousel.runtimeType.toString());
               print("is null " + (carousel == null).toString());
 
               //TODO isbreaking because we are trying to access a page in the pageview before its built
               //TODO: duplicatable by simply moving to the next
-              carousel.jumpToPage(selectedPage);
+
+              //this check is preventative because I can't seem to duplicate the problem
+              if(carousel.runtimeType == CarouselSlider){
+                carousel.jumpToPage(selectedPage);
+              }
             });
           }
         }
