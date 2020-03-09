@@ -20,6 +20,7 @@ maybeSkipTimer(
   AnExercise exercise,
   Function ifSkip,
   Color headerColor,
+  DateTime startTime,
 ) {
   //are we way off? or are we atleast within the range for this type of workout
   String trainingSelected = durationToTrainingType(
@@ -59,6 +60,7 @@ maybeSkipTimer(
                 padding: EdgeInsets.all(8),
                 child: AnimatedMiniNormalTimer(
                   exercise: exercise,
+                  startTime: startTime,
                 ),
               ),
             ),

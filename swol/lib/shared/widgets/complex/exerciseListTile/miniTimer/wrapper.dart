@@ -10,9 +10,11 @@ import 'package:swol/other/otherHelper.dart';
 class AnimatedMiniNormalTimer extends StatefulWidget {
   AnimatedMiniNormalTimer({
     @required this.exercise,
+    this.startTime,
   });
 
   final AnExercise exercise;
+  final DateTime startTime;
 
   @override
   _AnimatedMiniNormalTimerState createState() => _AnimatedMiniNormalTimerState();
@@ -21,6 +23,7 @@ class AnimatedMiniNormalTimer extends StatefulWidget {
 class _AnimatedMiniNormalTimerState extends State<AnimatedMiniNormalTimer> with SingleTickerProviderStateMixin{
   final Duration maxDuration = const Duration(minutes: 5);
   AnimationController controller;
+  DateTime startTime;
 
   //function removable from listeners
   updateState(){
@@ -43,10 +46,15 @@ class _AnimatedMiniNormalTimerState extends State<AnimatedMiniNormalTimer> with 
     controller.addListener(updateState);
     controller.addStatusListener(updateStateAnim);
 
+    startTime = widget.startTime ?? 
+      widget.exercise.tempStartTime.value;
+
     //start animation
     //NOTICE: this value never really changes, once its started... its started...
     //NOTE: again by now we know timerStart isnt null
-    Duration timePassed = DateTime.now().difference(widget.exercise.tempStartTime.value);
+    Duration timePassed = DateTime.now().difference(
+      startTime
+    );
     controller.forward(
       from: timeToLerpValue(timePassed),
     );
@@ -70,10 +78,13 @@ class _AnimatedMiniNormalTimerState extends State<AnimatedMiniNormalTimer> with 
   //build
   @override
   Widget build(BuildContext context) {
+    startTime = widget.startTime ?? 
+    widget.exercise.tempStartTime.value;
+
     return WatchUI(
       controller: controller,
       exercise: widget.exercise,
-      startTime: widget.exercise.tempStartTime.value,
+      startTime: startTime,
     );
   }
 }

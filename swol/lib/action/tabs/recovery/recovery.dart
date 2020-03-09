@@ -195,6 +195,7 @@ class RecoveryButtonsWithWhiteContext extends StatelessWidget {
               exercise, 
               goToNextSet,
               headerColor,
+              exercise.tempStartTime.value,
             );
           }
           else goToNextSet();
