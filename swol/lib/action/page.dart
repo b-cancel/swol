@@ -190,10 +190,27 @@ class _ExercisePageDarkState extends State<ExercisePageDark> {
     }
   }
 
+  testNotify()async{
+    /*
+    var androidPlatformChannelSpecifics = AndroidNotificationDetails(
+    'your channel id', 'your channel name', 'your channel description',
+    importance: Importance.Max, priority: Priority.High, ticker: 'ticker');
+var iOSPlatformChannelSpecifics = IOSNotificationDetails();
+var platformChannelSpecifics = NotificationDetails(
+    androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
+await flutterLocalNotificationsPlugin.show(
+    0, 'plain title', 'plain body', platformChannelSpecifics,
+    payload: 'item x');
+    */
+  }
+
   @override
   void initState() {
     //super init
     super.initState();
+
+    //TODO: remove test code
+    testNotify();
 
     //reset all statics to defaults
     ExercisePage.pageNumber.value = 0; //this will properly update itself later
@@ -403,3 +420,12 @@ updateOrderOfIDs(List<double> functionIDToValue) {
     ExercisePage.orderedIDs.value = orderedIDs;
   }
 }
+
+/*
+NOTIFICATION FEATURES SUPPORTED BY ALL LANGUAGES
+Scheduling when notifications should appear
+Retrieve a list of pending notification requests that have been scheduled to be shown in the future
+Cancelling/removing notification by id or all of them
+Ability to handle when a user has tapped on a notification, when the app is the foreground, background or terminated
+Determine if an app was launched due to tapping on a notification
+*/

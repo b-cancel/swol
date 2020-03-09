@@ -1,6 +1,11 @@
+import 'dart:async';
+import 'dart:ui';
+import 'package:flutter/cupertino.dart';
+
 //flutter
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+//import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 //plugins
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -18,8 +23,43 @@ import 'package:swol/shared/methods/theme.dart';
 import 'package:swol/pages/selection/exerciseListPage.dart';
 import 'package:swol/pages/search/searchesData.dart';
 
-//app start
-void main() => runApp(App());
+/*
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+FlutterLocalNotificationsPlugin();
+*/
+
+/// IMPORTANT: running the following code on its own won't work as there is setup required for each platform head project.
+/// Please download the complete example app from the GitHub repository where all the setup has been done
+Future<void> main() async {
+  // needed if you intend to initialize in the `main` function
+  WidgetsFlutterBinding.ensureInitialized();
+
+  /*
+  var initializationSettingsAndroid = AndroidInitializationSettings('@mipmap/ic_launcher');
+
+  var initializationSettingsIOS = IOSInitializationSettings(
+    requestAlertPermission: false,
+    requestBadgePermission: false,
+    requestSoundPermission: false
+  );
+
+  var initializationSettings = InitializationSettings(
+      initializationSettingsAndroid, 
+      initializationSettingsIOS,
+  );
+
+  await flutterLocalNotificationsPlugin.initialize(
+    initializationSettings,
+    onSelectNotification: (String payload) async {
+      if (payload != null) {
+        debugPrint('notification payload: ' + payload);
+      }
+    },
+  );
+  */
+  
+  runApp(App());
+}
 
 //required for loading pages to come up
 class App extends StatelessWidget {
