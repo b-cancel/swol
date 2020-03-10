@@ -12,6 +12,7 @@ import 'package:swol/action/page.dart';
 //internal: shared
 import 'package:swol/shared/structs/anExercise.dart';
 import 'package:swol/shared/methods/theme.dart';
+import 'package:swol/shared/widgets/simple/notify.dart';
 
 //widget
 class Recovery extends StatefulWidget {
@@ -35,6 +36,12 @@ class _RecoveryState extends State<Recovery>
   //function that is removable from listener
   updateRecoveryDuration() {
     widget.exercise.recoveryPeriod = recoveryDuration.value;
+    scheduleNotification(
+      widget.exercise.id,
+      widget.exercise.name,
+      DateTime.now().add(recoveryDuration.value),
+      alsoCancel: true,
+    );
   }
 
   //init

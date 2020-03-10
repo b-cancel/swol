@@ -18,6 +18,7 @@ import 'package:swol/pages/notes/exerciseNotes.dart';
 import 'package:swol/action/tabs/verticalTabs.dart';
 import 'package:swol/other/functions/W&R=1RM.dart';
 import 'package:swol/action/popUps/warning.dart';
+import 'package:swol/shared/widgets/simple/notify.dart';
 
 //used to
 //1. keep track of all the variables and be able to access them from everywhere
@@ -123,6 +124,14 @@ class _ExercisePageDarkState extends State<ExercisePageDark> {
         widget.exercise.tempStartTime =
             new ValueNotifier<DateTime>(DateTime.now());
 
+        //since the timer is starting so is the notification scheduled
+        scheduleNotification(
+          widget.exercise.id,
+          widget.exercise.name,
+          DateTime.now().add(widget.exercise.recoveryPeriod),
+          alsoCancel: false,
+        );
+
         //indicate you have started the set
         if (widget.exercise.tempSetCount == null) {
           widget.exercise.tempSetCount = 1;
@@ -192,75 +201,10 @@ class _ExercisePageDarkState extends State<ExercisePageDark> {
     }
   }
 
-  testNotify()async{
-    var androidPlatformChannelSpecifics = AndroidNotificationDetails(
-      'Channel-ID', 'Channel-Name', 'Channel-Description',
-      //user must act now
-      importance: Importance.Max, 
-      priority: Priority.Max, 
-      //not BigText, BigPicture, Message, or Media
-      //Maybe Inbox or Messaging
-      style: AndroidNotificationStyle.Default,
-      styleInformation: DefaultStyleInformation(
-        false, //content not html
-        false, //title not html
-      ),
-      //ultimate alert
-      playSound: true,
-      enableVibration: true,
-      enableLights: true,
-      //when the user taps it, it dismisses
-      autoCancel: true,
-      //the user can dismiss it
-      ongoing: false,
-      //the first alert should push them
-      //by the second they have already lost the benefit
-      onlyAlertOnce: true,
-      //easier for the user to find
-      channelShowBadge: true,
-      //no progress showing
-      showProgress: false,
-      indeterminate: false,
-      //updates won't happen
-      channelAction: AndroidNotificationChannelAction.CreateIfNotExists,
-      visibility: NotificationVisibility.Public,
-      //for older versions of android
-      ticker: 'Set Break Complete',
-    );
-
-    var iOSPlatformChannelSpecifics = IOSNotificationDetails(
-      presentAlert: true,
-      presentBadge: true,
-      presentSound: true,
-    );
-
-    var platformChannelSpecifics = NotificationDetails(
-      androidPlatformChannelSpecifics, 
-      iOSPlatformChannelSpecifics,
-    );
-
-    await flutterLocalNotificationsPlugin.show(
-      //pass ID so we can remove it by id if needed
-      widget.exercise.id,
-      //title
-      'Set Break Complete' , 
-      //content
-      'for '+ widget.exercise.name + '\n'
-      + 'Start your next set now for the best results', 
-      //pass details created above
-      platformChannelSpecifics,
-      //pass ID so we can open to that page when user taps the excercise
-      payload: widget.exercise.id.toString(),
-    );
-  }
-
   @override
   void initState() {
     //super init
     super.initState();
-
-    //TODO: remove test code
-    testNotify();
 
     //reset all statics to defaults
     ExercisePage.pageNumber.value = 0; //this will properly update itself later
