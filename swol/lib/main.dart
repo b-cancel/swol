@@ -5,9 +5,9 @@ import 'package:flutter/cupertino.dart';
 //flutter
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-//import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 //plugins
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:feature_discovery/feature_discovery.dart';
@@ -23,10 +23,8 @@ import 'package:swol/shared/methods/theme.dart';
 import 'package:swol/pages/selection/exerciseListPage.dart';
 import 'package:swol/pages/search/searchesData.dart';
 
-/*
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
 FlutterLocalNotificationsPlugin();
-*/
 
 /// IMPORTANT: running the following code on its own won't work as there is setup required for each platform head project.
 /// Please download the complete example app from the GitHub repository where all the setup has been done
@@ -34,13 +32,12 @@ Future<void> main() async {
   // needed if you intend to initialize in the `main` function
   WidgetsFlutterBinding.ensureInitialized();
 
-  /*
   var initializationSettingsAndroid = AndroidInitializationSettings('@mipmap/ic_launcher');
 
   var initializationSettingsIOS = IOSInitializationSettings(
-    requestAlertPermission: false,
-    requestBadgePermission: false,
-    requestSoundPermission: false
+    requestAlertPermission: true,
+    requestBadgePermission: true,
+    requestSoundPermission: true
   );
 
   var initializationSettings = InitializationSettings(
@@ -50,13 +47,32 @@ Future<void> main() async {
 
   await flutterLocalNotificationsPlugin.initialize(
     initializationSettings,
+    /*
+    If the app had been launched by tapping on a notification created by this plugin, 
+    calling initialize is what will trigger the onSelectNotification to trigger 
+    to handle the notification that the user tapped on. 
+    An alternative to handling the "launch notification" 
+    is to call the getNotificationAppLaunchDetails method 
+    that is available in the plugin. 
+    This could be used, for example, to change the home route of the app for deep-linking. 
+    Calling initialize will still cause the onSelectNotification callback to fire 
+    for the launch notification. 
+    It will be up to developers to ensure that they don't process the same notification twice 
+    (e.g. by storing and comparing the notification id).
+    */
+    //In the real world, this payload could represent the id of the item you want to display the details of.
     onSelectNotification: (String payload) async {
       if (payload != null) {
         debugPrint('notification payload: ' + payload);
       }
+      /*
+      await Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => SecondScreen(payload)),
+      );
+      */
     },
   );
-  */
   
   runApp(App());
 }

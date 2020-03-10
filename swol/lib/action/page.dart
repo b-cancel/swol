@@ -2,7 +2,9 @@
 import 'package:flutter/material.dart';
 
 //plugin
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:swol/main.dart';
 
 //internal: exercise
 import 'package:swol/shared/widgets/simple/heros/leading.dart';
@@ -191,17 +193,66 @@ class _ExercisePageDarkState extends State<ExercisePageDark> {
   }
 
   testNotify()async{
-    /*
     var androidPlatformChannelSpecifics = AndroidNotificationDetails(
-    'your channel id', 'your channel name', 'your channel description',
-    importance: Importance.Max, priority: Priority.High, ticker: 'ticker');
-var iOSPlatformChannelSpecifics = IOSNotificationDetails();
-var platformChannelSpecifics = NotificationDetails(
-    androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
-await flutterLocalNotificationsPlugin.show(
-    0, 'plain title', 'plain body', platformChannelSpecifics,
-    payload: 'item x');
-    */
+      'your channel id', 
+      'your channel name', 
+      'your channel description',
+      //user must act now
+      importance: Importance.Max, 
+      priority: Priority.Max, 
+      //not BigText, BigPicture, Message, or Media
+      //Maybe Inbox or Messaging
+      style: AndroidNotificationStyle.Default,
+      //BigTextStyleInformation
+      //BigPictureStyleInformation
+      //MessagingStyleInformation
+      //InboxStyleInformation
+      //DefaultStyleInformation
+      styleInformation: DefaultStyleInformation(
+        false, //content not html
+        false, //title not html
+      ),
+      //ultimate alert
+      playSound: true,
+      enableVibration: true,
+      enableLights: true,
+      //when the user taps it, it dismisses
+      autoCancel: true,
+      //the user can dismiss it
+      ongoing: false,
+      //the first alert should push them
+      //by the second they have already lost the benefit
+      onlyAlertOnce: true,
+      //easier for the user to find
+      channelShowBadge: true,
+      //no progress showing
+      showProgress: false,
+      indeterminate: false,
+      //updates won't happen
+      channelAction: AndroidNotificationChannelAction.CreateIfNotExists,
+      visibility: NotificationVisibility.Public,
+      //for older versions of android
+      ticker: 'Set Break Complete',
+    );
+
+    var iOSPlatformChannelSpecifics = IOSNotificationDetails(
+      presentAlert: true,
+      presentBadge: true,
+      presentSound: true,
+    );
+
+    var platformChannelSpecifics = NotificationDetails(
+      androidPlatformChannelSpecifics, 
+      iOSPlatformChannelSpecifics,
+    );
+
+    await flutterLocalNotificationsPlugin.show(
+      0, 
+      'Set Break Complete', 
+      'for X Excercise\nStart your next set now for the best results', 
+      platformChannelSpecifics,
+      payload: 'item x',
+    );
   }
 
   @override
