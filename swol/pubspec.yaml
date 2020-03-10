@@ -20,7 +20,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-  #flutter_local_notifications: ^1.2.0+4
+  flutter_local_notifications: ^1.2.0+4
 
   #PICKER (for time picking)
   flutter_picker: ^1.1.0 #WEB ISSUES
