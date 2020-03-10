@@ -25,6 +25,7 @@ import 'package:swol/pages/search/searchesData.dart';
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
 FlutterLocalNotificationsPlugin();
+final ValueNotifier<int> excerciseToTravelTo = new ValueNotifier<int>(-1);
 
 /// IMPORTANT: running the following code on its own won't work as there is setup required for each platform head project.
 /// Please download the complete example app from the GitHub repository where all the setup has been done
@@ -62,15 +63,11 @@ Future<void> main() async {
     */
     //In the real world, this payload could represent the id of the item you want to display the details of.
     onSelectNotification: (String payload) async {
+      //updates what excercise to travel to
+      //which will then cause us to travel to it
       if (payload != null) {
-        debugPrint('notification payload: ' + payload);
+        excerciseToTravelTo.value = int.parse(payload);
       }
-      /*
-      await Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => SecondScreen(payload)),
-      );
-      */
     },
   );
   

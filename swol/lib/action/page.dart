@@ -194,20 +194,13 @@ class _ExercisePageDarkState extends State<ExercisePageDark> {
 
   testNotify()async{
     var androidPlatformChannelSpecifics = AndroidNotificationDetails(
-      'your channel id', 
-      'your channel name', 
-      'your channel description',
+      'Channel-ID', 'Channel-Name', 'Channel-Description',
       //user must act now
       importance: Importance.Max, 
       priority: Priority.Max, 
       //not BigText, BigPicture, Message, or Media
       //Maybe Inbox or Messaging
       style: AndroidNotificationStyle.Default,
-      //BigTextStyleInformation
-      //BigPictureStyleInformation
-      //MessagingStyleInformation
-      //InboxStyleInformation
-      //DefaultStyleInformation
       styleInformation: DefaultStyleInformation(
         false, //content not html
         false, //title not html
@@ -247,11 +240,17 @@ class _ExercisePageDarkState extends State<ExercisePageDark> {
     );
 
     await flutterLocalNotificationsPlugin.show(
-      0, 
-      'Set Break Complete', 
-      'for X Excercise\nStart your next set now for the best results', 
+      //pass ID so we can remove it by id if needed
+      widget.exercise.id,
+      //title
+      'Set Break Complete' , 
+      //content
+      'for '+ widget.exercise.name + '\n'
+      + 'Start your next set now for the best results', 
+      //pass details created above
       platformChannelSpecifics,
-      payload: 'item x',
+      //pass ID so we can open to that page when user taps the excercise
+      payload: widget.exercise.id.toString(),
     );
   }
 
