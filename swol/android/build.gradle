@@ -5,7 +5,8 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.2.1'
+        //used to be 3.2.1
+        classpath 'com.android.tools.build:gradle:3.3.1'
     }
 }
 
@@ -45,6 +46,7 @@ Note: Some input files use or override a deprecated API.
 Note: Recompile with -Xlint:deprecation for details.
 √ Built build\app\outputs\apk\debug\app-debug.apk.
 */
+/*
 subprojects {
     project.configurations.all {
 	resolutionStrategy.eachDependency { details ->
@@ -55,6 +57,7 @@ subprojects {
 	}
     }    
 }
+*/
 
 task clean(type: Delete) {
     delete rootProject.buildDir

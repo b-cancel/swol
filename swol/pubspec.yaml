@@ -28,7 +28,7 @@ dependencies:
   #get application path for android and IOS
   #seems to only work for mobile
   #find alternative for web (https://pub.dev/packages/async_resource)
-  path_provider: ^1.6.1 
+  path_provider: ^1.6.5
 
   #-------------------------ABOVE PROBLEMATIC-------------------------
 
