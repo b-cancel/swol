@@ -25,7 +25,7 @@ import 'package:swol/pages/search/searchesData.dart';
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
 FlutterLocalNotificationsPlugin();
-final ValueNotifier<int> excerciseToTravelTo = new ValueNotifier<int>(-1);
+final ValueNotifier<int> exerciseToTravelTo = new ValueNotifier<int>(-1);
 
 /// IMPORTANT: running the following code on its own won't work as there is setup required for each platform head project.
 /// Please download the complete example app from the GitHub repository where all the setup has been done
@@ -66,7 +66,7 @@ Future<void> main() async {
       //updates what excercise to travel to
       //which will then cause us to travel to it
       if (payload != null) {
-        excerciseToTravelTo.value = int.parse(payload);
+        exerciseToTravelTo.value = int.parse(payload);
       }
     },
   );

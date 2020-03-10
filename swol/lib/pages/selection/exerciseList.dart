@@ -49,68 +49,74 @@ class _ExerciseListState extends State<ExerciseList> {
     }
   }
 
-  goToLearn() {
+  //go back until the main page and then to the exercise
+  //TODO: refine this so that state is saved
+  //NOTE: this doesn't save any previous state
+  //if skips out on the warnings that usually pop out
+  //and doesn't autostart the set for the exercise that we are leaving
+  goToExcercise() {
     BuildContext rootContext = GrabSystemData.rootContext;
     if (Navigator.canPop(rootContext)) {
+      //may need to unfocus
+      if (FocusScope.of(context).hasFocus) {
+        FocusScope.of(context).unfocus();
+      }
+
       //pop with the animation
       Navigator.pop(rootContext);
 
       //let the user see the animation
       Future.delayed(Duration(milliseconds: 300), () {
-        goToLearn();
+        goToExcercise();
       });
     } else {
-      App.navSpread.value = true;
-      Navigator.push(
-        rootContext,
-        PageTransition(
-          type: PageTransitionType.rightToLeft,
-          child: LearnExercise(),
-        ),
-      );
+      travelToExercise();
     }
   }
 
-  travelToExcercise(AnExercise exerciseToTravelTo) {
-    //TODO: match with transition Duration in exerciseTile
-    Duration transitionDuration = Duration(milliseconds: 300);
-    Navigator.push(
-      context,
-      PageTransition(
-        duration: transitionDuration,
-        type: PageTransitionType.rightToLeft,
-        //wrap in light so warning pop up works well
-        child: Theme(
-          data: MyTheme.light,
-          child: ExercisePage(
-            exercise: exerciseToTravelTo,
-            transitionDuration: transitionDuration,
+  travelToExercise() {
+    if (exerciseToTravelTo.value != -1) {
+      if (ExerciseData.getExercises().containsKey(exerciseToTravelTo.value)) {
+        AnExercise exerciseWeMightTravelTo =
+            ExerciseData.getExercises()[exerciseToTravelTo.value];
+
+        //we already traveled there
+        exerciseToTravelTo.value = -1;
+
+        //would be triggered by exercise tile
+        App.navSpread.value = true;
+
+        //TODO: match with transition Duration in exerciseTile
+        Duration transitionDuration = Duration(milliseconds: 300);
+
+        //travel there
+        Navigator.push(
+          context,
+          PageTransition(
+            duration: transitionDuration,
+            type: PageTransitionType.rightToLeft,
+            //wrap in light so warning pop up works well
+            child: Theme(
+              data: MyTheme.light,
+              child: ExercisePage(
+                exercise: exerciseWeMightTravelTo,
+                transitionDuration: transitionDuration,
+              ),
+            ),
           ),
-        ),
-      ),
-    );
+        );
+      }
+    }
   }
 
   //init
   @override
   void initState() {
-    //IF excerciseToTravelTo is set to something not -1
-    //then we want to travel to that page on init
-    if (excerciseToTravelTo.value != -1) {
-      //wait one frame before trying to travel
-      //otherwise things will break
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        AnExercise exerciseToTravelTo =
-            ExerciseData.getExercises()[excerciseToTravelTo.value];
-
-        if (exerciseToTravelTo != null) {
-          travelToExcercise(exerciseToTravelTo);
-        }
-      });
-
-      //we already traveled there
-      excerciseToTravelTo.value = -1;
-    }
+    //wait one frame before trying to travel
+    //otherwise things will break
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      travelToExercise();
+    });
 
     //wait to have mediaquery available
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -120,11 +126,13 @@ class _ExerciseListState extends State<ExerciseList> {
 
     //Updates every time we update[timestamp], add, or remove some exercise
     ExerciseData.exercisesOrder.addListener(updateState);
+    exerciseToTravelTo.addListener(goToExcercise);
     super.initState();
   }
 
   @override
   void dispose() {
+    exerciseToTravelTo.removeListener(goToExcercise);
     ExerciseData.exercisesOrder.addListener(updateState);
     super.dispose();
   }
