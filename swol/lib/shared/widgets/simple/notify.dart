@@ -58,10 +58,9 @@ scheduleNotification(int id, String name, DateTime notificationDT, {bool alsoCan
       //pass ID so we can remove it by id if needed
       id,
       //title
-      'Set Break Complete' , 
+      'Set Break Complete for \"' +  name + '\"', 
       //content
-      'for '+ name + '\n'
-      + 'Start your next set now for the best results', 
+      'Start your next set now for the best results', 
       //when the notification will pop up
       notificationDT,
       //pass details created above

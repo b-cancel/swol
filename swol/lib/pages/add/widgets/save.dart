@@ -1,5 +1,6 @@
 //flutter
 import 'package:flutter/material.dart';
+import 'package:swol/pages/add/widgets/vibrationPopUp.dart';
 
 //internal
 import 'package:swol/shared/methods/extensions/sharedPreferences.dart';
@@ -63,7 +64,7 @@ class _SaveButtonState extends State<SaveButton> {
     widget.namePresent.addListener(updateState);
 
     //start onbaording if needed
-    if(SharedPrefsExt.getSaveShown().value == false){
+    if(SharedPrefsExt.getSaveShown().value == false || true){ //TODO: remove test code 
       //NOTE: this will eventually request the focus of name
       OnBoarding.discoverSaveExercise(context);
 
@@ -184,10 +185,15 @@ class _SaveButtonState extends State<SaveButton> {
       //only 1 thing
       doneInsteadOfNext: true,
       nextFeature: (){
+        //the user knows where the save button is
         SharedPrefsExt.setSaveShown(true);
-        //request focus AFTER the feature has been shown
-        //so they keyboard doesn't pop up with the onboarding window
-        FocusScope.of(context).requestFocus(widget.nameFocusNode);
+
+        //request access to the vibration motor on the phone
+        requestVibrationPermission(context, (){
+          //request focus AFTER the feature has been shown
+          //so they keyboard doesn't pop up with the onboarding window
+          FocusScope.of(context).requestFocus(widget.nameFocusNode);
+        });
       },
     );
   }

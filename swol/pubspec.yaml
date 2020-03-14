@@ -20,6 +20,10 @@ dependencies:
   flutter:
     sdk: flutter
 
+  #request permission for both the vibration and notifiations
+  permission_handler: ^4.4.0+hotfix.1
+
+  #notify users their break is done
   flutter_local_notifications: ^1.2.0+4
 
   #PICKER (for time picking)

@@ -125,7 +125,7 @@ class _AddExerciseState extends State<AddExercise> {
   }
 
   @override
-  void initState() {
+  void initState() { 
     super.initState();
     repTarget.addListener(updateOthers);
   }
