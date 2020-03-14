@@ -6,6 +6,7 @@ import 'package:swol/action/doneButton/button.dart';
 import 'package:swol/action/doneButton/corner.dart';
 import 'package:swol/action/page.dart';
 import 'package:swol/action/popUps/maybeUpdateSet.dart';
+import 'package:swol/main.dart';
 import 'package:swol/shared/methods/theme.dart';
 
 //internal
@@ -266,33 +267,44 @@ class _FloatingDoneButtonState extends State<FloatingDoneButton> {
     bool setTempsToNull: false,
     bool tempToLast: false,
   }){
-    //time stamp
-    DateTime newTimeStamp = DateTime.now();
-    if(setsPassed == 0){ //we didn't care to even save this set
-      newTimeStamp = widget.exercise.backUpTimeStamp;
-    }
-    widget.exercise.lastTimeStamp = newTimeStamp;
+    Function onFinished = (){
+      //cancel the notification that may be running
+      flutterLocalNotificationsPlugin.cancel(widget.exercise.id);
 
-    //temp start time
-    if(setTempsToNull){
-      widget.exercise.tempStartTime = new ValueNotifier<DateTime>(AnExercise.nullDateTime);
-    }
+      //time stamp
+      DateTime newTimeStamp = DateTime.now();
+      if(setsPassed == 0){ //we didn't care to even save this set
+        newTimeStamp = widget.exercise.backUpTimeStamp;
+      }
+      widget.exercise.lastTimeStamp = newTimeStamp;
 
-    //weight
-    if(tempToLast){ //we KNOW tempWeight is VALID
-      widget.exercise.lastWeight = widget.exercise.tempWeight;
-    }
-    if(setTempsToNull){
-      widget.exercise.tempWeight = null;
-    }
+      //temp start time
+      if(setTempsToNull){
+        widget.exercise.tempStartTime = new ValueNotifier<DateTime>(AnExercise.nullDateTime);
+      }
 
-    //reps
-    if(tempToLast){ //we KNOW tempReps is VALID
-      widget.exercise.lastReps = widget.exercise.tempReps;
-    }
-    if(setTempsToNull){
-      widget.exercise.tempReps = null;
-    }
+      //weight
+      if(tempToLast){ //we KNOW tempWeight is VALID
+        widget.exercise.lastWeight = widget.exercise.tempWeight;
+      }
+      if(setTempsToNull){
+        widget.exercise.tempWeight = null;
+      }
+
+      //reps
+      if(tempToLast){ //we KNOW tempReps is VALID
+        widget.exercise.lastReps = widget.exercise.tempReps;
+      }
+      if(setTempsToNull){
+        widget.exercise.tempReps = null;
+      }
+
+      //nullify temp set count
+      widget.exercise.tempSetCount = null;
+
+      //pop the exercise page
+      Navigator.of(context).pop();
+    };
 
     //set target
     //NOTE: if we start record a set, are like naw, and don't want to record it
@@ -302,20 +314,12 @@ class _FloatingDoneButtonState extends State<FloatingDoneButton> {
       maybeChangeSetTarget(
         context, 
         widget.exercise, 
-        (){
-          widget.exercise.tempSetCount = null;
-          Navigator.of(context).pop();
-        }, 
+        onFinished,
         widget.cardColor,
         setsPassed,
       );
     }
-    else{
-      //the set target doesn't need to be updated
-      //but the tempSetCount MUST be nullified
-      widget.exercise.tempSetCount = null;
-      Navigator.of(context).pop();
-    }
+    else onFinished();
   }
 }
 
