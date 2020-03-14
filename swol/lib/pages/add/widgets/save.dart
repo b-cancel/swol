@@ -1,6 +1,5 @@
 //flutter
 import 'package:flutter/material.dart';
-import 'package:swol/pages/add/widgets/vibrationPopUp.dart';
 
 //internal
 import 'package:swol/shared/methods/extensions/sharedPreferences.dart';
@@ -188,12 +187,9 @@ class _SaveButtonState extends State<SaveButton> {
         //the user knows where the save button is
         SharedPrefsExt.setSaveShown(true);
 
-        //request access to the vibration motor on the phone
-        requestVibrationPermission(context, (){
-          //request focus AFTER the feature has been shown
-          //so they keyboard doesn't pop up with the onboarding window
-          FocusScope.of(context).requestFocus(widget.nameFocusNode);
-        });
+        //request focus AFTER the feature has been shown
+        //so they keyboard doesn't pop up with the onboarding window
+        FocusScope.of(context).requestFocus(widget.nameFocusNode);
       },
     );
   }

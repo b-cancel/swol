@@ -1,7 +1,23 @@
+//flutter
 import 'package:flutter/material.dart';
+
+//plugin
+import 'package:permission_handler/permission_handler.dart';
+
+//internal
 import 'package:swol/shared/methods/theme.dart';
 
-requestVibrationPermission(BuildContext context, Function onComplete) {
+//requestor
+requestNotificationPermission(BuildContext context, Function onComplete)async{
+  PermissionStatus status = await PermissionHandler().checkPermissionStatus(
+    PermissionGroup.notification,
+  );
+
+  //then take steps towards getting the permission granted
+  if(status != PermissionStatus.granted){
+
+  }
+
   showDialog(
     context: context,
     builder: (BuildContext context) {
@@ -15,7 +31,7 @@ requestVibrationPermission(BuildContext context, Function onComplete) {
           contentPadding: EdgeInsets.all(0),
           content: Column(
             children: [
-              
+
             ],
           ),
           actions: <Widget>[

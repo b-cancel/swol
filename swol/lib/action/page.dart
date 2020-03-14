@@ -160,6 +160,9 @@ class _ExercisePageDarkState extends State<ExercisePageDark> {
       //TODO: I suspect the above
       //worst case scenario this little exception cover won't break anything
       if (widget.exercise.tempStartTime.value != AnExercise.nullDateTime) {
+        //cancel the notifcation that perhaps didn't trigger
+        flutterLocalNotificationsPlugin.cancel(widget.exercise.id);
+
         //must be done first
         //so that our suggest page has access to right 1 rep maxes
         updateOneRepMaxes(
@@ -173,9 +176,6 @@ class _ExercisePageDarkState extends State<ExercisePageDark> {
         //before reacting to the change here in the one rep max chip
         widget.exercise.tempStartTime =
             new ValueNotifier<DateTime>(AnExercise.nullDateTime);
-        print(widget.exercise.id.toString() +
-            "******************************updated DT to " +
-            widget.exercise.tempStartTime.toString());
 
         //save values (that we know are valid)
         widget.exercise.lastWeight = widget.exercise.tempWeight;

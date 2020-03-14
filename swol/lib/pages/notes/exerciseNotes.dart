@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 //plugin
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:swol/action/page.dart';
+import 'package:swol/main.dart';
 
 //internl: exercise
 import 'package:swol/shared/widgets/complex/fields/fields/linkField/link.dart';
@@ -159,8 +160,18 @@ class BigActionButton extends StatelessWidget {
   final bool delete;
 
   //functions
-  deleteFunc() => ExerciseData.deleteExercise(exercise.id);
+  deleteFunc(){
+    //stop the notification that may be running
+    flutterLocalNotificationsPlugin.cancel(exercise.id);
+
+    //delete the exercise
+    ExerciseData.deleteExercise(exercise.id);
+  }
+  
   hideFunc(){
+    //stop the notification that may be running
+    flutterLocalNotificationsPlugin.cancel(exercise.id);
+
     //reset all temps
     exercise.tempWeight = null;
     exercise.tempReps = null;
