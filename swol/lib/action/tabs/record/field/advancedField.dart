@@ -62,6 +62,12 @@ class _RecordFieldsState extends State<RecordFields> {
 
     //autofocus if possible
     WidgetsBinding.instance.addPostFrameCallback((_)async{
+      //NOTE: if you don't wait until transition things begin to break
+      Future.delayed(widget.heroAnimDuration * 1.5, () {
+        if(mounted) focusOnFirstInvalid();
+      });
+
+      /*
       //regardless if we have to request the permission or not
       //we need to now focus on first invalid
       Function onComplete = (){
@@ -118,6 +124,7 @@ class _RecordFieldsState extends State<RecordFields> {
           onComplete();
         });
       }
+      */
     });
 
     //attach a listener so a change in it will cause a refocus
