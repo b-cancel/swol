@@ -74,7 +74,9 @@ class _RecordFieldsState extends State<RecordFields> {
       );
       
       //trigger the pop up when needed
-      if(status != PermissionStatus.granted){
+      //NOTE: we also check restricted because if its restricted the user presumably cant do anything about it
+      //TODO: improve how we handle this restricted state
+      if(status != PermissionStatus.granted && status != PermissionStatus.restricted){
         //this can occur if
         //1. the permission has never been granted before
         //2. the permission was once granted (automatically or manually)
@@ -97,7 +99,9 @@ class _RecordFieldsState extends State<RecordFields> {
 
           //in both scenarios we want to show the user the pop up
 
-          requestNotificationPermission(context, (){
+          requestNotificationPermission(
+            context, 
+            status, (){
             if(mounted) focusOnFirstInvalid();
           });
         }
