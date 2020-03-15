@@ -173,7 +173,7 @@ flutter:
    - assets/popUpGifs/delete.gif
    - assets/popUpGifs/agree.gif
    - assets/impatient.gif
-
+   - assets/notification/blueShadow.gif
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
 

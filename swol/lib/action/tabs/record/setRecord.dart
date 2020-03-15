@@ -69,7 +69,7 @@ class SetRecord extends StatelessWidget {
         : Theme.of(context).cardColor;
 
     //widget
-    Widget recordSetFields = CardWithHeader(
+    Widget recordSetFields = CardWithHeader( 
       header: "Record Set",
       aLittleSmaller: true,
       child: RecordFields(

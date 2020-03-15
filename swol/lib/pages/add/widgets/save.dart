@@ -63,7 +63,7 @@ class _SaveButtonState extends State<SaveButton> {
     widget.namePresent.addListener(updateState);
 
     //start onbaording if needed
-    if(SharedPrefsExt.getSaveShown().value == false || true){ //TODO: remove test code 
+    if(SharedPrefsExt.getSaveShown().value == false){
       //NOTE: this will eventually request the focus of name
       OnBoarding.discoverSaveExercise(context);
 

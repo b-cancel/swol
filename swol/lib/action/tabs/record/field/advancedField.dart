@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 
 //plugin
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:swol/action/notificationPopUp.dart';
 
 //internal: action
 import 'package:swol/action/tabs/record/field/customField.dart';
@@ -12,6 +14,7 @@ import 'package:swol/action/page.dart';
 
 //internal: shared
 import 'package:swol/shared/functions/goldenRatio.dart';
+import 'package:swol/shared/methods/extensions/sharedPreferences.dart';
 import 'package:swol/shared/methods/theme.dart';
 
 //widget
@@ -58,11 +61,59 @@ class _RecordFieldsState extends State<RecordFields> {
     repsController.addListener(updateRepsNotifier);
 
     //autofocus if possible
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      //NOTE: if you don't wait until transition things begin to break
-      Future.delayed(widget.heroAnimDuration * 1.5, () {
+    WidgetsBinding.instance.addPostFrameCallback((_)async{
+      //regardless if we have to request the permission or not
+      //we need to now focus on first invalid
+      Function onComplete = (){
         if(mounted) focusOnFirstInvalid();
-      });
+      };
+
+      //regardless of whether its been requested before we first check if it needs to be requested
+      PermissionStatus status = await PermissionHandler().checkPermissionStatus(
+        PermissionGroup.notification,
+      );
+      
+      //trigger the pop up when needed
+      if(status != PermissionStatus.granted){
+        //this can occur if
+        //1. the permission has never been granted before
+        //2. the permission was once granted (automatically or manually)
+        //  and the user decided to ungrant it (manually)
+
+        //so to narrow down if the pop up should show
+        //we check if we have asked before
+        //NOTICE: if the permission was granted automatically
+        //and the user then disabled it
+        //we didn't ask, so the it should indeed pop up this time
+        bool notificationPermissionRequested = SharedPrefsExt.getNotificationRequested().value;
+
+        if(notificationPermissionRequested == false){
+          //we can be here in 2 scenarios
+
+          //1. the permission was automatically granted
+          //  and then the user decided to manually ungrant it
+          //2. the permission was not automatically granted 
+          //  and its the first time the user is notified that they should grant it
+
+          //in both scenarios we want to show the user the pop up
+
+          requestNotificationPermission(context, (){
+            if(mounted) focusOnFirstInvalid();
+          });
+        }
+        else{
+          //NOTE: if you don't wait until transition things begin to break
+          Future.delayed(widget.heroAnimDuration * 1.5, () {
+            onComplete();
+          });
+        }
+      }
+      else{
+        //NOTE: if you don't wait until transition things begin to break
+        Future.delayed(widget.heroAnimDuration * 1.5, () {
+          onComplete();
+        });
+      }
     });
 
     //attach a listener so a change in it will cause a refocus
