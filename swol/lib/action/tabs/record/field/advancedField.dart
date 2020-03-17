@@ -1,5 +1,9 @@
+//dart
+import 'dart:io' show Platform;
+
 //flutter
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 //plugin
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -11,6 +15,7 @@ import 'package:swol/action/tabs/record/field/customField.dart';
 import 'package:swol/action/tabs/record/field/fieldIcon.dart';
 import 'package:swol/action/popUps/textValid.dart';
 import 'package:swol/action/page.dart';
+import 'package:swol/main.dart';
 
 //internal: shared
 import 'package:swol/shared/functions/goldenRatio.dart';
@@ -62,10 +67,44 @@ class _RecordFieldsState extends State<RecordFields> {
 
     //autofocus if possible
     WidgetsBinding.instance.addPostFrameCallback((_)async{
-      //NOTE: if you don't wait until transition things begin to break
-      Future.delayed(widget.heroAnimDuration * 1.5, () {
-        if(mounted) focusOnFirstInvalid();
-      });
+      if (Platform.isAndroid) { //we automatically have permission
+        //TODO: cover the case where we don't
+        //NOTE: if you don't wait until transition things begin to break
+        Future.delayed(widget.heroAnimDuration * 1.5, () {
+          if(mounted) focusOnFirstInvalid();
+        });
+      } else if (Platform.isIOS) {
+        //regardless of whether its been requested before we first check if it needs to be requested
+        PermissionStatus status = await PermissionHandler().checkPermissionStatus(
+          PermissionGroup.notification,
+        );
+
+        //as for permission if needed
+        if(status != PermissionStatus.granted){
+          //you can't enable this permission because the setting is restricted
+          if(status == PermissionStatus.restricted){
+            //You are not allowed to enable notifications
+
+            //parental controls, some settings, another app,
+            //or something else may be stopping you
+            
+            //Release the restriction to enable notifications
+
+            //TODO: create the pop up that tells you the above
+          }
+          else{
+            //not granted or restricted
+            //might be denied or unknown
+            requestNotificationPermission(
+              context, 
+              status, (){
+              if(mounted) focusOnFirstInvalid();
+            });
+          }
+        }
+        //ELSE: we have permission
+      }
+      
 
       /*
       //regardless if we have to request the permission or not

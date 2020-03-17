@@ -1,29 +1,14 @@
 //flutter
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 //plugin
 import 'package:permission_handler/permission_handler.dart';
+import 'package:swol/main.dart';
 
 //internal
 import 'package:swol/shared/methods/theme.dart';
 import 'package:swol/shared/widgets/simple/playOnceGif.dart';
-
-/*
-var result = await flutterLocalNotificationsPlugin
-          .resolvePlatformSpecificImplementation<
-              IOSFlutterLocalNotificationsPlugin>()
-          ?.requestPermissions(
-            alert: true,
-            badge: true,
-            sound: true,
-          );
-Here the call to 
-flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<IOSFlutterLocalNotificationsPlugin>() 
-returns the iOS implementation of the plugin that contains APIs specific to iOS, 
-provided that the application is running on iOS. The ?. operator is used here as 
-the result will be null when run on other platforms. Developers may alternative choose 
-to guard this call by checking the platform their application is running on.
-*/
 
 /*
 Release build configuration #
@@ -189,25 +174,18 @@ requestNotificationPermission(
                 child: Text("Allow"),
                 color: Theme.of(context).accentColor,
                 onPressed: () async{
+                  //remove this pop up to show the IOS pop up
                   Navigator.of(context).pop();
-                  print("status: " + status.toString());
-                  bool showRationale = await PermissionHandler().shouldShowRequestPermissionRationale(
-                    PermissionGroup.notification,
+
+                  //IOS only
+                  //status here is either denied or unknown
+                  await flutterLocalNotificationsPlugin
+                  .resolvePlatformSpecificImplementation<IOSFlutterLocalNotificationsPlugin>()
+                  ?.requestPermissions(
+                    alert: true,
+                    badge: true,
+                    sound: true,
                   );
-                  print("show rationale: " + showRationale.toString());
-                  Map<PermissionGroup, PermissionStatus> permissions = await PermissionHandler().requestPermissions(
-                    [PermissionGroup.notification]
-                  );
-                  print("status after: " + permissions[PermissionGroup.notification].toString());
-                  bool isOpened = await PermissionHandler().openAppSettings();
-                  /*
-                  if(status == PermissionStatus.neverAskAgain){
-                    Navigator.of(context).pop();
-                    requestThatYouGoToAppSettings(context, onComplete);
-                  }
-                  else{ //must be denied or unknown
-                    Navigator.of(context).pop();
-                  }*/
                 },
               ),
             )
