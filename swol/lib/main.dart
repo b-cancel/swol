@@ -24,54 +24,10 @@ import 'package:swol/pages/selection/exerciseListPage.dart';
 import 'package:swol/pages/search/searchesData.dart';
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-FlutterLocalNotificationsPlugin();
+    FlutterLocalNotificationsPlugin();
 final ValueNotifier<int> exerciseToTravelTo = new ValueNotifier<int>(-1);
 
-/// IMPORTANT: running the following code on its own won't work as there is setup required for each platform head project.
-/// Please download the complete example app from the GitHub repository where all the setup has been done
-Future<void> main() async {
-  // needed if you intend to initialize in the `main` function
-  WidgetsFlutterBinding.ensureInitialized();
-
-  // initialise the plugin. app_icon needs to be a added as a drawable resource to the Android head project
-  var initializationSettingsAndroid = AndroidInitializationSettings('app_icon_other');
-
-  var initializationSettingsIOS = IOSInitializationSettings(
-    requestAlertPermission: true,
-    requestBadgePermission: true,
-    requestSoundPermission: true
-  );
-
-  var initializationSettings = InitializationSettings(
-      initializationSettingsAndroid, 
-      initializationSettingsIOS,
-  );
-
-  await flutterLocalNotificationsPlugin.initialize(
-    initializationSettings,
-    /*
-    If the app had been launched by tapping on a notification created by this plugin, 
-    calling initialize is what will trigger the onSelectNotification to trigger 
-    to handle the notification that the user tapped on. 
-    An alternative to handling the "launch notification" 
-    is to call the getNotificationAppLaunchDetails method 
-    that is available in the plugin. 
-    This could be used, for example, to change the home route of the app for deep-linking. 
-    Calling initialize will still cause the onSelectNotification callback to fire 
-    for the launch notification. 
-    It will be up to developers to ensure that they don't process the same notification twice 
-    (e.g. by storing and comparing the notification id).
-    */
-    //In the real world, this payload could represent the id of the item you want to display the details of.
-    onSelectNotification: (String payload) async {
-      //updates what excercise to travel to
-      //which will then cause us to travel to it
-      if (payload != null) {
-        exerciseToTravelTo.value = int.parse(payload);
-      }
-    },
-  );
-  
+main() {
   runApp(App());
 }
 
@@ -89,7 +45,7 @@ class App extends StatelessWidget {
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
-    ]); 
+    ]);
 
     //app loading theme
     SystemChrome.setSystemUIOverlayStyle(ThemeChanger.darkStyle);
@@ -97,9 +53,11 @@ class App extends StatelessWidget {
     //main app build
     return BotToastInit(
       child: FeatureDiscovery(
-        child:  MaterialApp(
+        child: MaterialApp(
           title: 'SWOL',
-          navigatorObservers: [BotToastNavigatorObserver()],//2.registered route observer
+          navigatorObservers: [
+            BotToastNavigatorObserver()
+          ], //2.registered route observer
           theme: MyTheme.dark,
           home: GrabSystemData(),
         ),
@@ -120,24 +78,107 @@ class _GrabSystemDataState extends State<GrabSystemData> {
   SharedPreferences preferences;
 
   @override
-  void initState(){
+  void initState() {
     GrabSystemData.rootContext = context;
     asyncInit();
     super.initState();
   }
 
-  asyncInit()async{
+  asyncInit() async {
+    //grab all data from files
     await SearchesData.searchesInit();
     await ExerciseData.exercisesInit();
     preferences = await SharedPreferences.getInstance();
     SharedPrefsExt.init(preferences);
+
+    //start up the notification system
+    //needed if you intend to initialize in the `main` function
+    //or in my case just in case
+    WidgetsFlutterBinding.ensureInitialized();
+
+    //app_icon needs to be a added as a drawable resource to the Android head project
+    //just plug it in the folder, nothing else special needed
+    var initializationSettingsAndroid = AndroidInitializationSettings('app_icon_other');
+
+    //initialize IOS settings
+    //and make sure that the notification is "triggered"
+    //while the ap is in the foreground
+    var initializationSettingsIOS = IOSInitializationSettings(
+      requestAlertPermission: false,
+      requestBadgePermission: false,
+      requestSoundPermission: false,
+      onDidReceiveLocalNotification: (
+        int id,
+        String title,
+        String body,
+        String payload,
+      ) async {
+        // display a dialog with the notification details, tap ok to go to another page
+        showDialog(
+          context: context,
+          builder: (BuildContext context) => CupertinoAlertDialog(
+            title: Text(title),
+            content: Text(body),
+            actions: [
+              CupertinoDialogAction(
+                isDefaultAction: true,
+                child: Text('Ok'),
+                onPressed: () async {
+                  Navigator.of(context).pop();
+
+                  //updates what excercise to travel to
+                  //which will then cause us to travel to it
+                  if (payload != null) {
+                    exerciseToTravelTo.value = int.parse(payload);
+                  }
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
+
+    var initializationSettings = InitializationSettings(
+      initializationSettingsAndroid,
+      initializationSettingsIOS,
+    );
+
+    await flutterLocalNotificationsPlugin.initialize(
+      initializationSettings,
+      /*
+    If the app had been launched by tapping on a notification created by this plugin, 
+    calling initialize is what will trigger the onSelectNotification to trigger 
+    to handle the notification that the user tapped on. 
+    An alternative to handling the "launch notification" 
+    is to call the getNotificationAppLaunchDetails method 
+    that is available in the plugin. 
+    This could be used, for example, to change the home route of the app for deep-linking. 
+    Calling initialize will still cause the onSelectNotification callback to fire 
+    for the launch notification. 
+    It will be up to developers to ensure that they don't process the same notification twice 
+    (e.g. by storing and comparing the notification id).
+    */
+      //In the real world, this payload could represent the id of the item you want to display the details of.
+      onSelectNotification: (String payload) async {
+        //updates what excercise to travel to
+        //which will then cause us to travel to it
+        if (payload != null) {
+          exerciseToTravelTo.value = int.parse(payload);
+        }
+      },
+    );
+
+    //remove the loading indicator
     setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
-    if(preferences == null) return SplashScreen();
-    else return ExerciseSelectStateless();
+    if (preferences == null)
+      return SplashScreen();
+    else
+      return ExerciseSelectStateless();
   }
 }
 
@@ -158,7 +199,8 @@ class SplashScreen extends StatefulWidget {
 //using regular since FutureBuilder MAY cause the animation to trigger twice
 //although I'm preventing that by using the memoizer
 //flutter doesn't detect that and this silences the error
-class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMixin{
+class _SplashScreenState extends State<SplashScreen>
+    with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -189,11 +231,11 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
                       width: 50,
                       child: FittedBox(
                         fit: BoxFit.contain,
-                        child: PumpingHeart( 
+                        child: PumpingHeart(
                           color: Colors.red,
                           size: 75.0,
                           controller: AnimationController(
-                            vsync: this, 
+                            vsync: this,
                             //80 bpm / 60 seconds = 1.3 beat per second
                             duration: const Duration(milliseconds: 1333),
                           ),
@@ -270,11 +312,11 @@ class _PumpingHeartState extends State<PumpingHeart>
 
   Widget _itemBuilder(int index) {
     return widget.itemBuilder != null
-      ? widget.itemBuilder(context, index)
-      : Icon(
-        FontAwesomeIcons.solidHeart,
-        color: widget.color,
-        size: widget.size,
-      );
+        ? widget.itemBuilder(context, index)
+        : Icon(
+            FontAwesomeIcons.solidHeart,
+            color: widget.color,
+            size: widget.size,
+          );
   }
 }

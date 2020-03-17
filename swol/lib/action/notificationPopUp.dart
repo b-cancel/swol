@@ -8,6 +8,46 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:swol/shared/methods/theme.dart';
 import 'package:swol/shared/widgets/simple/playOnceGif.dart';
 
+/*
+var result = await flutterLocalNotificationsPlugin
+          .resolvePlatformSpecificImplementation<
+              IOSFlutterLocalNotificationsPlugin>()
+          ?.requestPermissions(
+            alert: true,
+            badge: true,
+            sound: true,
+          );
+Here the call to 
+flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<IOSFlutterLocalNotificationsPlugin>() 
+returns the iOS implementation of the plugin that contains APIs specific to iOS, 
+provided that the application is running on iOS. The ?. operator is used here as 
+the result will be null when run on other platforms. Developers may alternative choose 
+to guard this call by checking the platform their application is running on.
+*/
+
+/*
+Release build configuration #
+When doing a release build of your app, which is the default setting when building an APK or 
+app bundle, you'll likely need to customise your ProGuard configuration file as per this 
+link and add the following line.
+
+-keep class com.dexterous.** { *; }
+The plugin also makes use of GSON and the Proguard rules can be found here. The example app 
+has a consolidated Proguard rules (proguard-rules.pro) file that combines these together 
+for reference here.
+
+You will also need to ensure that you have configured the resources that should be kept 
+so that resources like your notification icons aren't discarded by the R8 compiler by 
+following the instructions here. Without doing this, you might not see the icon you've 
+specified in your app's notifications. The configuration used by the example app can be 
+found here where it is specifying that all drawable resources should be kept, as well as 
+the file used to play a custom notification sound (sound file is located here).
+
+IMPORTANT: Starting from version 0.5.0, this library no longer uses the deprecated 
+Android support libraries and has migrated to AndroidX. Developers may require 
+migrating their apps to support this following this guide
+*/
+
 //requestor
 //NOTE: here status is NOT granted and NOT restricted
 //but could be anything else
@@ -148,7 +188,7 @@ requestNotificationPermission(
               child: RaisedButton(
                 child: Text("Allow"),
                 color: Theme.of(context).accentColor,
-                onPressed: ()async{
+                onPressed: () async{
                   Navigator.of(context).pop();
                   print("status: " + status.toString());
                   bool showRationale = await PermissionHandler().shouldShowRequestPermissionRationale(
