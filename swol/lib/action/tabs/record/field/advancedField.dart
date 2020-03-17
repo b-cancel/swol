@@ -81,30 +81,38 @@ class _RecordFieldsState extends State<RecordFields> {
 
         //as for permission if needed
         if(status != PermissionStatus.granted){
-          //you can't enable this permission because the setting is restricted
-          if(status == PermissionStatus.restricted){
-            //You are not allowed to enable notifications
+          bool notificationRequested = SharedPrefsExt.getNotificationRequested().value;
 
-            //parental controls, some settings, another app,
-            //or something else may be stopping you
-            
-            //Release the restriction to enable notifications
+          //the notification hasn't been previously requested automatically
+          if(notificationRequested == false){
+            //you can't enable this permission because the setting is restricted
+            if(status == PermissionStatus.restricted){
+              //You are not allowed to enable notifications
 
-            //TODO: create the pop up that tells you the above
-          }
-          else{
-            //not granted or restricted
-            //might be denied or unknown
-            requestNotificationPermission(
-              context, 
-              status, (){
-              if(mounted) focusOnFirstInvalid();
-            });
+              //parental controls, some settings, another app,
+              //or something else may be stopping you
+              
+              //Release the restriction to enable notifications
+
+              //TODO: create the pop up that tells you the above
+              //TODO: it should also tell you where to enable the notification when you remove the restriction
+            }
+            else{
+              //not granted or restricted
+              //might be denied or unknown
+              await requestNotificationPermission(
+                context, 
+                status, (){
+                if(mounted) focusOnFirstInvalid();
+              });
+            }
+
+            //by now regardless of the user approving or not the permission has been requested
+            SharedPrefsExt.setNotificationRequested(true);
           }
         }
         //ELSE: we have permission
       }
-      
 
       /*
       //regardless if we have to request the permission or not

@@ -164,6 +164,8 @@ requestNotificationPermission(
               child: new Text("Deny"),
               onPressed: () {
                 Navigator.of(context).pop();
+
+                //TODO: indicate where someone could enable the permission if they change their mind
               },
             ),
             Padding(
@@ -179,13 +181,18 @@ requestNotificationPermission(
 
                   //IOS only
                   //status here is either denied or unknown
-                  await flutterLocalNotificationsPlugin
+                  bool permissionGiven = await flutterLocalNotificationsPlugin
                   .resolvePlatformSpecificImplementation<IOSFlutterLocalNotificationsPlugin>()
                   ?.requestPermissions(
                     alert: true,
                     badge: true,
                     sound: true,
                   );
+
+                  //if they didn't grant the permission tell them where to enable it if they change their mind
+                  if(permissionGiven == false){
+                    //TODO: indicate where someone could enable the permission if they change their mind
+                  }
                 },
               ),
             )
