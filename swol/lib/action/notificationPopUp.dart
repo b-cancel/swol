@@ -11,10 +11,7 @@ import 'package:swol/shared/methods/theme.dart';
 import 'package:swol/shared/widgets/simple/playOnceGif.dart';
 
 /*
-Release build configuration #
-When doing a release build of your app, which is the default setting when building an APK or 
-app bundle, you'll likely need to customise your ProGuard configuration file as per this 
-link and add the following line.
+customise your ProGuard configuration file
 
 -keep class com.dexterous.** { *; }
 The plugin also makes use of GSON and the Proguard rules can be found here. The example app 
