@@ -1,3 +1,6 @@
+//dart
+import 'dart:io' show Platform;
+
 //flutter
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -9,26 +12,6 @@ import 'package:swol/main.dart';
 //internal
 import 'package:swol/shared/methods/theme.dart';
 import 'package:swol/shared/widgets/simple/playOnceGif.dart';
-
-/*
-customise your ProGuard configuration file
-
--keep class com.dexterous.** { *; }
-The plugin also makes use of GSON and the Proguard rules can be found here. The example app 
-has a consolidated Proguard rules (proguard-rules.pro) file that combines these together 
-for reference here.
-
-You will also need to ensure that you have configured the resources that should be kept 
-so that resources like your notification icons aren't discarded by the R8 compiler by 
-following the instructions here. Without doing this, you might not see the icon you've 
-specified in your app's notifications. The configuration used by the example app can be 
-found here where it is specifying that all drawable resources should be kept, as well as 
-the file used to play a custom notification sound (sound file is located here).
-
-IMPORTANT: Starting from version 0.5.0, this library no longer uses the deprecated 
-Android support libraries and has migrated to AndroidX. Developers may require 
-migrating their apps to support this following this guide
-*/
 
 //requestor
 //NOTE: here status is NOT granted and NOT restricted
@@ -162,7 +145,10 @@ requestNotificationPermission(
               onPressed: () {
                 Navigator.of(context).pop();
 
-                //TODO: indicate where someone could enable the permission if they change their mind
+                //TODO: indicate where someone could enable the permission 
+                //TODO: if they change their mind and if notificationRequested is false
+                //because its the first time this has been requested
+                //and therefore the user didnt get the pop up from tapping the button
               },
             ),
             Padding(
@@ -176,19 +162,27 @@ requestNotificationPermission(
                   //remove this pop up to show the IOS pop up
                   Navigator.of(context).pop();
 
-                  //IOS only
-                  //status here is either denied or unknown
-                  bool permissionGiven = await flutterLocalNotificationsPlugin
-                  .resolvePlatformSpecificImplementation<IOSFlutterLocalNotificationsPlugin>()
-                  ?.requestPermissions(
-                    alert: true,
-                    badge: true,
-                    sound: true,
-                  );
+                  //If android its only posible for you to enable it manually through settings
+                  if (Platform.isAndroid) { 
 
-                  //if they didn't grant the permission tell them where to enable it if they change their mind
-                  if(permissionGiven == false){
-                    //TODO: indicate where someone could enable the permission if they change their mind
+                  } else if (Platform.isIOS) {
+                    //IOS only
+                    //status here is either denied or unknown
+                    bool permissionGiven = await flutterLocalNotificationsPlugin
+                    .resolvePlatformSpecificImplementation<IOSFlutterLocalNotificationsPlugin>()
+                    ?.requestPermissions(
+                      alert: true,
+                      badge: true,
+                      sound: true,
+                    );
+
+                    //if they didn't grant the permission tell them where to enable it if they change their mind
+                    if(permissionGiven == false){
+                      //TODO: indicate where someone could enable the permission 
+                      //TODO: if they change their mind and if notificationRequested is false
+                      //because its the first time this has been requested
+                      //and therefore the user didnt get the pop up from tapping the button
+                    }
                   }
                 },
               ),
