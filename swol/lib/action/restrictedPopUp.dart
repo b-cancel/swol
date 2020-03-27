@@ -7,8 +7,6 @@ import 'package:flutter/material.dart';
 //plugin
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:swol/action/buttonLocationPopUp.dart';
-import 'package:swol/action/ifAllow.dart';
 
 //internal
 import 'package:swol/shared/methods/extensions/sharedPreferences.dart';
@@ -16,27 +14,15 @@ import 'package:swol/shared/widgets/simple/playOnceGif.dart';
 import 'package:swol/shared/methods/theme.dart';
 import 'package:swol/main.dart';
 
-//PERMISSION REQUESTOR
-//NOTE: here status is NOT granted
-//but could be anything else
-//INCLUDING RESTRICTED
-
-//we include restricted since it only matters if the restriction exists
-//IF the user decides to enable the permssion
-requestNotificationPermission(
+//we only care to tell the user where the button is when they deny
+//if they don't already know
+//so we check if we are on the page with the button to determine if we should show the pop up
+maybeShowButtonLocation(
   BuildContext context, 
   PermissionStatus status,
   //on complete HAS TO RUN
   //regardless of what pop up path the user takes 
   Function onComplete) async{
-  //by now regardless of the user approving or not the permission has been requested
-  //NOTE: even in the case where the permission is restricted
-  //they may not be able to lift the restriction
-  //so showing it all the time is going to be really annoying
-  SharedPrefsExt.setNotificationRequested(true);
-
-  //inform the user of the permission they SHOULD have for and ideal experience
-  //let let them decide what they will do
   showDialog(
     context: context,
     //the user MUST respond
@@ -61,19 +47,16 @@ requestNotificationPermission(
                   topLeft: Radius.circular(12.0),
                 ),
                 child: Container(
-                  color: Theme.of(context).accentColor,
-                  child: Center(
+                  color: Colors.red,
+                  width: MediaQuery.of(context).size.width,
+                  height: 128,
+                  padding: EdgeInsets.all(24),
+                  child: FittedBox(
+                    fit: BoxFit.contain,
                     child: Container(
-                      width: 128,
-                      height: 128,
-                      child: FittedBox(
-                        fit: BoxFit.contain,
-                        child: PlayGifOnce(
-                          assetName: "assets/notification/blueShadow.gif",
-                          frameCount: 125, 
-                          runTimeMS: 2500,
-                          colorWhite: false,
-                        ),
+                      child: Icon(
+                        Icons.clear,
+                        color: Colors.white,
                       ),
                     ),
                   ),
@@ -161,13 +144,13 @@ requestNotificationPermission(
             FlatButton(
               child: new Text("Deny"),
               onPressed: () {
-                //remove this pop up
-                //only one pop up at a time
+                //notification
                 Navigator.of(context).pop();
 
-                //make sure the user knows where the button is
-                //will always call on complete
-                maybeShowButtonLocation(context, status, onComplete);
+                //TODO: indicate where someone could enable the permission 
+                //TODO: if they change their mind and if notificationRequested is false
+                //because its the first time this has been requested
+                //and therefore the user didnt get the pop up from tapping the button
               },
             ),
             Padding(
@@ -178,12 +161,31 @@ requestNotificationPermission(
                 child: Text("Allow"),
                 color: Theme.of(context).accentColor,
                 onPressed: () async{
-                  //the user wants to allow 
-                  //but now handle all the different ways 
-                  //we MIGHT have to go about that
-                  //becuase of the MIGHT
-                  //we handle poping in can allow
-                  onAllow(status, onComplete);
+                  //remove this pop up to show the IOS pop up
+                  Navigator.of(context).pop();
+
+                  //If android its only posible for you to enable it manually through settings
+                  if (Platform.isAndroid) { 
+
+                  } else if (Platform.isIOS) {
+                    //IOS only
+                    //status here is either denied or unknown
+                    bool permissionGiven = await flutterLocalNotificationsPlugin
+                    .resolvePlatformSpecificImplementation<IOSFlutterLocalNotificationsPlugin>()
+                    ?.requestPermissions(
+                      alert: true,
+                      badge: true,
+                      sound: true,
+                    );
+
+                    //if they didn't grant the permission tell them where to enable it if they change their mind
+                    if(permissionGiven == false){
+                      //TODO: indicate where someone could enable the permission 
+                      //TODO: if they change their mind and if notificationRequested is false
+                      //because its the first time this has been requested
+                      //and therefore the user didnt get the pop up from tapping the button
+                    }
+                  }
                 },
               ),
             )

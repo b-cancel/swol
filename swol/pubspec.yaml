@@ -67,7 +67,7 @@ dependencies:
   flutter_staggered_animations: ^0.1.2
 
   #info pop up
-  awesome_dialog: ^0.1.1
+  awesome_dialog: ^0.1.3
 
   #toast (work as customizable tool tips)
   bot_toast: ^2.2.0
@@ -171,6 +171,7 @@ flutter:
    - assets/popUpGifs/agree.gif
    - assets/impatient.gif
    - assets/notification/blueShadow.gif
+   - assets/notification/cropedLocation.gif
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
 

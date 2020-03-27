@@ -7,8 +7,6 @@ import 'package:flutter/material.dart';
 //plugin
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:swol/action/buttonLocationPopUp.dart';
-import 'package:swol/action/ifAllow.dart';
 
 //internal
 import 'package:swol/shared/methods/extensions/sharedPreferences.dart';
@@ -16,33 +14,15 @@ import 'package:swol/shared/widgets/simple/playOnceGif.dart';
 import 'package:swol/shared/methods/theme.dart';
 import 'package:swol/main.dart';
 
-//PERMISSION REQUESTOR
-//NOTE: here status is NOT granted
-//but could be anything else
-//INCLUDING RESTRICTED
-
-//we include restricted since it only matters if the restriction exists
-//IF the user decides to enable the permssion
-requestNotificationPermission(
+/*
+requestThatYouGoToAppSettings(
   BuildContext context, 
-  PermissionStatus status,
-  //on complete HAS TO RUN
-  //regardless of what pop up path the user takes 
   Function onComplete) async{
-  //by now regardless of the user approving or not the permission has been requested
-  //NOTE: even in the case where the permission is restricted
-  //they may not be able to lift the restriction
-  //so showing it all the time is going to be really annoying
-  SharedPrefsExt.setNotificationRequested(true);
-
-  //inform the user of the permission they SHOULD have for and ideal experience
-  //let let them decide what they will do
   showDialog(
     context: context,
-    //the user MUST respond
     barrierDismissible: false,
-    //show pop up
     builder: (BuildContext context) {
+      // return object of type Dialog
       return Theme(
         data: MyTheme.light,
         child: AlertDialog(
@@ -161,13 +141,7 @@ requestNotificationPermission(
             FlatButton(
               child: new Text("Deny"),
               onPressed: () {
-                //remove this pop up
-                //only one pop up at a time
                 Navigator.of(context).pop();
-
-                //make sure the user knows where the button is
-                //will always call on complete
-                maybeShowButtonLocation(context, status, onComplete);
               },
             ),
             Padding(
@@ -175,15 +149,15 @@ requestNotificationPermission(
                 right: 8.0,
               ),
               child: RaisedButton(
-                child: Text("Allow"),
+                child: Text("Go To App Settings"),
                 color: Theme.of(context).accentColor,
-                onPressed: () async{
-                  //the user wants to allow 
-                  //but now handle all the different ways 
-                  //we MIGHT have to go about that
-                  //becuase of the MIGHT
-                  //we handle poping in can allow
-                  onAllow(status, onComplete);
+                onPressed: (){
+                  if(status == PermissionStatus.neverAskAgain){
+                    Navigator.of(context).pop();
+                  }
+                  else{ //must be denied
+
+                  }
                 },
               ),
             )
@@ -193,3 +167,4 @@ requestNotificationPermission(
     },
   );
 }
+*/
