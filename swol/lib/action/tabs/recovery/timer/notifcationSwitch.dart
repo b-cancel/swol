@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 //packages
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:swol/action/notificationPopUp.dart';
 
 //build
 class NotificationSwitch extends StatefulWidget {
@@ -20,6 +21,7 @@ class NotificationSwitch extends StatefulWidget {
 //and that may cause more problems in the general cases we ignore that problem
 class _NotificationSwitchState extends State<NotificationSwitch> {
   bool showButton;
+  PermissionStatus status;
 
   updateState() {
     if (mounted) setState(() {});
@@ -32,19 +34,19 @@ class _NotificationSwitchState extends State<NotificationSwitch> {
 
     //more often than not users will aprove it so the button wont show
     showButton = false;
-    asyncInit();
+    updateShowButton();
   }
   
-  asyncInit()async{
-    PermissionStatus status = await PermissionHandler().checkPermissionStatus(
+  updateShowButton()async{
+    status = await PermissionHandler().checkPermissionStatus(
       PermissionGroup.notification,
     );
 
     //if anything else but granted the button should show
-    if(status != PermissionStatus.granted){
-      showButton = true;
-      updateState();
-    }
+    showButton = (status != PermissionStatus.granted);
+
+    //update show hide state
+    updateState();
   }
 
   @override
@@ -56,10 +58,9 @@ class _NotificationSwitchState extends State<NotificationSwitch> {
         child: IconButton(
           tooltip: 'Enable Notifications',
           onPressed: () async {
-            //TODO: bring up the pop up
-
-            //check the status now
-            //if its granted then we set state
+            requestNotificationPermission(context, status, () {
+              if (mounted) updateShowButton();
+            });
           },
           icon: Container(
             child: Stack(
@@ -70,7 +71,6 @@ class _NotificationSwitchState extends State<NotificationSwitch> {
                   child: FittedBox(
                     fit: BoxFit.contain,
                     child: SpinKitDoubleBounce(
-                      //ABBY LIKED
                       color: Theme.of(context).accentColor,
                       size: 1,
                       duration: Duration(milliseconds: 1000),

@@ -9,6 +9,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 //internal
+import 'package:swol/shared/methods/extensions/sharedPreferences.dart';
 import 'package:swol/shared/widgets/simple/playOnceGif.dart';
 import 'package:swol/shared/methods/theme.dart';
 import 'package:swol/main.dart';
@@ -24,6 +25,12 @@ requestNotificationPermission(
   BuildContext context, 
   PermissionStatus status, 
   Function onComplete) async{
+  //by now regardless of the user approving or not the permission has been requested
+  //NOTE: even in the case where the permission is restricted
+  //they may not be able to lift the restriction
+  //so showing it all the time is going to be really annoying
+  SharedPrefsExt.setNotificationRequested(true);
+
   showDialog(
     context: context,
     //the user MUST respond

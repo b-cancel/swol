@@ -92,12 +92,6 @@ class _RecordFieldsState extends State<RecordFields> {
           await requestNotificationPermission(context, status, () {
             if (mounted) focusOnFirstInvalid();
           });
-
-          //by now regardless of the user approving or not the permission has been requested
-          //NOTE: even in the case where the permission is restricted
-          //they may not be able to lift the restriction
-          //so showing it all the time is going to be really annoying
-          SharedPrefsExt.setNotificationRequested(true);
         }
       }
     });
