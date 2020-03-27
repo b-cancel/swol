@@ -53,7 +53,7 @@ class _RecordFieldsState extends State<RecordFields> {
 
   @override
   void initState() {
-    //supe init
+    //super init
     super.initState();
 
     //NOTE: set the initial values of our controllers from notifiers
@@ -64,54 +64,42 @@ class _RecordFieldsState extends State<RecordFields> {
     weightController.addListener(updateWeightNotifier);
     repsController.addListener(updateRepsNotifier);
 
-    //autofocus if possible
+    //autofocus if possible (AFTER REQUEST PERMISSION)
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       //regardless of whether its been requested before we first check if it needs to be requested
       PermissionStatus status = await PermissionHandler().checkPermissionStatus(
         PermissionGroup.notification,
       );
 
-      //ask for permission if needed
-      if (status != PermissionStatus.granted) {
+      //we already have the permission, simply autofocus
+      if (status == PermissionStatus.granted && false){ //TODO: remove test code
+        focusOnFirstInvalid();
+      } 
+      else{
+        //we don't have permission but have we requested it before?
         bool notificationRequested =
             SharedPrefsExt.getNotificationRequested().value;
 
-        //the notification hasn't been previously requested automatically
-        if (notificationRequested == false) {
-          //you can't enable this permission because the setting is restricted
-          if (status == PermissionStatus.restricted) {
-            //NOTE: if we are here we KNOW the platform is IOS
+        //the notification has already been requested
+        //it was either 1. denied
+        //or 2. MANUALLY given and then removed
+        if (notificationRequested && false){ //TODO: remove test code
+          focusOnFirstInvalid();
+        }
+        else{
+          //not granted or restricted
+          //might be denied or unknown
+          await requestNotificationPermission(context, status, () {
+            if (mounted) focusOnFirstInvalid();
+          });
 
-            //You are not allowed to enable notifications
-
-            //parental controls, some settings, another app,
-            //or something else may be stopping you
-
-            //Release the restriction to enable notifications
-
-            //TODO: create the pop up that tells you the above
-
-            //TODO: indicate where someone could enable the permission 
-            //TODO: if they change their mind and if notificationRequested is false
-            //because its the first time this has been requested
-            //and therefore the user didnt get the pop up from tapping the button
-          } else {
-            //not granted or restricted
-            //might be denied or unknown
-            await requestNotificationPermission(context, status, () {
-              if (mounted) focusOnFirstInvalid();
-            });
-          }
-
-          //TODO: if the user simply taps the permission button this should also set to true
-          //TODO: figure out when this can happen when im less sleepy
           //by now regardless of the user approving or not the permission has been requested
+          //NOTE: even in the case where the permission is restricted
+          //they may not be able to lift the restriction
+          //so showing it all the time is going to be really annoying
           SharedPrefsExt.setNotificationRequested(true);
         }
-        //ELSE: the notification has been already requested
-        //don't ask again
       }
-      //ELSE: we already have permission no need to ask
     });
 
     //attach a listener so a change in it will cause a refocus

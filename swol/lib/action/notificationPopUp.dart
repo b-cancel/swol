@@ -3,28 +3,33 @@ import 'dart:io' show Platform;
 
 //flutter
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 //plugin
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:swol/main.dart';
 
 //internal
-import 'package:swol/shared/methods/theme.dart';
 import 'package:swol/shared/widgets/simple/playOnceGif.dart';
+import 'package:swol/shared/methods/theme.dart';
+import 'package:swol/main.dart';
 
-//requestor
-//NOTE: here status is NOT granted and NOT restricted
+//PERMISSION REQUESTOR
+//NOTE: here status is NOT granted
 //but could be anything else
+//INCLUDING RESTRICTED
+
+//we include restricted since it only matters if the restriction exists
+//IF the user decides to enable the permssion
 requestNotificationPermission(
   BuildContext context, 
   PermissionStatus status, 
   Function onComplete) async{
   showDialog(
     context: context,
+    //the user MUST respond
     barrierDismissible: false,
+    //show pop up
     builder: (BuildContext context) {
-      // return object of type Dialog
       return Theme(
         data: MyTheme.light,
         child: AlertDialog(

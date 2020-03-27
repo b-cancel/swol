@@ -11,19 +11,20 @@ class PulsingBackground extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //in case at some point I want to switch between indicators
-    Duration pusleDuration = Duration(milliseconds: 1000); //so its serves as a indicator of change as well
+    Duration pulseDuration = Duration(milliseconds: 1000); 
+    //so its serves as a indicator of change as well
     List<Widget> pulsingBackgrounds = [
       //import 'package:flutter_spinkit/flutter_spinkit.dart';
       SpinKitDualRing(
         lineWidth: 1/2,
         color: Colors.white,
         size: 1,
-        duration: pusleDuration,
+        duration: pulseDuration,
       ),
       SpinKitDoubleBounce( //ABBY LIKED
         color: Colors.white,
         size: 1,
-        duration: pusleDuration,
+        duration: pulseDuration,
       ),
       //import 'package:loading_indicator/loading_indicator.dart';
       LoadingIndicator(

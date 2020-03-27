@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 //packages
 import 'package:liquid_progress_indicator/liquid_progress_indicator.dart';
+import 'package:swol/action/tabs/recovery/timer/notifcationSwitch.dart';
 
 //internal
 import 'package:swol/action/tabs/recovery/timer/puslingBackground.dart';
@@ -330,7 +331,16 @@ class _TimerState extends State<Timer> with TickerProviderStateMixin {
         ),
         Stack(
           children: [
-            VibrationSwitch(),
+            Positioned(
+              top: 0,
+              left: 0,
+              child: VibrationSwitch(),
+            ),
+            Positioned(
+              top: 0,
+              right: 0,
+              child: NotificationSwitch(),
+            ),
             Hero(
               tag: generatedHeroTag,
               child: Container(

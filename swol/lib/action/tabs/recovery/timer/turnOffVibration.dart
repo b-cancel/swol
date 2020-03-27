@@ -8,7 +8,7 @@ import 'package:flutter_icons/flutter_icons.dart';
 import 'package:swol/shared/methods/vibrate.dart';
 
 //build
-class VibrationSwitch extends StatefulWidget {
+class VibrationSwitch extends StatefulWidget { 
   @override
   _VibrationSwitchState createState() => _VibrationSwitchState();
 }
@@ -32,20 +32,16 @@ class _VibrationSwitchState extends State<VibrationSwitch> {
 
   @override
   Widget build(BuildContext context) {
-    return Positioned(
-      top: 0,
-      left: 0,
-      child: Container(
-        padding: EdgeInsets.all(24),
-        child: Visibility(
-          visible: (Vibrator.isVibrating.value) ? true : false,
-          child: IconButton(
-            padding: EdgeInsets.all(16),
-            tooltip: 'Turn Off Vibration',
-            onPressed: () => Vibrator.stopVibration(),
-            icon: Icon(
-              MaterialCommunityIcons.getIconData("vibrate-off")
-            ),
+    return Container(
+      padding: EdgeInsets.all(24),
+      child: Visibility(
+        visible: (Vibrator.isVibrating.value) ? true : false,
+        child: IconButton(
+          padding: EdgeInsets.all(16),
+          tooltip: 'Turn Off Vibration',
+          onPressed: () => Vibrator.stopVibration(),
+          icon: Icon(
+            MaterialCommunityIcons.getIconData("vibrate-off")
           ),
         ),
       ),
