@@ -86,14 +86,21 @@ requestNotificationPermission(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      "Grant Us Access",
+                      "To Be Notified",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 36,
                       ),
                     ),
                     Text(
-                      "To Send Notifications",
+                      "When Your Break Is Finished",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                      ),
+                    ),
+                    Text(
+                      "Allow Notifications",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 24,
@@ -180,7 +187,12 @@ requestNotificationPermission(
                   //we MIGHT have to go about that
                   //becuase of the MIGHT
                   //we handle poping in can allow
-                  onAllow(context, status, onComplete);
+                  onAllow(
+                    context, 
+                    status, 
+                    onComplete, 
+                    automaticallyOpened,
+                  );
                 },
               ),
             )

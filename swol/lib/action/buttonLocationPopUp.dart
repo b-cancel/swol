@@ -21,7 +21,7 @@ maybeShowButtonLocation(
   if (automaticallyOpened) {
     showDialog(
       context: context,
-      //the user MUST respond
+      //force to user to chose
       barrierDismissible: false,
       //show pop up
       builder: (BuildContext context) {
@@ -198,7 +198,13 @@ maybeShowButtonLocation(
                     //we MIGHT have to go about that
                     //becuase of the MIGHT
                     //we handle poping in can allow
-                    onAllow(context, status, onComplete);
+                    onAllow(
+                      context, 
+                      status, 
+                      onComplete,
+                      //if false would not show this pop up
+                      true,
+                    );
                   },
                 ),
               )

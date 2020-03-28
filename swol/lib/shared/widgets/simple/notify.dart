@@ -94,7 +94,7 @@ scheduleNotification(AnExercise exercise) async {
 
       //create the notification for this exercise
       var androidPlatformChannelSpecifics = AndroidNotificationDetails(
-        'Channel-ID', 'Channel-Name', 'Channel-Description',
+        'swol-ID', 'swol-Name', 'swol-Description',
         //user must act now
         importance: Importance.Max,
         priority: Priority.Max,

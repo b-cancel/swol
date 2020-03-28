@@ -1,6 +1,3 @@
-//dart
-import 'dart:io' show Platform;
-
 //flutter
 import 'package:flutter/material.dart';
 
@@ -14,7 +11,6 @@ import 'package:swol/shared/widgets/simple/playOnceGif.dart';
 import 'package:swol/shared/methods/theme.dart';
 import 'package:swol/main.dart';
 
-/*
 requestThatYouGoToAppSettings(
   BuildContext context, 
   Function onComplete) async{
@@ -41,19 +37,16 @@ requestThatYouGoToAppSettings(
                   topLeft: Radius.circular(12.0),
                 ),
                 child: Container(
-                  color: Theme.of(context).accentColor,
-                  child: Center(
+                  color: Colors.red,
+                  width: MediaQuery.of(context).size.width,
+                  height: 128,
+                  padding: EdgeInsets.all(24),
+                  child: FittedBox(
+                    fit: BoxFit.contain,
                     child: Container(
-                      width: 128,
-                      height: 128,
-                      child: FittedBox(
-                        fit: BoxFit.contain,
-                        child: PlayGifOnce(
-                          assetName: "assets/notification/blueShadow.gif",
-                          frameCount: 125, 
-                          runTimeMS: 2500,
-                          colorWhite: false,
-                        ),
+                      child: Icon(
+                        Icons.clear,
+                        color: Colors.white,
                       ),
                     ),
                   ),
@@ -167,4 +160,3 @@ requestThatYouGoToAppSettings(
     },
   );
 }
-*/

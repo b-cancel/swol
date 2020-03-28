@@ -17,7 +17,7 @@ import 'package:swol/main.dart';
 //we only care to tell the user where the button is when they deny
 //if they don't already know
 //so we check if we are on the page with the button to determine if we should show the pop up
-maybeShowButtonLocation(
+showRestrictedPopUp(
   BuildContext context, 
   PermissionStatus status,
   //on complete HAS TO RUN
