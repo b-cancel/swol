@@ -66,7 +66,7 @@ Future<bool> warningThenPop(BuildContext context, AnExercise exercise)async{
   //5. and then go back
   //but we dont want the notification to FAIL EVEN ONCE
   //so we HAVE to cover the case
-  
+
   //all 3 cases below are to cover this case
   //and they are all paired with going back to the exercise page
   //EXCEPT the one that goes back without having done anything
@@ -211,22 +211,32 @@ Future<bool> warningThenPop(BuildContext context, AnExercise exercise)async{
 
             //pop ourselves
             Navigator.of(context).pop();
-
-            //check status
-            PermissionStatus status = await PermissionHandler().checkPermissionStatus(
-              PermissionGroup.notification,
-            );
-
-            //request permission
-            requestNotificationPermission(context, status, (){
-              //regardless of whether the permission was given
-
-              //expected action
+            
+            //we deleted the new set so now notification is needed
+            //the timer hasn't started and won't because the set has been deleted
+            if(newSet){
               backToExercises(context);
+            }
+            else{
+              //check status
+              PermissionStatus status = await PermissionHandler().checkPermissionStatus(
+                PermissionGroup.notification,
+              );
 
-              //schedule notification
-              scheduleNotification(exercise);
-            });
+              //request permission
+              requestNotificationPermission(context, status, (){
+                //regardless of whether the permission was given
+
+                //try to schedlue notification
+                //we already have tempStartTime 
+                //and recoveryPeriod that we need
+                //to schedule it since the timer started and no change has been made
+                scheduleNotification(exercise);
+
+                //expected action
+                backToExercises(context);
+              });
+            }
           },
         ),
         btnOk: AwesomeButton(
