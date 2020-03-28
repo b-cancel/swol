@@ -42,7 +42,6 @@ class _RecoveryState extends State<Recovery>
       widget.exercise.id,
       widget.exercise.name,
       DateTime.now().add(recoveryDuration.value),
-      alsoCancel: true,
     );
   }
 
@@ -53,13 +52,27 @@ class _RecoveryState extends State<Recovery>
     recoveryDuration = new ValueNotifier(widget.exercise.recoveryPeriod);
     recoveryDuration.addListener(updateRecoveryDuration);
     showAreYouSure = new ValueNotifier<bool>(true);
+    
+    //the notification we WANT to schedule
+    Function initialSchedule = (){
+      scheduleNotification(
+        widget.exercise.id,
+        widget.exercise.name,
+        DateTime.now().add(
+          widget.exercise.recoveryPeriod,
+        ),
+      );
+    };
 
-    //TODO: perhaps use the highlighting thing WITHIN the page here
     //encourage the user to reap the benefits of the system
-    askForPermissionIfNotGrantedAndNeverAsked(
-      context, 
-      widget.exercise,
-    );
+    //after everything loads up so nothing crashes IF a pop up is going to be comming up
+    WidgetsBinding.instance.addPostFrameCallback((_){
+      //TODO: perhaps use the highlighting thing WITHIN the page here
+      askForPermissionIfNotGrantedAndNeverAsked(
+        context,
+        initialSchedule,
+      );
+    });
 
     //super init
     super.initState();

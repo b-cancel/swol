@@ -15,8 +15,7 @@ import 'package:swol/shared/structs/anExercise.dart';
 import 'package:swol/main.dart';
 
 //determine whether we should warn the user
-warningThenAllowPop(BuildContext context, AnExercise exercise,
-    {bool alsoPop: false}) {
+bool warningThenAllowPop(BuildContext context, AnExercise exercise){
   //NOTE: we can assume TEMPS ARE ALWAYS VALID
   //IF they ARENT EMPTY
 
@@ -63,11 +62,8 @@ warningThenAllowPop(BuildContext context, AnExercise exercise,
     //if the timer HAS STARTED this happens by NOT BEING EMPTY
 
     //allow the user to go to where they wanted to
-    //IF (also pop), will pop
-    //ELSE will return true and pop then
-    backToExercises(context, alsoPop);
-    //allow poping if called by back button
-    return true;
+    //pops manually
+    backToExercises(context);
   } else {
     //if both don't match
     //either we are initially setting the value
@@ -92,12 +88,8 @@ warningThenAllowPop(BuildContext context, AnExercise exercise,
       ExercisePage.updateSet.value = true;
 
       //allow the user to go to where they wanted to
-      //IF (also pop), will pop
-      //ELSE will return true and pop then
-      backToExercises(context, alsoPop);
-
-      //allow poping if called by back button
-      return true;
+      //pops manually
+      backToExercises(context);
     } else {
       //remove focus so the pop up doesnt bring it back
       FocusScope.of(context).unfocus();
@@ -169,9 +161,9 @@ warningThenAllowPop(BuildContext context, AnExercise exercise,
             //pop ourselves
             Navigator.of(context).pop();
 
-            //do the action the user initially wanted
-            //regardless of where this function was called from
-            backToExercises(context, true);
+            //allow the user to go to where they wanted to
+            //pops manually
+            backToExercises(context);
           },
         ),
         btnOk: AwesomeButton(
@@ -196,18 +188,20 @@ warningThenAllowPop(BuildContext context, AnExercise exercise,
           },
         ),
       ).show();
-
-      //don't allow popping automatically
-      return false;
     }
   }
+
+  //don't allow popping automatically
+  //at any point
+  //just we just do it manually
+  return false;
 }
 
-backToExercises(BuildContext context, bool alsoPop) {
+backToExercises(BuildContext context) {
   //may have to unfocus
   FocusScope.of(context).unfocus();
   //animate the header
   App.navSpread.value = false;
   //pop if not using the back button
-  if (alsoPop) Navigator.of(context).pop();
+  Navigator.of(context).pop();
 }

@@ -24,16 +24,7 @@ import 'package:swol/main.dart';
 //and for CASE 2: we do next set... then we ask for permission... then schedule
 
 //NOTE: onComplete MUST RUN regardless of anything
-askForPermissionIfNotGrantedAndNeverAsked(BuildContext context, AnExercise exercise)async{
-  Function onComplete = (){
-    scheduleNotification(
-      exercise.id,
-      exercise.name,
-      DateTime.now().add(exercise.recoveryPeriod),
-      alsoCancel: false,
-    );
-  };
-
+askForPermissionIfNotGrantedAndNeverAsked(BuildContext context, Function onComplete)async{
   //regardless of whether its been requested before
   //we first check if it needs to be requested
   PermissionStatus status = await PermissionHandler().checkPermissionStatus(
@@ -78,8 +69,7 @@ askForPermissionIfNotGrantedAndNeverAsked(BuildContext context, AnExercise exerc
 
 //we only schedule it IF we have the permission
 //NOTE: asking for permission is a completely seperate process because of the cases described ON TOP
-scheduleNotification(int id, String name, DateTime notificationDT,
-    {bool alsoCancel: true}) async {
+scheduleNotification(int id, String name, DateTime notificationDT) async {
   //check if we have permission to schedule a notification
   PermissionStatus status = await PermissionHandler().checkPermissionStatus(
     PermissionGroup.notification,

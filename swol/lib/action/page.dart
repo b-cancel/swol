@@ -81,8 +81,6 @@ class ExercisePage extends StatelessWidget {
           return warningThenAllowPop(
             context,
             exercise,
-            //false since return true here will pop
-            alsoPop: false,
           );
         },
         child: ExercisePageDark(
@@ -299,7 +297,6 @@ class PageTitle extends StatelessWidget {
             warningThenAllowPop(
               context,
               exercise,
-              alsoPop: true,
             );
           },
         ),
