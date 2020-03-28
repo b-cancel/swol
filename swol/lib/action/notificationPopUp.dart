@@ -21,6 +21,7 @@ import 'package:swol/shared/methods/theme.dart';
 requestNotificationPermission(
   BuildContext context, 
   PermissionStatus status,
+  //TODO: ensure this
   //on complete HAS TO RUN
   //regardless of what pop up path the user takes 
   Function onComplete) async{

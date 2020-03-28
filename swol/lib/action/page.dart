@@ -78,7 +78,7 @@ class ExercisePage extends StatelessWidget {
       data: MyTheme.dark,
       child: WillPopScope(
         onWillPop: () async {
-          return warningThenAllowPop(
+          return await warningThenPop(
             context,
             exercise,
           );
@@ -294,7 +294,7 @@ class PageTitle extends StatelessWidget {
           color: Colors.white,
           tooltip: backToolTip(),
           onPressed: () {
-            warningThenAllowPop(
+            warningThenPop(
               context,
               exercise,
             );

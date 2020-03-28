@@ -38,11 +38,7 @@ class _RecoveryState extends State<Recovery>
     widget.exercise.recoveryPeriod = recoveryDuration.value;
 
     //TODO: confirm this works under all conditions
-    scheduleNotification(
-      widget.exercise.id,
-      widget.exercise.name,
-      DateTime.now().add(recoveryDuration.value),
-    );
+    scheduleNotification(widget.exercise);
   }
 
   //init
@@ -55,13 +51,7 @@ class _RecoveryState extends State<Recovery>
     
     //the notification we WANT to schedule
     Function initialSchedule = (){
-      scheduleNotification(
-        widget.exercise.id,
-        widget.exercise.name,
-        DateTime.now().add(
-          widget.exercise.recoveryPeriod,
-        ),
-      );
+      scheduleNotification(widget.exercise);
     };
 
     //encourage the user to reap the benefits of the system

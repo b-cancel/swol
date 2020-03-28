@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 
 //plugin
 import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:swol/action/notificationPopUp.dart';
 
 //internal: action
 import 'package:swol/action/popUps/textValid.dart';
@@ -13,9 +15,10 @@ import 'package:swol/action/page.dart';
 //internal: other
 import 'package:swol/shared/structs/anExercise.dart';
 import 'package:swol/main.dart';
+import 'package:swol/shared/widgets/simple/notify.dart';
 
 //determine whether we should warn the user
-bool warningThenAllowPop(BuildContext context, AnExercise exercise){
+Future<bool> warningThenPop(BuildContext context, AnExercise exercise)async{
   //NOTE: we can assume TEMPS ARE ALWAYS VALID
   //IF they ARENT EMPTY
 
@@ -40,12 +43,11 @@ bool warningThenAllowPop(BuildContext context, AnExercise exercise){
   //  NOTE: assuming we allow manually updating temps after initially set
 
   //grab temps
-  int tempWeightString = exercise?.tempWeight;
-  int tempRepsString = exercise?.tempReps;
+  int tempWeightInt = exercise?.tempWeight;
+  int tempRepsInt = exercise?.tempReps;
   //extra step needed because null.toString() isn't null
-  String tempWeight =
-      (tempWeightString != null) ? tempWeightString.toString() : "";
-  String tempReps = (tempRepsString != null) ? tempRepsString.toString() : "";
+  String tempWeight = (tempWeightInt != null) ? tempWeightInt.toString() : "";
+  String tempReps = (tempRepsInt != null) ? tempRepsInt.toString() : "";
 
   //grab news
   String newWeight = ExercisePage.setWeight.value;
@@ -56,14 +58,52 @@ bool warningThenAllowPop(BuildContext context, AnExercise exercise){
   bool matchingReps = (newReps == tempReps);
   bool bothMatch = matchingWeight && matchingReps;
 
+  //its very unlikely that we need to schedule a notification here
+  //1. the permission has to be automatically applied
+  //2. the timer will start (by going to the permision page)
+  //3. then the user has to go back to the record set page
+  //4. then remove the permission manually
+  //5. and then go back
+  //but we dont want the notification to FAIL EVEN ONCE
+  //so we HAVE to cover the case
+  
+  //all 3 cases below are to cover this case
+  //and they are all paired with going back to the exercise page
+  //EXCEPT the one that goes back without having done anything
+
+  //Of both match the cases to address drop significantly
   if (bothMatch) {
     //our notifiers match our temps
     //if the timer HASN'T STARTED this happens by BEING EMTPY
     //if the timer HAS STARTED this happens by NOT BEING EMPTY
 
-    //allow the user to go to where they wanted to
-    //pops manually
-    backToExercises(context);
+    bool timerStarted = exercise.tempStartTime.value != AnExercise.nullDateTime;
+    if (timerStarted) {
+      //check if we have permission to schedule a notification
+      PermissionStatus status = await PermissionHandler().checkPermissionStatus(
+        PermissionGroup.notification,
+      );
+
+      //make sure they have been asked
+      requestNotificationPermission(context, status, (){
+        //regardless of whether the permission was given
+
+        //try to schedlue notification
+        //we already have tempStartTime 
+        //and recoveryPeriod that we need
+        //to schedule it since the timer started and no change has been made
+        scheduleNotification(exercise);
+
+        //perform expected action
+        backToExercises(context);
+      });
+    }
+    else {
+      //timer hasn't started, both fields are empty
+      //dont pester the user
+      //ask for the permission only when you NEED it
+      backToExercises(context);
+    }
   } else {
     //if both don't match
     //either we are initially setting the value
@@ -83,13 +123,24 @@ bool warningThenAllowPop(BuildContext context, AnExercise exercise){
       ELSE -> (revert | or got to record page to fix)
     */
 
-    if (newSetValid) {
-      //will start or update the set
-      ExercisePage.updateSet.value = true;
+    if(newSetValid){
+      PermissionStatus status = await PermissionHandler().checkPermissionStatus(
+        PermissionGroup.notification,
+      );
 
-      //allow the user to go to where they wanted to
-      //pops manually
-      backToExercises(context);
+      //make sure they have been asked
+      requestNotificationPermission(context, status, (){
+        //regardless of whether the permission was given
+
+        //will start or update the set
+        ExercisePage.updateSet.value = true;
+
+        //expected action
+        backToExercises(context);
+
+        //schedule notification AFTER the set finishes updating
+        scheduleNotificationAfterUpdate(exercise);
+      });
     } else {
       //remove focus so the pop up doesnt bring it back
       FocusScope.of(context).unfocus();
@@ -153,7 +204,7 @@ bool warningThenAllowPop(BuildContext context, AnExercise exercise){
           child: Text(
             (newSet ? "Delete The Set" : "Revert Back"),
           ),
-          onTap: () {
+          onTap: () async {
             //NOTE: we revert back to the previous values
             //by just not saving the notifier values
             //since we are leaving so they will essentially reset
@@ -161,9 +212,21 @@ bool warningThenAllowPop(BuildContext context, AnExercise exercise){
             //pop ourselves
             Navigator.of(context).pop();
 
-            //allow the user to go to where they wanted to
-            //pops manually
-            backToExercises(context);
+            //check status
+            PermissionStatus status = await PermissionHandler().checkPermissionStatus(
+              PermissionGroup.notification,
+            );
+
+            //request permission
+            requestNotificationPermission(context, status, (){
+              //regardless of whether the permission was given
+
+              //expected action
+              backToExercises(context);
+
+              //schedule notification
+              scheduleNotification(exercise);
+            });
           },
         ),
         btnOk: AwesomeButton(
@@ -193,7 +256,7 @@ bool warningThenAllowPop(BuildContext context, AnExercise exercise){
 
   //don't allow popping automatically
   //at any point
-  //just we just do it manually
+  //just we just do it manually to simply the problem
   return false;
 }
 
@@ -202,6 +265,6 @@ backToExercises(BuildContext context) {
   FocusScope.of(context).unfocus();
   //animate the header
   App.navSpread.value = false;
-  //pop if not using the back button
+  //pop the page
   Navigator.of(context).pop();
 }

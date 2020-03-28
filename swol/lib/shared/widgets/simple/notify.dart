@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 //plugin
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:swol/action/page.dart';
 
 //internal: shared
 import 'package:swol/shared/methods/extensions/sharedPreferences.dart';
@@ -69,7 +70,15 @@ askForPermissionIfNotGrantedAndNeverAsked(BuildContext context, Function onCompl
 
 //we only schedule it IF we have the permission
 //NOTE: asking for permission is a completely seperate process because of the cases described ON TOP
-scheduleNotification(int id, String name, DateTime notificationDT) async {
+scheduleNotification(AnExercise exercise) async {
+  int id = exercise.id;
+
+  //generate the DT that we want the notification to come up on
+  //TODO: if this date time has already passed then we don't need to schedule the notification
+  DateTime notificationDT = exercise.tempStartTime.value.add(
+    exercise.recoveryPeriod,
+  );
+
   //check if we have permission to schedule a notification
   PermissionStatus status = await PermissionHandler().checkPermissionStatus(
     PermissionGroup.notification,
@@ -134,7 +143,7 @@ scheduleNotification(int id, String name, DateTime notificationDT) async {
       //pass ID so we can remove it by id if needed
       id,
       //title
-      'Set Break Complete for \"' + name + '\"',
+      'Set Break Complete for \"' + exercise.name + '\"',
       //content
       'Start your next set now for the best results',
       //when the notification will pop up
@@ -149,7 +158,20 @@ scheduleNotification(int id, String name, DateTime notificationDT) async {
   }
 }
 
-//TODO: used because perhaps canceling when there is nothing to cancel might break things on IOS
+scheduleNotificationAfterUpdate(AnExercise exercise){
+  if(ExercisePage.updateSet.value == false){
+    //update is complete because the value was set to false
+    scheduleNotification(exercise);
+  }
+  else{
+    //wait another frame for the update to finish
+    WidgetsBinding.instance.addPostFrameCallback((_){
+      scheduleNotificationAfterUpdate(exercise);
+    });
+  }
+}
+
+//NOTE: used because perhaps canceling when there is nothing to cancel might break things on IOS
 safeCancelNotification(int id)async{
   //check this ID has previously scheduled a notification
   List<PendingNotificationRequest> pendingNotificationRequests 
