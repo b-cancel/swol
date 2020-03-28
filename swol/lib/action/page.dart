@@ -123,14 +123,6 @@ class _ExercisePageDarkState extends State<ExercisePageDark> {
         widget.exercise.tempStartTime =
             new ValueNotifier<DateTime>(DateTime.now());
 
-        //since the timer is starting so is the notification scheduled
-        scheduleNotification(
-          widget.exercise.id,
-          widget.exercise.name,
-          DateTime.now().add(widget.exercise.recoveryPeriod),
-          alsoCancel: false,
-        );
-
         //indicate you have started the set
         if (widget.exercise.tempSetCount == null) {
           widget.exercise.tempSetCount = 1;
@@ -160,7 +152,7 @@ class _ExercisePageDarkState extends State<ExercisePageDark> {
       //worst case scenario this little exception cover won't break anything
       if (widget.exercise.tempStartTime.value != AnExercise.nullDateTime) {
         //cancel the notifcation that perhaps didn't trigger
-        flutterLocalNotificationsPlugin.cancel(widget.exercise.id);
+        safeCancelNotification(widget.exercise.id);
 
         //must be done first
         //so that our suggest page has access to right 1 rep maxes

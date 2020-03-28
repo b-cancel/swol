@@ -2,15 +2,15 @@
 import 'package:flutter/material.dart';
 
 //internal: action
+import 'package:swol/action/popUps/maybeUpdateSet.dart';
 import 'package:swol/action/doneButton/button.dart';
 import 'package:swol/action/doneButton/corner.dart';
 import 'package:swol/action/page.dart';
-import 'package:swol/action/popUps/maybeUpdateSet.dart';
-import 'package:swol/main.dart';
-import 'package:swol/shared/methods/theme.dart';
 
 //internal
+import 'package:swol/shared/widgets/simple/notify.dart';
 import 'package:swol/shared/structs/anExercise.dart';
+import 'package:swol/shared/methods/theme.dart';
 
 //NOTE: we have a couple of timestamp types
 //inprogress (on top), new, normal, hidden
@@ -269,7 +269,7 @@ class _FloatingDoneButtonState extends State<FloatingDoneButton> {
   }){
     Function onFinished = (){
       //cancel the notification that may be running
-      flutterLocalNotificationsPlugin.cancel(widget.exercise.id);
+      safeCancelNotification(widget.exercise.id);
 
       //time stamp
       DateTime newTimeStamp = DateTime.now();

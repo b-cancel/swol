@@ -36,6 +36,8 @@ class _RecoveryState extends State<Recovery>
   //function that is removable from listener
   updateRecoveryDuration() {
     widget.exercise.recoveryPeriod = recoveryDuration.value;
+
+    //TODO: confirm this works under all conditions
     scheduleNotification(
       widget.exercise.id,
       widget.exercise.name,
@@ -51,6 +53,13 @@ class _RecoveryState extends State<Recovery>
     recoveryDuration = new ValueNotifier(widget.exercise.recoveryPeriod);
     recoveryDuration.addListener(updateRecoveryDuration);
     showAreYouSure = new ValueNotifier<bool>(true);
+
+    //TODO: perhaps use the highlighting thing WITHIN the page here
+    //encourage the user to reap the benefits of the system
+    askForPermissionIfNotGrantedAndNeverAsked(
+      context, 
+      widget.exercise,
+    );
 
     //super init
     super.initState();

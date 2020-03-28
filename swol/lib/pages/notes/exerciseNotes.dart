@@ -3,13 +3,12 @@ import 'package:flutter/material.dart';
 
 //plugin
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:swol/action/page.dart';
-import 'package:swol/main.dart';
 
 //internl: exercise
 import 'package:swol/shared/widgets/complex/fields/fields/linkField/link.dart';
 import 'package:swol/shared/widgets/complex/fields/fields/text/nameField.dart';
 import 'package:swol/shared/widgets/complex/fields/fields/text/notesField.dart';
+import 'package:swol/shared/widgets/simple/notify.dart';
 import 'package:swol/shared/widgets/simple/playOnceGif.dart';
 import 'package:swol/shared/functions/defaultDateTimes.dart';
 import 'package:swol/shared/methods/exerciseData.dart';
@@ -17,6 +16,7 @@ import 'package:swol/shared/structs/anExercise.dart';
 
 //internal: other
 import 'package:swol/pages/notes/exerciseMessages.dart';
+import 'package:swol/action/page.dart';
 
 //widget
 class ExerciseNotes extends StatefulWidget {
@@ -162,7 +162,7 @@ class BigActionButton extends StatelessWidget {
   //functions
   deleteFunc(){
     //stop the notification that may be running
-    flutterLocalNotificationsPlugin.cancel(exercise.id);
+    safeCancelNotification(exercise.id);
 
     //delete the exercise
     ExerciseData.deleteExercise(exercise.id);
@@ -170,7 +170,7 @@ class BigActionButton extends StatelessWidget {
   
   hideFunc(){
     //stop the notification that may be running
-    flutterLocalNotificationsPlugin.cancel(exercise.id);
+    safeCancelNotification(exercise.id);
 
     //reset all temps
     exercise.tempWeight = null;

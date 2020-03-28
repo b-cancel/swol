@@ -1,24 +1,17 @@
-
-
 //flutter
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 //plugin
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:permission_handler/permission_handler.dart';
-import 'package:swol/action/notificationPopUp.dart';
 
 //internal: action
 import 'package:swol/action/tabs/record/field/customField.dart';
 import 'package:swol/action/tabs/record/field/fieldIcon.dart';
 import 'package:swol/action/popUps/textValid.dart';
 import 'package:swol/action/page.dart';
-import 'package:swol/main.dart';
 
 //internal: shared
 import 'package:swol/shared/functions/goldenRatio.dart';
-import 'package:swol/shared/methods/extensions/sharedPreferences.dart';
 import 'package:swol/shared/methods/theme.dart';
 
 //widget
@@ -64,36 +57,17 @@ class _RecordFieldsState extends State<RecordFields> {
     weightController.addListener(updateWeightNotifier);
     repsController.addListener(updateRepsNotifier);
 
-    //autofocus if possible (AFTER REQUEST PERMISSION)
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      //regardless of whether its been requested before we first check if it needs to be requested
-      PermissionStatus status = await PermissionHandler().checkPermissionStatus(
-        PermissionGroup.notification,
-      );
+    //autofocus if possible
+    //you MUST wait for the transition to complete otherwise things break
 
-      //we already have the permission, simply autofocus
-      if (status == PermissionStatus.granted && false){ //TODO: remove test code
-        focusOnFirstInvalid();
-      } 
-      else{
-        //we don't have permission but have we requested it before?
-        bool notificationRequested =
-            SharedPrefsExt.getNotificationRequested().value;
+    //NOTE: we are waiting a little extra that just the heroAnimDuration
+    //since how async schedules things MAY VERY RARELY break things using exact timing
 
-        //the notification has already been requested
-        //it was either 1. denied
-        //or 2. MANUALLY given and then removed
-        if (notificationRequested && false){ //TODO: remove test code
-          focusOnFirstInvalid();
-        }
-        else{
-          //not granted or restricted
-          //might be denied or unknown
-          await requestNotificationPermission(context, status, () {
-            if (mounted) focusOnFirstInvalid();
-          });
-        }
-      }
+    //NOTE: I tried to use recursion to wait one frame
+    //and then check if the transition was finished
+    //loop until finished but that broke duration test for some unknown reason
+    Future.delayed(widget.heroAnimDuration * 1.5, () {
+      focusOnFirstInvalid();
     });
 
     //attach a listener so a change in it will cause a refocus
@@ -118,27 +92,32 @@ class _RecordFieldsState extends State<RecordFields> {
   //NOTE: in all cases where this is used the keyboard is guaranteed to be closed
   //and its closed automatically by unfocusing so there are no weird exceptions to cover
   focusOnFirstInvalid() {
-    //maybe focus on weight
-    if (isTextValid(weightController.text) == false) {
-      //clear with value that could be nothing but invalid
-      if (weightController.text == "0") weightController.clear();
-      //request focus
-      FocusScope.of(context).requestFocus(widget.weightFocusNode);
-      //NOTE: cursor automatically gets shifted to the end
-    } else {
-      //maybe focus on reps
-      if (isTextValid(repsController.text) == false) {
+    //NOTE: this addresses the bug that occurs
+    //when quickly scrolling past the page
+    //when going BACK TO page 0
+    if (ExercisePage.pageNumber.value == 1) {
+      //maybe focus on weight
+      if (isTextValid(weightController.text) == false) {
         //clear with value that could be nothing but invalid
-        if (repsController.text == "0") repsController.clear();
+        if (weightController.text == "0") weightController.clear();
         //request focus
-        FocusScope.of(context).requestFocus(widget.repsFocusNode);
+        FocusScope.of(context).requestFocus(widget.weightFocusNode);
         //NOTE: cursor automatically gets shifted to the end
+      } else {
+        //maybe focus on reps
+        if (isTextValid(repsController.text) == false) {
+          //clear with value that could be nothing but invalid
+          if (repsController.text == "0") repsController.clear();
+          //request focus
+          FocusScope.of(context).requestFocus(widget.repsFocusNode);
+          //NOTE: cursor automatically gets shifted to the end
+        }
       }
-    }
 
-    //whatever cause the refocusing
-    //no longer needs it
-    ExercisePage.causeRefocusIfInvalid.value = false;
+      //whatever cause the refocusing
+      //no longer needs it
+      ExercisePage.causeRefocusIfInvalid.value = false;
+    }
   }
 
   @override
@@ -167,12 +146,13 @@ class _RecordFieldsState extends State<RecordFields> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             RecordField(
-                focusNode: widget.weightFocusNode,
-                controller: weightController,
-                isLeft: true,
-                borderSize: borderSize,
-                otherFocusNode: widget.repsFocusNode,
-                otherController: repsController),
+              focusNode: widget.weightFocusNode,
+              controller: weightController,
+              isLeft: true,
+              borderSize: borderSize,
+              otherFocusNode: widget.repsFocusNode,
+              otherController: repsController,
+            ),
             Column(
               children: <Widget>[
                 TappableIcon(

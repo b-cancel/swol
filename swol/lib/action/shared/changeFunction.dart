@@ -148,7 +148,7 @@ class _ChangeFunctionState extends State<ChangeFunction> {
 
               //this check is preventative because I can't seem to duplicate the problem
               if(carousel.runtimeType == CarouselSlider){
-                carousel.jumpToPage(selectedPage);
+                if(mounted) carousel.jumpToPage(selectedPage);
               }
             });
           }

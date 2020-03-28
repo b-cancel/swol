@@ -13,6 +13,9 @@ import 'package:swol/action/page.dart';
 
 toNextPageAfterSetUpdateComplete(){
   if(ExercisePage.updateSet.value){
+    //wait for the set to finish updating
+    //NOTE: the statement is set back to false automatically
+    //when its set to true, it updates stuff, then set itself to false
     WidgetsBinding.instance.addPostFrameCallback((_){
         toNextPageAfterSetUpdateComplete();
     });

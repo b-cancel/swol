@@ -1,11 +1,7 @@
-//dart
-import 'dart:io' show Platform;
-
 //flutter
 import 'package:flutter/material.dart';
 
 //plugin
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:swol/action/buttonLocationPopUp.dart';
 import 'package:swol/action/ifAllow.dart';
@@ -14,7 +10,6 @@ import 'package:swol/action/ifAllow.dart';
 import 'package:swol/shared/methods/extensions/sharedPreferences.dart';
 import 'package:swol/shared/widgets/simple/playOnceGif.dart';
 import 'package:swol/shared/methods/theme.dart';
-import 'package:swol/main.dart';
 
 //PERMISSION REQUESTOR
 //NOTE: here status is NOT granted
