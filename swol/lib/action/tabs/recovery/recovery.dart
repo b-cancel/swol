@@ -48,19 +48,17 @@ class _RecoveryState extends State<Recovery>
     recoveryDuration = new ValueNotifier(widget.exercise.recoveryPeriod);
     recoveryDuration.addListener(updateRecoveryDuration);
     showAreYouSure = new ValueNotifier<bool>(true);
-    
-    //the notification we WANT to schedule
-    Function initialSchedule = (){
-      scheduleNotification(widget.exercise);
-    };
 
     //encourage the user to reap the benefits of the system
     //after everything loads up so nothing crashes IF a pop up is going to be comming up
     WidgetsBinding.instance.addPostFrameCallback((_){
-      //TODO: perhaps use the highlighting thing WITHIN the page here
-      askForPermissionIfNotGrantedAndNeverAsked(
-        context,
-        initialSchedule,
+      //TODO: perhaps use the highlighting notification thing WITHIN the page here
+      //NOTE: Im hinting at a certain plugin 
+      //that is most definately overkill for something so small
+      //but... meh... Just in case its an onboarding technique
+      askForPermissionIfNotGrantedAndWeNeverAsked(context, (){
+          scheduleNotification(widget.exercise);
+        },
       );
     });
 

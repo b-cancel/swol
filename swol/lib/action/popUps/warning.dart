@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 
 //plugin
 import 'package:awesome_dialog/awesome_dialog.dart';
-import 'package:permission_handler/permission_handler.dart';
-import 'package:swol/action/notificationPopUp.dart';
 
 //internal: action
 import 'package:swol/action/popUps/textValid.dart';
@@ -13,9 +11,9 @@ import 'package:swol/action/popUps/button.dart';
 import 'package:swol/action/page.dart';
 
 //internal: other
+import 'package:swol/shared/widgets/simple/notify.dart';
 import 'package:swol/shared/structs/anExercise.dart';
 import 'package:swol/main.dart';
-import 'package:swol/shared/widgets/simple/notify.dart';
 
 //determine whether we should warn the user
 Future<bool> warningThenPop(BuildContext context, AnExercise exercise)async{
@@ -69,7 +67,10 @@ Future<bool> warningThenPop(BuildContext context, AnExercise exercise)async{
 
   //all 3 cases below are to cover this case
   //and they are all paired with going back to the exercise page
-  //EXCEPT the one that goes back without having done anything
+  //EXCEPT when
+  //1. the user want to go back from an misclick
+  //2. the user want to go back by deleting the mistyped set
+  //    which ofcourse won't start the timer and therefore not have a notification
 
   //Of both match the cases to address drop significantly
   if (bothMatch) {
@@ -79,16 +80,11 @@ Future<bool> warningThenPop(BuildContext context, AnExercise exercise)async{
 
     bool timerStarted = exercise.tempStartTime.value != AnExercise.nullDateTime;
     if (timerStarted) {
-      //check if we have permission to schedule a notification
-      PermissionStatus status = await PermissionHandler().checkPermissionStatus(
-        PermissionGroup.notification,
-      );
-
-      //make sure they have been asked
-      requestNotificationPermission(context, status, (){
+      askForPermissionIfNotGrantedAndWeNeverAsked(context, (){
         //regardless of whether the permission was given
 
         //try to schedlue notification
+        //NOTE: here you already have processed a Valid Set
         //we already have tempStartTime 
         //and recoveryPeriod that we need
         //to schedule it since the timer started and no change has been made
@@ -105,6 +101,7 @@ Future<bool> warningThenPop(BuildContext context, AnExercise exercise)async{
       backToExercises(context);
     }
   } else {
+    //-------------------------*-------------------------*-------------------------*-------------------------*-------------------------
     //if both don't match
     //either we are initially setting the value
     //or we are updating the value
@@ -123,13 +120,13 @@ Future<bool> warningThenPop(BuildContext context, AnExercise exercise)async{
       ELSE -> (revert | or got to record page to fix)
     */
 
-    if(newSetValid){
-      PermissionStatus status = await PermissionHandler().checkPermissionStatus(
-        PermissionGroup.notification,
-      );
+    //change display for pop up and 
+    //whether we wait to schedule the notification
+    bool newSet = (tempWeight == "");
 
-      //make sure they have been asked
-      requestNotificationPermission(context, status, (){
+    //if its valid horray! no extra pop ups
+    if(newSetValid){
+      askForPermissionIfNotGrantedAndWeNeverAsked(context, (){
         //regardless of whether the permission was given
 
         //will start or update the set
@@ -139,14 +136,16 @@ Future<bool> warningThenPop(BuildContext context, AnExercise exercise)async{
         backToExercises(context);
 
         //schedule notification AFTER the set finishes updating
-        scheduleNotificationAfterUpdate(exercise);
+        if(newSet){
+          scheduleNotificationAfterUpdate(exercise);
+        } //things are set as they should be before this action
+        else scheduleNotification(exercise);
       });
     } else {
       //remove focus so the pop up doesnt bring it back
       FocusScope.of(context).unfocus();
 
       //possible because either both are filled or neither
-      bool newSet = (tempWeight == "");
       String title = newSet ? "Begin Your Set Break" : "You Must Fix Your Set";
       String subtitle =
           newSet ? "so we can save your set" : "before we save it";
@@ -218,16 +217,11 @@ Future<bool> warningThenPop(BuildContext context, AnExercise exercise)async{
               backToExercises(context);
             }
             else{
-              //check status
-              PermissionStatus status = await PermissionHandler().checkPermissionStatus(
-                PermissionGroup.notification,
-              );
-
-              //request permission
-              requestNotificationPermission(context, status, (){
+              askForPermissionIfNotGrantedAndWeNeverAsked(context, (){
                 //regardless of whether the permission was given
 
                 //try to schedlue notification
+                //NOTE: we are reverting so nothing new was updated
                 //we already have tempStartTime 
                 //and recoveryPeriod that we need
                 //to schedule it since the timer started and no change has been made
@@ -247,6 +241,9 @@ Future<bool> warningThenPop(BuildContext context, AnExercise exercise)async{
             //pop ourselves
             Navigator.of(context).pop();
 
+            //NOTE: we don't yet NEED to request permission for the break
+            //let the user correct their messed up set first
+
             //If the pop up came up the values typed are not valid
             //if we reverted then the refocus will do nothing
             //since the function will see that both values are valid
@@ -262,6 +259,7 @@ Future<bool> warningThenPop(BuildContext context, AnExercise exercise)async{
         ),
       ).show();
     }
+    //-------------------------*-------------------------*-------------------------*-------------------------*-------------------------
   }
 
   //don't allow popping automatically

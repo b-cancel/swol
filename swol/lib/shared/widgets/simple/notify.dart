@@ -24,8 +24,9 @@ import 'package:swol/main.dart';
 //since for CASE 1: we ask for permission... then do next set... then schedule
 //and for CASE 2: we do next set... then we ask for permission... then schedule
 
+//TODO: confirm the below
 //NOTE: onComplete MUST RUN regardless of anything
-askForPermissionIfNotGrantedAndNeverAsked(BuildContext context, Function onComplete)async{
+askForPermissionIfNotGrantedAndWeNeverAsked(BuildContext context, Function onComplete)async{
   //regardless of whether its been requested before
   //we first check if it needs to be requested
   PermissionStatus status = await PermissionHandler().checkPermissionStatus(

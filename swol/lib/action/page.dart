@@ -402,12 +402,3 @@ updateOrderOfIDs(List<double> functionIDToValue) {
     ExercisePage.orderedIDs.value = orderedIDs;
   }
 }
-
-/*
-NOTIFICATION FEATURES SUPPORTED BY ALL LANGUAGES
-Scheduling when notifications should appear
-Retrieve a list of pending notification requests that have been scheduled to be shown in the future
-Cancelling/removing notification by id or all of them
-Ability to handle when a user has tapped on a notification, when the app is the foreground, background or terminated
-Determine if an app was launched due to tapping on a notification
-*/
