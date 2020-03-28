@@ -24,7 +24,8 @@ requestNotificationPermission(
   //TODO: ensure this
   //on complete HAS TO RUN
   //regardless of what pop up path the user takes 
-  Function onComplete) async{
+  Function onComplete,
+  {bool automaticallyOpened: true}) async{
   //by now regardless of the user approving or not the permission has been requested
   //NOTE: even in the case where the permission is restricted
   //they may not be able to lift the restriction
@@ -163,7 +164,7 @@ requestNotificationPermission(
 
                 //make sure the user knows where the button is
                 //will always call on complete
-                maybeShowButtonLocation(context, status, onComplete);
+                maybeShowButtonLocation(context, status, onComplete, automaticallyOpened);
               },
             ),
             Padding(
@@ -179,7 +180,7 @@ requestNotificationPermission(
                   //we MIGHT have to go about that
                   //becuase of the MIGHT
                   //we handle poping in can allow
-                  onAllow(status, onComplete);
+                  onAllow(context, status, onComplete);
                 },
               ),
             )

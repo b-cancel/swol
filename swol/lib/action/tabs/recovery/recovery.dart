@@ -38,6 +38,8 @@ class _RecoveryState extends State<Recovery>
     widget.exercise.recoveryPeriod = recoveryDuration.value;
 
     //TODO: confirm this works under all conditions
+    //cases to test below
+    //to shorter one, to longer one, to shorter one after longer completed, to longer one after shorter completed
     scheduleNotification(widget.exercise);
   }
 

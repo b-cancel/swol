@@ -1,14 +1,19 @@
 //dart
 import 'dart:io' show Platform;
 
+//flutter
+import 'package:flutter/material.dart';
+
 //plugin
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:permission_handler/permission_handler.dart';
+
+//internal
 import 'package:swol/main.dart';
 
 //STATUS can be everything except GRANTED
-//the pop up that called this function is currently open
-onAllow(PermissionStatus status, Function onComplete) async {
+//NOTE: the pop up that called this function is currently open
+onAllow(BuildContext context, PermissionStatus status, Function onComplete) async {
   if (Platform.isAndroid) {
     //permission status can be
     //1. uknown 2. denied 3. neverAskAgain

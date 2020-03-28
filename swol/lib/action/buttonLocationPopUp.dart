@@ -3,11 +3,10 @@ import 'package:flutter/material.dart';
 
 //plugin
 import 'package:permission_handler/permission_handler.dart';
-import 'package:swol/action/ifAllow.dart';
 
 //internal
 import 'package:swol/shared/methods/theme.dart';
-import 'package:swol/action/page.dart';
+import 'package:swol/action/ifAllow.dart';
 
 //we only care to tell the user where the button is when they deny
 //if they don't already know
@@ -17,13 +16,9 @@ maybeShowButtonLocation(
     PermissionStatus status,
     //on complete HAS TO RUN
     //regardless of what pop up path the user takes
-    Function onComplete) async {
-  bool userTappedButton = (ExercisePage.pageNumber.value == 2);
-  //they just tapped the button, they know where the button is, no need to remind them
-  if (userTappedButton) {
-    onComplete();
-  } else {
-    //also runs onComplete REGARDLESS of what route is taken
+    Function onComplete,
+    bool automaticallyOpened) async {
+  if (automaticallyOpened) {
     showDialog(
       context: context,
       //the user MUST respond
@@ -198,12 +193,12 @@ maybeShowButtonLocation(
                   child: Text("I Changed My Mind"),
                   color: Theme.of(context).accentColor,
                   onPressed: () async {
-                    //the user wants to allow 
-                    //but now handle all the different ways 
+                    //the user wants to allow
+                    //but now handle all the different ways
                     //we MIGHT have to go about that
                     //becuase of the MIGHT
                     //we handle poping in can allow
-                    onAllow(status, onComplete);
+                    onAllow(context, status, onComplete);
                   },
                 ),
               )
@@ -212,5 +207,7 @@ maybeShowButtonLocation(
         );
       },
     );
+  } else {
+    onComplete();
   }
 }
