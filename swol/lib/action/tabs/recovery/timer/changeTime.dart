@@ -8,7 +8,7 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:swol/shared/widgets/complex/trainingTypeTables/trainingTypes.dart';
 import 'package:swol/shared/widgets/complex/RecoveryTime/minSecs.dart';
 import 'package:swol/shared/widgets/complex/recoveryTime/picker.dart';
-import 'package:swol/shared/widgets/simple/ourLearnPopUp.dart';
+import 'package:swol/shared/widgets/simple/ourHeaderIconPopUp.dart';
 import 'package:swol/shared/methods/theme.dart';
 
 //internal: other
@@ -34,7 +34,7 @@ class ActualButton extends StatelessWidget {
 
     return InkWell(
       onTap: () {
-        showCustomPopUp(
+        showCustomHeaderIconPopUp(
           context,
           [
             Text(
@@ -67,9 +67,8 @@ class ActualButton extends StatelessWidget {
             color: Colors.white,
             size: 56,
           ),
-          color: Colors.black,
+          headerBackground: Colors.black,
           isDense: true,
-          animationType: AnimType.SCALE,
           btnCancel: AwesomeButton(
             clear: true,
             child: Text(

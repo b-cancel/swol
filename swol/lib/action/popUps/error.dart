@@ -10,14 +10,15 @@ import 'package:swol/action/popUps/textValid.dart';
 import 'package:swol/action/popUps/reusable.dart';
 import 'package:swol/action/popUps/button.dart';
 import 'package:swol/action/page.dart';
+import 'package:swol/shared/widgets/simple/ourHeaderIconPopUp.dart';
 
-toNextPageAfterSetUpdateComplete(){
-  if(ExercisePage.updateSet.value){
+toNextPageAfterSetUpdateComplete() {
+  if (ExercisePage.updateSet.value) {
     //wait for the set to finish updating
     //NOTE: the statement is set back to false automatically
     //when its set to true, it updates stuff, then set itself to false
-    WidgetsBinding.instance.addPostFrameCallback((_){
-        toNextPageAfterSetUpdateComplete();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      toNextPageAfterSetUpdateComplete();
     });
   } else {
     ExercisePage.pageNumber.value = 2; //shift to the timer page
@@ -26,16 +27,15 @@ toNextPageAfterSetUpdateComplete(){
 
 //function
 maybeError(
-  BuildContext context, 
-  AnExercise exercise, 
+  BuildContext context,
+  AnExercise exercise,
   DateTime startTime,
 ) {
   //TODO: ideally we let the user skip the step
   bool keyboardOpen = FocusScope.of(context).hasFocus;
-  if(keyboardOpen){
+  if (keyboardOpen) {
     FocusScope.of(context).unfocus();
-  }
-  else{
+  } else {
     //grab data
     String weight = ExercisePage.setWeight.value;
     String reps = ExercisePage.setReps.value;
@@ -46,29 +46,20 @@ maybeError(
     bool setValid = weightValid && repsValid;
 
     //we are valid and can therefore move on
-    if(setValid){
+    if (setValid) {
       //move onto the next set
       ExercisePage.updateSet.value = true; //start the set
       toNextPageAfterSetUpdateComplete();
-    }
-    else{
+    } else {
       //change the buttons shows a the wording a tad\
-    bool timerNotStarted = startTime == AnExercise.nullDateTime;
-    String continueString =
-        (timerNotStarted) ? "Begin Your Set Break" : "Return To Your Break";
+      bool timerNotStarted = startTime == AnExercise.nullDateTime;
+      String continueString =
+          (timerNotStarted) ? "Begin Your Set Break" : "Return To Your Break";
 
-    //show the dialog
-    AwesomeDialog(
-      context: context,
-      isDense: false,
-      //NOTE: dont use dismiss callback since dismissing
-      //from different areas yields different results
-      dismissOnTouchOutside: true,
-      dialogType: DialogType.ERROR,
-      animType: AnimType.BOTTOMSLIDE,
-      headerAnimationLoop: false,
-      body: Column(
-        children: [
+      //show the dialog
+      showBasicHeaderIconPopUp(
+        context,
+        [
           Text(
             "Fix Your Set",
             style: TextStyle(
@@ -149,44 +140,49 @@ maybeError(
             ),
           ),
         ],
-      ),
-      btnCancel: timerNotStarted ? null : AwesomeButton(
-        clear: true,
-        child: Text(
-          "Revert Back",
-        ), 
-        onTap: () {
-          //revert back (no need to update set)
-          //we KNOW the temps are VALID
-          //else the timer would not have started
-          ExercisePage.setWeight.value = exercise.tempWeight.toString();
-          ExercisePage.setReps.value = exercise.tempReps.toString();
+        DialogType.ERROR,
+        animationType: AnimType.BOTTOMSLIDE,
+        btnCancel: timerNotStarted
+            ? null
+            : AwesomeButton(
+                clear: true,
+                child: Text(
+                  "Revert Back",
+                ),
+                onTap: () {
+                  //revert back (no need to update set)
+                  //we KNOW the temps are VALID
+                  //else the timer would not have started
+                  ExercisePage.setWeight.value = exercise.tempWeight.toString();
+                  ExercisePage.setReps.value = exercise.tempReps.toString();
 
-          //pop ourselves
-          Navigator.of(context).pop();
+                  //pop ourselves
+                  Navigator.of(context).pop();
 
-          //PRECAUTION: wait a frame to wait for setWeight and setReps to update
-          WidgetsBinding.instance.addPostFrameCallback((_){
-            ExercisePage.updateSet.value = true; //start the set
-            toNextPageAfterSetUpdateComplete();
-          });
-        },
-      ),
-      btnOk: timerNotStarted ? null : AwesomeButton(
-        child: Text(
-          "Let Me Fix It",
-        ),
-        onTap: () {
-          //pop ourselves
-          Navigator.of(context).pop();
+                  //PRECAUTION: wait a frame to wait for setWeight and setReps to update
+                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                    ExercisePage.updateSet.value = true; //start the set
+                    toNextPageAfterSetUpdateComplete();
+                  });
+                },
+              ),
+        btnOk: timerNotStarted
+            ? null
+            : AwesomeButton(
+                child: Text(
+                  "Let Me Fix It",
+                ),
+                onTap: () {
+                  //pop ourselves
+                  Navigator.of(context).pop();
 
-          //If the pop up came up the values typed are not valid
-          //if we reverted then the refocus will do nothing
-          //since the function will see that both values are valid
-          ExercisePage.causeRefocusIfInvalid.value = true;
-        },
-      ),
-    ).show();
+                  //If the pop up came up the values typed are not valid
+                  //if we reverted then the refocus will do nothing
+                  //since the function will see that both values are valid
+                  ExercisePage.causeRefocusIfInvalid.value = true;
+                },
+              ),
+      );
     }
   }
 }

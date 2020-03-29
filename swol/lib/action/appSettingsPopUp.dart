@@ -325,7 +325,7 @@ class _CompleteOnResumeIfPermissionGrantedState extends State<CompleteOnResumeIf
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context){
     return widget.child;
   }
 }

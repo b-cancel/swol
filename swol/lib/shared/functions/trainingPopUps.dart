@@ -7,7 +7,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 //internal
 import 'package:swol/shared/widgets/complex/trainingTypeTables/trainingTypes.dart';
 import 'package:swol/shared/widgets/simple/oneOrTheOtherIcon.dart';
-import 'package:swol/shared/widgets/simple/ourLearnPopUp.dart';
+import 'package:swol/shared/widgets/simple/ourHeaderIconPopUp.dart';
 import 'package:swol/shared/widgets/simple/toLearnPage.dart';
 import 'package:swol/shared/methods/theme.dart';
 
@@ -114,7 +114,7 @@ Function _makeTrainingTypePopUp({
     }
 
     //show pop up
-    showCustomPopUp(
+    showCustomHeaderIconPopUp(
       context,
       [
         Padding(
@@ -149,7 +149,7 @@ Function _makeTrainingTypePopUp({
       ],
       headerIcon,
       isDense: true,
-      color: Colors.black,
+      headerBackground: Colors.black,
     );
   };
 }
