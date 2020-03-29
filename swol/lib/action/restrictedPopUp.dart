@@ -1,18 +1,13 @@
-//dart
-import 'dart:io' show Platform;
-
 //flutter
 import 'package:flutter/material.dart';
 
 //plugin
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:swol/action/buttonLocationPopUp.dart';
+import 'package:swol/action/ifAllow.dart';
 
 //internal
-import 'package:swol/shared/methods/extensions/sharedPreferences.dart';
-import 'package:swol/shared/widgets/simple/playOnceGif.dart';
 import 'package:swol/shared/methods/theme.dart';
-import 'package:swol/main.dart';
 
 //we only care to tell the user where the button is when they deny
 //if they don't already know
@@ -22,7 +17,9 @@ showRestrictedPopUp(
   PermissionStatus status,
   //on complete HAS TO RUN
   //regardless of what pop up path the user takes 
-  Function onComplete) async{
+  Function onComplete,
+  bool automaticallyOpened,
+  ) async{
   showDialog(
     context: context,
     //the user MUST respond
@@ -71,18 +68,28 @@ showRestrictedPopUp(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Text(
-                      "Grant Us Access",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 36,
-                      ),
-                    ),
-                    Text(
-                      "To Send Notifications",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 24,
+                    FittedBox(
+                      fit: BoxFit.contain,
+                      child: Container(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            Text(
+                              "You Are Restricted",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 28,
+                              ),
+                            ),
+                            Text(
+                              "from granting us access",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 24,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                     Container(
@@ -96,40 +103,31 @@ showRestrictedPopUp(
                           ),
                           children: [
                             TextSpan(
-                              text: "It's important that you recover",
+                              text: "Parental Controls",
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
                             TextSpan(
-                              text: " before moving onto your next set.\n\n",
+                              text: " or a ",
                             ),
                             TextSpan(
-                              text: "But "
-                            ),
-                            TextSpan(
-                              text: "it's not fun to have to wait ",
+                              text: "Security Option",
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
                             TextSpan(
-                              text: "for the clock to tick down.\n\n"
+                              text: " isn't going to allow you to grant us access.\n\n"
                             ),
                             TextSpan(
-                              text: "If you grant us access to send notifications, ",
+                              text: "Remove The Restriction",
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
                             TextSpan(
-                              text: "we can alert you",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            TextSpan(
-                              text: " when you are ready for you next set.",
+                              text: " and Try Again.\n\n"
                             ),
                           ],
                         ),
@@ -142,15 +140,19 @@ showRestrictedPopUp(
           ),
           actions: <Widget>[
             FlatButton(
-              child: new Text("Deny"),
+              child: new Text("I'll do it later"),
               onPressed: () {
-                //notification
+                //pop ourselves
                 Navigator.of(context).pop();
 
-                //TODO: indicate where someone could enable the permission 
-                //TODO: if they change their mind and if notificationRequested is false
-                //because its the first time this has been requested
-                //and therefore the user didnt get the pop up from tapping the button
+                //make sure the user knows where the button is
+                //will always call on complete
+                maybeShowButtonLocation(
+                  context, 
+                  status, 
+                  onComplete, 
+                  automaticallyOpened,
+                );
               },
             ),
             Padding(
@@ -158,34 +160,26 @@ showRestrictedPopUp(
                 right: 8.0,
               ),
               child: RaisedButton(
-                child: Text("Allow"),
+                child: Text("Try Again"),
                 color: Theme.of(context).accentColor,
                 onPressed: () async{
-                  //remove this pop up to show the IOS pop up
-                  Navigator.of(context).pop();
+                  //maybe the user made the required change
+                  //check again
+                  PermissionStatus status = await PermissionHandler().checkPermissionStatus(
+                    PermissionGroup.notification,
+                  );
 
-                  //If android its only posible for you to enable it manually through settings
-                  if (Platform.isAndroid) { 
-
-                  } else if (Platform.isIOS) {
-                    //IOS only
-                    //status here is either denied or unknown
-                    bool permissionGiven = await flutterLocalNotificationsPlugin
-                    .resolvePlatformSpecificImplementation<IOSFlutterLocalNotificationsPlugin>()
-                    ?.requestPermissions(
-                      alert: true,
-                      badge: true,
-                      sound: true,
-                    );
-
-                    //if they didn't grant the permission tell them where to enable it if they change their mind
-                    if(permissionGiven == false){
-                      //TODO: indicate where someone could enable the permission 
-                      //TODO: if they change their mind and if notificationRequested is false
-                      //because its the first time this has been requested
-                      //and therefore the user didnt get the pop up from tapping the button
-                    }
-                  }
+                  //the user wants to allow 
+                  //but now handle all the different ways 
+                  //we MIGHT have to go about that
+                  //becuase of the MIGHT
+                  //we handle poping in can allow
+                  onAllowShouldHandlePoping(
+                    context, 
+                    status, 
+                    onComplete, 
+                    automaticallyOpened,
+                  );
                 },
               ),
             )

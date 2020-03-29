@@ -187,7 +187,7 @@ requestNotificationPermission(
                   //we MIGHT have to go about that
                   //becuase of the MIGHT
                   //we handle poping in can allow
-                  onAllow(
+                  onAllowShouldHandlePoping(
                     context, 
                     status, 
                     onComplete, 

@@ -78,7 +78,7 @@ maybeShowButtonLocation(
                                       ),
                                     ),
                                     Text(
-                                      "but if you change your mind",
+                                      "but when you're ready",
                                       style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 18,
@@ -190,7 +190,7 @@ maybeShowButtonLocation(
                   right: 8.0,
                 ),
                 child: RaisedButton(
-                  child: Text("I Changed My Mind"),
+                  child: Text("Enable Notificaions"),
                   color: Theme.of(context).accentColor,
                   onPressed: () async {
                     //the user wants to allow
@@ -198,7 +198,7 @@ maybeShowButtonLocation(
                     //we MIGHT have to go about that
                     //becuase of the MIGHT
                     //we handle poping in can allow
-                    onAllow(
+                    onAllowShouldHandlePoping(
                       context, 
                       status, 
                       onComplete,

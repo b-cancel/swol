@@ -11,6 +11,7 @@ import 'package:swol/shared/widgets/simple/playOnceGif.dart';
 import 'package:swol/shared/methods/theme.dart';
 import 'package:swol/main.dart';
 
+/*
 requestThatYouGoToAppSettings(
   BuildContext context, 
   Function onComplete) async{
@@ -160,3 +161,4 @@ requestThatYouGoToAppSettings(
     },
   );
 }
+*/

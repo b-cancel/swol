@@ -28,7 +28,7 @@ import 'package:swol/main.dart';
 
 //STATUS can be everything except GRANTED
 //NOTE: the pop up that called this function is currently open
-onAllow(
+onAllowShouldHandlePoping(
   BuildContext context,
   PermissionStatus status,
   Function onComplete,
@@ -40,7 +40,19 @@ onAllow(
   if (Platform.isAndroid) {
     //permission status can be
     //1. unknown 2. denied 3. neverAskAgain
-    showRestrictedPopUp(context, status, onComplete);
+
+    //test part 1 for ios
+    //pop the pop up that called this one
+    //because both operation below are going to create another pop up
+    Navigator.of(context).pop();
+
+    //test part 2 for ios
+    showRestrictedPopUp(
+      context, 
+      status, 
+      onComplete,
+      automaticallyOpened,
+    );
     /*
     if (status == PermissionStatus.neverAskAgain) {
     } else {}
@@ -53,7 +65,12 @@ onAllow(
     //permission status can be
     //1. unknown 2. denied 3. restricted
     if (status == PermissionStatus.restricted) {
-      showRestrictedPopUp(context, status, onComplete);
+      showRestrictedPopUp(
+        context, 
+        status, 
+        onComplete,
+        automaticallyOpened,
+      );
     } else {
       //IF it hasn't been requested before its going to be unknown
       //IF it has been requested before but it was denied it will be denied
@@ -76,23 +93,13 @@ onAllow(
         onComplete();
       }
       else{
-        if(automaticallyOpened){
-          //inform them of where they can change their mind
-          maybeShowButtonLocation(
-            context,
-            status,
-            onComplete,
-            //otherwise we wouldn't be here
-            true,
-          );
-        }
-        else{
-          //this is weird since to run ifAllow they need tap allow
-          //but since it occured after tapping the button
-          //we assume that if they messed up 
-          //they can simply begin the process again with the same button
-          onComplete();
-        }
+        //inform them of where they can change their mind
+        maybeShowButtonLocation(
+          context,
+          status,
+          onComplete,
+          automaticallyOpened,
+        );
       }
     }
   }
