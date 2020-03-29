@@ -14,9 +14,10 @@ import 'package:swol/action/page.dart';
 import 'package:swol/shared/widgets/simple/notify.dart';
 import 'package:swol/shared/structs/anExercise.dart';
 import 'package:swol/main.dart';
+import 'package:swol/shared/widgets/simple/ourHeaderIconPopUp.dart';
 
 //determine whether we should warn the user
-Future<bool> warningThenPop(BuildContext context, AnExercise exercise)async{
+Future<bool> warningThenPop(BuildContext context, AnExercise exercise) async {
   //NOTE: we can assume TEMPS ARE ALWAYS VALID
   //IF they ARENT EMPTY
 
@@ -80,12 +81,12 @@ Future<bool> warningThenPop(BuildContext context, AnExercise exercise)async{
 
     bool timerStarted = exercise.tempStartTime.value != AnExercise.nullDateTime;
     if (timerStarted) {
-      askForPermissionIfNotGrantedAndWeNeverAsked(context, (){
+      askForPermissionIfNotGrantedAndWeNeverAsked(context, () {
         //regardless of whether the permission was given
 
         //try to schedlue notification
         //NOTE: here you already have processed a Valid Set
-        //we already have tempStartTime 
+        //we already have tempStartTime
         //and recoveryPeriod that we need
         //to schedule it since the timer started and no change has been made
         scheduleNotification(exercise);
@@ -93,8 +94,7 @@ Future<bool> warningThenPop(BuildContext context, AnExercise exercise)async{
         //perform expected action
         backToExercises(context);
       });
-    }
-    else {
+    } else {
       //timer hasn't started, both fields are empty
       //dont pester the user
       //ask for the permission only when you NEED it
@@ -120,13 +120,13 @@ Future<bool> warningThenPop(BuildContext context, AnExercise exercise)async{
       ELSE -> (revert | or got to record page to fix)
     */
 
-    //change display for pop up and 
+    //change display for pop up and
     //whether we wait to schedule the notification
     bool newSet = (tempWeight == "");
 
     //if its valid horray! no extra pop ups
-    if(newSetValid){
-      askForPermissionIfNotGrantedAndWeNeverAsked(context, (){
+    if (newSetValid) {
+      askForPermissionIfNotGrantedAndWeNeverAsked(context, () {
         //regardless of whether the permission was given
 
         //will start or update the set
@@ -136,10 +136,11 @@ Future<bool> warningThenPop(BuildContext context, AnExercise exercise)async{
         backToExercises(context);
 
         //schedule notification AFTER the set finishes updating
-        if(newSet){
+        if (newSet) {
           scheduleNotificationAfterUpdate(exercise);
         } //things are set as they should be before this action
-        else scheduleNotification(exercise);
+        else
+          scheduleNotification(exercise);
       });
     } else {
       //remove focus so the pop up doesnt bring it back
@@ -151,53 +152,48 @@ Future<bool> warningThenPop(BuildContext context, AnExercise exercise)async{
           newSet ? "so we can save your set" : "before we save it";
 
       //bring up pop up
-      AwesomeDialog(
-        context: context,
-        isDense: false,
-        dismissOnTouchOutside: true,
-        dialogType: DialogType.WARNING,
-        animType: AnimType.LEFTSLIDE,
-        headerAnimationLoop: false,
-        body: Column(
-          children: [
-            SetTitle(
-              title: title,
-              subtitle: subtitle,
+      showBasicHeaderIconPopUp(
+        context,
+        [
+          SetTitle(
+            title: title,
+            subtitle: subtitle,
+          ),
+          Padding(
+            padding: EdgeInsets.only(
+              top: 16,
             ),
-            Padding(
-              padding: EdgeInsets.only(
-                top: 16,
+            child: Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: 24.0,
               ),
-              child: Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: 24.0,
-                ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SetDescription(
-                      weight: newWeight,
-                      reps: newReps,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SetDescription(
+                    weight: newWeight,
+                    reps: newReps,
+                  ),
+                  SetProblem(
+                    weightValid: newWeightValid,
+                    repsValid: newRepsValid,
+                    setValid: newSetValid,
+                  ),
+                  GoBackAndFix(),
+                  Visibility(
+                    visible: newSet == false,
+                    child: RevertToPrevious(
+                      exercise: exercise,
                     ),
-                    SetProblem(
-                      weightValid: newWeightValid,
-                      repsValid: newRepsValid,
-                      setValid: newSetValid,
-                    ),
-                    GoBackAndFix(),
-                    Visibility(
-                      visible: newSet == false,
-                      child: RevertToPrevious(
-                        exercise: exercise,
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
-          ],
-        ),
+          ),
+        ],
+        DialogType.WARNING,
+        animationType: AnimType.LEFTSLIDE,
         btnCancel: AwesomeButton(
           clear: true,
           child: Text(
@@ -210,19 +206,18 @@ Future<bool> warningThenPop(BuildContext context, AnExercise exercise)async{
 
             //pop ourselves
             Navigator.of(context).pop();
-            
+
             //we deleted the new set so now notification is needed
             //the timer hasn't started and won't because the set has been deleted
-            if(newSet){
+            if (newSet) {
               backToExercises(context);
-            }
-            else{
-              askForPermissionIfNotGrantedAndWeNeverAsked(context, (){
+            } else {
+              askForPermissionIfNotGrantedAndWeNeverAsked(context, () {
                 //regardless of whether the permission was given
 
                 //try to schedlue notification
                 //NOTE: we are reverting so nothing new was updated
-                //we already have tempStartTime 
+                //we already have tempStartTime
                 //and recoveryPeriod that we need
                 //to schedule it since the timer started and no change has been made
                 scheduleNotification(exercise);
@@ -257,7 +252,7 @@ Future<bool> warningThenPop(BuildContext context, AnExercise exercise)async{
             ExercisePage.pageNumber.value = 1;
           },
         ),
-      ).show();
+      );
     }
     //-------------------------*-------------------------*-------------------------*-------------------------*-------------------------
   }
