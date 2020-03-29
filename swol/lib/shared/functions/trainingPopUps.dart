@@ -84,15 +84,42 @@ Function _makeTrainingTypePopUp({
     Widget headerIcon;
     switch(iconID){
       case FitIcons.Endurance: 
-        headerIcon = Icon(FontAwesomeIcons.weight, color: iconColor); 
+        headerIcon = Transform.translate(
+          offset: Offset(0, -1),
+          child: Padding(
+            padding: EdgeInsets.all(3.0),
+            child: Icon(
+              FontAwesomeIcons.weight, 
+              color: iconColor,
+            ),
+          ),
+        ); 
       break;
-      case FitIcons.Hypertrophy: headerIcon = Transform.translate(
-          offset: Offset(-3, 0),
-          child: Icon(FontAwesomeIcons.dumbbell, color: iconColor),
+      case FitIcons.Hypertrophy: 
+      //adjustments required for oddly sized icon
+        headerIcon = Transform.translate(
+          offset: Offset(-3, -1),
+          child: Padding(
+            padding: EdgeInsets.all(3.0),
+            child: Icon(
+              FontAwesomeIcons.dumbbell, 
+              color: iconColor,
+            ),
+          ),
         );
       break;
       case FitIcons.Strength: 
-        headerIcon = Icon(FontAwesomeIcons.weightHanging, color: iconColor); 
+        //adjustments required for oddly sized icon
+        headerIcon = Transform.translate(
+          offset: Offset(0, -1),
+          child: Padding(
+            padding: EdgeInsets.all(3.0),
+            child: Icon(
+              FontAwesomeIcons.weightHanging, 
+              color: iconColor,
+            ),
+          ),
+        ); 
       break;
       default: 
         headerIcon = OneOrTheOtherIcon(
