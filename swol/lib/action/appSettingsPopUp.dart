@@ -262,11 +262,15 @@ requestThatYouGoToAppSettings(
                 right: 8.0,
               ),
               child: RaisedButton(
-                child: Text("App Info"),
                 color: Theme.of(context).accentColor,
                 onPressed: () {
                   PermissionHandler().openAppSettings();
+                  //NOTE: that complete MAY run below
                 },
+                child: CompleteOnResumeIfPermissionGranted(
+                  onComplete: onComplete, 
+                  child: Text("App Info"),
+                ),
               ),
             )
           ],
@@ -274,4 +278,54 @@ requestThatYouGoToAppSettings(
       );
     },
   );
+}
+
+class CompleteOnResumeIfPermissionGranted extends StatefulWidget {
+  CompleteOnResumeIfPermissionGranted({
+    @required this.onComplete,
+    @required this.child,
+  });
+
+  final Function onComplete;
+  final Widget child;
+
+  @override
+  _CompleteOnResumeIfPermissionGrantedState createState() => _CompleteOnResumeIfPermissionGrantedState();
+}
+
+class _CompleteOnResumeIfPermissionGrantedState extends State<CompleteOnResumeIfPermissionGranted> with WidgetsBindingObserver {
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  popIfPermissionGranted()async{
+    PermissionStatus status = await PermissionHandler().checkPermissionStatus(
+      PermissionGroup.notification,
+    );
+
+    if(status == PermissionStatus.granted){
+      Navigator.of(context).pop();
+    }
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if(state == AppLifecycleState.resumed){
+      popIfPermissionGranted();
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return widget.child;
+  }
 }
