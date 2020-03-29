@@ -11,6 +11,7 @@ showCustomHeaderIconPopUp(
   Widget header, {
   AnimType animationType: AnimType.SCALE,
   bool dismissOnTouchOutside: true,
+  bool regularPadding: true,
   bool isDense: false,
   Color headerBackground: Colors.blue,
   Widget btnCancel,
@@ -52,28 +53,33 @@ showCustomHeaderIconPopUp(
     animType: animationType,
     customHeader: FittedBox(
       fit: BoxFit.contain,
-      child: Container(
-        decoration: BoxDecoration(
-          color: headerBackground,
-          shape: BoxShape.circle,
-        ),
-        //NOTE: 28 is the max
-        padding: EdgeInsets.all(24),
+      child: Padding(
+        padding: EdgeInsets.all(4),
         child: Container(
           decoration: BoxDecoration(
-            color: Colors.green,
+            color: headerBackground,
             shape: BoxShape.circle,
           ),
-          width: 56,
-          height: 56,
-          child: FittedBox(
-            fit: BoxFit.fill,
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.red,
-                shape: BoxShape.circle,
+          //NOTE: 28 is the max
+          padding: EdgeInsets.all(
+            8.0 + (regularPadding ? 24 : 0),
+          ),
+          child: Container(
+            decoration: BoxDecoration(
+              //color: Colors.green,
+              shape: BoxShape.circle,
+            ),
+            width: 128,
+            height: 128,
+            child: FittedBox(
+              fit: BoxFit.fill,
+              child: Container(
+                decoration: BoxDecoration(
+                  //color: Colors.red,
+                  shape: BoxShape.circle,
+                ),
+                child: header,
               ),
-              child: header,
             ),
           ),
         ),

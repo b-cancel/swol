@@ -133,23 +133,18 @@ maybeSkipTimer(
         ),
       ),
     ],
-    Container(
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        color: Colors.pink,
-      ),
-      child: Transform.translate(
-        offset: Offset(0, 2),
-        child: Theme(
-          data: MyTheme.dark,
-          child: AnimatedMiniNormalTimer(
-            exercise: exercise,
-            startTime: startTime,
-          ),
+    Transform.translate(
+      offset: Offset(0, 4),
+      child: Theme(
+        data: MyTheme.dark,
+        child: AnimatedMiniNormalTimer(
+          exercise: exercise,
+          startTime: startTime,
         ),
       ),
     ),
     headerBackground: headerColor,
+    regularPadding: false,
     isDense: false,
     animationType: AnimType.TOPSLIDE,
     btnCancel: AwesomeButton(
