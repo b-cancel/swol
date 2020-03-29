@@ -7,10 +7,11 @@ import 'package:flutter/material.dart';
 //plugin
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:swol/action/buttonLocationPopUp.dart';
-import 'package:swol/action/restrictedPopUp.dart';
 
 //internal
+import 'package:swol/action/buttonLocationPopUp.dart';
+import 'package:swol/action/restrictedPopUp.dart';
+import 'package:swol/action/appSettingsPopUp.dart';
 import 'package:swol/main.dart';
 
 //NOTE: according to "https://pub.dev/packages/notification_permissions"
@@ -34,34 +35,33 @@ onAllowShouldHandlePoping(
   Function onComplete,
   bool automaticallyOpened,
 ) async {
+  //pop the pop up that called this one
+  //because all operation below are going to create another pop up
+  //NOTE: I was initally planning on poping this in this function
+  //because I expected some path to be different than they are
+  //but they are all pop... I'm keeping this as are since everything already works
+  Navigator.of(context).pop();
+  
   //according to android documentation, the status initially is always going to be denied
   //im going to assume unknown is also a part of that becuase frankly I'm not aware when unknown comes up
   //it might be an exclusively IOS problem
   if (Platform.isAndroid) {
     //permission status can be
     //1. unknown 2. denied 3. neverAskAgain
+    //but actually... because this is the notification permission...
+    //and its automatically granted... no pop up exists
+    //so regardless of the status
+    //which according to Android will 
+    //ATLEAST not be unknown (since this is an IOS only thing)
+    //we will be brining up the AppSettings pop up
 
-    //test part 1 for ios
-    //pop the pop up that called this one
-    //because both operation below are going to create another pop up
-    Navigator.of(context).pop();
-
-    //test part 2 for ios
-    showRestrictedPopUp(
+    requestThatYouGoToAppSettings(
       context, 
       status, 
-      onComplete,
+      onComplete, 
       automaticallyOpened,
     );
-    /*
-    if (status == PermissionStatus.neverAskAgain) {
-    } else {}
-    */
   } else if (Platform.isIOS) {
-    //pop the pop up that called this one
-    //because both operation below are going to create another pop up
-    Navigator.of(context).pop();
-
     //permission status can be
     //1. unknown 2. denied 3. restricted
     if (status == PermissionStatus.restricted) {

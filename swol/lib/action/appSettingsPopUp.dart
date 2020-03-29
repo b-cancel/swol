@@ -2,21 +2,23 @@
 import 'package:flutter/material.dart';
 
 //plugin
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 //internal
-import 'package:swol/shared/methods/extensions/sharedPreferences.dart';
-import 'package:swol/shared/widgets/simple/playOnceGif.dart';
+import 'package:swol/action/buttonLocationPopUp.dart';
+import 'package:swol/shared/widgets/simple/listItem.dart';
 import 'package:swol/shared/methods/theme.dart';
-import 'package:swol/main.dart';
 
-/*
+//you rejected the ez way, now you can only do it the hard way...
 requestThatYouGoToAppSettings(
-  BuildContext context, 
-  Function onComplete) async{
+  BuildContext context,
+  PermissionStatus status,
+  Function onComplete,
+  bool automaticallyOpened,
+) async {
   showDialog(
     context: context,
+    //force the user to decide
     barrierDismissible: false,
     builder: (BuildContext context) {
       // return object of type Dialog
@@ -38,7 +40,7 @@ requestThatYouGoToAppSettings(
                   topLeft: Radius.circular(12.0),
                 ),
                 child: Container(
-                  color: Colors.red,
+                  color: MyTheme.dark.cardColor,
                   width: MediaQuery.of(context).size.width,
                   height: 128,
                   padding: EdgeInsets.all(24),
@@ -46,7 +48,7 @@ requestThatYouGoToAppSettings(
                     fit: BoxFit.contain,
                     child: Container(
                       child: Icon(
-                        Icons.clear,
+                        Icons.settings,
                         color: Colors.white,
                       ),
                     ),
@@ -63,17 +65,24 @@ requestThatYouGoToAppSettings(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      "Grant Us Access",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 36,
-                      ),
-                    ),
-                    Text(
-                      "To Send Notifications",
+                      "Manually",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 24,
+                      ),
+                    ),
+                    Text(
+                      "Enable Notifications",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 24,
+                      ),
+                    ),
+                    Text(
+                      "In App Settings",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
                       ),
                     ),
                     Container(
@@ -87,40 +96,140 @@ requestThatYouGoToAppSettings(
                           ),
                           children: [
                             TextSpan(
-                              text: "It's important that you recover",
+                              text: "Since ",
+                            ),
+                            TextSpan(
+                              text: "you manually disabled notifications",
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
                             TextSpan(
-                              text: " before moving onto your next set.\n\n",
+                              text: ", you will need to manually re-enable them.\n\n",
                             ),
                             TextSpan(
-                              text: "But "
+                              text: "You can do so, by\n",
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    ListItem(
+                      circleText: "1",
+                      circleTextColor: Colors.white,
+                      circleColor: Colors.blue,
+                      content: RichText(
+                        text: TextSpan(
+                          style: TextStyle(
+                            color: Colors.black,
+                          ),
+                          children: [
+                            TextSpan(
+                              text: "Navigating to the ",
                             ),
                             TextSpan(
-                              text: "it's not fun to have to wait ",
+                              text: "App Info",
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
                             TextSpan(
-                              text: "for the clock to tick down.\n\n"
+                                text: " page, with the button on the bottom right",
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    ListItem(
+                      circleText: "2",
+                      circleTextColor: Colors.white,
+                      circleColor: Colors.blue,
+                      content: RichText(
+                        text: TextSpan(
+                          style: TextStyle(
+                            color: Colors.black,
+                          ),
+                          children: [
+                            TextSpan(
+                              text: "Scrolling to the ",
                             ),
                             TextSpan(
-                              text: "If you grant us access to send notifications, ",
+                              text: "App Settings Section",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    ListItem(
+                      circleText: "3",
+                      circleTextColor: Colors.white,
+                      circleColor: Colors.blue,
+                      content: RichText(
+                        text: TextSpan(
+                          style: TextStyle(
+                            color: Colors.black,
+                          ),
+                          children: [
+                            TextSpan(
+                              text: "Tapping ",
+                            ),
+                            TextSpan(
+                              text: "Notifications",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    ListItem(
+                      circleText: "4",
+                      circleTextColor: Colors.white,
+                      circleColor: Colors.blue,
+                      content: RichText(
+                        text: TextSpan(
+                          style: TextStyle(
+                            color: Colors.black,
+                          ),
+                          children: [
+                            TextSpan(
+                              text: "Turning On ",
+                            ),
+                            TextSpan(
+                              text: "Show notifications",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    ListItem(
+                      circleText: "5",
+                      circleTextColor: Colors.white,
+                      circleColor: Colors.blue,
+                      content: RichText(
+                        text: TextSpan(
+                          style: TextStyle(
+                            color: Colors.black,
+                          ),
+                          children: [
+                            TextSpan(
+                              text: "Making sure all the switches in the ",
+                            ),
+                            TextSpan(
+                              text: "Categories Section",
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
                             TextSpan(
-                              text: "we can alert you",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            TextSpan(
-                              text: " when you are ready for you next set.",
+                              text: " are set to On",
                             ),
                           ],
                         ),
@@ -133,9 +242,19 @@ requestThatYouGoToAppSettings(
           ),
           actions: <Widget>[
             FlatButton(
-              child: new Text("Deny"),
+              child: new Text("Nevermind"),
               onPressed: () {
+                //pop ourselves
                 Navigator.of(context).pop();
+
+                //make sure the user knows where they can re-enable
+                //if they didnt already get here from pressing the button
+                maybeShowButtonLocation(
+                  context,
+                  status,
+                  onComplete,
+                  automaticallyOpened,
+                );
               },
             ),
             Padding(
@@ -143,15 +262,10 @@ requestThatYouGoToAppSettings(
                 right: 8.0,
               ),
               child: RaisedButton(
-                child: Text("Go To App Settings"),
+                child: Text("App Info"),
                 color: Theme.of(context).accentColor,
-                onPressed: (){
-                  if(status == PermissionStatus.neverAskAgain){
-                    Navigator.of(context).pop();
-                  }
-                  else{ //must be denied
-
-                  }
+                onPressed: () {
+                  PermissionHandler().openAppSettings();
                 },
               ),
             )
@@ -161,4 +275,3 @@ requestThatYouGoToAppSettings(
     },
   );
 }
-*/
