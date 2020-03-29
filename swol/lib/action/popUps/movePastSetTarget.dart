@@ -1,13 +1,18 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:swol/action/popUps/button.dart';
+import 'package:swol/shared/widgets/simple/ourHeaderIconPopUp.dart';
 
-numberSuffix(int aNum){
-    if(aNum == 1 || aNum == 21 || aNum == 31) return "st";
-    else if(aNum == 2 || aNum == 22 || aNum == 32) return "nd";
-    else if (aNum == 3 || aNum == 23 || aNum == 33) return "rd";
-    else return "th";
-  }
+numberSuffix(int aNum) {
+  if (aNum == 1 || aNum == 21 || aNum == 31)
+    return "st";
+  else if (aNum == 2 || aNum == 22 || aNum == 32)
+    return "nd";
+  else if (aNum == 3 || aNum == 23 || aNum == 33)
+    return "rd";
+  else
+    return "th";
+}
 
 movePastSetTarget(
   BuildContext context,
@@ -24,31 +29,24 @@ movePastSetTarget(
   String suffix = numberSuffix(nextSet);
 
   //show the dialog
-  AwesomeDialog(
-    context: context,
-    isDense: false,
-    //NOTE: on dimiss nothing except dismissing the dialog happens
-    dismissOnTouchOutside: true,
-    animType: AnimType.BOTTOMSLIDE,
-    dialogType: DialogType.WARNING,
-    headerAnimationLoop: false,
-    body: Column(
-      children: <Widget>[
-        Text(
-          "Move Past Set Target?",
-          style: TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.bold,
-            fontSize: 28,
-          ),
+  showBasicHeaderIconPopUp(
+    context,
+    [
+      Text(
+        "Move Past Set Target?",
+        style: TextStyle(
+          color: Colors.black,
+          fontWeight: FontWeight.bold,
+          fontSize: 28,
         ),
-        Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: 16.0,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
+      ),
+      Padding(
+        padding: EdgeInsets.symmetric(
+          horizontal: 16.0,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
             RichText(
               text: TextSpan(
                 style: TextStyle(
@@ -78,11 +76,12 @@ movePastSetTarget(
                 ],
               ),
             ),
-            ],
-          ),
+          ],
         ),
-      ],
-    ),
+      ),
+    ],
+    DialogType.WARNING,
+    animationType: AnimType.BOTTOMSLIDE,
     btnCancel: AwesomeButton(
       clear: true,
       child: Text(
@@ -104,5 +103,5 @@ movePastSetTarget(
         ifMovePast();
       },
     ),
-  ).show();
+  );
 }
