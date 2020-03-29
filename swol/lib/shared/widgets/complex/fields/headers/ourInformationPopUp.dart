@@ -6,6 +6,7 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 
 //internal
 import 'package:swol/shared/methods/theme.dart';
+import 'package:swol/shared/widgets/simple/ourHeaderIconPopUp.dart';
 
 //widget
 infoPopUpFunction(
@@ -15,52 +16,47 @@ infoPopUpFunction(
   @required Widget body,
   isDense: false,
 }) {
-  AwesomeDialog(
-    context: context,
+  showBasicHeaderIconPopUp(
+    context,
+    [
+      Visibility(
+        visible: title != null,
+        maintainSize: false,
+        child: Text(
+          title ?? "",
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 24,
+            color: Colors.black,
+          ),
+        ),
+      ),
+      Visibility(
+        visible: subtitle != null,
+        maintainSize: false,
+        child: Text(
+          subtitle ?? "",
+          style: TextStyle(
+            fontSize: 14,
+            color: Colors.black,
+          ),
+        ),
+      ),
+      Padding(
+        padding: EdgeInsets.only(
+          top: (title != null || subtitle != null) ? 16.0 : 0,
+        ),
+        child: Theme(
+          data: MyTheme.dark,
+          child: Container(
+            width: MediaQuery.of(context).size.width,
+            child: body,
+          ),
+        ),
+      ),
+    ],
+    DialogType.INFO,
     isDense: isDense,
-    dismissOnTouchOutside: true,
-    animType: AnimType.SCALE,
-    dialogType: DialogType.INFO,
-    headerAnimationLoop: false,
-    body: Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Visibility(
-          visible: title != null,
-          maintainSize: false,
-          child: Text(
-            title ?? "",
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 24,
-              color: Colors.black,
-            ),
-          ),
-        ),
-        Visibility(
-          visible: subtitle != null,
-          maintainSize: false,
-          child: Text(
-            subtitle ?? "",
-            style: TextStyle(
-              fontSize: 14,
-              color: Colors.black,
-            ),
-          ),
-        ),
-        Padding(
-          padding: EdgeInsets.only(
-            top: (title != null || subtitle != null) ? 16.0 : 0,
-          ),
-          child: Theme(
-            data: MyTheme.dark,
-            child: Container(
-              width: MediaQuery.of(context).size.width,
-              child: body,
-            ),
-          ),
-        ),
-      ],
-    ),
-  ).show();
+    animationType: AnimType.SCALE,
+  );
 }
