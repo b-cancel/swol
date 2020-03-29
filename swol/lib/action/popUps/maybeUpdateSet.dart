@@ -5,6 +5,7 @@ import 'package:swol/shared/methods/theme.dart';
 import 'package:swol/shared/structs/anExercise.dart';
 import 'package:swol/shared/widgets/complex/fields/fields/sliders/setTarget/trainingTypes.dart';
 import 'package:swol/shared/widgets/complex/trainingTypeTables/trainingTypes.dart';
+import 'package:swol/shared/widgets/simple/ourHeaderIconPopUp.dart';
 import 'package:swol/shared/widgets/simple/ourSlider.dart';
 
 maybeChangeSetTarget(
@@ -13,7 +14,7 @@ maybeChangeSetTarget(
   Function ifFinish,
   Color headerColor,
   int setsPassed,
-){
+) {
   //remove focus so the pop up doesnt bring it back
   FocusScope.of(context).unfocus();
 
@@ -32,86 +33,81 @@ maybeChangeSetTarget(
   bool isNot1 = (setsBelow != 1 && setsBelow != -1);
 
   //show the dialog
-  AwesomeDialog(
-    context: context,
-    isDense: true,
-    //NOTE: on dimiss nothing except dismissing the dialog happens
-    dismissOnTouchOutside: true,
-    animType: AnimType.LEFTSLIDE,
-    dialogType: DialogType.WARNING,
-    headerAnimationLoop: false,
-    body: Column(
-      children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.only(
-            bottom: 16.0,
+  showBasicHeaderIconPopUp(
+    context,
+    [
+      Padding(
+        padding: const EdgeInsets.only(
+          bottom: 16.0,
+        ),
+        child: Text(
+          "Change Set Target?",
+          style: TextStyle(
+            color: Colors.black,
+            fontWeight: FontWeight.bold,
+            fontSize: 28,
           ),
-          child: Text(
-            "Change Set Target?",
-            style: TextStyle(
-              color: Colors.black,
-              fontWeight: FontWeight.bold,
-              fontSize: 28,
+        ),
+      ),
+      Padding(
+        padding: EdgeInsets.symmetric(
+          horizontal: 16.0,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            RichText(
+              text: TextSpan(
+                style: TextStyle(
+                  color: Colors.black,
+                ),
+                children: [
+                  TextSpan(
+                    text: "You did ",
+                  ),
+                  TextSpan(
+                    text: curr < target
+                        ? (setsBelow.toString() + " less")
+                        : ((setsBelow * -1).toString() + "more"),
+                    style: bold,
+                  ),
+                  TextSpan(
+                    text: " set" +
+                        (isNot1 ? "s" : "") +
+                        " than initially planned\n",
+                  ),
+                ],
+              ),
             ),
-          ),
-        ),
-        Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: 16.0,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              RichText(
-                text: TextSpan(
-                  style: TextStyle(
-                    color: Colors.black,
-                  ),
-                  children: [
-                    TextSpan(
-                      text: "You did ",
-                    ),
-                    TextSpan(
-                      text: curr < target
-                          ? (setsBelow.toString() + " less")
-                          : ((setsBelow * -1).toString() + "more"),
-                      style: bold,
-                    ),
-                    TextSpan(
-                      text: " set" 
-                      + (isNot1 ? "s" : "") 
-                      + " than initially planned\n",
-                    ),
-                  ],
+            RichText(
+              text: TextSpan(
+                style: TextStyle(
+                  color: Colors.black,
                 ),
-              ),
-              RichText(
-                text: TextSpan(
-                  style: TextStyle(
-                    color: Colors.black,
+                children: [
+                  TextSpan(
+                    text: "If Would you like to ",
                   ),
-                  children: [
-                    TextSpan(
-                      text: "If Would you like to ",
-                    ),
-                    TextSpan(
-                      text: "Change your Set Target ",
-                      style: bold,
-                    ),
-                    TextSpan(
-                      text: " you can do so below.\n",
-                    ),
-                  ],
-                ),
+                  TextSpan(
+                    text: "Change your Set Target ",
+                    style: bold,
+                  ),
+                  TextSpan(
+                    text: " you can do so below.\n",
+                  ),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
-        ChangeSetTargetWidget(
-          setTarget: setTarget,
-        ),
-      ],
-    ),
+      ),
+      ChangeSetTargetWidget(
+        setTarget: setTarget,
+      ),
+    ],
+    DialogType.WARNING,
+    isDense: true,
+    animationType: AnimType.LEFTSLIDE,
     btnCancel: AwesomeButton(
       clear: true,
       child: Text(
@@ -136,7 +132,7 @@ maybeChangeSetTarget(
         ifFinish();
       },
     ),
-  ).show();
+  );
 }
 
 class ChangeSetTargetWidget extends StatefulWidget {
