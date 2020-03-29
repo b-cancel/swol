@@ -65,7 +65,6 @@ class ActualButton extends StatelessWidget {
           Icon(
             Icons.edit,
             color: Colors.white,
-            size: 56,
           ),
           headerBackground: Colors.black,
           isDense: true,

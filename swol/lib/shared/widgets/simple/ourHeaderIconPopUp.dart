@@ -60,11 +60,21 @@ showCustomHeaderIconPopUp(
         //NOTE: 28 is the max
         padding: EdgeInsets.all(24),
         child: Container(
+          decoration: BoxDecoration(
+            color: Colors.green,
+            shape: BoxShape.circle,
+          ),
           width: 56,
           height: 56,
           child: FittedBox(
             fit: BoxFit.fill,
-            child: header,
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.red,
+                shape: BoxShape.circle,
+              ),
+              child: header,
+            ),
           ),
         ),
       ),
