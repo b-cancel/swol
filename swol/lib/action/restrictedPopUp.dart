@@ -21,6 +21,18 @@ showRestrictedPopUp(
   Function onComplete,
   bool automaticallyOpened,
 ) async {
+  //function
+  Function onDeny = (){
+    //make sure the user knows where they can re-enable
+    //if they didnt already get here from pressing the button
+    maybeShowButtonLocation(
+      status,
+      onComplete,
+      automaticallyOpened,
+    );
+  };
+
+  //pop up
   showBasicHeaderIconPopUp(
     ExercisePage.globalKey.currentContext,
     [
@@ -85,22 +97,26 @@ showRestrictedPopUp(
     ],
     DialogType.ERROR,
     dismissOnTouchOutside: automaticallyOpened == false,
-    clearBtn: FlatButton(
-      child: new Text("I'll do it later"),
-      onPressed: () {
-        //pop ourselves
-        Navigator.of(
-          ExercisePage.globalKey.currentContext,
-        ).pop();
+    clearBtn: WillPopScope(
+      onWillPop: ()async{
+        //negative action
+        onDeny();
 
-        //make sure the user knows where the button is
-        //will always call on complete
-        maybeShowButtonLocation(
-          status,
-          onComplete,
-          automaticallyOpened,
-        );
+        //allow pop
+        return true;
       },
+      child: FlatButton(
+        child: new Text("I'll do it later"),
+        onPressed: () {
+          //pop ourselves
+          Navigator.of(
+            ExercisePage.globalKey.currentContext,
+          ).pop();
+
+          //show button if needed
+          onDeny();
+        },
+      ),
     ),
     colorBtn: RaisedButton(
       child: Text("Try Again"),

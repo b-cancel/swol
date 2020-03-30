@@ -19,6 +19,18 @@ requestThatYouGoToAppSettings(
   Function onComplete,
   bool automaticallyOpened,
 ) async {
+  //function
+  Function onDeny = (){
+    //make sure the user knows where they can re-enable
+    //if they didnt already get here from pressing the button
+    maybeShowButtonLocation(
+      status,
+      onComplete,
+      automaticallyOpened,
+    );
+  };
+
+  //pop up
   showCustomHeaderIconPopUp(
     ExercisePage.globalKey.currentContext,
     [
@@ -204,22 +216,26 @@ requestThatYouGoToAppSettings(
     ),
     headerBackground: MyTheme.dark.cardColor,
     dismissOnTouchOutside: automaticallyOpened == false,
-    clearBtn: FlatButton(
-      child: new Text("Nevermind"),
-      onPressed: () {
-        //pop ourselves
-        Navigator.of(
-          ExercisePage.globalKey.currentContext,
-        ).pop();
+    clearBtn: WillPopScope(
+      onWillPop: ()async{
+        //negative action
+        onDeny();
 
-        //make sure the user knows where they can re-enable
-        //if they didnt already get here from pressing the button
-        maybeShowButtonLocation(
-          status,
-          onComplete,
-          automaticallyOpened,
-        );
+        //allow pop
+        return true;
       },
+      child: FlatButton(
+        child: new Text("Nevermind"),
+        onPressed: () {
+          //pop ourselves
+          Navigator.of(
+            ExercisePage.globalKey.currentContext,
+          ).pop();
+
+          //show button if needed
+          onDeny();
+        },
+      ),
     ),
     colorBtn: RaisedButton(
       onPressed: () {
