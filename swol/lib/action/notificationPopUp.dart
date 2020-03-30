@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 
 //plugin
 import 'package:permission_handler/permission_handler.dart';
+
+//internal: action
 import 'package:swol/action/buttonLocationPopUp.dart';
 import 'package:swol/action/ifAllow.dart';
 import 'package:swol/action/page.dart';
 
-//internal
+//internal: shared
 import 'package:swol/shared/methods/extensions/sharedPreferences.dart';
 import 'package:swol/shared/widgets/simple/playOnceGif.dart';
 import 'package:swol/shared/methods/theme.dart';

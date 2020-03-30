@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 
 //plugin
 import 'package:permission_handler/permission_handler.dart';
-import 'package:swol/action/page.dart';
 
 //internal
 import 'package:swol/shared/methods/theme.dart';
 import 'package:swol/action/ifAllow.dart';
+import 'package:swol/action/page.dart';
 
 //we only care to tell the user where the button is when they deny
 //if they don't already know

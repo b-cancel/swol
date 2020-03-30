@@ -3,12 +3,13 @@ import 'package:flutter/material.dart';
 
 //plugin
 import 'package:permission_handler/permission_handler.dart';
+import 'package:awesome_dialog/awesome_dialog.dart';
+
+//internal
+import 'package:swol/shared/widgets/simple/ourHeaderIconPopUp.dart';
 import 'package:swol/action/buttonLocationPopUp.dart';
 import 'package:swol/action/ifAllow.dart';
 import 'package:swol/action/page.dart';
-
-//internal
-import 'package:swol/shared/methods/theme.dart';
 
 //we only care to tell the user where the button is when they deny
 //if they don't already know
@@ -16,175 +17,130 @@ import 'package:swol/shared/methods/theme.dart';
 showRestrictedPopUp(
   PermissionStatus status,
   //on complete HAS TO RUN
-  //regardless of what pop up path the user takes 
+  //regardless of what pop up path the user takes
   Function onComplete,
   bool automaticallyOpened,
-  ) async{
-  showDialog(
-    context: ExercisePage.globalKey.currentContext,
-    //the user MUST respond
-    barrierDismissible: false,
-    //show pop up
-    builder: (BuildContext context) {
-      return Theme(
-        data: MyTheme.light,
-        child: AlertDialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(
-              Radius.circular(12.0),
-            ),
-          ),
-          contentPadding: EdgeInsets.all(0),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              ClipRRect(
-                borderRadius: BorderRadius.only(
-                  topRight: Radius.circular(12.0),
-                  topLeft: Radius.circular(12.0),
-                ),
-                child: Container(
-                  color: Colors.red,
-                  width: MediaQuery.of(context).size.width,
-                  height: 128,
-                  padding: EdgeInsets.all(24),
-                  child: FittedBox(
-                    fit: BoxFit.contain,
-                    child: Container(
-                      child: Icon(
-                        Icons.clear,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.only(
-                  top: 24,
-                  left: 16,
-                  right: 16,
-                ),
+) async {
+  showBasicHeaderIconPopUp(
+    ExercisePage.globalKey.currentContext,
+    [
+      Padding(
+        padding: EdgeInsets.symmetric(
+          horizontal: 16,
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            FittedBox(
+              fit: BoxFit.contain,
+              child: Container(
                 child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    FittedBox(
-                      fit: BoxFit.contain,
-                      child: Container(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[
-                            Text(
-                              "You Are Restricted",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 28,
-                              ),
-                            ),
-                            Text(
-                              "from granting us access",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 24,
-                              ),
-                            ),
-                          ],
-                        ),
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Text(
+                      "You Are Restricted",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 28,
                       ),
                     ),
-                    Container(
-                      padding: EdgeInsets.only(
-                        top: 24,
-                      ),
-                      child: RichText(
-                        text: TextSpan(
-                          style: TextStyle(
-                            color: Colors.black,
-                          ),
-                          children: [
-                            TextSpan(
-                              text: "Parental Controls",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            TextSpan(
-                              text: " or a ",
-                            ),
-                            TextSpan(
-                              text: "Security Option",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            TextSpan(
-                              text: " isn't going to allow you to grant us access.\n\n"
-                            ),
-                            TextSpan(
-                              text: "Remove The Restriction",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            TextSpan(
-                              text: " and Try Again.\n\n"
-                            ),
-                          ],
-                        ),
+                    Text(
+                      "from granting us access",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 24,
                       ),
                     ),
                   ],
                 ),
               ),
-            ],
-          ),
-          actions: <Widget>[
-            FlatButton(
-              child: new Text("I'll do it later"),
-              onPressed: () {
-                //pop ourselves
-                Navigator.of(context).pop();
-
-                //make sure the user knows where the button is
-                //will always call on complete
-                maybeShowButtonLocation(
-                  status, 
-                  onComplete, 
-                  automaticallyOpened,
-                );
-              },
             ),
-            Padding(
+            Container(
               padding: EdgeInsets.only(
-                right: 8.0,
+                top: 24,
               ),
-              child: RaisedButton(
-                child: Text("Try Again"),
-                color: Theme.of(context).accentColor,
-                onPressed: () async{
-                  //maybe the user made the required change
-                  //check again
-                  PermissionStatus status = await PermissionHandler().checkPermissionStatus(
-                    PermissionGroup.notification,
-                  );
-
-                  //pop ourselves
-                  Navigator.of(context).pop();
-
-                  //the user wants to allow 
-                  //but now handle all the different ways 
-                  //we MIGHT have to go about that
-                  onAllow(
-                    status, 
-                    onComplete, 
-                    automaticallyOpened,
-                  );
-                },
+              child: RichText(
+                text: TextSpan(
+                  style: TextStyle(
+                    color: Colors.black,
+                  ),
+                  children: [
+                    TextSpan(
+                      text: "Parental Controls",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    TextSpan(
+                      text: " or a ",
+                    ),
+                    TextSpan(
+                      text: "Security Option",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    TextSpan(
+                        text:
+                            " isn't going to allow you to grant us access.\n\n"),
+                    TextSpan(
+                      text: "Remove The Restriction",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    TextSpan(text: " and Try Again.\n\n"),
+                  ],
+                ),
               ),
-            )
+            ),
           ],
         ),
-      );
-    },
+      ),
+    ],
+    DialogType.ERROR,
+    dismissOnTouchOutside: false,
+    clearBtn: FlatButton(
+      child: new Text("I'll do it later"),
+      onPressed: () {
+        //pop ourselves
+        Navigator.of(
+          ExercisePage.globalKey.currentContext,
+        ).pop();
+
+        //make sure the user knows where the button is
+        //will always call on complete
+        maybeShowButtonLocation(
+          status,
+          onComplete,
+          automaticallyOpened,
+        );
+      },
+    ),
+    colorBtn: RaisedButton(
+      child: Text("Try Again"),
+      onPressed: () async {
+        //maybe the user made the required change
+        //check again
+        PermissionStatus status =
+            await PermissionHandler().checkPermissionStatus(
+          PermissionGroup.notification,
+        );
+
+        //pop ourselves
+        Navigator.of(
+          ExercisePage.globalKey.currentContext,
+        ).pop();
+
+        //the user wants to allow
+        //but now handle all the different ways
+        //we MIGHT have to go about that
+        onAllow(
+          status,
+          onComplete,
+          automaticallyOpened,
+        );
+      },
+    ),
   );
 }

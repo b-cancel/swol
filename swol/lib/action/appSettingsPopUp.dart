@@ -4,12 +4,14 @@ import 'package:flutter/material.dart';
 //plugin
 import 'package:permission_handler/permission_handler.dart';
 
-//internal
+//internal: action
 import 'package:swol/action/buttonLocationPopUp.dart';
 import 'package:swol/action/page.dart';
+
+//internal: shared
+import 'package:swol/shared/widgets/simple/ourHeaderIconPopUp.dart';
 import 'package:swol/shared/widgets/simple/listItem.dart';
 import 'package:swol/shared/methods/theme.dart';
-import 'package:swol/shared/widgets/simple/ourHeaderIconPopUp.dart';
 
 //you rejected the ez way, now you can only do it the hard way...
 requestThatYouGoToAppSettings(
@@ -212,10 +214,9 @@ requestThatYouGoToAppSettings(
       child: new Text("Nevermind"),
       onPressed: () {
         //pop ourselves
-        print("before");
-        print("its " + (Navigator.canPop(ExercisePage.globalKey.currentContext) ? "popable" : "NOT popable"));
-        print("after");
-        Navigator.of(ExercisePage.globalKey.currentContext, rootNavigator: true, nullOk: true).pop();
+        Navigator.of(
+          ExercisePage.globalKey.currentContext,
+        ).pop();
 
         //make sure the user knows where they can re-enable
         //if they didnt already get here from pressing the button
