@@ -168,12 +168,25 @@ showBasicHeaderIconPopUp(
               color: Colors.black,
             ),
             child: Container(
-              color: Colors.red,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: titles,
+              //color: Colors.green,
+              width: MediaQuery.of(context).size.width,
+              padding: EdgeInsets.symmetric(
+                horizontal: 48,
+              ),
+              child: FittedBox(
+                fit: BoxFit.contain,
+                child: Container(
+                  //color: Colors.red,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: titles,
+                  ),
+                ),
               ),
             ),
+          ),
+          Container(
+            height: 24,
           ),
           Column(
             mainAxisSize: MainAxisSize.min,
