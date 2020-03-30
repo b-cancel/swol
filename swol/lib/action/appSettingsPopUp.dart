@@ -203,7 +203,7 @@ requestThatYouGoToAppSettings(
       color: Colors.white,
     ),
     headerBackground: MyTheme.dark.cardColor,
-    dismissOnTouchOutside: false,
+    dismissOnTouchOutside: automaticallyOpened == false,
     clearBtn: FlatButton(
       child: new Text("Nevermind"),
       onPressed: () {

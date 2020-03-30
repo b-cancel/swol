@@ -49,7 +49,7 @@ onAllow(
     //ATLEAST not be unknown (since this is an IOS only thing)
     //we will be brining up the AppSettings pop up
 
-    requestThatYouGoToAppSettings(
+    requestThatYouGoToAppSettings( 
       status, 
       onComplete, 
       automaticallyOpened,

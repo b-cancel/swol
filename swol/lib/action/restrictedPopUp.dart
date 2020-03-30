@@ -84,7 +84,7 @@ showRestrictedPopUp(
       ),
     ],
     DialogType.ERROR,
-    dismissOnTouchOutside: false,
+    dismissOnTouchOutside: automaticallyOpened == false,
     clearBtn: FlatButton(
       child: new Text("I'll do it later"),
       onPressed: () {

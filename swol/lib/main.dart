@@ -231,29 +231,31 @@ class _SplashScreenState extends State<SplashScreen>
               ),
             ),
             Expanded(
-              child: Center(
+              child: Container(
+                alignment: Alignment.topCenter,
                 child: Padding(
                   padding: EdgeInsets.all(8),
-                  child: Center(
-                    child: Container(
-                      height: 50,
-                      width: 50,
-                      child: FittedBox(
-                        fit: BoxFit.contain,
-                        child: PumpingHeart(
-                          color: Colors.red,
-                          size: 75.0,
-                          controller: AnimationController(
-                            vsync: this,
-                            //80 bpm / 60 seconds = 1.3 beat per second
-                            duration: const Duration(milliseconds: 1333),
-                          ),
+                  child: Container(
+                    height: 50,
+                    width: 50,
+                    child: FittedBox(
+                      fit: BoxFit.contain,
+                      child: PumpingHeart(
+                        color: Colors.red,
+                        size: 75.0,
+                        controller: AnimationController(
+                          vsync: this,
+                          //80 bpm / 60 seconds = 1.3 beat per second
+                          duration: const Duration(milliseconds: 1333),
                         ),
                       ),
                     ),
                   ),
                 ),
               ),
+            ),
+            Expanded(
+              child: Container(),
             ),
           ],
         ),
