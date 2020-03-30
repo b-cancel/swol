@@ -144,24 +144,19 @@ Function _makeTrainingTypePopUp({
     showCustomHeaderIconPopUp(
       context,
       [
-        Padding(
-          padding: const EdgeInsets.only(
-            bottom: 16.0,
-          ),
-          child: Text(
-            title,
-            style: TextStyle(
-              color: Colors.black,
-              fontWeight: FontWeight.bold,
-              fontSize: 28,
-            ),
+        Text(
+          title,
+          style: TextStyle(
+            fontSize: 28,
           ),
         ),
+      ],
+      [
         Theme(
           data: MyTheme.dark,
           child: Padding(
-            padding: EdgeInsets.symmetric(
-              vertical: 8,
+            padding: EdgeInsets.only(
+              bottom: 8,
             ),
             child: ScrollableTrainingTypes(
               showEndurance: showEndurance,

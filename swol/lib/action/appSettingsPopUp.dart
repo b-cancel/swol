@@ -22,6 +22,26 @@ requestThatYouGoToAppSettings(
   showCustomHeaderIconPopUp(
     ExercisePage.globalKey.currentContext,
     [
+      Text(
+        "Manually",
+        style: TextStyle(
+          fontSize: 24,
+        ),
+      ),
+      Text(
+        "Enable Notifications",
+        style: TextStyle(
+          fontSize: 24,
+        ),
+      ),
+      Text(
+        "In App Settings",
+        style: TextStyle(
+          fontSize: 18,
+        ),
+      ),
+    ],
+    [
       Padding(
         padding: EdgeInsets.symmetric(
           horizontal: 16,
@@ -29,54 +49,28 @@ requestThatYouGoToAppSettings(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(
-              "Manually",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 24,
-              ),
-            ),
-            Text(
-              "Enable Notifications",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 24,
-              ),
-            ),
-            Text(
-              "In App Settings",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 18,
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.only(
-                top: 24,
-              ),
-              child: RichText(
-                text: TextSpan(
-                  style: TextStyle(
-                    color: Colors.black,
-                  ),
-                  children: [
-                    TextSpan(
-                      text: "Since ",
-                    ),
-                    TextSpan(
-                      text: "you manually disabled notifications",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    TextSpan(
-                      text: ", you will need to manually re-enable them.\n\n",
-                    ),
-                    TextSpan(
-                      text: "You can do so, by\n",
-                    ),
-                  ],
+            RichText(
+              text: TextSpan(
+                style: TextStyle(
+                  color: Colors.black,
                 ),
+                children: [
+                  TextSpan(
+                    text: "Since ",
+                  ),
+                  TextSpan(
+                    text: "you manually disabled notifications",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  TextSpan(
+                    text: ", you will need to manually re-enable them.\n\n",
+                  ),
+                  TextSpan(
+                    text: "You can do so, by\n",
+                  ),
+                ],
               ),
             ),
             ListItem(

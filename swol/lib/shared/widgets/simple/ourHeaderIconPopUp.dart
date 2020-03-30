@@ -7,6 +7,7 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 //function
 showCustomHeaderIconPopUp(
   BuildContext context, //should be light context
+  List<Widget> titles,
   List<Widget> children,
   Widget header, {
   AnimType animationType: AnimType.SCALE,
@@ -39,25 +40,6 @@ showCustomHeaderIconPopUp(
 
   //add action buttons if they exist
   bool hasAtleastOneButton = (clearBtn != null || colorBtn != null);
-  if(hasAtleastOneButton){
-    children.add(
-      Padding(
-        padding: EdgeInsets.only(
-          right: 16.0,
-          left: 16,
-          top: 16,
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.max,
-          children: [
-            Expanded(child: Container()),
-            clearBtn ?? Container(),
-            colorBtn ?? Container(),
-          ]
-        ),
-      ),
-    );
-  }
 
   //show pop up
   AwesomeDialog(
@@ -106,8 +88,53 @@ showCustomHeaderIconPopUp(
         bottom: hasAtleastOneButton ? 0 : 8.0,
       ),
       child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: children,
+        children: <Widget>[
+          DefaultTextStyle(
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
+            ),
+            child: Container(
+              //color: Colors.green,
+              width: MediaQuery.of(context).size.width,
+              padding: EdgeInsets.symmetric(
+                horizontal: 48,
+              ),
+              child: FittedBox(
+                fit: BoxFit.contain,
+                child: Container(
+                  //color: Colors.red,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: titles,
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Container(
+            height: 24,
+          ),
+          Column(
+            mainAxisSize: MainAxisSize.min,
+            children: children,
+          ),
+          hasAtleastOneButton ? Padding(
+            padding: EdgeInsets.only(
+              right: 16.0,
+              left: 16,
+              top: 16,
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                Expanded(child: Container()),
+                clearBtn ?? Container(),
+                colorBtn ?? Container(),
+              ]
+            ),
+          ) : Container()
+        ],
       ),
     ),
   ).show();

@@ -36,26 +36,14 @@ maybeSkipTimer(
   showCustomHeaderIconPopUp(
     context,
     [
-      Padding(
-        padding: const EdgeInsets.only(
-          bottom: 16.0,
-        ),
-        child: Text(
-          "Skip Break?",
-          style: TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.bold,
-            fontSize: 28,
-          ),
+      Text(
+        "Skip Break?",
+        style: TextStyle(
+          fontSize: 28,
         ),
       ),
-      /*
-        In order to recovery fully from a Hypertrophy Training set
-        you should wait between 2 and 3 minutes
-        before moving on to your next set
-        */
-      //updating rich text
-      ///"are you sure you want to Skip the rest of your break?"
+    ],
+    [
       Padding(
         padding: EdgeInsets.symmetric(
           horizontal: 16.0,

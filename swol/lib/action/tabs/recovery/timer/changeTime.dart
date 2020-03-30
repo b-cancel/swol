@@ -37,26 +37,20 @@ class ActualButton extends StatelessWidget {
             Text(
               "Change Break Time",
               style: TextStyle(
-                fontWeight: FontWeight.bold,
                 fontSize: 24,
-                color: Colors.black,
               ),
             ),
             Text(
               "Don't Worry! The Timer Won't Reset",
               style: TextStyle(
                 fontSize: 14,
-                color: Colors.black, //was grey at some point
               ),
             ),
-            Padding(
-              padding: EdgeInsets.only(
-                top: 16,
-              ),
-              child: ChangeRecoveryTimeWidget(
-                changeDuration: Duration(milliseconds: 300),
-                recoveryPeriod: possibleRecoveryDuration,
-              ),
+          ],
+          [
+            ChangeRecoveryTimeWidget(
+              changeDuration: Duration(milliseconds: 300),
+              recoveryPeriod: possibleRecoveryDuration,
             ),
           ],
           Icon(
