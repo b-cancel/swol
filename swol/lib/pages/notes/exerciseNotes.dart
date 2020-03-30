@@ -89,7 +89,7 @@ class _ExerciseNotesState extends State<ExerciseNotes> {
       child: Scaffold(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         appBar: AppBar(
-          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+          backgroundColor: Theme.of(context).primaryColor,
           leading: FittedBox(
             fit: BoxFit.contain,
             child: IconButton(

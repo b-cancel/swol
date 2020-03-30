@@ -72,8 +72,8 @@ class ExerciseTitleHeroHelper extends StatelessWidget {
           color: (percentToAppBar == 0 || percentToAppBar == 1)
               ? Colors.transparent
               : Color.lerp(
-                  Theme.of(context).cardColor,
-                  Theme.of(context).primaryColorDark,
+                  Theme.of(context).cardColor, 
+                  Theme.of(context).primaryColor,
                   percentToAppBar,
                 ),
           padding: EdgeInsets.symmetric(
