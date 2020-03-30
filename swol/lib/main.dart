@@ -121,8 +121,15 @@ class _GrabSystemDataState extends State<GrabSystemData> {
             content: Text(body),
             actions: [
               CupertinoDialogAction(
+                isDefaultAction: false,
+                child: Text('Close'),
+                onPressed: () async {
+                  Navigator.of(context).pop();
+                },
+              ),
+              CupertinoDialogAction(
                 isDefaultAction: true,
-                child: Text('Ok'),
+                child: Text('Go To Exercise'),
                 onPressed: () async {
                   Navigator.of(context).pop();
 

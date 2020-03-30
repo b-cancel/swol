@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 
 //plugin
 import 'package:awesome_dialog/awesome_dialog.dart';
-import 'package:swol/shared/methods/theme.dart';
 
 //function
 showCustomHeaderIconPopUp(
