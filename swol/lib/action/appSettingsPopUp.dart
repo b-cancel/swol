@@ -224,32 +224,32 @@ requestThatYouGoToAppSettings(
     colorBtn: RaisedButton(
       onPressed: () {
         PermissionHandler().openAppSettings();
-        //NOTE: that complete MAY run below
+        //NOTE: that complete WILL run not here
+        //but on resuming the notification switch
+        //we will check if its possible
+        //it works the same way as PopOnResume
       },
-      child: CompleteOnResumeIfPermissionGranted(
-        onComplete: onComplete,
+      child: PopOnResumeIfPermissionGranted(
         child: Text("App Info"),
       ),
     ),
   );
 }
 
-class CompleteOnResumeIfPermissionGranted extends StatefulWidget {
-  CompleteOnResumeIfPermissionGranted({
-    @required this.onComplete,
+class PopOnResumeIfPermissionGranted extends StatefulWidget {
+  PopOnResumeIfPermissionGranted({
     @required this.child,
   });
 
-  final Function onComplete;
   final Widget child;
 
   @override
-  _CompleteOnResumeIfPermissionGrantedState createState() =>
-      _CompleteOnResumeIfPermissionGrantedState();
+  _PopOnResumeIfPermissionGrantedState createState() =>
+      _PopOnResumeIfPermissionGrantedState();
 }
 
-class _CompleteOnResumeIfPermissionGrantedState
-    extends State<CompleteOnResumeIfPermissionGranted>
+class _PopOnResumeIfPermissionGrantedState
+    extends State<PopOnResumeIfPermissionGranted>
     with WidgetsBindingObserver {
   @override
   void initState() {
@@ -263,6 +263,14 @@ class _CompleteOnResumeIfPermissionGrantedState
     super.dispose();
   }
 
+  
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      popIfPermissionGranted();
+    }
+  }
+
   popIfPermissionGranted() async {
     PermissionStatus status = await PermissionHandler().checkPermissionStatus(
       PermissionGroup.notification,
@@ -270,13 +278,6 @@ class _CompleteOnResumeIfPermissionGrantedState
 
     if (status == PermissionStatus.granted) {
       Navigator.of(context).pop();
-    }
-  }
-
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (state == AppLifecycleState.resumed) {
-      popIfPermissionGranted();
     }
   }
 

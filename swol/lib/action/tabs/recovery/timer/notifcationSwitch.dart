@@ -19,7 +19,7 @@ class NotificationSwitch extends StatefulWidget {
 //and EXPECT the button to turn it on to be there
 //since its so unlikely and the solution would REQUIRE us to reload every second
 //and that may cause more problems in the general cases we ignore that problem
-class _NotificationSwitchState extends State<NotificationSwitch> {
+class _NotificationSwitchState extends State<NotificationSwitch> with WidgetsBindingObserver{
   bool showButton;
   PermissionStatus status;
 
@@ -35,6 +35,33 @@ class _NotificationSwitchState extends State<NotificationSwitch> {
     //more often than not users will aprove it so the button wont show
     showButton = false;
     updateShowButton();
+
+    //for on resume
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      completeIfPermissionGranted();
+    }
+  }
+
+  completeIfPermissionGranted() async {
+    PermissionStatus status = await PermissionHandler().checkPermissionStatus(
+      PermissionGroup.notification,
+    );
+
+    if (status == PermissionStatus.granted) {
+      updateShowButton();
+    }
   }
   
   updateShowButton()async{
@@ -59,9 +86,8 @@ class _NotificationSwitchState extends State<NotificationSwitch> {
           tooltip: 'Enable Notifications',
           onPressed: () async {
             requestNotificationPermission(
-              status, () {
-                if (mounted) updateShowButton();
-              },
+              status, 
+              updateShowButton,
               automaticallyOpened: false,
             );
           },
