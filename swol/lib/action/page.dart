@@ -33,6 +33,7 @@ class ExercisePage extends StatelessWidget {
   final Duration transitionDuration;
 
   //static vars used through out initializaed with their default values
+  static GlobalKey globalKey = GlobalKey();
 
   //used so that we can change the page number from anywhere
   static final ValueNotifier<int> pageNumber =
@@ -75,6 +76,7 @@ class ExercisePage extends StatelessWidget {
         "***********");
 
     return Theme(
+      key: globalKey,
       data: MyTheme.dark,
       child: WillPopScope(
         onWillPop: () async {

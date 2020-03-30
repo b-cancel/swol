@@ -59,7 +59,6 @@ class _NotificationSwitchState extends State<NotificationSwitch> {
           tooltip: 'Enable Notifications',
           onPressed: () async {
             requestNotificationPermission(
-              context, 
               status, () {
                 if (mounted) updateShowButton();
               },

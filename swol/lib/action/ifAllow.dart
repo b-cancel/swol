@@ -29,7 +29,6 @@ import 'package:swol/main.dart';
 
 //STATUS can be everything except GRANTED
 onAllow(
-  BuildContext context,
   PermissionStatus status,
   Function onComplete,
   bool automaticallyOpened,
@@ -48,7 +47,6 @@ onAllow(
     //we will be brining up the AppSettings pop up
 
     requestThatYouGoToAppSettings(
-      context, 
       status, 
       onComplete, 
       automaticallyOpened,
@@ -58,7 +56,6 @@ onAllow(
     //1. unknown 2. denied 3. restricted
     if (status == PermissionStatus.restricted) {
       showRestrictedPopUp(
-        context, 
         status, 
         onComplete,
         automaticallyOpened,
@@ -87,7 +84,6 @@ onAllow(
       else{
         //inform them of where they can change their mind
         maybeShowButtonLocation(
-          context,
           status,
           onComplete,
           automaticallyOpened,

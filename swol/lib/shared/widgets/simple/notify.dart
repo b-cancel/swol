@@ -53,7 +53,6 @@ askForPermissionIfNotGrantedAndWeNeverAsked(
       //not granted or restricted
       //might be denied or unknown
       await requestNotificationPermission(
-        context, 
         status, 
         onComplete,
         automaticallyOpened: true,

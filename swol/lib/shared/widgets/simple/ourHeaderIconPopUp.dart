@@ -14,6 +14,7 @@ showCustomHeaderIconPopUp(
   bool regularPadding: true,
   bool isDense: false,
   Color headerBackground: Colors.blue,
+  bool useRootNavigator: false,
   Widget clearBtn,
   Widget colorBtn,
 }) {
@@ -63,6 +64,7 @@ showCustomHeaderIconPopUp(
     context: context,
     isDense: isDense,
     dismissOnTouchOutside: dismissOnTouchOutside,
+    useRootNavigator: useRootNavigator,
     animType: animationType,
     customHeader: FittedBox(
       fit: BoxFit.contain,

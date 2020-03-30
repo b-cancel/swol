@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:swol/action/buttonLocationPopUp.dart';
 import 'package:swol/action/ifAllow.dart';
+import 'package:swol/action/page.dart';
 
 //internal
 import 'package:swol/shared/methods/theme.dart';
@@ -13,7 +14,6 @@ import 'package:swol/shared/methods/theme.dart';
 //if they don't already know
 //so we check if we are on the page with the button to determine if we should show the pop up
 showRestrictedPopUp(
-  BuildContext context, 
   PermissionStatus status,
   //on complete HAS TO RUN
   //regardless of what pop up path the user takes 
@@ -21,7 +21,7 @@ showRestrictedPopUp(
   bool automaticallyOpened,
   ) async{
   showDialog(
-    context: context,
+    context: ExercisePage.globalKey.currentContext,
     //the user MUST respond
     barrierDismissible: false,
     //show pop up
@@ -148,7 +148,6 @@ showRestrictedPopUp(
                 //make sure the user knows where the button is
                 //will always call on complete
                 maybeShowButtonLocation(
-                  context, 
                   status, 
                   onComplete, 
                   automaticallyOpened,
@@ -176,7 +175,6 @@ showRestrictedPopUp(
                   //but now handle all the different ways 
                   //we MIGHT have to go about that
                   onAllow(
-                    context, 
                     status, 
                     onComplete, 
                     automaticallyOpened,

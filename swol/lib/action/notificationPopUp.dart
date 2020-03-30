@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:swol/action/buttonLocationPopUp.dart';
 import 'package:swol/action/ifAllow.dart';
+import 'package:swol/action/page.dart';
 
 //internal
 import 'package:swol/shared/methods/extensions/sharedPreferences.dart';
@@ -19,7 +20,6 @@ import 'package:swol/shared/methods/theme.dart';
 //we include restricted since it only matters if the restriction exists
 //IF the user decides to enable the permssion
 requestNotificationPermission(
-  BuildContext context, 
   PermissionStatus status,
   //TODO: ensure this
   //on complete HAS TO RUN
@@ -35,7 +35,7 @@ requestNotificationPermission(
   //inform the user of the permission they SHOULD have for and ideal experience
   //let let them decide what they will do
   showDialog(
-    context: context,
+    context: ExercisePage.globalKey.currentContext,
     //the user MUST respond
     barrierDismissible: false,
     //show pop up
@@ -174,7 +174,6 @@ requestNotificationPermission(
                 //make sure the user knows where the button is
                 //will always call on complete
                 maybeShowButtonLocation(
-                  context, 
                   status, 
                   onComplete, 
                   automaticallyOpened,
@@ -191,12 +190,11 @@ requestNotificationPermission(
                 onPressed: () async{
                   //pop ourselves
                   Navigator.of(context).pop();
-                  
+
                   //the user wants to allow 
                   //but now handle all the different ways 
                   //we MIGHT have to go about that
                   onAllow(
-                    context, 
                     status, 
                     onComplete, 
                     automaticallyOpened,

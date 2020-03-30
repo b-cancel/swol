@@ -6,25 +6,23 @@ import 'package:permission_handler/permission_handler.dart';
 
 //internal
 import 'package:swol/action/buttonLocationPopUp.dart';
+import 'package:swol/action/page.dart';
 import 'package:swol/shared/widgets/simple/listItem.dart';
 import 'package:swol/shared/methods/theme.dart';
 import 'package:swol/shared/widgets/simple/ourHeaderIconPopUp.dart';
 
 //you rejected the ez way, now you can only do it the hard way...
 requestThatYouGoToAppSettings(
-  BuildContext context,
   PermissionStatus status,
   Function onComplete,
   bool automaticallyOpened,
 ) async {
   showCustomHeaderIconPopUp(
-    context,
+    ExercisePage.globalKey.currentContext,
     [
       Padding(
-        padding: EdgeInsets.only(
-          top: 24,
-          left: 16,
-          right: 16,
+        padding: EdgeInsets.symmetric(
+          horizontal: 16,
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -214,12 +212,14 @@ requestThatYouGoToAppSettings(
       child: new Text("Nevermind"),
       onPressed: () {
         //pop ourselves
-        Navigator.of(context).pop();
+        print("before");
+        print("its " + (Navigator.canPop(ExercisePage.globalKey.currentContext) ? "popable" : "NOT popable"));
+        print("after");
+        Navigator.of(ExercisePage.globalKey.currentContext, rootNavigator: true, nullOk: true).pop();
 
         //make sure the user knows where they can re-enable
         //if they didnt already get here from pressing the button
         maybeShowButtonLocation(
-          context,
           status,
           onComplete,
           automaticallyOpened,
