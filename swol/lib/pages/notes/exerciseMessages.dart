@@ -45,8 +45,8 @@ class ConfirmActionMessage extends StatelessWidget {
               decoration: BoxDecoration(
                 color: buttonColor,
                 borderRadius: new BorderRadius.only(
-                  topLeft:  const  Radius.circular(12.0),
-                  topRight: const  Radius.circular(12.0),
+                  topLeft: Radius.circular(12.0),
+                  topRight: Radius.circular(12.0),
                 ),
               ),
               child: image,

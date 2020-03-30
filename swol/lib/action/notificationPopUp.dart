@@ -189,12 +189,13 @@ requestNotificationPermission(
                 child: Text("Allow"),
                 color: MyTheme.dark.accentColor,
                 onPressed: () async{
+                  //pop ourselves
+                  Navigator.of(context).pop();
+                  
                   //the user wants to allow 
                   //but now handle all the different ways 
                   //we MIGHT have to go about that
-                  //becuase of the MIGHT
-                  //we handle poping in can allow
-                  onAllowShouldHandlePoping(
+                  onAllow(
                     context, 
                     status, 
                     onComplete, 

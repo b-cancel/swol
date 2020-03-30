@@ -28,20 +28,12 @@ import 'package:swol/main.dart';
 //On Android, if the permission is denied, this method will open the app settings.
 
 //STATUS can be everything except GRANTED
-//NOTE: the pop up that called this function is currently open
-onAllowShouldHandlePoping(
-  BuildContext whiteContext,
+onAllow(
+  BuildContext context,
   PermissionStatus status,
   Function onComplete,
   bool automaticallyOpened,
 ) async {
-  //pop the pop up that called this one
-  //because all operation below are going to create another pop up
-  //NOTE: I was initally planning on poping this in this function
-  //because I expected some path to be different than they are
-  //but they are all pop... I'm keeping this as are since everything already works
-  Navigator.of(whiteContext).pop();
-  
   //according to android documentation, the status initially is always going to be denied
   //im going to assume unknown is also a part of that becuase frankly I'm not aware when unknown comes up
   //it might be an exclusively IOS problem
@@ -56,7 +48,7 @@ onAllowShouldHandlePoping(
     //we will be brining up the AppSettings pop up
 
     requestThatYouGoToAppSettings(
-      whiteContext, 
+      context, 
       status, 
       onComplete, 
       automaticallyOpened,
@@ -66,7 +58,7 @@ onAllowShouldHandlePoping(
     //1. unknown 2. denied 3. restricted
     if (status == PermissionStatus.restricted) {
       showRestrictedPopUp(
-        whiteContext, 
+        context, 
         status, 
         onComplete,
         automaticallyOpened,
@@ -95,7 +87,7 @@ onAllowShouldHandlePoping(
       else{
         //inform them of where they can change their mind
         maybeShowButtonLocation(
-          whiteContext,
+          context,
           status,
           onComplete,
           automaticallyOpened,

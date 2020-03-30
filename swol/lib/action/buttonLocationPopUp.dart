@@ -12,7 +12,7 @@ import 'package:swol/action/ifAllow.dart';
 //if they don't already know
 //so we check if we are on the page with the button to determine if we should show the pop up
 maybeShowButtonLocation(
-    BuildContext whiteContext,
+    BuildContext context,
     PermissionStatus status,
     //on complete HAS TO RUN
     //regardless of what pop up path the user takes
@@ -20,7 +20,7 @@ maybeShowButtonLocation(
     bool automaticallyOpened) async {
   if (automaticallyOpened) {
     showDialog(
-      context: whiteContext,
+      context: context,
       //force to user to chose
       barrierDismissible: false,
       //show pop up
@@ -193,12 +193,13 @@ maybeShowButtonLocation(
                   child: Text("Enable Notificaions"),
                   color: Theme.of(context).accentColor,
                   onPressed: () async {
+                    //pop ourselves
+                    Navigator.of(context).pop();
+
                     //the user wants to allow
                     //but now handle all the different ways
                     //we MIGHT have to go about that
-                    //becuase of the MIGHT
-                    //we handle poping in can allow
-                    onAllowShouldHandlePoping(
+                    onAllow(
                       context, 
                       status, 
                       onComplete,

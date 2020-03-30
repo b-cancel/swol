@@ -13,7 +13,7 @@ import 'package:swol/shared/methods/theme.dart';
 //if they don't already know
 //so we check if we are on the page with the button to determine if we should show the pop up
 showRestrictedPopUp(
-  BuildContext whiteContext, 
+  BuildContext context, 
   PermissionStatus status,
   //on complete HAS TO RUN
   //regardless of what pop up path the user takes 
@@ -21,7 +21,7 @@ showRestrictedPopUp(
   bool automaticallyOpened,
   ) async{
   showDialog(
-    context: whiteContext,
+    context: context,
     //the user MUST respond
     barrierDismissible: false,
     //show pop up
@@ -169,12 +169,13 @@ showRestrictedPopUp(
                     PermissionGroup.notification,
                   );
 
+                  //pop ourselves
+                  Navigator.of(context).pop();
+
                   //the user wants to allow 
                   //but now handle all the different ways 
                   //we MIGHT have to go about that
-                  //becuase of the MIGHT
-                  //we handle poping in can allow
-                  onAllowShouldHandlePoping(
+                  onAllow(
                     context, 
                     status, 
                     onComplete, 
