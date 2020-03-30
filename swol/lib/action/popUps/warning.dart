@@ -154,40 +154,45 @@ Future<bool> warningThenPop(BuildContext context, AnExercise exercise) async {
       showBasicHeaderIconPopUp(
         context,
         [
-          SetTitle(
-            title: title,
-            subtitle: subtitle,
-          ),
-          Padding(
-            padding: EdgeInsets.only(
-              top: 16,
+          Text(
+            title,
+            style: TextStyle(
+              fontSize: 24,
             ),
-            child: Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: 24.0,
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SetDescription(
-                    weight: newWeight,
-                    reps: newReps,
+          ),
+          Text(
+            subtitle,
+            style: TextStyle(
+              fontSize: 14,
+            ),
+          ),
+        ],
+        [
+          Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: 24.0,
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SetDescription(
+                  weight: newWeight,
+                  reps: newReps,
+                ),
+                SetProblem(
+                  weightValid: newWeightValid,
+                  repsValid: newRepsValid,
+                  setValid: newSetValid,
+                ),
+                GoBackAndFix(),
+                Visibility(
+                  visible: newSet == false,
+                  child: RevertToPrevious(
+                    exercise: exercise,
                   ),
-                  SetProblem(
-                    weightValid: newWeightValid,
-                    repsValid: newRepsValid,
-                    setValid: newSetValid,
-                  ),
-                  GoBackAndFix(),
-                  Visibility(
-                    visible: newSet == false,
-                    child: RevertToPrevious(
-                      exercise: exercise,
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ],

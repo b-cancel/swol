@@ -40,11 +40,11 @@ movePastSetTarget(
       Text(
         "Move Past Set Target?",
         style: TextStyle(
-          color: Colors.black,
-          fontWeight: FontWeight.bold,
           fontSize: 28,
         ),
       ),
+    ],
+    [
       Padding(
         padding: EdgeInsets.symmetric(
           horizontal: 16.0,

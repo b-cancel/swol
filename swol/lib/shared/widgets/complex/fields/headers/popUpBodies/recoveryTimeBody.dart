@@ -21,7 +21,7 @@ class RecoveryTimePopUpBody extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Padding(
-          padding: const EdgeInsets.symmetric(
+          padding: EdgeInsets.symmetric(
             horizontal: 24.0,
           ),
           child: Column(

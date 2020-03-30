@@ -24,6 +24,20 @@ showRestrictedPopUp(
   showBasicHeaderIconPopUp(
     ExercisePage.globalKey.currentContext,
     [
+      Text(
+        "You Are Restricted",
+        style: TextStyle(
+          fontSize: 28,
+        ),
+      ),
+      Text(
+        "from granting us access",
+        style: TextStyle(
+          fontSize: 24,
+        ),
+      ),
+    ],
+    [
       Padding(
         padding: EdgeInsets.symmetric(
           horizontal: 16,
@@ -31,67 +45,38 @@ showRestrictedPopUp(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            FittedBox(
-              fit: BoxFit.contain,
-              child: Container(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    Text(
-                      "You Are Restricted",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 28,
-                      ),
-                    ),
-                    Text(
-                      "from granting us access",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 24,
-                      ),
-                    ),
-                  ],
+            RichText(
+              text: TextSpan(
+                style: TextStyle(
+                  color: Colors.black,
                 ),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(
-                top: 24,
-              ),
-              child: RichText(
-                text: TextSpan(
-                  style: TextStyle(
-                    color: Colors.black,
+                children: [
+                  TextSpan(
+                    text: "Parental Controls",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                  children: [
-                    TextSpan(
-                      text: "Parental Controls",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
+                  TextSpan(
+                    text: " or a ",
+                  ),
+                  TextSpan(
+                    text: "Security Option",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
                     ),
-                    TextSpan(
-                      text: " or a ",
+                  ),
+                  TextSpan(
+                      text:
+                          " isn't going to allow you to grant us access.\n\n"),
+                  TextSpan(
+                    text: "Remove The Restriction",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
                     ),
-                    TextSpan(
-                      text: "Security Option",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    TextSpan(
-                        text:
-                            " isn't going to allow you to grant us access.\n\n"),
-                    TextSpan(
-                      text: "Remove The Restriction",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    TextSpan(text: " and Try Again.\n\n"),
-                  ],
-                ),
+                  ),
+                  TextSpan(text: " and Try Again.\n\n"),
+                ],
               ),
             ),
           ],

@@ -67,7 +67,7 @@ class SetTargetPopUpBody extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
         Padding(
-          padding: const EdgeInsets.symmetric(
+          padding: EdgeInsets.symmetric(
             horizontal: 24,
           ),
           child: RichText(

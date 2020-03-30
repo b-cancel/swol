@@ -65,80 +65,74 @@ maybeError(
           Text(
             "Fix Your Set",
             style: TextStyle(
-              fontWeight: FontWeight.bold,
               fontSize: 24,
-              color: Colors.black,
             ),
           ),
           Text(
             "To " + continueString,
             style: TextStyle(
               fontSize: 14,
-              color: Colors.black,
             ),
           ),
+        ],
+        [
           Padding(
-            padding: EdgeInsets.only(
-              top: 16,
+            padding: EdgeInsets.symmetric(
+              horizontal: 24.0,
             ),
-            child: Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: 24.0,
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SetDescription(
-                    weight: weight,
-                    reps: reps,
-                    isError: true,
-                  ),
-                  SetProblem(
-                    weightValid: weightValid,
-                    repsValid: repsValid,
-                    setValid: setValid,
-                    isError: true,
-                  ),
-                  RichText(
-                    text: TextSpan(
-                      style: TextStyle(
-                        color: Colors.black,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SetDescription(
+                  weight: weight,
+                  reps: reps,
+                  isError: true,
+                ),
+                SetProblem(
+                  weightValid: weightValid,
+                  repsValid: repsValid,
+                  setValid: setValid,
+                  isError: true,
+                ),
+                RichText(
+                  text: TextSpan(
+                    style: TextStyle(
+                      color: Colors.black,
+                    ),
+                    children: [
+                      TextSpan(
+                        text: "Fix",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                      children: [
-                        TextSpan(
-                          text: "Fix",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                          ),
+                      TextSpan(
+                        text: " Your Set",
+                        style: TextStyle(
+                          fontWeight: timerNotStarted
+                              ? FontWeight.bold
+                              : FontWeight.normal,
                         ),
-                        TextSpan(
-                          text: " Your Set",
-                          style: TextStyle(
-                            fontWeight: timerNotStarted
-                                ? FontWeight.bold
-                                : FontWeight.normal,
-                          ),
-                        ),
-                        TextSpan(
-                          text: " to " + continueString,
-                        ),
-                      ],
-                    ),
+                      ),
+                      TextSpan(
+                        text: " to " + continueString,
+                      ),
+                    ],
                   ),
-                  Visibility(
-                    visible: timerNotStarted == false,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        RevertToPrevious(
-                          exercise: exercise,
-                        ),
-                      ],
-                    ),
+                ),
+                Visibility(
+                  visible: timerNotStarted == false,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      RevertToPrevious(
+                        exercise: exercise,
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ],

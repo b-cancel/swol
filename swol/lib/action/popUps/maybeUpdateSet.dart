@@ -43,19 +43,14 @@ maybeChangeSetTarget(
   showBasicHeaderIconPopUp(
     context,
     [
-      Padding(
-        padding: const EdgeInsets.only(
-          bottom: 16.0,
-        ),
-        child: Text(
+      Text(
           "Change Set Target?",
           style: TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.bold,
             fontSize: 28,
           ),
         ),
-      ),
+    ],
+    [
       Padding(
         padding: EdgeInsets.symmetric(
           horizontal: 16.0,

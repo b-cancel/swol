@@ -47,9 +47,8 @@ class _LinkPopUpBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(
-        left: 32,
-        right: 32,
+      padding: EdgeInsets.symmetric(
+        horizontal: 24,
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
