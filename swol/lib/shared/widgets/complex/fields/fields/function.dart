@@ -120,8 +120,8 @@ class PredictionFormulasPopUpBody extends StatelessWidget {
               horizontal: 24,
             ),
             child: Padding(
-              padding: const EdgeInsets.only(
-                bottom: 16.0,
+              padding: EdgeInsets.only(
+                bottom: 8.0,
               ),
               child: FunctionCardTable(),
             ),

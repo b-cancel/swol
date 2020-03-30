@@ -48,9 +48,9 @@ class SuggestToLearnPage extends StatelessWidget {
       child: InkWell(
         onTap: () => goToLearn(),
         child: Container(
-          padding: EdgeInsets.only(
-            left: 24,
-            right: 24,
+          padding: EdgeInsets.symmetric(
+            horizontal: 24,
+            vertical: 8,
           ),
           child: Row(
             mainAxisSize: MainAxisSize.max,

@@ -160,9 +160,8 @@ Function _makeTrainingTypePopUp({
         Theme(
           data: MyTheme.dark,
           child: Padding(
-            padding: EdgeInsets.only(
-              top: 8,
-              bottom: 16.0,
+            padding: EdgeInsets.symmetric(
+              vertical: 8,
             ),
             child: ScrollableTrainingTypes(
               showEndurance: showEndurance,
