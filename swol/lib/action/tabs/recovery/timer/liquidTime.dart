@@ -312,7 +312,7 @@ class _TimerState extends State<Timer> with TickerProviderStateMixin {
         color: Colors.transparent,
         child: Theme(
           data: MyTheme.light,
-          child: ActualButton(
+          child: ActualButton( 
             color: Theme.of(context).scaffoldBackgroundColor,
             changeableTimerDuration: widget.changeableTimerDuration,
           ),
@@ -394,8 +394,13 @@ class _TimerState extends State<Timer> with TickerProviderStateMixin {
                                                   ),
                                                   child: FittedBox(
                                                     fit: BoxFit.contain,
-                                                    child: OnlyEditButton(
-                                                      durationString: breakTimeString,
+                                                    child: Stack(
+                                                      children: <Widget>[
+                                                        OnlyEditButton(
+                                                          durationString: breakTimeString,
+                                                        ),
+                                                        changeTimeWidget,
+                                                      ],
                                                     ),
                                                   ),
                                                 ),

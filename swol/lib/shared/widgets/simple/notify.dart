@@ -36,8 +36,7 @@ askForPermissionIfNotGrantedAndWeNeverAsked(
   );
 
   //we don't have the permission
-  if (status != PermissionStatus.granted || true) {
-    //TODO: remove test code
+  if (status != PermissionStatus.granted) {
     //but have we requested it before?
     bool notificationRequested =
         SharedPrefsExt.getNotificationRequested().value;
@@ -48,8 +47,7 @@ askForPermissionIfNotGrantedAndWeNeverAsked(
     //NOTE: if its automatically given and then removed it HAS NOT been requested
 
     //else we need to ask for it
-    if (notificationRequested == false || true) {
-      //TODO: remove test code
+    if (notificationRequested == false) {
       //not granted or restricted
       //might be denied or unknown
       await requestNotificationPermission(
