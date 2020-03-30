@@ -28,6 +28,12 @@ import 'package:swol/main.dart';
 onAllow(
   PermissionStatus status,
   Function onComplete,
+  //NOTE: onAllow can be called from
+  //1. notification pop up (in which case keep automaticallyOpened)
+  //2. restricted pop up (in which case keep automaticallyOpened)
+  //3. button location pop up (in which case... 
+  //    they already know where the button is
+  //    no need to remind them
   bool automaticallyOpened,
 ) async {
   //according to android documentation, the status initially is always going to be denied

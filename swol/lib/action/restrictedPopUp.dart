@@ -55,7 +55,7 @@ showRestrictedPopUp(
                 ),
               ),
             ),
-            Container(
+            Padding(
               padding: EdgeInsets.only(
                 top: 24,
               ),

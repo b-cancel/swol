@@ -207,8 +207,9 @@ maybeShowButtonLocation(
                     onAllow(
                       status, 
                       onComplete,
-                      //if false would not show this pop up
-                      true,
+                      //this pop up already showed them where the button is
+                      //no need to show them again
+                      false,
                     );
                   },
                 ),
