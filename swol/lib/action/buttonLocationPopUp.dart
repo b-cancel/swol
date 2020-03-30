@@ -12,7 +12,7 @@ import 'package:swol/action/ifAllow.dart';
 //if they don't already know
 //so we check if we are on the page with the button to determine if we should show the pop up
 maybeShowButtonLocation(
-    BuildContext context,
+    BuildContext whiteContext,
     PermissionStatus status,
     //on complete HAS TO RUN
     //regardless of what pop up path the user takes
@@ -20,7 +20,7 @@ maybeShowButtonLocation(
     bool automaticallyOpened) async {
   if (automaticallyOpened) {
     showDialog(
-      context: context,
+      context: whiteContext,
       //force to user to chose
       barrierDismissible: false,
       //show pop up

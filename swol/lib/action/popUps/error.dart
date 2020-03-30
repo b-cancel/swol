@@ -4,14 +4,16 @@ import 'package:flutter/material.dart';
 //plugin
 import 'package:awesome_dialog/awesome_dialog.dart';
 
-//internal
+//internal: shared
+import 'package:swol/shared/widgets/simple/ourHeaderIconPopUp.dart';
 import 'package:swol/shared/structs/anExercise.dart';
+
+//internal: action
 import 'package:swol/action/popUps/textValid.dart';
 import 'package:swol/action/popUps/reusable.dart';
-import 'package:swol/action/popUps/button.dart';
 import 'package:swol/action/page.dart';
-import 'package:swol/shared/widgets/simple/ourHeaderIconPopUp.dart';
 
+//function
 toNextPageAfterSetUpdateComplete() {
   if (ExercisePage.updateSet.value) {
     //wait for the set to finish updating
@@ -142,14 +144,13 @@ maybeError(
         ],
         DialogType.ERROR,
         animationType: AnimType.BOTTOMSLIDE,
-        btnCancel: timerNotStarted
+        clearBtn: timerNotStarted
             ? null
-            : AwesomeButton(
-                clear: true,
+            : FlatButton(
                 child: Text(
                   "Revert Back",
                 ),
-                onTap: () {
+                onPressed: () {
                   //revert back (no need to update set)
                   //we KNOW the temps are VALID
                   //else the timer would not have started
@@ -166,13 +167,13 @@ maybeError(
                   });
                 },
               ),
-        btnOk: timerNotStarted
+        colorBtn: timerNotStarted
             ? null
-            : AwesomeButton(
+            : RaisedButton(
                 child: Text(
                   "Let Me Fix It",
                 ),
-                onTap: () {
+                onPressed: () {
                   //pop ourselves
                   Navigator.of(context).pop();
 

@@ -40,6 +40,8 @@ requestNotificationPermission(
     barrierDismissible: false,
     //show pop up
     builder: (BuildContext context) {
+      //convert the pop ups that appear after this one closes into light ones
+      //primarily for scenarios where you have the icon pop ups
       return Theme(
         data: MyTheme.light,
         child: AlertDialog(
@@ -171,7 +173,12 @@ requestNotificationPermission(
 
                 //make sure the user knows where the button is
                 //will always call on complete
-                maybeShowButtonLocation(context, status, onComplete, automaticallyOpened);
+                maybeShowButtonLocation(
+                  context, 
+                  status, 
+                  onComplete, 
+                  automaticallyOpened,
+                );
               },
             ),
             Padding(
@@ -180,7 +187,7 @@ requestNotificationPermission(
               ),
               child: RaisedButton(
                 child: Text("Allow"),
-                color: Theme.of(context).accentColor,
+                color: MyTheme.dark.accentColor,
                 onPressed: () async{
                   //the user wants to allow 
                   //but now handle all the different ways 

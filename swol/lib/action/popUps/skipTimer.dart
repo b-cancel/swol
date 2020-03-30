@@ -3,17 +3,16 @@ import 'package:flutter/material.dart';
 
 //plugin
 import 'package:awesome_dialog/awesome_dialog.dart';
-import 'package:swol/action/popUps/button.dart';
 
 //internal: shared
 import 'package:swol/shared/widgets/complex/exerciseListTile/miniTimer/wrapper.dart';
+import 'package:swol/shared/widgets/simple/ourHeaderIconPopUp.dart';
 import 'package:swol/shared/structs/anExercise.dart';
 import 'package:swol/shared/methods/theme.dart';
 
-//internal: shared
+//internal: other
 import 'package:swol/action/tabs/recovery/secondary/explained.dart';
 import 'package:swol/other/durationFormat.dart';
-import 'package:swol/shared/widgets/simple/ourHeaderIconPopUp.dart';
 
 //function
 maybeSkipTimer(
@@ -147,20 +146,19 @@ maybeSkipTimer(
     regularPadding: false,
     isDense: false,
     animationType: AnimType.TOPSLIDE,
-    btnCancel: AwesomeButton(
-      clear: true,
+    clearBtn: FlatButton(
       child: Text(
         "Don't Skip",
       ),
-      onTap: () {
+      onPressed: () {
         Navigator.pop(context);
       },
     ),
-    btnOk: AwesomeButton(
+    colorBtn: RaisedButton(
       child: Text(
         "Skip Break",
       ),
-      onTap: () {
+      onPressed: () {
         //pop ourselves
         Navigator.pop(context);
 

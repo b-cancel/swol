@@ -11,13 +11,13 @@ import 'package:swol/shared/methods/theme.dart';
 
 //you rejected the ez way, now you can only do it the hard way...
 requestThatYouGoToAppSettings(
-  BuildContext context,
+  BuildContext whiteContext,
   PermissionStatus status,
   Function onComplete,
   bool automaticallyOpened,
 ) async {
   showDialog(
-    context: context,
+    context: whiteContext,
     //force the user to decide
     barrierDismissible: false,
     builder: (BuildContext context) {

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 //plugin
 import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:swol/shared/methods/theme.dart';
 
 //function
 showCustomHeaderIconPopUp(
@@ -14,8 +15,8 @@ showCustomHeaderIconPopUp(
   bool regularPadding: true,
   bool isDense: false,
   Color headerBackground: Colors.blue,
-  Widget btnCancel,
-  Widget btnOk,
+  Widget clearBtn,
+  Widget colorBtn,
 }) {
   //unfocus so whatever was focused before doesnt annoying scroll us back
   //for some reason this only happens in addExercise
@@ -23,8 +24,21 @@ showCustomHeaderIconPopUp(
   //still its annoying and hence must die
   FocusScope.of(context).unfocus(); 
 
+  //set raised button color
+  if(colorBtn != null){
+    colorBtn = Theme(
+      data: Theme.of(context).copyWith(
+        buttonTheme: ButtonThemeData(
+          textTheme: ButtonTextTheme.primary,
+          buttonColor: Theme.of(context).accentColor,
+        ),
+      ), 
+      child: colorBtn,
+    );
+  }
+
   //add action buttons if they exist
-  bool hasAtleastOneButton = (btnCancel != null || btnOk != null);
+  bool hasAtleastOneButton = (clearBtn != null || colorBtn != null);
   if(hasAtleastOneButton){
     children.add(
       Padding(
@@ -37,8 +51,8 @@ showCustomHeaderIconPopUp(
           mainAxisSize: MainAxisSize.max,
           children: [
             Expanded(child: Container()),
-            btnCancel ?? Container(),
-            btnOk ?? Container(),
+            clearBtn ?? Container(),
+            colorBtn ?? Container(),
           ]
         ),
       ),
@@ -106,8 +120,8 @@ showBasicHeaderIconPopUp(
   AnimType animationType: AnimType.SCALE,
   bool dismissOnTouchOutside: true,
   bool isDense: false,
-  Widget btnCancel,
-  Widget btnOk,
+  Widget clearBtn,
+  Widget colorBtn,
 }) {
   //unfocus so whatever was focused before doesnt annoying scroll us back
   //for some reason this only happens in addExercise
@@ -115,8 +129,21 @@ showBasicHeaderIconPopUp(
   //still its annoying and hence must die
   FocusScope.of(context).unfocus(); 
 
+  //set raised button color
+  if(colorBtn != null){
+    colorBtn = Theme(
+      data: Theme.of(context).copyWith(
+        buttonTheme: ButtonThemeData(
+          textTheme: ButtonTextTheme.primary,
+          buttonColor: Theme.of(context).accentColor,
+        ),
+      ), 
+      child: colorBtn,
+    );
+  }
+
   //add action buttons if they exist
-  bool hasAtleastOneButton = (btnCancel != null || btnOk != null);
+  bool hasAtleastOneButton = (clearBtn != null || colorBtn != null);
   if(hasAtleastOneButton){
     children.add(
       Padding(
@@ -129,8 +156,8 @@ showBasicHeaderIconPopUp(
           mainAxisSize: MainAxisSize.max,
           children: [
             Expanded(child: Container()),
-            btnCancel ?? Container(),
-            btnOk ?? Container(),
+            clearBtn ?? Container(),
+            colorBtn ?? Container(),
           ]
         ),
       ),

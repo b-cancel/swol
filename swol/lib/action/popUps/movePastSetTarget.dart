@@ -1,8 +1,13 @@
-import 'package:awesome_dialog/awesome_dialog.dart';
+//flutter
 import 'package:flutter/material.dart';
-import 'package:swol/action/popUps/button.dart';
+
+//plugin
+import 'package:awesome_dialog/awesome_dialog.dart';
+
+//internal
 import 'package:swol/shared/widgets/simple/ourHeaderIconPopUp.dart';
 
+//functions
 numberSuffix(int aNum) {
   if (aNum == 1 || aNum == 21 || aNum == 31)
     return "st";
@@ -82,20 +87,19 @@ movePastSetTarget(
     ],
     DialogType.WARNING,
     animationType: AnimType.BOTTOMSLIDE,
-    btnCancel: AwesomeButton(
-      clear: true,
+    clearBtn: FlatButton(
       child: Text(
         "Finished",
       ),
-      onTap: () {
+      onPressed: () {
         Navigator.pop(context);
       },
     ),
-    btnOk: AwesomeButton(
+    colorBtn: RaisedButton(
       child: Text(
         "Do Another Set",
       ),
-      onTap: () {
+      onPressed: () {
         //pop ourselves
         Navigator.pop(context);
 

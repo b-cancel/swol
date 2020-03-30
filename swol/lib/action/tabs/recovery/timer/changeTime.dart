@@ -1,10 +1,7 @@
 //flutter
 import 'package:flutter/material.dart';
 
-//plguin
-import 'package:awesome_dialog/awesome_dialog.dart';
-
-//internal: time picker
+//internal: shared
 import 'package:swol/shared/widgets/complex/trainingTypeTables/trainingTypes.dart';
 import 'package:swol/shared/widgets/complex/RecoveryTime/minSecs.dart';
 import 'package:swol/shared/widgets/complex/recoveryTime/picker.dart';
@@ -13,8 +10,8 @@ import 'package:swol/shared/methods/theme.dart';
 
 //internal: other
 import 'package:swol/pages/add/widgets/recoveryTime.dart';
-import 'package:swol/action/popUps/button.dart';
 
+//function
 class ActualButton extends StatelessWidget {
   const ActualButton({
     Key key,
@@ -68,23 +65,22 @@ class ActualButton extends StatelessWidget {
           ),
           headerBackground: Colors.black,
           isDense: true,
-          btnCancel: AwesomeButton(
-            clear: true,
+          clearBtn: FlatButton(
             child: Text(
               "Cancel",
               style: TextStyle(
                 color: Colors.black,
               ),
             ),
-            onTap: () {
+            onPressed: () {
               Navigator.pop(context);
             },
           ),
-          btnOk: AwesomeButton(
+          colorBtn: RaisedButton(
             child: Text(
               "Change",
             ),
-            onTap: () {
+            onPressed: () {
               changeableTimerDuration.value = possibleRecoveryDuration.value;
               Navigator.pop(context);
             },

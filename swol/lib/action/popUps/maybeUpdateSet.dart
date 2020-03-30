@@ -1,13 +1,20 @@
-import 'package:awesome_dialog/awesome_dialog.dart';
+//flutter
 import 'package:flutter/material.dart';
-import 'package:swol/action/popUps/button.dart';
-import 'package:swol/shared/methods/theme.dart';
-import 'package:swol/shared/structs/anExercise.dart';
+
+//plugin
+import 'package:awesome_dialog/awesome_dialog.dart';
+
+//internal: widgets
 import 'package:swol/shared/widgets/complex/fields/fields/sliders/setTarget/trainingTypes.dart';
 import 'package:swol/shared/widgets/complex/trainingTypeTables/trainingTypes.dart';
 import 'package:swol/shared/widgets/simple/ourHeaderIconPopUp.dart';
 import 'package:swol/shared/widgets/simple/ourSlider.dart';
 
+//internal: other
+import 'package:swol/shared/structs/anExercise.dart';
+import 'package:swol/shared/methods/theme.dart';
+
+//function
 maybeChangeSetTarget(
   BuildContext context,
   AnExercise exercise,
@@ -108,20 +115,19 @@ maybeChangeSetTarget(
     DialogType.WARNING,
     isDense: true,
     animationType: AnimType.LEFTSLIDE,
-    btnCancel: AwesomeButton(
-      clear: true,
+    clearBtn: FlatButton(
       child: Text(
         "Keep Going",
       ),
-      onTap: () {
+      onPressed: () {
         Navigator.pop(context);
       },
     ),
-    btnOk: AwesomeButton(
+    colorBtn: RaisedButton(
       child: Text(
         "Finish Excercise",
       ),
-      onTap: () {
+      onPressed: () {
         //update set target
         exercise.setTarget = setTarget.value;
 

@@ -7,14 +7,13 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 //internal: action
 import 'package:swol/action/popUps/textValid.dart';
 import 'package:swol/action/popUps/reusable.dart';
-import 'package:swol/action/popUps/button.dart';
 import 'package:swol/action/page.dart';
 
 //internal: other
+import 'package:swol/shared/widgets/simple/ourHeaderIconPopUp.dart';
 import 'package:swol/shared/widgets/simple/notify.dart';
 import 'package:swol/shared/structs/anExercise.dart';
 import 'package:swol/main.dart';
-import 'package:swol/shared/widgets/simple/ourHeaderIconPopUp.dart';
 
 //determine whether we should warn the user
 Future<bool> warningThenPop(BuildContext context, AnExercise exercise) async {
@@ -194,12 +193,11 @@ Future<bool> warningThenPop(BuildContext context, AnExercise exercise) async {
         ],
         DialogType.WARNING,
         animationType: AnimType.LEFTSLIDE,
-        btnCancel: AwesomeButton(
-          clear: true,
+        clearBtn: FlatButton(
           child: Text(
             (newSet ? "Delete The Set" : "Revert Back"),
           ),
-          onTap: () async {
+          onPressed: () async {
             //NOTE: we revert back to the previous values
             //by just not saving the notifier values
             //since we are leaving so they will essentially reset
@@ -228,11 +226,11 @@ Future<bool> warningThenPop(BuildContext context, AnExercise exercise) async {
             }
           },
         ),
-        btnOk: AwesomeButton(
+        colorBtn: RaisedButton(
           child: Text(
             "Let Me Fix It",
           ),
-          onTap: () {
+          onPressed: () {
             //pop ourselves
             Navigator.of(context).pop();
 
