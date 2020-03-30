@@ -110,7 +110,17 @@ class AddNewHeroHelper extends StatelessWidget {
           color: Colors.transparent,
           child: InkWell(
             onTap: onTap,
-            child: Container(
+            child: percentToAppBar == 0 
+            ? Container(
+              height: 56,
+              width: 56,
+              child: Icon(
+                Icons.add,
+                color: Theme.of(context).primaryColorDark,
+                size: 24,
+              ),
+            ) 
+            : Container(
               padding: EdgeInsets.symmetric(
                 horizontal: 16,
               ),

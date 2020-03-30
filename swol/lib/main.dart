@@ -220,12 +220,14 @@ class _SplashScreenState extends State<SplashScreen>
             Expanded(
               child: Container(),
             ),
-            Padding(
-              padding: const EdgeInsets.all(24.0),
-              child: Image.asset(
-                "assets/splash/splashCut.png",
-                //width: 1080/2, //1080,
-                //height: 1462/2 , //1462,
+            Center(
+              child: Container(
+                width: MediaQuery.of(context).size.width * (2/3),
+                child: Image.asset(
+                  "assets/splash/splashCut.png",
+                  //width: 1080/2, //1080,
+                  //height: 1462/2 , //1462,
+                ),
               ),
             ),
             Expanded(

@@ -102,7 +102,7 @@ class _SearchExerciseButtonState extends State<SearchExerciseButton> {
             text: "Tap here to"
             + "\nsearch through"
             + "\nyour exercises",
-            child: FloatingActionButton.extended(
+            child: FloatingActionButton(
               backgroundColor: Theme.of(context).accentColor,
               onPressed: (){
                 App.navSpread.value = true;
@@ -114,8 +114,7 @@ class _SearchExerciseButtonState extends State<SearchExerciseButton> {
                   ),
                 );
               },
-              icon: Icon(Icons.search),
-              label: Text("Search"),
+              child: Icon(Icons.search),
             ),
             top: false,
             left: false,
