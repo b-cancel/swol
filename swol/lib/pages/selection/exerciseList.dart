@@ -310,35 +310,19 @@ class _ExerciseListState extends State<ExerciseList> {
           : Theme.of(context).primaryColor;
 
         //set bottom section color
-        Color bottomColor = Theme.of(context).primaryColor;
+        Color bottomColor;
 
-        /*
-        //if we have an inprogress and new section
-        if(){
-          //the in progress section has a special bottom Color
-          //to blend with new section top
-          if(index == 1) {
-            bottomColor = Theme.of(context).accentColor;
-          } else {
-            bottomColor = Theme.of(context).primaryColor;
-          }
+        //if a hidden section is present
+        //and this is the last regular
+        if(index == (groupsOfExercises.length - 2) && hiddenOnes.length > 0){
+          bottomColor = Theme.of(context).accentColor;
         }
-        else if(hiddenOnes.length > 0){ //if we have a hidden section
-          //the last regular section has a special bottomColor
+        else if(specialSectionsOnTop > index){
+          bottomColor = Theme.of(context).accentColor;
         }
         else{
           bottomColor = Theme.of(context).primaryColor;
         }
-
-
-        if (hiddenSection) {
-          //NOTE: here MUST use i... NOT INDEX
-          if ((i + 2) == groupsOfExercises.length) 
-        } else{
-          bottomColor = Theme.of(context).primaryColor;
-        }
-        */
-
       
         //add this section to the list of slivers
         sliverList.add(
