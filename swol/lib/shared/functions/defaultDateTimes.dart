@@ -16,14 +16,6 @@ to sort all of this and take care of all of this
 If we sort given time since epoch we will get things in order
 4,3,2,1
 
-timeSince = DateTime.now().difference(recordedDateTime);
-If timeSince > (1 lifeSpan) => "Archived"
-Else
-  IF DateTime.now() > recordedDateTime => "Other"
-  Else
-    IF recordedDateTime.difference(DateTime.now()) > (2 lifespans) => "In Progress"
-    Else => "New"
-
 Now that we have the functions for best results we call returnSectionID
 that essentially does the above with more checks
 */
@@ -47,24 +39,25 @@ class LastTimeStamp{
   }
 
   static TimeStampType returnTimeStampType(DateTime lastTimeStamp){
-    if(isHidden(lastTimeStamp)) return TimeStampType.Hidden;
-    else{
-      if(isInProgress(lastTimeStamp)) return TimeStampType.InProgress;
+    bool afterDT = lastTimeStamp.isAfter(DateTime.now());
+    if(afterDT){ //In Progress OR New
+      Duration timeSince = lastTimeStamp.difference(DateTime.now());
+      if(timeSince > newLifeSpans){
+        return TimeStampType.InProgress;
+      }
       else{
-        if(isNew(lastTimeStamp)) return TimeStampType.New;
-        else return TimeStampType.Other;
+        return TimeStampType.New;
       }
     }
-  }
-
-  //-------------------------In Progress-------------------------
-
-  static bool isInProgress(DateTime lastTimeStamp){
-    if(DateTime.now().isBefore(lastTimeStamp)){
-      Duration timeSince = lastTimeStamp.difference(DateTime.now());
-      return (newLifeSpans <= timeSince && timeSince <= inProgressLifeSpans);
+    else{ //Other OR Archived
+      Duration timeSince = (DateTime.now()).difference(lastTimeStamp);
+      if(timeSince <= humanLifeSpan){
+        return TimeStampType.Other;
+      }
+      else{
+        return TimeStampType.Hidden;
+      }
     }
-    else return false;
   }
 
   //timeSince will ONLY SHRINK
@@ -76,17 +69,6 @@ class LastTimeStamp{
     );
   }
 
-  //-------------------------New-------------------------
-
-  static bool isNew(DateTime lastTimeStamp){
-    if(DateTime.now().isBefore(lastTimeStamp)){
-      Duration timeSince = lastTimeStamp.difference(DateTime.now());
-      //MUST BE (< newLifeSpans) AND NOT (<= newLifeSpans) since the == should be picked up by isInProgress
-      return (humanLifeSpan <= timeSince && timeSince < newLifeSpans);
-    }
-    else return false;
-  }
-
   //timeSince will ONLY SHRINK
   //at most 2 life spans (but only for a microsecond)
   //at least 1 life span
@@ -94,19 +76,6 @@ class LastTimeStamp{
     return DateTime.now().add(
       newLifeSpans,
     );
-  }
-
-  //-------------------------Archiving-------------------------
-
-  static bool isHidden(DateTime lastTimeStamp){
-    //print("checking if hidden: " + lastTimeStamp.toString());
-    if((lastTimeStamp).isBefore(DateTime.now())){
-      //print("is after so may be hidden but check");
-      Duration timeSince = (DateTime.now()).difference(lastTimeStamp);
-      //print("time since is: " + timeSince.toString());
-      return (archivedLifeSpans <= timeSince); 
-    }
-    else return false;
   }
 
   //timeSince will ONLY GROW

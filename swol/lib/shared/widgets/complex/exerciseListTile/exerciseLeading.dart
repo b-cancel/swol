@@ -30,13 +30,17 @@ class ExerciseTileLeading extends StatefulWidget {
 }
 
 class _ExerciseTileLeadingState extends State<ExerciseTileLeading> {
-  actualUpdate(){
-    print(widget.exercise.id.toString() +" after wait: " + widget.exercise.tempStartTime.toString());
-    if(mounted) setState(() {});
+  actualUpdate() {
+    print(widget.exercise.id.toString() +
+        " after wait: " +
+        widget.exercise.tempStartTime.toString());
+    if (mounted) setState(() {});
   }
 
-  updateState(){
-    print(widget.exercise.id.toString() +" before wait: " + widget.exercise.tempStartTime.toString());
+  updateState() {
+    print(widget.exercise.id.toString() +
+        " before wait: " +
+        widget.exercise.tempStartTime.toString());
     //NOTE: just waiting a single frame isn't enough
     Future.delayed(widget.transitionDuration, actualUpdate);
   }
@@ -51,7 +55,7 @@ class _ExerciseTileLeadingState extends State<ExerciseTileLeading> {
   }
 
   @override
-  void dispose() { 
+  void dispose() {
     //remove working listeners
     widget.exercise.tempStartTime.removeListener(updateState);
 
@@ -59,73 +63,82 @@ class _ExerciseTileLeadingState extends State<ExerciseTileLeading> {
     super.dispose();
   }
 
-  //and also 
+  //and also
   @override
   Widget build(BuildContext context) {
-    print(widget.exercise.id.toString() + " build: " + widget.exercise.tempStartTime.toString());
+    print(widget.exercise.id.toString() +
+        " build: " +
+        widget.exercise.tempStartTime.toString());
 
     //NOTE: timer takes precendence over regular inprogress
-    if(widget.exercise.tempStartTime.value != AnExercise.nullDateTime){
+    if (widget.exercise.tempStartTime.value != AnExercise.nullDateTime) {
       return AnimatedMiniNormalTimer(
         exercise: widget.exercise,
       );
-    }
-    else if(LastTimeStamp.isInProgress(widget.exercise.lastTimeStamp)){
-      bool isLastSet = (widget.exercise.tempSetCount ?? 0) >= widget.exercise.setTarget;
-      return Hero(
-        tag: "exercise" + (isLastSet ? "Complete" : "Continue") + widget.exercise.id.toString(),
-        createRectTween: (begin, end) {
-          return CustomRectTween(a: begin, b: end);
-        },
-        child: FittedBox(
-          fit: BoxFit.contain,
-          child: Material(
-            color: Colors.transparent,
-            child: ContinueOrComplete(
-              afterLastSet: isLastSet,
+    } else {
+      //what state is the exercise in
+      TimeStampType timeStampType = LastTimeStamp.returnTimeStampType(
+        widget.exercise.lastTimeStamp,
+      );
+
+      //different leadings based on timeStampType
+      if (timeStampType == TimeStampType.InProgress) {
+        bool isLastSet =
+            (widget.exercise.tempSetCount ?? 0) >= widget.exercise.setTarget;
+        return Hero(
+          tag: "exercise" +
+              (isLastSet ? "Complete" : "Continue") +
+              widget.exercise.id.toString(),
+          createRectTween: (begin, end) {
+            return CustomRectTween(a: begin, b: end);
+          },
+          child: FittedBox(
+            fit: BoxFit.contain,
+            child: Material(
+              color: Colors.transparent,
+              child: ContinueOrComplete(
+                afterLastSet: isLastSet,
+              ),
             ),
           ),
-        ),
-      );
-    }
-    else{ //NOT in timer, NOT in progress => show in what section it is
-      //since we are starting off the exercise we don't need to worry about suggesting an action
-      //so we don't need to worry about anything being a hero
-      if(widget.tileInSearch){
-        if(LastTimeStamp.isNew(widget.exercise.lastTimeStamp)){
-          return ListTileChipShell(
-            chip: MyChip(
-              chipString: 'NEW',
-            ),
-          );
-        }
-        else{
-          if(LastTimeStamp.isHidden(widget.exercise.lastTimeStamp)){
+        );
+      } else {
+        //NOT in timer, NOT in progress => show in what section it is
+        //since we are starting off the exercise we don't need to worry about suggesting an action
+        //so we don't need to worry about anything being a hero
+        if (widget.tileInSearch) {
+          if (timeStampType == TimeStampType.New) {
             return ListTileChipShell(
               chip: MyChip(
-                chipString: 'HIDDEN',
+                chipString: 'NEW',
               ),
             );
+          } else {
+            if (timeStampType == TimeStampType.Hidden) {
+              return ListTileChipShell(
+                chip: MyChip(
+                  chipString: 'HIDDEN',
+                ),
+              );
+            } else {
+              return Text(
+                DurationFormat.format(
+                  DateTime.now().difference(widget.exercise.lastTimeStamp),
+                  showMinutes: false,
+                  showSeconds: false,
+                  showMilliseconds: false,
+                  showMicroseconds: false,
+                  len: 0, //short
+                ),
+              );
+            }
           }
-          else{
-            return Text(
-              DurationFormat.format(
-                DateTime.now().difference(widget.exercise.lastTimeStamp),
-                showMinutes: false,
-                showSeconds: false,
-                showMilliseconds: false,
-                showMicroseconds: false,
-                len: 0, //short
-              ),
-            );
-          }
+        } else {
+          return ExerciseBegin(
+            inAppBar: false,
+            exercise: widget.exercise,
+          );
         }
-      }
-      else{
-        return ExerciseBegin(
-          inAppBar: false,
-          exercise: widget.exercise,
-        );
       }
     }
   }

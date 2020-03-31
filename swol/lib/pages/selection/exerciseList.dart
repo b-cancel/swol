@@ -217,6 +217,7 @@ class _ExerciseListState extends State<ExerciseList> {
           else {
             //we are the same type of exercise
             if (thisExerciseType == TimeStampType.Other) {
+              //TODO... careful... after.difference(before)... for a positive result
               Duration timeBetweenExercises = lastExercise.lastTimeStamp
                   .difference(thisExercise.lastTimeStamp);
               makeNewGroup = (timeBetweenExercises > maxTimeBetweenExercises);
