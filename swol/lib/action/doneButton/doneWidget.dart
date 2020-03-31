@@ -274,6 +274,8 @@ class _FloatingDoneButtonState extends State<FloatingDoneButton> {
       //time stamp
       DateTime newTimeStamp = DateTime.now();
       if(setsPassed == 0){ //we didn't care to even save this set
+        //so If it was once new it should stay new
+        //ditto for hidden, or for a timestamp that was part of another workout
         newTimeStamp = widget.exercise.backUpTimeStamp;
       }
       widget.exercise.lastTimeStamp = newTimeStamp;

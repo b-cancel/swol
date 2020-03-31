@@ -117,17 +117,20 @@ class _ExercisePageDarkState extends State<ExercisePageDark> {
       widget.exercise.tempWeight = int.parse(setWeight);
       widget.exercise.tempReps = int.parse(setReps);
 
-      //only if begin
+      //IF we are "SAVING FOR THE FIRST TIME" and "NOT UPDATING" the set
       if (widget.exercise.tempStartTime.value == AnExercise.nullDateTime) {
         //start the timer
-        widget.exercise.tempStartTime =
-            new ValueNotifier<DateTime>(DateTime.now());
+        widget.exercise.tempStartTime = ValueNotifier<DateTime>(
+              DateTime.now(),
+        );
 
-        //indicate you have started the set
+        //fix things when sarting FIRST set
         if (widget.exercise.tempSetCount == null) {
-          widget.exercise.tempSetCount = 1;
-        } else
-          widget.exercise.tempSetCount += 1;
+          widget.exercise.tempSetCount = 0;
+        }
+
+        //this is a new set
+        widget.exercise.tempSetCount += 1;
 
         //we are recording our FIRST set so may go back to it
         //if we delete it instead of deciding to continue
