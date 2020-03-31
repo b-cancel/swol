@@ -37,7 +37,6 @@ class _RecoveryState extends State<Recovery>
   updateRecoveryDuration() {
     widget.exercise.recoveryPeriod = recoveryDuration.value;
 
-    //TODO: confirm this works under all conditions
     //cases to test below
     //to shorter one, to longer one, to shorter one after longer completed, to longer one after shorter completed
     scheduleNotification(widget.exercise);
@@ -53,12 +52,14 @@ class _RecoveryState extends State<Recovery>
 
     //encourage the user to reap the benefits of the system
     //after everything loads up so nothing crashes IF a pop up is going to be comming up
-    WidgetsBinding.instance.addPostFrameCallback((_){
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       //TODO: perhaps use the highlighting notification thing WITHIN the page here
-      //NOTE: Im hinting at a certain plugin 
+      //NOTE: Im hinting at a certain plugin
       //that is most definately overkill for something so small
       //but... meh... Just in case its an onboarding technique
-      askForPermissionIfNotGrantedAndWeNeverAsked(context, (){
+      askForPermissionIfNotGrantedAndWeNeverAsked(
+        context,
+        () {
           scheduleNotification(widget.exercise);
         },
       );
@@ -84,7 +85,9 @@ class _RecoveryState extends State<Recovery>
 
     //color for bottom buttons
     bool lastSetOrBefore = setsPassed <= widget.exercise.setTarget;
-    Color buttonsColor =  lastSetOrBefore ? Theme.of(context).accentColor : Theme.of(context).cardColor;
+    Color buttonsColor = lastSetOrBefore
+        ? Theme.of(context).accentColor
+        : Theme.of(context).cardColor;
 
     //build
     return Container(
@@ -95,7 +98,7 @@ class _RecoveryState extends State<Recovery>
         //everything including bottom button and spacing
         children: <Widget>[
           TimerWrapper(
-            buttonsColor: buttonsColor, 
+            buttonsColor: buttonsColor,
             child: Timer(
               exercise: widget.exercise,
               timeStarted: widget.exercise.tempStartTime.value,
@@ -127,7 +130,7 @@ class _RecoveryState extends State<Recovery>
             child: RecoveryButtonsWithWhiteContext(
               transitionDuration: widget.transtionDuration,
               showAreYouSure: showAreYouSure,
-              buttonsColor: buttonsColor, 
+              buttonsColor: buttonsColor,
               exercise: widget.exercise,
               setsPassed: setsPassed,
               headerColor: Theme.of(context).cardColor,
@@ -207,33 +210,37 @@ class RecoveryButtonsWithWhiteContext extends StatelessWidget {
       color: buttonsColor,
       exerciseID: exercise.id,
       forwardAction: () {
-        Function ifMoveToNextSet = (){
-          if(showAreYouSure.value){
-            maybeSkipTimer( 
-              context, 
-              exercise, 
-              goToNextSet,
-              headerColor,
-              exercise.tempStartTime.value,
-            );
-          }
-          else goToNextSet();
-        };
+        if (exercise.tempStartTime.value != AnExercise.nullDateTime) {
+          Function ifMoveToNextSet = () {
+            if (showAreYouSure.value) {
+              maybeSkipTimer(
+                context,
+                exercise,
+                goToNextSet,
+                headerColor,
+                exercise.tempStartTime.value,
+              );
+            } else {
+              goToNextSet();
+            }
+          };
 
-        //NOTE: we only bother the user if they match
-        //because we are warning the user that they are going above their target
-        int target = exercise.setTarget;
-        int current = exercise.tempSetCount;
-        if(target == current){
-          movePastSetTarget(
-            context, 
-            ifMoveToNextSet, 
-            target, 
-            headerColor,
-          );
+          //NOTE: we only bother the user if they match
+          //because we are warning the user that they are going above their target
+          int target = exercise.setTarget;
+          int current = exercise.tempSetCount;
+          if (target == current) {
+            movePastSetTarget(
+              context,
+              ifMoveToNextSet,
+              target,
+              headerColor,
+            );
+          } else {
+            ifMoveToNextSet();
+          }
         }
-        else ifMoveToNextSet();
-        
+        //ELSE: the button was Accidentally quick tapped
       },
       forwardActionWidget: RichText(
         text: TextSpan(
@@ -253,13 +260,13 @@ class RecoveryButtonsWithWhiteContext extends StatelessWidget {
           ],
         ),
       ),
-      backAction: (){
+      backAction: () {
         ExercisePage.pageNumber.value = 1;
       },
     );
   }
 
-  goToNextSet(){
+  goToNextSet() {
     //will also handle navigation
     ExercisePage.nextSet.value = true;
   }

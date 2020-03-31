@@ -1,9 +1,9 @@
-import 'dart:async';
+//dart
 import 'dart:ui';
-import 'package:flutter/cupertino.dart';
 
 //flutter
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 
 //plugins
@@ -23,10 +23,12 @@ import 'package:swol/shared/methods/theme.dart';
 import 'package:swol/pages/selection/exerciseListPage.dart';
 import 'package:swol/pages/search/searchesData.dart';
 
+//notification handler
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
 final ValueNotifier<int> exerciseToTravelTo = new ValueNotifier<int>(-1);
 
+//start the program
 main() {
   runApp(App());
 }

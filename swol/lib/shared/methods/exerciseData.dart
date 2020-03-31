@@ -151,9 +151,15 @@ class ExerciseData{
       newOrder.add(thisID);
     }
 
+    //TODO: do the thing below if we can't do anything else
+    //NOTE: we still want to update even if nothing changed
+    //because we MAY be updating due to a changed "recoveryTime" duration
+    //this wouldn't change the order
+    //but it should reload the inProgress section
+
     //official update
     if(allMatch == false){
-      exercisesOrder.value = newOrder;
+      
       print("new order");
       for(int i = 0; i < exercisesOrder.value.length; i++){
         int id = exercisesOrder.value[i];

@@ -193,6 +193,67 @@ class _ExerciseListState extends State<ExerciseList> {
 
       //add in progress ones if they exist
       if(inProgressOnes.length > 0){
+        //sort so the ones that have the least ammount before the timer runs out
+        //are on top
+
+        //Example
+        //If I do EXERCISE 1 and want to wait 20 minutes for the next set
+        //and do EXERCISE 2 and want to wait 1 minute for the next set
+        //EXERCISE 2 should be first
+
+        //create map, 2 duration might map to 2 difference indices
+        //in which case how they sort is which one you did first 
+        //the one you did first goes on the bottom
+        Map<Duration,List<int>> timeTillFinish2IndexInProgressOnes = new Map<Duration,List<int>>();
+
+        //grab the timeTillFinish for each to be able to sort by that
+        for(int i = 0; i < inProgressOnes.length; i++){
+          AnExercise inProgressExercise = inProgressOnes[i];
+          DateTime timerStart = inProgressExercise.tempStartTime.value;
+          Duration timerDuration = inProgressExercise.recoveryPeriod;
+          DateTime timerEnd = timerStart.add(timerDuration);
+
+          //calculate the value we will sort based on
+          //after.differene(before) produces positive values
+          //if timerEnd is BEFORE DateTime.now() we should get a positive value
+          Duration timeTillFinish = (DateTime.now()).difference(timerEnd);
+
+          //add to dictionary
+          if(timeTillFinish2IndexInProgressOnes.containsKey(timeTillFinish) == false){
+            timeTillFinish2IndexInProgressOnes[timeTillFinish] = new List<int>();
+          }
+          timeTillFinish2IndexInProgressOnes[timeTillFinish].add(i);
+        }
+        
+        //sort keys
+        List<Duration> timesTillFinish = timeTillFinish2IndexInProgressOnes.keys;
+        timesTillFinish.sort();
+
+        //iterate through keys to grab sorted order
+        List<AnExercise> newInProgressOnes = new List<AnExercise>();
+        for(int i = 0; i < timesTillFinish.length; i++){
+          Duration thisTimeTillFinish = timesTillFinish[i];
+          List<int> indicesInProgressOnes = timeTillFinish2IndexInProgressOnes[thisTimeTillFinish];
+
+          //cover main cases
+          if(indicesInProgressOnes.length == 1){
+            int theIndex = indicesInProgressOnes[0];
+            AnExercise theExercise = inProgressOnes[theIndex];
+            newInProgressOnes.add(theExercise);
+          }
+          else{ //2 different exercises have their timers finishing at the exact same time
+            //TODO: they will finish the break at exactly the same time
+            //but they where started at different times
+            //which every one was started first goes on the bottom
+            for(int i = 0; i < indicesInProgressOnes.length; i++){
+              int theIndex = indicesInProgressOnes[i];
+              AnExercise theExercise = inProgressOnes[theIndex];
+              newInProgressOnes.add(theExercise);
+            }
+          }
+        }
+
+        //add to group
         groupsOfExercises.add(inProgressOnes);
       }
 
@@ -222,14 +283,11 @@ class _ExerciseListState extends State<ExerciseList> {
           //we know we process things in order... so we only need to check the last group added
           //and even further really just the last item added to that group
           AnExercise lastExercise = lastGroup.last;
-          TimeStampType lastExerciseType = LastTimeStamp.returnTimeStampType(
-            lastExercise.lastTimeStamp,
-          );
 
           //every exercise must have at most 1.5 hours between
-          //TODO... careful... after.difference(before)... for a positive result
-          Duration timeBetweenExercises = thisExercise.lastTimeStamp
-              .difference(lastExercise.lastTimeStamp);
+          Duration timeBetweenExercises = thisExercise.lastTimeStamp.difference(
+            lastExercise.lastTimeStamp
+          );
           makeNewGroup = (timeBetweenExercises > maxTimeBetweenExercises);
         }
 

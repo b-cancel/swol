@@ -23,7 +23,6 @@ import 'package:swol/shared/methods/theme.dart';
 //IF the user decides to enable the permssion
 requestNotificationPermission(
   PermissionStatus status,
-  //TODO: ensure this
   //on complete HAS TO RUN
   //regardless of what pop up path the user takes 
   Function onComplete,

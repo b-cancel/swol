@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 
 //plugin
 import 'package:page_transition/page_transition.dart';
-import 'package:swol/main.dart';
 
 //internal: exercise
 import 'package:swol/shared/widgets/simple/heros/leading.dart';
 import 'package:swol/shared/functions/defaultDateTimes.dart';
 import 'package:swol/shared/widgets/simple/heros/title.dart';
+import 'package:swol/shared/widgets/simple/notify.dart';
 import 'package:swol/shared/structs/anExercise.dart';
 import 'package:swol/shared/methods/theme.dart';
 
@@ -17,7 +17,6 @@ import 'package:swol/pages/notes/exerciseNotes.dart';
 import 'package:swol/action/tabs/verticalTabs.dart';
 import 'package:swol/other/functions/W&R=1RM.dart';
 import 'package:swol/action/popUps/warning.dart';
-import 'package:swol/shared/widgets/simple/notify.dart';
 
 //used to
 //1. keep track of all the variables and be able to access them from everywhere
@@ -150,8 +149,8 @@ class _ExercisePageDarkState extends State<ExercisePageDark> {
   nextSet() {
     if (ExercisePage.nextSet.value) {
       //in order for the timer to start it has to be a value other than this
-      //cover exception that can happen if the user quick taps the next button
-      //TODO: I suspect the above
+      //this covers the edge case where the user quick taps the next button
+      
       //worst case scenario this little exception cover won't break anything
       if (widget.exercise.tempStartTime.value != AnExercise.nullDateTime) {
         //cancel the notifcation that perhaps didn't trigger

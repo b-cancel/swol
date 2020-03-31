@@ -89,11 +89,21 @@ class _AddExerciseState extends State<AddExercise> {
 
   final FocusNode noteFocusNode = FocusNode();
 
-  //TODO: make functional, decided to skip since we can't current do this
-  //TODO: since we can't make the time picker update this way unless we do some hacks
-  //TODO: the hack would be simply to have a manual reload that builds a different picker
-  //TODO: but ONLY if the picker is being set by something else
-  //TODO: figuring that out is what can suck up my time
+  //TODO: its possible to navigate away from the page without knowing
+  //and lose what you plugged in for your new exercise already
+  //so save the state when you back up and restore it when you come back
+  //you can navigate away by going to learn more
+
+  //TODO: make BELOW functional, decided to skip since we can't currently do this
+  //since we can't make the time picker update this way unless we do some hacks
+  //the hack would be simply to have a manual reload that builds a different picker
+  //but ONLY if the picker is being set by something else
+  //figuring that out is what can suck up my time
+  //we wanted to do this so when we INITIALLY update repTarget without touching set target and recovery
+  //repTarget also updates setTarget and recovery
+  //since those two should be set based on repTarget
+
+  /*
   //update the others if they haven't already been edited manually
   final ValueNotifier<bool> recoverySet = new ValueNotifier<bool>(false);
   final ValueNotifier<bool> setSet = new ValueNotifier(false);
@@ -123,7 +133,7 @@ class _AddExerciseState extends State<AddExercise> {
     //hypertrohpy: 3,4  mid: 3
     //endurance: 1,2    mid: 2
   }
-
+  
   @override
   void initState() { 
     super.initState();
@@ -135,6 +145,7 @@ class _AddExerciseState extends State<AddExercise> {
     repTarget.removeListener(updateOthers);
     super.dispose();
   }
+  */
 
   @override
   Widget build(BuildContext context) {
