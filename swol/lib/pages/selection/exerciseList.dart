@@ -144,12 +144,12 @@ class _ExerciseListState extends State<ExerciseList> {
 
     //special sections booleans to produce workout count
     //use in header with count and perhaps also icons of sorts
-    bool inprogressWorkoutSection = false;
-    bool newWorkoutSection = false;
-    bool hiddenWorkoutSection = false;
+    bool inProgSection = false;
+    bool newSection = false;
+    bool hiddenSection = false;
 
     List<Widget> sliverList = new List<Widget>();
-    List<List<AnExercise>> listOfGroupOfExercises =
+    List<List<AnExercise>> groupsOfExercises =
         new List<List<AnExercise>>();
 
     //a little bit of math
@@ -168,63 +168,80 @@ class _ExerciseListState extends State<ExerciseList> {
       //seperate exercise into their groups bassed on the max distance
       DateTime lastDateTime; //MUST NOT COLLIDE WITH EVEN ARCHIVED DATE TIMES
       for (int i = 0; i < exerciseOrder.length; i++) {
-        int exerciseID = exerciseOrder[i];
+        int thisExerciseID = exerciseOrder[i];
 
         //easy to access vars
-        AnExercise thisExercise = exercises[exerciseID];
-        TimeStampType thisExerciseType =
-            LastTimeStamp.returnTimeStampType(thisExercise.lastTimeStamp);
+        AnExercise thisExercise = exercises[thisExerciseID];
+        TimeStampType thisExerciseType = LastTimeStamp.returnTimeStampType(
+          thisExercise.lastTimeStamp,
+        );
 
         //determine if we have any of the special section
-        if (inprogressWorkoutSection == false) {
-          inprogressWorkoutSection =
-              (thisExerciseType == TimeStampType.InProgress);
+        if (inProgSection == false) {
+          inProgSection = (thisExerciseType == TimeStampType.InProgress);
         }
 
-        if (newWorkoutSection == false) {
-          newWorkoutSection = (thisExerciseType == TimeStampType.New);
+        if (newSection == false) {
+          newSection = (thisExerciseType == TimeStampType.New);
         }
 
-        if (hiddenWorkoutSection == false) {
-          hiddenWorkoutSection = (thisExerciseType == TimeStampType.Hidden);
+        if (hiddenSection == false) {
+          hiddenSection = (thisExerciseType == TimeStampType.Hidden);
         }
+
+        //-------------------------CHECK-------------------------*-------------------------BELOW-------------------------
+        //-------------------------CHECK-------------------------*-------------------------BELOW-------------------------
+        //-------------------------CHECK-------------------------*-------------------------BELOW-------------------------
 
         //determine if new group is required
         bool makeNewGroup;
-        if (lastDateTime == null)
+        if (lastDateTime == null){ //NOTE: only happens for the first exercise
           makeNewGroup = true;
+        }
         else {
-          List<AnExercise> lastGroup =
-              listOfGroupOfExercises[listOfGroupOfExercises.length - 1];
+          //NOTE: may still need to make a new group given things below
+          List<AnExercise> lastGroup = groupsOfExercises.last;
 
           //its not the first exercise we check so we MIGHT need a new group
           //we know we process things in order... so we only need to check the last group added
           //and even further really just the last item added to that group
-          AnExercise lastExercise = lastGroup[lastGroup.length - 1];
-          TimeStampType lastExerciseType =
-              LastTimeStamp.returnTimeStampType(lastExercise.lastTimeStamp);
+          AnExercise lastExercise = lastGroup.last;
+          TimeStampType lastExerciseType = LastTimeStamp.returnTimeStampType(
+            lastExercise.lastTimeStamp,
+          );
 
           //we are a different kind of exercise that the previous one so we KNOW we need a new group
-          if (thisExerciseType != lastExerciseType)
+          if (thisExerciseType != lastExerciseType){
             makeNewGroup = true;
+          }
           else {
             //we are the same type of exercise
             if (thisExerciseType == TimeStampType.Other) {
               Duration timeBetweenExercises = lastExercise.lastTimeStamp
                   .difference(thisExercise.lastTimeStamp);
               makeNewGroup = (timeBetweenExercises > maxTimeBetweenExercises);
-            } else
+            } else{
               makeNewGroup = false;
+            }
           }
         }
 
+        //-------------------------CHECK-------------------------*-------------------------ABOVE-------------------------
+        //-------------------------CHECK-------------------------*-------------------------ABOVE-------------------------
+        //-------------------------CHECK-------------------------*-------------------------ABOVE-------------------------
+
         //add a new group because its needed
         if (makeNewGroup) {
-          listOfGroupOfExercises.add(new List<AnExercise>());
+          groupsOfExercises.add(
+            List<AnExercise>(),
+          );
         }
 
-        //add this exercise to our 1. newly created group 2. OR old group
-        listOfGroupOfExercises[listOfGroupOfExercises.length - 1].add(
+        //add this exercise to our 
+        //1. newly created group 
+        //2. OR old group
+        //both of which are the last groups
+        groupsOfExercises.last.add(
           thisExercise,
         );
 
@@ -233,12 +250,16 @@ class _ExerciseListState extends State<ExerciseList> {
       }
 
       //fill sliver list
-      for (int i = 0; i < listOfGroupOfExercises.length; i++) {
+      for (int i = 0; i < groupsOfExercises.length; i++) {
         //create header text
         int index = i;
-        List<AnExercise> thisGroup = listOfGroupOfExercises[index];
+        List<AnExercise> thisGroup = groupsOfExercises[index];
         DateTime oldestDT = thisGroup[0].lastTimeStamp;
         TimeStampType sectionType = LastTimeStamp.returnTimeStampType(oldestDT);
+
+        //-------------------------CHECK-------------------------*-------------------------BELOW-------------------------
+        //-------------------------CHECK-------------------------*-------------------------BELOW-------------------------
+        //-------------------------CHECK-------------------------*-------------------------BELOW-------------------------
 
         //flip all regular sections
         //new and inprogress will be above them
@@ -246,19 +267,23 @@ class _ExerciseListState extends State<ExerciseList> {
         if (sectionType == TimeStampType.Other) {
           //adjust the index
           int oldIndex = index;
-          if (inprogressWorkoutSection) oldIndex -= 1;
-          if (newWorkoutSection) oldIndex -= 1;
+          if (inProgSection) oldIndex -= 1;
+          if (newSection) oldIndex -= 1;
 
           //adjust last index
-          int lastPossibleIndex = listOfGroupOfExercises.length - 1;
-          if (hiddenWorkoutSection) lastPossibleIndex -= 1;
+          int lastPossibleIndex = groupsOfExercises.length - 1;
+          if (hiddenSection) lastPossibleIndex -= 1;
           index = lastPossibleIndex - oldIndex;
 
           //recalc variables used below
-          thisGroup = listOfGroupOfExercises[index];
+          thisGroup = groupsOfExercises[index];
           oldestDT = thisGroup[0].lastTimeStamp;
           sectionType = LastTimeStamp.returnTimeStampType(oldestDT);
         }
+
+        //-------------------------CHECK-------------------------*-------------------------ABOVE-------------------------
+        //-------------------------CHECK-------------------------*-------------------------ABOVE-------------------------
+        //-------------------------CHECK-------------------------*-------------------------ABOVE-------------------------
 
         //vars to set
         String title;
@@ -291,14 +316,17 @@ class _ExerciseListState extends State<ExerciseList> {
 
         //set bottom section color
         Color bottomColor;
-        if (hiddenWorkoutSection) {
+        if (hiddenSection) {
           //NOTE: here MUST use i... NOT INDEX
-          if ((i + 2) == listOfGroupOfExercises.length) {
+          if ((i + 2) == groupsOfExercises.length) {
             bottomColor = Theme.of(context).accentColor;
-          } else
+          } else{
             bottomColor = Theme.of(context).primaryColor;
-        } else
+          }
+        } else{
           bottomColor = Theme.of(context).primaryColor;
+        }
+          
 
         //add this section to the list of slivers
         sliverList.add(
@@ -330,10 +358,10 @@ class _ExerciseListState extends State<ExerciseList> {
     slivers = new List<Widget>();
     slivers.add(
       HeaderForOneHandedUse(
-        listOfGroupOfExercises: listOfGroupOfExercises,
-        newWorkoutSection: newWorkoutSection,
-        hiddenWorkoutSection: hiddenWorkoutSection,
-        inprogressWorkoutSection: inprogressWorkoutSection,
+        listOfGroupOfExercises: groupsOfExercises,
+        newWorkoutSection: newSection,
+        hiddenWorkoutSection: hiddenSection,
+        inprogressWorkoutSection: inProgSection,
         openHeight: openHeaderHeight,
       ),
     );
