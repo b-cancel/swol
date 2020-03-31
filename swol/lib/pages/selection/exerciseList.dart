@@ -7,6 +7,7 @@ import 'package:page_transition/page_transition.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
 import 'package:swol/action/page.dart';
 import 'package:swol/main.dart';
+import 'package:swol/pages/selection/exerciseListPage.dart';
 
 //internal: shared
 import 'package:swol/shared/functions/defaultDateTimes.dart';
@@ -124,6 +125,11 @@ class _ExerciseListState extends State<ExerciseList> {
       setState(() {});
     });
 
+    //allows any excercise to manually update order
+    ExerciseSelectStateless.manualOrderUpdate.addListener(
+      manualBeforeManualBuild,
+    );
+
     //Updates every time we update[timestamp], add, or remove some exercise
     ExerciseData.exercisesOrder.addListener(updateState);
     exerciseToTravelTo.addListener(goToExcercise);
@@ -132,9 +138,21 @@ class _ExerciseListState extends State<ExerciseList> {
 
   @override
   void dispose() {
+    ExerciseSelectStateless.manualOrderUpdate.removeListener(
+      manualBeforeManualBuild,
+    );
     exerciseToTravelTo.removeListener(goToExcercise);
     ExerciseData.exercisesOrder.addListener(updateState);
     super.dispose();
+  }
+
+  //set to true by the ones who want the update to occur
+  manualBeforeManualBuild(){
+    print("*************************************************manually updating order");
+    if(ExerciseSelectStateless.manualOrderUpdate.value == true){
+      updateState();
+      ExerciseSelectStateless.manualOrderUpdate.value = false;
+    }
   }
 
   //prevents unecessary calculation when navigating
@@ -216,7 +234,9 @@ class _ExerciseListState extends State<ExerciseList> {
           //calculate the value we will sort based on
           //after.differene(before) produces positive values
           //if timerEnd is BEFORE DateTime.now() we should get a positive value
-          Duration timeTillFinish = (DateTime.now()).difference(timerEnd);
+          Duration timeTillFinish = (timerEnd).difference(DateTime.now());
+
+          print(timeTillFinish.toString() + " for " + inProgressExercise.name + " index " + inProgressExercise.id.toString());
 
           //add to dictionary
           if(timeTillFinish2IndexInProgressOnes.containsKey(timeTillFinish) == false){
@@ -229,6 +249,9 @@ class _ExerciseListState extends State<ExerciseList> {
         List<Duration> timesTillFinish = timeTillFinish2IndexInProgressOnes.keys.toList();
         timesTillFinish.sort();
 
+        print("sorted times small to big");
+        print(timesTillFinish.toString());
+
         //iterate through keys to grab sorted order
         List<AnExercise> newInProgressOnes = new List<AnExercise>();
         for(int i = 0; i < timesTillFinish.length; i++){
@@ -238,7 +261,9 @@ class _ExerciseListState extends State<ExerciseList> {
           //cover main cases
           if(indicesInProgressOnes.length == 1){
             int theIndex = indicesInProgressOnes[0];
+            
             AnExercise theExercise = inProgressOnes[theIndex];
+            print("ID: " + theExercise.id.toString());
             newInProgressOnes.add(theExercise);
           }
           else{ //2 different exercises have their timers finishing at the exact same time
@@ -248,13 +273,14 @@ class _ExerciseListState extends State<ExerciseList> {
             for(int i = 0; i < indicesInProgressOnes.length; i++){
               int theIndex = indicesInProgressOnes[i];
               AnExercise theExercise = inProgressOnes[theIndex];
+              print("ID: " + theExercise.id.toString());
               newInProgressOnes.add(theExercise);
             }
           }
         }
 
         //add to group
-        groupsOfExercises.add(inProgressOnes);
+        groupsOfExercises.add(newInProgressOnes);
       }
 
       //add new ones if they exist

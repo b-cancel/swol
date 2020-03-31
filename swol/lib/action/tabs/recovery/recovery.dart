@@ -8,6 +8,7 @@ import 'package:swol/action/tabs/recovery/timer/liquidTime.dart';
 import 'package:swol/action/bottomButtons/button.dart';
 import 'package:swol/action/popUps/skipTimer.dart';
 import 'package:swol/action/page.dart';
+import 'package:swol/pages/selection/exerciseListPage.dart';
 
 //internal: shared
 import 'package:swol/shared/structs/anExercise.dart';
@@ -40,6 +41,9 @@ class _RecoveryState extends State<Recovery>
     //cases to test below
     //to shorter one, to longer one, to shorter one after longer completed, to longer one after shorter completed
     scheduleNotification(widget.exercise);
+
+    //manually update inprogress sorting
+    ExerciseSelectStateless.manualOrderUpdate.value = true;
   }
 
   //init

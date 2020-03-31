@@ -66,10 +66,6 @@ class _ExerciseTileLeadingState extends State<ExerciseTileLeading> {
   //and also
   @override
   Widget build(BuildContext context) {
-    print(widget.exercise.id.toString() +
-        " build: " +
-        widget.exercise.tempStartTime.toString());
-
     //NOTE: timer takes precendence over regular inprogress
     if (widget.exercise.tempStartTime.value != AnExercise.nullDateTime) {
       return AnimatedMiniNormalTimer(
