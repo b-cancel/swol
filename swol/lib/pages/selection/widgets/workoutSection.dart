@@ -145,7 +145,7 @@ class SectionBody extends StatelessWidget {
                 physics: ClampingScrollPhysics(),
                 itemCount: thisGroup.length,
                 //ONLY false IF Hidden Section
-                reverse: (sectionType == TimeStampType.Hidden),
+                reverse: (sectionType == TimeStampType.New || sectionType == TimeStampType.InProgress),
                 itemBuilder: (context, index){
                   AnExercise exercise = thisGroup[index];
                   return ExerciseTile(

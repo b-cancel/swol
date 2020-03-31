@@ -191,10 +191,6 @@ class _ExerciseListState extends State<ExerciseList> {
         }
       }
 
-      //-------------------------CHECK-------------------------*-------------------------ABOVE-------------------------
-      //-------------------------CHECK-------------------------*-------------------------ABOVE-------------------------
-      //-------------------------CHECK-------------------------*-------------------------ABOVE-------------------------
-
       //add in progress ones if they exist
       if(inProgressOnes.length > 0){
         groupsOfExercises.add(inProgressOnes);
@@ -269,28 +265,6 @@ class _ExerciseListState extends State<ExerciseList> {
         DateTime oldestDT = thisGroup[0].lastTimeStamp;
         TimeStampType sectionType = LastTimeStamp.returnTimeStampType(oldestDT);
 
-        /*
-        //flip all regular sections
-        //new and inprogress will be above them
-        //but hidden will be below so take that into account when filipping sections
-        if (sectionType == TimeStampType.Other) {
-          //adjust the index
-          int oldIndex = index;
-          if (inProgSection) oldIndex -= 1;
-          if (newSection) oldIndex -= 1;
-
-          //adjust last index
-          int lastPossibleIndex = groupsOfExercises.length - 1;
-          if (hiddenSection) lastPossibleIndex -= 1;
-          index = lastPossibleIndex - oldIndex;
-
-          //recalc variables used below
-          thisGroup = groupsOfExercises[index];
-          oldestDT = thisGroup[0].lastTimeStamp;
-          sectionType = LastTimeStamp.returnTimeStampType(oldestDT);
-        }
-        */
-
         //vars to set
         String title;
         String subtitle;
@@ -314,22 +288,52 @@ class _ExerciseListState extends State<ExerciseList> {
           }
         }
 
-        //set top section Color
-        bool highlightTop = (index == 0 || sectionType == TimeStampType.Hidden);
-        Color topColor = highlightTop
-            ? Theme.of(context).accentColor
-            : Theme.of(context).primaryColor;
+        //set TOP SECTION color
+        //color ALL special sections
+        //and FIRST exercise section
+
+        //all special sections
+        bool specialSection = (sectionType == TimeStampType.InProgress
+        || sectionType == TimeStampType.New 
+        || sectionType == TimeStampType.Hidden);
+
+        //how many special sections on top
+        int specialSectionsOnTop = (inProgressOnes.length > 0) ? 1 : 0;
+        specialSectionsOnTop += (newOnes.length > 0) ? 1 : 0;
+
+        //check if first exercise section
+        bool isFirstExerciseSection = (index == specialSectionsOnTop);
+
+        //set top color
+        Color topColor = (specialSection || isFirstExerciseSection)
+          ? Theme.of(context).accentColor
+          : Theme.of(context).primaryColor;
 
         //set bottom section color
-        Color bottomColor = Theme.of(context).accentColor;
+        Color bottomColor = Theme.of(context).primaryColor;
+
         /*
-        if (hiddenSection) {
-          //NOTE: here MUST use i... NOT INDEX
-          if ((i + 2) == groupsOfExercises.length) {
+        //if we have an inprogress and new section
+        if(){
+          //the in progress section has a special bottom Color
+          //to blend with new section top
+          if(index == 1) {
             bottomColor = Theme.of(context).accentColor;
-          } else{
+          } else {
             bottomColor = Theme.of(context).primaryColor;
           }
+        }
+        else if(hiddenOnes.length > 0){ //if we have a hidden section
+          //the last regular section has a special bottomColor
+        }
+        else{
+          bottomColor = Theme.of(context).primaryColor;
+        }
+
+
+        if (hiddenSection) {
+          //NOTE: here MUST use i... NOT INDEX
+          if ((i + 2) == groupsOfExercises.length) 
         } else{
           bottomColor = Theme.of(context).primaryColor;
         }
@@ -343,7 +347,7 @@ class _ExerciseListState extends State<ExerciseList> {
               title: title,
               subtitle: subtitle,
               sectionType: sectionType,
-              highlightTop: highlightTop,
+              highlightTop: topColor == Theme.of(context).accentColor,
               topColor: topColor,
             ),
             sliver: SectionBody(
