@@ -154,6 +154,11 @@ class ExerciseData{
     //official update
     if(allMatch == false){
       exercisesOrder.value = newOrder;
+      print("new order");
+      for(int i = 0; i < exercisesOrder.value.length; i++){
+        int id = exercisesOrder.value[i];
+        print(id.toString() + " => " + _exercises[id].name + " @ " + _exercises[id].lastTimeStamp.toString());
+      }
     }
   }
 
