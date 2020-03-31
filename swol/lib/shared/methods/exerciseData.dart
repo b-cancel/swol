@@ -152,7 +152,9 @@ class ExerciseData{
     }
 
     //official update
-    if(allMatch == false) exercisesOrder.value = newOrder;
+    if(allMatch == false){
+      exercisesOrder.value = newOrder;
+    }
   }
 
   //should never have to update from anywhere else

@@ -59,22 +59,6 @@ class _ExerciseTileState extends State<ExerciseTile> {
     //widget
     return ListTile(
       onTap: (){
-        /*
-        //-----
-        print("id:" + widget.exercise.id.toString());
-        print("time stamp: " + widget.exercise.lastTimeStamp.toString());
-        print("name: " +  widget.exercise.name.toString());
-        print("url: " + widget.exercise.url.toString());
-        print("note: " + widget.exercise.note.toString());
-        //-----
-        print("prediction ID: " + widget.exercise.predictionID.toString());
-        print("rep target: " + widget.exercise.repTarget.toString());
-        print("recovery: " + widget.exercise.recoveryPeriod.toString());
-        print("set target: " + widget.exercise.setTarget.toString());
-        */
-
-        print("time stamp: " + widget.exercise.lastTimeStamp.toString());
-
         //travel to page
         App.navSpread.value = true;
 
@@ -100,6 +84,22 @@ class _ExerciseTileState extends State<ExerciseTile> {
           Navigator.of(context).pushReplacement(page);
         }
         else Navigator.push(context, page);
+      },
+      onLongPress: (){
+        //debug stuff
+        print("-------------------------S-------------------------");
+        print("id:" + widget.exercise.id.toString());
+        print("time stamp: " + widget.exercise.lastTimeStamp.toString());
+        print("-------------------------Data-------------------------");
+        print("name: " +  widget.exercise.name.toString());
+        print("url: " + widget.exercise.url.toString());
+        print("note: " + widget.exercise.note.toString());
+        print("-------------------------Settings-------------------------");
+        print("prediction ID: " + widget.exercise.predictionID.toString());
+        print("rep target: " + widget.exercise.repTarget.toString());
+        print("recovery: " + widget.exercise.recoveryPeriod.toString());
+        print("set target: " + widget.exercise.setTarget.toString());
+        print("-------------------------E-------------------------");
       },
       title: ExerciseTitleHero(
         exercise: widget.exercise,
