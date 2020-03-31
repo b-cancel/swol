@@ -226,7 +226,7 @@ class _ExerciseListState extends State<ExerciseList> {
         }
         
         //sort keys
-        List<Duration> timesTillFinish = timeTillFinish2IndexInProgressOnes.keys;
+        List<Duration> timesTillFinish = timeTillFinish2IndexInProgressOnes.keys.toList();
         timesTillFinish.sort();
 
         //iterate through keys to grab sorted order

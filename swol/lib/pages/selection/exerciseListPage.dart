@@ -29,6 +29,8 @@ import 'package:swol/shared/widgets/simple/scrollToTop.dart';
 //  when its monday again you expect that workout to be on top with the first workout you did to be on top in the section
 
 class ExerciseSelectStateless extends StatelessWidget { 
+  static ValueNotifier<bool> manualOrderUpdate = new ValueNotifier<bool>(false);
+
   @override
   Widget build(BuildContext context) {
     return ExerciseSelect();

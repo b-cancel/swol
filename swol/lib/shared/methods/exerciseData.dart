@@ -159,7 +159,11 @@ class ExerciseData{
 
     //official update
     if(allMatch == false){
-      
+      //update order
+      //TODO: if newOrder is the same as exercisesOrder.value... will the update still run?
+      exercisesOrder.value = newOrder;
+
+      //print to check stuff
       print("new order");
       for(int i = 0; i < exercisesOrder.value.length; i++){
         int id = exercisesOrder.value[i];
