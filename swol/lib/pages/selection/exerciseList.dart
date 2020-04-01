@@ -51,7 +51,7 @@ class _ExerciseListState extends State<ExerciseList> {
   }
 
   //go back until the main page and then to the exercise
-  //TODO: refine this so that state is saved
+  //TODO: ***POTENTIAL BREAKING refine this so that state is saved
   //NOTE: this doesn't save any previous state
   //if skips out on the warnings that usually pop out
   //and doesn't autostart the set for the exercise that we are leaving
@@ -267,7 +267,7 @@ class _ExerciseListState extends State<ExerciseList> {
             newInProgressOnes.add(theExercise);
           }
           else{ //2 different exercises have their timers finishing at the exact same time
-            //TODO: they will finish the break at exactly the same time
+            //TODO: ***EASY FIX, SHOULD FIX they will finish the break at exactly the same time
             //but they where started at different times
             //which every one was started first goes on the bottom
             for(int i = 0; i < indicesInProgressOnes.length; i++){

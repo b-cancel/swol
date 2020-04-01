@@ -151,24 +151,9 @@ class ExerciseData{
       newOrder.add(thisID);
     }
 
-    //TODO: do the thing below if we can't do anything else
-    //NOTE: we still want to update even if nothing changed
-    //because we MAY be updating due to a changed "recoveryTime" duration
-    //this wouldn't change the order
-    //but it should reload the inProgress section
-
     //official update
     if(allMatch == false){
-      //update order
-      //TODO: if newOrder is the same as exercisesOrder.value... will the update still run?
       exercisesOrder.value = newOrder;
-
-      //print to check stuff
-      print("new order");
-      for(int i = 0; i < exercisesOrder.value.length; i++){
-        int id = exercisesOrder.value[i];
-        print(id.toString() + " => " + _exercises[id].name + " @ " + _exercises[id].lastTimeStamp.toString());
-      }
     }
   }
 

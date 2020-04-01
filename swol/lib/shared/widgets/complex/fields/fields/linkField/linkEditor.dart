@@ -90,7 +90,8 @@ class _LinkEditorState extends State<LinkEditor> {
           children: <Widget>[
             //IF we can only edit one at a time AND we are not editing
             showToEditButton ? EditButton(isEditing: isEditing) : Container(),
-            //TODO: add condition description to confirm this never overlaps the above
+            //TODO: ***add condition description to confirm this never overlaps the above
+            //IDK what im refering to above
             (showClearAndConfirmButtons) ? ConfirmOrClear(
               isEditing: isEditing,
               editOneAtATime: widget.editOneAtATime,

@@ -33,7 +33,6 @@ maybeError(
   AnExercise exercise,
   DateTime startTime,
 ) {
-  //TODO: ideally we let the user skip the step
   bool keyboardOpen = FocusScope.of(context).hasFocus;
   if (keyboardOpen) {
     FocusScope.of(context).unfocus();
