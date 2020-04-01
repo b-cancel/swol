@@ -64,6 +64,7 @@ class _RecoveryState extends State<Recovery>
       askForPermissionIfNotGrantedAndWeNeverAsked(
         context,
         () {
+          print("-------------------------Auto On Complete from The Recovery Page");
           scheduleNotification(widget.exercise);
         },
       );

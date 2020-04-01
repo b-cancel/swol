@@ -72,6 +72,22 @@ Future<bool> warningThenPop(BuildContext context, AnExercise exercise) async {
   //2. the user want to go back by deleting the mistyped set
   //    which ofcourse won't start the timer and therefore not have a notification
 
+  Function scheduleThenBack = (){
+    print("-------------------------On Complete from Warning With No Update");
+    //regardless of whether the permission was given
+
+    //try to schedlue notification
+    //Case 1: here you already have processed a Valid Set
+    //Case 2: we are reverting so nothing new was updated
+    //we already have tempStartTime
+    //and recoveryPeriod that we need
+    //to schedule it since the timer started and no change has been made
+    scheduleNotification(exercise);
+
+    //perform expected action
+    backToExercises(context);
+  };
+
   //Of both match the cases to address drop significantly
   if (bothMatch) {
     //our notifiers match our temps
@@ -80,19 +96,10 @@ Future<bool> warningThenPop(BuildContext context, AnExercise exercise) async {
 
     bool timerStarted = exercise.tempStartTime.value != AnExercise.nullDateTime;
     if (timerStarted) {
-      askForPermissionIfNotGrantedAndWeNeverAsked(context, () {
-        //regardless of whether the permission was given
-
-        //try to schedlue notification
-        //NOTE: here you already have processed a Valid Set
-        //we already have tempStartTime
-        //and recoveryPeriod that we need
-        //to schedule it since the timer started and no change has been made
-        scheduleNotification(exercise);
-
-        //perform expected action
-        backToExercises(context);
-      });
+      askForPermissionIfNotGrantedAndWeNeverAsked(
+        context, 
+        scheduleThenBack,
+      );
     } else {
       //timer hasn't started, both fields are empty
       //dont pester the user
@@ -126,6 +133,7 @@ Future<bool> warningThenPop(BuildContext context, AnExercise exercise) async {
     //if its valid horray! no extra pop ups
     if (newSetValid) {
       askForPermissionIfNotGrantedAndWeNeverAsked(context, () {
+        print("-------------------------Auto On Complete from Warning With Updates");
         //regardless of whether the permission was given
 
         //will start or update the set
@@ -138,8 +146,12 @@ Future<bool> warningThenPop(BuildContext context, AnExercise exercise) async {
         if (newSet) {
           scheduleNotificationAfterUpdate(exercise);
         } //things are set as they should be before this action
-        else
+        else {
+          //as in I have the time the timer started
+          //because this set is an update
+          //and the recovery period is set
           scheduleNotification(exercise);
+        }
       });
     } else {
       //remove focus so the pop up doesnt bring it back
@@ -215,19 +227,11 @@ Future<bool> warningThenPop(BuildContext context, AnExercise exercise) async {
             if (newSet) {
               backToExercises(context);
             } else {
-              askForPermissionIfNotGrantedAndWeNeverAsked(context, () {
-                //regardless of whether the permission was given
-
-                //try to schedlue notification
-                //NOTE: we are reverting so nothing new was updated
-                //we already have tempStartTime
-                //and recoveryPeriod that we need
-                //to schedule it since the timer started and no change has been made
-                scheduleNotification(exercise);
-
-                //expected action
-                backToExercises(context);
-              });
+              //we are reverting back so we do schedule
+              askForPermissionIfNotGrantedAndWeNeverAsked(
+                context, 
+                scheduleThenBack,
+              );
             }
           },
         ),

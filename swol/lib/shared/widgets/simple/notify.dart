@@ -171,6 +171,7 @@ scheduleNotificationAfterUpdate(AnExercise exercise) {
   }
 }
 
+//TODO: check if we need permission to cancel a notifcation
 //NOTE: used because perhaps canceling when there is nothing to cancel might break things on IOS
 safeCancelNotification(int id) async {
   //check this ID has previously scheduled a notification

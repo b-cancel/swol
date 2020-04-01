@@ -1,11 +1,13 @@
 //flutter
 import 'package:flutter/material.dart';
 
-//packages
-import 'package:flutter_spinkit/flutter_spinkit.dart';
+//plugins
 import 'package:permission_handler/permission_handler.dart';
-import 'package:swol/action/notificationPopUp.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+
+//internal
 import 'package:swol/shared/structs/anExercise.dart';
+import 'package:swol/action/notificationPopUp.dart';
 import 'package:swol/shared/widgets/simple/notify.dart';
 
 //build
@@ -40,8 +42,10 @@ class _NotificationSwitchState extends State<NotificationSwitch> with WidgetsBin
     //super init
     super.initState();
 
-    //more often than not users will aprove it so the button wont show
+    //more often than not users will have it aproved
+    //so the button wont show
     showButton = false;
+    //in case we are wrong thats updated here
     updateShowButton();
 
     //for on resume
@@ -60,32 +64,20 @@ class _NotificationSwitchState extends State<NotificationSwitch> with WidgetsBin
       updateShowButton();
     }
   }
-
-  /*
-  completeIfPermissionGranted() async {
-    print("************************resumed");
-
-    //check new status
-    status = await PermissionHandler().checkPermissionStatus(
-      PermissionGroup.notification,
-    );
-
-    //if granted schedule
-    if(status == PermissionStatus.granted){
-      print("************************scheduling now");
-      scheduleNotification(widget.exercise);
-    }
-
-    //show or hide button
-    updateShowButton(statusOutdated: false);
-  }
-  */
   
   updateShowButton({statusOutdated: true})async{
     if(statusOutdated){
       status = await PermissionHandler().checkPermissionStatus(
         PermissionGroup.notification,
       );
+    }
+
+    //schedule notification or cancel it
+    if(status == PermissionStatus.granted){
+      scheduleNotification(widget.exercise);
+    }
+    else{
+      safeCancelNotification(widget.exercise.id);
     }
 
     //if anything else but granted the button should show

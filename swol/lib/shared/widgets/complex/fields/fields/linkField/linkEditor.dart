@@ -1,6 +1,7 @@
 //flutter
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:swol/shared/widgets/simple/conditional.dart';
 
 //plugin
 import 'package:url_launcher/url_launcher.dart';
@@ -79,37 +80,66 @@ class _LinkEditorState extends State<LinkEditor> {
     bool showClearAndConfirmButtons = (showEditButtons && widget.url.value != "");
     bool showPasteButton = showEditButtons;
 
+    //ez condition
+    bool emptyUrl = (widget.url.value == null || widget.url.value.length == 0);
+
+    //normal widget
+    Widget normalOne = Row(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: <Widget>[
+        //IF we can only edit one at a time AND we are not editing
+        showToEditButton ? EditButton(isEditing: isEditing) : Container(),
+        //TODO: ***add condition description to confirm this never overlaps the above
+        //IDK what im refering to above
+        (showClearAndConfirmButtons) ? ConfirmOrClear(
+          isEditing: isEditing,
+          editOneAtATime: widget.editOneAtATime,
+          url: widget.url,
+        ): Container(),
+        //-------------------------
+        Visibility(
+          visible: emptyUrl == false,
+          child: LaunchLinkButton(
+            url: widget.url,
+            showWarning: showWarning,
+          ),
+        ),
+        //-------------------------
+        //if we are in the position to edit the field
+        showPasteButton ? _PasteButton(
+          url: widget.url,
+          emptyUrl: emptyUrl,
+          isEditing: isEditing,
+          showWarning: showWarning,
+          editingOneAtATime: widget.editOneAtATime,
+        ) : Container(),
+      ],
+    );
+
     //build
     return ClipRRect(
       borderRadius: new BorderRadius.all(
         Radius.circular(16.0),
       ), //instrinc height below
       child: IntrinsicHeight(
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            //IF we can only edit one at a time AND we are not editing
-            showToEditButton ? EditButton(isEditing: isEditing) : Container(),
-            //TODO: ***add condition description to confirm this never overlaps the above
-            //IDK what im refering to above
-            (showClearAndConfirmButtons) ? ConfirmOrClear(
-              isEditing: isEditing,
-              editOneAtATime: widget.editOneAtATime,
-              url: widget.url,
-            ): Container(),
-            //-------------------------
-            LaunchLinkButton(
-              url: widget.url,
-              showWarning: showWarning,
+        child: Conditional(
+          condition: widget.editOneAtATime && emptyUrl, 
+          ifTrue: Container(
+            height: 48,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                _PasteButton( 
+                  url: widget.url,
+                  emptyUrl: emptyUrl,
+                  isEditing: isEditing,
+                  showWarning: showWarning,
+                  editingOneAtATime: widget.editOneAtATime,
+                ),
+              ],
             ),
-            //-------------------------
-            //if we are in the position to edit the field
-            (showPasteButton) ? _PasteButton(
-              url: widget.url, 
-              isEditing: isEditing,
-              showWarning: showWarning,
-            ) : Container(),
-          ],
+          ), 
+          ifFalse: normalOne,
         ),
       ),
     );
@@ -190,7 +220,7 @@ class LaunchLinkButton extends StatelessWidget {
           if (await canLaunch(url.value)) {
             //launch the launchable url
             await launch(url.value);
-          } else showWarning("Could Not Launch URL");
+          } else showWarning("Could Not Open Link");
         },
         child: Container(
           padding: EdgeInsets.all(8),
@@ -211,24 +241,39 @@ class _PasteButton extends StatelessWidget {
   const _PasteButton({
     Key key,
     @required this.url,
+    @required this.emptyUrl,
     @required this.isEditing,
     @required this.showWarning,
+    @required this.editingOneAtATime,
   }) : super(key: key);
 
   final ValueNotifier<String> url;
+  final bool emptyUrl;
   final ValueNotifier<bool> isEditing;
   final Function showWarning;
+  final bool editingOneAtATime;
 
   @override
   Widget build(BuildContext context) {
-    return FlatButton(
+    Widget button = FlatButton(
       color: Theme.of(context).accentColor,
       padding: EdgeInsets.all(0),
       onPressed: (){
+        //unfocus from others
+        if(editingOneAtATime){
+          FocusScope.of(context).unfocus();
+        }
+        
+        //clip board operation
         Clipboard.getData('text/plain').then((clipboardContent) {
           if(clipboardContent?.text != null){
             //pass new url text
             url.value = clipboardContent.text;
+            
+            //cause reload
+            if(editingOneAtATime){
+              isEditing.value = true;
+            }
           }
           else{
             //show clipboard empty
@@ -240,12 +285,22 @@ class _PasteButton extends StatelessWidget {
         });
       },
       child: Text(
-        "Paste",
+        emptyUrl == false ? "Paste" : "Tap Here To Paste A Link",
         style: TextStyle(
           color: Theme.of(context).primaryColorDark,
           fontWeight: FontWeight.bold,
         ),
       ),
     );
+
+    //different
+    if(emptyUrl){
+      return Expanded(
+        child: button,
+      );
+    }
+    else{
+      return button;
+    }
   }
 }
