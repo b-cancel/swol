@@ -5,9 +5,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:swol/action/notificationPopUp.dart';
+import 'package:swol/shared/structs/anExercise.dart';
+import 'package:swol/shared/widgets/simple/notify.dart';
 
 //build
 class NotificationSwitch extends StatefulWidget {
+  NotificationSwitch({
+    @required this.exercise,
+  });
+
+  final AnExercise exercise;
+
   @override
   _NotificationSwitchState createState() => _NotificationSwitchState();
 }
@@ -45,29 +53,40 @@ class _NotificationSwitchState extends State<NotificationSwitch> with WidgetsBin
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
-
   
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
-      completeIfPermissionGranted();
-    }
-  }
-
-  completeIfPermissionGranted() async {
-    PermissionStatus status = await PermissionHandler().checkPermissionStatus(
-      PermissionGroup.notification,
-    );
-
-    if (status == PermissionStatus.granted) {
       updateShowButton();
     }
   }
-  
-  updateShowButton()async{
+
+  /*
+  completeIfPermissionGranted() async {
+    print("************************resumed");
+
+    //check new status
     status = await PermissionHandler().checkPermissionStatus(
       PermissionGroup.notification,
     );
+
+    //if granted schedule
+    if(status == PermissionStatus.granted){
+      print("************************scheduling now");
+      scheduleNotification(widget.exercise);
+    }
+
+    //show or hide button
+    updateShowButton(statusOutdated: false);
+  }
+  */
+  
+  updateShowButton({statusOutdated: true})async{
+    if(statusOutdated){
+      status = await PermissionHandler().checkPermissionStatus(
+        PermissionGroup.notification,
+      );
+    }
 
     //if anything else but granted the button should show
     showButton = (status != PermissionStatus.granted);
@@ -77,7 +96,7 @@ class _NotificationSwitchState extends State<NotificationSwitch> with WidgetsBin
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context){
     return Container(
       padding: EdgeInsets.all(24),
       child: Visibility(

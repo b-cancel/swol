@@ -89,12 +89,12 @@ class _AddExerciseState extends State<AddExercise> {
 
   final FocusNode noteFocusNode = FocusNode();
 
-  //TODO: its possible to navigate away from the page without knowing
+  //TODO: ***ANNOYING BUT EASY TO AVOID: its possible to navigate away from the page without knowing
   //and lose what you plugged in for your new exercise already
   //so save the state when you back up and restore it when you come back
   //you can navigate away by going to learn more
 
-  //TODO: make BELOW functional, decided to skip since we can't currently do this
+  //TODO: ***ANNOYING BUT ONLY WHEN ADDING EXERCISE: make BELOW functional, decided to skip since we can't currently do this
   //since we can't make the time picker update this way unless we do some hacks
   //the hack would be simply to have a manual reload that builds a different picker
   //but ONLY if the picker is being set by something else

@@ -339,7 +339,9 @@ class _TimerState extends State<Timer> with TickerProviderStateMixin {
             Positioned(
               top: 0,
               right: 0,
-              child: NotificationSwitch(),
+              child: NotificationSwitch(
+                exercise: widget.exercise,
+              ),
             ),
             Hero(
               tag: generatedHeroTag,

@@ -241,12 +241,14 @@ requestThatYouGoToAppSettings(
       onPressed: () {
         PermissionHandler().openAppSettings();
         //NOTE: that complete WILL run not here
-        //but on resuming the notification switch
-        //we will check if its possible
-        //it works the same way as PopOnResume
+        //but it will run in the widget below
+        //when we detect that you have given us permission
+        //the pop up will be auto dismissed
+        //and onComplete will run
       },
       child: PopOnResumeIfPermissionGranted(
         child: Text("App Info"),
+        onComplete: onComplete,
       ),
     ),
   );
@@ -255,9 +257,11 @@ requestThatYouGoToAppSettings(
 class PopOnResumeIfPermissionGranted extends StatefulWidget {
   PopOnResumeIfPermissionGranted({
     @required this.child,
+    @required this.onComplete,
   });
 
   final Widget child;
+  final Function onComplete;
 
   @override
   _PopOnResumeIfPermissionGrantedState createState() =>
@@ -267,6 +271,7 @@ class PopOnResumeIfPermissionGranted extends StatefulWidget {
 class _PopOnResumeIfPermissionGrantedState
     extends State<PopOnResumeIfPermissionGranted>
     with WidgetsBindingObserver {
+      
   @override
   void initState() {
     super.initState();
@@ -283,17 +288,18 @@ class _PopOnResumeIfPermissionGrantedState
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
-      popIfPermissionGranted();
+      popAndCompleteIfPermissionGranted();
     }
   }
 
-  popIfPermissionGranted() async {
+  popAndCompleteIfPermissionGranted() async {
     PermissionStatus status = await PermissionHandler().checkPermissionStatus(
       PermissionGroup.notification,
     );
 
     if (status == PermissionStatus.granted) {
       Navigator.of(context).pop();
+      widget.onComplete();
     }
   }
 
