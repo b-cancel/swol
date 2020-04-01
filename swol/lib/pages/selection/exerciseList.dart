@@ -50,8 +50,48 @@ class _ExerciseListState extends State<ExerciseList> {
     }
   }
 
+  //NOTE: case analysis of function below
+  //In particular when its triggered from page 0 or page 1 of an exercise
+
+  //the function runs after a notification is triggered
+  //a notification is triggered if the permission is given
+
+  //NOTE: this DOES NOT mean its been requested 
+  //  since it automatically requested by android
+  //  this WOULD mean its been requested if the platform is IOS tho
+  //but assume that its irelevant
+  //we only CARE ABOUT requesting permission IF we don't have it
+  
+  //NOTE: If a permission is taken away after a notification is scheduled
+  //is the notification canceled? for both platforms?
+  //for Android, turning off notification doesn't cancel the notification
+  //  it just blocks them
+  //IDK for IOS so assume that it isn't
+
+  //So we know that when this pop ups a notification was schedule and arrived
+  //1. we KNOW Notifications Are Current Enabled (Regardless of Platform)
+  //2. we DONT KNOW if they have been requested
+  //3. we KNOW 2 doesn't matter because Notifications are granted regardless
+  //4. and because 3 is true than nothing having to do with permission will show up
+  
+  //So we know the error causing things that can occur are
+  //we haven't started the timer 
+  //  1. and our set is invalid (ERROR)
+  //  2. and our set is valid
+  //  3. and our set is not recorded
+  //    TODO: address error on the exercise we travel to
+  //    the exercise that we travel to MIGHT travel to page 1 instead of 0
+  //        atleast for first set of exercise
+  //        and for all other sets of exercises
+  //        * the problem is the record field doesn't have the value you already recorded
+  //we have started the timer so we want to update our set
+  //  1. and the update is invalid (ERROR)
+  //  2. and the update is valid
+  //  3. and our set is not recorded
+  
+  //TODO: check if any of the above cause problems
+
   //go back until the main page and then to the exercise
-  //TODO: ***POTENTIAL BREAKING refine this so that state is saved
   //NOTE: this doesn't save any previous state
   //if skips out on the warnings that usually pop out
   //and doesn't autostart the set for the exercise that we are leaving

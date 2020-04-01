@@ -89,8 +89,9 @@ class AddNewHeroHelper extends StatelessWidget {
         };
       }
     } //Tapping while transitioning does nothing
-    else
+    else{
       onTap = () {};
+    }
 
     //NOTE in all cases below (regular button first, then app bar button)
     return Conditional(
