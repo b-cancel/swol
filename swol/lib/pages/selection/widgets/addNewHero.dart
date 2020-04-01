@@ -11,6 +11,7 @@ import 'package:page_transition/page_transition.dart';
 import 'package:swol/pages/add/addExercise.dart';
 import 'package:swol/main.dart';
 import 'package:swol/other/otherHelper.dart';
+import 'package:swol/shared/widgets/simple/conditional.dart';
 import 'package:swol/shared/widgets/simple/heros/curveMod.dart';
 
 class AddNewHero extends StatelessWidget {
@@ -37,7 +38,7 @@ class AddNewHero extends StatelessWidget {
       ) {
         return AnimatedBuilder(
           animation: animation,
-          builder: (context, child){
+          builder: (context, child) {
             return AddNewHeroHelper(
               percentToAppBar: animation.value,
             );
@@ -65,22 +66,21 @@ class AddNewHeroHelper extends StatelessWidget {
 
     //determine on tap function
     Function onTap;
-    if(percentToAppBar == 0 || percentToAppBar == 1){
-      if(percentToAppBar == 1){
-        onTap = (){
+    if (percentToAppBar == 0 || percentToAppBar == 1) {
+      if (percentToAppBar == 1) {
+        onTap = () {
           FocusScope.of(context).unfocus();
           App.navSpread.value = false;
           Navigator.of(context).pop();
         };
-      }
-      else{
-        onTap = (){
+      } else {
+        onTap = () {
           App.navSpread.value = true;
           Navigator.push(
-            context, 
+            context,
             PageTransition(
               duration: transitionDuration,
-              type: PageTransitionType.downToUp, 
+              type: PageTransitionType.downToUp,
               child: AddExercise(
                 showPageDuration: transitionDuration,
               ),
@@ -89,118 +89,122 @@ class AddNewHeroHelper extends StatelessWidget {
         };
       }
     } //Tapping while transitioning does nothing
-    else onTap = (){};
+    else
+      onTap = () {};
 
     //NOTE in all cases below (regular button first, then app bar button)
-    return ClipRRect(
-      borderRadius: new BorderRadius.all(
-        new Radius.circular(
-          //button size should never be larger than 56
-          //and even if its a little bit above nothing bad will happen
-          lerpDouble(28, 0, percentToAppBar),
+    return Conditional(
+      condition: percentToAppBar == 0,
+      ifTrue: FloatingActionButton(
+        heroTag: null,
+        onPressed: onTap,
+        backgroundColor: Theme.of(context).accentColor,
+        child: Icon(
+          Icons.add,
+          color: Theme.of(context).primaryColorDark,
+          size: 24,
         ),
       ),
-      child: Container(
-        color: Color.lerp(
-          Theme.of(context).accentColor, 
-          Theme.of(context).primaryColorDark, 
-          percentToAppBar,
+      ifFalse: ClipRRect(
+        borderRadius: new BorderRadius.all(
+          new Radius.circular(
+            //button size should never be larger than 56
+            //and even if its a little bit above nothing bad will happen
+            lerpDouble(28, 0, percentToAppBar),
+          ),
         ),
-        child: Material(
-          color: Colors.transparent,
-          child: InkWell(
-            onTap: onTap,
-            child: percentToAppBar == 0 
-            ? Container(
-              height: 56,
-              width: 56,
-              child: Icon(
-                Icons.add,
-                color: Theme.of(context).primaryColorDark,
-                size: 24,
-              ),
-            ) 
-            : Container(
-              padding: EdgeInsets.symmetric(
-                horizontal: 16,
-              ),
+        child: Container(
+          color: Color.lerp(
+            Theme.of(context).accentColor,
+            Theme.of(context).primaryColorDark,
+            percentToAppBar,
+          ),
+          child: Material(
+            color: Colors.transparent,
+            child: InkWell(
+              onTap: onTap,
               child: Container(
-                height: 48,
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    Flexible(
-                      child: Padding(
-                        padding: EdgeInsets.only(
-                          right: lerpDouble(
-                            8,
-                            NavigationToolbar.kMiddleSpacing,
-                            percentToAppBar,
-                          ),
-                        ),
-                        child: Transform.rotate(
-                          angle: (-math.pi / 4) * (percentToAppBar),
-                          child: (percentToAppBar == 0) 
-                          ? Icon(
-                            Icons.add,
-                            color: Color.lerp(
-                              Theme.of(context).primaryColorDark,
-                              Colors.white,
+                padding: EdgeInsets.symmetric(
+                  horizontal: 16,
+                ),
+                child: Container(
+                  height: 48,
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Flexible(
+                        child: Padding(
+                          padding: EdgeInsets.only(
+                            right: lerpDouble(
+                              8,
+                              NavigationToolbar.kMiddleSpacing,
                               percentToAppBar,
                             ),
-                          )
-                          //NOTE: the close button must be turned to look like an add button
-                          : Transform.rotate(
-                            angle: (-math.pi / 4),
-                            child: Icon(
-                              Icons.close,
-                              color: Color.lerp(
-                                Theme.of(context).primaryColorDark,
-                                Colors.white,
+                          ),
+                          child: Transform.rotate(
+                            angle: (-math.pi / 4) * (percentToAppBar),
+                            child: (percentToAppBar == 0)
+                                ? Icon(
+                                    Icons.add,
+                                    color: Color.lerp(
+                                      Theme.of(context).primaryColorDark,
+                                      Colors.white,
+                                      percentToAppBar,
+                                    ),
+                                  )
+                                //NOTE: the close button must be turned to look like an add button
+                                : Transform.rotate(
+                                    angle: (-math.pi / 4),
+                                    child: Icon(
+                                      Icons.close,
+                                      color: Color.lerp(
+                                        Theme.of(context).primaryColorDark,
+                                        Colors.white,
+                                        percentToAppBar,
+                                      ),
+                                    ),
+                                  ),
+                          ),
+                        ),
+                      ),
+                      Flexible(
+                        child: Padding(
+                          padding: EdgeInsets.only(
+                            right: 8,
+                          ),
+                          child: DefaultTextStyle(
+                            style: TextStyle(
+                              decoration: TextDecoration.none,
+                              textBaseline: TextBaseline.alphabetic,
+                              fontWeight: FontWeight.w500,
+                            ),
+                            child: Text(
+                              "Add New",
+                              style: TextStyle.lerp(
+                                TextStyle(
+                                  color: Theme.of(context).primaryColorDark,
+                                  letterSpacing: 1,
+                                  fontSize: 14,
+                                ),
+                                //NOTE: I have absolutely no idea why its isnt allowing me to jut use
+                                //Theme.of(context).primaryTextTheme.title
+                                //but after print it I realized what values are different
+                                //and can simply copy them over
+                                TextStyle(
+                                  color: Colors.white,
+                                  letterSpacing: 0,
+                                  fontSize: 20,
+                                ),
                                 percentToAppBar,
                               ),
+                              softWrap: false,
+                              overflow: TextOverflow.ellipsis,
                             ),
                           ),
                         ),
                       ),
-                    ),
-                    Flexible(
-                      child: Padding(
-                        padding: EdgeInsets.only(
-                          right: 8,
-                        ),
-                        child: DefaultTextStyle(
-                          style: TextStyle(
-                            decoration: TextDecoration.none,
-                            textBaseline: TextBaseline.alphabetic,
-                            fontWeight: FontWeight.w500,
-                          ),
-                          child: Text(
-                            "Add New",
-                            style: TextStyle.lerp(
-                            TextStyle(
-                              color: Theme.of(context).primaryColorDark,
-                              letterSpacing: 1,
-                              fontSize: 14,
-                            ),
-                            //NOTE: I have absolutely no idea why its isnt allowing me to jut use
-                            //Theme.of(context).primaryTextTheme.title
-                            //but after print it I realized what values are different
-                            //and can simply copy them over
-                            TextStyle(
-                              color: Colors.white,
-                              letterSpacing: 0,
-                              fontSize: 20,
-                            ),
-                            percentToAppBar,
-                          ),
-                          softWrap: false,
-                          overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),

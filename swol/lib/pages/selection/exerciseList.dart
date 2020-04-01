@@ -267,7 +267,10 @@ class _ExerciseListState extends State<ExerciseList> {
             newInProgressOnes.add(theExercise);
           }
           else{ //2 different exercises have their timers finishing at the exact same time
-            //TODO: ***EASY FIX, SHOULD FIX they will finish the break at exactly the same time
+            //NOTE:currently our sorting order views things like so
+            //what was started first is on top
+            //which is exatly how we want to be this bit sorted so just add them as they appear
+
             //but they where started at different times
             //which every one was started first goes on the bottom
             for(int i = 0; i < indicesInProgressOnes.length; i++){
