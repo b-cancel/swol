@@ -201,7 +201,9 @@ class _ExercisePageDarkState extends State<ExercisePageDark> {
     super.initState();
 
     //TODO: confirm that all these are causing issues because of not updating on init
-    //static other: pageNumber
+    //static other: pageNumber [CHECKED]
+    //  but clearly "initalPage" which set it is not being created properly
+    //  checking its generation and fixing that first
     //static vars: setWeight, setReps, oneRepMaxes, orderedIDs, closestIndex, setGoalWeight, setGoalReps
     //static func starters: causeRefocusIfInvalid, updateSet, nextSet
 
