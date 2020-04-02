@@ -88,6 +88,8 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
   //build
   @override
   Widget build(BuildContext context) {
+    print("page now after build: " + ExercisePage.pageNumber.value.toString());
+
     //both values grabbed raw
     double bottomPadding = 24.0 + 24.0 + 40.0 + 24;
     double topPadding = 16;
@@ -145,6 +147,8 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
   //NOTE: since this is triggered by a change to a notifier
   //we will never go to a page that we are already at
   updatePage(){
+    print("animating to: " + ExercisePage.pageNumber.value.toString());
+
     //close the keybaord since we have been on page 1 (record)
     FocusScope.of(context).unfocus();
 

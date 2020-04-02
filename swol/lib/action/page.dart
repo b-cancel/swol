@@ -268,12 +268,15 @@ class _ExercisePageDarkState extends State<ExercisePageDark> {
   Widget build(BuildContext context) {
     //set the first page we will be at based on startTimerValue
     int initialPage;
-    bool timerNotStarted = (widget.exercise.tempStartTime.value == AnExercise.nullDateTime);
-    if(timerNotStarted){
-      if(widget.exercise.lastWeight == null) initialPage = 1;
-      else initialPage = 0;
+    bool timerStarted = (widget.exercise.tempStartTime.value != AnExercise.nullDateTime);
+    bool lastSetPresent = (widget.exercise.lastWeight != null);
+    print("timer started: |" + timerStarted.toString() + "| Last Set Present |" + lastSetPresent.toString() + "|");
+    if(timerStarted){
+      initialPage = 2;
     }
-    else initialPage = 2;
+    else{
+      initialPage = (lastSetPresent) ? 0 : 1;
+    }
 
     //build
     return Scaffold(

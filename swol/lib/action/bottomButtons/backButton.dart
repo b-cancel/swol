@@ -74,8 +74,16 @@ class _BottomBackButtonState extends State<BottomBackButton> {
             padding: EdgeInsets.symmetric(
               vertical: 24,
             ),
-            child: BottomRight(
-              color: widget.color,
+            child: Stack(
+              children: <Widget>[
+                Container(
+                  width: 12,
+                  height: 12,
+                ),
+                BottomRight(
+                  color: widget.color,
+                ),
+              ],
             ),
           ),
           ifFalse: Tooltip(
