@@ -228,7 +228,7 @@ class _FloatingDoneButtonState extends State<FloatingDoneButton> {
       child: Visibility(
         visible: fullyHidden ? false : true,
         child: Tooltip(
-          message: showButton == false ? "hiding" : message,
+          message: message,
           child: GestureDetector(
             behavior: showButton == false ? HitTestBehavior.translucent : HitTestBehavior.opaque,
             onTap: showButton == false ? null : (){

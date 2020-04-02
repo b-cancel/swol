@@ -75,21 +75,20 @@ class _ExerciseListState extends State<ExerciseList> {
   //4. and because 3 is true than nothing having to do with permission will show up
   
   //So we know the error causing things that can occur are
+  //* means its taken care off or doesn't cause a problem
   //we haven't started the timer 
   //  1. and our set is invalid (ERROR)
+  //    TODO: SHOULD be fixed
   //  2. and our set is valid
-  //  3. and our set is not recorded
-  //    TODO: address error on the exercise we travel to
-  //    the exercise that we travel to MIGHT travel to page 1 instead of 0
-  //        atleast for first set of exercise
-  //        and for all other sets of exercises
-  //        * the problem is the record field doesn't have the value you already recorded
+  //    TODO: must be fixed
+  //  *3. and our set is not recorded
   //we have started the timer so we want to update our set
   //  1. and the update is invalid (ERROR)
+  //    TODO: SHOULD be fixed
   //  2. and the update is valid
-  //  3. and our set is not recorded
-  
-  //TODO: check if any of the above cause problems
+  //    TODO: must be fixed
+  //  3. and our set is the same as it was before
+  //    TODO: must be fixed
 
   //go back until the main page and then to the exercise
   //NOTE: this doesn't save any previous state

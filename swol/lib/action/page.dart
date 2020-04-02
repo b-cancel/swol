@@ -71,9 +71,10 @@ class ExercisePage extends StatelessWidget {
   Widget build(BuildContext context) {
     print(exercise.id.toString() +
         " " +
-        exercise.tempStartTime.toString() +
+        exercise.name.toString() +
         "***********");
 
+    //build
     return Theme(
       key: globalKey,
       data: MyTheme.dark,
@@ -199,6 +200,11 @@ class _ExercisePageDarkState extends State<ExercisePageDark> {
     //super init
     super.initState();
 
+    //TODO: confirm that all these are causing issues because of not updating on init
+    //static other: pageNumber
+    //static vars: setWeight, setReps, oneRepMaxes, orderedIDs, closestIndex, setGoalWeight, setGoalReps
+    //static func starters: causeRefocusIfInvalid, updateSet, nextSet
+
     //reset all statics to defaults
     ExercisePage.pageNumber.value = 0; //this will properly update itself later
     //goals
@@ -217,6 +223,18 @@ class _ExercisePageDarkState extends State<ExercisePageDark> {
     //add listeners
     ExercisePage.updateSet.addListener(updateSet);
     ExercisePage.nextSet.addListener(nextSet);
+
+    //proper inits
+    //initally set the notifiers
+    //after this our notifiers initially set our controllers
+    //our controllers update our notifiers
+    //and then our notifiers ONLY update our temps under very specific conditions
+    int tempWeight = widget?.exercise?.tempWeight;
+    int tempReps = widget?.exercise?.tempReps;
+
+    //extra step needed because null.toString() isn't null
+    ExercisePage.setWeight.value = (tempWeight != null) ? tempWeight.toString() : "";
+    ExercisePage.setReps.value = (tempReps != null) ? tempReps.toString() : "";
 
     //one rep maxes
     updateOneRepMaxes();
@@ -246,6 +264,16 @@ class _ExercisePageDarkState extends State<ExercisePageDark> {
 
   @override
   Widget build(BuildContext context) {
+    //set the first page we will be at based on startTimerValue
+    int initialPage;
+    bool timerNotStarted = (widget.exercise.tempStartTime.value == AnExercise.nullDateTime);
+    if(timerNotStarted){
+      if(widget.exercise.lastWeight == null) initialPage = 1;
+      else initialPage = 0;
+    }
+    else initialPage = 2;
+
+    //build
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColorDark,
       appBar: PreferredSize(
@@ -272,6 +300,7 @@ class _ExercisePageDarkState extends State<ExercisePageDark> {
           //and the others are within a scaffold
           statusBarHeight: MediaQuery.of(context).padding.top,
           transitionDuration: widget.transitionDuration,
+          initialPage: initialPage,
         ),
       ),
     );

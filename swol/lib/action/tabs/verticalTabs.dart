@@ -15,11 +15,13 @@ class VerticalTabs extends StatefulWidget {
   final AnExercise exercise;
   final double statusBarHeight;
   final Duration transitionDuration;
+  final int initialPage;
 
   VerticalTabs({
     @required this.exercise,
     @required this.statusBarHeight,
     @required this.transitionDuration,
+    @required this.initialPage,
   });
 
   @override
@@ -43,35 +45,20 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
     //super init
     super.initState();
 
-    //set the first page we will be at based on startTimerValue
-    int initialPage;
-    bool timerNotStarted = widget.exercise.tempStartTime.value == AnExercise.nullDateTime;
-    if(timerNotStarted){
-      if(widget.exercise.lastWeight == null) initialPage = 1;
-      else initialPage = 0;
-    }
-    else initialPage = 2;
+    print("initial page: " + widget.initialPage.toString());
     
     //set hero position depending on start page (updated when pages switch)
-    goalSetUp = new ValueNotifier<bool>(initialPage == 0);
+    goalSetUp = new ValueNotifier<bool>(
+      widget.initialPage == 0,
+    );
 
     //update value globally
-    ExercisePage.pageNumber.value = initialPage;
-
-    //initally set the notifiers
-    //after this our notifiers initially set our controllers
-    //our controllers update our notifiers
-    //and then our notifiers ONLY update our temps under very specific conditions
-    int tempWeight = widget?.exercise?.tempWeight;
-    int tempReps = widget?.exercise?.tempReps;
-    //extra step needed because null.toString() isn't null
-    ExercisePage.setWeight.value = (tempWeight != null) ? tempWeight.toString() : "";
-    ExercisePage.setReps.value = (tempReps != null) ? tempReps.toString() : "";
+    ExercisePage.pageNumber.value = widget.initialPage;
 
     //have the page controller go to that initial page
     pageViewController = PageController(
       keepPage: false, //we need to use the on init of various pages
-      initialPage: initialPage,
+      initialPage: widget.initialPage,
     );
 
     //listen to changes on pageNumber to then go to that page

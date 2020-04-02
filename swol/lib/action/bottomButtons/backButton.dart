@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 //plugin
 import 'package:bot_toast/bot_toast.dart';
+import 'package:swol/shared/widgets/simple/conditional.dart';
 
 //internal
 import 'package:swol/shared/widgets/simple/curvedCorner.dart';
@@ -10,7 +11,7 @@ import 'package:swol/shared/widgets/simple/ourToolTip.dart';
 import 'package:swol/action/page.dart';
 
 //build
-class BottomBackButton extends StatelessWidget {
+class BottomBackButton extends StatefulWidget {
   const BottomBackButton({
     this.backAction,
     @required this.verticalPadding,
@@ -21,6 +22,38 @@ class BottomBackButton extends StatelessWidget {
   final Function backAction;
   final double verticalPadding;
   final Color color;
+
+  @override
+  _BottomBackButtonState createState() => _BottomBackButtonState();
+}
+
+class _BottomBackButtonState extends State<BottomBackButton> {
+  updateState() {
+    if (mounted) {
+      setState(() {});
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    ExercisePage.pageNumber.addListener(updateState);
+  }
+
+  @override
+  void dispose() {
+    ExercisePage.pageNumber.removeListener(updateState);
+    super.dispose();
+  }
+
+  String backToWhere() {
+    if (ExercisePage.pageNumber.value == 2) {
+      return "going back won't reset the timer";
+    } else {
+      //could only be page 1, page 0 has no back button
+      return "back to your sugggestion";
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,18 +67,26 @@ class BottomBackButton extends StatelessWidget {
           child: Container(),
         ),
         //the button that looks small but is actually very tall
-        Container(
-          child: Tooltip(
-            message: ExercisePage.pageNumber.value == 2 
-            ? "going back won't reset the timer" 
-            : "back",
+        Conditional(
+          //only happens on the first page
+          condition: (widget.backAction == null),
+          ifTrue: Padding(
+            padding: EdgeInsets.symmetric(
+              vertical: 24,
+            ),
+            child: BottomRight(
+              color: widget.color,
+            ),
+          ),
+          ifFalse: Tooltip(
+            message: backToWhere(),
             child: GestureDetector(
               behavior: HitTestBehavior.opaque,
-              onTap: backAction == null ? null : (){
+              onTap: () {
                 //notify users that the timer did not reset
-                if(ExercisePage.pageNumber.value == 2){
+                if (ExercisePage.pageNumber.value == 2) {
                   showToolTip(
-                    context, 
+                    context,
                     "the timer won't reset",
                     showIcon: false,
                     direction: PreferDirection.bottomRight,
@@ -54,19 +95,19 @@ class BottomBackButton extends StatelessWidget {
 
                 //go back
                 //MUST HAPPEN AFTER so that pageNumber hasn't yet updated
-                backAction();
+                widget.backAction();
               },
               child: Padding(
-                padding: EdgeInsets.only(
-                  top: 24,
-                  bottom: 24,
+                padding: EdgeInsets.symmetric(
+                  vertical: 24,
                 ),
                 child: Stack(
                   children: <Widget>[
-                    BottomRight(color: color),
+                    BottomRight(
+                      color: widget.color,
+                    ),
                     ActualBackButton(
-                      verticalPadding: verticalPadding,
-                      hidden: backAction == null,
+                      verticalPadding: widget.verticalPadding,
                     ),
                   ],
                 ),
@@ -94,8 +135,8 @@ class BottomRight extends StatelessWidget {
       right: 0,
       child: CurvedCorner(
         size: 12,
-        isTop: false, 
-        isLeft: false, 
+        isTop: false,
+        isLeft: false,
         cornerColor: color,
       ),
     );
@@ -106,22 +147,20 @@ class ActualBackButton extends StatelessWidget {
   const ActualBackButton({
     Key key,
     @required this.verticalPadding,
-    @required this.hidden,
   }) : super(key: key);
 
   final double verticalPadding;
-  final bool hidden;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(
         left: 24, //extra spacing for big fingers
-        top: verticalPadding,
-        bottom: verticalPadding,
       ),
-      child: Opacity(
-        opacity: hidden ? 0 : 1,
+      child: Padding(
+        padding: EdgeInsets.symmetric(
+          vertical: verticalPadding,
+        ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
