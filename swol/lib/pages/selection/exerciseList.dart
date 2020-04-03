@@ -87,17 +87,12 @@ class _ExerciseListState extends State<ExerciseList> {
   //* means its taken care off or doesn't cause a problem
   //we haven't started the timer
   //  1. and our set is invalid (ERROR)
-  //    TODO: SHOULD be fixed
   //  2. and our set is valid
-  //    TODO: must be fixed
   //  *3. and our set is not recorded
   //we have started the timer so we want to update our set
   //  1. and the update is invalid (ERROR)
-  //    TODO: SHOULD be fixed
   //  2. and the update is valid
-  //    TODO: must be fixed
   //  3. and our set is the same as it was before
-  //    TODO: must be fixed
 
   //NOTE: this should only run if we are SURE
   //the on the top of the navigator are the vertical tabs
@@ -181,8 +176,29 @@ class _ExerciseListState extends State<ExerciseList> {
         isANewSet = isNewSet(exercise);
       }
 
-      //TODO: actually do the thing bruh
-      print("do the thang");
+      //handle what happens, might have to manually move and that MAY cause problems
+      if(bothMatch){
+        //NOTE: we KNOW 
+        //1. the timer started and ended
+        //    otherwise we wouldn't be here
+        //2. the values are already saved for the set
+        //    since both match and the timer started
+        //    so we don't have to run anything special
+
+        //all we need to do is navigate to page 2
+        ExercisePage.pageNumber.value = 2;
+      }
+      else{
+        //travel to page 1 where edits will need to be made
+        ExercisePage.pageNumber.value = 1;
+
+        //allow autofocusing to indicate action or not
+        bool someThingInvalid = true;
+        if(someThingInvalid == false){
+          //TODO: either indicate that you need to click return to set break
+          //TODO: OR simply do it for them to be able to get to page 2
+        }
+      }
     }
   }
 
