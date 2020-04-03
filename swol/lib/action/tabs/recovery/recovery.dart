@@ -18,11 +18,9 @@ import 'package:swol/shared/widgets/simple/notify.dart';
 //widget
 class Recovery extends StatefulWidget {
   Recovery({
-    @required this.transtionDuration,
     @required this.exercise,
   });
 
-  final Duration transtionDuration;
   final AnExercise exercise;
 
   @override
@@ -133,7 +131,6 @@ class _RecoveryState extends State<Recovery>
           Theme(
             data: MyTheme.light,
             child: RecoveryButtonsWithWhiteContext(
-              transitionDuration: widget.transtionDuration,
               showAreYouSure: showAreYouSure,
               buttonsColor: buttonsColor,
               exercise: widget.exercise,
@@ -194,7 +191,6 @@ class TimerWrapper extends StatelessWidget {
 class RecoveryButtonsWithWhiteContext extends StatelessWidget {
   const RecoveryButtonsWithWhiteContext({
     Key key,
-    @required this.transitionDuration,
     @required this.showAreYouSure,
     @required this.buttonsColor,
     @required this.exercise,
@@ -202,7 +198,6 @@ class RecoveryButtonsWithWhiteContext extends StatelessWidget {
     @required this.headerColor,
   }) : super(key: key);
 
-  final Duration transitionDuration;
   final ValueNotifier<bool> showAreYouSure;
   final Color buttonsColor;
   final AnExercise exercise;

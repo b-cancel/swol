@@ -156,20 +156,25 @@ class _GrabSystemDataState extends State<GrabSystemData> {
     await flutterLocalNotificationsPlugin.initialize(
       initializationSettings,
       /*
-    If the app had been launched by tapping on a notification created by this plugin, 
-    calling initialize is what will trigger the onSelectNotification to trigger 
-    to handle the notification that the user tapped on. 
-    An alternative to handling the "launch notification" 
-    is to call the getNotificationAppLaunchDetails method 
-    that is available in the plugin. 
-    This could be used, for example, to change the home route of the app for deep-linking. 
-    Calling initialize will still cause the onSelectNotification callback to fire 
-    for the launch notification. 
-    It will be up to developers to ensure that they don't process the same notification twice 
-    (e.g. by storing and comparing the notification id).
-    */
+      If the app had been launched by tapping on a notification created by this plugin, 
+      calling initialize is what will trigger the onSelectNotification to trigger 
+      to handle the notification that the user tapped on. 
+      An alternative to handling the "launch notification" 
+      is to call the getNotificationAppLaunchDetails method 
+      that is available in the plugin. 
+      This could be used, for example, to change the home route of the app for deep-linking. 
+      Calling initialize will still cause the onSelectNotification callback to fire 
+      for the launch notification. 
+      It will be up to developers to ensure that they don't process the same notification twice 
+      (e.g. by storing and comparing the notification id).
+      */
       //In the real world, this payload could represent the id of the item you want to display the details of.
       onSelectNotification: (String payload) async {
+        NotificationAppLaunchDetails notificationAppLaunchDetails =
+          await flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
+        
+        print("app launched by notification? " + notificationAppLaunchDetails.didNotificationLaunchApp.toString());
+     
         //updates what excercise to travel to
         //which will then cause us to travel to it
         if (payload != null) {

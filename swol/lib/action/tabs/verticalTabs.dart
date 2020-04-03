@@ -14,13 +14,11 @@ import 'package:swol/action/page.dart';
 class VerticalTabs extends StatefulWidget {
   final AnExercise exercise;
   final double statusBarHeight;
-  final Duration transitionDuration;
   final int initialPage;
 
   VerticalTabs({
     @required this.exercise,
     @required this.statusBarHeight,
-    @required this.transitionDuration,
     @required this.initialPage,
   });
 
@@ -110,7 +108,6 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
             Suggestion( 
               exercise: widget.exercise,
               heroUp: goalSetUp,
-              heroAnimDuration: widget.transitionDuration,
               heroAnimTravel: totalTravel,
               functionIDToWeightFromRT: functionIDToWeightFromRT,
             ),
@@ -118,14 +115,12 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
               exercise: widget.exercise,
               statusBarHeight: widget.statusBarHeight,
               heroUp: goalSetUp,
-              heroAnimDuration: widget.transitionDuration,
               heroAnimTravel: totalTravel,
               functionIDToWeightFromRT: functionIDToWeightFromRT,
               weightFocusNode: weightFocusNode,
               repsFocusNode: repsFocusNode,
             ),
             Recovery(
-              transtionDuration: widget.transitionDuration,
               exercise: widget.exercise,
             ),
           ],
@@ -135,7 +130,6 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
           data: MyTheme.light,
           child: FloatingDoneButton(
             exercise: widget.exercise,
-            showOrHideDuration: widget.transitionDuration,
             animationCurve: Curves.easeInOut,
             cardColor: Theme.of(context).cardColor,
           ),
@@ -158,7 +152,7 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
     //animated to right page
     pageViewController.animateToPage(
       ExercisePage.pageNumber.value, 
-      duration: widget.transitionDuration, 
+      duration: ExercisePage.transitionDuration, 
       curve: Curves.easeInOut,
     );
   }

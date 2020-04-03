@@ -24,7 +24,6 @@ class SetRecord extends StatelessWidget {
     @required this.exercise,
     @required this.statusBarHeight,
     @required this.heroUp,
-    @required this.heroAnimDuration,
     @required this.heroAnimTravel,
     @required this.functionIDToWeightFromRT,
     @required this.weightFocusNode,
@@ -34,7 +33,6 @@ class SetRecord extends StatelessWidget {
   final AnExercise exercise;
   final double statusBarHeight;
   final ValueNotifier<bool> heroUp;
-  final Duration heroAnimDuration;
   final double heroAnimTravel;
   final ValueNotifier<List<double>> functionIDToWeightFromRT;
   final FocusNode weightFocusNode;
@@ -73,7 +71,6 @@ class SetRecord extends StatelessWidget {
       header: "Record Set",
       aLittleSmaller: true,
       child: RecordFields(
-        heroAnimDuration: heroAnimDuration,
         weightFocusNode: weightFocusNode,
         repsFocusNode: repsFocusNode,
       ),
@@ -139,7 +136,6 @@ class SetRecord extends StatelessWidget {
                     functionIDToWeightFromRT: functionIDToWeightFromRT,
                     topColor: buttonsColor,
                     heroUp: heroUp,
-                    heroAnimDuration: heroAnimDuration,
                     heroAnimTravel: heroAnimTravel,
                     exercise: exercise,
                   ),

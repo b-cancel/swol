@@ -25,14 +25,19 @@ import 'package:swol/action/popUps/warning.dart';
 class ExercisePage extends StatelessWidget {
   ExercisePage({
     @required this.exercise,
-    @required this.transitionDuration,
   });
 
   final AnExercise exercise;
-  final Duration transitionDuration;
 
   //static vars used through out initializaed with their default values
   static GlobalKey globalKey = GlobalKey();
+
+  //any more is super annoying
+  //use for ENTIRE app
+  static Duration transitionDuration = const Duration(milliseconds: 300);
+
+  //to allow notifications to work properly keep track of what exercise we are currently messing with
+  static ValueNotifier<int> exerciseID = new ValueNotifier<int>(-1);
 
   //used so that we can change the page number from anywhere
   static final ValueNotifier<int> pageNumber =
@@ -87,7 +92,6 @@ class ExercisePage extends StatelessWidget {
         },
         child: ExercisePageDark(
           exercise: exercise,
-          transitionDuration: transitionDuration,
         ),
       ),
     );
@@ -97,11 +101,9 @@ class ExercisePage extends StatelessWidget {
 class ExercisePageDark extends StatefulWidget {
   ExercisePageDark({
     @required this.exercise,
-    @required this.transitionDuration,
   });
 
   final AnExercise exercise;
-  final Duration transitionDuration;
 
   @override
   _ExercisePageDarkState createState() => _ExercisePageDarkState();
@@ -210,6 +212,7 @@ class _ExercisePageDarkState extends State<ExercisePageDark> {
     //static func starters: causeRefocusIfInvalid, updateSet, nextSet
 
     //reset all statics to defaults
+    ExercisePage.exerciseID.value = -1;
     ExercisePage.pageNumber.value = 0; //this will properly update itself later
     //goals
     ExercisePage.setGoalWeight.value = 0;
@@ -229,6 +232,8 @@ class _ExercisePageDarkState extends State<ExercisePageDark> {
     ExercisePage.nextSet.addListener(nextSet);
 
     //proper inits
+    ExercisePage.exerciseID.value = widget.exercise.id;
+
     //initally set the notifiers
     //after this our notifiers initially set our controllers
     //our controllers update our notifiers
@@ -306,7 +311,6 @@ class _ExercisePageDarkState extends State<ExercisePageDark> {
           //since this is the whole new context after navigation
           //and the others are within a scaffold
           statusBarHeight: MediaQuery.of(context).padding.top,
-          transitionDuration: widget.transitionDuration,
           initialPage: initialPage,
         ),
       ),

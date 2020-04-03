@@ -1,5 +1,6 @@
 //flutter
 import 'package:flutter/material.dart';
+import 'package:swol/action/page.dart';
 
 //internal
 import 'package:swol/shared/widgets/simple/heros/curveMod.dart';
@@ -14,7 +15,6 @@ class DoneButton extends StatelessWidget {
     //stay the same throughout
     @required this.exerciseID,
     @required this.animationCurve,
-    @required this.showOrHideDuration,
   });
 
   final bool show;
@@ -23,7 +23,6 @@ class DoneButton extends StatelessWidget {
   //stay the same throughout
   final int exerciseID;
   final Curve animationCurve;
-  final Duration showOrHideDuration;
 
   //build
   @override
@@ -55,7 +54,7 @@ class DoneButton extends StatelessWidget {
       children: <Widget>[
         Positioned.fill(
           child: AnimatedContainer(
-            duration: showOrHideDuration,
+            duration: ExercisePage.transitionDuration,
             curve: animationCurve,
             transform: newTransform,
             decoration: newBoxDecoration,
@@ -72,7 +71,7 @@ class DoneButton extends StatelessWidget {
               color: Colors.transparent,
               child: AnimatedContainer(
                 curve: animationCurve,
-                duration: showOrHideDuration,
+                duration: ExercisePage.transitionDuration,
                 transform: newTransform,
                 decoration: newBoxDecoration,
                 padding: EdgeInsets.symmetric(

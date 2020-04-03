@@ -17,14 +17,12 @@ class Suggestion extends StatefulWidget {
   Suggestion({
     @required this.exercise,
     @required this.heroUp,
-    @required this.heroAnimDuration,
     @required this.heroAnimTravel,
     @required this.functionIDToWeightFromRT,
   });
 
   final AnExercise exercise;
   final ValueNotifier<bool> heroUp;
-  final Duration heroAnimDuration;
   final double heroAnimTravel;
   final ValueNotifier<List<double>> functionIDToWeightFromRT;
 
@@ -175,7 +173,7 @@ class _SuggestionState extends State<Suggestion> {
                         useAccent: true,
                         title: "Goal Set",
                         heroUp: widget.heroUp,
-                        heroAnimDuration: widget.heroAnimDuration,
+                        animate: true,
                         heroAnimTravel: widget.heroAnimTravel,
                       ),
                     ),

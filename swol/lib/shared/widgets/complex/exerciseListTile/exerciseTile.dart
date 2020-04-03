@@ -72,7 +72,6 @@ class _ExerciseTileState extends State<ExerciseTile> {
             data: MyTheme.light,
             child: ExercisePage(
               exercise: widget.exercise,
-              transitionDuration: transitionDuration, 
             ),
           ),
         );

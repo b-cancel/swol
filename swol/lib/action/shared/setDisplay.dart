@@ -36,8 +36,8 @@ class SetDisplay extends StatefulWidget {
     @required this.useAccent,
     //optional
     this.heroUp,
-    this.heroAnimDuration,
     this.heroAnimTravel,
+    this.animate: false,
   }) : super(key: key);
 
   final AnExercise exercise;
@@ -47,8 +47,8 @@ class SetDisplay extends StatefulWidget {
   final bool useAccent;
   //optional
   final ValueNotifier<bool> heroUp;
-  final Duration heroAnimDuration;
   final double heroAnimTravel;
+  final bool animate;
 
   @override
   _SetDisplayState createState() => _SetDisplayState();
@@ -156,7 +156,7 @@ class _SetDisplayState extends State<SetDisplay> {
 
     //widget
     return AnimatedContainer(
-      duration: widget.heroAnimDuration ?? Duration.zero,
+      duration: widget.animate ? ExercisePage.transitionDuration : Duration.zero,
       width: MediaQuery.of(context).size.width,
       decoration: BoxDecoration(
         color: backgroundColor,

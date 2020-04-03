@@ -24,7 +24,6 @@ class MakeFunctionAdjustment extends StatefulWidget {
     Key key,
     @required this.topColor,
     @required this.heroUp,
-    @required this.heroAnimDuration,
     @required this.heroAnimTravel,
     @required this.exercise,
     @required this.functionIDToWeightFromRT,
@@ -33,7 +32,6 @@ class MakeFunctionAdjustment extends StatefulWidget {
   final Color topColor;
   final AnExercise exercise;
   final ValueNotifier<bool> heroUp;
-  final Duration heroAnimDuration;
   final double heroAnimTravel;
   final ValueNotifier<List<double>> functionIDToWeightFromRT;
 
@@ -195,7 +193,7 @@ class _MakeFunctionAdjustmentState extends State<MakeFunctionAdjustment> {
       useAccent: false,
       title: "Goal Set",
       heroUp: widget.heroUp,
-      heroAnimDuration: widget.heroAnimDuration,
+      animate: true,
       heroAnimTravel: widget.heroAnimTravel,
     );
 

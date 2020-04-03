@@ -2,6 +2,7 @@
 
 //flutter
 import 'package:flutter/material.dart';
+import 'package:swol/action/page.dart';
 
 //internal
 import 'package:swol/shared/widgets/simple/curvedCorner.dart';
@@ -13,7 +14,6 @@ class DoneCorner extends StatelessWidget {
     @required this.color,
     //stay the same throughout
     @required this.animationCurve,
-    @required this.showOrHideDuration,
     @required this.isTop,
   });
 
@@ -21,7 +21,6 @@ class DoneCorner extends StatelessWidget {
   final Color color;
   //stay the same throughout
   final Curve animationCurve;
-  final Duration showOrHideDuration;
   final bool isTop;
 
   @override
@@ -43,7 +42,7 @@ class DoneCorner extends StatelessWidget {
       alignment: isTop ? Alignment.bottomLeft : Alignment.topLeft,
       child: AnimatedContainer(
         curve: animationCurve,
-        duration: showOrHideDuration,
+        duration: ExercisePage.transitionDuration,
         //this is what primarily animates
         transform: newTransform,
         height: size,
@@ -56,7 +55,7 @@ class DoneCorner extends StatelessWidget {
             ),
             child: AnimatedContainer(
               curve: animationCurve,
-              duration: showOrHideDuration,
+              duration: ExercisePage.transitionDuration,
               //color switch to match button
               decoration: new BoxDecoration(
                 color: color,

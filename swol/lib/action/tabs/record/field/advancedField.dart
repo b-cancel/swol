@@ -17,12 +17,10 @@ import 'package:swol/shared/methods/theme.dart';
 //widget
 class RecordFields extends StatefulWidget {
   RecordFields({
-    @required this.heroAnimDuration,
     @required this.weightFocusNode,
     @required this.repsFocusNode,
   });
 
-  final Duration heroAnimDuration;
   final FocusNode weightFocusNode;
   final FocusNode repsFocusNode;
 
@@ -66,7 +64,8 @@ class _RecordFieldsState extends State<RecordFields> {
     //NOTE: I tried to use recursion to wait one frame
     //and then check if the transition was finished
     //loop until finished but that broke duration test for some unknown reason
-    Future.delayed(widget.heroAnimDuration * 1.5, () {
+    //TODO: ideally a more fool proof solution (1.5 duration may not cover un-planned delay)
+    Future.delayed(ExercisePage.transitionDuration * 1.5, () {
       focusOnFirstInvalid();
     });
 

@@ -69,13 +69,13 @@ class _LearnExerciseState extends State<LearnExercise> {
       closeOthers(isOpen);
 
       //scroll to other
-      //autoScrollController.
       Future.delayed(
-        Duration(
-          //300 to wait for the other sections to close
-          //100 as a buffere since processing this takes a tad longer
-          milliseconds: duration.inMilliseconds + 100,
-        ), 
+        //TODO: ideally a more fool proof solution (1.5 duration may not cover un-planned delay)
+        //we currently just set the variables in "allIsOpens" to false
+        //but the animation kind of happens on its own
+        //requires seperate set of variables that confirm if it finished its animation
+        //add if necessary
+        duration * 1.5, 
         (){
           //scroll to index
           autoScrollController.scrollToIndex(

@@ -39,14 +39,12 @@ enum Complete {ForgotToFinish, DeleteNewSet, Normal}
 class FloatingDoneButton extends StatefulWidget {
   FloatingDoneButton({
     @required this.exercise,
-    @required this.showOrHideDuration,
     @required this.animationCurve,
     @required this.cardColor,
   });
 
   final AnExercise exercise;
   final Curve animationCurve;
-  final Duration showOrHideDuration;
   final Color cardColor;
 
   @override
@@ -100,7 +98,7 @@ class _FloatingDoneButtonState extends State<FloatingDoneButton> {
           setState(() {});
 
           //wait for the animation to complete
-          Future.delayed(widget.showOrHideDuration, (){
+          Future.delayed(ExercisePage.transitionDuration, (){
             //fully hide
             fullyHidden = true;
             setState(() {});
@@ -118,7 +116,7 @@ class _FloatingDoneButtonState extends State<FloatingDoneButton> {
     //in order to properly update the done button with the pageNumber
     bool shouldShowAfterDelay = shouldShow();
     if(ExercisePage.pageNumber.value == 0){
-      Future.delayed(widget.showOrHideDuration, (){
+      Future.delayed(ExercisePage.transitionDuration, (){
         bool shouldStillShow = shouldShow();
         if(shouldShowAfterDelay == shouldStillShow){
           updateButtonVisually(shouldShowAfterDelay);
@@ -253,7 +251,6 @@ class _FloatingDoneButtonState extends State<FloatingDoneButton> {
                   setsPassedFromHere: setsPassedFromHere,
                   excerciseID: widget.exercise.id,
                   animationCurve: widget.animationCurve,
-                  showOrHideDuration: widget.showOrHideDuration,
                 ),
               ),
             ),
@@ -333,7 +330,6 @@ class WrappedInDarkness extends StatelessWidget {
     @required this.setsPassedFromHere,
     @required this.excerciseID,
     @required this.animationCurve,
-    @required this.showOrHideDuration,
   }) : super(key: key);
 
   final bool showButton;
@@ -341,7 +337,6 @@ class WrappedInDarkness extends StatelessWidget {
   final int setsPassedFromHere;
   final int excerciseID;
   final Curve animationCurve;
-  final Duration showOrHideDuration;
 
   @override
   Widget build(BuildContext context) {
@@ -353,7 +348,6 @@ class WrappedInDarkness extends StatelessWidget {
           show: showButton,
           color: cardColor,
           animationCurve: animationCurve,
-          showOrHideDuration: showOrHideDuration,
           isTop: true,
         ),
         DoneButton(
@@ -362,13 +356,11 @@ class WrappedInDarkness extends StatelessWidget {
           setsPassed: setsPassedFromHere,
           exerciseID: excerciseID,
           animationCurve: animationCurve,
-          showOrHideDuration: showOrHideDuration,
         ),
         DoneCorner(
           show: showButton,
           color: cardColor,
           animationCurve: animationCurve,
-          showOrHideDuration: showOrHideDuration,
           isTop: false,
         ),
       ],

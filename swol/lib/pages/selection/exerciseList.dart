@@ -1,5 +1,6 @@
 //flutter
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 //plugin
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
@@ -111,7 +112,9 @@ class _ExerciseListState extends State<ExerciseList> {
 
         //let the user see the animation
         //NOTE: we are waiting a little more to wait for the pop to complete so init always runs
-        Future.delayed(Duration(milliseconds: 450), () {
+        //TODO: ideally a more fool proof solution (1.5 duration may not cover un-planned delay)
+        //TODO: use the same duration everywhere
+        Future.delayed(Duration(milliseconds: 300) * 1.5, () {
           print("After delay: " + DateTime.now().toString());
           goToExcercise();
         });
@@ -133,21 +136,17 @@ class _ExerciseListState extends State<ExerciseList> {
         //would be triggered by exercise tile
         App.navSpread.value = true;
 
-        //TODO: match with transition Duration in exerciseTile
-        Duration transitionDuration = Duration(milliseconds: 300);
-
         //travel there
         Navigator.push(
           context,
           PageTransition(
-            duration: transitionDuration,
+            duration: ExercisePage.transitionDuration,
             type: PageTransitionType.rightToLeft,
             //wrap in light so warning pop up works well
             child: Theme(
               data: MyTheme.light,
               child: ExercisePage(
                 exercise: exerciseWeMightTravelTo,
-                transitionDuration: transitionDuration,
               ),
             ),
           ),
