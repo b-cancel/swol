@@ -174,7 +174,8 @@ class _ExerciseListState extends State<ExerciseList> {
         );
       }
       //ELSE we are comming from the NOTES page
-    } else { //active page is 0 or 1
+    } else {
+      //active page is 0 or 1
       int exerciseID = ExercisePage.exerciseID.value;
       AnExercise exercise = ExerciseData.getExercises()[exerciseID];
 
@@ -189,23 +190,24 @@ class _ExerciseListState extends State<ExerciseList> {
 
         //all we need to do is navigate to page 2
         ExercisePage.pageNumber.value = 2;
-      } else { //in page 0 or 1
+      } else {
+        //in page 0 or 1
         //imply the action the user wants to take
         //move onto the 2nd page
-        if(isSetValid()){
+        if (isSetValid()) {
           ExercisePage.updateSet.value = true;
           toPage2AfterSetUpdateComplete();
-        }
-        else{ //the set isn't valid so push the user to validate
-          if(ExercisePage.pageNumber.value == 0){
+        } else {
+          //the set isn't valid so push the user to validate
+          if (ExercisePage.pageNumber.value == 0) {
             //move to the page and it will automatically refocus
             ExercisePage.pageNumber.value = 1;
-          }
-          else{ //we are already on the page, so confirm focus
+          } else {
+            //we are already on the page, so confirm focus
             //if we have focus, remove it so we can then get it back
-            if(FocusScope.of(context).hasFocus){
+            if (FocusScope.of(context).hasFocus) {
               FocusScope.of(context).unfocus();
-            } 
+            }
 
             //Focus to show the user what is wrong
             ExercisePage.causeRefocusIfInvalid.value = true;
@@ -311,57 +313,56 @@ class _ExerciseListState extends State<ExerciseList> {
               //we are good to go whereever
               popThenGoToExercise(nextExerciseID);
             } else {
-              //TODO: IF set valid
-              //-> updateSet
-              //-> goToLearnAfterSetUpdateComplete
-              //-> handle the navSpread var
-              //ELSE proceed as below
+              if (isSetValid()) {
+                ExercisePage.updateSet.value = true;
+                popThenGoToExerciseAfterSetUpdateComplete(nextExerciseID);
+              } else {
+                //notify the user of the action that should take place first
+                BotToast.showCustomNotification(
+                  toastBuilder: (_) {
+                    //style
+                    TextStyle bold = TextStyle(
+                      fontWeight: FontWeight.bold,
+                    );
 
-              //notify the user of the action that should take place first
-              BotToast.showCustomNotification(
-                toastBuilder: (_) {
-                  //style
-                  TextStyle bold = TextStyle(
-                    fontWeight: FontWeight.bold,
-                  );
-
-                  //return
-                  return CustomToast(
-                    paddingBottom: 24.0 + 8,
-                    child: RichText(
-                      text: TextSpan(
-                        style: TextStyle(
-                          color: Colors.black,
+                    //return
+                    return CustomToast(
+                      paddingBottom: 24.0 + 8,
+                      child: RichText(
+                        text: TextSpan(
+                          style: TextStyle(
+                            color: Colors.black,
+                          ),
+                          children: [
+                            TextSpan(
+                              text: "You Should ",
+                            ),
+                            TextSpan(
+                              text: "Finish " +
+                                  (isNewSet(exercise) ? "Saving" : "Updating") +
+                                  " This Set\n",
+                              style: bold,
+                            ),
+                            TextSpan(
+                              text: "Before",
+                              style: bold,
+                            ),
+                            TextSpan(text: " Moving onto your next"),
+                          ],
                         ),
-                        children: [
-                          TextSpan(
-                            text: "You Should ",
-                          ),
-                          TextSpan(
-                            text: "Finish " +
-                                (isNewSet(exercise) ? "Saving" : "Updating") +
-                                " This Set\n",
-                            style: bold,
-                          ),
-                          TextSpan(
-                            text: "Before",
-                            style: bold,
-                          ),
-                          TextSpan(text: " Moving onto your next"),
-                        ],
                       ),
-                    ),
-                  );
-                },
-                align: Alignment(0, 1),
-                duration: Duration(seconds: 5),
-                dismissDirections: [
-                  DismissDirection.horizontal,
-                  DismissDirection.vertical,
-                ],
-                crossPage: false,
-                onlyOne: true,
-              );
+                    );
+                  },
+                  align: Alignment(0, 1),
+                  duration: Duration(seconds: 5),
+                  dismissDirections: [
+                    DismissDirection.horizontal,
+                    DismissDirection.vertical,
+                  ],
+                  crossPage: false,
+                  onlyOne: true,
+                );
+              }
             }
           } else {
             popThenGoToExercise(nextExerciseID);
@@ -371,6 +372,23 @@ class _ExerciseListState extends State<ExerciseList> {
 
       //reset for next notification
       exerciseToTravelTo.value = -1;
+    }
+  }
+
+  popThenGoToExerciseAfterSetUpdateComplete(int exerciseID) {
+    BuildContext rootContext = GrabSystemData.rootContext;
+    bool gestureInProgress = Navigator.of(rootContext).userGestureInProgress;
+    if (gestureInProgress == false) {
+      if (ExercisePage.updateSet.value) {
+        //wait for the set to finish updating
+        //NOTE: the statement is set back to false automatically
+        //when its set to true, it updates stuff, then set itself to false
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          popThenGoToExerciseAfterSetUpdateComplete(exerciseID);
+        });
+      } else {
+        popThenGoToExercise(exerciseID);
+      }
     }
   }
 
@@ -389,6 +407,7 @@ class _ExerciseListState extends State<ExerciseList> {
         }
 
         //pop with the animation
+        App.navSpread.value = false;
         Navigator.pop(rootContext);
 
         //let the user see the animation
@@ -412,30 +431,34 @@ class _ExerciseListState extends State<ExerciseList> {
   }
 
   travelAfterDisposeComplete(AnExercise exercise) {
-    //dipose has run because the exercise open in the page is none
-    if (ExercisePage.exerciseID.value == -1) {
-      //would be triggered by exercise tile
-      App.navSpread.value = true;
+    BuildContext rootContext = GrabSystemData.rootContext;
+    bool gestureInProgress = Navigator.of(rootContext).userGestureInProgress;
+    if (gestureInProgress == false) {
+      //dipose has run because the exercise open in the page is none
+      if (ExercisePage.exerciseID.value == -1) {
+        //would be triggered by exercise tile
+        App.navSpread.value = true;
 
-      //travel there
-      Navigator.push(
-        context,
-        PageTransition(
-          duration: ExercisePage.transitionDuration,
-          type: PageTransitionType.rightToLeft,
-          //wrap in light so warning pop up works well
-          child: Theme(
-            data: MyTheme.light,
-            child: ExercisePage(
-              exercise: exercise,
+        //travel there
+        Navigator.push(
+          context,
+          PageTransition(
+            duration: ExercisePage.transitionDuration,
+            type: PageTransitionType.rightToLeft,
+            //wrap in light so warning pop up works well
+            child: Theme(
+              data: MyTheme.light,
+              child: ExercisePage(
+                exercise: exercise,
+              ),
             ),
           ),
-        ),
-      );
-    } else {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        travelAfterDisposeComplete(exercise);
-      });
+        );
+      } else {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          travelAfterDisposeComplete(exercise);
+        });
+      }
     }
   }
 
