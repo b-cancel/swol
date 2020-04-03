@@ -197,6 +197,37 @@ class _ExercisePageDarkState extends State<ExercisePageDark> {
     }
   }
 
+  resetToDefault(){
+    //reset all statics to defaults
+    ExercisePage.exerciseID.value = -1;
+    ExercisePage.pageNumber.value = 0; //this will properly update itself later
+
+    //notifiers
+    ExercisePage.setWeight.value = "";
+    ExercisePage.setReps.value = "";
+
+    
+
+    //functions
+    ExercisePage.causeRefocusIfInvalid.value = false;
+    ExercisePage.updateSet.value = false;
+    ExercisePage.nextSet.value = false;
+
+    //lists
+    //1. oneRepMaxes
+    //one rep maxes is final but we can reset
+    //but we should because it will set the size of the list to 0
+    //2. orderedIDs
+    ExercisePage.orderedIDs.value = new List<int>(8);
+
+    //closest index reset
+    ExercisePage.closestIndex.value = -1;
+
+    //goals
+    ExercisePage.setGoalWeight.value = 0;
+    ExercisePage.setGoalReps.value = 0;
+  }
+
   @override
   void initState() {
     //super init
@@ -211,21 +242,9 @@ class _ExercisePageDarkState extends State<ExercisePageDark> {
     //static vars: setWeight, setReps, oneRepMaxes, orderedIDs, closestIndex, setGoalWeight, setGoalReps
     //static func starters: causeRefocusIfInvalid, updateSet, nextSet
 
-    //reset all statics to defaults
-    ExercisePage.exerciseID.value = -1;
-    ExercisePage.pageNumber.value = 0; //this will properly update itself later
-    //goals
-    ExercisePage.setGoalWeight.value = 0;
-    ExercisePage.setGoalReps.value = 0;
-    //notifiers
-    ExercisePage.setWeight.value = "";
-    ExercisePage.setReps.value = "";
-    //functions
-    ExercisePage.causeRefocusIfInvalid.value = false;
-    ExercisePage.updateSet.value = false;
-    ExercisePage.nextSet.value = false;
-    //closest index reset
-    ExercisePage.closestIndex.value = -1;
+    //we just got here but we are working with statics
+    //so manually reset to default
+    resetToDefault();
 
     //add listeners
     ExercisePage.updateSet.addListener(updateSet);
@@ -254,6 +273,9 @@ class _ExercisePageDarkState extends State<ExercisePageDark> {
     //remove listeners
     ExercisePage.updateSet.removeListener(updateSet);
     ExercisePage.nextSet.removeListener(nextSet);
+
+    //reset
+    resetToDefault();
 
     //super dispose
     super.dispose();
