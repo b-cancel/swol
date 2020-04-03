@@ -36,8 +36,6 @@ class AddExercise extends StatefulWidget {
     //this delay plays AFTER the page completely shows
     this.delayBetweenListItems: const Duration(milliseconds: 500),
     this.delayBeforeSaveShow: const Duration(milliseconds: 450),
-
-    this.sectionTransitionDuration: const Duration(milliseconds: 250),
   }) : super(key: key);
 
   final Duration longTransitionDuration;
@@ -47,8 +45,6 @@ class AddExercise extends StatefulWidget {
   //this delay plays AFTER the page completely shows
   final Duration delayBetweenListItems;
   final Duration delayBeforeSaveShow;
-
-  final Duration sectionTransitionDuration;
 
   @override
   _AddExerciseState createState() => _AddExerciseState();
