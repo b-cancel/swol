@@ -107,8 +107,10 @@ class _ExerciseListState extends State<ExerciseList> {
       if (ExercisePage.exerciseID.value == -1) {
         popThenGoToExercise(exerciseID);
       } else {
+        //needed in most cases
         bool bothMatch = true;
         bool isANewSet = false;
+
         //check the validity of the current exercise set
         if (ExerciseData.getExercises().containsKey(exerciseID)) {
           AnExercise exercise = ExerciseData.getExercises()[exerciseID];
