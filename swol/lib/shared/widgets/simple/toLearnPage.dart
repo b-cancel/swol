@@ -24,15 +24,19 @@ import 'package:swol/shared/structs/anExercise.dart';
 //the simply navigate to the learn page
 class SuggestToLearnPage extends StatelessWidget {
   goToLearnAfterSetUpdateComplete() {
-    if (ExercisePage.updateSet.value) {
-      //wait for the set to finish updating
-      //NOTE: the statement is set back to false automatically
-      //when its set to true, it updates stuff, then set itself to false
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        goToLearnAfterSetUpdateComplete();
-      });
-    } else {
-      goToLearn();
+    BuildContext rootContext = GrabSystemData.rootContext;
+    bool gestureInProgress = Navigator.of(rootContext).userGestureInProgress;
+    if (gestureInProgress == false) {
+      if (ExercisePage.updateSet.value) {
+        //wait for the set to finish updating
+        //NOTE: the statement is set back to false automatically
+        //when its set to true, it updates stuff, then set itself to false
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          goToLearnAfterSetUpdateComplete();
+        });
+      } else {
+        goToLearn();
+      }
     }
   }
 
@@ -42,6 +46,7 @@ class SuggestToLearnPage extends StatelessWidget {
     if (gestureInProgress == false) {
       if (Navigator.canPop(rootContext)) {
         //pop with the animation
+        App.navSpread.value = false;
         Navigator.pop(rootContext);
 
         //let the user see the animation
@@ -72,6 +77,10 @@ class SuggestToLearnPage extends StatelessWidget {
         //2. excercise page 0
         //so...
         onTap: () {
+          //pop to make space for snackbar
+          Navigator.of(context).pop();
+
+          //ID to be used below
           int exerciseID = ExercisePage.exerciseID.value;
 
           //we triggered it from addExcercise page
@@ -103,64 +112,61 @@ class SuggestToLearnPage extends StatelessWidget {
                 //either we are initially setting the value
                 //or we are updating the value
 
-                //TODO: IF set valid
-                //-> updateSet
-                //-> goToLearnAfterSetUpdateComplete
-                //-> handle the navSpread var
-                //ELSE proceed as below
+                //imply action if possible
+                if (isSetValid()) {
+                  ExercisePage.updateSet.value = true;
+                  goToLearnAfterSetUpdateComplete();
+                } else {
+                  BotToast.showCustomNotification(
+                    toastBuilder: (_) {
+                      //style
+                      TextStyle bold = TextStyle(
+                        fontWeight: FontWeight.bold,
+                      );
 
-                //pop to make space for snackbar
-                Navigator.of(context).pop();
-
-                //create toast
-                BotToast.showCustomNotification(
-                  toastBuilder: (_) {
-                    //style
-                    TextStyle bold = TextStyle(
-                      fontWeight: FontWeight.bold,
-                    );
-
-                    //return
-                    return CustomToast(
-                      action: () {
-                        goToLearn();
-                      },
-                      paddingBottom: 24.0 + 12,
-                      child: RichText(
-                        text: TextSpan(
-                          style: TextStyle(
-                            color: Colors.black,
+                      //return
+                      return CustomToast(
+                        action: () {
+                          goToLearn();
+                        },
+                        paddingBottom: 24.0 + 12,
+                        child: RichText(
+                          text: TextSpan(
+                            style: TextStyle(
+                              color: Colors.black,
+                            ),
+                            children: [
+                              TextSpan(
+                                text: "If You Continue, ",
+                              ),
+                              TextSpan(
+                                text: "You Will\n",
+                                style: bold,
+                              ),
+                              TextSpan(
+                                text: "Lose Your ",
+                                style: bold,
+                              ),
+                              TextSpan(
+                                text: isNewSet(exercise)
+                                    ? "New Set"
+                                    : "Set Update",
+                              ),
+                            ],
                           ),
-                          children: [
-                            TextSpan(
-                              text: "If You Continue, ",
-                            ),
-                            TextSpan(
-                              text: "You Will\n",
-                              style: bold,
-                            ),
-                            TextSpan(
-                              text: "Lose Your ",
-                              style: bold,
-                            ),
-                            TextSpan(
-                              text:
-                                  isNewSet(exercise) ? "New Set" : "Set Update",
-                            ),
-                          ],
                         ),
-                      ),
-                    );
-                  },
-                  align: Alignment(0, 1),
-                  duration: Duration(seconds: 8),
-                  dismissDirections: [
-                    DismissDirection.horizontal,
-                    DismissDirection.vertical,
-                  ],
-                  crossPage: false,
-                  onlyOne: true,
-                );
+                      );
+                    },
+                    align: Alignment(0, 1),
+                    duration: Duration(seconds: 8),
+                    dismissDirections: [
+                      DismissDirection.horizontal,
+                      DismissDirection.vertical,
+                    ],
+                    crossPage: false,
+                    onlyOne: true,
+                  );
+                }
               }
             } else {
               goToLearn();
