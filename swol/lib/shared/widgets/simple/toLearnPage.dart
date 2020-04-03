@@ -72,7 +72,7 @@ class SuggestToLearnPage extends StatelessWidget {
             //or that they will lose the data
 
             //all the data needed to determine if we need to generate a pop up
-            
+
             if (ExerciseData.getExercises().containsKey(exerciseID)) {
               AnExercise exercise = ExerciseData.getExercises()[exerciseID];
 
@@ -95,91 +95,39 @@ class SuggestToLearnPage extends StatelessWidget {
                 //create toast
                 BotToast.showCustomNotification(
                   toastBuilder: (_) {
+                    //style
                     TextStyle bold = TextStyle(
                       fontWeight: FontWeight.bold,
                     );
 
                     //return
-                    return Padding(
-                      padding: EdgeInsets.only(
-                        bottom: 24.0 + 12,
-                      ),
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 16.0,
-                        ),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(6),
+                    return WarningToast(
+                      action: (){
+                        goToLearn();
+                      },
+                      paddingBottom: 24.0 + 12,
+                      child: RichText(
+                        text: TextSpan(
+                          style: TextStyle(
+                            color: Colors.black,
                           ),
-                          child: Material(
-                            color: Colors.white,
-                            child: InkWell(
-                              onTap: () {
-                                BotToast.cleanAll();
-                              },
-                              child: Container(
-                                width: MediaQuery.of(context).size.width,
-                                padding: EdgeInsets.symmetric(
-                                  vertical: 8,
-                                  horizontal: 16,
-                                ),
-                                child: Row(
-                                  children: <Widget>[
-                                    Expanded(
-                                      child: Row(
-                                        children: <Widget>[
-                                          Padding(
-                                            padding: EdgeInsets.only(
-                                              right: 12.0,
-                                            ),
-                                            child: Icon(
-                                              Icons.warning,
-                                              color: Colors.red,
-                                            ),
-                                          ),
-                                          Expanded(
-                                            child: RichText(
-                                              text: TextSpan(
-                                                style: TextStyle(
-                                                  color: Colors.black,
-                                                ),
-                                                children: [
-                                                  TextSpan(
-                                                    text: "If You Continue, ",
-                                                  ),
-                                                  TextSpan(
-                                                    text: "You Will\n",
-                                                    style: bold,
-                                                  ),
-                                                  TextSpan(
-                                                    text: "Lose Your ",
-                                                    style: bold,
-                                                  ),
-                                                  TextSpan(
-                                                    text: isNewSet(exercise) ? "New Set" : "Set Update",
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    RaisedButton(
-                                      onPressed: (){
-                                        goToLearn();
-                                      },
-                                      child: Text(
-                                        "Continue",
-                                        style: bold,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
+                          children: [
+                            TextSpan(
+                              text: "If You Continue, ",
                             ),
-                          ),
+                            TextSpan(
+                              text: "You Will\n",
+                              style: bold,
+                            ),
+                            TextSpan(
+                              text: "Lose Your ",
+                              style: bold,
+                            ),
+                            TextSpan(
+                              text:
+                                  isNewSet(exercise) ? "New Set" : "Set Update",
+                            ),
+                          ],
                         ),
                       ),
                     );
@@ -250,21 +198,19 @@ class SuggestToLearnPage extends StatelessWidget {
   }
 }
 
-bool isNewSet(AnExercise exercise){
+bool isNewSet(AnExercise exercise) {
   int tempWeightInt = exercise?.tempWeight;
   String tempWeight = (tempWeightInt != null) ? tempWeightInt.toString() : "";
   return tempWeight == "";
 }
 
-bool doBothMatch(AnExercise exercise){
+bool doBothMatch(AnExercise exercise) {
   //grab temps
   int tempWeightInt = exercise?.tempWeight;
   int tempRepsInt = exercise?.tempReps;
   //extra step needed because null.toString() isn't null
-  String tempWeight =
-      (tempWeightInt != null) ? tempWeightInt.toString() : "";
-  String tempReps =
-      (tempRepsInt != null) ? tempRepsInt.toString() : "";
+  String tempWeight = (tempWeightInt != null) ? tempWeightInt.toString() : "";
+  String tempReps = (tempRepsInt != null) ? tempRepsInt.toString() : "";
 
   //grab news
   String newWeight = ExercisePage.setWeight.value;
@@ -277,4 +223,86 @@ bool doBothMatch(AnExercise exercise){
 
   //ret
   return bothMatch;
+}
+
+class WarningToast extends StatelessWidget {
+  WarningToast({
+    @required this.child,
+    @required this.paddingBottom,
+    this.action,
+  });
+
+  final Widget child;
+  final Function action;
+  final double paddingBottom;
+
+  @override
+  Widget build(BuildContext context) {
+    TextStyle bold = TextStyle(
+      fontWeight: FontWeight.bold,
+    );
+    //build
+    return Padding(
+      padding: EdgeInsets.only(
+        bottom: paddingBottom,
+      ),
+      child: Padding(
+        padding: EdgeInsets.symmetric(
+          horizontal: 16.0,
+        ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.all(
+            Radius.circular(6),
+          ),
+          child: Material(
+            color: Colors.white,
+            child: InkWell(
+              onTap: () {
+                BotToast.cleanAll();
+              },
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                padding: EdgeInsets.symmetric(
+                  vertical: 8,
+                  horizontal: 16,
+                ),
+                child: Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: Row(
+                        children: <Widget>[
+                          Padding(
+                            padding: EdgeInsets.only(
+                              right: 16.0,
+                            ),
+                            child: Icon(
+                              Icons.warning,
+                              color: Colors.red,
+                            ),
+                          ),
+                          Expanded(
+                            child: child,
+                          ),
+                        ],
+                      ),
+                    ),
+                    Visibility(
+                      visible: action != null,
+                      child: RaisedButton(
+                        onPressed: () => action(),
+                        child: Text(
+                          "Continue",
+                          style: bold,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 }

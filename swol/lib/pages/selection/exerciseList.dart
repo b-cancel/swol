@@ -1,4 +1,5 @@
 //flutter
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 
 //plugin
@@ -95,8 +96,6 @@ class _ExerciseListState extends State<ExerciseList> {
 
   tryToGoToExercise() {
     if (exerciseToTravelTo.value != -1) {
-      int exerciseID = exerciseToTravelTo.value;
-
       //either we
       //1. had the app closed
       //2. were in the exercise list
@@ -105,29 +104,31 @@ class _ExerciseListState extends State<ExerciseList> {
       //5. were adding an new exercise
       //TODO: for case below it might be nice to warn the user that they will lose their data
       if (ExercisePage.exerciseID.value == -1) {
-        popThenGoToExercise(exerciseID);
+        popThenGoToExercise(exerciseToTravelTo.value);
       } else {
         //needed in most cases
         bool bothMatch = true;
         bool isANewSet = false;
 
         //check the validity of the current exercise set
-        if (ExerciseData.getExercises().containsKey(exerciseID)) {
-          AnExercise exercise = ExerciseData.getExercises()[exerciseID];
+        if (ExerciseData.getExercises().containsKey(ExercisePage.exerciseID.value)) {
+          AnExercise exercise = ExerciseData.getExercises()[ExercisePage.exerciseID.value];
           bothMatch = doBothMatch(exercise);
           isANewSet = isNewSet(exercise);
         }
+
+        print("both match? " + bothMatch.toString() + " new set? " + isANewSet.toString());
 
         //we are already where we want to be
         //but perhaps not exactly where we want to be
         //1. main pages (but not page 2)
         //2. breath page
         //3. note page
-        if (ExercisePage.exerciseID.value == exerciseID) {
+        if (ExercisePage.exerciseID.value == exerciseToTravelTo.value) {
           //TODO: grab actual with breathing page static
-          bool breathingPage = false; 
+          bool breathingPage = false;
           //TODO: grab actual with notes page static
-          bool notesPage = false; 
+          bool notesPage = false;
 
           //breathing page is ideal since it takes us directly to where we want to be
           if (breathingPage) {
@@ -141,16 +142,55 @@ class _ExerciseListState extends State<ExerciseList> {
           }
         } else {
           //we have to navigate away... IF WE CAN
-          if(bothMatch){ //we are good to go whereever
-            popThenGoToExercise(exerciseID);
-          }
-          else{
-            if(isANewSet){ //new
-              //TODO: pop up that tells them to SAVE the new exercise first
-            }
-            else{ //update
-              //TODO: pop up that tells them to UPDATE the new exercise first
-            }
+          if (bothMatch) {
+            //we are good to go whereever
+            popThenGoToExercise(exerciseToTravelTo.value);
+          } else {
+            //notify the user of the action that should take place first
+            BotToast.showCustomNotification(
+              toastBuilder: (_) {
+                //style
+                TextStyle bold = TextStyle(
+                  fontWeight: FontWeight.bold,
+                );
+
+                //return
+                return WarningToast(
+                  paddingBottom: 24.0 + 16,
+                  child: RichText(
+                    text: TextSpan(
+                      style: TextStyle(
+                        color: Colors.black,
+                      ),
+                      children: [
+                        TextSpan(
+                          text: "You Should ",
+                        ),
+                        TextSpan(
+                          text: "Finish " 
+                          + ((isANewSet) ? "Saving" : "Updating") 
+                          + " This Set\n",
+                          style: bold,
+                        ),
+                        TextSpan(
+                          text: "Before",
+                          style: bold,
+                        ),
+                        TextSpan(text: " Moving onto your next"),
+                      ],
+                    ),
+                  ),
+                );
+              },
+              align: Alignment(0, 1),
+              duration: Duration(seconds: 5),
+              dismissDirections: [
+                DismissDirection.horizontal,
+                DismissDirection.vertical,
+              ],
+              crossPage: false,
+              onlyOne: true,
+            );
           }
         }
       }
