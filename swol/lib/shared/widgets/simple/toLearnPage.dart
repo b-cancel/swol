@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:swol/action/page.dart';
+import 'package:swol/action/popUps/textValid.dart';
 
 //internal
 import 'package:swol/pages/learn/page.dart';
@@ -22,6 +23,19 @@ import 'package:swol/shared/structs/anExercise.dart';
 
 //the simply navigate to the learn page
 class SuggestToLearnPage extends StatelessWidget {
+  goToLearnAfterSetUpdateComplete() {
+    if (ExercisePage.updateSet.value) {
+      //wait for the set to finish updating
+      //NOTE: the statement is set back to false automatically
+      //when its set to true, it updates stuff, then set itself to false
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        goToLearnAfterSetUpdateComplete();
+      });
+    } else {
+      goToLearn();
+    }
+  }
+
   goToLearn() {
     BuildContext rootContext = GrabSystemData.rootContext;
     bool gestureInProgress = Navigator.of(rootContext).userGestureInProgress;
@@ -89,6 +103,12 @@ class SuggestToLearnPage extends StatelessWidget {
                 //either we are initially setting the value
                 //or we are updating the value
 
+                //TODO: IF set valid
+                //-> updateSet
+                //-> goToLearnAfterSetUpdateComplete
+                //-> handle the navSpread var
+                //ELSE proceed as below
+
                 //pop to make space for snackbar
                 Navigator.of(context).pop();
 
@@ -102,7 +122,7 @@ class SuggestToLearnPage extends StatelessWidget {
 
                     //return
                     return CustomToast(
-                      action: (){
+                      action: () {
                         goToLearn();
                       },
                       paddingBottom: 24.0 + 12,
@@ -198,7 +218,21 @@ class SuggestToLearnPage extends StatelessWidget {
   }
 }
 
+bool isSetValid() {
+  //grab news
+  String newWeight = ExercisePage.setWeight.value;
+  String newReps = ExercisePage.setReps.value;
+
+  //check validity
+  bool newWeightValid = isTextValid(newWeight);
+  bool newRepsValid = isTextValid(newReps);
+
+  //ret
+  return (newWeightValid && newRepsValid);
+}
+
 bool isNewSet(AnExercise exercise) {
+  //NOTE: IF tempWeight is filled that so is tempReps
   int tempWeightInt = exercise?.tempWeight;
   String tempWeight = (tempWeightInt != null) ? tempWeightInt.toString() : "";
   return tempWeight == "";
@@ -208,6 +242,7 @@ bool doBothMatch(AnExercise exercise) {
   //grab temps
   int tempWeightInt = exercise?.tempWeight;
   int tempRepsInt = exercise?.tempReps;
+
   //extra step needed because null.toString() isn't null
   String tempWeight = (tempWeightInt != null) ? tempWeightInt.toString() : "";
   String tempReps = (tempRepsInt != null) ? tempRepsInt.toString() : "";

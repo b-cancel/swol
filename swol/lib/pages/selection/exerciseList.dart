@@ -94,11 +94,23 @@ class _ExerciseListState extends State<ExerciseList> {
   //  2. and the update is valid
   //  3. and our set is the same as it was before
 
+  toPage2AfterSetUpdateComplete() {
+    if (ExercisePage.updateSet.value) {
+      //wait for the set to finish updating
+      //NOTE: the statement is set back to false automatically
+      //when its set to true, it updates stuff, then set itself to false
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        toPage2AfterSetUpdateComplete();
+      });
+    } else {
+      ExercisePage.pageNumber.value = 2; //shift to the timer page
+    }
+  }
+
   //NOTE: this should only run if we are SURE
   //the on the top of the navigator are the vertical tabs
   toPage2({bool popUpIfThere: true}) {
-    int activePage = ExercisePage.pageNumber.value;
-    if (activePage == 2) {
+    if (ExercisePage.pageNumber.value == 2) {
       if (popUpIfThere) {
         //the user is probably confused...
         //they are already there so remind them
@@ -162,23 +174,13 @@ class _ExerciseListState extends State<ExerciseList> {
         );
       }
       //ELSE we are comming from the NOTES page
-    } else {
-      //needed in most cases
-      bool bothMatch = true;
-      bool isANewSet = false;
-
-      //check the validity of the current exercise set
-      if (ExerciseData.getExercises()
-          .containsKey(ExercisePage.exerciseID.value)) {
-        AnExercise exercise =
-            ExerciseData.getExercises()[ExercisePage.exerciseID.value];
-        bothMatch = doBothMatch(exercise);
-        isANewSet = isNewSet(exercise);
-      }
+    } else { //active page is 0 or 1
+      int exerciseID = ExercisePage.exerciseID.value;
+      AnExercise exercise = ExerciseData.getExercises()[exerciseID];
 
       //handle what happens, might have to manually move and that MAY cause problems
-      if(bothMatch){
-        //NOTE: we KNOW 
+      if (doBothMatch(exercise)) {
+        //NOTE: we KNOW
         //1. the timer started and ended
         //    otherwise we wouldn't be here
         //2. the values are already saved for the set
@@ -187,16 +189,29 @@ class _ExerciseListState extends State<ExerciseList> {
 
         //all we need to do is navigate to page 2
         ExercisePage.pageNumber.value = 2;
-      }
-      else{
-        //travel to page 1 where edits will need to be made
-        ExercisePage.pageNumber.value = 1;
+      } else { //in page 0 or 1
+        //imply the action the user wants to take
+        //move onto the 2nd page
+        if(isSetValid()){
+          ExercisePage.updateSet.value = true;
+          toPage2AfterSetUpdateComplete();
+        }
+        else{ //the set isn't valid so push the user to validate
+          if(ExercisePage.pageNumber.value == 0){
+            //move to the page and it will automatically refocus
+            ExercisePage.pageNumber.value = 1;
+          }
+          else{ //we are already on the page, so confirm focus
+            //if we have focus, remove it so we can then get it back
+            if(FocusScope.of(context).hasFocus){
+              FocusScope.of(context).unfocus();
+            } 
 
-        //allow autofocusing to indicate action or not
-        bool someThingInvalid = true;
-        if(someThingInvalid == false){
-          //TODO: either indicate that you need to click return to set break
-          //TODO: OR simply do it for them to be able to get to page 2
+            //Focus to show the user what is wrong
+            ExercisePage.causeRefocusIfInvalid.value = true;
+          }
+
+          //TODO: pop up that says the thing is invalid
         }
       }
     }
@@ -206,6 +221,9 @@ class _ExerciseListState extends State<ExerciseList> {
   //and for iOS it also called from the special pop up
   tryToGoToExercise() {
     if (exerciseToTravelTo.value != -1) {
+      int currExerciseID = ExercisePage.exerciseID.value;
+      int nextExerciseID = exerciseToTravelTo.value;
+
       //either we
       //1. had the app closed
       //2. were in the exercise list
@@ -213,23 +231,21 @@ class _ExerciseListState extends State<ExerciseList> {
       //4. were searching
       //5. were adding an new exercise
       //TODO: for case below it might be nice to warn the user that they will lose their data
-      if (ExercisePage.exerciseID.value == -1) {
-        popThenGoToExercise(exerciseToTravelTo.value);
+      if (currExerciseID == -1) {
+        popThenGoToExercise(nextExerciseID);
       } else {
         //we are already where we want to be
         //but perhaps not exactly where we want to be
         //1. main pages (but not page 2)
         //2. breath page
         //3. note page
-        if (ExercisePage.exerciseID.value == exerciseToTravelTo.value) {
+        if (currExerciseID == nextExerciseID) {
           //breathing page is ideal since it takes us directly to where we want to be
           if (BreathStateless.inStack) {
-            print("in breath");
             Navigator.of(context).pop();
           } else {
             //notes page or in one of the vertical pages
             if (ExerciseNotesStateless.inStack) {
-              print("in notes");
               //let the user know that they should save their changes
               BotToast.showCustomNotification(
                 toastBuilder: (_) {
@@ -286,69 +302,69 @@ class _ExerciseListState extends State<ExerciseList> {
             }
           }
         } else {
-          //needed in most cases
-          bool bothMatch = true;
-          bool isANewSet = false;
-
           //check the validity of the current exercise set
-          if (ExerciseData.getExercises()
-              .containsKey(ExercisePage.exerciseID.value)) {
-            AnExercise exercise =
-                ExerciseData.getExercises()[ExercisePage.exerciseID.value];
-            bothMatch = doBothMatch(exercise);
-            isANewSet = isNewSet(exercise);
-          }
+          if (ExerciseData.getExercises().containsKey(currExerciseID)) {
+            AnExercise exercise = ExerciseData.getExercises()[currExerciseID];
 
-          //we have to navigate away... IF WE CAN
-          if (bothMatch) {
-            //we are good to go whereever
-            popThenGoToExercise(exerciseToTravelTo.value);
-          } else {
-            //notify the user of the action that should take place first
-            BotToast.showCustomNotification(
-              toastBuilder: (_) {
-                //style
-                TextStyle bold = TextStyle(
-                  fontWeight: FontWeight.bold,
-                );
+            //we have to navigate away... IF WE CAN
+            if (doBothMatch(exercise)) {
+              //we are good to go whereever
+              popThenGoToExercise(nextExerciseID);
+            } else {
+              //TODO: IF set valid
+              //-> updateSet
+              //-> goToLearnAfterSetUpdateComplete
+              //-> handle the navSpread var
+              //ELSE proceed as below
 
-                //return
-                return CustomToast(
-                  paddingBottom: 24.0 + 8,
-                  child: RichText(
-                    text: TextSpan(
-                      style: TextStyle(
-                        color: Colors.black,
+              //notify the user of the action that should take place first
+              BotToast.showCustomNotification(
+                toastBuilder: (_) {
+                  //style
+                  TextStyle bold = TextStyle(
+                    fontWeight: FontWeight.bold,
+                  );
+
+                  //return
+                  return CustomToast(
+                    paddingBottom: 24.0 + 8,
+                    child: RichText(
+                      text: TextSpan(
+                        style: TextStyle(
+                          color: Colors.black,
+                        ),
+                        children: [
+                          TextSpan(
+                            text: "You Should ",
+                          ),
+                          TextSpan(
+                            text: "Finish " +
+                                (isNewSet(exercise) ? "Saving" : "Updating") +
+                                " This Set\n",
+                            style: bold,
+                          ),
+                          TextSpan(
+                            text: "Before",
+                            style: bold,
+                          ),
+                          TextSpan(text: " Moving onto your next"),
+                        ],
                       ),
-                      children: [
-                        TextSpan(
-                          text: "You Should ",
-                        ),
-                        TextSpan(
-                          text: "Finish " +
-                              ((isANewSet) ? "Saving" : "Updating") +
-                              " This Set\n",
-                          style: bold,
-                        ),
-                        TextSpan(
-                          text: "Before",
-                          style: bold,
-                        ),
-                        TextSpan(text: " Moving onto your next"),
-                      ],
                     ),
-                  ),
-                );
-              },
-              align: Alignment(0, 1),
-              duration: Duration(seconds: 5),
-              dismissDirections: [
-                DismissDirection.horizontal,
-                DismissDirection.vertical,
-              ],
-              crossPage: false,
-              onlyOne: true,
-            );
+                  );
+                },
+                align: Alignment(0, 1),
+                duration: Duration(seconds: 5),
+                dismissDirections: [
+                  DismissDirection.horizontal,
+                  DismissDirection.vertical,
+                ],
+                crossPage: false,
+                onlyOne: true,
+              );
+            }
+          } else {
+            popThenGoToExercise(nextExerciseID);
           }
         }
       }
@@ -377,7 +393,6 @@ class _ExerciseListState extends State<ExerciseList> {
 
         //let the user see the animation
         Future.delayed(ExercisePage.transitionDuration, () {
-          print("After delay: " + DateTime.now().toString());
           popThenGoToExercise(exerciseID);
         });
       } else {

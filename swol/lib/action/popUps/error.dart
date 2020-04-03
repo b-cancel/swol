@@ -12,6 +12,7 @@ import 'package:swol/shared/structs/anExercise.dart';
 import 'package:swol/action/popUps/textValid.dart';
 import 'package:swol/action/popUps/reusable.dart';
 import 'package:swol/action/page.dart';
+import 'package:swol/shared/widgets/simple/toLearnPage.dart';
 
 //function
 toNextPageAfterSetUpdateComplete() {
