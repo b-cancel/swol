@@ -51,6 +51,7 @@ class AnimatedTitleAction extends StatelessWidget {
                   context, 
                   PageTransition(
                     type: PageTransitionType.rightToLeft, 
+                    duration: ExercisePage.transitionDuration,
                     child: LearnExercise(),
                   ),
                 );

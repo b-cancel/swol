@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 //plugin
 import 'package:page_transition/page_transition.dart';
+import 'package:swol/action/page.dart';
 
 //internal: shared
 import 'package:swol/shared/methods/extensions/sharedPreferences.dart';
@@ -110,6 +111,7 @@ class _SearchExerciseButtonState extends State<SearchExerciseButton> {
                   context, 
                   PageTransition(
                     type: PageTransitionType.downToUp, 
+                    duration: ExercisePage.transitionDuration,
                     child: SearchExercise(),
                   ),
                 );

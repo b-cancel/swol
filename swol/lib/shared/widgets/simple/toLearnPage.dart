@@ -38,6 +38,7 @@ class SuggestToLearnPage extends StatelessWidget {
           rootContext,
           PageTransition(
             type: PageTransitionType.rightToLeft,
+            duration: ExercisePage.transitionDuration,
             child: LearnExercise(),
           ),
         );

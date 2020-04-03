@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:swol/action/page.dart';
 import 'package:swol/shared/widgets/simple/heros/curveMod.dart';
 
 class ToBreath extends StatelessWidget {
@@ -17,6 +18,7 @@ class ToBreath extends StatelessWidget {
             context, 
             PageTransition(
               type: PageTransitionType.fade, 
+              duration: ExercisePage.transitionDuration,
               child: Breath(),
             ),
           );
