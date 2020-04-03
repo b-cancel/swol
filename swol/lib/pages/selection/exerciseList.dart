@@ -1,3 +1,6 @@
+//dart
+import 'dart:math' as math;
+
 //flutter
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
@@ -98,22 +101,89 @@ class _ExerciseListState extends State<ExerciseList> {
 
   //NOTE: this should only run if we are SURE
   //the on the top of the navigator are the vertical tabs
-  toPage2() {
-    //needed in most cases
-    bool bothMatch = true;
-    bool isANewSet = false;
+  toPage2({bool popUpIfThere: true}) {
+    int activePage = ExercisePage.pageNumber.value;
+    if (activePage == 2) {
+      if (popUpIfThere) {
+        //the user is probably confused...
+        //they are already there so remind them
+        //and also be usedful and remind them where the button is for some reason
+        BotToast.showCustomNotification(
+          toastBuilder: (_) {
+            //style
+            TextStyle bold = TextStyle(
+              fontWeight: FontWeight.bold,
+            );
 
-    //check the validity of the current exercise set
-    if (ExerciseData.getExercises()
-        .containsKey(ExercisePage.exerciseID.value)) {
-      AnExercise exercise =
-          ExerciseData.getExercises()[ExercisePage.exerciseID.value];
-      bothMatch = doBothMatch(exercise);
-      isANewSet = isNewSet(exercise);
+            //return
+            return CustomToast(
+              paddingBottom: 24.0 + 40.0 + 16,
+              child: Row(
+                children: <Widget>[
+                  Expanded(
+                    child: RichText(
+                      text: TextSpan(
+                        style: TextStyle(
+                          color: Colors.black,
+                        ),
+                        children: [
+                          TextSpan(
+                            text: "Tap The Button",
+                            style: bold,
+                          ),
+                          TextSpan(
+                            text: " on the ",
+                          ),
+                          TextSpan(
+                            text: "Bottom Right\n",
+                            style: bold,
+                          ),
+                          TextSpan(
+                            text: "to move onto your Next Set",
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Transform.rotate(
+                    angle: (-math.pi / 4) * 2,
+                    child: Icon(
+                      Icons.subdirectory_arrow_left,
+                      color: Colors.black,
+                    ),
+                  )
+                ],
+              ),
+            );
+          },
+          align: Alignment(0, 1),
+          duration: Duration(seconds: 5),
+          dismissDirections: [
+            DismissDirection.horizontal,
+            DismissDirection.vertical,
+          ],
+          crossPage: false,
+          onlyOne: true,
+        );
+      }
+      //ELSE we are comming from the NOTES page
+    } else {
+      //needed in most cases
+      bool bothMatch = true;
+      bool isANewSet = false;
+
+      //check the validity of the current exercise set
+      if (ExerciseData.getExercises()
+          .containsKey(ExercisePage.exerciseID.value)) {
+        AnExercise exercise =
+            ExerciseData.getExercises()[ExercisePage.exerciseID.value];
+        bothMatch = doBothMatch(exercise);
+        isANewSet = isNewSet(exercise);
+      }
+
+      //TODO: actually do the thing bruh
+      print("do the thang");
     }
-
-    //TODO: actually do the thing bruh
-    print("do the thang");
   }
 
   //called when a notification is tapped regardless of platform
@@ -138,10 +208,12 @@ class _ExerciseListState extends State<ExerciseList> {
         if (ExercisePage.exerciseID.value == exerciseToTravelTo.value) {
           //breathing page is ideal since it takes us directly to where we want to be
           if (BreathStateless.inStack) {
+            print("in breath");
             Navigator.of(context).pop();
           } else {
             //notes page or in one of the vertical pages
             if (ExerciseNotesStateless.inStack) {
+              print("in notes");
               //let the user know that they should save their changes
               BotToast.showCustomNotification(
                 toastBuilder: (_) {
@@ -151,11 +223,11 @@ class _ExerciseListState extends State<ExerciseList> {
                   );
 
                   //return
-                  return WarningToast(
+                  return CustomToast(
                     paddingBottom: 24.0 + 8,
-                    action: (){
+                    action: () {
                       Navigator.of(context).pop();
-                      toPage2();
+                      toPage2(popUpIfThere: false);
                     },
                     child: RichText(
                       text: TextSpan(
@@ -225,7 +297,7 @@ class _ExerciseListState extends State<ExerciseList> {
                 );
 
                 //return
-                return WarningToast(
+                return CustomToast(
                   paddingBottom: 24.0 + 8,
                   child: RichText(
                     text: TextSpan(

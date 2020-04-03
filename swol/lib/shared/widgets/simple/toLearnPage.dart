@@ -101,7 +101,7 @@ class SuggestToLearnPage extends StatelessWidget {
                     );
 
                     //return
-                    return WarningToast(
+                    return CustomToast(
                       action: (){
                         goToLearn();
                       },
@@ -225,16 +225,18 @@ bool doBothMatch(AnExercise exercise) {
   return bothMatch;
 }
 
-class WarningToast extends StatelessWidget {
-  WarningToast({
+class CustomToast extends StatelessWidget {
+  CustomToast({
     @required this.child,
     @required this.paddingBottom,
     this.action,
+    this.isWarning: true,
   });
 
   final Widget child;
   final Function action;
   final double paddingBottom;
+  final bool isWarning;
 
   @override
   Widget build(BuildContext context) {
@@ -271,13 +273,16 @@ class WarningToast extends StatelessWidget {
                     Expanded(
                       child: Row(
                         children: <Widget>[
-                          Padding(
-                            padding: EdgeInsets.only(
-                              right: 16.0,
-                            ),
-                            child: Icon(
-                              Icons.warning,
-                              color: Colors.red,
+                          Visibility(
+                            visible: isWarning,
+                            child: Padding(
+                              padding: EdgeInsets.only(
+                                right: 16.0,
+                              ),
+                              child: Icon(
+                                Icons.warning,
+                                color: Colors.red,
+                              ),
                             ),
                           ),
                           Expanded(
