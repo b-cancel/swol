@@ -95,15 +95,19 @@ class _ExerciseListState extends State<ExerciseList> {
   //  3. and our set is the same as it was before
 
   toPage2AfterSetUpdateComplete() {
-    if (ExercisePage.updateSet.value) {
-      //wait for the set to finish updating
-      //NOTE: the statement is set back to false automatically
-      //when its set to true, it updates stuff, then set itself to false
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        toPage2AfterSetUpdateComplete();
-      });
-    } else {
-      ExercisePage.pageNumber.value = 2; //shift to the timer page
+    BuildContext rootContext = GrabSystemData.rootContext;
+    bool gestureInProgress = Navigator.of(rootContext).userGestureInProgress;
+    if (gestureInProgress == false) {
+      if (ExercisePage.updateSet.value) {
+        //wait for the set to finish updating
+        //NOTE: the statement is set back to false automatically
+        //when its set to true, it updates stuff, then set itself to false
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          toPage2AfterSetUpdateComplete();
+        });
+      } else {
+        ExercisePage.pageNumber.value = 2; //shift to the timer page
+      }
     }
   }
 
@@ -205,12 +209,10 @@ class _ExerciseListState extends State<ExerciseList> {
           } else {
             //we are already on the page, so confirm focus
             //if we have focus, remove it so we can then get it back
-            if (FocusScope.of(context).hasFocus) {
-              FocusScope.of(context).unfocus();
+            if (FocusScope.of(context).hasFocus == false) {
+              //Focus to show the user what is wrong
+              ExercisePage.causeRefocusIfInvalid.value = true;
             }
-
-            //Focus to show the user what is wrong
-            ExercisePage.causeRefocusIfInvalid.value = true;
           }
 
           //TODO: pop up that says the thing is invalid
