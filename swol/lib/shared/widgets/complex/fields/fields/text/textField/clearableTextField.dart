@@ -1,5 +1,6 @@
 //flutter
 import 'package:flutter/material.dart';
+import 'package:swol/action/page.dart';
 
 //internal
 import 'package:swol/shared/widgets/complex/fields/fields/text/textField/undoAndEditToggle.dart';
@@ -75,7 +76,7 @@ class _TextFieldWithClearButtonState extends State<TextFieldWithClearButton> {
         WidgetsBinding.instance.addPostFrameCallback((_){
           Future.delayed(
             //wait a little bit so animations page transition animation complete
-            Duration(milliseconds: 300),(){
+            ExercisePage.transitionDuration, () {
               FocusScope.of(context).requestFocus(focusNodeVN.value);
             }
           );

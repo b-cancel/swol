@@ -1,5 +1,6 @@
 //flutter
 import 'package:flutter/material.dart';
+import 'package:swol/action/page.dart';
 
 //internal
 import 'package:swol/pages/selection/widgets/workoutSection.dart';
@@ -101,9 +102,6 @@ class RecentSearches extends StatelessWidget {
     Animation<double> animation,
     {String passedTerm}
   ){
-    //one of my own defaults
-    Duration removeDuration = Duration(milliseconds: 300);
-
     //make sure we have a valid search term
     String searchTerm;
     if(passedTerm != null) searchTerm = passedTerm;
@@ -159,14 +157,14 @@ class RecentSearches extends StatelessWidget {
                               passedTerm: searchTerm,
                             );
                           },
-                          duration: removeDuration,
+                          duration: ExercisePage.transitionDuration,
                         );
 
                         //remove the contact
                         SearchesData.removeFromSearchesAtIndex(index);
 
                         //NOTE: using a listener doesn't work for some reason
-                        Future.delayed(removeDuration, (){
+                        Future.delayed(ExercisePage.transitionDuration, (){
                           //cover edge case
                           if(SearchesData.getRecentSearches().length == 0){
                             updateState();

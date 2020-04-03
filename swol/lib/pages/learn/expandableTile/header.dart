@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 
 //plugin
 import 'package:animator/animator.dart';
+import 'package:swol/action/page.dart';
 
 //internal
 import 'package:swol/shared/widgets/simple/curvedCorner.dart';
@@ -13,7 +14,6 @@ import 'package:swol/shared/widgets/simple/curvedCorner.dart';
 //widget
 class TileHeader extends StatelessWidget {
   const TileHeader({
-    @required this.duration,
     @required this.isOpen,
     @required this.openOrClose,
     @required this.headerIcon,
@@ -22,7 +22,6 @@ class TileHeader extends StatelessWidget {
     Key key,
   }) : super(key: key);
 
-  final Duration duration;
   final ValueNotifier<bool> isOpen;
   final Function openOrClose;
   final IconData headerIcon;
@@ -36,7 +35,7 @@ class TileHeader extends StatelessWidget {
     : Colors.white;
 
     return AnimatedContainer(
-      duration: duration,
+      duration: ExercisePage.transitionDuration,
       margin: EdgeInsets.only(
         left: isOpen.value ? 0 : 12,
         right: isOpen.value ? 0 : 12,
@@ -61,7 +60,7 @@ class TileHeader extends StatelessWidget {
             child: Visibility(
               visible: true,
               child: AnimatedContainer(
-                duration: duration,
+                duration: ExercisePage.transitionDuration,
                 width: MediaQuery.of(context).size.width,
                 child: Transform.translate(
                   offset: Offset(
@@ -84,7 +83,7 @@ class TileHeader extends StatelessWidget {
                               isLeft: true,
                             ),
                             child: AnimatedContainer(
-                              duration: duration,
+                              duration: ExercisePage.transitionDuration,
                               //color switch to match button
                               decoration: new BoxDecoration(
                                 color: isOpen.value ? Theme.of(context).accentColor : Theme.of(context).cardColor,
@@ -107,7 +106,7 @@ class TileHeader extends StatelessWidget {
                               isLeft: false,
                             ),
                             child: AnimatedContainer(
-                              duration: duration,
+                              duration: ExercisePage.transitionDuration,
                               //color switch to match button
                               decoration: new BoxDecoration(
                                 color: isOpen.value ? Theme.of(context).accentColor : Theme.of(context).cardColor,

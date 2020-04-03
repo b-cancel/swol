@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 //plugin
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
+import 'package:swol/action/page.dart';
 
 //internal: learn
 import 'package:swol/pages/learn/expandableTile/expandableTile.dart';
@@ -41,9 +42,6 @@ class LearnExercise extends StatefulWidget {
 class _LearnExerciseState extends State<LearnExercise> {
   final AutoScrollController autoScrollController = new AutoScrollController();
 
-  //animation speed
-  final Duration duration = const Duration(milliseconds: 300);
-
   //is opens
   List<ValueNotifier<bool>> allIsOpens = new List<ValueNotifier<bool>>();
 
@@ -75,7 +73,7 @@ class _LearnExerciseState extends State<LearnExercise> {
         //but the animation kind of happens on its own
         //requires seperate set of variables that confirm if it finished its animation
         //add if necessary
-        duration * 1.5, 
+        ExercisePage.transitionDuration * 1.5, 
         (){
           //scroll to index
           autoScrollController.scrollToIndex(
@@ -196,7 +194,6 @@ class _LearnExerciseState extends State<LearnExercise> {
             controller: autoScrollController,
             slivers: [
               ExpandableTile(
-                duration: duration,
                 autoScrollController: autoScrollController,
                 index: 0,
                 isOpen: introductionIsOpen,
@@ -204,9 +201,7 @@ class _LearnExerciseState extends State<LearnExercise> {
                 headerText: "Introduction", 
                 expandedChild: IntroductionBody(),
               ),
-              
               ExpandableTile(
-                duration: duration,
                 autoScrollController: autoScrollController,
                 index: 1,
                 isOpen: definitionIsOpen,
@@ -215,7 +210,6 @@ class _LearnExerciseState extends State<LearnExercise> {
                 expandedChild: DefinitionBody(),
               ),
               ExpandableTile(
-                duration: duration,
                 autoScrollController: autoScrollController,
                 index: 2,
                 isOpen: trainingIsOpen,
@@ -225,7 +219,6 @@ class _LearnExerciseState extends State<LearnExercise> {
                 expandedChild: TrainingBody(),
               ),
               ExpandableTile(
-                duration: duration,
                 autoScrollController: autoScrollController,
                 index: 3,
                 isOpen: precautionIsOpen,
@@ -234,7 +227,6 @@ class _LearnExerciseState extends State<LearnExercise> {
                 expandedChild: PrecautionsBody(),
               ),
               ExpandableTile(
-                duration: duration,
                 autoScrollController: autoScrollController,
                 index: 4,
                 isOpen: oneRepMaxIsOpen,
@@ -244,7 +236,6 @@ class _LearnExerciseState extends State<LearnExercise> {
                 expandedChild: OneRepMaxBody(),
               ),
               ExpandableTile(
-                duration: duration,
                 autoScrollController: autoScrollController,
                 index: 5,
                 isOpen: experimentIsOpen,
@@ -253,7 +244,6 @@ class _LearnExerciseState extends State<LearnExercise> {
                 expandedChild: ExperimentBody(),
               ),
               ExpandableTile(
-                duration: duration,
                 autoScrollController: autoScrollController,
                 index: 6,
                 isOpen: researchIsOpen,
@@ -262,7 +252,6 @@ class _LearnExerciseState extends State<LearnExercise> {
                 expandedChild: ResearchBody(),
                 theOnlyException: true,
               ),
-              
               SliverFillRemaining(
                 hasScrollBody: false,
                 fillOverscroll: false,

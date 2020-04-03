@@ -114,7 +114,7 @@ class _ExerciseListState extends State<ExerciseList> {
         //NOTE: we are waiting a little more to wait for the pop to complete so init always runs
         //TODO: ideally a more fool proof solution (1.5 duration may not cover un-planned delay)
         //TODO: use the same duration everywhere
-        Future.delayed(Duration(milliseconds: 300) * 1.5, () {
+        Future.delayed(ExercisePage.transitionDuration * 1.5, () {
           print("After delay: " + DateTime.now().toString());
           goToExcercise();
         });

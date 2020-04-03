@@ -139,7 +139,6 @@ class _ExerciseTileState extends State<ExerciseTile> {
       trailing: ExerciseTileLeading(
         key: widget.key,
         exercise: widget.exercise,
-        transitionDuration: transitionDuration,
         tileInSearch: widget.tileInSearch,
       ),
     );

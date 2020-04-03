@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 //plugins
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
+import 'package:swol/action/page.dart';
 
 //internal
 import 'package:swol/pages/learn/expandableTile/header.dart';
@@ -13,7 +14,6 @@ import 'package:swol/pages/learn/expandableTile/body.dart';
 class ExpandableTile extends StatefulWidget {
   const ExpandableTile({
     Key key,
-    @required this.duration,
     @required this.autoScrollController,
     @required this.index,
     @required this.isOpen,
@@ -24,7 +24,6 @@ class ExpandableTile extends StatefulWidget {
     this.size,
   }) : super(key: key);
 
-  final Duration duration;
   final AutoScrollController autoScrollController;
   final int index;
   final ValueNotifier<bool> isOpen;
@@ -33,7 +32,6 @@ class ExpandableTile extends StatefulWidget {
   final Widget expandedChild;
   final double size;
   final bool theOnlyException;
-  //style options
 
   @override
   _ExpandableTileState createState() => _ExpandableTileState();
@@ -51,7 +49,6 @@ class _ExpandableTileState extends State<ExpandableTile> {
           animation: widget.isOpen,
           builder: (context, child){
             return TileHeader(
-              duration: widget.duration,
               headerIcon: widget.headerIcon,
               headerText: widget.headerText,
               size: widget.size,
@@ -69,7 +66,7 @@ class _ExpandableTileState extends State<ExpandableTile> {
               animation: widget.isOpen,
               builder: (context, child){
                 return AnimatedSwitcher(
-                  duration: widget.duration,
+                  duration: ExercisePage.transitionDuration,
                   transitionBuilder: (widget, animation){
                     return SizeTransition(
                       child: widget,

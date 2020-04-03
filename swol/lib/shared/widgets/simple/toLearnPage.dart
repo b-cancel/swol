@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 //plugin
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:swol/action/page.dart';
 
 //internal
 import 'package:swol/pages/learn/page.dart';
@@ -27,7 +28,8 @@ class SuggestToLearnPage extends StatelessWidget {
         Navigator.pop(rootContext);
 
         //let the user see the animation
-        Future.delayed(Duration(milliseconds: 300), () {
+        Future.delayed(
+          ExercisePage.transitionDuration, () {
           goToLearn();
         });
       } else {

@@ -1,5 +1,6 @@
 //flutter
 import 'package:flutter/material.dart';
+import 'package:swol/action/page.dart';
 
 //internal: shared
 import 'package:swol/shared/widgets/complex/exerciseListTile/miniTimer/wrapper.dart';
@@ -17,13 +18,11 @@ class ExerciseTileLeading extends StatefulWidget {
   ExerciseTileLeading({
     @required this.exercise,
     @required this.tileInSearch,
-    @required this.transitionDuration,
     @required Key key,
   }) : super(key: key);
 
   final AnExercise exercise;
   final bool tileInSearch;
-  final Duration transitionDuration;
 
   @override
   _ExerciseTileLeadingState createState() => _ExerciseTileLeadingState();
@@ -45,7 +44,7 @@ class _ExerciseTileLeadingState extends State<ExerciseTileLeading> {
     //TODO: more fool proof solution because waiting one frame should be enough
     //if its isnt it may just the the unexpected delay that happens like everywhere
     //this REALLY SHOULD be enough, but fix if needed
-    Future.delayed(widget.transitionDuration, actualUpdate);
+    Future.delayed(ExercisePage.transitionDuration, actualUpdate);
   }
 
   @override
