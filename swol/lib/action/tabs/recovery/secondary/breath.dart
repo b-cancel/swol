@@ -19,7 +19,7 @@ class ToBreath extends StatelessWidget {
             PageTransition(
               type: PageTransitionType.fade, 
               duration: ExercisePage.transitionDuration,
-              child: Breath(),
+              child: BreathStateless(),
             ),
           );
         },
@@ -48,7 +48,37 @@ class ToBreath extends StatelessWidget {
   }
 }
 
-class Breath extends StatelessWidget {
+class BreathStateless extends StatelessWidget {
+  static bool inStack = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return BreathStateful();
+  }
+}
+
+class BreathStateful extends StatefulWidget {
+  const BreathStateful({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  _BreathStatefulState createState() => _BreathStatefulState();
+}
+
+class _BreathStatefulState extends State<BreathStateful> {
+  @override
+  void initState() { 
+    super.initState();
+    BreathStateless.inStack = true;
+  }
+
+  @override
+  void dispose() { 
+    BreathStateless.inStack = false;
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

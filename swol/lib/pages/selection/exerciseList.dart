@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
+import 'package:swol/action/tabs/recovery/secondary/breath.dart';
+import 'package:swol/pages/notes/exerciseNotes.dart';
 
 //internal: shared
 import 'package:swol/shared/functions/defaultDateTimes.dart';
@@ -94,6 +96,28 @@ class _ExerciseListState extends State<ExerciseList> {
   //  3. and our set is the same as it was before
   //    TODO: must be fixed
 
+  //NOTE: this should only run if we are SURE
+  //the on the top of the navigator are the vertical tabs
+  toPage2() {
+    //needed in most cases
+    bool bothMatch = true;
+    bool isANewSet = false;
+
+    //check the validity of the current exercise set
+    if (ExerciseData.getExercises()
+        .containsKey(ExercisePage.exerciseID.value)) {
+      AnExercise exercise =
+          ExerciseData.getExercises()[ExercisePage.exerciseID.value];
+      bothMatch = doBothMatch(exercise);
+      isANewSet = isNewSet(exercise);
+    }
+
+    //TODO: actually do the thing bruh
+    print("do the thang");
+  }
+
+  //called when a notification is tapped regardless of platform
+  //and for iOS it also called from the special pop up
   tryToGoToExercise() {
     if (exerciseToTravelTo.value != -1) {
       //either we
@@ -106,41 +130,87 @@ class _ExerciseListState extends State<ExerciseList> {
       if (ExercisePage.exerciseID.value == -1) {
         popThenGoToExercise(exerciseToTravelTo.value);
       } else {
-        //needed in most cases
-        bool bothMatch = true;
-        bool isANewSet = false;
-
-        //check the validity of the current exercise set
-        if (ExerciseData.getExercises().containsKey(ExercisePage.exerciseID.value)) {
-          AnExercise exercise = ExerciseData.getExercises()[ExercisePage.exerciseID.value];
-          bothMatch = doBothMatch(exercise);
-          isANewSet = isNewSet(exercise);
-        }
-
-        print("both match? " + bothMatch.toString() + " new set? " + isANewSet.toString());
-
         //we are already where we want to be
         //but perhaps not exactly where we want to be
         //1. main pages (but not page 2)
         //2. breath page
         //3. note page
         if (ExercisePage.exerciseID.value == exerciseToTravelTo.value) {
-          //TODO: grab actual with breathing page static
-          bool breathingPage = false;
-          //TODO: grab actual with notes page static
-          bool notesPage = false;
-
           //breathing page is ideal since it takes us directly to where we want to be
-          if (breathingPage) {
+          if (BreathStateless.inStack) {
             Navigator.of(context).pop();
           } else {
             //notes page or in one of the vertical pages
-            if (ExercisePage.pageNumber.value != 2) {
+            if (ExerciseNotesStateless.inStack) {
+              //let the user know that they should save their changes
+              BotToast.showCustomNotification(
+                toastBuilder: (_) {
+                  //style
+                  TextStyle bold = TextStyle(
+                    fontWeight: FontWeight.bold,
+                  );
+
+                  //return
+                  return WarningToast(
+                    paddingBottom: 24.0 + 8,
+                    action: (){
+                      Navigator.of(context).pop();
+                      toPage2();
+                    },
+                    child: RichText(
+                      text: TextSpan(
+                        style: TextStyle(
+                          color: Colors.black,
+                        ),
+                        children: [
+                          TextSpan(
+                            text: "Save Before",
+                            style: bold,
+                          ),
+                          TextSpan(
+                            text: " You Continue\n",
+                          ),
+                          TextSpan(
+                            text: "or you will ",
+                            style: bold,
+                          ),
+                          TextSpan(
+                            text: "Lose Your Changes",
+                            style: bold,
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+                align: Alignment(0, 1),
+                //5 to read, 5 to save and still use BTN
+                duration: Duration(seconds: 5 + 5),
+                dismissDirections: [
+                  DismissDirection.horizontal,
+                  DismissDirection.vertical,
+                ],
+                crossPage: false,
+                onlyOne: true,
+              );
             } else {
-              //TODO: pop up that says move onto your next set with the "NEXT SET" button below
+              toPage2();
             }
           }
         } else {
+          //needed in most cases
+          bool bothMatch = true;
+          bool isANewSet = false;
+
+          //check the validity of the current exercise set
+          if (ExerciseData.getExercises()
+              .containsKey(ExercisePage.exerciseID.value)) {
+            AnExercise exercise =
+                ExerciseData.getExercises()[ExercisePage.exerciseID.value];
+            bothMatch = doBothMatch(exercise);
+            isANewSet = isNewSet(exercise);
+          }
+
           //we have to navigate away... IF WE CAN
           if (bothMatch) {
             //we are good to go whereever
@@ -156,7 +226,7 @@ class _ExerciseListState extends State<ExerciseList> {
 
                 //return
                 return WarningToast(
-                  paddingBottom: 24.0 + 16,
+                  paddingBottom: 24.0 + 8,
                   child: RichText(
                     text: TextSpan(
                       style: TextStyle(
@@ -167,9 +237,9 @@ class _ExerciseListState extends State<ExerciseList> {
                           text: "You Should ",
                         ),
                         TextSpan(
-                          text: "Finish " 
-                          + ((isANewSet) ? "Saving" : "Updating") 
-                          + " This Set\n",
+                          text: "Finish " +
+                              ((isANewSet) ? "Saving" : "Updating") +
+                              " This Set\n",
                           style: bold,
                         ),
                         TextSpan(

@@ -18,6 +18,23 @@ import 'package:swol/shared/structs/anExercise.dart';
 import 'package:swol/pages/notes/exerciseMessages.dart';
 import 'package:swol/action/page.dart';
 
+class ExerciseNotesStateless extends StatelessWidget {
+  ExerciseNotesStateless({
+    @required this.exercise,
+  });
+
+  final AnExercise exercise;
+
+  static bool inStack = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return ExerciseNotes(
+      exercise: exercise,
+    );
+  }
+}
+
 //widget
 class ExerciseNotes extends StatefulWidget {
   ExerciseNotes({
@@ -48,6 +65,9 @@ class _ExerciseNotesState extends State<ExerciseNotes> {
     //super init
     super.initState();
 
+    //inform static for notifcation
+    ExerciseNotesStateless.inStack = true;
+
     //set initial values of ValueNotifiers
     name.value = widget.exercise.name;
     note.value = widget.exercise.note;
@@ -65,6 +85,9 @@ class _ExerciseNotesState extends State<ExerciseNotes> {
     name.removeListener(updateName);
     note.removeListener(updateNote);
     url.removeListener(updateUrl);
+
+    //inform static for notifcation
+    ExerciseNotesStateless.inStack = false;
     
     //super dispose
     super.dispose();
