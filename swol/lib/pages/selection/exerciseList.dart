@@ -92,11 +92,39 @@ class _ExerciseListState extends State<ExerciseList> {
   //  3. and our set is the same as it was before
   //    TODO: must be fixed
 
+  tryToGoToExercise(){
+    //either we 
+    //1. had the app closed
+    //2. were in the exercise list
+    //3. were in the learn section
+    //4. were searching
+    //5. were adding an new exercise
+    //TODO: for case below it might be nice to warn the user that they will lose their data
+    if(ExercisePage.exerciseID.value == -1){
+      popThenGoToExercise();
+    }
+    else{
+      //we are in some exercise page
+      //1. main pages
+      //2. breath page
+      //3. note page
+
+      //we may also be either 
+      //1. in the exercise we are trying to go to
+      //2. in an exercise we aren't try to go to
+      //*trying to go to exercise determine by passed payload
+
+      //the exercise may also have changes that can't be done automatically
+
+      popThenGoToExercise();
+    }
+  }
+
   //go back until the main page and then to the exercise
   //NOTE: this doesn't save any previous state
   //if skips out on the warnings that usually pop out
   //and doesn't autostart the set for the exercise that we are leaving
-  goToExcercise() {
+  popThenGoToExercise() {
     BuildContext rootContext = GrabSystemData.rootContext;
     bool gestureInProgress = Navigator.of(rootContext).userGestureInProgress;
     if (gestureInProgress == false) {
@@ -112,7 +140,7 @@ class _ExerciseListState extends State<ExerciseList> {
         //let the user see the animation
         Future.delayed(ExercisePage.transitionDuration, () {
           print("After delay: " + DateTime.now().toString());
-          goToExcercise();
+          popThenGoToExercise();
         });
       } else {
         travelToExercise();
@@ -186,7 +214,7 @@ class _ExerciseListState extends State<ExerciseList> {
 
     //Updates every time we update[timestamp], add, or remove some exercise
     ExerciseData.exercisesOrder.addListener(updateState);
-    exerciseToTravelTo.addListener(goToExcercise);
+    exerciseToTravelTo.addListener(tryToGoToExercise);
     super.initState();
   }
 
@@ -195,7 +223,7 @@ class _ExerciseListState extends State<ExerciseList> {
     ExerciseSelectStateless.manualOrderUpdate.removeListener(
       manualBeforeManualBuild,
     );
-    exerciseToTravelTo.removeListener(goToExcercise);
+    exerciseToTravelTo.removeListener(tryToGoToExercise);
     ExerciseData.exercisesOrder.addListener(updateState);
     super.dispose();
   }

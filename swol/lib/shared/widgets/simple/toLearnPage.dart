@@ -170,6 +170,9 @@ class SuggestToLearnPage extends StatelessWidget {
                                                 ),
                                                 children: [
                                                   TextSpan(
+                                                    text: "1  ",
+                                                  ),
+                                                  TextSpan(
                                                     text: "Finish " + customBit,
                                                     style: bold,
                                                   ),
@@ -177,18 +180,23 @@ class SuggestToLearnPage extends StatelessWidget {
                                                     text: " The Set\n",
                                                   ),
                                                   TextSpan(
+                                                    text: "2  ",
+                                                  ),
+                                                  TextSpan(
                                                     text: "Go Back",
                                                     style: bold,
                                                   ),
                                                   TextSpan(
-                                                    text:
-                                                        " to the list of exercises\n",
+                                                    text: " to the List Of Exercises\n",
+                                                  ),
+                                                  TextSpan(
+                                                    text: "3  ",
                                                   ),
                                                   TextSpan(
                                                     text: "Tap",
                                                     style: bold,
                                                   ),
-                                                  TextSpan(text: " the icon on the "),
+                                                  TextSpan(text: " the Icon on the "),
                                                   TextSpan(
                                                     text: "Top Right",
                                                     style: bold,
@@ -214,7 +222,7 @@ class SuggestToLearnPage extends StatelessWidget {
                     );
                   },
                   align: Alignment(0, 1),
-                  duration: Duration(seconds: 5),
+                  duration: Duration(seconds: 8),
                   dismissDirections: [
                     DismissDirection.horizontal,
                     DismissDirection.vertical,
