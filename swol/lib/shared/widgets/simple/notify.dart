@@ -145,7 +145,7 @@ scheduleNotification(AnExercise exercise) async {
         //title
         'Set Break Complete for \"' + exercise.name + '\"',
         //content
-        'Start your next set now for the best results',
+        '\"Tap Here\" to start your next set',
         //when the notification will pop up
         notificationDT,
         //pass details created above
