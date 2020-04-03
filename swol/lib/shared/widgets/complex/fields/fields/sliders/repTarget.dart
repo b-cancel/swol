@@ -14,13 +14,11 @@ import 'package:swol/shared/methods/theme.dart';
 class RepTargetField extends StatefulWidget {
   RepTargetField({
     @required this.repTarget,
-    @required this.changeDuration,
     @required this.subtle,
     this.darkTheme: true,
   });
 
   final ValueNotifier<int> repTarget;
-  final Duration changeDuration;
   final bool subtle;
   final bool darkTheme;
 
@@ -72,7 +70,6 @@ class _RepTargetFieldState extends State<RepTargetField> {
       indicator: Theme(
         data: MyTheme.light,
         child: AnimRepTargetInfoWhite(
-          changeDuration: Duration(milliseconds: 300), 
           repTargetDuration: repTargetDuration,
           darkTheme: widget.subtle == false,
         ),
@@ -85,19 +82,16 @@ class _RepTargetFieldState extends State<RepTargetField> {
 class AnimRepTargetInfoWhite extends StatelessWidget {
   const AnimRepTargetInfoWhite({
     Key key,
-    @required this.changeDuration,
     @required this.repTargetDuration,
     this.darkTheme: true,
   }) : super(key: key);
 
-  final Duration changeDuration;
   final ValueNotifier<Duration> repTargetDuration;
   final bool darkTheme;
 
   @override
   Widget build(BuildContext context) {
     return AnimatedRangeInformation(
-      changeDuration: changeDuration,
       selectedDuration: repTargetDuration,
       bigTickNumber: 25,
       darkTheme: darkTheme,

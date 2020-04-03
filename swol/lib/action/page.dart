@@ -385,7 +385,7 @@ class PageTitle extends StatelessWidget {
       context,
       PageTransition(
         type: PageTransitionType.rightToLeft,
-        duration: Duration(milliseconds: 300),
+        duration: ExercisePage.transitionDuration,
         child: ExerciseNotes(
           exercise: exercise,
         ),

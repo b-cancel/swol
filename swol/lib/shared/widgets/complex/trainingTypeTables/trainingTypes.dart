@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 //plugins
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:swol/action/page.dart';
 
 //internal
 import 'package:swol/shared/widgets/complex/trainingTypeTables/cardTables.dart';
@@ -79,7 +80,7 @@ class _TrainingTypeSectionsState extends State<TrainingTypeSections> {
       else{
         mainCarousel.animateToPage(
           widget.sectionID.value,
-          duration: Duration(milliseconds: 250), 
+          duration: ExercisePage.transitionDuration, 
           curve: Curves.linear,
         );
       }

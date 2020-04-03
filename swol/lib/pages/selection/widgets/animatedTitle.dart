@@ -1,4 +1,5 @@
 //dart
+import 'package:swol/action/page.dart';
 import 'package:vector_math/vector_math_64.dart' as vect;
 
 //flutter
@@ -35,7 +36,7 @@ class AnimatedTitleAction extends StatelessWidget {
               0
             ),  
           ),
-          duration: Duration(milliseconds: 300),
+          duration: ExercisePage.transitionDuration,
           child: FeatureWrapper(
             featureID: AFeature.LearnPage.toString(),
             tapTarget: Icon(FontAwesomeIcons.leanpub),
@@ -87,7 +88,7 @@ class AnimatedTitle extends StatelessWidget {
       animation: App.navSpread,
       builder: (context, child){
         return AnimatedContainer(
-          duration: Duration(milliseconds: 300),
+          duration: ExercisePage.transitionDuration,
           transform: Matrix4.translation(
             vect.Vector3(
               (App.navSpread.value == true) ? -screenWidth/2 : 0,

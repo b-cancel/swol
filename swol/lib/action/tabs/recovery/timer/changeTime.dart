@@ -49,7 +49,6 @@ class ActualButton extends StatelessWidget {
           ],
           [
             ChangeRecoveryTimeWidget(
-              changeDuration: Duration(milliseconds: 300),
               recoveryPeriod: possibleRecoveryDuration,
             ),
           ],
@@ -89,11 +88,9 @@ class ActualButton extends StatelessWidget {
 class ChangeRecoveryTimeWidget extends StatefulWidget {
   ChangeRecoveryTimeWidget({
     Key key,
-    @required this.changeDuration,
     @required this.recoveryPeriod,
   }) : super(key: key);
 
-  final Duration changeDuration;
   final ValueNotifier<Duration> recoveryPeriod;
 
   @override
@@ -181,7 +178,6 @@ class _ChangeRecoveryTimeWidgetState extends State<ChangeRecoveryTimeWidget> {
                   bottom: 8,
                 ),
                 child: AnimRecoveryTimeInfoToWhiteTheme(
-                  changeDuration: widget.changeDuration,
                   recoveryPeriod: widget.recoveryPeriod,
                   darkTheme: false,
                   hideNameButtons: true,

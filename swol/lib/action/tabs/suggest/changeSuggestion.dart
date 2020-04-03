@@ -99,7 +99,6 @@ class SuggestionChanger extends StatelessWidget {
               bottom: 12,
             ),
             child: RepTargetField(
-              changeDuration: Duration(milliseconds: 300),
               repTarget: repTarget,
               subtle: true,
             ),

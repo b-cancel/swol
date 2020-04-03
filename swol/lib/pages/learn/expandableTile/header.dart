@@ -178,13 +178,11 @@ class TileHeader extends StatelessWidget {
 class RotatingIcon extends StatelessWidget {
   RotatingIcon({
     @required this.color,
-    this.duration: const Duration(milliseconds: 300),
     @required this.isOpen,
   });
 
   //passed params
   final Color color;
-  final Duration duration;
   final ValueNotifier<bool> isOpen;
 
   //operating within
@@ -209,7 +207,7 @@ class RotatingIcon extends StatelessWidget {
             end: normalRotation,
         ),
       duration: Duration(
-        milliseconds: ((duration.inMilliseconds * fractionOfDuration.value).toInt()),
+        milliseconds: ((ExercisePage.transitionDuration.inMilliseconds * fractionOfDuration.value).toInt()),
       ),
       customListener: (animator) {
         tweenBeginning.value = animator.animation.value;

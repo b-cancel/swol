@@ -183,7 +183,7 @@ class _ChangeFunctionState extends State<ChangeFunction> {
   upOneFunction() {
     if (firstFunction.value == false) {
       carousel.nextPage(
-        duration: Duration(milliseconds: 300),
+        duration: ExercisePage.transitionDuration,
         curve: Curves.bounceIn,
       );
     }
@@ -192,7 +192,7 @@ class _ChangeFunctionState extends State<ChangeFunction> {
   downOneFunction() {
     if (lastFunction.value == false) {
       carousel.previousPage(
-        duration: Duration(milliseconds: 300),
+        duration: ExercisePage.transitionDuration,
         curve: Curves.bounceIn,
       );
     }

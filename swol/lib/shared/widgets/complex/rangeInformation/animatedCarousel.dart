@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 //plugin
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:swol/action/page.dart';
 
 //internal
 import 'package:swol/shared/widgets/complex/RangeInformation/trainingNameButton.dart';
@@ -18,7 +19,6 @@ import 'package:swol/shared/structs/range.dart';
 class AnimatedRangeInformation extends StatefulWidget {
   AnimatedRangeInformation({
     Key key,
-    @required this.changeDuration,
     @required this.selectedDuration,
     @required this.ranges,
     this.bigTickNumber: 30,
@@ -26,7 +26,6 @@ class AnimatedRangeInformation extends StatefulWidget {
     this.hideNameButtons: false,
   }) : super(key: key);
 
-  final Duration changeDuration;
   final ValueNotifier<Duration> selectedDuration;
   final List<Range> ranges;
   final int bigTickNumber;
@@ -57,7 +56,7 @@ class _AnimatedRangeInformationState extends State<AnimatedRangeInformation> {
     else{
       carousel.animateToPage(
         sectionGrown, 
-        duration: Duration(milliseconds: 250), 
+        duration: ExercisePage.transitionDuration, 
         curve: Curves.easeInOut,
       );
     }

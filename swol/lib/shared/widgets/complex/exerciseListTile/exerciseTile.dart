@@ -55,9 +55,6 @@ class ExerciseTile extends StatefulWidget {
 class _ExerciseTileState extends State<ExerciseTile> {
   @override
   Widget build(BuildContext context) {
-    Duration transitionDuration = Duration(milliseconds: 300);
-
-    //widget
     return ListTile(
       onTap: (){
         //travel to page
@@ -65,7 +62,7 @@ class _ExerciseTileState extends State<ExerciseTile> {
 
         //page transition
         PageTransition page = PageTransition(
-          duration: transitionDuration,
+          duration: ExercisePage.transitionDuration,
           type: PageTransitionType.rightToLeft, 
           //wrap in light so warning pop up works well
           child: Theme(
@@ -134,7 +131,6 @@ class _ExerciseTileState extends State<ExerciseTile> {
       subtitle: ExerciseTileSubtitle(
         key: widget.key,
         exercise: widget.exercise,
-        transitionDuration: transitionDuration,
       ),
       trailing: ExerciseTileLeading(
         key: widget.key,

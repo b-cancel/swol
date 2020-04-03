@@ -173,13 +173,11 @@ class _AddExerciseState extends State<AddExercise> {
       ),
       SliderCard(
         child: RepTargetField(
-          changeDuration: widget.sectionTransitionDuration,
           repTarget: repTarget,
           subtle: false,
         ),
       ),
       RecoveryTimeCard(
-        changeDuration: widget.sectionTransitionDuration,
         recoveryPeriod: recoveryPeriod, 
       ),
       SliderCard(

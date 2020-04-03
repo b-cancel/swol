@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 //plugin
 import 'package:scroll_to_index/scroll_to_index.dart';
+import 'package:swol/action/page.dart';
 import 'package:vector_math/vector_math_64.dart' as vect;
 
 //internal
@@ -50,7 +51,7 @@ class _ScrollToTopButtonState extends State<ScrollToTopButton> {
         alignment: Alignment.bottomCenter,
         padding: EdgeInsets.only(bottom: 16),
         child:  AnimatedContainer(
-          duration: Duration(milliseconds: 200),
+          duration: ExercisePage.transitionDuration,
           transform: Matrix4.translation(
             vect.Vector3(
               0, 

@@ -1,5 +1,6 @@
 //flutter
 import 'package:flutter/material.dart';
+import 'package:swol/action/page.dart';
 
 //internal
 import 'package:swol/shared/widgets/complex/fields/fields/sliders/setTarget/pills.dart';
@@ -36,7 +37,7 @@ class _SetTargetToTrainingTypeIndicatorState extends State<SetTargetToTrainingTy
     WidgetsBinding.instance.addPostFrameCallback((_){
       controller.animateTo(
         (((widget.wholeWidth - (2 * widget.oneSidePadding))/4) * section),
-        duration: Duration(milliseconds: 250),
+        duration: ExercisePage.transitionDuration,
         curve: Curves.easeInOut,
       );
     });

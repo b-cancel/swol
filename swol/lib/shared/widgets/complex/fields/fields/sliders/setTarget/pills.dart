@@ -1,5 +1,6 @@
 //flutter
 import 'package:flutter/material.dart';
+import 'package:swol/action/page.dart';
 
 //internal
 import 'package:swol/shared/functions/trainingPopUps.dart';
@@ -179,7 +180,7 @@ class _PillState extends State<Pill> {
                 bottomRight: rightRadius,
               ),
               child: AnimatedContainer(
-                duration: Duration(milliseconds: 250),
+                duration: ExercisePage.transitionDuration,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.only(
                     topLeft: leftRadius,

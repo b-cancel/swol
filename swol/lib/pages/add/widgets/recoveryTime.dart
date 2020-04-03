@@ -15,11 +15,9 @@ import 'package:swol/shared/structs/range.dart';
 class RecoveryTimeCard extends StatelessWidget {
   const RecoveryTimeCard({
     Key key,
-    @required this.changeDuration,
     @required this.recoveryPeriod,
   }) : super(key: key);
 
-  final Duration changeDuration;
   final ValueNotifier<Duration> recoveryPeriod;
 
   @override
@@ -38,7 +36,6 @@ class RecoveryTimeCard extends StatelessWidget {
           children: <Widget>[
             RecoveryTimeHeader(),
             RecoveryTimeWidget(
-              changeDuration: changeDuration,
               recoveryPeriod: recoveryPeriod, 
             ),
           ],
@@ -51,11 +48,9 @@ class RecoveryTimeCard extends StatelessWidget {
 class RecoveryTimeWidget extends StatelessWidget {
   const RecoveryTimeWidget({
     Key key,
-    @required this.changeDuration,
     @required this.recoveryPeriod,
   }) : super(key: key);
 
-  final Duration changeDuration;
   final ValueNotifier<Duration> recoveryPeriod;
 
   @override
@@ -66,7 +61,6 @@ class RecoveryTimeWidget extends StatelessWidget {
         Theme(
           data: MyTheme.light,
           child: AnimRecoveryTimeInfoToWhiteTheme(
-            changeDuration: changeDuration, 
             recoveryPeriod: recoveryPeriod, 
           ),
         ),
@@ -97,13 +91,11 @@ class RecoveryTimeWidget extends StatelessWidget {
 class AnimRecoveryTimeInfoToWhiteTheme extends StatelessWidget {
   const AnimRecoveryTimeInfoToWhiteTheme({
     Key key,
-    @required this.changeDuration,
     @required this.recoveryPeriod,
     this.darkTheme: true,
     this.hideNameButtons: false,
   }) : super(key: key);
 
-  final Duration changeDuration;
   final ValueNotifier<Duration> recoveryPeriod;
   final bool darkTheme;
   final bool hideNameButtons;
@@ -112,7 +104,6 @@ class AnimRecoveryTimeInfoToWhiteTheme extends StatelessWidget {
   Widget build(BuildContext context) {
     return AnimatedRangeInformation(
       darkTheme: darkTheme,
-      changeDuration: changeDuration,
       selectedDuration: recoveryPeriod,
       hideNameButtons: hideNameButtons,
       ranges: [
