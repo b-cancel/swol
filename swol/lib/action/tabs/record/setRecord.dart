@@ -251,7 +251,6 @@ class SetRecordButtonsWithWhiteContext extends StatelessWidget {
             maybeError(
               context,
               exercise,
-              exercise.tempStartTime.value,
             );
           },
           forwardActionWidget: Text(

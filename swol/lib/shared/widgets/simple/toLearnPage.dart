@@ -72,32 +72,12 @@ class SuggestToLearnPage extends StatelessWidget {
             //or that they will lose the data
 
             //all the data needed to determine if we need to generate a pop up
-            AnExercise exercise = ExerciseData.getExercises()[exerciseID];
-            if (exercise != null) {
-              //test
-              print("inital: " + exerciseID.toString());
-              print("grabbed: " + exercise.id.toString());
-
-              //grab temps
-              int tempWeightInt = exercise?.tempWeight;
-              int tempRepsInt = exercise?.tempReps;
-              //extra step needed because null.toString() isn't null
-              String tempWeight =
-                  (tempWeightInt != null) ? tempWeightInt.toString() : "";
-              String tempReps =
-                  (tempRepsInt != null) ? tempRepsInt.toString() : "";
-
-              //grab news
-              String newWeight = ExercisePage.setWeight.value;
-              String newReps = ExercisePage.setReps.value;
-
-              //check if matching
-              bool matchingWeight = (newWeight == tempWeight);
-              bool matchingReps = (newReps == tempReps);
-              bool bothMatch = matchingWeight && matchingReps;
+            
+            if (ExerciseData.getExercises().containsKey(exerciseID)) {
+              AnExercise exercise = ExerciseData.getExercises()[exerciseID];
 
               //if both match proceed as expected
-              if (bothMatch) {
+              if (doBothMatch(exercise)) {
                 //our notifiers match our temps
                 //if the timer HASN'T STARTED this happens by BEING EMTPY
                 //      so don't pester the user
@@ -108,10 +88,6 @@ class SuggestToLearnPage extends StatelessWidget {
                 //if both don't match
                 //either we are initially setting the value
                 //or we are updating the value
-
-                //handle both cases
-                bool newSet = (tempWeight == "");
-                String customBit = (newSet) ? "Saving" : "Updating";
 
                 //pop to make space for snackbar
                 Navigator.of(context).pop();
@@ -158,8 +134,8 @@ class SuggestToLearnPage extends StatelessWidget {
                                               right: 12.0,
                                             ),
                                             child: Icon(
-                                              Icons.close,
-                                              color: Colors.black,
+                                              Icons.warning,
+                                              color: Colors.red,
                                             ),
                                           ),
                                           Expanded(
@@ -170,36 +146,18 @@ class SuggestToLearnPage extends StatelessWidget {
                                                 ),
                                                 children: [
                                                   TextSpan(
-                                                    text: "1  ",
+                                                    text: "If You Continue, ",
                                                   ),
                                                   TextSpan(
-                                                    text: "Finish " + customBit,
+                                                    text: "You Will\n",
                                                     style: bold,
                                                   ),
                                                   TextSpan(
-                                                    text: " The Set\n",
-                                                  ),
-                                                  TextSpan(
-                                                    text: "2  ",
-                                                  ),
-                                                  TextSpan(
-                                                    text: "Go Back",
+                                                    text: "Lose Your ",
                                                     style: bold,
                                                   ),
                                                   TextSpan(
-                                                    text: " to the List Of Exercises\n",
-                                                  ),
-                                                  TextSpan(
-                                                    text: "3  ",
-                                                  ),
-                                                  TextSpan(
-                                                    text: "Tap",
-                                                    style: bold,
-                                                  ),
-                                                  TextSpan(text: " the Icon on the "),
-                                                  TextSpan(
-                                                    text: "Top Right",
-                                                    style: bold,
+                                                    text: isNewSet(exercise) ? "New Set" : "Set Update",
                                                   ),
                                                 ],
                                               ),
@@ -208,9 +166,14 @@ class SuggestToLearnPage extends StatelessWidget {
                                         ],
                                       ),
                                     ),
-                                    Icon(
-                                      FontAwesomeIcons.leanpub,
-                                      color: Colors.black,
+                                    RaisedButton(
+                                      onPressed: (){
+                                        goToLearn();
+                                      },
+                                      child: Text(
+                                        "Continue",
+                                        style: bold,
+                                      ),
                                     ),
                                   ],
                                 ),
@@ -285,4 +248,33 @@ class SuggestToLearnPage extends StatelessWidget {
       ),
     );
   }
+}
+
+bool isNewSet(AnExercise exercise){
+  int tempWeightInt = exercise?.tempWeight;
+  String tempWeight = (tempWeightInt != null) ? tempWeightInt.toString() : "";
+  return tempWeight == "";
+}
+
+bool doBothMatch(AnExercise exercise){
+  //grab temps
+  int tempWeightInt = exercise?.tempWeight;
+  int tempRepsInt = exercise?.tempReps;
+  //extra step needed because null.toString() isn't null
+  String tempWeight =
+      (tempWeightInt != null) ? tempWeightInt.toString() : "";
+  String tempReps =
+      (tempRepsInt != null) ? tempRepsInt.toString() : "";
+
+  //grab news
+  String newWeight = ExercisePage.setWeight.value;
+  String newReps = ExercisePage.setReps.value;
+
+  //check if matching
+  bool matchingWeight = (newWeight == tempWeight);
+  bool matchingReps = (newReps == tempReps);
+  bool bothMatch = matchingWeight && matchingReps;
+
+  //ret
+  return bothMatch;
 }

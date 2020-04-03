@@ -31,7 +31,6 @@ toNextPageAfterSetUpdateComplete() {
 maybeError(
   BuildContext context,
   AnExercise exercise,
-  DateTime startTime,
 ) {
   bool keyboardOpen = FocusScope.of(context).hasFocus;
   if (keyboardOpen) {
@@ -53,7 +52,7 @@ maybeError(
       toNextPageAfterSetUpdateComplete();
     } else {
       //change the buttons shows a the wording a tad\
-      bool timerNotStarted = startTime == AnExercise.nullDateTime;
+      bool timerNotStarted = (exercise.tempStartTime.value) == AnExercise.nullDateTime;
       String continueString =
           (timerNotStarted) ? "Begin Your Set Break" : "Return To Your Break";
 

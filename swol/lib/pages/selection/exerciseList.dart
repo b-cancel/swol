@@ -23,6 +23,7 @@ import 'package:swol/pages/selection/exerciseListPage.dart';
 import 'package:swol/other/durationFormat.dart';
 import 'package:swol/action/page.dart';
 import 'package:swol/main.dart';
+import 'package:swol/shared/widgets/simple/toLearnPage.dart';
 
 //widget
 class ExerciseList extends StatefulWidget {
@@ -92,31 +93,68 @@ class _ExerciseListState extends State<ExerciseList> {
   //  3. and our set is the same as it was before
   //    TODO: must be fixed
 
-  tryToGoToExercise(){
-    //either we 
-    //1. had the app closed
-    //2. were in the exercise list
-    //3. were in the learn section
-    //4. were searching
-    //5. were adding an new exercise
-    //TODO: for case below it might be nice to warn the user that they will lose their data
-    if(ExercisePage.exerciseID.value == -1){
-      popThenGoToExercise();
-    }
-    else{
-      //we are in some exercise page
-      //1. main pages
-      //2. breath page
-      //3. note page
+  tryToGoToExercise() {
+    if (exerciseToTravelTo.value != -1) {
+      int exerciseID = exerciseToTravelTo.value;
 
-      //we may also be either 
-      //1. in the exercise we are trying to go to
-      //2. in an exercise we aren't try to go to
-      //*trying to go to exercise determine by passed payload
+      //either we
+      //1. had the app closed
+      //2. were in the exercise list
+      //3. were in the learn section
+      //4. were searching
+      //5. were adding an new exercise
+      //TODO: for case below it might be nice to warn the user that they will lose their data
+      if (ExercisePage.exerciseID.value == -1) {
+        popThenGoToExercise(exerciseID);
+      } else {
+        bool bothMatch = true;
+        bool isANewSet = false;
+        //check the validity of the current exercise set
+        if (ExerciseData.getExercises().containsKey(exerciseID)) {
+          AnExercise exercise = ExerciseData.getExercises()[exerciseID];
+          bothMatch = doBothMatch(exercise);
+          isANewSet = isNewSet(exercise);
+        }
 
-      //the exercise may also have changes that can't be done automatically
+        //we are already where we want to be
+        //but perhaps not exactly where we want to be
+        //1. main pages (but not page 2)
+        //2. breath page
+        //3. note page
+        if (ExercisePage.exerciseID.value == exerciseID) {
+          //TODO: grab actual with breathing page static
+          bool breathingPage = false; 
+          //TODO: grab actual with notes page static
+          bool notesPage = false; 
 
-      popThenGoToExercise();
+          //breathing page is ideal since it takes us directly to where we want to be
+          if (breathingPage) {
+            Navigator.of(context).pop();
+          } else {
+            //notes page or in one of the vertical pages
+            if (ExercisePage.pageNumber.value != 2) {
+            } else {
+              //TODO: pop up that says move onto your next set with the "NEXT SET" button below
+            }
+          }
+        } else {
+          //we have to navigate away... IF WE CAN
+          if(bothMatch){ //we are good to go whereever
+            popThenGoToExercise(exerciseID);
+          }
+          else{
+            if(isANewSet){ //new
+              //TODO: pop up that tells them to SAVE the new exercise first
+            }
+            else{ //update
+              //TODO: pop up that tells them to UPDATE the new exercise first
+            }
+          }
+        }
+      }
+
+      //reset for next notification
+      exerciseToTravelTo.value = -1;
     }
   }
 
@@ -124,7 +162,7 @@ class _ExerciseListState extends State<ExerciseList> {
   //NOTE: this doesn't save any previous state
   //if skips out on the warnings that usually pop out
   //and doesn't autostart the set for the exercise that we are leaving
-  popThenGoToExercise() {
+  popThenGoToExercise(int exerciseID) {
     BuildContext rootContext = GrabSystemData.rootContext;
     bool gestureInProgress = Navigator.of(rootContext).userGestureInProgress;
     if (gestureInProgress == false) {
@@ -140,32 +178,27 @@ class _ExerciseListState extends State<ExerciseList> {
         //let the user see the animation
         Future.delayed(ExercisePage.transitionDuration, () {
           print("After delay: " + DateTime.now().toString());
-          popThenGoToExercise();
+          popThenGoToExercise(exerciseID);
         });
       } else {
-        travelToExercise();
+        travelToExercise(exerciseID);
       }
     }
   }
 
-  travelToExercise() {
-    if (exerciseToTravelTo.value != -1) {
-      if (ExerciseData.getExercises().containsKey(exerciseToTravelTo.value)) {
-        AnExercise exerciseWeMightTravelTo =
-            ExerciseData.getExercises()[exerciseToTravelTo.value];
+  travelToExercise(int exerciseID) {
+    if (ExerciseData.getExercises().containsKey(exerciseID)) {
+      AnExercise exerciseWeMightTravelTo =
+          ExerciseData.getExercises()[exerciseID];
 
-        //we already traveled there
-        exerciseToTravelTo.value = -1;
-
-        //wait a bit so that init runs
-        travelAfterDisposeComplete(exerciseWeMightTravelTo);
-      }
+      //wait a bit so that init runs
+      travelAfterDisposeComplete(exerciseWeMightTravelTo);
     }
   }
 
-  travelAfterDisposeComplete(AnExercise exercise){
+  travelAfterDisposeComplete(AnExercise exercise) {
     //dipose has run because the exercise open in the page is none
-    if(ExercisePage.exerciseID.value == -1){
+    if (ExercisePage.exerciseID.value == -1) {
       //would be triggered by exercise tile
       App.navSpread.value = true;
 
@@ -184,9 +217,8 @@ class _ExerciseListState extends State<ExerciseList> {
           ),
         ),
       );
-    }
-    else{
-      WidgetsBinding.instance.addPostFrameCallback((_){
+    } else {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
         travelAfterDisposeComplete(exercise);
       });
     }
@@ -195,11 +227,15 @@ class _ExerciseListState extends State<ExerciseList> {
   //init
   @override
   void initState() {
+    //TODO: below commented out because the new goToExcercise from notification
+    //may break with this
+    /*
     //wait one frame before trying to travel
     //otherwise things will break
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      travelToExercise();
+      travelToExercise(exerciseToTravelTo.value);
     });
+    */
 
     //wait to have mediaquery available
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -554,7 +590,7 @@ class _ExerciseListState extends State<ExerciseList> {
           SearchExerciseButton(),
           AddExerciseButton(
             //extra 150 makes it long
-            longTransitionDuration: Duration(milliseconds : 300 + 150),
+            longTransitionDuration: Duration(milliseconds: 300 + 150),
           ),
         ],
       );
