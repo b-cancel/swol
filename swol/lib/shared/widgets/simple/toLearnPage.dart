@@ -13,31 +13,33 @@ import 'package:swol/main.dart';
 //all we have to do is pass to this widget the amount of time we have to pop
 //every page should react accordingly to its pop
 
-//in the case of the add exercise page 
+//in the case of the add exercise page
 //the pop OF THIS TYPE should cause settings to be saved for reloading later
 
 //the simply navigate to the learn page
 class SuggestToLearnPage extends StatelessWidget {
-  goToLearn(){
+  goToLearn() {
     BuildContext rootContext = GrabSystemData.rootContext;
-    if(Navigator.canPop(rootContext)){
-      //pop with the animation
-      Navigator.pop(rootContext);
+    bool gestureInProgress = Navigator.of(rootContext).userGestureInProgress;
+    if (gestureInProgress == false) {
+      if (Navigator.canPop(rootContext)) {
+        //pop with the animation
+        Navigator.pop(rootContext);
 
-      //let the user see the animation
-      Future.delayed(Duration(milliseconds: 300),(){
-        goToLearn();
-      });
-    }
-    else{
-      App.navSpread.value = true;
-      Navigator.push(
-        rootContext, 
-        PageTransition(
-          type: PageTransitionType.rightToLeft, 
-          child: LearnExercise(),
-        ),
-      );
+        //let the user see the animation
+        Future.delayed(Duration(milliseconds: 300), () {
+          goToLearn();
+        });
+      } else {
+        App.navSpread.value = true;
+        Navigator.push(
+          rootContext,
+          PageTransition(
+            type: PageTransitionType.rightToLeft,
+            child: LearnExercise(),
+          ),
+        );
+      }
     }
   }
 
@@ -59,33 +61,32 @@ class SuggestToLearnPage extends StatelessWidget {
             children: <Widget>[
               RichText(
                 text: TextSpan(
-                  style: TextStyle(
-                    color: Colors.black,
-                  ),
-                  children: [
-                    TextSpan(
-                      text: "To Learn More\n",
+                    style: TextStyle(
+                      color: Colors.black,
                     ),
-                    TextSpan(
-                      text: "Tap Here",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
+                    children: [
+                      TextSpan(
+                        text: "To Learn More\n",
                       ),
-                    ),
-                    TextSpan(
-                      text: " to visit the ",
-                    ),
-                    TextSpan(
-                      text: "Learn",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
+                      TextSpan(
+                        text: "Tap Here",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
-                    TextSpan(
-                      text: " page",
-                    ),
-                  ]
-                ),
+                      TextSpan(
+                        text: " to visit the ",
+                      ),
+                      TextSpan(
+                        text: "Learn",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      TextSpan(
+                        text: " page",
+                      ),
+                    ]),
               ),
               Icon(
                 FontAwesomeIcons.leanpub,

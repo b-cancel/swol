@@ -56,12 +56,12 @@ class _ExerciseListState extends State<ExerciseList> {
   //the function runs after a notification is triggered
   //a notification is triggered if the permission is given
 
-  //NOTE: this DOES NOT mean its been requested 
+  //NOTE: this DOES NOT mean its been requested
   //  since it automatically requested by android
   //  this WOULD mean its been requested if the platform is IOS tho
   //but assume that its irelevant
   //we only CARE ABOUT requesting permission IF we don't have it
-  
+
   //NOTE: If a permission is taken away after a notification is scheduled
   //is the notification canceled? for both platforms?
   //for Android, turning off notification doesn't cancel the notification
@@ -73,10 +73,10 @@ class _ExerciseListState extends State<ExerciseList> {
   //2. we DONT KNOW if they have been requested
   //3. we KNOW 2 doesn't matter because Notifications are granted regardless
   //4. and because 3 is true than nothing having to do with permission will show up
-  
+
   //So we know the error causing things that can occur are
   //* means its taken care off or doesn't cause a problem
-  //we haven't started the timer 
+  //we haven't started the timer
   //  1. and our set is invalid (ERROR)
   //    TODO: SHOULD be fixed
   //  2. and our set is valid
@@ -96,21 +96,28 @@ class _ExerciseListState extends State<ExerciseList> {
   //and doesn't autostart the set for the exercise that we are leaving
   goToExcercise() {
     BuildContext rootContext = GrabSystemData.rootContext;
-    if (Navigator.canPop(rootContext)) {
-      //may need to unfocus
-      if (FocusScope.of(context).hasFocus) {
-        FocusScope.of(context).unfocus();
+    bool gestureInProgress = Navigator.of(rootContext).userGestureInProgress;
+    if (gestureInProgress == false) {
+      if (Navigator.canPop(rootContext)) {
+        //may need to unfocus
+        if (FocusScope.of(context).hasFocus) {
+          FocusScope.of(context).unfocus();
+        }
+
+        print("before pop: " + DateTime.now().toString());
+
+        //pop with the animation
+        Navigator.pop(rootContext);
+
+        //let the user see the animation
+        //NOTE: we are waiting a little more to wait for the pop to complete so init always runs
+        Future.delayed(Duration(milliseconds: 450), () {
+          print("After delay: " + DateTime.now().toString());
+          goToExcercise();
+        });
+      } else {
+        travelToExercise();
       }
-
-      //pop with the animation
-      Navigator.pop(rootContext);
-
-      //let the user see the animation
-      Future.delayed(Duration(milliseconds: 300), () {
-        goToExcercise();
-      });
-    } else {
-      travelToExercise();
     }
   }
 
@@ -186,9 +193,10 @@ class _ExerciseListState extends State<ExerciseList> {
   }
 
   //set to true by the ones who want the update to occur
-  manualBeforeManualBuild(){
-    print("*************************************************manually updating order");
-    if(ExerciseSelectStateless.manualOrderUpdate.value == true){
+  manualBeforeManualBuild() {
+    print(
+        "*************************************************manually updating order");
+    if (ExerciseSelectStateless.manualOrderUpdate.value == true) {
       updateState();
       ExerciseSelectStateless.manualOrderUpdate.value = false;
     }
@@ -204,7 +212,7 @@ class _ExerciseListState extends State<ExerciseList> {
     List<AnExercise> newOnes = new List<AnExercise>();
     List<AnExercise> regularOnes = new List<AnExercise>();
     List<AnExercise> hiddenOnes = new List<AnExercise>();
-    
+
     //where to combine the list above into
     List<List<AnExercise>> groupsOfExercises = new List<List<AnExercise>>();
 
@@ -234,22 +242,19 @@ class _ExerciseListState extends State<ExerciseList> {
         );
 
         //send to proper list
-        if(thisExerciseType == TimeStampType.InProgress){
+        if (thisExerciseType == TimeStampType.InProgress) {
           inProgressOnes.add(thisExercise);
-        }
-        else if(thisExerciseType == TimeStampType.New){
+        } else if (thisExerciseType == TimeStampType.New) {
           newOnes.add(thisExercise);
-        }
-        else if(thisExerciseType == TimeStampType.Other){
+        } else if (thisExerciseType == TimeStampType.Other) {
           regularOnes.add(thisExercise);
-        }
-        else{
+        } else {
           hiddenOnes.add(thisExercise);
         }
       }
 
       //add in progress ones if they exist
-      if(inProgressOnes.length > 0){
+      if (inProgressOnes.length > 0) {
         //sort so the ones that have the least ammount before the timer runs out
         //are on top
 
@@ -259,12 +264,13 @@ class _ExerciseListState extends State<ExerciseList> {
         //EXERCISE 2 should be first
 
         //create map, 2 duration might map to 2 difference indices
-        //in which case how they sort is which one you did first 
+        //in which case how they sort is which one you did first
         //the one you did first goes on the bottom
-        Map<Duration,List<int>> timeTillFinish2IndexInProgressOnes = new Map<Duration,List<int>>();
+        Map<Duration, List<int>> timeTillFinish2IndexInProgressOnes =
+            new Map<Duration, List<int>>();
 
         //grab the timeTillFinish for each to be able to sort by that
-        for(int i = 0; i < inProgressOnes.length; i++){
+        for (int i = 0; i < inProgressOnes.length; i++) {
           AnExercise inProgressExercise = inProgressOnes[i];
           DateTime timerStart = inProgressExercise.tempStartTime.value;
           Duration timerDuration = inProgressExercise.recoveryPeriod;
@@ -275,17 +281,24 @@ class _ExerciseListState extends State<ExerciseList> {
           //if timerEnd is BEFORE DateTime.now() we should get a positive value
           Duration timeTillFinish = (timerEnd).difference(DateTime.now());
 
-          print(timeTillFinish.toString() + " for " + inProgressExercise.name + " index " + inProgressExercise.id.toString());
+          print(timeTillFinish.toString() +
+              " for " +
+              inProgressExercise.name +
+              " index " +
+              inProgressExercise.id.toString());
 
           //add to dictionary
-          if(timeTillFinish2IndexInProgressOnes.containsKey(timeTillFinish) == false){
-            timeTillFinish2IndexInProgressOnes[timeTillFinish] = new List<int>();
+          if (timeTillFinish2IndexInProgressOnes.containsKey(timeTillFinish) ==
+              false) {
+            timeTillFinish2IndexInProgressOnes[timeTillFinish] =
+                new List<int>();
           }
           timeTillFinish2IndexInProgressOnes[timeTillFinish].add(i);
         }
-        
+
         //sort keys
-        List<Duration> timesTillFinish = timeTillFinish2IndexInProgressOnes.keys.toList();
+        List<Duration> timesTillFinish =
+            timeTillFinish2IndexInProgressOnes.keys.toList();
         timesTillFinish.sort();
 
         print("sorted times small to big");
@@ -293,26 +306,27 @@ class _ExerciseListState extends State<ExerciseList> {
 
         //iterate through keys to grab sorted order
         List<AnExercise> newInProgressOnes = new List<AnExercise>();
-        for(int i = 0; i < timesTillFinish.length; i++){
+        for (int i = 0; i < timesTillFinish.length; i++) {
           Duration thisTimeTillFinish = timesTillFinish[i];
-          List<int> indicesInProgressOnes = timeTillFinish2IndexInProgressOnes[thisTimeTillFinish];
+          List<int> indicesInProgressOnes =
+              timeTillFinish2IndexInProgressOnes[thisTimeTillFinish];
 
           //cover main cases
-          if(indicesInProgressOnes.length == 1){
+          if (indicesInProgressOnes.length == 1) {
             int theIndex = indicesInProgressOnes[0];
-            
+
             AnExercise theExercise = inProgressOnes[theIndex];
             print("ID: " + theExercise.id.toString());
             newInProgressOnes.add(theExercise);
-          }
-          else{ //2 different exercises have their timers finishing at the exact same time
+          } else {
+            //2 different exercises have their timers finishing at the exact same time
             //NOTE:currently our sorting order views things like so
             //what was started first is on top
             //which is exatly how we want to be this bit sorted so just add them as they appear
 
             //but they where started at different times
             //which every one was started first goes on the bottom
-            for(int i = 0; i < indicesInProgressOnes.length; i++){
+            for (int i = 0; i < indicesInProgressOnes.length; i++) {
               int theIndex = indicesInProgressOnes[i];
               AnExercise theExercise = inProgressOnes[theIndex];
               print("ID: " + theExercise.id.toString());
@@ -326,24 +340,24 @@ class _ExerciseListState extends State<ExerciseList> {
       }
 
       //add new ones if they exist
-      if(newOnes.length > 0){
+      if (newOnes.length > 0) {
         groupsOfExercises.add(newOnes);
       }
 
       //create the groups of the regular ones
       //travel them in the opposite direction
       DateTime lastDateTime;
-      for(int i = 0; i < regularOnes.length; i ++){
+      for (int i = 0; i < regularOnes.length; i++) {
         //array from back to front
         int index = (regularOnes.length - 1) - i;
         AnExercise thisExercise = regularOnes[index];
 
         //determine if new group is required
         bool makeNewGroup;
-        if (lastDateTime == null){ //NOTE: only happens for the first exercise
+        if (lastDateTime == null) {
+          //NOTE: only happens for the first exercise
           makeNewGroup = true;
-        }
-        else {
+        } else {
           //NOTE: may still need to make a new group given things below
           List<AnExercise> lastGroup = groupsOfExercises.last;
 
@@ -353,9 +367,8 @@ class _ExerciseListState extends State<ExerciseList> {
           AnExercise lastExercise = lastGroup.last;
 
           //every exercise must have at most 1.5 hours between
-          Duration timeBetweenExercises = thisExercise.lastTimeStamp.difference(
-            lastExercise.lastTimeStamp
-          );
+          Duration timeBetweenExercises =
+              thisExercise.lastTimeStamp.difference(lastExercise.lastTimeStamp);
           makeNewGroup = (timeBetweenExercises > maxTimeBetweenExercises);
         }
 
@@ -366,8 +379,8 @@ class _ExerciseListState extends State<ExerciseList> {
           );
         }
 
-        //add this exercise to our 
-        //1. newly created group 
+        //add this exercise to our
+        //1. newly created group
         //2. OR old group
         //both of which are the last groups
         groupsOfExercises.last.add(
@@ -379,7 +392,7 @@ class _ExerciseListState extends State<ExerciseList> {
       }
 
       //add archived ones
-      if(hiddenOnes.length > 0){
+      if (hiddenOnes.length > 0) {
         groupsOfExercises.add(hiddenOnes);
       }
 
@@ -419,9 +432,9 @@ class _ExerciseListState extends State<ExerciseList> {
         //and FIRST exercise section
 
         //all special sections
-        bool specialSection = (sectionType == TimeStampType.InProgress
-        || sectionType == TimeStampType.New 
-        || sectionType == TimeStampType.Hidden);
+        bool specialSection = (sectionType == TimeStampType.InProgress ||
+            sectionType == TimeStampType.New ||
+            sectionType == TimeStampType.Hidden);
 
         //how many special sections on top
         int specialSectionsOnTop = (inProgressOnes.length > 0) ? 1 : 0;
@@ -432,24 +445,22 @@ class _ExerciseListState extends State<ExerciseList> {
 
         //set top color
         Color topColor = (specialSection || isFirstExerciseSection)
-          ? Theme.of(context).accentColor
-          : Theme.of(context).primaryColor;
+            ? Theme.of(context).accentColor
+            : Theme.of(context).primaryColor;
 
         //set bottom section color
         Color bottomColor;
 
         //if a hidden section is present
         //and this is the last regular
-        if(index == (groupsOfExercises.length - 2) && hiddenOnes.length > 0){
+        if (index == (groupsOfExercises.length - 2) && hiddenOnes.length > 0) {
           bottomColor = Theme.of(context).accentColor;
-        }
-        else if(specialSectionsOnTop > index){
+        } else if (specialSectionsOnTop > index) {
           bottomColor = Theme.of(context).accentColor;
-        }
-        else{
+        } else {
           bottomColor = Theme.of(context).primaryColor;
         }
-      
+
         //add this section to the list of slivers
         sliverList.add(
           SliverStickyHeader(
