@@ -18,9 +18,11 @@ class AddNewHero extends StatelessWidget {
   const AddNewHero({
     Key key,
     @required this.inAppBar,
+    @required this.longTransitionDuration,
   }) : super(key: key);
 
   final bool inAppBar;
+  final Duration longTransitionDuration;
 
   @override
   Widget build(BuildContext context) {
@@ -41,12 +43,14 @@ class AddNewHero extends StatelessWidget {
           builder: (context, child) {
             return AddNewHeroHelper(
               percentToAppBar: animation.value,
+              longTransitionDuration: longTransitionDuration,
             );
           },
         );
       },
       child: AddNewHeroHelper(
         percentToAppBar: (inAppBar) ? 1 : 0,
+        longTransitionDuration: longTransitionDuration,
       ),
     );
   }
@@ -56,15 +60,14 @@ class AddNewHeroHelper extends StatelessWidget {
   const AddNewHeroHelper({
     Key key,
     @required this.percentToAppBar,
+    @required this.longTransitionDuration,
   }) : super(key: key);
 
   final double percentToAppBar;
+  final Duration longTransitionDuration;
 
   @override
   Widget build(BuildContext context) {
-    Duration transitionDuration = Duration(milliseconds: 500);
-
-    //determine on tap function
     Function onTap;
     if (percentToAppBar == 0 || percentToAppBar == 1) {
       if (percentToAppBar == 1) {
@@ -79,10 +82,10 @@ class AddNewHeroHelper extends StatelessWidget {
           Navigator.push(
             context,
             PageTransition(
-              duration: transitionDuration,
+              duration: longTransitionDuration,
               type: PageTransitionType.downToUp,
               child: AddExercise(
-                showPageDuration: transitionDuration,
+                longTransitionDuration: longTransitionDuration,
               ),
             ),
           );

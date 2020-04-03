@@ -1,14 +1,10 @@
 //flutter
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 //plugin
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
-import 'package:swol/action/page.dart';
-import 'package:swol/main.dart';
-import 'package:swol/pages/selection/exerciseListPage.dart';
 
 //internal: shared
 import 'package:swol/shared/functions/defaultDateTimes.dart';
@@ -17,11 +13,16 @@ import 'package:swol/shared/methods/exerciseData.dart';
 import 'package:swol/shared/methods/theme.dart';
 import 'package:swol/shared/structs/anExercise.dart';
 
-//internal: other
+//internal: pages
 import 'package:swol/pages/selection/widgets/persistentHeaderDelegate.dart';
 import 'package:swol/pages/selection/widgets/workoutSection.dart';
 import 'package:swol/pages/selection/widgets/bottomButtons.dart';
+import 'package:swol/pages/selection/exerciseListPage.dart';
+
+//internal: others
 import 'package:swol/other/durationFormat.dart';
+import 'package:swol/action/page.dart';
+import 'package:swol/main.dart';
 
 //widget
 class ExerciseList extends StatefulWidget {
@@ -515,7 +516,10 @@ class _ExerciseListState extends State<ExerciseList> {
             slivers: slivers,
           ),
           SearchExerciseButton(),
-          AddExerciseButton(),
+          AddExerciseButton(
+            //extra 150 makes it long
+            longTransitionDuration: Duration(milliseconds : 300 + 150),
+          ),
         ],
       );
     }

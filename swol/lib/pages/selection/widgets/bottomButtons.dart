@@ -18,6 +18,12 @@ import 'package:swol/main.dart';
 
 //widget
 class AddExerciseButton extends StatelessWidget {
+  AddExerciseButton({
+    @required this.longTransitionDuration,
+  });
+
+  final Duration longTransitionDuration;
+
   @override
   Widget build(BuildContext context) {
     return Positioned(
@@ -37,6 +43,7 @@ class AddExerciseButton extends StatelessWidget {
           + "new exercise",
           child: AddNewHero(
             inAppBar: false,
+            longTransitionDuration: longTransitionDuration,
           ),
           top: false,
           left: true,

@@ -139,11 +139,9 @@ maybeChangeSetTarget(
 class ChangeSetTargetWidget extends StatefulWidget {
   ChangeSetTargetWidget({
     Key key,
-    this.changeDuration: const Duration(milliseconds: 300),
     @required this.setTarget,
   }) : super(key: key);
 
-  final Duration changeDuration;
   final ValueNotifier<int> setTarget;
 
   @override

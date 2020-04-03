@@ -29,7 +29,7 @@ class AddExercise extends StatefulWidget {
     Key key,
 
     //NOTE: 200 ms above the norm so they can see the sweat animation
-    this.showPageDuration: const Duration(milliseconds: 500),
+    @required this.longTransitionDuration,
     this.showListDuration: const Duration(milliseconds: 350),
     this.showSaveDuration: const Duration(milliseconds: 350),
 
@@ -40,7 +40,7 @@ class AddExercise extends StatefulWidget {
     this.sectionTransitionDuration: const Duration(milliseconds: 250),
   }) : super(key: key);
 
-  final Duration showPageDuration;
+  final Duration longTransitionDuration;
   final Duration showListDuration;
   final Duration showSaveDuration;
 
@@ -222,6 +222,7 @@ class _AddExerciseState extends State<AddExercise> {
                       right: 0,
                       child: AddNewHero(
                         inAppBar: true,
+                        longTransitionDuration: widget.longTransitionDuration,
                       ),
                     ),
                     Positioned(
@@ -233,7 +234,7 @@ class _AddExerciseState extends State<AddExercise> {
                           right: 8.0,
                         ),
                         child: SaveButton(
-                          delay: widget.showPageDuration + widget.delayBeforeSaveShow,
+                          delay: widget.longTransitionDuration + widget.delayBeforeSaveShow,
                           showSaveButton: showSaveButton, 
                           nameFocusNode: nameFocusNode,
                           nameError: nameError,
