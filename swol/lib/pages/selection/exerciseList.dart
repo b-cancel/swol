@@ -106,16 +106,11 @@ class _ExerciseListState extends State<ExerciseList> {
           FocusScope.of(context).unfocus();
         }
 
-        print("before pop: " + DateTime.now().toString());
-
         //pop with the animation
         Navigator.pop(rootContext);
 
         //let the user see the animation
-        //NOTE: we are waiting a little more to wait for the pop to complete so init always runs
-        //TODO: ideally a more fool proof solution (1.5 duration may not cover un-planned delay)
-        //TODO: use the same duration everywhere
-        Future.delayed(ExercisePage.transitionDuration * 1.5, () {
+        Future.delayed(ExercisePage.transitionDuration, () {
           print("After delay: " + DateTime.now().toString());
           goToExcercise();
         });
@@ -134,25 +129,38 @@ class _ExerciseListState extends State<ExerciseList> {
         //we already traveled there
         exerciseToTravelTo.value = -1;
 
-        //would be triggered by exercise tile
-        App.navSpread.value = true;
+        //wait a bit so that init runs
+        travelAfterDisposeComplete(exerciseWeMightTravelTo);
+      }
+    }
+  }
 
-        //travel there
-        Navigator.push(
-          context,
-          PageTransition(
-            duration: ExercisePage.transitionDuration,
-            type: PageTransitionType.rightToLeft,
-            //wrap in light so warning pop up works well
-            child: Theme(
-              data: MyTheme.light,
-              child: ExercisePage(
-                exercise: exerciseWeMightTravelTo,
-              ),
+  travelAfterDisposeComplete(AnExercise exercise){
+    //dipose has run because the exercise open in the page is none
+    if(ExercisePage.exerciseID.value == -1){
+      //would be triggered by exercise tile
+      App.navSpread.value = true;
+
+      //travel there
+      Navigator.push(
+        context,
+        PageTransition(
+          duration: ExercisePage.transitionDuration,
+          type: PageTransitionType.rightToLeft,
+          //wrap in light so warning pop up works well
+          child: Theme(
+            data: MyTheme.light,
+            child: ExercisePage(
+              exercise: exercise,
             ),
           ),
-        );
-      }
+        ),
+      );
+    }
+    else{
+      WidgetsBinding.instance.addPostFrameCallback((_){
+        travelAfterDisposeComplete(exercise);
+      });
     }
   }
 

@@ -22,7 +22,6 @@ import 'package:swol/shared/structs/anExercise.dart';
 
 //the simply navigate to the learn page
 class SuggestToLearnPage extends StatelessWidget {
-  //TODO: if in exercise that isnt updated, don't allow us to go back
   goToLearn() {
     BuildContext rootContext = GrabSystemData.rootContext;
     bool gestureInProgress = Navigator.of(rootContext).userGestureInProgress;

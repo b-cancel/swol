@@ -44,7 +44,7 @@ class _ExerciseTileLeadingState extends State<ExerciseTileLeading> {
     //TODO: more fool proof solution because waiting one frame should be enough
     //if its isnt it may just the the unexpected delay that happens like everywhere
     //this REALLY SHOULD be enough, but fix if needed
-    Future.delayed(ExercisePage.transitionDuration, actualUpdate);
+    Future.delayed(ExercisePage.transitionDuration * 1.5, actualUpdate);
   }
 
   @override
