@@ -8,6 +8,7 @@ import 'package:swol/shared/methods/vibrate.dart';
 import 'package:swol/shared/methods/theme.dart';
 
 //internal: utils
+import 'package:swol/shared/widgets/simple/scrollViewWithShadow.dart';
 import 'package:swol/shared/widgets/simple/triangleAngle.dart';
 import 'package:swol/shared/widgets/simple/playOnceGif.dart';
 
@@ -26,179 +27,68 @@ class UELA extends StatefulWidget {
 class _UELAState extends State<UELA> {
   final ValueNotifier<bool> holding = new ValueNotifier<bool>(false);
 
-  updateState(){
-    if(mounted) setState(() {});
-  }
-
-  @override
-  void initState(){ 
-    holding.addListener(updateState);
-    super.initState();
-  }
-
-  @override
-  void dispose(){ 
-    holding.removeListener(updateState);
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
     String tab = "\t\t\t\t\t";
-    Widget holdWidget = Container();
-
-    Color theColor = Colors.blue;
-    //Color(0xFF33C3D5);
-
-    if(holding.value){
-      holdWidget = Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          Container(
-            decoration: BoxDecoration(
-              color: Colors.black.withOpacity(0.75),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            padding: EdgeInsets.all(16),
-            child: DefaultTextStyle(
-              style: TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-              ),
-              child: Column(
-                children: <Widget>[
-                  Text(
-                    "Hold To Agree",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                    ),
-                  ),
-                  BasicCountDown(
-                    seconds: 3,
-                    afterConfirm: () => widget.afterConfirm(),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
-      );
-    }
-
-    //build
     return Theme(
       data: MyTheme.light,
       child: WillPopScope(
-        onWillPop: () async{
+        onWillPop: () async {
           //close the app
           SystemChannels.platform.invokeMethod('SystemNavigator.pop');
-          
+
           //dont allow pop up to go away
           return false;
         },
         child: AlertDialog(
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(
-              Radius.circular(12.0)
-            ),
+            borderRadius: BorderRadius.all(Radius.circular(12.0)),
           ),
           contentPadding: EdgeInsets.all(0),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Stack(
+          content: ClipRRect(
+            borderRadius: new BorderRadius.all(
+              Radius.circular(12.0),
+            ),
+            child: Container(
+              width: MediaQuery.of(context).size.width,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  Container(
-                    decoration: BoxDecoration(
-                      color: theColor,
-                      borderRadius: new BorderRadius.only(
-                        topLeft:  const  Radius.circular(12.0),
-                        topRight: const  Radius.circular(12.0),
-                      ),
-                    ),
-                    padding: EdgeInsets.only(
-                      top: 8,
-                    ),
-                    child: ClipOval(
-                      child: PlayGifOnce( 
-                        assetName: "assets/popUpGifs/agree.gif",
-                        runTimeMS: 2370,
-                        frameCount: 70,
-                        colorWhite: false,
-                      ),
-                    ),
-                  ),
-                  Positioned.fill(
-                    child: Center(
-                      child: holdWidget,
-                    ),
-                  ),
-                ],
-              ),
-              Stack(
-                children: <Widget>[
-                  Column(
-                    mainAxisSize: MainAxisSize.min,
+                  Stack(
                     children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.only(
-                          top: 16.0,
-                          bottom: 8,
-                        ),
-                        child: Container(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 16,
-                          ),
-                          child: DefaultTextStyle(
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 24,
-                              color: Colors.black,
-                            ),
-                            child: Column(
-                              children: <Widget>[
-                                Text("End User License"),
-                                Text("Agreement"),
-                              ],
-                            ),
+                      TopPicture(),
+                      Positioned.fill(
+                        child: Center(
+                          child: AnimatedBuilder(
+                            animation: holding,
+                            //no reusable child
+                            builder: (context, child) {
+                              return Visibility(
+                                visible: holding.value,
+                                child: TheCountDown(
+                                  afterConfirm: widget.afterConfirm,
+                                ),
+                              );
+                            },
                           ),
                         ),
                       ),
-                      Container(
-                        padding: EdgeInsets.all(16),
-                        child: DefaultTextStyle(
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: Colors.black,
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              RichText(
-                                text: TextSpan(
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    color: Colors.black,
-                                  ),
-                                  children: [
-                                    TextSpan(
-                                      text: tab + "In order to help you, we offer many suggestions throughout the app.",
-                                    ),
-                                    TextSpan(
-                                      text: " But it's your responsibility to stay safe.",
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w900,
-                                      ),
-                                    ),
-                                  ]
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.only(
-                                  top: 12.0,
-                                ),
-                                child: RichText(
+                    ],
+                  ),
+                  Flexible(
+                    child: ScrollViewWithShadow(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          EulaTitle(),
+                          Container(
+                            padding: EdgeInsets.all(16),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                RichText(
+                                  textScaleFactor:
+                                      MediaQuery.of(context).textScaleFactor,
                                   text: TextSpan(
                                     style: TextStyle(
                                       fontSize: 16,
@@ -206,76 +96,202 @@ class _UELAState extends State<UELA> {
                                     ),
                                     children: [
                                       TextSpan(
-                                        text: tab + "We are not liable for any harm that you may cause yourself or others by following our suggestions.",
+                                        text: tab +
+                                            "In order to help you, we offer many suggestions throughout the app.",
                                       ),
                                       TextSpan(
-                                        text: " Follow our suggestions at your own risk.",
+                                        text:
+                                            " But it's your responsibility to stay safe.",
                                         style: TextStyle(
                                           fontWeight: FontWeight.w900,
                                         ),
                                       ),
-                                    ]
+                                    ],
                                   ),
                                 ),
-                              ),
-                            ],
+                                Padding(
+                                  padding: EdgeInsets.only(
+                                    top: 12.0,
+                                  ),
+                                  child: RichText(
+                                    textScaleFactor:
+                                        MediaQuery.of(context).textScaleFactor,
+                                    text: TextSpan(
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        color: Colors.black,
+                                      ),
+                                      children: [
+                                        TextSpan(
+                                          text: tab +
+                                              "We are not liable for any harm that you may cause yourself or others by following our suggestions.",
+                                        ),
+                                        TextSpan(
+                                          text:
+                                              " Follow our suggestions at your own risk.",
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.w900,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.only(
+                                    bottom: 8.0,
+                                  ),
+                                  child: BottomButtonsThatResize(
+                                    secondary: FlatButton(
+                                      onPressed: () {
+                                        SystemChannels.platform.invokeMethod(
+                                          'SystemNavigator.pop',
+                                        );
+                                      },
+                                      child: Text("Close App"),
+                                    ),
+                                    primary: GestureDetector(
+                                      behavior: HitTestBehavior.opaque,
+                                      onTapDown: (tapDownDetails) {
+                                        holding.value = true;
+                                      },
+                                      onTapUp: (tapUpDetails) {
+                                        holding.value = false;
+                                      },
+                                      child: IgnorePointer(
+                                        child: RaisedButton(
+                                          color: Theme.of(context).accentColor,
+                                          onPressed: () {},
+                                          child: Text(
+                                            "Hold To Agree",
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
+                        ],
                       ),
-                    ],
+                    ),
                   ),
                 ],
               ),
-              Padding(
-                padding: EdgeInsets.only(
-                  bottom: 8.0,
-                ),
-                child: Container(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 16,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class EulaTitle extends StatelessWidget {
+  const EulaTitle({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(
+        top: 16.0,
+        bottom: 8,
+      ),
+      child: Container(
+        width: MediaQuery.of(context).size.width,
+        padding: EdgeInsets.symmetric(
+          horizontal: 16,
+        ),
+        child: FittedBox(
+          fit: BoxFit.contain,
+          child: DefaultTextStyle(
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
+            ),
+            child: Column(
+              children: <Widget>[
+                Text("End User License"),
+                Text("Agreement"),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class TheCountDown extends StatelessWidget {
+  const TheCountDown({
+    @required this.afterConfirm,
+    Key key,
+  }) : super(key: key);
+
+  final Function afterConfirm;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        Container(
+          decoration: BoxDecoration(
+            color: Colors.black.withOpacity(0.75),
+            borderRadius: BorderRadius.circular(12),
+          ),
+          padding: EdgeInsets.all(16),
+          child: DefaultTextStyle(
+            style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+            ),
+            child: Column(
+              children: <Widget>[
+                Text(
+                  "Hold To Agree",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
                   ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: <Widget>[
-                      FlatButton(
-                        onPressed: (){
-                          SystemChannels.platform.invokeMethod('SystemNavigator.pop');
-                        },
-                        child: Text("Close App"),
-                      ),
-                      GestureDetector(
-                        behavior: HitTestBehavior.opaque,
-                        onTapDown: (tapDownDetails){
-                          holding.value = true;
-                        },
-                        onTapUp: (tapUpDetails){
-                          holding.value = false;
-                        },
-                        child: Container(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 24,
-                            vertical: 8,
-                          ),
-                          decoration: BoxDecoration(
-                            color: theColor,
-                            borderRadius: BorderRadius.circular(4),
-                          ),
-                          child: Text(
-                            "Hold To Agree",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
                 ),
-              )
-            ],
-          )
+                BasicCountDown(
+                  seconds: 3,
+                  afterConfirm: () => afterConfirm(),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class TopPicture extends StatelessWidget {
+  const TopPicture({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: Theme.of(context).accentColor,
+      padding: EdgeInsets.only(
+        top: 8,
+      ),
+      child: ClipOval(
+        child: PlayGifOnce(
+          assetName: "assets/popUpGifs/agree.gif",
+          runTimeMS: 2370,
+          frameCount: 70,
+          colorWhite: false,
         ),
       ),
     );
@@ -295,17 +311,18 @@ class BasicCountDown extends StatefulWidget {
   _BasicCountDownState createState() => _BasicCountDownState();
 }
 
-class _BasicCountDownState extends State<BasicCountDown> with SingleTickerProviderStateMixin{
+class _BasicCountDownState extends State<BasicCountDown>
+    with SingleTickerProviderStateMixin {
   AnimationController controller;
 
-  updateState(){
-    if(mounted) setState(() {});
+  updateState() {
+    if (mounted) setState(() {});
   }
 
-  vibrateOnComplete(AnimationStatus status)async{
-    if(status == AnimationStatus.completed){
+  vibrateOnComplete(AnimationStatus status) async {
+    if (status == AnimationStatus.completed) {
       //vibrate to let the user know they are done
-      Vibrator.vibrateOnce(); 
+      Vibrator.vibrateOnce();
       //give permission
       SharedPrefsExt.setTermsAgreed(true);
       //pop the permission pop up
@@ -316,7 +333,7 @@ class _BasicCountDownState extends State<BasicCountDown> with SingleTickerProvid
   }
 
   @override
-  void initState() { 
+  void initState() {
     controller = AnimationController(
       vsync: this,
       duration: Duration(seconds: widget.seconds),
@@ -339,7 +356,7 @@ class _BasicCountDownState extends State<BasicCountDown> with SingleTickerProvid
   Widget build(BuildContext context) {
     double progress;
     Widget centerWidget;
-    if(controller.isAnimating){
+    if (controller.isAnimating) {
       Duration timePassed = controller.lastElapsedDuration;
       int secondsPassed = timePassed.inSeconds;
       int secondsLeft = widget.seconds - secondsPassed;
@@ -356,8 +373,7 @@ class _BasicCountDownState extends State<BasicCountDown> with SingleTickerProvid
           fontSize: 24,
         ),
       );
-    }
-    else{
+    } else {
       progress = 1;
 
       //output widget
@@ -367,7 +383,7 @@ class _BasicCountDownState extends State<BasicCountDown> with SingleTickerProvid
         color: Colors.black,
       );
     }
-     
+
     return Padding(
       padding: EdgeInsets.only(
         top: 8.0,
@@ -382,20 +398,20 @@ class _BasicCountDownState extends State<BasicCountDown> with SingleTickerProvid
                 color: Colors.white.withOpacity(0.75),
               ),
             ),
-            (progress == 1) 
-            ? ClipOval(
-              child: Container(
-                color: Colors.white,
-              ),
-            )
-            : ClipOval(
-              child: TriangleAngle(
-                size: 48,
-                start: 0.0,
-                end: progress * 360,
-                color: Colors.white,
-              ),
-            ),
+            (progress == 1)
+                ? ClipOval(
+                    child: Container(
+                      color: Colors.white,
+                    ),
+                  )
+                : ClipOval(
+                    child: TriangleAngle(
+                      size: 48,
+                      start: 0.0,
+                      end: progress * 360,
+                      color: Colors.white,
+                    ),
+                  ),
             Center(
               child: centerWidget,
             ),
