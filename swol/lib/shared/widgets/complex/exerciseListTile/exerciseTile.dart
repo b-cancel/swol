@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 
 //plugin
 import 'package:page_transition/page_transition.dart';
-import 'package:swol/shared/methods/exerciseData.dart';
 
 //internal: shared
 import 'package:swol/shared/widgets/complex/exerciseListTile/exerciseLeading.dart';
@@ -82,35 +81,9 @@ class _ExerciseTileState extends State<ExerciseTile> {
         }
         else Navigator.push(context, page);
       },
-      onLongPress: (){
-        //grab the IDs above and below this one
-        int indexInList = ExerciseData.exercisesOrder.value.indexOf(widget.exercise.id);
-
-        //above
-        int idAbove = ExerciseData.exercisesOrder.value[indexInList + 1];
-        AnExercise exerciseAbove = ExerciseData.getExercises()[idAbove];
-        DateTime dtAbove = exerciseAbove.lastTimeStamp;
-        Duration timeToAbove = widget.exercise.lastTimeStamp.difference(dtAbove);
-
-        //below
-        int idBelow = ExerciseData.exercisesOrder.value[indexInList - 1];
-        AnExercise exerciseBelow = ExerciseData.getExercises()[idBelow];
-        DateTime dtBelow = exerciseBelow.lastTimeStamp;
-        Duration timeToBelow = dtBelow.difference(widget.exercise.lastTimeStamp);
-
-        //debug stuff
-        print("-------------------------S-------------------------");
-        print("id: " + widget.exercise.id.toString());
-        print("-------------------------CHECK-------------------------");
-        print("id above: " + idAbove.toString()// + " " + dtAbove.toString());
-        + " dur from " + timeToAbove.inMinutes.toString());
-
-        print("time stamp: " + widget.exercise.lastTimeStamp.toString());
-
-        print("id below: " + idBelow.toString()// + " " + dtBelow.toString());
-        + " dur from " + timeToBelow.inMinutes.toString());
-        /*
+      onLongPress: (){ //debug stuff that only I know about
         print("-------------------------Data-------------------------");
+        print("id: " + widget.exercise.id.toString());
         print("name: " +  widget.exercise.name.toString());
         print("url: " + widget.exercise.url.toString());
         print("note: " + widget.exercise.note.toString());
@@ -119,7 +92,6 @@ class _ExerciseTileState extends State<ExerciseTile> {
         print("rep target: " + widget.exercise.repTarget.toString());
         print("recovery: " + widget.exercise.recoveryPeriod.toString());
         print("set target: " + widget.exercise.setTarget.toString());
-        */
         print("-------------------------E-------------------------");
       },
       title: ExerciseTitleHero(

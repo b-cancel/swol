@@ -57,14 +57,9 @@ class ExerciseData{
       fileData = await _exerciseFile.readAsString();
       _exercises = Map<int,AnExercise>();
 
-      //print("-----start");
-      //StringPrint.printWrapped(fileData);
-      //print("-----end");
-
       //grab the contacts
       int maxID = 0;
       List<dynamic> map = json.decode(fileData);
-      //print("---items: " + map.length.toString());
       for(int i = 0; i < map.length; i++){
         AnExercise thisExercise = AnExercise.fromJson(map[i]);
         maxID = (thisExercise.id > maxID) ? thisExercise.id : maxID; 
@@ -89,8 +84,6 @@ class ExerciseData{
       theExercise.id = nextID;
       nextID += 1;
     }
-
-    //print("Adding: " + theExercise.id.toString() + "---------------");
 
     //add to exercises
     _exercises[theExercise.id] = theExercise;
@@ -160,16 +153,12 @@ class ExerciseData{
   //should never have to update from anywhere else
   static updateFile() async {
     String newFileData = _exercisesToString();
-    //print("-----------to be written");
-    //StringPrint.printWrapped(newFileData);
-    //print("--------will write now");
     SafeWrite.write(_exerciseFile, newFileData);
   }
 
   static String _exercisesToString(){
     List<AnExercise> exercises = _exercises.values.toList();
     String string = "[";
-    //print("------------updating: " + exercises.length.toString());
     for(int i = 0; i < exercises.length; i++){
       String str = json.encode(exercises[i].toJson());
       string += str;

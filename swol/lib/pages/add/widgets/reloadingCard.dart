@@ -18,7 +18,6 @@ class ReloadingCard extends StatefulWidget {
 
 class _ReloadingCardState extends State<ReloadingCard> {
   updateState(){
-    print("------------reloading");
     if(mounted) setState(() {});
   }
 

@@ -74,12 +74,6 @@ class ExercisePage extends StatelessWidget {
   //build
   @override
   Widget build(BuildContext context) {
-    print(exercise.id.toString() +
-        " " +
-        exercise.name.toString() +
-        "***********");
-
-    //build
     return Theme(
       key: globalKey,
       data: MyTheme.dark,
@@ -233,8 +227,6 @@ class _ExercisePageDarkState extends State<ExercisePageDark> {
     //super init
     super.initState();
 
-    print("Init of the page, the base one for each exercise");
-
     //TODO: confirm that all these are causing issues because of not updating on init
     //static other: pageNumber [CHECKED]
     //  but clearly "initalPage" which set it is not being created properly
@@ -299,7 +291,6 @@ class _ExercisePageDarkState extends State<ExercisePageDark> {
     int initialPage;
     bool timerStarted = (widget.exercise.tempStartTime.value != AnExercise.nullDateTime);
     bool lastSetPresent = (widget.exercise.lastWeight != null);
-    print("timer started: |" + timerStarted.toString() + "| Last Set Present |" + lastSetPresent.toString() + "|");
     if(timerStarted){
       initialPage = 2;
     }
@@ -458,8 +449,6 @@ updateOrderOfIDs(List<double> functionIDToValue) {
       }
     }
   }
-
-  print("IDs in order: " + orderedIDs.toString());
 
   //set the value so all notifies get notified
   //only if there is a difference (avoid weird setState while build BUG)

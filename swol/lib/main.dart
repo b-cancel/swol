@@ -170,11 +170,6 @@ class _GrabSystemDataState extends State<GrabSystemData> {
       */
       //In the real world, this payload could represent the id of the item you want to display the details of.
       onSelectNotification: (String payload) async {
-        NotificationAppLaunchDetails notificationAppLaunchDetails =
-          await flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
-        
-        print("app launched by notification? " + notificationAppLaunchDetails.didNotificationLaunchApp.toString());
-     
         //updates what excercise to travel to
         //which will then cause us to travel to it
         if (payload != null) {

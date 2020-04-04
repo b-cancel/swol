@@ -551,8 +551,6 @@ class _ExerciseListState extends State<ExerciseList> {
 
   //set to true by the ones who want the update to occur
   manualBeforeManualBuild() {
-    print(
-        "*************************************************manually updating order");
     if (ExerciseSelectStateless.manualOrderUpdate.value == true) {
       updateState();
       ExerciseSelectStateless.manualOrderUpdate.value = false;
@@ -562,8 +560,6 @@ class _ExerciseListState extends State<ExerciseList> {
   //prevents unecessary calculation when navigating
   List<Widget> slivers;
   beforeManualBuild() {
-    print("manual build");
-
     //list to separate stuff into
     List<AnExercise> inProgressOnes = new List<AnExercise>();
     List<AnExercise> newOnes = new List<AnExercise>();
@@ -638,12 +634,6 @@ class _ExerciseListState extends State<ExerciseList> {
           //if timerEnd is BEFORE DateTime.now() we should get a positive value
           Duration timeTillFinish = (timerEnd).difference(DateTime.now());
 
-          print(timeTillFinish.toString() +
-              " for " +
-              inProgressExercise.name +
-              " index " +
-              inProgressExercise.id.toString());
-
           //add to dictionary
           if (timeTillFinish2IndexInProgressOnes.containsKey(timeTillFinish) ==
               false) {
@@ -658,9 +648,6 @@ class _ExerciseListState extends State<ExerciseList> {
             timeTillFinish2IndexInProgressOnes.keys.toList();
         timesTillFinish.sort();
 
-        print("sorted times small to big");
-        print(timesTillFinish.toString());
-
         //iterate through keys to grab sorted order
         List<AnExercise> newInProgressOnes = new List<AnExercise>();
         for (int i = 0; i < timesTillFinish.length; i++) {
@@ -673,7 +660,6 @@ class _ExerciseListState extends State<ExerciseList> {
             int theIndex = indicesInProgressOnes[0];
 
             AnExercise theExercise = inProgressOnes[theIndex];
-            print("ID: " + theExercise.id.toString());
             newInProgressOnes.add(theExercise);
           } else {
             //2 different exercises have their timers finishing at the exact same time
@@ -686,7 +672,6 @@ class _ExerciseListState extends State<ExerciseList> {
             for (int i = 0; i < indicesInProgressOnes.length; i++) {
               int theIndex = indicesInProgressOnes[i];
               AnExercise theExercise = inProgressOnes[theIndex];
-              print("ID: " + theExercise.id.toString());
               newInProgressOnes.add(theExercise);
             }
           }

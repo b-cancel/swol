@@ -135,7 +135,6 @@ class _SaveButtonState extends State<SaveButton> {
                 FocusScope.of(context).unfocus();
 
                 DateTime theNewDateTime = LastTimeStamp.newDateTime();
-                print("the new date time is: " + theNewDateTime.toString());
 
                 //add workout to our list
                 await ExerciseData.addExercise(

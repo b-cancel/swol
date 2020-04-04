@@ -73,7 +73,6 @@ Future<bool> warningThenPop(BuildContext context, AnExercise exercise) async {
   //    which ofcourse won't start the timer and therefore not have a notification
 
   Function scheduleThenBack = (){
-    print("-------------------------On Complete from Warning With No Update");
     //regardless of whether the permission was given
 
     //try to schedlue notification
@@ -133,7 +132,6 @@ Future<bool> warningThenPop(BuildContext context, AnExercise exercise) async {
     //if its valid horray! no extra pop ups
     if (newSetValid) {
       askForPermissionIfNotGrantedAndWeNeverAsked(context, () {
-        print("-------------------------Auto On Complete from Warning With Updates");
         //regardless of whether the permission was given
 
         //will start or update the set

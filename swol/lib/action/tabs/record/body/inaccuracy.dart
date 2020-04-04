@@ -171,9 +171,6 @@ class _PercentOffState extends State<PercentOff> {
       absDifferenceTofunctionID[absDifference].add(functionID);
     }
 
-    print("differences: " + functionIdToPercentDifferences.toString());
-    print("map: " + absDifferenceTofunctionID.toString());
-
     //get the smallest difference
     List<int> differences = absDifferenceTofunctionID.keys.toList();
     differences.sort();
@@ -186,22 +183,14 @@ class _PercentOffState extends State<PercentOff> {
   updatePredictionID(){
     int ourID = widget.predictionID.value;
     int ourAbsPercentDifference = functionIdToPercentDifferencesAbsolute[ourID];
-    print("our id: " + ourID.toString());
-    print("our abs dif: " + ourAbsPercentDifference.toString());
-
-    print("function id to abs dif: " + functionIdToPercentDifferencesAbsolute.toString());
-    print("smallest abs dif: " + smallestAbsDifference.toString());
-
     ourIndex = ExercisePage.orderedIDs.value.indexOf(ourID);
     
     //based on the smallest difference see if another index is closer
     if(ourAbsPercentDifference == smallestAbsDifference){
-      print("we are gg");
       ExercisePage.closestIndex.value = ourIndex;
     }
     else{
       List<int> potentialClosestFunctionIDs = absDifferenceTofunctionID[smallestAbsDifference];
-      print("potential closest function IDs " + potentialClosestFunctionIDs.toString());
       if(potentialClosestFunctionIDs.length == 1){
         int closestFunctionID = potentialClosestFunctionIDs[0];
         ExercisePage.closestIndex.value = ExercisePage.orderedIDs.value.indexOf(closestFunctionID);
@@ -233,16 +222,12 @@ class _PercentOffState extends State<PercentOff> {
           distToFunctionIDs[distanceFromUs].add(potentialFunction);
         }
 
-        print("dist to IDs: " + distToFunctionIDs.toString());
-
         //now we pick the smallest distance
         List<int> distances = distToFunctionIDs.keys.toList();
         distances.sort(); //smallest to largest
         int smallestDistance = distances[0];
-        print("smallest distance is: " + smallestDistance.toString());
 
         List<int> validFunctionIDs = distToFunctionIDs[smallestDistance];
-        print("valid IDs: " + validFunctionIDs.toString());
 
         //if only one then great!
         if(validFunctionIDs.length == 1){
@@ -256,7 +241,6 @@ class _PercentOffState extends State<PercentOff> {
             int functionID = validFunctionIDs[index];
             validIndices[index] = ExercisePage.orderedIDs.value.indexOf(functionID);
           }
-          print("valid Indices: " + validIndices.toString());
 
           //pick the one that aims higher or the smallest one
           //for the sake of consistency
@@ -274,11 +258,6 @@ class _PercentOffState extends State<PercentOff> {
         }
       }
     }
-
-    print("closest index: " + ExercisePage.closestIndex.value.toString());
-    print("function there: " + ExercisePage.orderedIDs.value[
-      ExercisePage.closestIndex.value
-    ].toString());
 
     //now that we have the proper value everywhere
     updateState();
@@ -322,7 +301,7 @@ class _PercentOffState extends State<PercentOff> {
     Color overlayColor = Colors.white;
     //we are some distance from where we should be
     int dif = ourIndex - ExercisePage.closestIndex.value;
-    print("dif: " + dif.toString());
+    print("ERROR AFTER -> dif: " + dif.toString());
     if(dif != 0){ 
       if(dif < 0) dif *= -1;
       switch(dif){

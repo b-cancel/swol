@@ -108,29 +108,18 @@ class _ChangeFunctionState extends State<ChangeFunction> {
       }).toList(),
     );
 
-    print("order 1: " + ExercisePage.orderedIDs.value.toString());
-    print("type 1: " + carousel.runtimeType.toString());
-    print("here");
-
     //set state if needed
     List<int> beforeWait = ExercisePage.orderedIDs.value;
-    print("before if");
     if (alsoSetState) {
       //wait a frame to avoid problems when transitioning to another page
-      print("before wait");
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        print("after wait");
         if (mounted) {
           //NOTE: must to string for proper compare
           if (beforeWait.toString() !=
               ExercisePage.orderedIDs.value.toString()) {
-            print("order has changed");
           } else {
             //show this new carousel
             setState(() {});
-
-            print("order 2: " + ExercisePage.orderedIDs.value.toString());
-            print("type 2: " + carousel.runtimeType.toString());
 
             //TODO: figure out why I need this
             //wait one frame to set the initial page since the initial page parameter doesn't work
@@ -139,9 +128,6 @@ class _ChangeFunctionState extends State<ChangeFunction> {
             //so the ongoing theory is that its the fault of carousel
             WidgetsBinding.instance.addPostFrameCallback((_) {
               //TODO: figure out why sometimes the carousel here has no pages
-              print("order 3: " + ExercisePage.orderedIDs.value.toString());
-              print("type 3: " + carousel.runtimeType.toString());
-              print("is null " + (carousel == null).toString());
 
               //TODO isbreaking because we are trying to access a page in the pageview before its built
               //TODO: duplicatable by simply moving to the next
@@ -155,7 +141,6 @@ class _ChangeFunctionState extends State<ChangeFunction> {
         }
       });
     }
-    else print("carousel init*******");
     //ELSE: the carousel is being build in init
   }
 

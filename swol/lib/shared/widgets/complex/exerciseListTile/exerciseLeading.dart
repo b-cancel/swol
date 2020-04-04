@@ -30,16 +30,10 @@ class ExerciseTileLeading extends StatefulWidget {
 
 class _ExerciseTileLeadingState extends State<ExerciseTileLeading> {
   actualUpdate() {
-    print(widget.exercise.id.toString() +
-        " after wait: " +
-        widget.exercise.tempStartTime.toString());
     if (mounted) setState(() {});
   }
 
   updateState() {
-    print(widget.exercise.id.toString() +
-        " before wait: " +
-        widget.exercise.tempStartTime.toString());
     //NOTE: just waiting a single frame isn't enough
     //TODO: more fool proof solution because waiting one frame should be enough
     //if its isnt it may just the the unexpected delay that happens like everywhere

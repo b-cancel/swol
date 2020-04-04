@@ -97,10 +97,11 @@ class _MakeFunctionAdjustmentState extends State<MakeFunctionAdjustment> {
 
       //if weight is still valid, then all rep estimates valid
       allRepsEstimatesValid = weightRecordedValid;
-    } else
+    } else {
       allRepsEstimatesValid = false;
+    }
 
-    print("estimatedReps:  " +
+    print("ERROR BEFORE -> estimatedReps:  " +
         allRepsEstimatesValid.toString() +
         " => " +
         repEstimates.toString());
@@ -141,10 +142,11 @@ class _MakeFunctionAdjustmentState extends State<MakeFunctionAdjustment> {
 
       //if reps is still valid, then all weight estimates are valid
       allWeightEstimatesValid = repsRecordedValid;
-    } else
+    } else{
       allWeightEstimatesValid = false;
+    }
 
-    print("estimatedWeights: " +
+    print("ERROR BEFORE -> estimatedWeights: " +
         allWeightEstimatesValid.toString() +
         " => " +
         weightEstimates.toString());
@@ -196,8 +198,6 @@ class _MakeFunctionAdjustmentState extends State<MakeFunctionAdjustment> {
       animate: true,
       heroAnimTravel: widget.heroAnimTravel,
     );
-
-    print("---------------build");
 
     return Container(
       width: MediaQuery.of(context).size.width,
@@ -290,7 +290,6 @@ class _MakeFunctionAdjustmentState extends State<MakeFunctionAdjustment> {
     
     //upate the goal set
     if (allRepsEstimatesValid) {
-      print("*****Using recorded weight");
       valuesToSortWith = repEstimates;
 
       //use recorded weight
@@ -302,7 +301,6 @@ class _MakeFunctionAdjustmentState extends State<MakeFunctionAdjustment> {
       ExercisePage.setGoalReps.value = repEstimates[predictionID.value];
     } else {
       if (allWeightEstimatesValid) {
-        print("*****Using recorded reps");
         valuesToSortWith = weightEstimates;
 
         //get calculatd weight
@@ -313,7 +311,6 @@ class _MakeFunctionAdjustmentState extends State<MakeFunctionAdjustment> {
         ExercisePage.setGoalReps.value =
             int.parse(ExercisePage.setReps.value).toDouble();
       } else {
-        print("*****Using rep target");
         valuesToSortWith = widget.functionIDToWeightFromRT.value;
 
         //avoid init issue
