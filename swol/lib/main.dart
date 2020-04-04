@@ -33,6 +33,15 @@ main() {
   runApp(App());
 }
 
+/*
+MediaQuery(
+  child: child,
+  data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+),
+
+Wrapping text in flexible fixes overflow issue
+*/
+
 //required for loading pages to come up
 class App extends StatelessWidget {
   //the cost of having a cool little animation that is trigger from EVERYWHERE
