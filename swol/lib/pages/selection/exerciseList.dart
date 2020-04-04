@@ -128,7 +128,7 @@ class _ExerciseListState extends State<ExerciseList> {
 
             //return
             return CustomToast(
-              paddingBottom: 24.0 + 40.0 + 16,
+              padding: 24.0 + 40.0 + 16,
               child: Row(
                 children: <Widget>[
                   Expanded(
@@ -215,7 +215,52 @@ class _ExerciseListState extends State<ExerciseList> {
             }
           }
 
-          //TODO: pop up that says the thing is invalid
+          //pop up that says the thing is invalid
+          BotToast.showCustomNotification(
+            toastBuilder: (_) {
+              //style
+              TextStyle bold = TextStyle(
+                fontWeight: FontWeight.bold,
+              );
+
+              //return
+              return CustomToast(
+                padding: -(56.0 + 16),
+                child: RichText(
+                  text: TextSpan(
+                    style: TextStyle(
+                      color: Colors.black,
+                    ),
+                    children: [
+                      TextSpan(
+                        text: "Finish Repairing",
+                        style: bold,
+                      ),
+                      TextSpan(
+                        text: " Your Set\n",
+                      ),
+                      TextSpan(
+                        text: "Before",
+                        style: bold,
+                      ),
+                      TextSpan(
+                        text: " moving onto your next",
+                        style: bold,
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
+            align: Alignment(0, -1),
+            duration: Duration(seconds: 5),
+            dismissDirections: [
+              DismissDirection.horizontal,
+              DismissDirection.vertical,
+            ],
+            crossPage: false,
+            onlyOne: true,
+          );
         }
       }
     }
@@ -260,7 +305,7 @@ class _ExerciseListState extends State<ExerciseList> {
 
                   //return
                   return CustomToast(
-                    paddingBottom: 24.0 + 8,
+                    padding: 24.0 + 8,
                     action: () {
                       Navigator.of(context).pop();
                       toPage2(popUpIfThere: false);
@@ -329,7 +374,7 @@ class _ExerciseListState extends State<ExerciseList> {
 
                     //return
                     return CustomToast(
-                      paddingBottom: 24.0 + 8,
+                      padding: 24.0 + 8,
                       child: RichText(
                         text: TextSpan(
                           style: TextStyle(

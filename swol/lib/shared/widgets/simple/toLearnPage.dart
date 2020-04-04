@@ -129,7 +129,7 @@ class SuggestToLearnPage extends StatelessWidget {
                         action: () {
                           goToLearn();
                         },
-                        paddingBottom: 24.0 + 12,
+                        padding: 24.0 + 12,
                         child: RichText(
                           text: TextSpan(
                             style: TextStyle(
@@ -269,14 +269,14 @@ bool doBothMatch(AnExercise exercise) {
 class CustomToast extends StatelessWidget {
   CustomToast({
     @required this.child,
-    @required this.paddingBottom,
+    @required this.padding,
     this.action,
     this.isWarning: true,
   });
 
   final Widget child;
   final Function action;
-  final double paddingBottom;
+  final double padding;
   final bool isWarning;
 
   @override
@@ -287,7 +287,8 @@ class CustomToast extends StatelessWidget {
     //build
     return Padding(
       padding: EdgeInsets.only(
-        bottom: paddingBottom,
+        bottom: padding > 0 ? padding : 0,
+        top: padding < 0 ? -padding : 0,
       ),
       child: Padding(
         padding: EdgeInsets.symmetric(
