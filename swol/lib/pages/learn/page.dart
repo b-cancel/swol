@@ -240,7 +240,7 @@ class _LearnExerciseState extends State<LearnExercise> {
                 index: 5,
                 isOpen: experimentIsOpen,
                 headerIcon: FontAwesomeIcons.calculator, 
-                headerText: "The SWOL Calculator",
+                headerText: "The Calculator",
                 expandedChild: ExperimentBody(),
               ),
               ExpandableTile(

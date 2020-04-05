@@ -146,11 +146,13 @@ class TileHeader extends StatelessWidget {
                                 color: innerColor,
                               ),
                             ),
-                            Text(
-                              headerText,
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: innerColor,
+                            Expanded(
+                              child: Text(
+                                headerText,
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: innerColor,
+                                ),
                               ),
                             ),
                           ],
