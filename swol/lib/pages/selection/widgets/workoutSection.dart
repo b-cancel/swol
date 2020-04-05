@@ -26,6 +26,16 @@ class SectionHeader extends StatelessWidget {
   final bool highlightTop;
   final Color topColor;
 
+  String grabChipString() {
+    if (sectionType == TimeStampType.InProgress) {
+      return "IN PROG";
+    } else {
+      return LastTimeStamp.timeStampTypeToString(
+        sectionType,
+      ).toUpperCase();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -58,9 +68,7 @@ class SectionHeader extends StatelessWidget {
                 Conditional(
                   condition: (subtitle == null),
                   ifTrue: MyChip(
-                    chipString: LastTimeStamp.timeStampTypeToString(
-                      sectionType,
-                    ).toUpperCase(),
+                    chipString: grabChipString(),
                     inverse: highlightTop,
                   ),
                   ifFalse: Text(
@@ -72,31 +80,32 @@ class SectionHeader extends StatelessWidget {
           ),
         ),
         Positioned(
-            bottom: 0,
-            left: 0,
-            right: 0,
-            child: Container(
-              width: MediaQuery.of(context).size.width,
-              child: Transform.translate(
-                offset: Offset(0, 24),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    CurvedCorner(
-                      isTop: true,
-                      isLeft: true,
-                      cornerColor: topColor,
-                    ),
-                    CurvedCorner(
-                      isTop: true,
-                      isLeft: false,
-                      cornerColor: topColor,
-                    ),
-                  ],
-                ),
+          bottom: 0,
+          left: 0,
+          right: 0,
+          child: Container(
+            width: MediaQuery.of(context).size.width,
+            child: Transform.translate(
+              offset: Offset(0, 24),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  CurvedCorner(
+                    isTop: true,
+                    isLeft: true,
+                    cornerColor: topColor,
+                  ),
+                  CurvedCorner(
+                    isTop: true,
+                    isLeft: false,
+                    cornerColor: topColor,
+                  ),
+                ],
               ),
-            )),
+            ),
+          ),
+        ),
       ],
     );
   }

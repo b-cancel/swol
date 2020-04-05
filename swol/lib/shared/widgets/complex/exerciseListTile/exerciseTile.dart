@@ -55,6 +55,7 @@ class _ExerciseTileState extends State<ExerciseTile> {
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      dense: false,
       onTap: (){
         //travel to page
         App.navSpread.value = true;
