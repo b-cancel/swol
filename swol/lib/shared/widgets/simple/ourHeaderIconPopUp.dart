@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 //plugin
 import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:swol/awesomeDialog.dart';
 import 'package:swol/shared/widgets/simple/popUpAdjustments.dart';
 
 showBasicHeaderIconPopUp(
@@ -24,14 +25,13 @@ showBasicHeaderIconPopUp(
   FocusScope.of(context).unfocus(); 
 
   //show pop up
-  AwesomeDialog(
+  MyAwesomeDialog(
     context: context,
     isDense: isDense,
-    dismissOnTouchOutside: dismissOnTouchOutside,
+    barrierDismissible: dismissOnTouchOutside,
     headerAnimationLoop: false,
     animType: animationType,
     dialogType: dialogType,
-    padding: EdgeInsets.all(0),
     body: AwesomeBody(
       titles: titles, 
       children: children, 
@@ -63,10 +63,10 @@ showCustomHeaderIconPopUp(
   FocusScope.of(context).unfocus(); 
 
   //show pop up
-  AwesomeDialog(
+  MyAwesomeDialog(
     context: context,
     isDense: isDense,
-    dismissOnTouchOutside: dismissOnTouchOutside,
+    barrierDismissible: dismissOnTouchOutside,
     useRootNavigator: useRootNavigator,
     animType: animationType,
     customHeader: AwesomeHeader(
@@ -74,7 +74,6 @@ showCustomHeaderIconPopUp(
       regularPadding: regularPadding,
       header: header,
     ),
-    padding: EdgeInsets.all(0),
     body: AwesomeBody(
       titles: titles, 
       children: children, 
@@ -155,32 +154,27 @@ class AwesomeBody extends StatelessWidget {
     bool hasAtleastOneButton = (clearBtn != null || colorBtn != null);
 
     //build dat body
-    return GestureDetector(
-      behavior: HitTestBehavior.deferToChild,
-      child: ScrollViewWithShadow(
-        child: Padding(
-          padding: EdgeInsets.only(
-            bottom: hasAtleastOneButton ? 0 : 8.0,
+    return Padding(
+      padding: EdgeInsets.only(
+        bottom: hasAtleastOneButton ? 0 : 8.0,
+      ),
+      child: Column(
+        children: <Widget>[
+          TitleThatContainsTRBL(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: titles,
+            ),
           ),
-          child: Column(
-            children: <Widget>[
-              TitleThatContainsTRBL(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: titles,
-                ),
-              ),
-              Column(
-                mainAxisSize: MainAxisSize.min,
-                children: children,
-              ),
-              hasAtleastOneButton ? BottomButtonsThatResizeTRBL(
-                secondary: clearBtn ?? Container(),
-                primary: colorBtn ?? Container(),
-              ) : Container()
-            ],
+          Column(
+            mainAxisSize: MainAxisSize.min,
+            children: children,
           ),
-        ),
+          hasAtleastOneButton ? BottomButtonsThatResizeTRBL(
+            secondary: clearBtn ?? Container(),
+            primary: colorBtn ?? Container(),
+          ) : Container()
+        ],
       ),
     );
   }

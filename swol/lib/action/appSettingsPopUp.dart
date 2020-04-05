@@ -232,6 +232,7 @@ requestThatYouGoToAppSettings(
       Icons.settings,
       color: Colors.white,
     ),
+    animationType: null,
     headerBackground: MyTheme.dark.cardColor,
     dismissOnTouchOutside: automaticallyOpened == false,
     clearBtn: WillPopScope(

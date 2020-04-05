@@ -100,6 +100,7 @@ showRestrictedPopUp(
     ],
     DialogType.ERROR,
     dismissOnTouchOutside: automaticallyOpened == false,
+    animationType: null,
     clearBtn: WillPopScope(
       onWillPop: () async {
         //negative action

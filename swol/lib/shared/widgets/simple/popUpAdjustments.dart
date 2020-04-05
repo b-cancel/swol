@@ -13,7 +13,7 @@ class ScrollViewWithShadow extends StatefulWidget {
 
 class _ScrollViewWithShadowState extends State<ScrollViewWithShadow> {
   final ScrollController ctrl = new ScrollController();
-  final ValueNotifier<bool> onTop = new ValueNotifier<bool>(true);
+  final ValueNotifier<bool> onTop = new ValueNotifier<bool>(false);
   final ValueNotifier<bool> onBottom = new ValueNotifier<bool>(false);
 
   scrollUpdate(){
@@ -25,6 +25,9 @@ class _ScrollViewWithShadowState extends State<ScrollViewWithShadow> {
 
   @override
   void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_){
+      scrollUpdate();
+    });
     ctrl.addListener(scrollUpdate);
     super.initState();
   }
