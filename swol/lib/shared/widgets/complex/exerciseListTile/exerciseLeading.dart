@@ -59,6 +59,49 @@ class _ExerciseTileLeadingState extends State<ExerciseTileLeading> {
     super.dispose();
   }
 
+  grabFormattedDT(){
+    String dt = DurationFormat.format(
+      DateTime.now().difference(widget.exercise.lastTimeStamp),
+      showMinutes: false,
+      showSeconds: false,
+      showMilliseconds: false,
+      showMicroseconds: false,
+      len: 0, //short
+    );
+
+    //remove thing if needed
+    List units = dt.split(" ");
+
+    //5 things must be there
+    //so hours must be there
+    if(units.length > 4){
+      //years, months, weeks, days, hours
+       String dt = DurationFormat.format(
+        DateTime.now().difference(widget.exercise.lastTimeStamp),
+        showHours: false,
+        //---
+        showMinutes: false,
+        showSeconds: false,
+        showMilliseconds: false,
+        showMicroseconds: false,
+        len: 0, //short
+      );
+
+      //update
+      List units = dt.split(" ");
+    }
+
+    //add spacing where needed
+    String result = "";
+    for(int i = 0; i < units.length - 1; i++){
+      result += units[i];
+      result += (i%2 == 0) ? " " : "\n";
+    }
+    
+    //return 
+    return result + units.last;
+  }
+
   //and also
   @override
   Widget build(BuildContext context) {
@@ -113,14 +156,10 @@ class _ExerciseTileLeadingState extends State<ExerciseTileLeading> {
                 ),
               );
             } else {
-              return Text(
-                DurationFormat.format(
-                  DateTime.now().difference(widget.exercise.lastTimeStamp),
-                  showMinutes: false,
-                  showSeconds: false,
-                  showMilliseconds: false,
-                  showMicroseconds: false,
-                  len: 0, //short
+              return FittedBox(
+                fit: BoxFit.contain,
+                child: Text(
+                  grabFormattedDT()
                 ),
               );
             }
