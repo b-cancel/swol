@@ -807,12 +807,72 @@ class _ExerciseListState extends State<ExerciseList> {
 
         //if a hidden section is present
         //and this is the last regular
-        if (index == (groupsOfExercises.length - 2) && hiddenOnes.length > 0) {
+        int indexOfLastSection = groupsOfExercises.length - 1;
+        bool haveHidden = hiddenOnes.length > 0;
+
+        //if we are right above the last section
+        //and the hidden section exists (its the last section)
+        if (index == (indexOfLastSection - 1) && haveHidden) {
           bottomColor = Theme.of(context).accentColor;
-        } else if (specialSectionsOnTop > index) {
-          bottomColor = Theme.of(context).accentColor;
-        } else {
-          bottomColor = Theme.of(context).primaryColor;
+        } else{
+          //if atleast a single regular section
+          if(regularOnes.length > 0){
+            //TODO: check further
+            //this is what I get when I optimize...
+            if (specialSectionsOnTop > index) {
+              bottomColor = Theme.of(context).accentColor;
+            } else {
+              bottomColor = Theme.of(context).primaryColor;
+            }
+          }
+          else{ //we only have inprogress, new, hidden (if anything)
+            if(index == 2){ //nothing can be below us
+              bottomColor = Theme.of(context).primaryColor;
+            }
+            else{
+              //CASES TO ADDRESS
+              //  N,I,H
+
+              //1. t,t,t
+              //2. t,t,f
+              //3. t,f,t
+              //4. t,f,f
+              //5. f,t,t
+              //6. f,t,f
+              //7. f,f,t
+              //8. f,f,f
+
+              //easy to use
+              int sectionCount = groupsOfExercises.length;
+
+              //use section count
+              if(sectionCount == 1){ //CASE [4],6,7,8
+                bottomColor = Theme.of(context).primaryColor;
+              }
+              else{ //CASE 1,2,3,[5]
+                //2 or 3 items
+                //CASES TO ADDRESS
+                //   N    I     H
+                //1. t,   t,    t
+                //2. t,   t,    [f] => N, I
+                //3. t,   [f],  t   => N, H
+                //5. [f], t,    t   => I, H  
+                if(sectionCount == 2){ //CASE 2,3,5
+                  if(index == 0){
+                    bottomColor = Theme.of(context).accentColor;
+                  }
+                  else{
+                    bottomColor = Theme.of(context).primaryColor;
+                  }
+                }
+                else{ //we have 3 sections [CASE 1]
+                  //the section with index 2 wont highlight because of above
+                  //if(index == 0 || index == 1)
+                  bottomColor = Theme.of(context).accentColor;
+                }
+              }
+            }
+          }
         }
 
         //add this section to the list of slivers

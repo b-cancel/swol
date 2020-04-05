@@ -100,21 +100,18 @@ class _SaveButtonState extends State<SaveButton> {
   Widget build(BuildContext context) {
     return FeatureWrapper(
       featureID: AFeature.SaveExercise.toString(),
-      tapTarget: Container(
-        width: 72,
-        child: RaisedButton(
-          onPressed: null,
-          child: Text(
-            "Save",
-            style: TextStyle(
-              color: Colors.white,
-            ),
+      tapTarget: RaisedButton(
+        onPressed: null,
+        child: Text(
+          "Save",
+          style: TextStyle(
+            color: Colors.white,
           ),
         ),
       ),
-      text: "Only after naming the exercise\n"
-      + "will the button become active\n"
-      + "and allow you to save",
+      text: "Only after naming the exercise"
+      + " will the button become active"
+      + " and allow you to save",
       child: AnimatedContainer(
         duration: widget.showSaveDuration,
         curve: Curves.bounceInOut,
