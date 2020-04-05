@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 //internal
 import 'package:swol/shared/widgets/complex/exerciseListTile/exerciseTile.dart';
+import 'package:swol/shared/widgets/simple/conditional.dart';
 import 'package:swol/shared/widgets/simple/curvedCorner.dart';
 import 'package:swol/shared/functions/defaultDateTimes.dart';
 import 'package:swol/shared/widgets/simple/chip.dart';
@@ -41,55 +42,61 @@ class SectionHeader extends StatelessWidget {
           child: DefaultTextStyle(
             style: TextStyle(
               fontSize: 16,
-              color: highlightTop ? Theme.of(context).primaryColor : Colors.white,
-              fontWeight: highlightTop  ? FontWeight.bold : FontWeight.normal,
+              color:
+                  highlightTop ? Theme.of(context).primaryColor : Colors.white,
+              fontWeight: highlightTop ? FontWeight.bold : FontWeight.normal,
             ),
             child: Row(
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                new Text(
-                  title,
+                Flexible(
+                  child: Text(
+                    title,
+                  ),
                 ),
-                (subtitle == null)
-                ? MyChip(
-                  chipString: LastTimeStamp.timeStampTypeToString(sectionType).toUpperCase(), 
-                  inverse: highlightTop,
-                )
-                : Text(
-                  subtitle,
-                )
+                Conditional(
+                  condition: (subtitle == null),
+                  ifTrue: MyChip(
+                    chipString: LastTimeStamp.timeStampTypeToString(
+                      sectionType,
+                    ).toUpperCase(),
+                    inverse: highlightTop,
+                  ),
+                  ifFalse: Text(
+                    subtitle ?? "",
+                  ),
+                ),
               ],
             ),
           ),
         ),
         Positioned(
-          bottom: 0,
-          left: 0,
-          right: 0,
-          child: Container(
-            width: MediaQuery.of(context).size.width,
-            child: Transform.translate(
-              offset: Offset(0, 24),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  CurvedCorner(
-                    isTop: true, 
-                    isLeft: true, 
-                    cornerColor: topColor,
-                  ),
-                  CurvedCorner(
-                    isTop: true, 
-                    isLeft: false, 
-                    cornerColor: topColor,
-                  ),
-                ],
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: Container(
+              width: MediaQuery.of(context).size.width,
+              child: Transform.translate(
+                offset: Offset(0, 24),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    CurvedCorner(
+                      isTop: true,
+                      isLeft: true,
+                      cornerColor: topColor,
+                    ),
+                    CurvedCorner(
+                      isTop: true,
+                      isLeft: false,
+                      cornerColor: topColor,
+                    ),
+                  ],
+                ),
               ),
-            ),
-          )
-        ),
+            )),
       ],
     );
   }
@@ -146,14 +153,14 @@ class SectionBody extends StatelessWidget {
                 itemCount: thisGroup.length,
                 //ONLY false IF Hidden Section
                 reverse: (sectionType == TimeStampType.New),
-                itemBuilder: (context, index){
+                itemBuilder: (context, index) {
                   AnExercise exercise = thisGroup[index];
                   return ExerciseTile(
                     key: ValueKey(exercise.id),
                     exercise: exercise,
                   );
                 },
-                separatorBuilder : (context, index) => ListTileDivider(),
+                separatorBuilder: (context, index) => ListTileDivider(),
               ),
             ),
           ],
@@ -171,14 +178,13 @@ class ListTileDivider extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(
-        left: 16,
-        right: 16,
-      ),
-      child: Container(
-        height: 1,
-        color: Theme.of(context).scaffoldBackgroundColor,
-      )
-    );
+        padding: EdgeInsets.only(
+          left: 16,
+          right: 16,
+        ),
+        child: Container(
+          height: 1,
+          color: Theme.of(context).scaffoldBackgroundColor,
+        ));
   }
 }
