@@ -27,11 +27,12 @@ class ExperimentBody extends StatelessWidget {
         SectionDescription(
           children: [
             TextSpan(
-                text:
-                    "We suspect, that one rep max formulas can be helpful for more than just tracking your progress",
-                style: TextStyle(
-                  fontWeight: FontWeight.w900,
-                )),
+              text:
+                  "We suspect, that one rep max formulas can be helpful for more than just tracking your progress",
+              style: TextStyle(
+                fontWeight: FontWeight.w900,
+              ),
+            ),
           ],
         ),
         DefaultTextStyle(
@@ -39,7 +40,7 @@ class ExperimentBody extends StatelessWidget {
             fontSize: 16,
           ),
           child: Padding(
-            padding: const EdgeInsets.symmetric(
+            padding: EdgeInsets.symmetric(
               horizontal: 16.0,
             ),
             child: Column(
@@ -297,21 +298,21 @@ class ExperimentBody extends StatelessWidget {
                     ],
                   ),
                 ),
-                Padding(
-                  padding: EdgeInsets.only(
-                    top: 24,
-                    bottom: 8,
-                  ),
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 8.0,
-                    ),
-                    child: FunctionCardTable(
-                      cardBackground: true,
-                    ),
-                  ),
-                ),
               ],
+            ),
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.only(
+            top: 24,
+            bottom: 8,
+          ),
+          child: Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: 16.0,
+            ),
+            child: FunctionCardTable(
+              cardBackground: true,
             ),
           ),
         ),
