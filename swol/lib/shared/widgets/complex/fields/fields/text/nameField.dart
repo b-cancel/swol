@@ -81,29 +81,30 @@ class _NamePopUpBody extends StatelessWidget {
               context,
             ).textScaleFactor,
             text: TextSpan(
-                style: TextStyle(
-                  color: Colors.black,
+              style: TextStyle(
+                color: Colors.black,
+              ),
+              children: [
+                TextSpan(
+                  text: "You can have ",
                 ),
-                children: [
-                  TextSpan(
-                    text: "You can have ",
+                TextSpan(
+                  text: "multiple exercises",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
                   ),
-                  TextSpan(
-                    text: "multiple exercises",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
+                ),
+                TextSpan(
+                  text: " with the ",
+                ),
+                TextSpan(
+                  text: "same name\n",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
                   ),
-                  TextSpan(
-                    text: " with the ",
-                  ),
-                  TextSpan(
-                    text: "same name\n",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ]),
+                ),
+              ],
+            ),
           ),
           //---
           RichText(
@@ -111,26 +112,27 @@ class _NamePopUpBody extends StatelessWidget {
               context,
             ).textScaleFactor,
             text: TextSpan(
-                style: TextStyle(
-                  color: Colors.black,
+              style: TextStyle(
+                color: Colors.black,
+              ),
+              children: [
+                TextSpan(
+                  text: "But, it's best",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-                children: [
-                  TextSpan(
-                    text: "But, it's best",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
+                TextSpan(
+                  text: " if you keep the name ",
+                ),
+                TextSpan(
+                  text: "unique\n",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
                   ),
-                  TextSpan(
-                    text: " if you keep the name ",
-                  ),
-                  TextSpan(
-                    text: "unique\n",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ]),
+                ),
+              ],
+            ),
           ),
           //---
           RichText(

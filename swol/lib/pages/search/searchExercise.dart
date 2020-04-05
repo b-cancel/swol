@@ -156,16 +156,14 @@ class _SearchExerciseState extends State<SearchExercise> {
                 sliver: SliverList(
                   delegate: new SliverChildListDelegate(
                     [
-                      Container(
-                        child: SearchBody(
-                          noRecentsToShow: noRecentsToShow,
-                          showRecentsSearches: showRecentsSearches,
-                          search: search,
-                          queryResults: queryResults,
-                          exercises: exercises,
-                          updateState: () => setState(() {}),
-                          statusBar: MediaQuery.of(context).padding.top,
-                        ),
+                      SearchBody(
+                        noRecentsToShow: noRecentsToShow,
+                        showRecentsSearches: showRecentsSearches,
+                        search: search,
+                        queryResults: queryResults,
+                        exercises: exercises,
+                        updateState: () => setState(() {}),
+                        statusBar: MediaQuery.of(context).padding.top,
                       ),
                     ],
                   ),
