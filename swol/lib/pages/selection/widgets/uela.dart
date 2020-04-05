@@ -8,7 +8,7 @@ import 'package:swol/shared/methods/vibrate.dart';
 import 'package:swol/shared/methods/theme.dart';
 
 //internal: utils
-import 'package:swol/shared/widgets/simple/scrollViewWithShadow.dart';
+import 'package:swol/shared/widgets/simple/popUpAdjustments.dart';
 import 'package:swol/shared/widgets/simple/triangleAngle.dart';
 import 'package:swol/shared/widgets/simple/playOnceGif.dart';
 
@@ -49,44 +49,89 @@ class _UELAState extends State<UELA> {
             borderRadius: new BorderRadius.all(
               Radius.circular(12.0),
             ),
-            child: Container(
-              width: MediaQuery.of(context).size.width,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Stack(
-                    children: <Widget>[
-                      TopPicture(),
-                      Positioned.fill(
-                        child: Center(
-                          child: AnimatedBuilder(
-                            animation: holding,
-                            //no reusable child
-                            builder: (context, child) {
-                              return Visibility(
-                                visible: holding.value,
-                                child: TheCountDown(
-                                  afterConfirm: widget.afterConfirm,
-                                ),
-                              );
-                            },
-                          ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Stack(
+                  children: <Widget>[
+                    TopPicture(),
+                    Positioned.fill(
+                      child: Center(
+                        child: AnimatedBuilder(
+                          animation: holding,
+                          //no reusable child
+                          builder: (context, child) {
+                            return Visibility(
+                              visible: holding.value,
+                              child: TheCountDown(
+                                afterConfirm: widget.afterConfirm,
+                              ),
+                            );
+                          },
                         ),
                       ),
-                    ],
-                  ),
-                  Flexible(
-                    child: ScrollViewWithShadow(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          EulaTitle(),
-                          Container(
-                            padding: EdgeInsets.all(16),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                RichText(
+                    ),
+                  ],
+                ),
+                Flexible(
+                  child: ScrollViewWithShadow(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        TitleThatContainsTRBL(
+                          hasTopIcon: false,
+                          child: Column(
+                            children: <Widget>[
+                              Text(
+                                "End User License",
+                                style: TextStyle(
+                                  fontSize: 24,
+                                ),
+                              ),
+                              Text(
+                                "Agreement",
+                                style: TextStyle(
+                                  fontSize: 24,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Container(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 16,
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              RichText(
+                                textScaleFactor:
+                                    MediaQuery.of(context).textScaleFactor,
+                                text: TextSpan(
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.black,
+                                  ),
+                                  children: [
+                                    TextSpan(
+                                      text: tab +
+                                          "In order to help you, we offer many suggestions throughout the app.",
+                                    ),
+                                    TextSpan(
+                                      text:
+                                          " But it's your responsibility to stay safe.",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w900,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(
+                                  top: 12.0,
+                                ),
+                                child: RichText(
                                   textScaleFactor:
                                       MediaQuery.of(context).textScaleFactor,
                                   text: TextSpan(
@@ -97,11 +142,11 @@ class _UELAState extends State<UELA> {
                                     children: [
                                       TextSpan(
                                         text: tab +
-                                            "In order to help you, we offer many suggestions throughout the app.",
+                                            "We are not liable for any harm that you may cause yourself or others by following our suggestions.",
                                       ),
                                       TextSpan(
                                         text:
-                                            " But it's your responsibility to stay safe.",
+                                            " Follow our suggestions at your own risk.",
                                         style: TextStyle(
                                           fontWeight: FontWeight.w900,
                                         ),
@@ -109,116 +154,47 @@ class _UELAState extends State<UELA> {
                                     ],
                                   ),
                                 ),
-                                Padding(
-                                  padding: EdgeInsets.only(
-                                    top: 12.0,
-                                  ),
-                                  child: RichText(
-                                    textScaleFactor:
-                                        MediaQuery.of(context).textScaleFactor,
-                                    text: TextSpan(
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        color: Colors.black,
-                                      ),
-                                      children: [
-                                        TextSpan(
-                                          text: tab +
-                                              "We are not liable for any harm that you may cause yourself or others by following our suggestions.",
-                                        ),
-                                        TextSpan(
-                                          text:
-                                              " Follow our suggestions at your own risk.",
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.w900,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.only(
-                                    bottom: 8.0,
-                                  ),
-                                  child: BottomButtonsThatResize(
-                                    secondary: FlatButton(
-                                      onPressed: () {
-                                        SystemChannels.platform.invokeMethod(
-                                          'SystemNavigator.pop',
-                                        );
-                                      },
-                                      child: Text("Close App"),
-                                    ),
-                                    primary: GestureDetector(
-                                      behavior: HitTestBehavior.opaque,
-                                      onTapDown: (tapDownDetails) {
-                                        holding.value = true;
-                                      },
-                                      onTapUp: (tapUpDetails) {
-                                        holding.value = false;
-                                      },
-                                      child: IgnorePointer(
-                                        child: RaisedButton(
-                                          color: Theme.of(context).accentColor,
-                                          onPressed: () {},
-                                          child: Text(
-                                            "Hold To Agree",
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        BottomButtonsThatResizeTRBL(
+                          hasTopIcon: false,
+                          secondary: FlatButton(
+                            onPressed: () {
+                              SystemChannels.platform.invokeMethod(
+                                'SystemNavigator.pop',
+                              );
+                            },
+                            child: Text("Close App"),
+                          ),
+                          primary: GestureDetector(
+                            behavior: HitTestBehavior.opaque,
+                            onTapDown: (tapDownDetails) {
+                              holding.value = true;
+                            },
+                            onTapUp: (tapUpDetails) {
+                              holding.value = false;
+                            },
+                            child: IgnorePointer(
+                              child: RaisedButton(
+                                color: Theme.of(context).accentColor,
+                                onPressed: () {},
+                                child: Text(
+                                  "Hold To Agree",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
                                   ),
                                 ),
-                              ],
+                              ),
                             ),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class EulaTitle extends StatelessWidget {
-  const EulaTitle({
-    Key key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(
-        top: 16.0,
-        bottom: 8,
-      ),
-      child: Container(
-        width: MediaQuery.of(context).size.width,
-        padding: EdgeInsets.symmetric(
-          horizontal: 16,
-        ),
-        child: FittedBox(
-          fit: BoxFit.contain,
-          child: DefaultTextStyle(
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              color: Colors.black,
-            ),
-            child: Column(
-              children: <Widget>[
-                Text("End User License"),
-                Text("Agreement"),
+                ),
               ],
             ),
           ),

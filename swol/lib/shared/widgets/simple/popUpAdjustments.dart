@@ -56,6 +56,7 @@ class _ScrollViewWithShadowState extends State<ScrollViewWithShadow> {
   }
 }
 
+//just the shadow that appears
 class ScrollShadow extends StatefulWidget {
   ScrollShadow({
     @required this.active,
@@ -129,29 +130,89 @@ class _ScrollShadowState extends State<ScrollShadow> {
   }
 }
 
-class BottomButtonsThatResize extends StatelessWidget {
-  const BottomButtonsThatResize({
+//padding in all directions
+class BottomButtonsThatResizeTRBL extends StatelessWidget {
+  const BottomButtonsThatResizeTRBL({
     Key key,
     @required this.secondary,
     @required this.primary,
+    this.hasTopIcon: true,
   }) : super(key: key);
 
   final Widget secondary;
   final Widget primary;
+  final bool hasTopIcon;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      alignment: Alignment.bottomRight,
-      child: FittedBox(
-        fit: BoxFit.contain,
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            secondary,
-            primary,
-          ],
+    return Padding(
+      padding: EdgeInsets.only(
+        top: 16.0,
+        bottom: hasTopIcon ? 0 : 8,
+      ),
+      child: Container(
+        width: MediaQuery.of(context).size.width,
+        alignment: Alignment.bottomRight,
+        padding: EdgeInsets.symmetric(
+          horizontal: 16,
+        ),
+        child: FittedBox(
+          fit: BoxFit.contain,
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              secondary,
+              Theme(
+                data: Theme.of(context).copyWith(
+                  buttonTheme: ButtonThemeData(
+                    textTheme: ButtonTextTheme.primary,
+                    buttonColor: Theme.of(context).accentColor,
+                  ),
+                ), 
+                child: primary,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+//padding all directions
+class TitleThatContainsTRBL extends StatelessWidget {
+  const TitleThatContainsTRBL({
+    Key key,
+    @required this.child,
+    this.hasTopIcon: true,
+  }) : super(key: key);
+
+  final Widget child;
+  final bool hasTopIcon;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.only(
+        top: hasTopIcon ? 0 : 16,
+        bottom: 24,
+      ),
+      child: DefaultTextStyle(
+        style: TextStyle(
+          fontWeight: FontWeight.bold,
+          color: Colors.black,
+        ),
+        child: Container(
+          width: MediaQuery.of(context).size.width,
+          padding: EdgeInsets.symmetric(
+            horizontal: 16,
+          ),
+          child: FittedBox(
+            fit: BoxFit.contain,
+            child: Container(
+              child: child,
+            ),
+          ),
         ),
       ),
     );

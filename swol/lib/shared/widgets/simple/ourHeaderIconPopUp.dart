@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 //plugin
 import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:swol/shared/widgets/simple/popUpAdjustments.dart';
 
 showBasicHeaderIconPopUp(
   BuildContext context, //should be light context
@@ -160,62 +161,19 @@ class AwesomeBody extends StatelessWidget {
       ),
       child: Column(
         children: <Widget>[
-          DefaultTextStyle(
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              color: Colors.black,
+          TitleThatContainsTRBL(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: titles,
             ),
-            child: Container(
-              //color: Colors.green,
-              width: MediaQuery.of(context).size.width,
-              padding: EdgeInsets.symmetric(
-                horizontal: 48,
-              ),
-              child: FittedBox(
-                fit: BoxFit.contain,
-                child: Container(
-                  //color: Colors.red,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: titles,
-                  ),
-                ),
-              ),
-            ),
-          ),
-          Container(
-            height: 24,
           ),
           Column(
             mainAxisSize: MainAxisSize.min,
             children: children,
           ),
-          hasAtleastOneButton ? Padding(
-            padding: EdgeInsets.only(
-              top: 16,
-            ),
-            child: Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: 16.0,
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  Expanded(child: Container()),
-                  clearBtn ?? Container(),
-                  colorBtn == null ? Container() :
-                  Theme(
-                    data: Theme.of(context).copyWith(
-                      buttonTheme: ButtonThemeData(
-                        textTheme: ButtonTextTheme.primary,
-                        buttonColor: Theme.of(context).accentColor,
-                      ),
-                    ), 
-                    child: colorBtn,
-                  ),
-                ]
-              ),
-            ),
+          hasAtleastOneButton ? BottomButtonsThatResizeTRBL(
+            secondary: clearBtn ?? Container(),
+            primary: colorBtn ?? Container(),
           ) : Container()
         ],
       ),
