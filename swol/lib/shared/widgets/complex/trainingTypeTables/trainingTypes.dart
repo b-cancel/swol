@@ -94,7 +94,7 @@ class _TrainingTypeSectionsState extends State<TrainingTypeSections> {
     cardHeight = 256.0; //this is just the height that feels the nicest
 
     //create all default card
-    enduranceCard = CardTable(
+    enduranceCard = CardTable( 
       cardBackground: widget.cardBackground,
       height: cardHeight,
       items: [
