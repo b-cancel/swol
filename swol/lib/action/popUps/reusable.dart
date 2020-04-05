@@ -24,6 +24,9 @@ class SetDescription extends StatelessWidget {
     String repsS = (reps != "1") ? "s" : "";
 
     return RichText(
+      textScaleFactor: MediaQuery.of(
+        context,
+      ).textScaleFactor,
       text: TextSpan(
         style: TextStyle(
           color: Colors.black,
@@ -41,23 +44,29 @@ class SetDescription extends StatelessWidget {
           ),
           //-------------------------Weight-------------------------
           TextSpan(
-            text: invalidWeight ? 
-            ((weight.length == 0 || weight == "0") ? "Nothing" : "An Invalid Amount of Weight") 
-            : weight,
+            text: invalidWeight
+                ? ((weight.length == 0 || weight == "0")
+                    ? "Nothing"
+                    : "An Invalid Amount of Weight")
+                : weight,
             style: TextStyle(
               fontWeight: FontWeight.bold,
             ),
           ),
           TextSpan(
-              text: invalidWeight ? "" : " (lb" + weightS + "/kg" + weightS + ")"),
+              text: invalidWeight
+                  ? ""
+                  : " (lb" + weightS + "/kg" + weightS + ")"),
           //-------------------------Reps-------------------------
           TextSpan(
             text: " for ",
           ),
           TextSpan(
-            text: invalidReps ? 
-            ((reps.length == 0 || reps == "0") ? "Zero" : "An Invalid Amount of Reps") 
-            : reps,
+            text: invalidReps
+                ? ((reps.length == 0 || reps == "0")
+                    ? "Zero"
+                    : "An Invalid Amount of Reps")
+                : reps,
             style: TextStyle(
               fontWeight: FontWeight.bold,
             ),
@@ -89,6 +98,9 @@ class SetProblem extends StatelessWidget {
     return Visibility(
       visible: setValid == false,
       child: RichText(
+        textScaleFactor: MediaQuery.of(
+          context,
+        ).textScaleFactor,
         text: TextSpan(
           style: TextStyle(
             color: Colors.black,
@@ -142,6 +154,9 @@ class GoBackAndFix extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return RichText(
+      textScaleFactor: MediaQuery.of(
+        context,
+      ).textScaleFactor,
       text: TextSpan(
         style: TextStyle(
           color: Colors.black,
@@ -188,6 +203,9 @@ class RevertToPrevious extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return RichText(
+      textScaleFactor: MediaQuery.of(
+        context,
+      ).textScaleFactor,
       text: TextSpan(
         style: TextStyle(
           color: Colors.black,

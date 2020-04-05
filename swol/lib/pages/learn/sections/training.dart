@@ -22,11 +22,10 @@ class TrainingBody extends StatelessWidget {
               text: "There are many reasons you may want to workout\nBut ",
             ),
             TextSpan(
-              text: "you should have One Primary Goal ",
-              style: TextStyle(
-                fontWeight: FontWeight.w900,
-              )
-            ),
+                text: "you should have One Primary Goal ",
+                style: TextStyle(
+                  fontWeight: FontWeight.w900,
+                )),
           ],
         ),
         Column(
@@ -39,6 +38,9 @@ class TrainingBody extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   RichText(
+                    textScaleFactor: MediaQuery.of(
+                      context,
+                    ).textScaleFactor,
                     text: TextSpan(
                       style: TextStyle(
                         fontSize: 16,
@@ -50,8 +52,8 @@ class TrainingBody extends StatelessWidget {
                         TextSpan(
                           text: "\tGet Strong\t",
                           style: TextStyle(
-                              fontWeight: FontWeight.w900,
-                            ),
+                            fontWeight: FontWeight.w900,
+                          ),
                         ),
                         TextSpan(
                           text: ", ",
@@ -59,8 +61,8 @@ class TrainingBody extends StatelessWidget {
                         TextSpan(
                           text: "\tGet Big\t",
                           style: TextStyle(
-                              fontWeight: FontWeight.w900,
-                            ),
+                            fontWeight: FontWeight.w900,
+                          ),
                         ),
                         TextSpan(
                           text: ", or",
@@ -68,13 +70,16 @@ class TrainingBody extends StatelessWidget {
                         TextSpan(
                           text: "\tGet Agile\t",
                           style: TextStyle(
-                              fontWeight: FontWeight.w900,
-                            ),
+                            fontWeight: FontWeight.w900,
+                          ),
                         ),
                       ],
                     ),
                   ),
                   RichText(
+                    textScaleFactor: MediaQuery.of(
+                      context,
+                    ).textScaleFactor,
                     text: TextSpan(
                       style: TextStyle(
                         fontSize: 16,
@@ -89,6 +94,9 @@ class TrainingBody extends StatelessWidget {
                   ListItem(
                     circleColor: Theme.of(context).accentColor,
                     content: RichText(
+                      textScaleFactor: MediaQuery.of(
+                        context,
+                      ).textScaleFactor,
                       text: TextSpan(
                         style: TextStyle(
                           fontSize: 16,
@@ -110,6 +118,9 @@ class TrainingBody extends StatelessWidget {
                   ListItem(
                     circleColor: Theme.of(context).accentColor,
                     content: RichText(
+                      textScaleFactor: MediaQuery.of(
+                        context,
+                      ).textScaleFactor,
                       text: TextSpan(
                         style: TextStyle(
                           fontSize: 16,
@@ -131,6 +142,9 @@ class TrainingBody extends StatelessWidget {
                   ListItem(
                     circleColor: Theme.of(context).accentColor,
                     content: RichText(
+                      textScaleFactor: MediaQuery.of(
+                        context,
+                      ).textScaleFactor,
                       text: TextSpan(
                         style: TextStyle(
                           fontSize: 16,
@@ -151,16 +165,21 @@ class TrainingBody extends StatelessWidget {
                     bottomSpacing: 0,
                   ),
                   RichText(
+                    textScaleFactor: MediaQuery.of(
+                      context,
+                    ).textScaleFactor,
                     text: TextSpan(
                       style: TextStyle(
                         fontSize: 16,
                       ),
                       children: [
                         TextSpan(
-                          text: "\nThe chart below has a column for each type of training. ",
+                          text:
+                              "\nThe chart below has a column for each type of training. ",
                         ),
                         TextSpan(
-                          text: "Sticking to a training style will give you the fastest results.\n",
+                          text:
+                              "Sticking to a training style will give you the fastest results.\n",
                           style: TextStyle(
                             fontWeight: FontWeight.w900,
                           ),

@@ -22,7 +22,7 @@ showRestrictedPopUp(
   bool automaticallyOpened,
 ) async {
   //function
-  Function onDeny = (){
+  Function onDeny = () {
     //make sure the user knows where they can re-enable
     //if they didnt already get here from pressing the button
     maybeShowButtonLocation(
@@ -58,6 +58,9 @@ showRestrictedPopUp(
           mainAxisSize: MainAxisSize.min,
           children: [
             RichText(
+              textScaleFactor: MediaQuery.of(
+                ExercisePage.globalKey.currentContext,
+              ).textScaleFactor,
               text: TextSpan(
                 style: TextStyle(
                   color: Colors.black,
@@ -98,7 +101,7 @@ showRestrictedPopUp(
     DialogType.ERROR,
     dismissOnTouchOutside: automaticallyOpened == false,
     clearBtn: WillPopScope(
-      onWillPop: ()async{
+      onWillPop: () async {
         //negative action
         onDeny();
 

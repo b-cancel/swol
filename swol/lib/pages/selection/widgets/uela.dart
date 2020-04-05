@@ -105,8 +105,9 @@ class _UELAState extends State<UELA> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               RichText(
-                                textScaleFactor:
-                                    MediaQuery.of(context).textScaleFactor,
+                                textScaleFactor: MediaQuery.of(
+                                  context,
+                                ).textScaleFactor,
                                 text: TextSpan(
                                   style: TextStyle(
                                     fontSize: 16,
@@ -132,8 +133,9 @@ class _UELAState extends State<UELA> {
                                   top: 12.0,
                                 ),
                                 child: RichText(
-                                  textScaleFactor:
-                                      MediaQuery.of(context).textScaleFactor,
+                                  textScaleFactor: MediaQuery.of(
+                                    context,
+                                  ).textScaleFactor,
                                   text: TextSpan(
                                     style: TextStyle(
                                       fontSize: 16,

@@ -21,11 +21,10 @@ class ResearchBody extends StatelessWidget {
               text: "Here are some topics that you can look into, to help you ",
             ),
             TextSpan(
-              text: "get even more out of your workouts",
-              style: TextStyle(
-                fontWeight: FontWeight.w900,
-              )
-            ),
+                text: "get even more out of your workouts",
+                style: TextStyle(
+                  fontWeight: FontWeight.w900,
+                )),
           ],
         ),
         Padding(
@@ -35,66 +34,75 @@ class ResearchBody extends StatelessWidget {
           child: Column(
             children: <Widget>[
               ResearchCard(
-                title: "How do you focus at each stage of movement to get the most out of each exercise?", 
+                title:
+                    "How do you focus at each stage of movement to get the most out of each exercise?",
                 items: [
                   RichText(
+                    textScaleFactor: MediaQuery.of(
+                      context,
+                    ).textScaleFactor,
                     text: TextSpan(
-                      style: TextStyle(
-                        fontSize: 16,
-                      ),
-                      children: [
-                        TextSpan(
-                          text: "Concentric Stage (positive reps): ",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
+                        style: TextStyle(
+                          fontSize: 16,
+                        ),
+                        children: [
+                          TextSpan(
+                            text: "Concentric Stage (positive reps): ",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
-                        ),
-                        TextSpan(
-                          text: "where your muscle contracts and shortens",
-                        ),
-                      ]
-                    ),
+                          TextSpan(
+                            text: "where your muscle contracts and shortens",
+                          ),
+                        ]),
                   ),
                   RichText(
+                    textScaleFactor: MediaQuery.of(
+                      context,
+                    ).textScaleFactor,
                     text: TextSpan(
-                      style: TextStyle(
-                        fontSize: 16,
-                      ),
-                      children: [
-                        TextSpan(
-                          text: "Isometric Stage (holds): ",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
+                        style: TextStyle(
+                          fontSize: 16,
+                        ),
+                        children: [
+                          TextSpan(
+                            text: "Isometric Stage (holds): ",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
-                        ),
-                        TextSpan(
-                          text: " where your muscle contracts, and neither shortens or lengthens",
-                        ),
-                      ]
-                    ),
+                          TextSpan(
+                            text:
+                                " where your muscle contracts, and neither shortens or lengthens",
+                          ),
+                        ]),
                   ),
                   RichText(
+                    textScaleFactor: MediaQuery.of(
+                      context,
+                    ).textScaleFactor,
                     text: TextSpan(
-                      style: TextStyle(
-                        fontSize: 16,
-                      ),
-                      children: [
-                        TextSpan(
-                          text: "Eccentric Stage (negative reps): ",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
+                        style: TextStyle(
+                          fontSize: 16,
+                        ),
+                        children: [
+                          TextSpan(
+                            text: "Eccentric Stage (negative reps): ",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
-                        ),
-                        TextSpan(
-                          text: "where your muscle contracts and lengthens",
-                        ),
-                      ]
-                    ),
+                          TextSpan(
+                            text: "where your muscle contracts and lengthens",
+                          ),
+                        ]),
                   ),
                 ],
               ),
               ResearchCard(
-                title: "How does each energy system work? How can you use your knowledge of each to improve your workouts?", 
+                title:
+                    "How does each energy system work? How can you use your knowledge of each to improve your workouts?",
                 items: [
                   Text(
                     "Anaerobic System",
@@ -140,7 +148,7 @@ class ResearchCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<Widget> listItems = new List<Widget>();
-    for(int i = 0; i < items.length; i++){
+    for (int i = 0; i < items.length; i++) {
       listItems.add(
         ListItem(
           circleColor: Theme.of(context).accentColor,

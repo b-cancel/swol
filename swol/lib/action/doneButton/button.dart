@@ -95,13 +95,18 @@ class DoneButton extends StatelessWidget {
                         ),
                       ),
                       ifFalse: RichText(
+                        textScaleFactor: MediaQuery.of(
+                          context,
+                        ).textScaleFactor,
                         text: TextSpan(
                           style: TextStyle(
                             color: fontColor,
                           ),
                           children: [
                             TextSpan(
-                              text: setsPassed.toString() + " Set" + (setsPassed == 1 ? "" : "s"),
+                              text: setsPassed.toString() +
+                                  " Set" +
+                                  (setsPassed == 1 ? "" : "s"),
                               style: TextStyle(
                                 fontWeight: FontWeight.w900,
                               ),

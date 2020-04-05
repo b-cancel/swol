@@ -131,6 +131,9 @@ class SuggestToLearnPage extends StatelessWidget {
                         },
                         padding: 24.0 + 12,
                         child: RichText(
+                          textScaleFactor: MediaQuery.of(
+                            context,
+                          ).textScaleFactor,
                           text: TextSpan(
                             style: TextStyle(
                               color: Colors.black,
@@ -184,6 +187,9 @@ class SuggestToLearnPage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               RichText(
+                textScaleFactor: MediaQuery.of(
+                  context,
+                ).textScaleFactor,
                 text: TextSpan(
                     style: TextStyle(
                       color: Colors.black,

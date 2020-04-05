@@ -35,18 +35,19 @@ class ExplainFunctionality extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               RichText(
+                textScaleFactor: MediaQuery.of(
+                  context,
+                ).textScaleFactor,
                 text: TextSpan(
                   style: TextStyle(
                     color: Colors.black,
                   ),
                   children: [
                     TextSpan(
-                      text: "Each type of training gives you the best results if you work within its ",
+                      text:
+                          "Each type of training gives you the best results if you work within its ",
                     ),
-                    TextSpan(
-                      style: bold,
-                      text: "Break Time Range\n\n"
-                    ),
+                    TextSpan(style: bold, text: "Break Time Range\n\n"),
                     //-------------------------
                     TextSpan(
                       text: "Since you are current doing ",
@@ -55,45 +56,37 @@ class ExplainFunctionality extends StatelessWidget {
                       style: bold,
                       text: trainingName + " Training\n",
                     ),
-                    TextSpan(
-                      text: "You should wait between "
-                    ),
+                    TextSpan(text: "You should wait between "),
                     TextSpan(
                       style: bold,
                       text: trainingTypeToMin(trainingName),
                     ),
-                    TextSpan(
-                      text: " and "
-                    ),
+                    TextSpan(text: " and "),
                     TextSpan(
                       style: bold,
                       text: trainingTypeToMax(trainingName),
                     ),
-                    TextSpan(
-                      text: " before moving on to your next set\n"
-                    )
+                    TextSpan(text: " before moving on to your next set\n")
                     //-------------------------
                   ],
                 ),
               ),
               RichText(
+                textScaleFactor: MediaQuery.of(
+                  context,
+                ).textScaleFactor,
                 text: TextSpan(
                   style: TextStyle(
                     color: Colors.black,
                   ),
-                  children:[
-                    TextSpan(
-                      text: "The "
-                    ),
-                    TextSpan(
-                      style: bold,
-                      text: "Break Time Ranges"
-                    ),
+                  children: [
+                    TextSpan(text: "The "),
+                    TextSpan(style: bold, text: "Break Time Ranges"),
                     TextSpan(
                       text: " for all training types are below for reference\n",
                     ),
-                  ]
-                ) 
+                  ],
+                ),
               )
             ],
           ),

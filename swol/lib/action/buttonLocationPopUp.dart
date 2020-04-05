@@ -28,7 +28,7 @@ maybeShowButtonLocation(
         return Theme(
           data: MyTheme.light,
           child: WillPopScope(
-            onWillPop: () async{
+            onWillPop: () async {
               //if automaticalyOpened the notification pop up
               //or a sequence of other pop ups had to open before
               //so the chances of this being closed on accident are low
@@ -138,6 +138,9 @@ maybeShowButtonLocation(
                                       horizontal: 16.0,
                                     ),
                                     child: RichText(
+                                      textScaleFactor: MediaQuery.of(
+                                        context,
+                                      ).textScaleFactor,
                                       text: TextSpan(
                                         style: TextStyle(
                                           color: Colors.black,
@@ -220,7 +223,7 @@ maybeShowButtonLocation(
                       //but now handle all the different ways
                       //we MIGHT have to go about that
                       onAllow(
-                        status, 
+                        status,
                         onComplete,
                         //this pop up already showed them where the button is
                         //no need to show them again

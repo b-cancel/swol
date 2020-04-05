@@ -79,6 +79,9 @@ class PredictionFormulasPopUpBody extends StatelessWidget {
           ),
           alignment: Alignment.centerLeft,
           child: RichText(
+            textScaleFactor: MediaQuery.of(
+              context,
+            ).textScaleFactor,
             text: TextSpan(
               style: TextStyle(
                 color: Colors.black,

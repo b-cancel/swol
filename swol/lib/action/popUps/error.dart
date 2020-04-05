@@ -52,7 +52,8 @@ maybeError(
       toNextPageAfterSetUpdateComplete();
     } else {
       //change the buttons shows a the wording a tad\
-      bool timerNotStarted = (exercise.tempStartTime.value) == AnExercise.nullDateTime;
+      bool timerNotStarted =
+          (exercise.tempStartTime.value) == AnExercise.nullDateTime;
       String continueString =
           (timerNotStarted) ? "Begin Your Set Break" : "Return To Your Break";
 
@@ -94,6 +95,9 @@ maybeError(
                   isError: true,
                 ),
                 RichText(
+                  textScaleFactor: MediaQuery.of(
+                    context,
+                  ).textScaleFactor,
                   text: TextSpan(
                     style: TextStyle(
                       color: Colors.black,

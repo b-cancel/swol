@@ -20,6 +20,9 @@ showWeightToolTip(
         BotToast.cleanAll();
       },
       child: RichText(
+        textScaleFactor: MediaQuery.of(
+          context,
+        ).textScaleFactor,
         text: TextSpan(
           children: [
             TextSpan(text: "the weight you lifted\n"),
@@ -65,6 +68,9 @@ showRepsToolTip(
         BotToast.cleanAll();
       },
       child: RichText(
+        textScaleFactor: MediaQuery.of(
+          context,
+        ).textScaleFactor,
         text: TextSpan(children: [
           TextSpan(text: "how many times you lifted the weight\n"),
           TextSpan(

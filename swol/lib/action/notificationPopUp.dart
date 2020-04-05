@@ -22,11 +22,11 @@ import 'package:swol/shared/methods/theme.dart';
 //we include restricted since it only matters if the restriction exists
 //IF the user decides to enable the permssion
 requestNotificationPermission(
-  PermissionStatus status,
-  //on complete HAS TO RUN
-  //regardless of what pop up path the user takes 
-  Function onComplete,
-  {bool automaticallyOpened: true}) async{
+    PermissionStatus status,
+    //on complete HAS TO RUN
+    //regardless of what pop up path the user takes
+    Function onComplete,
+    {bool automaticallyOpened: true}) async {
   //by now regardless of the user approving or not the permission has been requested
   //NOTE: even in the case where the permission is restricted
   //they may not be able to lift the restriction
@@ -38,8 +38,8 @@ requestNotificationPermission(
     //make sure the user knows where the button is
     //will always call on complete
     maybeShowButtonLocation(
-      status, 
-      onComplete, 
+      status,
+      onComplete,
       automaticallyOpened,
     );
   };
@@ -57,18 +57,18 @@ requestNotificationPermission(
       return Theme(
         data: MyTheme.light,
         child: WillPopScope(
-          onWillPop: () async{
+          onWillPop: () async {
             //if automatically open
             //  pressing back button MAY BE accidental
             //  but the button pop up will give them a chance
             //  to undo their accidental action
             //  *BUT* they won't know the reason the setting is being requested
             //so we simply disable the back button and force them to take an action
-            if(automaticallyOpened){
+            if (automaticallyOpened) {
               //dont allow pop up to go away
               return false;
-            }
-            else{ //we assume an accidental button press
+            } else {
+              //we assume an accidental button press
               //assume the clear option
               onDeny();
 
@@ -102,7 +102,7 @@ requestNotificationPermission(
                           fit: BoxFit.contain,
                           child: PlayGifOnce(
                             assetName: "assets/notification/blueShadow.gif",
-                            frameCount: 125, 
+                            frameCount: 125,
                             runTimeMS: 2500,
                             colorWhite: false,
                           ),
@@ -146,6 +146,9 @@ requestNotificationPermission(
                           top: 24,
                         ),
                         child: RichText(
+                          textScaleFactor: MediaQuery.of(
+                            context,
+                          ).textScaleFactor,
                           text: TextSpan(
                             style: TextStyle(
                               color: Colors.black,
@@ -160,20 +163,17 @@ requestNotificationPermission(
                               TextSpan(
                                 text: " before moving onto your next set.\n\n",
                               ),
-                              TextSpan(
-                                text: "But "
-                              ),
+                              TextSpan(text: "But "),
                               TextSpan(
                                 text: "it's not fun to have to wait ",
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
+                              TextSpan(text: "for the clock to tick down.\n\n"),
                               TextSpan(
-                                text: "for the clock to tick down.\n\n"
-                              ),
-                              TextSpan(
-                                text: "If you grant us access to send notifications, ",
+                                text:
+                                    "If you grant us access to send notifications, ",
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -199,7 +199,7 @@ requestNotificationPermission(
             actions: <Widget>[
               FlatButton(
                 child: new Text("Deny"),
-                onPressed: (){
+                onPressed: () {
                   //remove this pop up
                   //only one pop up at a time
                   Navigator.of(context).pop();
@@ -215,16 +215,16 @@ requestNotificationPermission(
                 child: RaisedButton(
                   child: Text("Allow"),
                   color: MyTheme.dark.accentColor,
-                  onPressed: () async{
+                  onPressed: () async {
                     //pop ourselves
                     Navigator.of(context).pop();
 
-                    //the user wants to allow 
-                    //but now handle all the different ways 
+                    //the user wants to allow
+                    //but now handle all the different ways
                     //we MIGHT have to go about that
                     onAllow(
-                      status, 
-                      onComplete, 
+                      status,
+                      onComplete,
                       automaticallyOpened,
                     );
                   },

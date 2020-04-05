@@ -19,7 +19,7 @@ class ConfirmActionMessage extends StatelessWidget {
   }) : super(key: key);
 
   final Color buttonColor;
-  final Widget image; 
+  final Widget image;
   final double iconSpace;
   final IconData icon;
   final String actionString;
@@ -32,9 +32,7 @@ class ConfirmActionMessage extends StatelessWidget {
       data: MyTheme.light,
       child: AlertDialog(
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(
-            Radius.circular(12.0)
-          ),
+          borderRadius: BorderRadius.all(Radius.circular(12.0)),
         ),
         contentPadding: EdgeInsets.all(0),
         content: Column(
@@ -78,7 +76,7 @@ class ConfirmActionMessage extends StatelessWidget {
         ),
         actions: <Widget>[
           FlatButton(
-            onPressed: (){
+            onPressed: () {
               Navigator.of(context).pop();
             },
             child: Text(
@@ -90,7 +88,7 @@ class ConfirmActionMessage extends StatelessWidget {
           ),
           RaisedButton(
             color: buttonColor,
-            onPressed: (){
+            onPressed: () {
               //get rid of keyboard that MAY be shown
               FocusScope.of(context).unfocus();
 
@@ -132,53 +130,44 @@ class HideMessage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return RichText(
-     text: TextSpan(
-       style: TextStyle(
-         color: Colors.black,
-       ),
-       children: [
-         TextSpan(
-           text: theName,
-           style: TextStyle(
-             fontWeight: FontWeight.bold,
-           )
-         ),
-         TextSpan(
-           text: " will be ",
-         ),
-         TextSpan(
-           text: "Hidden",
-           style: TextStyle(
-             fontWeight: FontWeight.bold
-           ),
-         ),
-         TextSpan(
-           text: " at the bottom of your list of exercises\n\n",
-         ),
-         TextSpan(
-           text: "If you ",
-         ),
-         TextSpan(
-           text: "want to delete your exercise,\n",
-           style: TextStyle(
-             fontWeight: FontWeight.bold
-           ),
-         ),
-         TextSpan(
-           text: "then you should "
-         ),
-         TextSpan(
-           text: "Delete",
-           style: TextStyle(
-             fontWeight: FontWeight.bold
-           ),
-         ),
-         TextSpan(
-           text: " it instead"
-         ),
-       ]
-     ),
-      );
+      textScaleFactor: MediaQuery.of(
+        context,
+      ).textScaleFactor,
+      text: TextSpan(
+          style: TextStyle(
+            color: Colors.black,
+          ),
+          children: [
+            TextSpan(
+                text: theName,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                )),
+            TextSpan(
+              text: " will be ",
+            ),
+            TextSpan(
+              text: "Hidden",
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            TextSpan(
+              text: " at the bottom of your list of exercises\n\n",
+            ),
+            TextSpan(
+              text: "If you ",
+            ),
+            TextSpan(
+              text: "want to delete your exercise,\n",
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            TextSpan(text: "then you should "),
+            TextSpan(
+              text: "Delete",
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            TextSpan(text: " it instead"),
+          ]),
+    );
   }
 }
 
@@ -193,55 +182,46 @@ class DeleteMessage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return RichText(
+      textScaleFactor: MediaQuery.of(
+        context,
+      ).textScaleFactor,
       text: TextSpan(
-        style: TextStyle(
-          color: Colors.black,
-        ),
-        children: [
-          TextSpan(
-            text: theName,
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-            )
+          style: TextStyle(
+            color: Colors.black,
           ),
-          TextSpan(
-            text: " will be ",
-          ),
-          TextSpan(
-            text: "Permanently Deleted",
-            style: TextStyle(
-              fontWeight: FontWeight.bold
+          children: [
+            TextSpan(
+                text: theName,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                )),
+            TextSpan(
+              text: " will be ",
             ),
-          ),
-          TextSpan(
-            text: " from your list of exercises\n\n",
-          ),
-          TextSpan(
-            text: "If you ",
-          ),
-          TextSpan(
-            text: "don't want to lose your data,\n",
-            style: TextStyle(
-              fontWeight: FontWeight.bold
+            TextSpan(
+              text: "Permanently Deleted",
+              style: TextStyle(fontWeight: FontWeight.bold),
             ),
-          ),
-          TextSpan(
-            text: "but you do want to stop it from cycling back up the list, "
-          ),
-          TextSpan(
-            text: "then you should "
-          ),
-          TextSpan(
-            text: "Hide",
-            style: TextStyle(
-              fontWeight: FontWeight.bold
+            TextSpan(
+              text: " from your list of exercises\n\n",
             ),
-          ),
-          TextSpan(
-            text: " it instead"
-          ),
-        ]
-      ),
+            TextSpan(
+              text: "If you ",
+            ),
+            TextSpan(
+              text: "don't want to lose your data,\n",
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            TextSpan(
+                text:
+                    "but you do want to stop it from cycling back up the list, "),
+            TextSpan(text: "then you should "),
+            TextSpan(
+              text: "Hide",
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            TextSpan(text: " it instead"),
+          ]),
     );
   }
 }

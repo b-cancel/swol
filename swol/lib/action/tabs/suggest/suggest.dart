@@ -39,34 +39,32 @@ class _SuggestionState extends State<Suggestion> {
 
   //update the goal set based on init
   //and changed valus
-  updateGoalWeight(){
+  updateGoalWeight() {
     //grab correct goal weight
     ExercisePage.setGoalWeight.value = widget.functionIDToWeightFromRT.value[
-      functionID.value //NOTE: before we used the exercise value here
-    ];
+        functionID.value //NOTE: before we used the exercise value here
+        ];
   }
 
-  updatePredictionID(){
+  updatePredictionID() {
     widget.exercise.predictionID = functionID.value;
     //retreive new weight
     updateGoalWeight();
   }
 
-  updateRepTarget(){
+  updateRepTarget() {
     //update it in the file
     widget.exercise.repTarget = repTarget.value;
     ExercisePage.setGoalReps.value = repTarget.value.toDouble();
 
     //recalculate all weight with new rep target
     List<double> functionIDToWeight = new List<double>(8);
-    for(int functionID = 0; functionID < 8; functionID++){
+    for (int functionID = 0; functionID < 8; functionID++) {
       double weight = ToWeight.fromRepAnd1Rm(
         //rep target used
-        repTarget.value, 
+        repTarget.value,
         //one rep max that uses the same function as below
-        ExercisePage.oneRepMaxes[
-          functionID
-        ], 
+        ExercisePage.oneRepMaxes[functionID],
         //function index to use
         functionID,
       );
@@ -74,11 +72,9 @@ class _SuggestionState extends State<Suggestion> {
       functionIDToWeight[functionID] = weight;
     }
     widget.functionIDToWeightFromRT.value = functionIDToWeight;
-    
+
     //based on new results update order
-    updateOrderOfIDs(
-      functionIDToWeight
-    );
+    updateOrderOfIDs(functionIDToWeight);
 
     //update the goal by chosing from everything we
     updateGoalWeight();
@@ -88,7 +84,7 @@ class _SuggestionState extends State<Suggestion> {
   void initState() {
     //super init
     super.initState();
-    
+
     //set inits
     functionID.value = widget.exercise.predictionID;
     repTarget.value = widget.exercise.repTarget;
@@ -120,12 +116,15 @@ class _SuggestionState extends State<Suggestion> {
 
     //calc sets passed for bottom buttons
     int setsPassed = widget.exercise.tempSetCount ?? 0;
-    bool timerNotStarted = widget.exercise.tempStartTime.value == AnExercise.nullDateTime;
-    if(timerNotStarted) setsPassed += 1;
+    bool timerNotStarted =
+        widget.exercise.tempStartTime.value == AnExercise.nullDateTime;
+    if (timerNotStarted) setsPassed += 1;
 
     //color for bottom buttons
     bool lastSetOrBefore = setsPassed <= widget.exercise.setTarget;
-    Color buttonsColor =  lastSetOrBefore ? Theme.of(context).accentColor : Theme.of(context).cardColor;
+    Color buttonsColor = lastSetOrBefore
+        ? Theme.of(context).accentColor
+        : Theme.of(context).cardColor;
 
     //build
     return ClipRRect(
@@ -189,6 +188,9 @@ class _SuggestionState extends State<Suggestion> {
               ExercisePage.pageNumber.value = 1;
             },
             forwardActionWidget: RichText(
+              textScaleFactor: MediaQuery.of(
+                context,
+              ).textScaleFactor,
               text: TextSpan(
                 children: [
                   TextSpan(

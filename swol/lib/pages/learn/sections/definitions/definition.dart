@@ -1,5 +1,3 @@
-
-
 //Format for a word and definition
 import 'package:flutter/material.dart';
 
@@ -56,8 +54,8 @@ class _DefinitionOfWord extends StatelessWidget {
       decoration: BoxDecoration(
         color: Theme.of(context).scaffoldBackgroundColor,
         borderRadius: new BorderRadius.only(
-          topLeft:  const  Radius.circular(12.0),
-          bottomLeft: const  Radius.circular(12.0),
+          topLeft: const Radius.circular(12.0),
+          bottomLeft: const Radius.circular(12.0),
         ),
       ),
       child: Column(
@@ -68,6 +66,9 @@ class _DefinitionOfWord extends StatelessWidget {
               top: 2,
             ),
             child: RichText(
+              textScaleFactor: MediaQuery.of(
+                context,
+              ).textScaleFactor,
               text: TextSpan(
                 style: TextStyle(
                   fontSize: 16,
@@ -76,38 +77,42 @@ class _DefinitionOfWord extends StatelessWidget {
               ),
             ),
           ),
-          (extra == null) ? Container(
-            height: 8,
-          )
-          : Column(
-            children: <Widget>[
-              Padding(
-                padding: EdgeInsets.only(
-                  top: 8,
-                  bottom: 12,
-                ),
-                child: Container(
-                  color: Colors.white.withOpacity(0.5),
-                  height: 1,
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.only(
-                  top: 4,
-                  bottom: 8,
-                ),
-                child: RichText(
-                  text: TextSpan(
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontStyle: FontStyle.italic,
+          (extra == null)
+              ? Container(
+                  height: 8,
+                )
+              : Column(
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.only(
+                        top: 8,
+                        bottom: 12,
+                      ),
+                      child: Container(
+                        color: Colors.white.withOpacity(0.5),
+                        height: 1,
+                      ),
                     ),
-                    children: extra,
-                  ),
-                ),
-              ),
-            ],
-          )
+                    Padding(
+                      padding: EdgeInsets.only(
+                        top: 4,
+                        bottom: 8,
+                      ),
+                      child: RichText(
+                        textScaleFactor: MediaQuery.of(
+                          context,
+                        ).textScaleFactor,
+                        text: TextSpan(
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontStyle: FontStyle.italic,
+                          ),
+                          children: extra,
+                        ),
+                      ),
+                    ),
+                  ],
+                )
         ],
       ),
     );
@@ -129,8 +134,8 @@ class _WordToDefine extends StatelessWidget {
       decoration: BoxDecoration(
         color: Theme.of(context).accentColor,
         borderRadius: new BorderRadius.only(
-          bottomRight:  const  Radius.circular(12.0),
-          topRight: const  Radius.circular(12.0),
+          bottomRight: const Radius.circular(12.0),
+          topRight: const Radius.circular(12.0),
         ),
       ),
       child: Stack(

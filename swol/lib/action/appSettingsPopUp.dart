@@ -20,7 +20,7 @@ requestThatYouGoToAppSettings(
   bool automaticallyOpened,
 ) async {
   //function
-  Function onDeny = (){
+  Function onDeny = () {
     //make sure the user knows where they can re-enable
     //if they didnt already get here from pressing the button
     maybeShowButtonLocation(
@@ -62,6 +62,9 @@ requestThatYouGoToAppSettings(
           mainAxisSize: MainAxisSize.min,
           children: [
             RichText(
+              textScaleFactor: MediaQuery.of(
+                ExercisePage.globalKey.currentContext,
+              ).textScaleFactor,
               text: TextSpan(
                 style: TextStyle(
                   color: Colors.black,
@@ -90,6 +93,9 @@ requestThatYouGoToAppSettings(
               circleTextColor: Colors.white,
               circleColor: Colors.blue,
               content: RichText(
+                textScaleFactor: MediaQuery.of(
+                  ExercisePage.globalKey.currentContext,
+                ).textScaleFactor,
                 text: TextSpan(
                   style: TextStyle(
                     color: Colors.black,
@@ -116,6 +122,9 @@ requestThatYouGoToAppSettings(
               circleTextColor: Colors.white,
               circleColor: Colors.blue,
               content: RichText(
+                textScaleFactor: MediaQuery.of(
+                  ExercisePage.globalKey.currentContext,
+                ).textScaleFactor,
                 text: TextSpan(
                   style: TextStyle(
                     color: Colors.black,
@@ -139,6 +148,9 @@ requestThatYouGoToAppSettings(
               circleTextColor: Colors.white,
               circleColor: Colors.blue,
               content: RichText(
+                textScaleFactor: MediaQuery.of(
+                  ExercisePage.globalKey.currentContext,
+                ).textScaleFactor,
                 text: TextSpan(
                   style: TextStyle(
                     color: Colors.black,
@@ -162,6 +174,9 @@ requestThatYouGoToAppSettings(
               circleTextColor: Colors.white,
               circleColor: Colors.blue,
               content: RichText(
+                textScaleFactor: MediaQuery.of(
+                  ExercisePage.globalKey.currentContext,
+                ).textScaleFactor,
                 text: TextSpan(
                   style: TextStyle(
                     color: Colors.black,
@@ -185,6 +200,9 @@ requestThatYouGoToAppSettings(
               circleTextColor: Colors.white,
               circleColor: Colors.blue,
               content: RichText(
+                textScaleFactor: MediaQuery.of(
+                  ExercisePage.globalKey.currentContext,
+                ).textScaleFactor,
                 text: TextSpan(
                   style: TextStyle(
                     color: Colors.black,
@@ -217,7 +235,7 @@ requestThatYouGoToAppSettings(
     headerBackground: MyTheme.dark.cardColor,
     dismissOnTouchOutside: automaticallyOpened == false,
     clearBtn: WillPopScope(
-      onWillPop: ()async{
+      onWillPop: () async {
         //negative action
         onDeny();
 
@@ -269,9 +287,7 @@ class PopOnResumeIfPermissionGranted extends StatefulWidget {
 }
 
 class _PopOnResumeIfPermissionGrantedState
-    extends State<PopOnResumeIfPermissionGranted>
-    with WidgetsBindingObserver {
-      
+    extends State<PopOnResumeIfPermissionGranted> with WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
@@ -284,7 +300,6 @@ class _PopOnResumeIfPermissionGrantedState
     super.dispose();
   }
 
-  
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {

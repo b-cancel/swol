@@ -52,6 +52,9 @@ maybeSkipTimer(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             RichText(
+              textScaleFactor: MediaQuery.of(
+                context,
+              ).textScaleFactor,
               text: TextSpan(
                 style: TextStyle(
                   color: Colors.black,
@@ -101,6 +104,9 @@ maybeSkipTimer(
               ),
             ),
             RichText(
+              textScaleFactor: MediaQuery.of(
+                context,
+              ).textScaleFactor,
               text: TextSpan(
                 style: TextStyle(
                   color: Colors.black,
@@ -203,6 +209,9 @@ class UpdatingBreakSet extends StatelessWidget {
 
     if (withinTrainingType) {
       return RichText(
+        textScaleFactor: MediaQuery.of(
+          context,
+        ).textScaleFactor,
         text: TextSpan(
           style: TextStyle(
             color: Colors.black,
@@ -235,6 +244,9 @@ class UpdatingBreakSet extends StatelessWidget {
       );
     } else {
       return RichText(
+        textScaleFactor: MediaQuery.of(
+          context,
+        ).textScaleFactor,
         textAlign: TextAlign.left,
         text: TextSpan(
           style: TextStyle(

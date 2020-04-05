@@ -29,34 +29,31 @@ class RecoveryTimePopUpBody extends StatelessWidget {
             children: <Widget>[
               Container(
                 alignment: Alignment.centerLeft,
-                child: Text(
-                  "To select the appropiate recovery time\n"
-                ),
+                child: Text("To select the appropiate recovery time\n"),
               ),
               ListItem(
                 circleColor: Colors.blue,
                 circleText: "1",
                 circleTextColor: Colors.white,
                 content: RichText(
+                  textScaleFactor: MediaQuery.of(
+                    context,
+                  ).textScaleFactor,
                   text: TextSpan(
-                    style: TextStyle(
-                      color: Colors.black,
-                    ),
-                    children: [
-                      TextSpan(
-                        text: "Select the ",
+                      style: TextStyle(
+                        color: Colors.black,
                       ),
-                      TextSpan(
-                        text: "training type",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                        )
-                      ),
-                      TextSpan(
-                        text: " you are working towards"
-                      ),
-                    ]
-                  ),
+                      children: [
+                        TextSpan(
+                          text: "Select the ",
+                        ),
+                        TextSpan(
+                            text: "training type",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            )),
+                        TextSpan(text: " you are working towards"),
+                      ]),
                 ),
               ),
               ListItem(
@@ -67,70 +64,72 @@ class RecoveryTimePopUpBody extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
                     RichText(
+                      textScaleFactor: MediaQuery.of(
+                        context,
+                      ).textScaleFactor,
                       text: TextSpan(
-                        style: TextStyle(
-                          color: Colors.black,
-                        ),
-                        children: [
-                          TextSpan(
-                            text: "Select a ",
+                          style: TextStyle(
+                            color: Colors.black,
                           ),
-                          TextSpan(
-                            text: "larger recovery time ",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
+                          children: [
+                            TextSpan(
+                              text: "Select a ",
                             ),
-                          ),
-                          TextSpan(
-                            text: "within the training type's range",
-                            style: TextStyle(
-                              decoration: TextDecoration.underline,
-                            )
-                          ),
-                          TextSpan(
-                            text: " if you are working with ",
-                          ),
-                          TextSpan(
-                            text: "larger muscle groups\n",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
+                            TextSpan(
+                              text: "larger recovery time ",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
-                          ),
-                        ]
-                      ),
+                            TextSpan(
+                                text: "within the training type's range",
+                                style: TextStyle(
+                                  decoration: TextDecoration.underline,
+                                )),
+                            TextSpan(
+                              text: " if you are working with ",
+                            ),
+                            TextSpan(
+                              text: "larger muscle groups\n",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ]),
                     ),
                     RichText(
+                      textScaleFactor: MediaQuery.of(
+                        context,
+                      ).textScaleFactor,
                       text: TextSpan(
-                        style: TextStyle(
-                          color: Colors.black,
-                        ),
-                        children: [
-                          TextSpan(
-                            text: "Select a ",
+                          style: TextStyle(
+                            color: Colors.black,
                           ),
-                          TextSpan(
-                            text: "smaller recovery time ",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
+                          children: [
+                            TextSpan(
+                              text: "Select a ",
                             ),
-                          ),
-                          TextSpan(
-                            text: "within the training type's range",
-                            style: TextStyle(
-                              decoration: TextDecoration.underline,
-                            )
-                          ),
-                          TextSpan(
-                            text: " if you are working with ",
-                          ),
-                          TextSpan(
-                            text: "smaller muscle groups",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
+                            TextSpan(
+                              text: "smaller recovery time ",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
-                          ),
-                        ]
-                      ),
+                            TextSpan(
+                                text: "within the training type's range",
+                                style: TextStyle(
+                                  decoration: TextDecoration.underline,
+                                )),
+                            TextSpan(
+                              text: " if you are working with ",
+                            ),
+                            TextSpan(
+                              text: "smaller muscle groups",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ]),
                     ),
                   ],
                 ),

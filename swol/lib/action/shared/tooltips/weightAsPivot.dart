@@ -8,7 +8,7 @@ import 'package:bot_toast/bot_toast.dart';
 import 'package:swol/shared/widgets/simple/ourToolTip.dart';
 
 //functions
-showWeightWeightAsPivotToolTip(context){
+showWeightWeightAsPivotToolTip(context) {
   showWidgetToolTip(
     context,
     GestureDetector(
@@ -17,6 +17,9 @@ showWeightWeightAsPivotToolTip(context){
         BotToast.cleanAll();
       },
       child: RichText(
+        textScaleFactor: MediaQuery.of(
+          context,
+        ).textScaleFactor,
         text: TextSpan(
           children: [
             TextSpan(
@@ -46,9 +49,7 @@ showWeightWeightAsPivotToolTip(context){
                 fontWeight: FontWeight.bold,
               ),
             ),
-            TextSpan(
-              text: " the calculated\n"
-            ),
+            TextSpan(text: " the calculated\n"),
             TextSpan(
               text: "Expected Weight is Not Available",
               style: TextStyle(
@@ -64,7 +65,7 @@ showWeightWeightAsPivotToolTip(context){
   );
 }
 
-showRepsWeightAsPivotToolTip(context){
+showRepsWeightAsPivotToolTip(context) {
   showWidgetToolTip(
     context,
     GestureDetector(
@@ -73,6 +74,9 @@ showRepsWeightAsPivotToolTip(context){
         BotToast.cleanAll();
       },
       child: RichText(
+        textScaleFactor: MediaQuery.of(
+          context,
+        ).textScaleFactor,
         text: TextSpan(
           children: [
             TextSpan(

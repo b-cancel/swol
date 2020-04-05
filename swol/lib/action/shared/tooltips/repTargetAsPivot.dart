@@ -8,7 +8,7 @@ import 'package:bot_toast/bot_toast.dart';
 import 'package:swol/shared/widgets/simple/ourToolTip.dart';
 
 //functions
-showWeightRepTargetAsPivotToolTip(context){
+showWeightRepTargetAsPivotToolTip(context) {
   showWidgetToolTip(
     context,
     GestureDetector(
@@ -17,6 +17,9 @@ showWeightRepTargetAsPivotToolTip(context){
         BotToast.cleanAll();
       },
       child: RichText(
+        textScaleFactor: MediaQuery.of(
+          context,
+        ).textScaleFactor,
         text: TextSpan(
           children: [
             TextSpan(
@@ -46,7 +49,7 @@ showWeightRepTargetAsPivotToolTip(context){
   );
 }
 
-showRepsRepTargetAsPivotToolTip(context){
+showRepsRepTargetAsPivotToolTip(context) {
   showWidgetToolTip(
     context,
     GestureDetector(
@@ -55,6 +58,9 @@ showRepsRepTargetAsPivotToolTip(context){
         BotToast.cleanAll();
       },
       child: RichText(
+        textScaleFactor: MediaQuery.of(
+          context,
+        ).textScaleFactor,
         text: TextSpan(
           children: [
             TextSpan(

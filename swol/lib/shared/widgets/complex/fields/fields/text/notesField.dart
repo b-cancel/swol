@@ -37,8 +37,8 @@ class NotesField extends StatelessWidget {
           isName: false,
           editOneAtAtTime: editOneAtATime,
           valueToUpdate: noteToUpdate,
-          hint: "Details", 
-          error: null, 
+          hint: "Details",
+          error: null,
           //so we can link up both fields
           focusNode: noteFocusNode,
         ),
@@ -64,6 +64,9 @@ class _NotePopUpBody extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           RichText(
+            textScaleFactor: MediaQuery.of(
+              context,
+            ).textScaleFactor,
             text: TextSpan(
               style: TextStyle(
                 color: Colors.black,
@@ -79,7 +82,8 @@ class _NotePopUpBody extends StatelessWidget {
                   ),
                 ),
                 TextSpan(
-                  text: " that you may want to keep in mind before starting the exercise",
+                  text:
+                      " that you may want to keep in mind before starting the exercise",
                 ),
               ],
             ),

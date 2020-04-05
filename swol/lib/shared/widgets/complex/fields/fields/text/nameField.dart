@@ -46,12 +46,12 @@ class NameField extends StatelessWidget {
           editOneAtAtTime: editOneAtATime,
           valueToUpdate: nameToUpdate,
           focusNode: nameFocusNode,
-          hint: "Required*", 
-          error: (showError.value) ? "Name Is Required" : null, 
+          hint: "Required*",
+          error: (showError.value) ? "Name Is Required" : null,
           //auto focus field (this is handled by the save button)
           autofocus: autofocus,
           //we need to keep track above to determine whether we can active the button
-          present: namePresent, 
+          present: namePresent,
           //so next focuses on the note
           noteFocusNode: noteFocusNode,
         ),
@@ -77,59 +77,66 @@ class _NamePopUpBody extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           RichText(
+            textScaleFactor: MediaQuery.of(
+              context,
+            ).textScaleFactor,
             text: TextSpan(
-              style: TextStyle(
-                color: Colors.black,
-              ),
-              children: [
-                TextSpan(
-                  text: "You can have ",
+                style: TextStyle(
+                  color: Colors.black,
                 ),
-                TextSpan(
-                  text: "multiple exercises",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
+                children: [
+                  TextSpan(
+                    text: "You can have ",
                   ),
-                ),
-                TextSpan(
-                  text: " with the ",
-                ),
-                TextSpan(
-                  text: "same name\n",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
+                  TextSpan(
+                    text: "multiple exercises",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-              ]
-            ),
+                  TextSpan(
+                    text: " with the ",
+                  ),
+                  TextSpan(
+                    text: "same name\n",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ]),
           ),
           //---
           RichText(
+            textScaleFactor: MediaQuery.of(
+              context,
+            ).textScaleFactor,
             text: TextSpan(
-              style: TextStyle(
-                color: Colors.black,
-              ),
-              children: [
-                TextSpan(
-                  text: "But, it's best",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
+                style: TextStyle(
+                  color: Colors.black,
+                ),
+                children: [
+                  TextSpan(
+                    text: "But, it's best",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-                TextSpan(
-                  text: " if you keep the name ",
-                ),
-                TextSpan(
-                  text: "unique\n",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
+                  TextSpan(
+                    text: " if you keep the name ",
                   ),
-                ),
-              ]
-            ),
+                  TextSpan(
+                    text: "unique\n",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ]),
           ),
           //---
           RichText(
+            textScaleFactor: MediaQuery.of(
+              context,
+            ).textScaleFactor,
             text: TextSpan(
               style: TextStyle(
                 color: Colors.black,
@@ -142,9 +149,9 @@ class _NamePopUpBody extends StatelessWidget {
                   ),
                 ),
                 TextSpan(
-                  text: " when you do the "
-                  + "same exercise, multiple times, in the same workout"
-                  + " but with a ",
+                  text: " when you do the " +
+                      "same exercise, multiple times, in the same workout" +
+                      " but with a ",
                 ),
                 TextSpan(
                   text: "different",

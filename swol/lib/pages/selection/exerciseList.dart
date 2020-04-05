@@ -133,6 +133,9 @@ class _ExerciseListState extends State<ExerciseList> {
                 children: <Widget>[
                   Expanded(
                     child: RichText(
+                      textScaleFactor: MediaQuery.of(
+                        context,
+                      ).textScaleFactor,
                       text: TextSpan(
                         style: TextStyle(
                           color: Colors.black,
@@ -227,6 +230,9 @@ class _ExerciseListState extends State<ExerciseList> {
               return CustomToast(
                 padding: -(56.0 + 16),
                 child: RichText(
+                  textScaleFactor: MediaQuery.of(
+                    context,
+                  ).textScaleFactor,
                   text: TextSpan(
                     style: TextStyle(
                       color: Colors.black,
@@ -311,6 +317,9 @@ class _ExerciseListState extends State<ExerciseList> {
                       toPage2(popUpIfThere: false);
                     },
                     child: RichText(
+                      textScaleFactor: MediaQuery.of(
+                        context,
+                      ).textScaleFactor,
                       text: TextSpan(
                         style: TextStyle(
                           color: Colors.black,
@@ -376,6 +385,9 @@ class _ExerciseListState extends State<ExerciseList> {
                     return CustomToast(
                       padding: 24.0 + 8,
                       child: RichText(
+                        textScaleFactor: MediaQuery.of(
+                          context,
+                        ).textScaleFactor,
                         text: TextSpan(
                           style: TextStyle(
                             color: Colors.black,

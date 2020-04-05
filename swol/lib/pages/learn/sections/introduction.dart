@@ -25,7 +25,7 @@ class IntroductionBody extends StatelessWidget {
               text: "get into weightlifting as quick as possible",
               style: TextStyle(
                 fontWeight: FontWeight.w900,
-              )
+              ),
             ),
           ],
         ),
@@ -41,84 +41,94 @@ class IntroductionBody extends StatelessWidget {
               children: <Widget>[
                 //-------------------------Introduction-------------------------
                 RichText(
+                  textScaleFactor: MediaQuery.of(
+                    context,
+                  ).textScaleFactor,
                   text: TextSpan(
                     style: defaultStyle,
                     children: [
                       TextSpan(
-                        style: TextStyle(
-                          fontWeight: FontWeight.w900,
-                        ),
-                        text:  tab + "It does not focus on tracking progress; it focuses on creating a habit.\t"
-                      ),
+                          style: TextStyle(
+                            fontWeight: FontWeight.w900,
+                          ),
+                          text: tab +
+                              "It does not focus on tracking progress; it focuses on creating a habit.\t"),
                       TextSpan(
-                        text: " What matters is that you do the best that you can now; the results will come on their own." + newLine,
+                        text:
+                            " What matters is that you do the best that you can now; the results will come on their own." +
+                                newLine,
                       ),
-                    ]
+                    ],
                   ),
                 ),
                 //-------------------------At Your Own Risk-------------------------
                 RichText(
+                  textScaleFactor: MediaQuery.of(
+                    context,
+                  ).textScaleFactor,
                   text: TextSpan(
                     style: defaultStyle,
                     children: [
+                      TextSpan(text: tab + "In order to help you, "),
                       TextSpan(
-                        text: tab + "In order to help you, "
-                      ),
+                          style: TextStyle(
+                            fontWeight: FontWeight.w900,
+                          ),
+                          text: "\twe have many suggestions but\t"),
                       TextSpan(
-                        style: TextStyle(
-                          fontWeight: FontWeight.w900,
-                        ),
-                        text: "\twe have many suggestions but\t"
-                      ),
-                      TextSpan(
-                        text: " it's your responsibility to stay safe. "
-                        +"We are not liable for any harm that you may cause yourself or others. "
-                      ),
+                          text: " it's your responsibility to stay safe. " +
+                              "We are not liable for any harm that you may cause yourself or others. "),
                       TextSpan(
                         style: TextStyle(
                           fontWeight: FontWeight.w900,
                         ),
-                        text: "\tFollow our suggestions at your own risk.\t" + newLine,
+                        text: "\tFollow our suggestions at your own risk.\t" +
+                            newLine,
                       ),
-                    ]
+                    ],
                   ),
                 ),
                 //-------------------------Is Experiment-------------------------
                 RichText(
+                  textScaleFactor: MediaQuery.of(
+                    context,
+                  ).textScaleFactor,
                   text: TextSpan(
                     style: defaultStyle,
                     children: [
+                      TextSpan(text: tab + "Additionally, be aware that "),
                       TextSpan(
-                        text: tab + "Additionally, be aware that "
-                      ),
+                          style: TextStyle(
+                            fontWeight: FontWeight.w900,
+                          ),
+                          text: "\tpart of our app is experimental.\t"),
                       TextSpan(
-                        style: TextStyle(
-                          fontWeight: FontWeight.w900,
-                        ),
-                        text: "\tpart of our app is experimental.\t"
+                        text:
+                            " We suspect that one rep max formulas can be used to give users a new goal to work towards after each set," +
+                                " but this has not been proven yet." +
+                                newLine,
                       ),
-                      TextSpan(
-                        text: " We suspect that one rep max formulas can be used to give users a new goal to work towards after each set,"
-                        +" but this has not been proven yet." + newLine,
-                      ),
-                    ]
+                    ],
                   ),
                 ),
                 //-------------------------Below Suggestions-------------------------
                 RichText(
+                  textScaleFactor: MediaQuery.of(
+                    context,
+                  ).textScaleFactor,
                   text: TextSpan(
                     style: defaultStyle,
                     children: [
                       TextSpan(
-                        text: tab + "Below are some suggestions to get you started. "
-                      ),
+                          text: tab +
+                              "Below are some suggestions to get you started. "),
                       TextSpan(
                         style: TextStyle(
                           fontWeight: FontWeight.w900,
                         ),
                         text: "\tEnjoy Pumping Iron!\t",
                       ),
-                    ]
+                    ],
                   ),
                 ),
               ],

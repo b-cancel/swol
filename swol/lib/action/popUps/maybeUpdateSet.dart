@@ -44,11 +44,11 @@ maybeChangeSetTarget(
     context,
     [
       Text(
-          "Change Set Target?",
-          style: TextStyle(
-            fontSize: 28,
-          ),
+        "Change Set Target?",
+        style: TextStyle(
+          fontSize: 28,
         ),
+      ),
     ],
     [
       Padding(
@@ -59,6 +59,9 @@ maybeChangeSetTarget(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             RichText(
+              textScaleFactor: MediaQuery.of(
+                context,
+              ).textScaleFactor,
               text: TextSpan(
                 style: TextStyle(
                   color: Colors.black,
@@ -82,6 +85,9 @@ maybeChangeSetTarget(
               ),
             ),
             RichText(
+              textScaleFactor: MediaQuery.of(
+                context,
+              ).textScaleFactor,
               text: TextSpan(
                 style: TextStyle(
                   color: Colors.black,

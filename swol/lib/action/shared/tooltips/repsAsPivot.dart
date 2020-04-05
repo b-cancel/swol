@@ -8,7 +8,7 @@ import 'package:bot_toast/bot_toast.dart';
 import 'package:swol/shared/widgets/simple/ourToolTip.dart';
 
 //functions
-showWeightRepsAsPivotToolTip(context){
+showWeightRepsAsPivotToolTip(context) {
   showWidgetToolTip(
     context,
     GestureDetector(
@@ -17,6 +17,9 @@ showWeightRepsAsPivotToolTip(context){
         BotToast.cleanAll();
       },
       child: RichText(
+        textScaleFactor: MediaQuery.of(
+          context,
+        ).textScaleFactor,
         text: TextSpan(
           children: [
             TextSpan(
@@ -46,7 +49,7 @@ showWeightRepsAsPivotToolTip(context){
   );
 }
 
-showRepsRepsAsPivotToolTip(context){
+showRepsRepsAsPivotToolTip(context) {
   showWidgetToolTip(
     context,
     GestureDetector(
@@ -55,6 +58,9 @@ showRepsRepsAsPivotToolTip(context){
         BotToast.cleanAll();
       },
       child: RichText(
+        textScaleFactor: MediaQuery.of(
+          context,
+        ).textScaleFactor,
         text: TextSpan(
           children: [
             TextSpan(
@@ -84,9 +90,7 @@ showRepsRepsAsPivotToolTip(context){
                 fontWeight: FontWeight.bold,
               ),
             ),
-            TextSpan(
-              text: " the calculated\n"
-            ),
+            TextSpan(text: " the calculated\n"),
             TextSpan(
               text: "Expected Reps are Higher Or Lower",
               style: TextStyle(

@@ -242,6 +242,9 @@ class RecoveryButtonsWithWhiteContext extends StatelessWidget {
         //ELSE: the button was Accidentally quick tapped
       },
       forwardActionWidget: RichText(
+        textScaleFactor: MediaQuery.of(
+          context,
+        ).textScaleFactor,
         text: TextSpan(
           children: [
             TextSpan(

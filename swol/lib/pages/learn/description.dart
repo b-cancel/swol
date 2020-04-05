@@ -23,14 +23,16 @@ class SectionDescription extends StatelessWidget {
             padding: EdgeInsets.all(16),
             width: MediaQuery.of(context).size.width,
             child: RichText(
-              text: TextSpan(
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.white,
-                ),
-                children: children,
-              )
-            ),
+                textScaleFactor: MediaQuery.of(
+                  context,
+                ).textScaleFactor,
+                text: TextSpan(
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.white,
+                  ),
+                  children: children,
+                )),
           ),
           Padding(
             padding: EdgeInsets.symmetric(
@@ -38,12 +40,10 @@ class SectionDescription extends StatelessWidget {
             ),
             child: Container(
               decoration: BoxDecoration(
-                border: Border(
-                  bottom: BorderSide(
-                    color: Colors.white.withOpacity(0.5),
-                  )
-                )
-              ),
+                  border: Border(
+                      bottom: BorderSide(
+                color: Colors.white.withOpacity(0.5),
+              ))),
             ),
           )
         ],

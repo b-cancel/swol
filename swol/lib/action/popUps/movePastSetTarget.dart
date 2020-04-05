@@ -53,6 +53,9 @@ movePastSetTarget(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             RichText(
+              textScaleFactor: MediaQuery.of(
+                context,
+              ).textScaleFactor,
               text: TextSpan(
                 style: TextStyle(
                   color: Colors.black,

@@ -29,15 +29,18 @@ class HeaderForOneHandedUse extends StatelessWidget {
         //since it SEEMS like it belong to the top thingy and therefore should be excluded
         openHeight: openHeight,
         closedHeight: 0,
-        workoutCount: listOfGroupOfExercises.length 
-        //exclude new workouts
-        - (newWorkoutSection ? 1 : 0) 
-        //exclude hidden workouts
-        - (hiddenWorkoutSection ? 1 : 0)
-        //exclude in progress since they either
-        //- create a new section
-        //- or replace a section
-        - (inprogressWorkoutSection ? 1 : 0),
+        workoutCount: listOfGroupOfExercises.length
+            //exclude new workouts
+            -
+            (newWorkoutSection ? 1 : 0)
+            //exclude hidden workouts
+            -
+            (hiddenWorkoutSection ? 1 : 0)
+            //exclude in progress since they either
+            //- create a new section
+            //- or replace a section
+            -
+            (inprogressWorkoutSection ? 1 : 0),
       ),
     );
   }
@@ -57,12 +60,13 @@ class PersistentHeaderDelegate extends SliverPersistentHeaderDelegate {
   });
 
   @override
-  Widget build(BuildContext context, double shrinkOffset, bool overlapsContent){
+  Widget build(
+      BuildContext context, double shrinkOffset, bool overlapsContent) {
     String subtitle = "";
-    if(workoutCount != null && workoutCount > 0){
+    if (workoutCount != null && workoutCount > 0) {
       subtitle = workoutCount.toString();
       subtitle = subtitle + " Workout";
-      if(workoutCount > 1) subtitle += "s";
+      if (workoutCount > 1) subtitle += "s";
     }
 
     //-----Used to clip the Exercises Title
@@ -107,6 +111,9 @@ class PersistentHeaderDelegate extends SliverPersistentHeaderDelegate {
                 ),
                 //-----Our Text
                 child: RichText(
+                  textScaleFactor: MediaQuery.of(
+                    context,
+                  ).textScaleFactor,
                   textAlign: TextAlign.center,
                   text: TextSpan(
                     style: TextStyle(
@@ -121,11 +128,10 @@ class PersistentHeaderDelegate extends SliverPersistentHeaderDelegate {
                         ),
                       ),
                       TextSpan(
-                        text: subtitle,
-                        style: TextStyle(
-                          fontSize: 16,
-                        )
-                      ),
+                          text: subtitle,
+                          style: TextStyle(
+                            fontSize: 16,
+                          )),
                     ],
                   ),
                 ),

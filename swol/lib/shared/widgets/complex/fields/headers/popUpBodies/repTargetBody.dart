@@ -23,34 +23,32 @@ class RepTargetPopUpBody extends StatelessWidget {
             horizontal: 24,
           ),
           child: RichText(
+            textScaleFactor: MediaQuery.of(
+              context,
+            ).textScaleFactor,
             text: TextSpan(
-              style: TextStyle(
-                color: Colors.black,
-              ),
-              children: [
-                TextSpan(
-                  text: "Select a ",
+                style: TextStyle(
+                  color: Colors.black,
                 ),
-                TextSpan(
-                  text: "rep target",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                  )
-                ),
-                TextSpan(
-                  text: " for the ",
-                ),
-                TextSpan(
-                  text: "training type",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                  )
-                ),
-                TextSpan(
-                  text: " you are working towards"
-                ),
-              ]
-            ),
+                children: [
+                  TextSpan(
+                    text: "Select a ",
+                  ),
+                  TextSpan(
+                      text: "rep target",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      )),
+                  TextSpan(
+                    text: " for the ",
+                  ),
+                  TextSpan(
+                      text: "training type",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      )),
+                  TextSpan(text: " you are working towards"),
+                ]),
           ),
         ),
         Theme(

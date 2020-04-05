@@ -24,7 +24,7 @@ class OneRepMaxBody extends StatelessWidget {
       child: Column(
         children: <Widget>[
           SectionDescription(
-            children:[
+            children: [
               TextSpan(
                 text: "Doing a 1 Rep Max puts you at a high risk for injury!",
                 style: boldStyle,
@@ -39,6 +39,9 @@ class OneRepMaxBody extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 RichText(
+                  textScaleFactor: MediaQuery.of(
+                    context,
+                  ).textScaleFactor,
                   text: TextSpan(
                     style: defaultStyle,
                     children: [
@@ -46,7 +49,8 @@ class OneRepMaxBody extends StatelessWidget {
                         text: "Hitting a ",
                       ),
                       TextSpan(
-                        text: "New Personal Record by peforming a One Rep Max (1RM)",
+                        text:
+                            "New Personal Record by peforming a One Rep Max (1RM)",
                         style: boldStyle,
                       ),
                       TextSpan(
@@ -56,15 +60,19 @@ class OneRepMaxBody extends StatelessWidget {
                         text: "track your progress\n",
                         style: boldStyle,
                       )
-                    ]
+                    ],
                   ),
                 ),
                 RichText(
+                  textScaleFactor: MediaQuery.of(
+                    context,
+                  ).textScaleFactor,
                   text: TextSpan(
                     style: defaultStyle,
                     children: [
                       TextSpan(
-                        text: "But since it puts you at a high risk for injury, ",
+                        text:
+                            "But since it puts you at a high risk for injury, ",
                       ),
                       TextSpan(
                         text: "1RM formulas",
@@ -80,7 +88,7 @@ class OneRepMaxBody extends StatelessWidget {
                       TextSpan(
                         text: "based on any other set\n",
                       ),
-                    ]
+                    ],
                   ),
                 ),
                 Text(
@@ -90,6 +98,9 @@ class OneRepMaxBody extends StatelessWidget {
                 ListItem(
                   circleColor: Theme.of(context).accentColor,
                   content: RichText(
+                    textScaleFactor: MediaQuery.of(
+                      context,
+                    ).textScaleFactor,
                     text: TextSpan(
                       style: defaultStyle,
                       children: [
@@ -101,32 +112,37 @@ class OneRepMaxBody extends StatelessWidget {
                           style: boldStyle,
                         ),
                         TextSpan(
-                          text: " as you increase reps and/or the weight you are lifting",
+                          text:
+                              " as you increase reps and/or the weight you are lifting",
                         ),
-                      ]
+                      ],
                     ),
                   ),
                 ),
                 ListItem(
                   circleColor: Theme.of(context).accentColor,
                   content: RichText(
-                    text: TextSpan(
-                      style: defaultStyle,
-                      children: [
-                        TextSpan(
-                          text: "Some formulas can only give you an estimated 1RM if you plug in a set with ",
-                        ),
-                        TextSpan(
-                          text: "less than 37 reps",
-                          style: boldStyle,
-                        ),
-                      ]
-                    ),
+                    textScaleFactor: MediaQuery.of(
+                      context,
+                    ).textScaleFactor,
+                    text: TextSpan(style: defaultStyle, children: [
+                      TextSpan(
+                        text:
+                            "Some formulas can only give you an estimated 1RM if you plug in a set with ",
+                      ),
+                      TextSpan(
+                        text: "less than 37 reps",
+                        style: boldStyle,
+                      ),
+                    ]),
                   ),
                 ),
                 ListItem(
                   circleColor: Theme.of(context).accentColor,
                   content: RichText(
+                    textScaleFactor: MediaQuery.of(
+                      context,
+                    ).textScaleFactor,
                     text: TextSpan(
                       style: defaultStyle,
                       children: [
@@ -138,13 +154,17 @@ class OneRepMaxBody extends StatelessWidget {
                           style: boldStyle,
                         ),
                         TextSpan(
-                          text: " that give slightly different results, but no clear indicator of when to use which",
+                          text:
+                              " that give slightly different results, but no clear indicator of when to use which",
                         )
-                      ]
+                      ],
                     ),
                   ),
                 ),
                 RichText(
+                  textScaleFactor: MediaQuery.of(
+                    context,
+                  ).textScaleFactor,
                   text: TextSpan(
                     style: defaultStyle,
                     children: [
@@ -156,13 +176,14 @@ class OneRepMaxBody extends StatelessWidget {
                         style: boldStyle,
                       ),
                       TextSpan(
-                        text: " to work with the limitations of One Rep Max Formulas",
+                        text:
+                            " to work with the limitations of One Rep Max Formulas",
                       ),
-                    ]
+                    ],
                   ),
                 ),
               ],
-            )
+            ),
           ),
         ],
       ),

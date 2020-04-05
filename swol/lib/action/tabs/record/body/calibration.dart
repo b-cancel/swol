@@ -56,6 +56,9 @@ class CalibrationCard extends StatelessWidget {
                 circleSize: 36,
                 circleColor: Theme.of(context).accentColor,
                 content: RichText(
+                  textScaleFactor: MediaQuery.of(
+                    context,
+                  ).textScaleFactor,
                   text: TextSpan(style: defaultTextStyle, children: [
                     TextSpan(
                       text: "Pick ",
@@ -95,6 +98,9 @@ class CalibrationCard extends StatelessWidget {
                 circleSize: 36,
                 circleColor: Theme.of(context).accentColor,
                 content: RichText(
+                  textScaleFactor: MediaQuery.of(
+                    context,
+                  ).textScaleFactor,
                   text: TextSpan(style: defaultTextStyle, children: [
                     TextSpan(
                       text: "Do as many reps as ",
@@ -126,6 +132,9 @@ class CalibrationCard extends StatelessWidget {
                 circleColor: Theme.of(context).accentColor,
                 bottomSpacing: 0,
                 content: RichText(
+                  textScaleFactor: MediaQuery.of(
+                    context,
+                  ).textScaleFactor,
                   text: TextSpan(style: defaultTextStyle, children: [
                     TextSpan(
                       text: "Record the weight you used and your ",

@@ -18,11 +18,10 @@ class PrecautionsBody extends StatelessWidget {
         SectionDescription(
           children: [
             TextSpan(
-              text: "Every exercise has its own unique risks",
-              style: TextStyle(
-                fontWeight: FontWeight.w900,
-              )
-            ),
+                text: "Every exercise has its own unique risks",
+                style: TextStyle(
+                  fontWeight: FontWeight.w900,
+                )),
           ],
         ),
         Padding(
@@ -32,43 +31,45 @@ class PrecautionsBody extends StatelessWidget {
           child: Column(
             children: <Widget>[
               RichText(
+                textScaleFactor: MediaQuery.of(
+                  context,
+                ).textScaleFactor,
                 text: TextSpan(
-                  style: TextStyle(
-                    fontSize: 16,
-                  ),
-                  children: [
-                    TextSpan(
-                      text: "So make sure you ",
+                    style: TextStyle(
+                      fontSize: 16,
                     ),
-                    TextSpan(
-                      text: "\tdo the research\t",
-                      style: TextStyle(
-                        fontWeight: FontWeight.w900,
-                      )
-                    ),
-                    TextSpan(
-                      text: ", in order to ",
-                    ),
-                    TextSpan(
-                      text: "\tfully understand how to eliminate or minimize the risks\n\n",
-                      style: TextStyle(
-                        fontWeight: FontWeight.w900,
+                    children: [
+                      TextSpan(
+                        text: "So make sure you ",
                       ),
-                    ),
-                    TextSpan(
-                      text: "Below are some of the ",
-                    ),
-                    TextSpan(
-                      text: "\tmost common precautions\t",
-                      style: TextStyle(
-                        fontWeight: FontWeight.w900,
+                      TextSpan(
+                          text: "\tdo the research\t",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w900,
+                          )),
+                      TextSpan(
+                        text: ", in order to ",
                       ),
-                    ),
-                    TextSpan(
-                      text: " you can take",
-                    ),
-                  ]
-                ),
+                      TextSpan(
+                        text:
+                            "\tfully understand how to eliminate or minimize the risks\n\n",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w900,
+                        ),
+                      ),
+                      TextSpan(
+                        text: "Below are some of the ",
+                      ),
+                      TextSpan(
+                        text: "\tmost common precautions\t",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w900,
+                        ),
+                      ),
+                      TextSpan(
+                        text: " you can take",
+                      ),
+                    ]),
               ),
               Padding(
                 padding: EdgeInsets.only(
