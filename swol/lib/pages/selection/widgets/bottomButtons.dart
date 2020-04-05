@@ -39,8 +39,8 @@ class AddExerciseButton extends StatelessWidget {
             backgroundColor: Theme.of(context).accentColor,
             child: Icon(Icons.add),
           ),
-          text: "Tap here to add a\n"
-          + "new exercise",
+          text: "Tap here to ADD a"
+          + " new exercise",
           child: AddNewHero(
             inAppBar: false,
             longTransitionDuration: longTransitionDuration,
@@ -108,8 +108,8 @@ class _SearchExerciseButtonState extends State<SearchExerciseButton> {
               onPressed: null,
             ),
             text: "Tap here to"
-            + "\nsearch through"
-            + "\nyour exercises",
+            + " SEARCH through"
+            + " your exercises",
             child: FloatingActionButton(
               backgroundColor: Theme.of(context).accentColor,
               onPressed: (){

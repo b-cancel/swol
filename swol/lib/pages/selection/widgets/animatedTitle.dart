@@ -41,9 +41,9 @@ class AnimatedTitleAction extends StatelessWidget {
             featureID: AFeature.LearnPage.toString(),
             tapTarget: Icon(FontAwesomeIcons.leanpub),
             text: "Tap here to LEARN"
-            + "\nabout the concepts,"
-            + "\nmath, and science" 
-            + "\nbehind our app",
+            + " about the concepts,"
+            + " math, and science" 
+            + " behind our app",
             child: IconButton(
               onPressed: (){
                 App.navSpread.value = true;
@@ -103,7 +103,7 @@ class AnimatedTitle extends StatelessWidget {
               height: statusBarHeight - 16,
             ),
             text: "What you're going to be"
-            + "\nafter using this app",
+            + " after STICKING TO ANY exercise routine",
             child: SwolLogo(
               height: statusBarHeight,
             ),
