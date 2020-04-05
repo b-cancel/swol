@@ -155,27 +155,32 @@ class AwesomeBody extends StatelessWidget {
     bool hasAtleastOneButton = (clearBtn != null || colorBtn != null);
 
     //build dat body
-    return Padding(
-      padding: EdgeInsets.only(
-        bottom: hasAtleastOneButton ? 0 : 8.0,
-      ),
-      child: Column(
-        children: <Widget>[
-          TitleThatContainsTRBL(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: titles,
-            ),
+    return GestureDetector(
+      behavior: HitTestBehavior.deferToChild,
+      child: ScrollViewWithShadow(
+        child: Padding(
+          padding: EdgeInsets.only(
+            bottom: hasAtleastOneButton ? 0 : 8.0,
           ),
-          Column(
-            mainAxisSize: MainAxisSize.min,
-            children: children,
+          child: Column(
+            children: <Widget>[
+              TitleThatContainsTRBL(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: titles,
+                ),
+              ),
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                children: children,
+              ),
+              hasAtleastOneButton ? BottomButtonsThatResizeTRBL(
+                secondary: clearBtn ?? Container(),
+                primary: colorBtn ?? Container(),
+              ) : Container()
+            ],
           ),
-          hasAtleastOneButton ? BottomButtonsThatResizeTRBL(
-            secondary: clearBtn ?? Container(),
-            primary: colorBtn ?? Container(),
-          ) : Container()
-        ],
+        ),
       ),
     );
   }
