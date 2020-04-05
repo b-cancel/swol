@@ -157,7 +157,6 @@ class _SearchExerciseState extends State<SearchExercise> {
                   delegate: new SliverChildListDelegate(
                     [
                       Container(
-                        color: Theme.of(context).cardColor,
                         child: SearchBody(
                           noRecentsToShow: noRecentsToShow,
                           showRecentsSearches: showRecentsSearches,
@@ -191,64 +190,67 @@ class SearchBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.all(
-          Radius.circular(24.0),
-        ),
-        color: Theme.of(context).cardColor,
-      ),
-      width: MediaQuery.of(context).size.width,
-      padding: EdgeInsets.symmetric(
-        horizontal: 12,
-      ),
-      child: Row(
-        children: <Widget>[
-          InkWell(
-            onTap: () {
-              App.navSpread.value = false;
-              FocusScope.of(context).unfocus();
-              Navigator.pop(context);
-            },
-            child: Padding(
-              padding: EdgeInsets.only(right: 16.0),
-              child: Icon(Icons.keyboard_arrow_left),
-            ),
+      color: Theme.of(context).primaryColorDark,
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(
+            Radius.circular(24.0),
           ),
-          Flexible(
-            child: Padding(
-              padding: EdgeInsets.only(top: 4.0),
-              child: TextField(
-                scrollPadding: EdgeInsets.all(0),
-                textInputAction: TextInputAction.search,
-                onSubmitted: (str) {
-                  if (search.text != null && search.text != "") {
-                    SearchesData.addToSearches(search.text);
-                  }
-                },
-                controller: search,
-                autofocus: true,
-                decoration: InputDecoration(
-                  contentPadding: EdgeInsets.all(0),
-                  border: InputBorder.none,
-                  hintText: "Search",
+          color: Theme.of(context).cardColor,
+        ),
+        width: MediaQuery.of(context).size.width,
+        padding: EdgeInsets.symmetric(
+          horizontal: 12,
+        ),
+        child: Row(
+          children: <Widget>[
+            InkWell(
+              onTap: () {
+                App.navSpread.value = false;
+                FocusScope.of(context).unfocus();
+                Navigator.pop(context);
+              },
+              child: Padding(
+                padding: EdgeInsets.only(right: 16.0),
+                child: Icon(Icons.keyboard_arrow_left),
+              ),
+            ),
+            Flexible(
+              child: Padding(
+                padding: EdgeInsets.only(top: 4.0),
+                child: TextField(
+                  scrollPadding: EdgeInsets.all(0),
+                  textInputAction: TextInputAction.search,
+                  onSubmitted: (str) {
+                    if (search.text != null && search.text != "") {
+                      SearchesData.addToSearches(search.text);
+                    }
+                  },
+                  controller: search,
+                  autofocus: true,
+                  decoration: InputDecoration(
+                    contentPadding: EdgeInsets.all(0),
+                    border: InputBorder.none,
+                    hintText: "Search",
+                  ),
                 ),
               ),
             ),
-          ),
-          Conditional(
-            condition: (search.text == ""),
-            ifTrue: Icon(
-              Icons.search,
+            Conditional(
+              condition: (search.text == ""),
+              ifTrue: Icon(
+                Icons.search,
+              ),
+              ifFalse: GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onTap: () {
+                  search.text = "";
+                },
+                child: Icon(Icons.close),
+              ),
             ),
-            ifFalse: GestureDetector(
-              behavior: HitTestBehavior.opaque,
-              onTap: () {
-                search.text = "";
-              },
-              child: Icon(Icons.close),
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -309,34 +311,26 @@ class SearchResults extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      children: <Widget>[
-        //spacer for header so that the stack thing lets the curves stay above
-        Container(
-          height: 56,
-        ),
-        Card(
-          margin: EdgeInsets.all(0),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(24.0),
-          ),
-          clipBehavior: Clip.antiAlias,
-          child: ListView.separated(
-            shrinkWrap: true,
-            physics: ClampingScrollPhysics(),
-            itemCount: queryResults.length,
-            itemBuilder: (context, index) {
-              AnExercise exercise = exercises[queryResults[index]];
-              return ExerciseTile(
-                key: ValueKey(exercise.id),
-                exercise: exercise,
-                tileInSearch: true,
-              );
-            },
-            separatorBuilder: (context, index) => ListTileDivider(),
-          ),
-        ),
-      ],
+    return Card(
+      margin: EdgeInsets.all(0),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(24.0),
+      ),
+      clipBehavior: Clip.antiAlias,
+      child: ListView.separated(
+        shrinkWrap: true,
+        physics: ClampingScrollPhysics(),
+        itemCount: queryResults.length,
+        itemBuilder: (context, index) {
+          AnExercise exercise = exercises[queryResults[index]];
+          return ExerciseTile(
+            key: ValueKey(exercise.id),
+            exercise: exercise,
+            tileInSearch: true,
+          );
+        },
+        separatorBuilder: (context, index) => ListTileDivider(),
+      ),
     );
   }
 }

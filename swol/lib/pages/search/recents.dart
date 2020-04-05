@@ -56,41 +56,41 @@ class RecentsOrResultsHeader extends StatelessWidget {
                 Text(
                   (showRecentsSearches) ? "Recent searches" : "Exercises",
                 ),
-                (showRecentsSearches) ? Container()
-                : Text(
-                  resultCount.toString() + " Found",
-                ),
+                (showRecentsSearches)
+                    ? Container()
+                    : Text(
+                        resultCount.toString() + " Found",
+                      ),
               ],
             ),
           ),
         ),
         Positioned(
-          left: 0,
-          right: 0,
-          bottom: 0,
-          child: Container(
-            width: MediaQuery.of(context).size.width,
-            child: Transform.translate(
-              offset: Offset(0, 24),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  CurvedCorner(
-                    isTop: true, 
-                    isLeft: true, 
-                    cornerColor: Theme.of(context).primaryColorDark,
-                  ),
-                  CurvedCorner(
-                    isTop: true, 
-                    isLeft: false, 
-                    cornerColor: Theme.of(context).primaryColorDark,
-                  ),
-                ],
+            left: 0,
+            right: 0,
+            bottom: 0,
+            child: Container(
+              width: MediaQuery.of(context).size.width,
+              child: Transform.translate(
+                offset: Offset(0, 24),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    CurvedCorner(
+                      isTop: true,
+                      isLeft: true,
+                      cornerColor: Theme.of(context).primaryColorDark,
+                    ),
+                    CurvedCorner(
+                      isTop: true,
+                      isLeft: false,
+                      cornerColor: Theme.of(context).primaryColorDark,
+                    ),
+                  ],
+                ),
               ),
-            ),
-          )
-        ),
+            )),
       ],
     );
   }
@@ -110,36 +110,34 @@ class RecentSearches extends StatelessWidget {
   final ValueNotifier<bool> removalLocked = new ValueNotifier<bool>(false);
 
   //once search item built
-  buildSearch(
-    BuildContext context, 
-    int index, 
-    Animation<double> animation,
-    {String passedTerm}
-  ){
+  buildSearch(BuildContext context, int index, Animation<double> animation,
+      {String passedTerm}) {
     //make sure we have a valid search term
     String searchTerm;
-    if(passedTerm != null) searchTerm = passedTerm;
-    else{
-      if(SearchesData.getRecentSearches().length == 0){
+    if (passedTerm != null)
+      searchTerm = passedTerm;
+    else {
+      if (SearchesData.getRecentSearches().length == 0) {
         searchTerm = "";
-      }
-      else searchTerm = SearchesData.getRecentSearches()[index];
+      } else
+        searchTerm = SearchesData.getRecentSearches()[index];
     }
 
     //build our widget given that search term
     return SizeTransition(
       sizeFactor: new Tween<double>(
         begin: 0,
-        end: 1, 
-      ).animate(animation), 
+        end: 1,
+      ).animate(animation),
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           Card(
             margin: EdgeInsets.all(0),
             child: ListTile(
               contentPadding: EdgeInsets.only(left: 16),
               dense: true,
-              onTap: (){
+              onTap: () {
                 search.text = searchTerm;
                 SearchesData.addToSearches(searchTerm);
               },
@@ -152,43 +150,45 @@ class RecentSearches extends StatelessWidget {
               trailing: Material(
                 color: Colors.transparent,
                 child: InkWell(
-                  onTap: (){
+                  onTap: () {
                     //NOTE: this should allow other deletions to complete
                     //and therefore letting us confirm lock our or not
-                    WidgetsBinding.instance.addPostFrameCallback((_){
-                      if(removalLocked.value == false){
-                        //lock removal
-                        removalLocked.value = true;
+                    WidgetsBinding.instance.addPostFrameCallback(
+                      (_) {
+                        if (removalLocked.value == false) {
+                          //lock removal
+                          removalLocked.value = true;
 
-                        //make removal
-                        AnimatedList.of(context).removeItem(
-                          index,
-                          (context, animation){
-                            return buildSearch(
-                              context, 
-                              index, 
-                              animation,
-                              passedTerm: searchTerm,
-                            );
-                          },
-                          duration: ExercisePage.transitionDuration,
-                        );
+                          //make removal
+                          AnimatedList.of(context).removeItem(
+                            index,
+                            (context, animation) {
+                              return buildSearch(
+                                context,
+                                index,
+                                animation,
+                                passedTerm: searchTerm,
+                              );
+                            },
+                            duration: ExercisePage.transitionDuration,
+                          );
 
-                        //remove the contact
-                        SearchesData.removeFromSearchesAtIndex(index);
+                          //remove the contact
+                          SearchesData.removeFromSearchesAtIndex(index);
 
-                        //NOTE: using a listener doesn't work for some reason
-                        Future.delayed(ExercisePage.transitionDuration, (){
-                          //cover edge case
-                          if(SearchesData.getRecentSearches().length == 0){
-                            updateState();
-                          }
+                          //NOTE: using a listener doesn't work for some reason
+                          Future.delayed(ExercisePage.transitionDuration, () {
+                            //cover edge case
+                            if (SearchesData.getRecentSearches().length == 0) {
+                              updateState();
+                            }
 
-                          //unlock removal
-                          removalLocked.value = false;
-                        });
-                      }
-                    });
+                            //unlock removal
+                            removalLocked.value = false;
+                          });
+                        }
+                      },
+                    );
                   },
                   child: Container(
                     padding: EdgeInsets.symmetric(
@@ -211,12 +211,8 @@ class RecentSearches extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Radius cardRadius = Radius.circular(24);
-    return ListView(
+    return Column(
       children: <Widget>[
-        //spacer for header so that the stack thing lets the curves stay above
-        Container(
-          height: 56,
-        ),
         ClipRRect(
           borderRadius: BorderRadius.only(
             topLeft: cardRadius,
@@ -229,7 +225,7 @@ class RecentSearches extends StatelessWidget {
               physics: ClampingScrollPhysics(),
               reverse: true,
               initialItemCount: SearchesData.getRecentSearches().length,
-              itemBuilder: (context, index, animation){
+              itemBuilder: (context, index, animation) {
                 return buildSearch(context, index, animation);
               },
             ),
@@ -241,13 +237,14 @@ class RecentSearches extends StatelessWidget {
             bottomRight: cardRadius,
           ),
           child: Container(
+            width: MediaQuery.of(context).size.width,
             decoration: BoxDecoration(
               color: Theme.of(context).cardColor,
             ),
             child: FlatButton(
               materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
               padding: EdgeInsets.all(0),
-              onPressed: (){
+              onPressed: () {
                 SearchesData.removeAllSearches();
                 updateState();
               },
@@ -266,7 +263,7 @@ class RecentSearches extends StatelessWidget {
               ),
             ),
           ),
-        )
+        ),
       ],
     );
   }
