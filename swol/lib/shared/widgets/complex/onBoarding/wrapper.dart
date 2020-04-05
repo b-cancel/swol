@@ -19,6 +19,7 @@ class FeatureWrapper extends StatelessWidget {
     this.prevFeature,
     this.nextFeature,
     this.doneInsteadOfNext: false,
+    this.backgroundColor: Colors.transparent,
   });
 
   final String featureID;
@@ -30,6 +31,7 @@ class FeatureWrapper extends StatelessWidget {
   final Function prevFeature;
   final Function nextFeature;
   final bool doneInsteadOfNext;
+  final Color backgroundColor;
 
   //NOTE: [1] Dismiss or [2] OnComplete are both going to be called 
   //because we HAVE TO close the current discovery feature
@@ -95,7 +97,24 @@ class FeatureWrapper extends StatelessWidget {
     return DescribedFeatureOverlay(
       featureId: featureID,
       //target
-      tapTarget: tapTarget,
+      tapTarget: Stack(
+        children: <Widget>[
+          IgnorePointer(
+            child: FloatingActionButton(
+              heroTag: null,
+              onPressed: (){},
+              backgroundColor: backgroundColor,
+              child: Text(""),
+            ),
+          ),
+          Positioned.fill(
+            child: FittedBox(
+              fit: BoxFit.contain,
+              child: tapTarget,
+            ),
+          ),
+        ],
+      ),
       targetColor: top ? Theme.of(context).primaryColor : Theme.of(context).primaryColorDark,
       //background
       title: top ? textWidget : image,

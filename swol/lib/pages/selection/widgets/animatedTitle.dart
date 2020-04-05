@@ -39,7 +39,12 @@ class AnimatedTitleAction extends StatelessWidget {
           duration: ExercisePage.transitionDuration,
           child: FeatureWrapper(
             featureID: AFeature.LearnPage.toString(),
-            tapTarget: Icon(FontAwesomeIcons.leanpub),
+            tapTarget: Padding(
+              padding: EdgeInsets.all(16),
+              child: Icon(
+                FontAwesomeIcons.leanpub,
+              ),
+            ),
             text: "Tap here to LEARN"
             + " about the concepts,"
             + " math, and science" 
@@ -99,9 +104,7 @@ class AnimatedTitle extends StatelessWidget {
           ),
           child: FeatureWrapper(
             featureID: AFeature.SwolLogo.toString(),
-            tapTarget: SwolLogo(
-              height: statusBarHeight - 16,
-            ),
+            tapTarget: SwolLogo(),
             text: "What you're going to be"
             + " after STICKING TO ANY exercise routine",
             child: SwolLogo(
