@@ -9,9 +9,23 @@ import 'package:swol/shared/widgets/simple/curvedCorner.dart';
 
 //widget
 class NoRecentSearches extends StatelessWidget {
+  NoRecentSearches({
+    @required this.statusBar,
+  });
+
+  final double statusBar;
+
   @override
   Widget build(BuildContext context) {
-    return Center(child: Text("No recent searches"));
+    double height = MediaQuery.of(context).size.height;
+
+    //build
+    return Container(
+      height: height - 56 - statusBar,
+      alignment: Alignment.center,
+      color: Theme.of(context).primaryColorDark,
+      child: Text("No recent searches"),
+    );
   }
 }
 

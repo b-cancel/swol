@@ -88,7 +88,7 @@ class _ExerciseTileLeadingState extends State<ExerciseTileLeading> {
       );
 
       //update
-      List units = dt.split(" ");
+      units = dt.split(" ");
     }
 
     //add spacing where needed

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 //plugins
 import 'package:diacritic/diacritic.dart';
+import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:swol/pages/selection/widgets/workoutSection.dart';
 
 //internal: shared
@@ -14,6 +15,8 @@ import 'package:swol/shared/structs/anExercise.dart';
 import 'package:swol/pages/search/searchesData.dart';
 import 'package:swol/pages/search/recents.dart';
 import 'package:swol/main.dart';
+import 'package:swol/shared/widgets/simple/conditional.dart';
+import 'package:swol/shared/widgets/simple/curvedCorner.dart';
 
 //widget
 class SearchExercise extends StatefulWidget {
@@ -92,98 +95,160 @@ class _SearchExerciseState extends State<SearchExercise> {
         return true; //can still pop
       },
       child: Scaffold(
-        backgroundColor: Colors.transparent,
+        backgroundColor: Theme.of(context).primaryColorDark,
         body: SafeArea(
-          child: Container(
-            color: Theme.of(context).primaryColorDark,
-            padding: EdgeInsets.symmetric(vertical: 4),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(24.0),
+          child: CustomScrollView(
+            slivers: [
+              SliverStickyHeader(
+                header: Column(
+                  children: <Widget>[
+                    SearchBar(
+                      search: search,
                     ),
-                    color: Theme.of(context).cardColor,
-                  ),
-                  width: MediaQuery.of(context).size.width,
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 12,
-                  ),
-                  child: Row(
-                    children: <Widget>[
-                      InkWell(
-                        onTap: () {
-                          App.navSpread.value = false;
-                          FocusScope.of(context).unfocus();
-                          Navigator.pop(context);
-                        },
-                        child: Padding(
-                          padding: EdgeInsets.only(right: 16.0),
-                          child: Icon(Icons.keyboard_arrow_left),
-                        ),
+                    Visibility(
+                      visible: noRecentsToShow == false,
+                      child: RecentsOrResultsHeader(
+                        showRecentsSearches: showRecentsSearches,
+                        resultCount: queryResults.length,
                       ),
-                      Flexible(
-                        child: Padding(
-                          padding: EdgeInsets.only(top: 4.0),
-                          child: TextField(
-                            scrollPadding: EdgeInsets.all(0),
-                            textInputAction: TextInputAction.search,
-                            onSubmitted: (str) {
-                              if (search.text != null && search.text != "") {
-                                SearchesData.addToSearches(search.text);
-                              }
-                            },
-                            controller: search,
-                            autofocus: true,
-                            decoration: InputDecoration(
-                              contentPadding: EdgeInsets.all(0),
-                              border: InputBorder.none,
-                              hintText: "Search",
+                    ),
+                  ],
+                ),
+
+                /*Stack(
+                  children: <Widget>[
+                    
+                    Positioned(
+                      bottom: 0,
+                      left: 0,
+                      right: 0,
+                      child: Column(
+                        children: <Widget>[
+                          
+                          Container(
+                            width: MediaQuery.of(context).size.width,
+                            child: Transform.translate(
+                              offset: Offset(0, 24),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisSize: MainAxisSize.max,
+                                children: [
+                                  CurvedCorner(
+                                    isTop: true,
+                                    isLeft: true,
+                                    cornerColor: Colors.red,
+                                  ),
+                                  CurvedCorner(
+                                    isTop: true,
+                                    isLeft: false,
+                                    cornerColor: Colors.red,
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                */
+                sliver: SliverList(
+                  delegate: new SliverChildListDelegate(
+                    [
+                      Container(
+                        color: Theme.of(context).cardColor,
+                        child: SearchBody(
+                          noRecentsToShow: noRecentsToShow,
+                          showRecentsSearches: showRecentsSearches,
+                          search: search,
+                          queryResults: queryResults,
+                          exercises: exercises,
+                          updateState: () => setState(() {}),
+                          statusBar: MediaQuery.of(context).padding.top,
                         ),
                       ),
-                      (search.text == "")
-                          ? Icon(
-                              Icons.search,
-                            )
-                          : GestureDetector(
-                              behavior: HitTestBehavior.opaque,
-                              onTap: () {
-                                search.text = "";
-                              },
-                              child: Icon(Icons.close)),
                     ],
                   ),
                 ),
-                Expanded(
-                    child: Stack(children: [
-                  SearchBody(
-                    noRecentsToShow: noRecentsToShow,
-                    showRecentsSearches: showRecentsSearches,
-                    search: search,
-                    queryResults: queryResults,
-                    exercises: exercises,
-                    updateState: () => setState(() {}),
-                  ),
-                  Positioned(
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    child: (noRecentsToShow)
-                        ? Container()
-                        : RecentsOrResultsHeader(
-                            showRecentsSearches: showRecentsSearches,
-                            resultCount: queryResults.length,
-                          ),
-                  ),
-                ])),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+class SearchBar extends StatelessWidget {
+  const SearchBar({
+    Key key,
+    @required this.search,
+  }) : super(key: key);
+
+  final TextEditingController search;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.all(
+          Radius.circular(24.0),
+        ),
+        color: Theme.of(context).cardColor,
+      ),
+      width: MediaQuery.of(context).size.width,
+      padding: EdgeInsets.symmetric(
+        horizontal: 12,
+      ),
+      child: Row(
+        children: <Widget>[
+          InkWell(
+            onTap: () {
+              App.navSpread.value = false;
+              FocusScope.of(context).unfocus();
+              Navigator.pop(context);
+            },
+            child: Padding(
+              padding: EdgeInsets.only(right: 16.0),
+              child: Icon(Icons.keyboard_arrow_left),
+            ),
+          ),
+          Flexible(
+            child: Padding(
+              padding: EdgeInsets.only(top: 4.0),
+              child: TextField(
+                scrollPadding: EdgeInsets.all(0),
+                textInputAction: TextInputAction.search,
+                onSubmitted: (str) {
+                  if (search.text != null && search.text != "") {
+                    SearchesData.addToSearches(search.text);
+                  }
+                },
+                controller: search,
+                autofocus: true,
+                decoration: InputDecoration(
+                  contentPadding: EdgeInsets.all(0),
+                  border: InputBorder.none,
+                  hintText: "Search",
+                ),
+              ),
+            ),
+          ),
+          Conditional(
+            condition: (search.text == ""),
+            ifTrue: Icon(
+              Icons.search,
+            ),
+            ifFalse: GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              onTap: () {
+                search.text = "";
+              },
+              child: Icon(Icons.close),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -198,6 +263,7 @@ class SearchBody extends StatelessWidget {
     @required this.exercises,
     @required this.queryResults,
     @required this.updateState,
+    @required this.statusBar,
   }) : super(key: key);
 
   final bool noRecentsToShow;
@@ -206,11 +272,15 @@ class SearchBody extends StatelessWidget {
   final TextEditingController search;
   final List<int> queryResults;
   final Function updateState;
+  final double statusBar;
 
   @override
   Widget build(BuildContext context) {
-    if (noRecentsToShow)
-      return NoRecentSearches();
+    if (noRecentsToShow){
+      return NoRecentSearches(
+        statusBar: statusBar,
+      );
+    }
     else {
       if (showRecentsSearches) {
         return RecentSearches(
