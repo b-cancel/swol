@@ -773,6 +773,45 @@ class _ExerciseListState extends State<ExerciseList> {
             showMicroseconds: false,
             len: 1, //medium
           );
+
+          //only use short length stuff if there is only one thing to show
+          //better for scaling and such
+          if(title.contains(" ")){
+            //make sure only the last couples things
+            List items = title.split(" ");
+
+            //we will be good no matter what
+            if(items.length == 2){
+              title = DurationFormat.format(
+                timeSince,
+                showMinutes: false,
+                showSeconds: false,
+                showMilliseconds: false,
+                showMicroseconds: false,
+                len: 0, //medium
+              );
+            }
+            else{ //remove hours for starters
+              if(title.contains("h")){
+                title = DurationFormat.format(
+                  timeSince,
+                  //---
+                  showHours: false,
+                  //---
+                  showMinutes: false,
+                  showSeconds: false,
+                  showMilliseconds: false,
+                  showMicroseconds: false,
+                  len: 0, //medium
+                );
+              }
+
+              //NOTE: now only years, months, weeks, days
+              //for most people all of which are relevant
+            }
+          }
+
+          //gen subtitle
           subtitle = "on a " + DurationFormat.weekDayToString[oldestDT.weekday];
         } else {
           title = LastTimeStamp.timeStampTypeToString(sectionType);
