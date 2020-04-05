@@ -241,27 +241,30 @@ class _FunctionDropDownState extends State<FunctionDropDown> {
                         : Colors.white.withOpacity(0.75),
                   ),
                 ),
-                Visibility(
-                  visible: selected == false &&
-                      (functionID == idAtStart || functionID == idAtEnd),
-                  child: Padding(
-                    padding: EdgeInsets.only(
-                      right: 8.0,
-                    ),
-                    child: Conditional(
-                      condition: functionID == idAtEnd,
-                      ifTrue: Text(
-                        "Higher 1RM Estimates",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
+                Flexible(
+                  child: Visibility(
+                    visible: selected == false &&
+                        (functionID == idAtStart || functionID == idAtEnd),
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                        right: 8.0,
                       ),
-                      ifFalse: Text(
-                        "Lower 1RM Estimates",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
+                      child: Conditional(
+                        condition: functionID == idAtEnd,
+                        ifTrue: Text(
+                          "Higher E-1RM",
+                          textAlign: TextAlign.right,
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                        ifFalse: Text(
+                          "Lower E-1RM",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
                         ),
                       ),
                     ),

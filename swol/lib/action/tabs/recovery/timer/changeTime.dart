@@ -191,9 +191,14 @@ class _ChangeRecoveryTimeWidgetState extends State<ChangeRecoveryTimeWidget> {
             ),
             child: Column(
               children: <Widget>[
-                RecoveryTimePicker(
-                  duration: widget.recoveryPeriod,
-                  darkTheme: false,
+                MediaQuery(
+                  data: MediaQuery.of(context).copyWith(
+                    textScaleFactor: 1.0,
+                  ),
+                  child: RecoveryTimePicker(
+                    duration: widget.recoveryPeriod,
+                    darkTheme: false,
+                  ),
                 ),
                 MinsSecsBelowTimePicker(
                   duration: widget.recoveryPeriod,

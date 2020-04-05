@@ -86,6 +86,7 @@ class _ChangeFunctionState extends State<ChangeFunction> {
                     ),
                     Text(
                       Functions.functions[functionID],
+                      textScaleFactor: 1,
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,

@@ -118,81 +118,86 @@ class CustomSlider extends StatelessWidget {
           ),
         ),
         Container(
-          child: FlutterSlider(
-            step: 1,
-            jump: true,
-            values: [value.value.toDouble()],
-            min: 1,
-            max: lastTick.toDouble(),
-            handlerWidth: 35,
-            handlerHeight: 35,
-            touchSize: 50,
-            handlerAnimation: FlutterSliderHandlerAnimation(
-              scale: 1.25,
+          child: MediaQuery(
+            data: MediaQuery.of(context).copyWith(
+              textScaleFactor: 1.5
             ),
-            handler: FlutterSliderHandler(
-              child: Container(
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.all(width: 2, color: Colors.black),
-                  color: isDark ? Theme.of(context).accentColor : MyTheme.dark.scaffoldBackgroundColor,
+            child: FlutterSlider(
+              step: 1,
+              jump: true,
+              values: [value.value.toDouble()],
+              min: 1,
+              max: lastTick.toDouble(),
+              handlerWidth: 35,
+              handlerHeight: 35,
+              touchSize: 50,
+              handlerAnimation: FlutterSliderHandlerAnimation(
+                scale: 1.25,
+              ),
+              handler: FlutterSliderHandler(
+                child: Container(
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(width: 2, color: Colors.black),
+                    color: isDark ? Theme.of(context).accentColor : MyTheme.dark.scaffoldBackgroundColor,
+                  ),
+                  child: Center(
+                    child: Icon(
+                      Icons.repeat, 
+                      size: 25,
+                      color: Colors.white,
+                    ),
+                  ),
                 ),
-                child: Center(
-                  child: Icon(
-                    Icons.repeat, 
-                    size: 25,
-                    color: Colors.white,
+                foregroundDecoration: BoxDecoration()
+              ),
+              tooltip: FlutterSliderTooltip(
+                alwaysShowTooltip: true,
+                textStyle: TextStyle(
+                  fontSize: 16, 
+                  fontWeight: FontWeight.bold,
+                  color: isDark ? Colors.white : Colors.black,
+                ),
+                boxStyle: FlutterSliderTooltipBox(
+                  decoration: BoxDecoration(
+                    //color: Theme.of(context).backgroundColor,
+                  )
+                ),
+                numberFormat: intl.NumberFormat(),
+              ),
+              trackBar: FlutterSliderTrackBar(
+                activeTrackBarHeight: 16,
+                inactiveTrackBarHeight: 16,
+                //NOTE: They need their own outline to cover up mid division of background
+                inactiveTrackBar: BoxDecoration(
+                  color: tickColor,
+                  border: Border(
+                    top: BorderSide(width: 2, color: Colors.black),
+                    bottom: BorderSide(width: 2, color: Colors.black),
+                  ),
+                ),
+                activeTrackBar: BoxDecoration(
+                  color: Theme.of(context).accentColor,
+                  border: Border(
+                    top: BorderSide(width: 2, color: Colors.black),
+                    bottom: BorderSide(width: 2, color: Colors.black),
                   ),
                 ),
               ),
-              foregroundDecoration: BoxDecoration()
+              //NOTE: hatch marks don't work unfortunately
+              onDragging: (handlerIndex, lowerValue, upperValue) {
+                onChange(handlerIndex, lowerValue, upperValue);
+              },
+              //NOTE: primarily so tapping activates the changes
+              //tapping the area runs onDragStarted and onDragCompleted
+              //but we only really need one
+              //and its a nice bonus that
+              //when ur dragging and you finish dragging
+              //you are made aware with a little vibration
+              onDragCompleted: (handlerIndex, lowerValue, upperValue) {
+                onChange(handlerIndex, lowerValue, upperValue);
+              },
             ),
-            tooltip: FlutterSliderTooltip(
-              alwaysShowTooltip: true,
-              textStyle: TextStyle(
-                fontSize: 16, 
-                fontWeight: FontWeight.bold,
-                color: isDark ? Colors.white : Colors.black,
-              ),
-              boxStyle: FlutterSliderTooltipBox(
-                decoration: BoxDecoration(
-                  //color: Theme.of(context).backgroundColor,
-                )
-              ),
-              numberFormat: intl.NumberFormat(),
-            ),
-            trackBar: FlutterSliderTrackBar(
-              activeTrackBarHeight: 16,
-              inactiveTrackBarHeight: 16,
-              //NOTE: They need their own outline to cover up mid division of background
-              inactiveTrackBar: BoxDecoration(
-                color: tickColor,
-                border: Border(
-                  top: BorderSide(width: 2, color: Colors.black),
-                  bottom: BorderSide(width: 2, color: Colors.black),
-                ),
-              ),
-              activeTrackBar: BoxDecoration(
-                color: Theme.of(context).accentColor,
-                border: Border(
-                  top: BorderSide(width: 2, color: Colors.black),
-                  bottom: BorderSide(width: 2, color: Colors.black),
-                ),
-              ),
-            ),
-            //NOTE: hatch marks don't work unfortunately
-            onDragging: (handlerIndex, lowerValue, upperValue) {
-              onChange(handlerIndex, lowerValue, upperValue);
-            },
-            //NOTE: primarily so tapping activates the changes
-            //tapping the area runs onDragStarted and onDragCompleted
-            //but we only really need one
-            //and its a nice bonus that
-            //when ur dragging and you finish dragging
-            //you are made aware with a little vibration
-            onDragCompleted: (handlerIndex, lowerValue, upperValue) {
-              onChange(handlerIndex, lowerValue, upperValue);
-            },
           ),
         ),
       ],

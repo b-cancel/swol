@@ -75,9 +75,14 @@ class RecoveryTimeWidget extends StatelessWidget {
             width: MediaQuery.of(context).size.width,
           ),
         ),
-        RecoveryTimePicker(
-          duration: recoveryPeriod,
-          darkTheme: true,
+        MediaQuery(
+          data: MediaQuery.of(context).copyWith(
+            textScaleFactor: 1.0,
+          ),
+          child: RecoveryTimePicker(
+            duration: recoveryPeriod,
+            darkTheme: true,
+          ),
         ),
         MinsSecsBelowTimePicker(
           duration: recoveryPeriod,

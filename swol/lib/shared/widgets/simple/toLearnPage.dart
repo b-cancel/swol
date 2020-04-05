@@ -181,48 +181,56 @@ class SuggestToLearnPage extends StatelessWidget {
             horizontal: 24,
             vertical: 8,
           ),
-          child: Row(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              RichText(
-                textScaleFactor: MediaQuery.of(
-                  context,
-                ).textScaleFactor,
-                text: TextSpan(
-                    style: TextStyle(
-                      color: Colors.black,
+          child: IntrinsicHeight(
+            child: Row(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                Flexible(
+                  child: RichText(
+                    textScaleFactor: MediaQuery.of(
+                      context,
+                    ).textScaleFactor,
+                    text: TextSpan(
+                      style: TextStyle(
+                        color: Colors.black,
+                      ),
+                      children: [
+                        TextSpan(
+                          text: "To Learn More\n",
+                        ),
+                        TextSpan(
+                          text: "Tap Here",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        TextSpan(
+                          text: " to visit the ",
+                        ),
+                        TextSpan(
+                          text: "Learn",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        TextSpan(
+                          text: " page",
+                        ),
+                      ],
                     ),
-                    children: [
-                      TextSpan(
-                        text: "To Learn More\n",
-                      ),
-                      TextSpan(
-                        text: "Tap Here",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      TextSpan(
-                        text: " to visit the ",
-                      ),
-                      TextSpan(
-                        text: "Learn",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      TextSpan(
-                        text: " page",
-                      ),
-                    ]),
-              ),
-              Icon(
-                FontAwesomeIcons.leanpub,
-                color: Colors.black,
-              ),
-            ],
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Icon(
+                    FontAwesomeIcons.leanpub,
+                    color: Colors.black,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

@@ -46,14 +46,14 @@ class Functions{
   static const int defaultFunctionID = 3; 
 
   static List<String> functions = [
-    "Brzycki Formula", // 0
-    "McGlothin (or Landers) Formula", // 1
-    "Almazan Formula", // 2
-    "Epley (or Baechle) Formula", // 3
-    "O'Conner Formula", // 4
-    "Wathan Formula", // 5
-    "Mayhew Formula", // 6
-    "Lombardi Formula", // 7
+    "Brzycki", // 0
+    "McGlothin (or Landers)", // 1
+    "Almazan", // 2
+    "Epley (or Baechle)", // 3
+    "O'Conner", // 4
+    "Wathan", // 5
+    "Mayhew", // 6
+    "Lombardi", // 7
   ];
 
   static Map<String, int> functionToIndex = {
