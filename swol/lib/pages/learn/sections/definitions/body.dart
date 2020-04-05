@@ -28,8 +28,8 @@ class DefinitionBody extends StatelessWidget {
           ],
         ),
         Padding(
-          padding: const EdgeInsets.only(
-            top: 16.0,
+          padding: EdgeInsets.only(
+            top: 0.0,
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
