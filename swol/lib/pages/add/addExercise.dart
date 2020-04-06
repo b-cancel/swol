@@ -79,8 +79,6 @@ class _AddExerciseState extends State<AddExercise> {
     AnExercise.defaultRepTarget,
   );
 
-  final ValueNotifier<bool> tipIsShowing = new ValueNotifier(false);
-
   final FocusNode nameFocusNode = FocusNode();
 
   final FocusNode noteFocusNode = FocusNode();
@@ -187,8 +185,12 @@ class _AddExerciseState extends State<AddExercise> {
           repTarget: repTarget,
         ),
       ),
-      TipSpacing(
-        tipIsShowing: tipIsShowing,
+      //Tip Generator with spacing
+      TipGenerator(
+        recoveryPeriod: recoveryPeriod,
+        setTarget: setTarget,
+        repTarget: repTarget,
+        isSpacer: true,
       ),
     ];
 
@@ -249,11 +251,10 @@ class _AddExerciseState extends State<AddExercise> {
                       ),
                     ),
                     TipGenerator(
-                      tipIsShowing: tipIsShowing,
                       recoveryPeriod: recoveryPeriod,
                       setTarget: setTarget,
                       repTarget: repTarget,
-                    )
+                    ),
                   ],
                 ),
               ),

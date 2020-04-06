@@ -28,29 +28,11 @@ openSnackBar(
   }
 
   //main content
-  Widget content = Row(
-    mainAxisSize: MainAxisSize.max,
-    children:[
-      Padding(
-        padding: const EdgeInsets.only(
-          right: 8.0,
-        ),
-        child: Icon(
-          icon,
-          size: 24.0,
-          color: color,
-        ),
-      ),
-      Flexible(
-        child: DefaultTextStyle(
-          style: TextStyle(
-            color: Colors.white,
-          ),
-          child: updatingMessage == null ? Text(message)
-          : UpdatingText(updatingText: updatingMessage),
-        ),
-      ),
-    ]
+  Widget content = SnackBarBody(
+    icon: icon,
+    color: color,
+    updatingMessage: updatingMessage,
+    message: message,
   );
 
   //show snackbar
@@ -77,6 +59,49 @@ openSnackBar(
       ),
     ),
   );
+}
+
+class SnackBarBody extends StatelessWidget {
+  const SnackBarBody({
+    @required this.icon,
+    @required this.color,
+    this.updatingMessage,
+    this.message,
+    Key key,
+  }) : super(key: key);
+
+  final IconData icon;
+  final Color color;
+  final ValueNotifier<String> updatingMessage;
+  final String message;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisSize: MainAxisSize.max,
+      children:[
+        Padding(
+          padding: const EdgeInsets.only(
+            right: 8.0,
+          ),
+          child: Icon(
+            icon,
+            size: 24.0,
+            color: color,
+          ),
+        ),
+        Flexible(
+          child: DefaultTextStyle(
+            style: TextStyle(
+              color: Colors.white,
+            ),
+            child: updatingMessage == null ? Text(message)
+            : UpdatingText(updatingText: updatingMessage),
+          ),
+        ),
+      ]
+    );
+  }
 }
 
 class UpdatingText extends StatefulWidget {

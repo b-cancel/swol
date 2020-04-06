@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 //plugin
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:swol/shared/widgets/simple/conditional.dart';
 
 //internal
 import 'package:swol/shared/widgets/simple/ourSnackBar.dart';
@@ -28,7 +29,7 @@ When 1 mismatch (ideally)
 
 enum TrainingID {
   Endurance, //
-  EnduranceAndHypertrophy, 
+  EnduranceAndHypertrophy,
   Hypertrophy, //
   HypertrophyAndStrength,
   Strength, //
@@ -39,91 +40,124 @@ enum TrainingID {
 
 class TipGenerator extends StatefulWidget {
   TipGenerator({
-    @required this.tipIsShowing,
     @required this.recoveryPeriod,
     @required this.setTarget,
     @required this.repTarget,
+    this.isSpacer: false,
     Key key,
   }) : super(key: key);
 
-  final ValueNotifier<bool> tipIsShowing;
   final ValueNotifier<Duration> recoveryPeriod;
   final ValueNotifier<int> setTarget;
   final ValueNotifier<int> repTarget;
+  final bool isSpacer;
 
   @override
   _TipGeneratorState createState() => _TipGeneratorState();
 }
 
 class _TipGeneratorState extends State<TipGenerator> {
-  final ValueNotifier<String> updateableTipMessage = new ValueNotifier<String>("");
+  final ValueNotifier<String> updateableTipMessage =
+      new ValueNotifier<String>("");
 
-  bool hasEndurance(TrainingID item){
-    if(item == TrainingID.All) return true;
-    else if(item == TrainingID.Endurance) return true;
-    else if(item == TrainingID.EnduranceAndHypertrophy) return true;
-    else if(item == TrainingID.StrengthAndEndurance) return true;
-    else return false;
+  bool hasEndurance(TrainingID item) {
+    if (item == TrainingID.All)
+      return true;
+    else if (item == TrainingID.Endurance)
+      return true;
+    else if (item == TrainingID.EnduranceAndHypertrophy)
+      return true;
+    else if (item == TrainingID.StrengthAndEndurance)
+      return true;
+    else
+      return false;
   }
 
-  bool hasHypertrohpy(TrainingID item){
-    if(item == TrainingID.All) return true;
-    else if(item == TrainingID.EnduranceAndHypertrophy) return true;
-    else if(item == TrainingID.Hypertrophy) return true;
-    else if(item == TrainingID.HypertrophyAndStrength) return true;
-    else return false;
+  bool hasHypertrohpy(TrainingID item) {
+    if (item == TrainingID.All)
+      return true;
+    else if (item == TrainingID.EnduranceAndHypertrophy)
+      return true;
+    else if (item == TrainingID.Hypertrophy)
+      return true;
+    else if (item == TrainingID.HypertrophyAndStrength)
+      return true;
+    else
+      return false;
   }
 
-  bool hasStrength(TrainingID item){
-    if(item == TrainingID.All) return true;
-    else if(item == TrainingID.StrengthAndEndurance) return true;
-    else if(item == TrainingID.HypertrophyAndStrength) return true;
-    else if(item == TrainingID.Strength) return true;
-    else return false;
+  bool hasStrength(TrainingID item) {
+    if (item == TrainingID.All)
+      return true;
+    else if (item == TrainingID.StrengthAndEndurance)
+      return true;
+    else if (item == TrainingID.HypertrophyAndStrength)
+      return true;
+    else if (item == TrainingID.Strength)
+      return true;
+    else
+      return false;
   }
 
   //rep target can only be endurance, hypertrophy, or strength
-  bool otherMatchesRepTarget(TrainingID repTarget, TrainingID other){
-    if(repTarget == other) return true;
-    else{ //overlaps also count as matching
+  bool otherMatchesRepTarget(TrainingID repTarget, TrainingID other) {
+    if (repTarget == other)
+      return true;
+    else {
+      //overlaps also count as matching
       //if either cover all 3 trainings then there is an obvious match
-      if(repTarget == TrainingID.All || other == TrainingID.All) return true;
-      else{ 
-        if(repTarget == TrainingID.Endurance){
+      if (repTarget == TrainingID.All || other == TrainingID.All)
+        return true;
+      else {
+        if (repTarget == TrainingID.Endurance) {
           return hasEndurance(other);
-        }
-        else if(repTarget == TrainingID.Hypertrophy){
+        } else if (repTarget == TrainingID.Hypertrophy) {
           return hasHypertrohpy(other);
-        }
-        else{
+        } else {
           return hasStrength(other);
         }
       }
     }
   }
 
-  showTheTip(String message){
-    updateableTipMessage.value = message;
-    widget.tipIsShowing.value = true;
-    openSnackBar(
-      context, 
-      Colors.yellow, 
-      FontAwesomeIcons.solidLightbulb,
-      updatingMessage: updateableTipMessage,
-      dismissible: false,
-      showForever: true,
-    );
+  updateState() {
+    if (mounted) {
+      setState(() {});
+    }
   }
 
-  updateTheTip(String message){
+  showTheTip(String message) {
     updateableTipMessage.value = message;
+    if (widget.isSpacer) {
+      updateState();
+    } else {
+      openSnackBar(
+        context,
+        Colors.yellow,
+        FontAwesomeIcons.solidLightbulb,
+        updatingMessage: updateableTipMessage,
+        dismissible: false,
+        showForever: true,
+      );
+    }
   }
 
-  hideTheTip(){
-    if(updateableTipMessage.value != ""){
+  updateTheTip(String message) {
+    updateableTipMessage.value = message;
+    if (widget.isSpacer) {
+      updateState();
+    }
+  }
+
+  hideTheTip() {
+    if (updateableTipMessage.value != "") {
       updateableTipMessage.value = "";
-      widget.tipIsShowing.value = false;
-      Scaffold.of(context).hideCurrentSnackBar();
+      if (widget.isSpacer) {
+        updateState();
+      } else {
+        //remove snack bar if any
+        Scaffold.of(context).hideCurrentSnackBar();
+      }
     }
   }
 
@@ -131,21 +165,18 @@ class _TipGeneratorState extends State<TipGenerator> {
   //once the user selects their rep target
   //their set target and recovery period match
   //since ultimately the biggest factor is reps
-  updateTip(){
+  updateTip() {
     //handle recovery period
     Duration currRecovery = widget.recoveryPeriod.value;
     TrainingID recoveryID;
-    if(currRecovery <= Duration(minutes: 1)){
+    if (currRecovery <= Duration(minutes: 1)) {
       recoveryID = TrainingID.Endurance;
-    }
-    else{
-      if(currRecovery <= Duration(minutes: 2)){
+    } else {
+      if (currRecovery <= Duration(minutes: 2)) {
         recoveryID = TrainingID.Hypertrophy;
-      }
-      else if(currRecovery <= Duration(minutes: 3)){
+      } else if (currRecovery <= Duration(minutes: 3)) {
         recoveryID = TrainingID.HypertrophyAndStrength;
-      }
-      else{
+      } else {
         recoveryID = TrainingID.Strength;
       }
     }
@@ -153,25 +184,33 @@ class _TipGeneratorState extends State<TipGenerator> {
     //handle set target
     int currSetTar = widget.setTarget.value;
     TrainingID setTargetID;
-    if(1 <= currSetTar && currSetTar <= 3){
+    if (1 <= currSetTar && currSetTar <= 3) {
       setTargetID = TrainingID.Endurance;
     }
-    if(3 <= currSetTar && currSetTar <= 5){
-      if(setTargetID == null) setTargetID = TrainingID.Hypertrophy;
-      else setTargetID = TrainingID.EnduranceAndHypertrophy;
+    if (3 <= currSetTar && currSetTar <= 5) {
+      if (setTargetID == null)
+        setTargetID = TrainingID.Hypertrophy;
+      else
+        setTargetID = TrainingID.EnduranceAndHypertrophy;
     }
-    if(4 <= currSetTar && currSetTar <= 6){
-      if(setTargetID == null) setTargetID = TrainingID.Strength;
-      else if(setTargetID == TrainingID.Hypertrophy) setTargetID = TrainingID.HypertrophyAndStrength;
-      else setTargetID = TrainingID.All;
+    if (4 <= currSetTar && currSetTar <= 6) {
+      if (setTargetID == null)
+        setTargetID = TrainingID.Strength;
+      else if (setTargetID == TrainingID.Hypertrophy)
+        setTargetID = TrainingID.HypertrophyAndStrength;
+      else
+        setTargetID = TrainingID.All;
     }
 
     //handle rep target
     int currRepTar = widget.repTarget.value;
     TrainingID repTargetID;
-    if(currRepTar <= 6) repTargetID = TrainingID.Strength;
-    else if(currRepTar <= 12) repTargetID = TrainingID.Hypertrophy;
-    else repTargetID = TrainingID.Endurance;
+    if (currRepTar <= 6)
+      repTargetID = TrainingID.Strength;
+    else if (currRepTar <= 12)
+      repTargetID = TrainingID.Hypertrophy;
+    else
+      repTargetID = TrainingID.Endurance;
 
     //find matches
     bool goodRecoveryTarget = otherMatchesRepTarget(
@@ -184,30 +223,31 @@ class _TipGeneratorState extends State<TipGenerator> {
     );
 
     //show tip if needed
-    if(goodRecoveryTarget && goodSetTarget) hideTheTip();
-    else{ //NOTE: here we point out what change should be made
+    if (goodRecoveryTarget && goodSetTarget)
+      hideTheTip();
+    else {
+      //NOTE: here we point out what change should be made
       String trainingType;
-      if(repTargetID == TrainingID.Endurance){
+      if (repTargetID == TrainingID.Endurance) {
         trainingType = "Endurance";
-      }
-      else if(repTargetID == TrainingID.Hypertrophy){
+      } else if (repTargetID == TrainingID.Hypertrophy) {
         trainingType = "Hypertrophy";
-      }
-      else trainingType = "Strength";
+      } else
+        trainingType = "Strength";
 
       //create tip text
-      String tipText = "You Rep Target indicates"
-      + " that you are doing " + trainingType + " Training\n"
-      + "But you have the wrong ";
+      String tipText = "You Rep Target indicates" +
+          " that you are doing " +
+          trainingType +
+          " Training\n" +
+          "But you have the wrong ";
 
       //specifics
-      if(goodRecoveryTarget == false && goodSetTarget == false){
+      if (goodRecoveryTarget == false && goodSetTarget == false) {
         tipText += "Recovery Period and Set Target";
-      } 
-      else if(goodRecoveryTarget == false){
+      } else if (goodRecoveryTarget == false) {
         tipText += "Recovery Period";
-      }
-      else{
+      } else {
         tipText += "Set Target";
       }
 
@@ -215,8 +255,11 @@ class _TipGeneratorState extends State<TipGenerator> {
       tipText += " for that type of training";
 
       //show or update
-      if(updateableTipMessage.value == "") showTheTip(tipText);
-      else updateTheTip(tipText);
+      if (updateableTipMessage.value == "") {
+        showTheTip(tipText);
+      } else {
+        updateTheTip(tipText);
+      }
     }
   }
 
@@ -243,7 +286,32 @@ class _TipGeneratorState extends State<TipGenerator> {
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Conditional(
+      condition: widget.isSpacer,
+      ifTrue: AnimatedBuilder(
+        animation: updateableTipMessage,
+        builder: (context, child) {
+          return Visibility(
+            visible: updateableTipMessage.value.length > 0,
+            child: Opacity(
+              opacity: 0,
+              child: Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: 24.0 + 8,
+                  vertical: 24,
+                ),
+                child: SnackBarBody(
+                  icon: FontAwesomeIcons.solidLightbulb,
+                  color: Colors.yellow,
+                  updatingMessage: updateableTipMessage,
+                ),
+              ),
+            ),
+          );
+        },
+      ),
+      ifFalse: Container(), //the spacer will come up as a pop up
+    );
   }
 }
 
@@ -260,18 +328,18 @@ class TipSpacing extends StatefulWidget {
 }
 
 class _TipSpacingState extends State<TipSpacing> {
-  updateState(){
-    if(mounted) setState(() {});
+  updateState() {
+    if (mounted) setState(() {});
   }
 
   @override
-  void initState() { 
+  void initState() {
     widget.tipIsShowing.addListener(updateState);
     super.initState();
   }
 
   @override
-  void dispose() { 
+  void dispose() {
     widget.tipIsShowing.removeListener(updateState);
     super.dispose();
   }
