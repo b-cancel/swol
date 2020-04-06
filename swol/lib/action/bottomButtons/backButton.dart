@@ -61,18 +61,15 @@ class _BottomBackButtonState extends State<BottomBackButton> {
       mainAxisSize: MainAxisSize.max,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
-        //the section that the "finish with this exercise"
-        //button might be at
-        Expanded(
-          child: Container(),
-        ),
         //the button that looks small but is actually very tall
         Conditional(
           //only happens on the first page
           condition: (widget.backAction == null),
+          //just the curve so the next button looks whole
+          //NOTE: doesnt care about done button height
           ifTrue: Padding(
-            padding: EdgeInsets.symmetric(
-              vertical: 24,
+            padding: EdgeInsets.only(
+              bottom: 24,
             ),
             child: Stack(
               children: <Widget>[
@@ -86,6 +83,7 @@ class _BottomBackButtonState extends State<BottomBackButton> {
               ],
             ),
           ),
+          //actualy the bottom button
           ifFalse: Tooltip(
             message: backToWhere(),
             child: GestureDetector(
@@ -105,19 +103,23 @@ class _BottomBackButtonState extends State<BottomBackButton> {
                 //MUST HAPPEN AFTER so that pageNumber hasn't yet updated
                 widget.backAction();
               },
-              child: Padding(
-                padding: EdgeInsets.symmetric(
-                  vertical: 24,
+              child: Container(
+                padding: EdgeInsets.only(
+                  top: ExercisePage.mainButtonsHeight,
+                  bottom: 24,
                 ),
-                child: Stack(
-                  children: <Widget>[
-                    BottomRight(
-                      color: widget.color,
-                    ),
-                    ActualBackButton(
-                      verticalPadding: widget.verticalPadding,
-                    ),
-                  ],
+                child: Container(
+                  height: ExercisePage.mainButtonsHeight,
+                  child: Stack(
+                    children: <Widget>[
+                      BottomRight(
+                        color: widget.color,
+                      ),
+                      ActualBackButton(
+                        verticalPadding: widget.verticalPadding,
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -161,21 +163,20 @@ class ActualBackButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(
-        left: 24, //extra spacing for big fingers
-      ),
+    return Center(
       child: Padding(
-        padding: EdgeInsets.symmetric(
-          vertical: verticalPadding,
+        padding: EdgeInsets.only(
+          left: 24, //extra spacing for big fingers
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            Text(
-              "Back",
-              style: TextStyle(
-                color: Colors.white,
+            Flexible(
+              child: Text(
+                "Back",
+                style: TextStyle(
+                  color: Colors.white,
+                ),
               ),
             ),
             Icon(Icons.arrow_drop_up),

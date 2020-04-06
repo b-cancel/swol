@@ -177,8 +177,11 @@ class _SuggestionState extends State<Suggestion> {
               ),
             ),
           ),
-          Container(
-            color: Colors.red,
+          Padding(
+            //for done button curve
+            padding: EdgeInsets.only(
+              top: 24,
+            ),
             child: BottomButtons(
               color: buttonsColor,
               exerciseID: widget.exercise.id,
@@ -189,6 +192,8 @@ class _SuggestionState extends State<Suggestion> {
                 textScaleFactor: MediaQuery.of(
                   context,
                 ).textScaleFactor,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
                 text: TextSpan(
                   children: [
                     TextSpan(

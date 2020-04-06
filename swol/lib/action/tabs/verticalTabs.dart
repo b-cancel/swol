@@ -87,7 +87,7 @@ class _VerticalTabsState extends State<VerticalTabs>
   @override
   Widget build(BuildContext context) {
     //both values grabbed raw
-    double bottomPadding = 24.0 + 24.0 + ExercisePage.doneButtonHeight + 24;
+    double bottomPadding = 24.0 + 24.0 + ExercisePage.mainButtonsHeight + 24;
     double topPadding = 16; //TODO: is this actually status bar height
 
     //travel bottomPadding + bottomPadding + topPadding in 300 ms

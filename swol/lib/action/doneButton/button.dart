@@ -73,7 +73,7 @@ class DoneButton extends StatelessWidget {
           ),
           //actual button
           Container(
-            height: ExercisePage.doneButtonHeight,
+            height: ExercisePage.mainButtonsHeight,
             child: Hero(
               tag: "exerciseComplete" + exerciseID.toString(),
               createRectTween: (begin, end) {
@@ -86,7 +86,7 @@ class DoneButton extends StatelessWidget {
                   duration: ExercisePage.transitionDuration,
                   transform: newTransform,
                   decoration: newBoxDecoration,
-                  height: ExercisePage.doneButtonHeight,
+                  height: ExercisePage.mainButtonsHeight,
                   padding: EdgeInsets.only(
                     left: 8,
                     right: 16,

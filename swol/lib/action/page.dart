@@ -29,7 +29,7 @@ class ExercisePage extends StatelessWidget {
 
   final AnExercise exercise;
 
-  static double doneButtonHeight = 36;
+  static double mainButtonsHeight = 36;
 
   //static vars used through out initializaed with their default values
   static GlobalKey globalKey = GlobalKey();

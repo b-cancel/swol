@@ -42,18 +42,24 @@ class TextWithCorners extends StatelessWidget {
           Positioned(
             left: 0,
             bottom: 0,
-            child: Corner(
-              cornerColor: useAccent ? Theme.of(context).accentColor : Theme.of(context).cardColor,
-              cardRadius: radius,
-              isLeft: true,
+            child: Visibility(
+              visible: radius != null,
+              child: Corner(
+                cornerColor: useAccent ? Theme.of(context).accentColor : Theme.of(context).cardColor,
+                cardRadius: radius,
+                isLeft: true,
+              ),
             ),
           ),
           Positioned(
             right: 0,
             bottom: 0,
-            child: Corner(
-              cardRadius: radius,
-              cornerColor: useAccent ? Theme.of(context).accentColor : Theme.of(context).cardColor,
+            child: Visibility(
+              visible: radius != null,
+              child: Corner(
+                cardRadius: radius,
+                cornerColor: useAccent ? Theme.of(context).accentColor : Theme.of(context).cardColor,
+              ),
             ),
           ),
         ],
