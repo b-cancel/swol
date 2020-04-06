@@ -137,24 +137,14 @@ class _VerticalTabsState extends State<VerticalTabs>
             Container(
               height: panelHeight,
               child: SingleChildScrollView(
-                child: ConstrainedBox(
-                  constraints: BoxConstraints(
-                    minHeight: panelHeight,
-                  ),
-                  child: Container(
-                    color: Colors.green,
-                  ),
+                child: Suggestion(
+                  panelHeight: panelHeight,
+                  exercise: widget.exercise,
+                  heroUp: goalSetUp,
+                  heroAnimTravel: totalTravel,
+                  functionIDToWeightFromRT: functionIDToWeightFromRT,
                 ),
               ),
-
-              /*
-                  Suggestion(
-                          exercise: widget.exercise,
-                          heroUp: goalSetUp,
-                          heroAnimTravel: totalTravel,
-                          functionIDToWeightFromRT: functionIDToWeightFromRT,
-                        ),
-                  */
             ),
             SetRecord(
               exercise: widget.exercise,
