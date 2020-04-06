@@ -188,28 +188,22 @@ class _SuggestionState extends State<Suggestion> {
               forwardAction: () {
                 ExercisePage.pageNumber.value = 1;
               },
-              forwardActionWidget: RichText(
-                textScaleFactor: MediaQuery.of(
-                  context,
-                ).textScaleFactor,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                text: TextSpan(
-                  children: [
-                    TextSpan(
-                      text: timerNotStarted ? "Record" : "View",
+              forwardActionWidget: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    timerNotStarted ? "Record" : "View",
+                  ),
+                  Text(
+                    " Set " + setsPassed.toString(),
+                    style: TextStyle(
+                      fontWeight: FontWeight.w900,
                     ),
-                    TextSpan(
-                      text: " Set " + setsPassed.toString(),
-                      style: TextStyle(
-                        fontWeight: FontWeight.w900,
-                      ),
-                    ),
-                    TextSpan(
-                      text: "/" + widget.exercise.setTarget.toString(),
-                    ),
-                  ],
-                ),
+                  ),
+                  Text(
+                    "/" + widget.exercise.setTarget.toString(),
+                  ),
+                ],
               ),
             ),
           ),
