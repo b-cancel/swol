@@ -128,12 +128,25 @@ class _SuggestionState extends State<Suggestion> {
 
     //build
     return Column(
+      mainAxisSize: MainAxisSize.max,
       children: <Widget>[
+        /*
         Container(
           height: 200,
           color: Colors.red,
           width: MediaQuery.of(context).size.width,
         )
+        */
+        Expanded(
+          child: FittedBox(
+            fit: BoxFit.fitHeight,
+            child: Container(
+              height: 1,
+              width: MediaQuery.of(context).size.width,
+              color: Colors.red,
+            ),
+          ),
+        ),
         /*
         Expanded(
           child: Padding(
@@ -185,6 +198,7 @@ class _SuggestionState extends State<Suggestion> {
             ),
           ),
         ),
+        */
         BottomButtons(
           color: buttonsColor,
           exerciseID: widget.exercise.id,
@@ -213,7 +227,6 @@ class _SuggestionState extends State<Suggestion> {
             ),
           ),
         ),
-        */
       ],
     );
   }

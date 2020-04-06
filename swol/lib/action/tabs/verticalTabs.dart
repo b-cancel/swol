@@ -87,7 +87,8 @@ class _VerticalTabsState extends State<VerticalTabs>
   @override
   Widget build(BuildContext context) {
     //both values grabbed raw
-    double bottomPadding = 24.0 + 24.0 + 40.0 + 24;
+    double doneButtonHeight = 40;
+    double bottomPadding = 24.0 + 24.0 + doneButtonHeight + 24;
     double topPadding = 16;
 
     //travel bottomPadding + bottomPadding + toPadding in 300 ms
@@ -112,6 +113,7 @@ class _VerticalTabsState extends State<VerticalTabs>
           physics: NeverScrollableScrollPhysics(),
           scrollDirection: Axis.vertical,
           children: <Widget>[
+            /*
             ClipRRect(
               //clipping so "hero" doesn't show up in the other page
               child: Container(
@@ -130,6 +132,29 @@ class _VerticalTabsState extends State<VerticalTabs>
                   ),
                 ),
               ),
+            ),
+            */
+            Container(
+              height: panelHeight,
+              child: SingleChildScrollView(
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(
+                    minHeight: panelHeight,
+                  ),
+                  child: Container(
+                    color: Colors.green,
+                  ),
+                ),
+              ),
+
+              /*
+                  Suggestion(
+                          exercise: widget.exercise,
+                          heroUp: goalSetUp,
+                          heroAnimTravel: totalTravel,
+                          functionIDToWeightFromRT: functionIDToWeightFromRT,
+                        ),
+                  */
             ),
             SetRecord(
               exercise: widget.exercise,

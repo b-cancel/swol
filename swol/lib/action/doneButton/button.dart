@@ -28,11 +28,13 @@ class DoneButton extends StatelessWidget {
   //build
   @override
   Widget build(BuildContext context) {
+    double doneButtonHeight = 40; //12 + 16 + 12
+
     //max travel distance
     List<double> widthBS = measurementToGoldenRatioBS(
       MediaQuery.of(context).size.width,
     );
-    
+
     //calculate the offset
     double xOffset = show ? 0 : -widthBS[1];
     Matrix4 newTransform = Matrix4.translationValues(
@@ -73,7 +75,7 @@ class DoneButton extends StatelessWidget {
           ),
           //actual button
           Container(
-            height: 48,
+            height: doneButtonHeight,
             child: Hero(
               tag: "exerciseComplete" + exerciseID.toString(),
               createRectTween: (begin, end) {
@@ -86,7 +88,7 @@ class DoneButton extends StatelessWidget {
                   duration: ExercisePage.transitionDuration,
                   transform: newTransform,
                   decoration: newBoxDecoration,
-                  height: 48,
+                  height: doneButtonHeight,
                   padding: EdgeInsets.only(
                     left: 8,
                     right: 16,
