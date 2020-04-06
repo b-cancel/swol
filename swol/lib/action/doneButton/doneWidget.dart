@@ -240,42 +240,57 @@ class _FloatingDoneButtonState extends State<FloatingDoneButton> {
       //to the top of the visual button
       child: Visibility(
         visible: fullyHidden ? false : true,
-        child: Tooltip(
-          message: message,
-          child: GestureDetector(
-            behavior: showButton == false
-                ? HitTestBehavior.translucent
-                : HitTestBehavior.opaque,
-            onTap: showButton == false
-                ? null
-                : () {
-                    completeSets(
-                      setsPassedFromHere,
-                      //only if we forgot to finish are temps ALREADY null
-                      setTempsToNull: completionType != Complete.ForgotToFinish,
-                      //only if we are completing under normal circumstances
-                      //do we also have to copy the temp variables and save them to last
-                      tempToLast: completionType == Complete.Normal,
-                    );
-                  },
-            child: Padding(
-              padding: EdgeInsets.only(
-                //the peaking card is 24, the button is 36 = 60
-                //our curve is 24, so we need to add the 36
-                //  so the done button is always on top of the bottom buttons
-                bottom: 36,
-              ),
-              child: Theme(
-                data: MyTheme.dark,
-                child: WrappedInDarkness(
-                  showButton: showButton,
-                  cardColor: cardColor,
-                  setsPassedFromHere: setsPassedFromHere,
-                  excerciseID: widget.exercise.id,
-                  animationCurve: widget.animationCurve,
+        child: Padding(
+          padding: EdgeInsets.only(
+            //the peaking card is 24, the button is 36 = 60
+            //our curve is 24, so we need to add the 36
+            //  so the done button is always on top of the bottom buttons
+            bottom: 36,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Tooltip(
+                message: message,
+                child: Column(
+                  children: <Widget>[
+                    GestureDetector(
+                      behavior: showButton == false
+                          ? HitTestBehavior.translucent
+                          : HitTestBehavior.opaque,
+                      onTap: showButton == false
+                          ? null
+                          : () {
+                              completeSets(
+                                setsPassedFromHere,
+                                //only if we forgot to finish are temps ALREADY null
+                                setTempsToNull: completionType != Complete.ForgotToFinish,
+                                //only if we are completing under normal circumstances
+                                //do we also have to copy the temp variables and save them to last
+                                tempToLast: completionType == Complete.Normal,
+                              );
+                            },
+                      child: Theme(
+                        data: MyTheme.dark,
+                        child: WrappedInDarkness(
+                          showButton: showButton,
+                          cardColor: cardColor,
+                          setsPassedFromHere: setsPassedFromHere,
+                          excerciseID: widget.exercise.id,
+                          animationCurve: widget.animationCurve,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
-            ),
+              DoneCorner(
+                show: showButton,
+                color: cardColor,
+                animationCurve: widget.animationCurve,
+                isTop: false,
+              ),
+            ],
           ),
         ),
       ),
@@ -371,28 +386,18 @@ class WrappedInDarkness extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        //must be height of 24
         DoneCorner(
           show: showButton,
           color: cardColor,
           animationCurve: animationCurve,
           isTop: true,
         ),
-        //TODO: make it 56
-        //must be height of 40
         DoneButton(
           show: showButton,
           color: cardColor,
           setsPassed: setsPassedFromHere,
           exerciseID: excerciseID,
           animationCurve: animationCurve,
-        ),
-        //must be height of 24
-        DoneCorner(
-          show: showButton,
-          color: cardColor,
-          animationCurve: animationCurve,
-          isTop: false,
         ),
       ],
     );
