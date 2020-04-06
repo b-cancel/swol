@@ -1,6 +1,7 @@
 //flutter
 import 'package:flutter/material.dart';
 import 'package:swol/action/page.dart';
+import 'package:swol/shared/functions/goldenRatio.dart';
 
 //internal
 import 'package:swol/shared/widgets/simple/heros/curveMod.dart';
@@ -27,9 +28,13 @@ class DoneButton extends StatelessWidget {
   //build
   @override
   Widget build(BuildContext context) {
+    //max travel distance
+    List<double> widthBS = measurementToGoldenRatioBS(
+      MediaQuery.of(context).size.width,
+    );
+    
     //calculate the offset
-    double halfOfScreen = MediaQuery.of(context).size.width / 2;
-    double xOffset = show ? 0 : -halfOfScreen;
+    double xOffset = show ? 0 : -widthBS[1];
     Matrix4 newTransform = Matrix4.translationValues(
       xOffset,
       0,
@@ -50,82 +55,97 @@ class DoneButton extends StatelessWidget {
     Color fontColor = (color == Colors.red) ? Colors.black : Colors.white;
 
     //build
-    return Stack(
-      children: <Widget>[
-        Positioned.fill(
-          child: AnimatedContainer(
-            duration: ExercisePage.transitionDuration,
-            curve: animationCurve,
-            transform: newTransform,
-            decoration: newBoxDecoration,
+    return ConstrainedBox(
+      constraints: BoxConstraints(
+        maxWidth: widthBS[1],
+        minWidth: 0,
+      ),
+      child: Stack(
+        children: <Widget>[
+          //TODO: we might not even need this
+          Positioned.fill(
+            child: AnimatedContainer(
+              duration: ExercisePage.transitionDuration,
+              curve: animationCurve,
+              transform: newTransform,
+              decoration: newBoxDecoration,
+            ),
           ),
-        ),
-        Hero(
-          tag: "exerciseComplete" + exerciseID.toString(),
-          createRectTween: (begin, end) {
-            return CustomRectTween(a: begin, b: end);
-          },
-          child: FittedBox(
-            fit: BoxFit.contain,
-            child: Material(
-              color: Colors.transparent,
-              child: AnimatedContainer(
-                curve: animationCurve,
-                duration: ExercisePage.transitionDuration,
-                transform: newTransform,
-                decoration: newBoxDecoration,
-                padding: EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 8,
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    Icon(
-                      Icons.arrow_left,
-                      color: fontColor,
-                    ),
-                    Conditional(
-                      condition: color == Colors.red,
-                      ifTrue: Text(
-                        "Delete This Set",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                        ),
+          //actual button
+          Container(
+            height: 48,
+            child: Hero(
+              tag: "exerciseComplete" + exerciseID.toString(),
+              createRectTween: (begin, end) {
+                return CustomRectTween(a: begin, b: end);
+              },
+              child: Material(
+                color: Colors.transparent,
+                child: AnimatedContainer(
+                  curve: animationCurve,
+                  duration: ExercisePage.transitionDuration,
+                  transform: newTransform,
+                  decoration: newBoxDecoration,
+                  height: 48,
+                  padding: EdgeInsets.only(
+                    left: 8,
+                    right: 16,
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Icon(
+                        Icons.arrow_left,
+                        color: fontColor,
                       ),
-                      ifFalse: RichText(
-                        textScaleFactor: MediaQuery.of(
-                          context,
-                        ).textScaleFactor,
-                        text: TextSpan(
-                          style: TextStyle(
-                            color: fontColor,
+                      Flexible(
+                        child: Conditional(
+                          condition: color == Colors.red,
+                          ifTrue: Text(
+                            "Delete This Set",
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                            ),
                           ),
-                          children: [
-                            TextSpan(
-                              text: setsPassed.toString() +
-                                  " Set" +
-                                  (setsPassed == 1 ? "" : "s"),
+                          ifFalse: RichText(
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            textScaleFactor: MediaQuery.of(
+                              context,
+                            ).textScaleFactor,
+                            text: TextSpan(
                               style: TextStyle(
-                                fontWeight: FontWeight.w900,
+                                color: fontColor,
                               ),
+                              children: [
+                                TextSpan(
+                                  text: setsPassed.toString() +
+                                      " Set" +
+                                      (setsPassed == 1 ? "" : "s"),
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w900,
+                                  ),
+                                ),
+                                TextSpan(
+                                  text: " Finished",
+                                  style: TextStyle(),
+                                ),
+                              ],
                             ),
-                            TextSpan(
-                              text: " Finished",
-                              style: TextStyle(),
-                            ),
-                          ],
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

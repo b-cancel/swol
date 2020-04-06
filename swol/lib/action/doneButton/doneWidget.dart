@@ -6,6 +6,7 @@ import 'package:swol/action/popUps/maybeUpdateSet.dart';
 import 'package:swol/action/doneButton/button.dart';
 import 'package:swol/action/doneButton/corner.dart';
 import 'package:swol/action/page.dart';
+import 'package:swol/shared/functions/goldenRatio.dart';
 
 //internal
 import 'package:swol/shared/widgets/simple/notify.dart';
