@@ -129,21 +129,21 @@ class _PercentOffState extends State<PercentOff> {
   List<double> oneRepMaxes = new List<double>(8);
   List<int> functionIdToPercentDifferences = new List<int>(8);
   List<int> functionIdToPercentDifferencesAbsolute = new List<int>(8);
-  Map<int,List<int>> absDifferenceTofunctionID = new Map<int,List<int>>();
+  Map<int, List<int>> absDifferenceTofunctionID = new Map<int, List<int>>();
   int smallestAbsDifference;
   int ourIndex;
 
-  updateOneRepMaxes(){
+  updateOneRepMaxes() {
     absDifferenceTofunctionID.clear();
 
     //do new calculations
-    for(int functionID = 0; functionID < 8; functionID++){
+    for (int functionID = 0; functionID < 8; functionID++) {
       //calc
       //NOTE: must calculate with these values since thats what the user typed
       double calculated1RM = To1RM.fromWeightAndReps(
         double.parse(ExercisePage.setWeight.value),
         int.parse(ExercisePage.setReps.value),
-        functionID, 
+        functionID,
       );
 
       //save
@@ -151,7 +151,7 @@ class _PercentOffState extends State<PercentOff> {
 
       //calc
       double calculatedDifference = calcPercentDifference(
-        ExercisePage.oneRepMaxes[functionID], 
+        ExercisePage.oneRepMaxes[functionID],
         calculated1RM,
       );
 
@@ -165,7 +165,7 @@ class _PercentOffState extends State<PercentOff> {
       functionIdToPercentDifferencesAbsolute[functionID] = absDifference;
 
       //keep counter
-      if(absDifferenceTofunctionID.containsKey(absDifference) == false){
+      if (absDifferenceTofunctionID.containsKey(absDifference) == false) {
         absDifferenceTofunctionID[absDifference] = new List<int>();
       }
       absDifferenceTofunctionID[absDifference].add(functionID);
@@ -175,27 +175,27 @@ class _PercentOffState extends State<PercentOff> {
     List<int> differences = absDifferenceTofunctionID.keys.toList();
     differences.sort();
     smallestAbsDifference = differences[0];
-    
+
     //will eventually set state
     updatePredictionID();
   }
 
-  updatePredictionID(){
+  updatePredictionID() {
     int ourID = widget.predictionID.value;
     int ourAbsPercentDifference = functionIdToPercentDifferencesAbsolute[ourID];
     ourIndex = ExercisePage.orderedIDs.value.indexOf(ourID);
-    
+
     //based on the smallest difference see if another index is closer
-    if(ourAbsPercentDifference == smallestAbsDifference){
+    if (ourAbsPercentDifference == smallestAbsDifference) {
       ExercisePage.closestIndex.value = ourIndex;
-    }
-    else{
-      List<int> potentialClosestFunctionIDs = absDifferenceTofunctionID[smallestAbsDifference];
-      if(potentialClosestFunctionIDs.length == 1){
+    } else {
+      List<int> potentialClosestFunctionIDs =
+          absDifferenceTofunctionID[smallestAbsDifference];
+      if (potentialClosestFunctionIDs.length == 1) {
         int closestFunctionID = potentialClosestFunctionIDs[0];
-        ExercisePage.closestIndex.value = ExercisePage.orderedIDs.value.indexOf(closestFunctionID);
-      }
-      else{
+        ExercisePage.closestIndex.value =
+            ExercisePage.orderedIDs.value.indexOf(closestFunctionID);
+      } else {
         //there are multiple indicies that hold the smallest percent
         //NOTE: the smallest could be 3... and 4 functions could have it
         //we narrow things down further by checking how far these indices are from me
@@ -204,17 +204,18 @@ class _PercentOffState extends State<PercentOff> {
         //so we need to keep track of a list
 
         //iterate to map out how far each index is
-        Map<int,List<int>> distToFunctionIDs = new Map<int,List<int>>();
-        for(int i = 0; i < potentialClosestFunctionIDs.length; i++){
+        Map<int, List<int>> distToFunctionIDs = new Map<int, List<int>>();
+        for (int i = 0; i < potentialClosestFunctionIDs.length; i++) {
           int potentialFunction = potentialClosestFunctionIDs[i];
-          int potentialIndex = ExercisePage.orderedIDs.value.indexOf(potentialFunction);
+          int potentialIndex =
+              ExercisePage.orderedIDs.value.indexOf(potentialFunction);
 
           //calculate distance
           int distanceFromUs = (ourIndex > potentialIndex) ? 1 : -1;
           distanceFromUs *= (ourIndex - potentialIndex);
 
           //initialize list
-          if(distToFunctionIDs.containsKey(distanceFromUs) == false){
+          if (distToFunctionIDs.containsKey(distanceFromUs) == false) {
             distToFunctionIDs[distanceFromUs] = new List<int>();
           }
 
@@ -230,16 +231,17 @@ class _PercentOffState extends State<PercentOff> {
         List<int> validFunctionIDs = distToFunctionIDs[smallestDistance];
 
         //if only one then great!
-        if(validFunctionIDs.length == 1){
+        if (validFunctionIDs.length == 1) {
           int closestFunctionID = validFunctionIDs[0];
-          ExercisePage.closestIndex.value = ExercisePage.orderedIDs.value.indexOf(closestFunctionID);
-        }
-        else{
+          ExercisePage.closestIndex.value =
+              ExercisePage.orderedIDs.value.indexOf(closestFunctionID);
+        } else {
           //get all the indices of the valid function
           List<int> validIndices = new List<int>(validFunctionIDs.length);
-          for(int index = 0; index < validFunctionIDs.length; index++){
+          for (int index = 0; index < validFunctionIDs.length; index++) {
             int functionID = validFunctionIDs[index];
-            validIndices[index] = ExercisePage.orderedIDs.value.indexOf(functionID);
+            validIndices[index] =
+                ExercisePage.orderedIDs.value.indexOf(functionID);
           }
 
           //pick the one that aims higher or the smallest one
@@ -247,9 +249,9 @@ class _PercentOffState extends State<PercentOff> {
           int smallestIndex = validIndices[0];
           //cover edge case of edge case
           //start at 1 since 0 handled
-          for(int i = 1; i < validIndices.length ; i++){
+          for (int i = 1; i < validIndices.length; i++) {
             int thisIndex = validIndices[i];
-            if(thisIndex < smallestIndex){
+            if (thisIndex < smallestIndex) {
               smallestIndex = thisIndex;
             }
           }
@@ -302,16 +304,17 @@ class _PercentOffState extends State<PercentOff> {
     //we are some distance from where we should be
     int dif = ourIndex - ExercisePage.closestIndex.value;
     print("ERROR AFTER -> dif: " + dif.toString());
-    if(dif != 0){ 
-      if(dif < 0) dif *= -1;
-      switch(dif){
-        case 1: 
-          overlayColor = Colors.red.withOpacity(0.33); 
+    if (dif != 0) {
+      if (dif < 0) dif *= -1;
+      switch (dif) {
+        case 1:
+          overlayColor = Colors.red.withOpacity(0.33);
           break;
-        case 2: 
-          overlayColor = Colors.red.withOpacity(0.66); 
+        case 2:
+          overlayColor = Colors.red.withOpacity(0.66);
           break;
-        default: overlayColor = Colors.red;
+        default:
+          overlayColor = Colors.red;
       }
     }
 
@@ -320,7 +323,7 @@ class _PercentOffState extends State<PercentOff> {
     //if met or exceeded
     bool metExpectations = percentOff > 0;
     //display just a number
-    percentOff = (percentOff < 0) ? percentOff * -1 : percentOff;     
+    percentOff = (percentOff < 0) ? percentOff * -1 : percentOff;
 
     //build
     return Column(
@@ -333,6 +336,8 @@ class _PercentOffState extends State<PercentOff> {
             ),
             child: Text(
               "Exactly",
+              //56 is big enough
+              textScaleFactor: 1,
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 56,
@@ -353,6 +358,8 @@ class _PercentOffState extends State<PercentOff> {
                         fontSize: 96,
                         wordSpacing: 0,
                       ),
+                      //96 is beig enough
+                      textScaleFactor: 1,
                     ),
                     //warns the user that they should change functions
                     Text(
@@ -363,6 +370,8 @@ class _PercentOffState extends State<PercentOff> {
                         fontSize: 96,
                         wordSpacing: 0,
                       ),
+                      //96 is beig enough
+                      textScaleFactor: 1,
                     ),
                   ],
                 ),
@@ -391,10 +400,12 @@ class _PercentOffState extends State<PercentOff> {
                         ],
                       ),
                       Text(
-                       (metExpectations) ? "higher" : "lower",
+                        (metExpectations) ? "higher" : "lower",
                         style: TextStyle(
                           fontSize: 42,
                         ),
+                        //42 is beig enough
+                        textScaleFactor: 1,
                       ),
                     ],
                   ),
@@ -406,10 +417,21 @@ class _PercentOffState extends State<PercentOff> {
         Center(
           child: Transform.translate(
             offset: Offset(0, (percentOff == 0) ? -12 : -16),
-            child: Text(
-              (percentOff == 0 ? "as" : "than") + " calculated by the",
-              style: TextStyle(
-                fontSize: 22,
+            child: Container(
+              width: MediaQuery.of(context).size.width,
+              padding: EdgeInsets.symmetric(
+                horizontal: 56.0,
+              ),
+              child: FittedBox(
+                fit: BoxFit.contain,
+                child: Text(
+                  (percentOff == 0 ? "as" : "than") + " calculated by the",
+                  textAlign: TextAlign.center,
+                  textScaleFactor: 1,
+                  style: TextStyle(
+                    fontSize: 22,
+                  ),
+                ),
               ),
             ),
           ),
@@ -419,7 +441,7 @@ class _PercentOffState extends State<PercentOff> {
   }
 }
 
-double calcPercentDifference(double last, double current){
+double calcPercentDifference(double last, double current) {
   double change = last - current;
   //so doing better than expected yeilds positive values
   return ((change / last) * 100) * -1;

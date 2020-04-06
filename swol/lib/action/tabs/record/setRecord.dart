@@ -116,7 +116,13 @@ class SetRecord extends StatelessWidget {
                 ),
                 recordSetFields,
                 Expanded(child: Container()),
-                buttonsOnBottom,
+                Padding(
+                  //padding for curve button
+                  padding: EdgeInsets.only(
+                    top: 24,
+                  ),
+                  child: buttonsOnBottom,
+                ),
               ],
             ),
           ),

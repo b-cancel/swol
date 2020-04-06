@@ -142,7 +142,7 @@ class _MakeFunctionAdjustmentState extends State<MakeFunctionAdjustment> {
 
       //if reps is still valid, then all weight estimates are valid
       allWeightEstimatesValid = repsRecordedValid;
-    } else{
+    } else {
       allWeightEstimatesValid = false;
     }
 
@@ -241,20 +241,21 @@ class _MakeFunctionAdjustmentState extends State<MakeFunctionAdjustment> {
                   children: <Widget>[
                     topBit,
                     Row(
-                        mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          CurvedCorner(
-                            isTop: true,
-                            isLeft: true, //left
-                            cornerColor: widget.topColor,
-                          ),
-                          CurvedCorner(
-                            isTop: true,
-                            isLeft: false, //right
-                            cornerColor: widget.topColor,
-                          ),
-                        ])
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        CurvedCorner(
+                          isTop: true,
+                          isLeft: true, //left
+                          cornerColor: widget.topColor,
+                        ),
+                        CurvedCorner(
+                          isTop: true,
+                          isLeft: false, //right
+                          cornerColor: widget.topColor,
+                        ),
+                      ],
+                    ),
                   ],
                 ),
               ),
@@ -287,7 +288,7 @@ class _MakeFunctionAdjustmentState extends State<MakeFunctionAdjustment> {
   //and changed valus
   updateGoal() {
     List<double> valuesToSortWith;
-    
+
     //upate the goal set
     if (allRepsEstimatesValid) {
       valuesToSortWith = repEstimates;
@@ -329,7 +330,7 @@ class _MakeFunctionAdjustmentState extends State<MakeFunctionAdjustment> {
     bool weightValid = isTextValid(ExercisePage.setWeight.value);
     bool repsValid = isTextValid(ExercisePage.setReps.value);
     bool setValid = weightValid && repsValid;
-    if(setValid) valuesToSortWith = getPercentDifferences();
+    if (setValid) valuesToSortWith = getPercentDifferences();
     updateOrderOfIDs(valuesToSortWith);
   }
 

@@ -152,7 +152,6 @@ class _RecordFieldState extends State<RecordField> {
                           textScaleFactor: 1,
                         ),
                         child: TextField(
-                          
                           //show little tick, lets you select but with no toolbar you can't do anything with it
                           //we only WOULD LIKE the user to be able to reposition their cursor
                           //nothing else

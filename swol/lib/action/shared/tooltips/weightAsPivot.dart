@@ -16,48 +16,63 @@ showWeightWeightAsPivotToolTip(context) {
       onTap: () {
         BotToast.cleanAll();
       },
-      child: RichText(
-        textScaleFactor: MediaQuery.of(
-          context,
-        ).textScaleFactor,
-        text: TextSpan(
-          children: [
-            TextSpan(
-              text: "We are using your ",
-            ),
-            TextSpan(
-              text: "Recorded Weight\n",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Wrap(
+            children: [
+              Text(
+                "We are using your ",
               ),
-            ),
-            TextSpan(
-              text: "To calculate your ",
-            ),
-            TextSpan(
-              text: "Expected Reps\n",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
+              Text(
+                "Recorded Weight",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            ),
-            TextSpan(
-              text: "This ",
-            ),
-            TextSpan(
-              text: "helps when",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
+            ],
+          ),
+          Wrap(
+            children: [
+              Text(
+                "To calculate your ",
               ),
-            ),
-            TextSpan(text: " the calculated\n"),
-            TextSpan(
-              text: "Expected Weight is Not Available",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
+              Text(
+                "Expected Reps",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            ),
-          ],
-        ),
+            ],
+          ),
+          Wrap(
+            children: [
+              Text(
+                "This ",
+              ),
+              Text(
+                "helps when",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Text(
+                " the calculated",
+              ),
+            ],
+          ),
+          Wrap(
+            children: [
+              Text(
+                "Expected Weight is Not Available",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+        ],
       ),
     ),
     direction: PreferDirection.topCenter,
@@ -73,32 +88,37 @@ showRepsWeightAsPivotToolTip(context) {
       onTap: () {
         BotToast.cleanAll();
       },
-      child: RichText(
-        textScaleFactor: MediaQuery.of(
-          context,
-        ).textScaleFactor,
-        text: TextSpan(
-          children: [
-            TextSpan(
-              text: "The ",
-            ),
-            TextSpan( 
-              text: "Expected Reps\n",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Wrap(
+            children: [
+              Text(
+                "The ",
               ),
-            ),
-            TextSpan(
-              text: "Calculated from your ",
-            ),
-            TextSpan(
-              text: "Recorded Weight",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
+              Text(
+                "Expected Reps",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            ),
-          ],
-        ),
+            ],
+          ),
+          Wrap(
+            children: [
+              Text(
+                "Calculated from your ",
+              ),
+              Text(
+                "Recorded Weight",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+        ],
       ),
     ),
     direction: PreferDirection.topCenter,

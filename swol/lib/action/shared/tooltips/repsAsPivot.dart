@@ -62,51 +62,66 @@ showRepsRepsAsPivotToolTip(context) {
       onTap: () {
         BotToast.cleanAll();
       },
-      child: RichText(
-        textScaleFactor: MediaQuery.of(
-          context,
-        ).textScaleFactor,
-        text: TextSpan(
-          children: [
-            TextSpan(
-              text: "We are using your ",
-            ),
-            TextSpan(
-              text: "Recorded Reps\n",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Wrap(
+            children: [
+              Text(
+                "We are using your ",
               ),
-            ),
-            TextSpan(
-              text: "To calculate your ",
-            ),
-            TextSpan(
-              text: "Expected Weight\n",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
+              Text(
+                "Recorded Reps",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            ),
-            TextSpan(
-              text: "This ",
-            ),
-            TextSpan(
-              text: "helps when",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
+            ],
+          ),
+          Wrap(
+            children: [
+              Text(
+                "To calculate your ",
               ),
-            ),
-            TextSpan(text: " the calculated\n"),
-            TextSpan(
-              text: "Expected Reps are Higher Or Lower",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
+              Text(
+                "Expected Weight",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            ),
-            TextSpan(
-              text: " than Recorded",
-            ),
-          ],
-        ),
+            ],
+          ),
+          Wrap(
+            children: [
+              Text(
+                "This ",
+              ),
+              Text(
+                "helps when",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Text(
+                " the calculated",
+              ),
+            ],
+          ),
+          Wrap(
+            children: [
+              Text(
+                "Expected Reps are Higher Or Lower",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Text(
+                " than Recorded",
+              ),
+            ],
+          ),
+        ],
       ),
     ),
     direction: PreferDirection.topCenter,
