@@ -141,6 +141,11 @@ class _AddExerciseState extends State<AddExercise> {
   }
   */
 
+  final ValueNotifier<String> updateableTipMessage =
+    new ValueNotifier<String>("");
+  final ValueNotifier<bool> tipIsShowing = 
+    new ValueNotifier<bool>(false);
+
   @override
   Widget build(BuildContext context) {
     //each section
@@ -186,11 +191,9 @@ class _AddExerciseState extends State<AddExercise> {
         ),
       ),
       //Tip Generator with spacing
-      TipGenerator(
-        recoveryPeriod: recoveryPeriod,
-        setTarget: setTarget,
-        repTarget: repTarget,
-        isSpacer: true,
+      TipSpacing(
+        tipIsShowing: tipIsShowing,
+        updateableTipMessage: updateableTipMessage,
       ),
     ];
 
@@ -251,6 +254,8 @@ class _AddExerciseState extends State<AddExercise> {
                       ),
                     ),
                     TipGenerator(
+                      tipIsShowing: tipIsShowing,
+                      updateableTipMessage: updateableTipMessage,
                       recoveryPeriod: recoveryPeriod,
                       setTarget: setTarget,
                       repTarget: repTarget,
