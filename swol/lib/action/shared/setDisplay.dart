@@ -56,7 +56,7 @@ class SetDisplay extends StatefulWidget {
 
 class _SetDisplayState extends State<SetDisplay> {
   updateState() {
-    WidgetsBinding.instance.addPostFrameCallback((_){
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) setState(() {});
     });
   }
@@ -128,27 +128,29 @@ class _SetDisplayState extends State<SetDisplay> {
 
     //what is our pivot
     Pivot goalSetPivot;
-    if (widget.exercise == null) { //we aren't showing the last set
-      if(ExercisePage.pageNumber.value == 0){
+    if (widget.exercise == null) {
+      //we aren't showing the last set
+      if (ExercisePage.pageNumber.value == 0) {
         goalSetPivot = Pivot.RepTarget;
-      }
-      else{
+      } else {
         bool weightValid = isTextValid(ExercisePage.setWeight.value);
         double calculatedGoalWeight = ExercisePage?.setGoalWeight?.value ?? 0;
         //NOTE: here we do round since setWeight will ALWAYS BE an integer
-        if(weightValid && int.parse(ExercisePage.setWeight.value) == calculatedGoalWeight.round()){
+        if (weightValid &&
+            int.parse(ExercisePage.setWeight.value) ==
+                calculatedGoalWeight.round()) {
           //we are using our GOAL WEIGHT as our pivot
           goalSetPivot = Pivot.Weight;
-        }
-        else{
+        } else {
           bool repsValid = isTextValid(ExercisePage.setReps.value);
           double calculatedReps = ExercisePage?.setGoalReps?.value ?? 0;
           //NOTE: here we do round since setWeight will ALWAYS BE an integer
-          if(repsValid && int.parse(ExercisePage.setReps.value) == calculatedReps.round()){
+          if (repsValid &&
+              int.parse(ExercisePage.setReps.value) == calculatedReps.round()) {
             //we are using our GOAL WEIGHT as our pivot
             goalSetPivot = Pivot.Reps;
-          }
-          else goalSetPivot = Pivot.RepTarget;
+          } else
+            goalSetPivot = Pivot.RepTarget;
         }
       }
     }
@@ -156,7 +158,8 @@ class _SetDisplayState extends State<SetDisplay> {
 
     //widget
     return AnimatedContainer(
-      duration: widget.animate ? ExercisePage.transitionDuration : Duration.zero,
+      duration:
+          widget.animate ? ExercisePage.transitionDuration : Duration.zero,
       width: MediaQuery.of(context).size.width,
       decoration: BoxDecoration(
         color: backgroundColor,
@@ -218,6 +221,7 @@ class _SetDisplayState extends State<SetDisplay> {
                             width: 4,
                           ),
                         ),
+                        //-------------------------*-------------------------
                         InkWell(
                           borderRadius: BorderRadius.all(
                             Radius.circular(6.0),
@@ -238,6 +242,7 @@ class _SetDisplayState extends State<SetDisplay> {
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
+                              //-------------------------BELOW
                               Conditional(
                                 condition: goalSetPivot != null &&
                                     goalSetPivot == Pivot.Weight,
@@ -250,11 +255,15 @@ class _SetDisplayState extends State<SetDisplay> {
                                   backgroundColor: foregroundColor,
                                   foregroundColor: backgroundColor,
                                 ),
-                                ifFalse: UpdatingSetText(
-                                  isWeight: true,
-                                  exercise: widget.exercise,
+                                ifFalse: FittedBox(
+                                  fit: BoxFit.contain,
+                                  child: UpdatingSetText(
+                                    isWeight: true,
+                                    exercise: widget.exercise,
+                                  ),
                                 ),
                               ),
+                              //-------------------------ABOVE
                               Container(
                                 alignment: Alignment.topLeft,
                                 padding: EdgeInsets.only(
@@ -297,38 +306,47 @@ class _SetDisplayState extends State<SetDisplay> {
                                 showRepsRepTargetAsPivotToolTip(context);
                             }
                           },
-                          child: Row(mainAxisSize: MainAxisSize.min, children: [
-                            Conditional(
-                              condition: goalSetPivot != null &&
-                                  goalSetPivot != Pivot.Weight,
-                              ifTrue: ButtonWrapper(
-                                usingRT: goalSetPivot == Pivot.RepTarget,
-                                child: UpdatingSetText(
-                                  isWeight: false,
-                                  exercise: widget.exercise,
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              //-------------------------BELOW
+                              Conditional(
+                                condition: goalSetPivot != null &&
+                                    goalSetPivot != Pivot.Weight,
+                                ifTrue: ButtonWrapper(
+                                  usingRT: goalSetPivot == Pivot.RepTarget,
+                                  child: UpdatingSetText(
+                                    isWeight: false,
+                                    exercise: widget.exercise,
+                                  ),
+                                  //NOTE: this is correct
+                                  backgroundColor: foregroundColor,
+                                  foregroundColor: backgroundColor,
                                 ),
-                                //NOTE: this is correct
-                                backgroundColor: foregroundColor,
-                                foregroundColor: backgroundColor,
+                                ifFalse: FittedBox(
+                                  fit: BoxFit.contain,
+                                  child: UpdatingSetText(
+                                    isWeight: false,
+                                    exercise: widget.exercise,
+                                  ),
+                                ),
                               ),
-                              ifFalse: UpdatingSetText(
-                                isWeight: false,
-                                exercise: widget.exercise,
+                              //-------------------------ABOVE
+                              Container(
+                                alignment: Alignment.topLeft,
+                                padding: EdgeInsets.only(
+                                  top: 2,
+                                ),
+                                child: Icon(
+                                  Icons.repeat,
+                                  size: 12,
+                                  color: foregroundColor,
+                                ),
                               ),
-                            ),
-                            Container(
-                              alignment: Alignment.topLeft,
-                              padding: EdgeInsets.only(
-                                top: 2,
-                              ),
-                              child: Icon(
-                                Icons.repeat,
-                                size: 12,
-                                color: foregroundColor,
-                              ),
-                            ),
-                          ]),
-                        )
+                            ],
+                          ),
+                        ),
+                        //-------------------------*-------------------------
                       ],
                     ),
                   )
@@ -451,41 +469,40 @@ class ButtonWrapper extends StatelessWidget {
                       child: FittedBox(
                         fit: BoxFit.contain,
                         child: Container(
-                          width: 24,
-                          height: 24,
-                          padding: EdgeInsets.only(
-                            top: 4,
-                            right: 2,
-                          ),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: backgroundColor,
-                              borderRadius: BorderRadius.only(
-                                topRight: Radius.circular(6.0),
-                                bottomRight: Radius.circular(6.0),
-                              ),
+                            width: 24,
+                            height: 24,
+                            padding: EdgeInsets.only(
+                              top: 4,
+                              right: 2,
                             ),
-                            padding: EdgeInsets.all(2),
-                            child: FittedBox(
-                              fit: BoxFit.contain,
-                              alignment: Alignment.center,
-                              child: Conditional(
-                                condition: usingRT, 
-                                ifTrue: Text(
-                                  "RT",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: foregroundColor,
-                                  ),
-                                ), 
-                                ifFalse: Icon(
-                                  Icons.lock,
-                                  color: foregroundColor,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: backgroundColor,
+                                borderRadius: BorderRadius.only(
+                                  topRight: Radius.circular(6.0),
+                                  bottomRight: Radius.circular(6.0),
                                 ),
                               ),
-                            ),
-                          )
-                        ),
+                              padding: EdgeInsets.all(2),
+                              child: FittedBox(
+                                fit: BoxFit.contain,
+                                alignment: Alignment.center,
+                                child: Conditional(
+                                  condition: usingRT,
+                                  ifTrue: Text(
+                                    "RT",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: foregroundColor,
+                                    ),
+                                  ),
+                                  ifFalse: Icon(
+                                    Icons.lock,
+                                    color: foregroundColor,
+                                  ),
+                                ),
+                              ),
+                            )),
                       ),
                     ),
                   ),

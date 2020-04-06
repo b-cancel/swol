@@ -53,7 +53,7 @@ class PredictionFormulaHeader extends StatelessWidget {
     return Theme(
       data: MyTheme.light,
       child: HeaderWithInfo(
-        header: "Prediction Formula",
+        header: "Formula",
         title: "Prediction Formulas",
         subtitle: "Not sure? Keep the default",
         body: PredictionFormulasPopUpBody(),

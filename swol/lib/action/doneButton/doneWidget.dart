@@ -34,7 +34,7 @@ import 'package:swol/shared/methods/theme.dart';
 //ONLY when recording the first set do we want to set it so we can use it
 //and ONLY when deleting the first set do we want to reinstate it vs simply using the default DateTime.now()
 
-enum Complete {ForgotToFinish, DeleteNewSet, Normal}
+enum Complete { ForgotToFinish, DeleteNewSet, Normal }
 
 class FloatingDoneButton extends StatefulWidget {
   FloatingDoneButton({
@@ -52,11 +52,13 @@ class FloatingDoneButton extends StatefulWidget {
 }
 
 class _FloatingDoneButtonState extends State<FloatingDoneButton> {
-  bool showButton; //show and hides entire button
-  bool fullyHidden; //required so gestures wouldn't be registered by the hidden box
+  //show and hides entire button
+  bool showButton; 
+  //required so gestures wouldn't be registered by the hidden box
+  bool fullyHidden; 
 
   //whether or not this particular page wants the button to show
-  bool shouldShow(){
+  bool shouldShow() {
     bool pageWithButton = ExercisePage.pageNumber.value != 1;
     bool nullTSC = widget.exercise.tempSetCount == null;
 
@@ -67,8 +69,11 @@ class _FloatingDoneButtonState extends State<FloatingDoneButton> {
     //for that reason when our setsPassed are equal to 0
     //we show "Delete The Set" instead
 
-    if(pageWithButton) return nullTSC == false;
-    else{ //the page that usually doesn't have a done button
+    if (pageWithButton) {
+      return nullTSC == false;
+    }
+    else {
+      //the page that usually doesn't have a done button
       //does have the done button but only for the calibration set
       //and only if all other conditions are met
       bool inCalibrationSet = widget.exercise.lastWeight == null;
@@ -76,38 +81,39 @@ class _FloatingDoneButtonState extends State<FloatingDoneButton> {
     }
   }
 
-  updateButtonVisually(bool shouldStillShow){
-    if(shouldStillShow){ //should animate in
-          //start animation position to hidden
-          showButton = false;
-          //fully unhide so animation can play
-          fullyHidden = false;
-          //reflect both of these changes
-          setState(() {});
-          
-          //wait a frame for fully hidden to regsiter
-          //so animation can then play
-          WidgetsBinding.instance.addPostFrameCallback((_){
-            showButton = true;
-            setState(() {});
-          });
-        }
-        else{ //should animate out
-          //start the animation that hides
-          showButton = false;
-          setState(() {});
+  updateButtonVisually(bool shouldStillShow) {
+    if (shouldStillShow) {
+      //should animate in
+      //start animation position to hidden
+      showButton = false;
+      //fully unhide so animation can play
+      fullyHidden = false;
+      //reflect both of these changes
+      setState(() {});
 
-          //wait for the animation to complete
-          Future.delayed(ExercisePage.transitionDuration, (){
-            //fully hide
-            fullyHidden = true;
-            setState(() {});
-          });
-        }
+      //wait a frame for fully hidden to regsiter
+      //so animation can then play
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        showButton = true;
+        setState(() {});
+      });
+    } else {
+      //should animate out
+      //start the animation that hides
+      showButton = false;
+      setState(() {});
+
+      //wait for the animation to complete
+      Future.delayed(ExercisePage.transitionDuration, () {
+        //fully hide
+        fullyHidden = true;
+        setState(() {});
+      });
+    }
   }
 
   //runs after a change in pageNumber is detected
-  updateButton(){
+  updateButton() {
     //NOTE: we wait for the transition to complete...
     //primarily because the if we reset the timer immediately
     //then while the transition is occuring you will have a scary flash or red
@@ -115,23 +121,24 @@ class _FloatingDoneButtonState extends State<FloatingDoneButton> {
     //which means we have to wait for the change ATLEAST
     //in order to properly update the done button with the pageNumber
     bool shouldShowAfterDelay = shouldShow();
-    if(ExercisePage.pageNumber.value == 0){
-      Future.delayed(ExercisePage.transitionDuration, (){
+    if (ExercisePage.pageNumber.value == 0) {
+      Future.delayed(ExercisePage.transitionDuration, () {
         bool shouldStillShow = shouldShow();
-        if(shouldShowAfterDelay == shouldStillShow){
+        if (shouldShowAfterDelay == shouldStillShow) {
           updateButtonVisually(shouldShowAfterDelay);
         }
         //ELSE this function has been called for the opposite thing
       });
+    } else {
+      updateButtonVisually(shouldShowAfterDelay);
     }
-    else updateButtonVisually(shouldShowAfterDelay);
   }
 
   @override
   void initState() {
     //super init
     super.initState();
-    
+
     //how the button reacts on init
     bool shouldBeShowing = shouldShow();
     //init should be immidiate since
@@ -152,7 +159,7 @@ class _FloatingDoneButtonState extends State<FloatingDoneButton> {
     //super dispose
     super.dispose();
   }
-  
+
   @override
   Widget build(BuildContext context) {
     String message = "";
@@ -160,67 +167,75 @@ class _FloatingDoneButtonState extends State<FloatingDoneButton> {
     //handle page changes
     int setsPassedFromHere = widget.exercise.tempSetCount ?? 0;
     Complete completionType;
-    if(ExercisePage.pageNumber.value != 2){
-      //for page 0 and 1 
+    if (ExercisePage.pageNumber.value != 2) {
+      //for page 0 and 1
       //although page 1 shouldn't have the button
       DateTime tempStartTime = widget.exercise.tempStartTime.value;
-      if(tempStartTime == AnExercise.nullDateTime){
+      if (tempStartTime == AnExercise.nullDateTime) {
         completionType = Complete.ForgotToFinish;
-      }
-      else{
+      } else {
         setsPassedFromHere -= 1;
         completionType = Complete.DeleteNewSet;
-        
       }
-    }
-    else completionType = Complete.Normal;
+    } else
+      completionType = Complete.Normal;
 
     int setTarget = widget.exercise.setTarget;
     int setsLeft = setTarget - setsPassedFromHere;
 
     //do we have values left?
-    if(setsLeft > 0){
-      message += "You have " + setsLeft.toString() 
-      + " SET" + (setsLeft == 1 ? "" : "S")
-      + " LEFT before you reach your set target(" + setTarget.toString() +  "), but you can ";
+    if (setsLeft > 0) {
+      message += "You have " +
+          setsLeft.toString() +
+          " SET" +
+          (setsLeft == 1 ? "" : "S") +
+          " LEFT before you reach your set target(" +
+          setTarget.toString() +
+          "), but you can ";
     }
 
     //are we trying to delete something?
-    if(completionType == Complete.DeleteNewSet){
+    if (completionType == Complete.DeleteNewSet) {
       message += "DELETE SET " + (setsPassedFromHere + 1).toString() + ", and ";
     }
 
     //what this does by default
-    message += "Finish Here after having COMPLETED " + setsPassedFromHere.toString() 
-    + " set" + (setsPassedFromHere == 1 ? "" : "s");
+    message += "Finish Here after having COMPLETED " +
+        setsPassedFromHere.toString() +
+        " set" +
+        (setsPassedFromHere == 1 ? "" : "s");
 
     //do we have extra values?
-    if(setsLeft < 0){
-      message += ", " +  (setsLeft * -1).toString() + " more than your set target(" + setTarget.toString() + ")";
+    if (setsLeft < 0) {
+      message += ", " +
+          (setsLeft * -1).toString() +
+          " more than your set target(" +
+          setTarget.toString() +
+          ")";
     }
-    
+
     //add spacing
     message = "\n" + message + "\n";
 
     //need to grab since we are in white context
     Color cardColor = widget.cardColor;
-    
+
     //determine button color based on sets passed
-    //NOTE: we also check if showButton is false because 
+    //NOTE: we also check if showButton is false because
     //we don't want to scare the user with RED while the button is closing
-    if(completionType == Complete.DeleteNewSet && showButton){
+    if (completionType == Complete.DeleteNewSet && showButton) {
       cardColor = Colors.red;
-    }
-    else{
-      bool shouldCompleteHere = (setsPassedFromHere >= widget.exercise.setTarget);
-      if(shouldCompleteHere) cardColor = Theme.of(context).accentColor;
+    } else {
+      bool shouldCompleteHere =
+          (setsPassedFromHere >= widget.exercise.setTarget);
+      if (shouldCompleteHere) cardColor = Theme.of(context).accentColor;
     }
 
     //position
     return Positioned(
       bottom: 0,
       left: 0,
-      //NOTE: this button spans all the space possible 
+      //NOTE: this button spans all the space possible
       //from bottom of the screen
       //to the top of the visual button
       child: Visibility(
@@ -228,17 +243,21 @@ class _FloatingDoneButtonState extends State<FloatingDoneButton> {
         child: Tooltip(
           message: message,
           child: GestureDetector(
-            behavior: showButton == false ? HitTestBehavior.translucent : HitTestBehavior.opaque,
-            onTap: showButton == false ? null : (){
-              completeSets(
-                setsPassedFromHere,
-                //only if we forgot to finish are temps ALREADY null
-                setTempsToNull: completionType != Complete.ForgotToFinish,
-                //only if we are completing under normal circumstances
-                //do we also have to copy the temp variables and save them to last
-                tempToLast: completionType == Complete.Normal,
-              );
-            },
+            behavior: showButton == false
+                ? HitTestBehavior.translucent
+                : HitTestBehavior.opaque,
+            onTap: showButton == false
+                ? null
+                : () {
+                    completeSets(
+                      setsPassedFromHere,
+                      //only if we forgot to finish are temps ALREADY null
+                      setTempsToNull: completionType != Complete.ForgotToFinish,
+                      //only if we are completing under normal circumstances
+                      //do we also have to copy the temp variables and save them to last
+                      tempToLast: completionType == Complete.Normal,
+                    );
+                  },
             child: Padding(
               padding: EdgeInsets.only(
                 bottom: 24.0,
@@ -246,8 +265,8 @@ class _FloatingDoneButtonState extends State<FloatingDoneButton> {
               child: Theme(
                 data: MyTheme.dark,
                 child: WrappedInDarkness(
-                  showButton: showButton, 
-                  cardColor: cardColor, 
+                  showButton: showButton,
+                  cardColor: cardColor,
                   setsPassedFromHere: setsPassedFromHere,
                   excerciseID: widget.exercise.id,
                   animationCurve: widget.animationCurve,
@@ -260,17 +279,19 @@ class _FloatingDoneButtonState extends State<FloatingDoneButton> {
     );
   }
 
-  completeSets(int setsPassed, {
+  completeSets(
+    int setsPassed, {
     bool setTempsToNull: false,
     bool tempToLast: false,
-  }){
-    Function onFinished = (){
+  }) {
+    Function onFinished = () {
       //cancel the notification that may be running
       safeCancelNotification(widget.exercise.id);
 
       //time stamp
       DateTime newTimeStamp = DateTime.now();
-      if(setsPassed == 0){ //we didn't care to even save this set
+      if (setsPassed == 0) {
+        //we didn't care to even save this set
         //so If it was once new it should stay new
         //ditto for hidden, or for a timestamp that was part of another workout
         newTimeStamp = widget.exercise.backUpTimeStamp;
@@ -278,23 +299,26 @@ class _FloatingDoneButtonState extends State<FloatingDoneButton> {
       widget.exercise.lastTimeStamp = newTimeStamp;
 
       //temp start time
-      if(setTempsToNull){
-        widget.exercise.tempStartTime = new ValueNotifier<DateTime>(AnExercise.nullDateTime);
+      if (setTempsToNull) {
+        widget.exercise.tempStartTime =
+            new ValueNotifier<DateTime>(AnExercise.nullDateTime);
       }
 
       //weight
-      if(tempToLast){ //we KNOW tempWeight is VALID
+      if (tempToLast) {
+        //we KNOW tempWeight is VALID
         widget.exercise.lastWeight = widget.exercise.tempWeight;
       }
-      if(setTempsToNull){
+      if (setTempsToNull) {
         widget.exercise.tempWeight = null;
       }
 
       //reps
-      if(tempToLast){ //we KNOW tempReps is VALID
+      if (tempToLast) {
+        //we KNOW tempReps is VALID
         widget.exercise.lastReps = widget.exercise.tempReps;
       }
-      if(setTempsToNull){
+      if (setTempsToNull) {
         widget.exercise.tempReps = null;
       }
 
@@ -307,18 +331,18 @@ class _FloatingDoneButtonState extends State<FloatingDoneButton> {
 
     //set target
     //NOTE: if we start record a set, are like naw, and don't want to record it
-    //we aren't going to show the pop up 
+    //we aren't going to show the pop up
     //and half suggest that they update their setTarget to 0
-    if(setsPassed != 0 && setsPassed != widget.exercise.setTarget){
+    if (setsPassed != 0 && setsPassed != widget.exercise.setTarget) {
       maybeChangeSetTarget(
-        context, 
-        widget.exercise, 
+        context,
+        widget.exercise,
         onFinished,
         widget.cardColor,
         setsPassed,
       );
-    }
-    else onFinished();
+    } else
+      onFinished();
   }
 }
 
@@ -344,12 +368,15 @@ class WrappedInDarkness extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
+        //must be height of 24
         DoneCorner(
           show: showButton,
           color: cardColor,
           animationCurve: animationCurve,
           isTop: true,
         ),
+        //TODO: make it 56
+        //must be height of 40
         DoneButton(
           show: showButton,
           color: cardColor,
@@ -357,6 +384,7 @@ class WrappedInDarkness extends StatelessWidget {
           exerciseID: excerciseID,
           animationCurve: animationCurve,
         ),
+        //must be height of 24
         DoneCorner(
           show: showButton,
           color: cardColor,

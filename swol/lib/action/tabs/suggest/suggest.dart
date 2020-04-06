@@ -127,90 +127,94 @@ class _SuggestionState extends State<Suggestion> {
         : Theme.of(context).cardColor;
 
     //build
-    return ClipRRect(
-      //clipping so "hero" doesn't show up in the other page
-      child: Column(
-        children: <Widget>[
-          Expanded(
-            child: Padding(
-              padding: EdgeInsets.only(
-                bottom: 24, //extra for the complete button
-              ),
-              child: Container(
-                width: MediaQuery.of(context).size.width,
-                child: Column(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[
-                    TopBackgroundColored(
-                      color: Theme.of(context).cardColor,
-                      child: SetDisplay(
-                        exercise: widget.exercise,
-                        useAccent: false,
-                        extraCurvy: true,
-                        title: "Last Set",
-                      ),
-                    ),
-                    Expanded(
-                      child: SuggestionChanger(
-                        functionID: functionID,
-                        repTarget: repTarget,
-                        arrowRadius: arrowRadius,
-                        cardRadius: cardRadius,
-                      ),
-                    ),
-                    Container(
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).accentColor,
-                        borderRadius: BorderRadius.only(
-                          bottomRight: cardRadius,
-                          bottomLeft: cardRadius,
-                        ),
-                      ),
-                      width: MediaQuery.of(context).size.width,
-                      child: SetDisplay(
-                        useAccent: true,
-                        title: "Goal Set",
-                        heroUp: widget.heroUp,
-                        animate: true,
-                        heroAnimTravel: widget.heroAnimTravel,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+    return Column(
+      children: <Widget>[
+        Container(
+          height: 200,
+          color: Colors.red,
+          width: MediaQuery.of(context).size.width,
+        )
+        /*
+        Expanded(
+          child: Padding(
+            padding: EdgeInsets.only(
+              bottom: 24, //extra for the complete button
             ),
-          ),
-          BottomButtons(
-            color: buttonsColor,
-            exerciseID: widget.exercise.id,
-            forwardAction: () {
-              ExercisePage.pageNumber.value = 1;
-            },
-            forwardActionWidget: RichText(
-              textScaleFactor: MediaQuery.of(
-                context,
-              ).textScaleFactor,
-              text: TextSpan(
-                children: [
-                  TextSpan(
-                    text: timerNotStarted ? "Record" : "View",
-                  ),
-                  TextSpan(
-                    text: " Set " + setsPassed.toString(),
-                    style: TextStyle(
-                      fontWeight: FontWeight.w900,
+            child: Container(
+              width: MediaQuery.of(context).size.width,
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  TopBackgroundColored(
+                    color: Theme.of(context).cardColor,
+                    child: SetDisplay(
+                      exercise: widget.exercise,
+                      useAccent: false,
+                      extraCurvy: true,
+                      title: "Last Set",
                     ),
                   ),
-                  TextSpan(
-                    text: "/" + widget.exercise.setTarget.toString(),
+                  Expanded(
+                    child: SuggestionChanger(
+                      functionID: functionID,
+                      repTarget: repTarget,
+                      arrowRadius: arrowRadius,
+                      cardRadius: cardRadius,
+                    ),
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).accentColor,
+                      borderRadius: BorderRadius.only(
+                        bottomRight: cardRadius,
+                        bottomLeft: cardRadius,
+                      ),
+                    ),
+                    width: MediaQuery.of(context).size.width,
+                    child: SetDisplay(
+                      useAccent: true,
+                      title: "Goal Set",
+                      heroUp: widget.heroUp,
+                      animate: true,
+                      heroAnimTravel: widget.heroAnimTravel,
+                    ),
                   ),
                 ],
               ),
             ),
           ),
-        ],
-      ),
+        ),
+        BottomButtons(
+          color: buttonsColor,
+          exerciseID: widget.exercise.id,
+          forwardAction: () {
+            ExercisePage.pageNumber.value = 1;
+          },
+          forwardActionWidget: RichText(
+            textScaleFactor: MediaQuery.of(
+              context,
+            ).textScaleFactor,
+            text: TextSpan(
+              children: [
+                TextSpan(
+                  text: timerNotStarted ? "Record" : "View",
+                ),
+                TextSpan(
+                  text: " Set " + setsPassed.toString(),
+                  style: TextStyle(
+                    fontWeight: FontWeight.w900,
+                  ),
+                ),
+                TextSpan(
+                  text: "/" + widget.exercise.setTarget.toString(),
+                ),
+              ],
+            ),
+          ),
+        ),
+        */
+      ],
     );
   }
 }

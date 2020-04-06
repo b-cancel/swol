@@ -1,5 +1,6 @@
 //flutter
 import 'package:flutter/material.dart';
+import 'package:swol/shared/functions/goldenRatio.dart';
 import 'package:swol/shared/methods/theme.dart';
 
 //internal
@@ -26,10 +27,11 @@ class VerticalTabs extends StatefulWidget {
   _VerticalTabsState createState() => _VerticalTabsState();
 }
 
-class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMixin {
+class _VerticalTabsState extends State<VerticalTabs>
+    with TickerProviderStateMixin {
   //updated by suggest, reused by adjustment widget
-  final ValueNotifier<List<double>> functionIDToWeightFromRT
-   = new ValueNotifier<List<double>>(new List<double>(8));
+  final ValueNotifier<List<double>> functionIDToWeightFromRT =
+      new ValueNotifier<List<double>>(new List<double>(8));
 
   //for the "hero" widget (if not up then down)
   ValueNotifier<bool> goalSetUp;
@@ -42,7 +44,7 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
   void initState() {
     //super init
     super.initState();
-    
+
     //set hero position depending on start page (updated when pages switch)
     goalSetUp = new ValueNotifier<bool>(
       widget.initialPage == 0,
@@ -63,13 +65,13 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
 
   //dipose
   @override
-  void dispose() { 
+  void dispose() {
     //remove listener
     ExercisePage.pageNumber.removeListener(updatePage);
 
     //remove controller
     pageViewController.dispose();
-    
+
     //remove notifier
     goalSetUp.dispose();
 
@@ -93,6 +95,15 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
     //how long to travel 3 feet? 3/2 = 1.5 seconds
     double totalTravel = (bottomPadding * 2) + topPadding;
 
+    //height calcs
+    double totalHeight = MediaQuery.of(context).size.height;
+    double appBarHeight = 56;
+    double panelHeight = totalHeight - widget.statusBarHeight - appBarHeight;
+
+    //width calcs
+    double totalWidth = MediaQuery.of(context).size.width;
+    List<double> widthBS = measurementToGoldenRatioBS(totalWidth);
+
     //all the stuffs
     return Stack(
       children: <Widget>[
@@ -101,11 +112,24 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
           physics: NeverScrollableScrollPhysics(),
           scrollDirection: Axis.vertical,
           children: <Widget>[
-            Suggestion( 
-              exercise: widget.exercise,
-              heroUp: goalSetUp,
-              heroAnimTravel: totalTravel,
-              functionIDToWeightFromRT: functionIDToWeightFromRT,
+            ClipRRect(
+              //clipping so "hero" doesn't show up in the other page
+              child: Container(
+                height: panelHeight,
+                child: SingleChildScrollView(
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(
+                      minHeight: panelHeight,
+                    ),
+                    child: Suggestion(
+                      exercise: widget.exercise,
+                      heroUp: goalSetUp,
+                      heroAnimTravel: totalTravel,
+                      functionIDToWeightFromRT: functionIDToWeightFromRT,
+                    ),
+                  ),
+                ),
+              ),
             ),
             SetRecord(
               exercise: widget.exercise,
@@ -136,7 +160,7 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
 
   //NOTE: since this is triggered by a change to a notifier
   //we will never go to a page that we are already at
-  updatePage(){
+  updatePage() {
     //close the keybaord since we have been on page 1 (record)
     FocusScope.of(context).unfocus();
 
@@ -145,14 +169,14 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
 
     //animated to right page
     pageViewController.animateToPage(
-      ExercisePage.pageNumber.value, 
-      duration: ExercisePage.transitionDuration, 
+      ExercisePage.pageNumber.value,
+      duration: ExercisePage.transitionDuration,
       curve: Curves.easeInOut,
     );
   }
 
-  //NOTE: we don't need to plan for the rare case 
-  //where before the animation starts 
+  //NOTE: we don't need to plan for the rare case
+  //where before the animation starts
   //we want to go to another page
   //because there is no way that can happen because
   //1. only about 3 frames pass
@@ -160,11 +184,12 @@ class _VerticalTabsState extends State<VerticalTabs> with TickerProviderStateMix
   //    until the transition begins no other navigation buttons are expose
   //3. if we are moving towards the "suggest page"
   //    the next button is immediately hidden
-  waitForTransitionBegin(double startOffset){
-    WidgetsBinding.instance.addPostFrameCallback((_){
+  waitForTransitionBegin(double startOffset) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       double currentOffset = pageViewController.offset;
-      if(currentOffset == startOffset) waitForTransitionBegin(startOffset);
-      else{
+      if (currentOffset == startOffset)
+        waitForTransitionBegin(startOffset);
+      else {
         //get the goal set animation to begin
         goalSetUp.value = (ExercisePage.pageNumber.value == 0);
         //NOTE: although it seems like it
