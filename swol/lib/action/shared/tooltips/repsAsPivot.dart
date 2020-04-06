@@ -16,32 +16,37 @@ showWeightRepsAsPivotToolTip(context) {
       onTap: () {
         BotToast.cleanAll();
       },
-      child: RichText(
-        textScaleFactor: MediaQuery.of(
-          context,
-        ).textScaleFactor,
-        text: TextSpan(
-          children: [
-            TextSpan(
-              text: "The ",
-            ),
-            TextSpan(
-              text: "Expected Weight\n",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Wrap(
+            children: [
+              Text(
+                "The ",
               ),
-            ),
-            TextSpan(
-              text: "Calculated from your ",
-            ),
-            TextSpan(
-              text: "Recorded Reps",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
+              Text(
+                "Expected Weight",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            ),
-          ],
-        ),
+            ],
+          ),
+          Wrap(
+            children: [
+              Text(
+                "Calculated from your ",
+              ),
+              Text(
+                "Recorded Reps",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+        ],
       ),
     ),
     direction: PreferDirection.topCenter,

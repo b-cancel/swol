@@ -19,36 +19,41 @@ showWeightToolTip(
       onTap: () {
         BotToast.cleanAll();
       },
-      child: RichText(
-        textScaleFactor: MediaQuery.of(
-          context,
-        ).textScaleFactor,
-        text: TextSpan(
-          children: [
-            TextSpan(text: "the weight you lifted\n"),
-            TextSpan(
-              text: "(",
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Flexible(
+            child: Text(
+              "the weight you lifted",
             ),
-            TextSpan(
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
+          ),
+          Wrap(
+            children: <Widget>[
+              Text(
+                "(",
               ),
-              text: "LBS",
-            ),
-            TextSpan(
-              text: " or ",
-            ),
-            TextSpan(
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
+              Text(
+                "LBS",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-              text: "KG",
-            ),
-            TextSpan(
-              text: ")",
-            ),
-          ],
-        ),
+              Text(
+                " or ",
+              ),
+              Text(
+                "KG",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Text(
+                ")",
+              ),
+            ],
+          ),
+        ],
       ),
     ),
     direction: direction,
@@ -67,28 +72,35 @@ showRepsToolTip(
       onTap: () {
         BotToast.cleanAll();
       },
-      child: RichText(
-        textScaleFactor: MediaQuery.of(
-          context,
-        ).textScaleFactor,
-        text: TextSpan(children: [
-          TextSpan(text: "how many times you lifted the weight\n"),
-          TextSpan(
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Flexible(
+            child: Text(
+              "how many times you lifted the weight",
             ),
-            text: "Successfully",
           ),
-          TextSpan(
-            text: " and with ",
+          Wrap(
+            children: <Widget>[
+              Text(
+                "Successfully",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Text(
+                " and with ",
+              ),
+              Text(
+                "Good Form",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
           ),
-          TextSpan(
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-            ),
-            text: "Good Form",
-          ),
-        ]),
+        ],
       ),
     ),
     direction: direction,

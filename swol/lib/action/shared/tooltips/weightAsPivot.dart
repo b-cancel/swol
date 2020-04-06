@@ -82,7 +82,7 @@ showRepsWeightAsPivotToolTip(context) {
             TextSpan(
               text: "The ",
             ),
-            TextSpan(
+            TextSpan( 
               text: "Expected Reps\n",
               style: TextStyle(
                 fontWeight: FontWeight.bold,

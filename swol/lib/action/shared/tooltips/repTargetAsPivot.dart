@@ -16,32 +16,37 @@ showWeightRepTargetAsPivotToolTip(context) {
       onTap: () {
         BotToast.cleanAll();
       },
-      child: RichText(
-        textScaleFactor: MediaQuery.of(
-          context,
-        ).textScaleFactor,
-        text: TextSpan(
-          children: [
-            TextSpan(
-              text: "The ",
-            ),
-            TextSpan(
-              text: "Expected Weight\n",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Wrap(
+            children: [
+              Text(
+                "The ",
               ),
-            ),
-            TextSpan(
-              text: "Calculated from your ",
-            ),
-            TextSpan(
-              text: "Rep Target",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
+              Text(
+                "Expected Weight",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            ),
-          ],
-        ),
+            ],
+          ),
+          Wrap(
+            children: [
+              Text(
+                "Calculated from your ",
+              ),
+              Text(
+                "Rep Target",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+        ],
       ),
     ),
     direction: PreferDirection.topCenter,
@@ -57,32 +62,37 @@ showRepsRepTargetAsPivotToolTip(context) {
       onTap: () {
         BotToast.cleanAll();
       },
-      child: RichText(
-        textScaleFactor: MediaQuery.of(
-          context,
-        ).textScaleFactor,
-        text: TextSpan(
-          children: [
-            TextSpan(
-              text: "The ",
-            ),
-            TextSpan(
-              text: "Rep Target\n",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Wrap(
+            children: [
+              Text(
+                "The ",
               ),
-            ),
-            TextSpan(
-              text: "Used to calculate your ",
-            ),
-            TextSpan(
-              text: "Expected Weight",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
+              Text(
+                "Rep Target",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            ),
-          ],
-        ),
+            ],
+          ),
+          Wrap(
+            children: [
+              Text(
+                "Used to calculate your ",
+              ),
+              Text(
+                "Expected Weight",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+        ],
       ),
     ),
     direction: PreferDirection.topCenter,
