@@ -6,7 +6,6 @@ import 'package:swol/action/popUps/maybeUpdateSet.dart';
 import 'package:swol/action/doneButton/button.dart';
 import 'package:swol/action/doneButton/corner.dart';
 import 'package:swol/action/page.dart';
-import 'package:swol/shared/functions/goldenRatio.dart';
 
 //internal
 import 'package:swol/shared/widgets/simple/notify.dart';
@@ -261,7 +260,10 @@ class _FloatingDoneButtonState extends State<FloatingDoneButton> {
                   },
             child: Padding(
               padding: EdgeInsets.only(
-                bottom: 24.0,
+                //the peaking card is 24, the button is 36 = 60
+                //our curve is 24, so we need to add the 36
+                //  so the done button is always on top of the bottom buttons
+                bottom: 36,
               ),
               child: Theme(
                 data: MyTheme.dark,
@@ -391,6 +393,40 @@ class WrappedInDarkness extends StatelessWidget {
           color: cardColor,
           animationCurve: animationCurve,
           isTop: false,
+        ),
+      ],
+    );
+  }
+}
+
+class DoneButtonSpacing extends StatelessWidget {
+  DoneButtonSpacing({
+    this.cardPeak: true,
+    this.bottomCurve: true,
+    this.button: true,
+    this.topCurve: true,
+  });
+
+  final bool cardPeak;
+  final bool bottomCurve;
+  final bool button;
+  final bool topCurve;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: <Widget>[
+        Container(
+          height: topCurve ? 24 : 0,
+        ),
+        Container(
+          height: button ? 36 : 0,
+        ),
+        Container(
+          height: bottomCurve ? 24 : 0,
+        ),
+        Container(
+          height: cardPeak ? 24 : 0,
         ),
       ],
     );

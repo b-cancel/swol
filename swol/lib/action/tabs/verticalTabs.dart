@@ -87,11 +87,10 @@ class _VerticalTabsState extends State<VerticalTabs>
   @override
   Widget build(BuildContext context) {
     //both values grabbed raw
-    double doneButtonHeight = 40;
-    double bottomPadding = 24.0 + 24.0 + doneButtonHeight + 24;
-    double topPadding = 16;
+    double bottomPadding = 24.0 + 24.0 + ExercisePage.doneButtonHeight + 24;
+    double topPadding = 16; //TODO: is this actually status bar height
 
-    //travel bottomPadding + bottomPadding + toPadding in 300 ms
+    //travel bottomPadding + bottomPadding + topPadding in 300 ms
     //10 feet in 5 seconds, 2 feets per second
     //how long to travel 3 feet? 3/2 = 1.5 seconds
     double totalTravel = (bottomPadding * 2) + topPadding;
@@ -113,38 +112,11 @@ class _VerticalTabsState extends State<VerticalTabs>
           physics: NeverScrollableScrollPhysics(),
           scrollDirection: Axis.vertical,
           children: <Widget>[
-            /*
-            ClipRRect(
-              //clipping so "hero" doesn't show up in the other page
-              child: Container(
-                height: panelHeight,
-                child: SingleChildScrollView(
-                  child: ConstrainedBox(
-                    constraints: BoxConstraints(
-                      minHeight: panelHeight,
-                    ),
-                    child: Suggestion(
-                      exercise: widget.exercise,
-                      heroUp: goalSetUp,
-                      heroAnimTravel: totalTravel,
-                      functionIDToWeightFromRT: functionIDToWeightFromRT,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            */
-            Container(
-              height: panelHeight,
-              child: SingleChildScrollView(
-                child: Suggestion(
-                  panelHeight: panelHeight,
-                  exercise: widget.exercise,
-                  heroUp: goalSetUp,
-                  heroAnimTravel: totalTravel,
-                  functionIDToWeightFromRT: functionIDToWeightFromRT,
-                ),
-              ),
+            Suggestion(
+              exercise: widget.exercise,
+              heroUp: goalSetUp,
+              heroAnimTravel: totalTravel,
+              functionIDToWeightFromRT: functionIDToWeightFromRT,
             ),
             SetRecord(
               exercise: widget.exercise,

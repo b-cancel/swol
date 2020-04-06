@@ -4,7 +4,7 @@ class TextWithCorners extends StatelessWidget {
   const TextWithCorners({
     Key key,
     @required this.text,
-    @required this.radius,
+    this.radius,
     this.useAccent: false,
   }) : super(key: key);
 
@@ -14,38 +14,50 @@ class TextWithCorners extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: <Widget>[
-        Container(
-          width: MediaQuery.of(context).size.width,
-          alignment: Alignment.center,
-          child: Text(
-            text,
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 14,
+    return Padding(
+      padding: EdgeInsets.symmetric(
+        horizontal: (radius == null) ? 24 : 0,
+      ),
+      child: Stack(
+        children: <Widget>[
+          Container(
+            width: MediaQuery.of(context).size.width,
+            alignment: Alignment.center,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Flexible(
+                  child: Text(
+                    text,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 14,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ],
             ),
-            textAlign: TextAlign.center,
           ),
-        ),
-        Positioned(
-          left: 0,
-          bottom: 0,
-          child: Corner(
-            cornerColor: useAccent ? Theme.of(context).accentColor : Theme.of(context).cardColor,
-            cardRadius: radius,
-            isLeft: true,
+          Positioned(
+            left: 0,
+            bottom: 0,
+            child: Corner(
+              cornerColor: useAccent ? Theme.of(context).accentColor : Theme.of(context).cardColor,
+              cardRadius: radius,
+              isLeft: true,
+            ),
           ),
-        ),
-        Positioned(
-          right: 0,
-          bottom: 0,
-          child: Corner(
-            cardRadius: radius,
-            cornerColor: useAccent ? Theme.of(context).accentColor : Theme.of(context).cardColor,
+          Positioned(
+            right: 0,
+            bottom: 0,
+            child: Corner(
+              cardRadius: radius,
+              cornerColor: useAccent ? Theme.of(context).accentColor : Theme.of(context).cardColor,
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
