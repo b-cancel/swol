@@ -64,11 +64,11 @@ class CardWithHeader extends StatelessWidget {
                     child: DefaultTextStyle(
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        color: topRound ? Colors.white : Theme.of(context).primaryColorDark,
+                        color: topRound
+                            ? Colors.white
+                            : Theme.of(context).primaryColorDark,
                       ),
-                      child: Text(
-                        header
-                      ),
+                      child: Text(header),
                     ),
                   ),
                 ),

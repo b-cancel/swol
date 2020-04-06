@@ -100,7 +100,10 @@ class SetRecord extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               mainAxisSize: MainAxisSize.max,
               children: <Widget>[
-                CalibrationCard(),
+                CalibrationHeader(
+                  header: "Calibration Set",
+                ),
+                Spacer(),
                 Container(
                   height: 48.0,
                   child: Shimmer.fromColors(
@@ -115,7 +118,7 @@ class SetRecord extends StatelessWidget {
                   ),
                 ),
                 recordSetFields,
-                Expanded(child: Container()),
+                Spacer(),
                 Padding(
                   //padding for curve button
                   padding: EdgeInsets.only(
