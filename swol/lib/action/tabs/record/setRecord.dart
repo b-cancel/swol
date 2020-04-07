@@ -17,6 +17,7 @@ import 'package:swol/action/page.dart';
 //internal: shared
 import 'package:swol/shared/structs/anExercise.dart';
 import 'package:swol/shared/methods/theme.dart';
+import 'package:swol/shared/widgets/simple/popUpAdjustments.dart';
 
 //widget
 class SetRecord extends StatelessWidget {
@@ -103,7 +104,24 @@ class SetRecord extends StatelessWidget {
                 CalibrationHeader(
                   header: "Calibration Set",
                 ),
-                Spacer(),
+                Expanded(
+                  child: ScrollViewWithShadow(
+                    transparentWhite: false,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).cardColor,
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(24),
+                        ),
+                      ),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 16,
+                      ),
+                      child: CalibrationBody(),
+                    ),
+                  ),
+                ),
                 Container(
                   height: 48.0,
                   child: Shimmer.fromColors(
@@ -118,7 +136,6 @@ class SetRecord extends StatelessWidget {
                   ),
                 ),
                 recordSetFields,
-                Spacer(),
                 Padding(
                   //padding for curve button
                   padding: EdgeInsets.only(

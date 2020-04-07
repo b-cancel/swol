@@ -241,27 +241,20 @@ class RecoveryButtonsWithWhiteContext extends StatelessWidget {
         }
         //ELSE: the button was Accidentally quick tapped
       },
-      forwardActionWidget: RichText(
-        textScaleFactor: MediaQuery.of(
-          context,
-        ).textScaleFactor,
-        text: TextSpan(
-          children: [
-            TextSpan(
-              text: "Begin",
-            ),
-            TextSpan(
-              text: " Set " + setsPassed.toString(),
-              style: TextStyle(
-                fontWeight: FontWeight.w900,
-              ),
-            ),
-            TextSpan(
-              text: "/" + exercise.setTarget.toString(),
-            ),
-          ],
+      forwardActionWidget: Row(mainAxisSize: MainAxisSize.min, children: [
+        Text(
+          "Begin",
         ),
-      ),
+        Text(
+          " Set " + setsPassed.toString(),
+          style: TextStyle(
+            fontWeight: FontWeight.w900,
+          ),
+        ),
+        Text(
+          "/" + exercise.setTarget.toString(),
+        ),
+      ]),
       backAction: () {
         ExercisePage.pageNumber.value = 1;
       },

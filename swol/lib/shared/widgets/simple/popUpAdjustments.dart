@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 class ScrollViewWithShadow extends StatefulWidget {
   ScrollViewWithShadow({
     @required this.child,
+    this.transparentWhite: true,
   });
 
   final Widget child;
+  final bool transparentWhite;
 
   @override
   _ScrollViewWithShadowState createState() => _ScrollViewWithShadowState();
@@ -49,10 +51,12 @@ class _ScrollViewWithShadowState extends State<ScrollViewWithShadow> {
         ScrollShadow(
           active: onTop, 
           isTop: true,
+          transparentWhite: widget.transparentWhite,
         ),
         ScrollShadow(
           active: onBottom, 
           isTop: false,
+          transparentWhite: widget.transparentWhite,
         ),
       ],
     );
@@ -64,10 +68,12 @@ class ScrollShadow extends StatefulWidget {
   ScrollShadow({
     @required this.active,
     @required this.isTop,
+    @required this.transparentWhite,
   });
 
   final ValueNotifier<bool> active;
   final bool isTop;
+  final bool transparentWhite;
 
   @override
   _ScrollShadowState createState() => _ScrollShadowState();
@@ -94,7 +100,8 @@ class _ScrollShadowState extends State<ScrollShadow> {
 
   @override
   Widget build(BuildContext context) {
-    Color middle = Colors.white.withOpacity(0);
+    Color middle = (widget.transparentWhite) ? Colors.white : Colors.black;
+    middle = middle.withOpacity(0);
     Color edge = Colors.black;
 
     //create shadow
