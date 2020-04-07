@@ -85,9 +85,9 @@ class OurToolTip extends StatelessWidget {
               ),
             ),
             //this is what's actually important
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Flexible(
+            Flexible(
+              child: Padding(
+                padding: EdgeInsets.all(8.0),
                 child: Text(
                   text,
                   maxLines: 3,
