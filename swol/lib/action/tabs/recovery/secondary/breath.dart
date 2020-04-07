@@ -23,23 +23,18 @@ class ToBreath extends StatelessWidget {
             ),
           );
         },
-        child: Padding(
-          padding: EdgeInsets.all(
-            16,
-          ),
-          child: Container(
-            width: 50,
-            height: 50,
-            child: Hero(
-              tag: 'breath',
-              createRectTween: (begin, end) {
-                return CustomRectTween(a: begin, b: end);
-              },
-              child: new Image(
-                image: new AssetImage("assets/gifs/breathMod.gif"),
-                //lines being slightly distinguishable is ugly
-                color: Theme.of(context).accentColor,
-              ),
+        child: Container(
+          width: 48,
+          height: 48,
+          child: Hero(
+            tag: 'breath',
+            createRectTween: (begin, end) {
+              return CustomRectTween(a: begin, b: end);
+            },
+            child: new Image(
+              image: new AssetImage("assets/gifs/breathMod.gif"),
+              //lines being slightly distinguishable is ugly
+              color: Theme.of(context).accentColor,
             ),
           ),
         ),
