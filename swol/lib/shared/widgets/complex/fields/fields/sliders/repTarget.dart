@@ -129,7 +129,8 @@ class AnimRepTargetInfoWhite extends StatelessWidget {
           ),
           right: SlideRangeExtent(
             buttonText: "35",
-            tipText: "Any More, and we will have trouble \nestimating your 1 Rep Max",
+            tipText: "Any More, and we will have trouble estimating your 1 Rep Max",
+            tipToLeft: false,
           ),
           startSeconds: (13*5),
           endSeconds: (35*5),

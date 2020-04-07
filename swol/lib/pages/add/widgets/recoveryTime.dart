@@ -157,7 +157,8 @@ class AnimRecoveryTimeInfoToWhiteTheme extends StatelessWidget {
           ),
           right: SlideRangeExtent(
             buttonText: "4:55",
-            tipText: "Any More, will require you to\nwarm up again",
+            tipText: "Any More, will require you to warm up again",
+            tipToLeft: false,
           ),
           startSeconds: 185,
           endSeconds: 295,

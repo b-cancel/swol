@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 //plugin
 import 'package:bot_toast/bot_toast.dart';
 
+//checked for text size modification
 showWidgetToolTip(BuildContext context, Widget widget, {
   int seconds: 4,
   PreferDirection direction: PreferDirection.topRight,
@@ -27,6 +28,7 @@ showWidgetToolTip(BuildContext context, Widget widget, {
 }
 
 //function
+//TODO: check this
 showToolTip(BuildContext context, String text, {
   PreferDirection direction: PreferDirection.topRight,
   bool showIcon: true,
@@ -86,9 +88,11 @@ class OurToolTip extends StatelessWidget {
             //this is what's actually important
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Text(
-                text,
-                maxLines: 3,
+              child: Flexible(
+                child: Text(
+                  text,
+                  maxLines: 3,
+                ),
               )
             ),
           ],

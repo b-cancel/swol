@@ -54,10 +54,12 @@ class _TappableIconState extends State<TappableIcon> {
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: () {
-        if (widget.isLeft)
+        if (widget.isLeft){
           showWeightToolTip(context);
-        else
+        }
+        else{
           showRepsToolTip(context);
+        }
       },
       child: Container(
         padding: EdgeInsets.only(

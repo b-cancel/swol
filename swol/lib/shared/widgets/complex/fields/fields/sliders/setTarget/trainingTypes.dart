@@ -1,4 +1,5 @@
 //flutter
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:swol/action/page.dart';
 
@@ -155,9 +156,21 @@ class NoMoreThan6Sets extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: (){
-        showToolTip(
+        showWidgetToolTip(
           context, 
-          "Any More than 6 sets\nmight do you more harm than good",
+          Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children:[
+              Flexible(
+                child: Text(
+                  "Any More than 6 sets, might do you more harm than good",
+                  textAlign: TextAlign.right,
+                ),
+              ),
+            ],
+          ),
+          direction: PreferDirection.topRight,
         );
       },
       child: Padding(

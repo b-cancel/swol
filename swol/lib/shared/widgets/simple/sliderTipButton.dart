@@ -1,4 +1,5 @@
 //flutter
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 
 //internal
@@ -9,11 +10,13 @@ class SlideRangeExtent extends StatelessWidget {
   const SlideRangeExtent({
     @required this.buttonText,
     this.tipText,
+    this.tipToLeft: true,
     Key key,
   }) : super(key: key);
 
   final String buttonText;
   final String tipText;
+  final bool tipToLeft;
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +58,25 @@ class SlideRangeExtent extends StatelessWidget {
     if(tipText == null) return mainButton;
     else{
       return InkWell(
-        onTap: () => showToolTip(context, tipText),
+        onTap: (){
+          showWidgetToolTip(
+            context, 
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: tipToLeft ? MainAxisAlignment.start : MainAxisAlignment.end,
+              children: [
+                Flexible(
+                  child: Text(
+                    
+                    tipText,
+                    textAlign: tipToLeft ? TextAlign.left : TextAlign.right,
+                  ),
+                )
+              ],
+            ),
+            direction: tipToLeft ? PreferDirection.topLeft : PreferDirection.topRight,
+          );
+        },
         child: mainButton,
       );
     }
