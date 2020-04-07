@@ -48,7 +48,6 @@ onAllow(
     //which according to Android will 
     //ATLEAST not be unknown (since this is an IOS only thing)
     //we will be brining up the AppSettings pop up
-
     requestThatYouGoToAppSettings( 
       status, 
       onComplete, 
@@ -93,5 +92,6 @@ onAllow(
         );
       }
     }
+    
   }
 }

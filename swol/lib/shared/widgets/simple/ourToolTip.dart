@@ -28,7 +28,6 @@ showWidgetToolTip(BuildContext context, Widget widget, {
 }
 
 //function
-//TODO: check this
 showToolTip(BuildContext context, String text, {
   PreferDirection direction: PreferDirection.topRight,
   bool showIcon: true,

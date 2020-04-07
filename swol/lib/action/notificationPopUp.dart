@@ -13,6 +13,7 @@ import 'package:swol/action/page.dart';
 import 'package:swol/shared/methods/extensions/sharedPreferences.dart';
 import 'package:swol/shared/widgets/simple/playOnceGif.dart';
 import 'package:swol/shared/methods/theme.dart';
+import 'package:swol/shared/widgets/simple/popUpAdjustments.dart';
 
 //PERMISSION REQUESTOR
 //NOTE: here status is NOT granted
@@ -84,68 +85,72 @@ requestNotificationPermission(
               ),
             ),
             contentPadding: EdgeInsets.all(0),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                ClipRRect(
-                  borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(12.0),
-                    topLeft: Radius.circular(12.0),
-                  ),
-                  child: Container(
-                    color: Theme.of(context).accentColor,
-                    child: Center(
-                      child: Container(
-                        width: 128,
-                        height: 128,
-                        child: FittedBox(
-                          fit: BoxFit.contain,
-                          child: PlayGifOnce(
-                            assetName: "assets/notification/blueShadow.gif",
-                            frameCount: 125,
-                            runTimeMS: 2500,
-                            colorWhite: false,
+            content: ScrollViewWithShadow(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  ClipRRect(
+                    borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(12.0),
+                      topLeft: Radius.circular(12.0),
+                    ),
+                    child: Container(
+                      color: Theme.of(context).accentColor,
+                      child: Center(
+                        child: Container(
+                          width: 128,
+                          height: 128,
+                          child: FittedBox(
+                            fit: BoxFit.contain,
+                            child: PlayGifOnce(
+                              assetName: "assets/notification/blueShadow.gif",
+                              frameCount: 125,
+                              runTimeMS: 2500,
+                              colorWhite: false,
+                            ),
                           ),
                         ),
                       ),
                     ),
                   ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(
-                    top: 24,
-                    left: 16,
-                    right: 16,
-                  ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        "To Be Notified",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 36,
+                  Padding(
+                    padding: EdgeInsets.only(
+                      top: 24,
+                      left: 16,
+                      right: 16,
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        TitleThatContainsTRBL(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                "To Be Notified",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 36,
+                                ),
+                              ),
+                              Text(
+                                "When Your Break Is Finished",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 18,
+                                ),
+                              ),
+                              Text(
+                                "Allow Notifications",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 24,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                      Text(
-                        "When Your Break Is Finished",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18,
-                        ),
-                      ),
-                      Text(
-                        "Allow Notifications",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 24,
-                        ),
-                      ),
-                      Container(
-                        padding: EdgeInsets.only(
-                          top: 24,
-                        ),
-                        child: RichText(
+                        RichText(
                           textScaleFactor: MediaQuery.of(
                             context,
                           ).textScaleFactor,
@@ -190,47 +195,42 @@ requestNotificationPermission(
                             ],
                           ),
                         ),
-                      ),
-                    ],
+                        BottomButtonsThatResizeTRBL(
+                          secondary: FlatButton(
+                            child: new Text("Deny"),
+                            onPressed: () {
+                              //remove this pop up
+                              //only one pop up at a time
+                              Navigator.of(context).pop();
+
+                              //tell user of button location if needed
+                              onDeny();
+                            },
+                          ),
+                          primary: RaisedButton(
+                            child: Text("Allow"),
+                            color: MyTheme.dark.accentColor,
+                            onPressed: () async {
+                              //pop ourselves
+                              Navigator.of(context).pop();
+
+                              //the user wants to allow
+                              //but now handle all the different ways
+                              //we MIGHT have to go about that
+                              onAllow(
+                                status,
+                                onComplete,
+                                automaticallyOpened,
+                              );
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ],
-            ),
-            actions: <Widget>[
-              FlatButton(
-                child: new Text("Deny"),
-                onPressed: () {
-                  //remove this pop up
-                  //only one pop up at a time
-                  Navigator.of(context).pop();
-
-                  //tell user of button location if needed
-                  onDeny();
-                },
+                ],
               ),
-              Padding(
-                padding: EdgeInsets.only(
-                  right: 8.0,
-                ),
-                child: RaisedButton(
-                  child: Text("Allow"),
-                  color: MyTheme.dark.accentColor,
-                  onPressed: () async {
-                    //pop ourselves
-                    Navigator.of(context).pop();
-
-                    //the user wants to allow
-                    //but now handle all the different ways
-                    //we MIGHT have to go about that
-                    onAllow(
-                      status,
-                      onComplete,
-                      automaticallyOpened,
-                    );
-                  },
-                ),
-              )
-            ],
+            ),
           ),
         ),
       );

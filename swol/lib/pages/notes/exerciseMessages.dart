@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 //internal
 import 'package:swol/shared/methods/theme.dart';
 import 'package:swol/main.dart';
+import 'package:swol/shared/widgets/simple/popUpAdjustments.dart';
 
 //widget
 class ConfirmActionMessage extends StatelessWidget {
@@ -35,85 +36,98 @@ class ConfirmActionMessage extends StatelessWidget {
           borderRadius: BorderRadius.all(Radius.circular(12.0)),
         ),
         contentPadding: EdgeInsets.all(0),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            Container(
-              decoration: BoxDecoration(
-                color: buttonColor,
-                borderRadius: new BorderRadius.only(
-                  topLeft: Radius.circular(12.0),
-                  topRight: Radius.circular(12.0),
-                ),
-              ),
-              child: image,
-            ),
-            Padding(
-              padding: const EdgeInsets.only(
-                top: 16.0,
-              ),
-              child: Container(
-                alignment: Alignment.center,
-                padding: EdgeInsets.symmetric(
-                  horizontal: 16,
-                ),
-                child: DefaultTextStyle(
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 24,
-                    color: Colors.black,
+        content: ScrollViewWithShadow(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              Container(
+                decoration: BoxDecoration(
+                  color: buttonColor,
+                  borderRadius: new BorderRadius.only(
+                    topLeft: Radius.circular(12.0),
+                    topRight: Radius.circular(12.0),
                   ),
-                  child: Text(actionString + " Exercise?"),
+                ),
+                child: image,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(
+                  top: 16.0,
+                ),
+                child: Container(
+                  alignment: Alignment.center,
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 16,
+                  ),
+                  child: DefaultTextStyle(
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 24,
+                      color: Colors.black,
+                    ),
+                    child: Text(
+                      actionString + " Exercise?",
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
                 ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(24.0),
-              child: message,
-            ),
-          ],
+              Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: 16.0,
+                ),
+                child: Padding(
+                  padding: EdgeInsets.only(
+                    top: 24,
+                  ),
+                  child: message,
+                ),
+              ),
+              BottomButtonsThatResizeTRBL(
+                hasTopIcon: false,
+                secondary: FlatButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text(
+                    "Don't " + actionString,
+                    style: TextStyle(
+                      color: Theme.of(context).primaryColorDark,
+                    ),
+                  ),
+                ),
+                primary: RaisedButton(
+                  color: buttonColor,
+                  onPressed: () {
+                    //get rid of keyboard that MAY be shown
+                    FocusScope.of(context).unfocus();
+
+                    actionFunction();
+
+                    //get rid of this pop up
+                    Navigator.of(context).pop();
+
+                    //go back to our exercise page
+                    Navigator.of(context).pop();
+
+                    //go back to our list
+                    Navigator.of(context).pop();
+
+                    //show the changing nav bar
+                    App.navSpread.value = false;
+                  },
+                  child: Text(
+                    actionString,
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
-        actions: <Widget>[
-          FlatButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            child: Text(
-              "Don't " + actionString,
-              style: TextStyle(
-                color: Theme.of(context).primaryColorDark,
-              ),
-            ),
-          ),
-          RaisedButton(
-            color: buttonColor,
-            onPressed: () {
-              //get rid of keyboard that MAY be shown
-              FocusScope.of(context).unfocus();
-
-              actionFunction();
-
-              //get rid of this pop up
-              Navigator.of(context).pop();
-
-              //go back to our exercise page
-              Navigator.of(context).pop();
-
-              //go back to our list
-              Navigator.of(context).pop();
-
-              //show the changing nav bar
-              App.navSpread.value = false;
-            },
-            child: Text(
-              actionString,
-              style: TextStyle(
-                color: Colors.white,
-              ),
-            ),
-          ),
-        ],
       ),
     );
   }
