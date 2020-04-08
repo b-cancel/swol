@@ -1,3 +1,6 @@
+# Publishing related
+/android/key.properties
+
 # Miscellaneous
 *.class
 *.log
