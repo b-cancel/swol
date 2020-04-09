@@ -2,23 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:swol/action/tabs/recovery/secondary/timeDisplay.dart';
 
 //utility (max is 9:59 but we indicate we are maxed out with 9:99)
+//negative durations will show as 0:00
 List<String> durationToCustomDisplay(Duration duration){
   String only1stDigit = "0";
   String always2Digits = "00";
 
   if(duration > Duration.zero){
     //seperate minutes
-    int minutes = duration.inMinutes;
+    int minutes = duration.inMinutes ?? 0;
 
     //9 minutes or less have passed (still displayable)
     if(minutes <= 9){
+      //ensure the duration.inMinutes returns atleast 0
       only1stDigit = minutes.toString(); //9 through 0
 
       //remove minutes so only seconds left
       duration = duration - Duration(minutes: minutes);
 
       //seperate seconds
-      int seconds = duration.inSeconds;
+      int seconds = duration.inSeconds ?? 0;
       always2Digits = seconds.toString(); //0 through 59
 
       //anything less than 10
