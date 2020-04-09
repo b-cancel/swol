@@ -25,7 +25,6 @@ maybeSkipTimer(
   //are we way off? or are we atleast within the range for this type of workout
   String trainingSelected = durationToTrainingType(
     exercise.recoveryPeriod,
-    zeroIsEndurance: false,
   );
 
   TextStyle bold = TextStyle(
@@ -180,7 +179,6 @@ class UpdatingBreakSet extends StatelessWidget {
         DateTime.now().difference(exercise.tempStartTime.value);
     String trainingBreakGoodFor = durationToTrainingType(
       timePassed,
-      zeroIsEndurance: false,
     );
 
     bool withinTrainingType = (trainingName == trainingBreakGoodFor);

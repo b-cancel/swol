@@ -26,11 +26,9 @@ class InfoOutlineWhiteButton extends StatelessWidget {
     //text for pop ups and button
     String trainingSelected = durationToTrainingType(
       selectedDuration,
-      zeroIsEndurance: false,
     );
     String trainingBreakGoodFor = durationToTrainingType(
       totalDurationPassed, 
-      zeroIsEndurance: false,
     );
 
     //are you sure?

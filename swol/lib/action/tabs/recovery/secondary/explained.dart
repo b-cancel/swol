@@ -109,22 +109,21 @@ class ExplainFunctionality extends StatelessWidget {
   }
 }
 
-String durationToTrainingType(Duration duration, {bool zeroIsEndurance: true}) {
+String durationToTrainingType(Duration duration) {
+  //NOTE: If you aren't taking a break longer than 15 seconds 
+  //you aren't doing endurance training
+  //but lets not bust our heads about this
+  //not being able to stop them from pluging in a break time of 0 a system problem
+  //or rather a picker problem, more than anything else
   if (duration <= Duration(minutes: 1)) {
-    if (zeroIsEndurance)
-      return "Endurance";
-    else {
-      if (duration < Duration(seconds: 15)) {
-        return "";
-      } else
-        return "Endurance";
-    }
-  } else if (duration <= Duration(minutes: 2))
+    return "Endurance";
+  } else if (duration <= Duration(minutes: 2)) {
     return "Hypertrohpy";
-  else if (duration <= Duration(minutes: 3))
+  } else if (duration <= Duration(minutes: 3)) {
     return "Hyp/Str";
-  else
+  } else {
     return "Strength";
+  }
 }
 
 String trainingTypeToMin(String training) {
