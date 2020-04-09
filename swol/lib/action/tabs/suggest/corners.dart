@@ -21,6 +21,9 @@ class TextWithCorners extends StatelessWidget {
       child: Stack(
         children: <Widget>[
           Container(
+            padding: EdgeInsets.symmetric(
+              horizontal: radius.x, 
+            ),
             width: MediaQuery.of(context).size.width,
             alignment: Alignment.center,
             child: Column(

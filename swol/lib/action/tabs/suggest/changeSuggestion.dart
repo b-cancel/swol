@@ -130,6 +130,7 @@ class PredictionFormulaSpacer extends StatelessWidget {
       children: <Widget>[
         TextWithCorners(
           text: "using your Prediction Formula",
+          radius: arrowRadius,
         ),
         Positioned.fill(
           child: Container(
