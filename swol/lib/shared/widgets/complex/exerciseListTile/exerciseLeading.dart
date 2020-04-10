@@ -97,9 +97,12 @@ class _ExerciseTileLeadingState extends State<ExerciseTileLeading> {
       result += units[i];
       result += (i%2 == 0) ? " " : "\n";
     }
+
+    //the result
+    result = result + units.last;
     
     //return 
-    return result + units.last;
+    return result.length > 0 ? result : "Just\nNow";
   }
 
   //and also

@@ -811,6 +811,11 @@ class _ExerciseListState extends State<ExerciseList> {
             }
           }
 
+          //make sure title isn't empty
+          if(title.length <= 0){
+            title = "Most Recent";
+          }
+
           //gen subtitle
           subtitle = "on a " + DurationFormat.weekDayToString[oldestDT.weekday];
         } else {

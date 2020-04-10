@@ -142,12 +142,15 @@ class DurationFormat {
       if (value != 0) {
         //return descrip
         String description;
-        if (len == 0)
+        if (len == 0){
           description = _indexToShort[i];
-        else if (len == 1)
+        }
+        else if (len == 1){
           description = _indexToMedium[i];
-        else
+        }
+        else{
           description = _indexToLong[i];
+        }
 
         //add s and space
         description += (value != 1) ? "s" : "";

@@ -89,6 +89,7 @@ maybeSkipTimer(
               UpdatingBreakSet(
                 trainingName: trainingSelected,
                 exercise: exercise,
+                //guarnateed to be larger than 15 second period
                 selectedWaitTime: DurationFormat.format(
                   exercise.recoveryPeriod,
                   //no longer
@@ -193,7 +194,9 @@ class UpdatingBreakSet extends StatelessWidget {
       fontWeight: FontWeight.bold,
     );
 
-    String timeWaited = DurationFormat.format(
+    String timeWaited;
+    if(timePassed.inSeconds > 0){
+      timeWaited = DurationFormat.format(
       timePassed,
       //no longer
       showYears: false,
@@ -211,6 +214,10 @@ class UpdatingBreakSet extends StatelessWidget {
       len: 2, //long
       spaceBetween: true,
     );
+    }
+    else{
+      timeWaited = "0 seconds";
+    }
 
     if (withinTrainingType) {
       return RichText(
@@ -222,8 +229,11 @@ class UpdatingBreakSet extends StatelessWidget {
             color: Colors.black,
           ),
           children: [
-            TextSpan(text: "So far you have waited "),
             TextSpan(
+              text: "So far you have waited ",
+            ),
+            TextSpan(
+              //handles 0 seconds case
               text: timeWaited,
               style: bold,
             ),
@@ -241,6 +251,7 @@ class UpdatingBreakSet extends StatelessWidget {
               text: "But you have chosen to wait ",
             ),
             TextSpan(
+              //atleast 15 seconds
               text: selectedWaitTime,
               style: bold,
             ),
