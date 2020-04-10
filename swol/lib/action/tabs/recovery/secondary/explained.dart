@@ -158,9 +158,9 @@ class ExplainFunctionality extends StatelessWidget {
 String durationToTrainingType(Duration duration) {
   //NOTE: If you aren't taking a break longer than 15 seconds
   //you aren't doing endurance training
-  //but lets not bust our heads about this
-  //not being able to stop them from pluging in a break time of 0 a system problem
-  //or rather a picker problem, more than anything else
+  //exceptions current covered
+  //although they really should be covered by using asserts 
+  //instead of just cuz I know and have read the code
   if (duration <= Duration(minutes: 1)) {
     if (duration < Duration(seconds: 15)) {
       return "";
