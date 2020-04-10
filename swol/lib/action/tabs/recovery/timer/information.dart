@@ -114,17 +114,34 @@ class InfoOutlineDarkButton extends StatelessWidget {
       //what text to sho
       if(withinTrainingTypeRange == false){
         primaryMsg = "Currently Recovering From";
-        secondaryMsg = trainingName + " Training";
+        if(trainingName.length > 0){
+          secondaryMsg = trainingName + " Training";
+        }
+        else{
+          secondaryMsg = "Your Last Set";
+        }
       }
       else{
         primaryMsg = "You Should Wait For Full Recovery";
-        secondaryMsg = "But You Are Ready For " + trainingName + " Training";
+        secondaryMsg = "But You Are Ready For ";
+        if(trainingName.length > 0){
+          secondaryMsg += trainingName + " Training";
+        }
+        else{
+          secondaryMsg += "Your Next Set";
+        }
       }
     }
     else{ //your timer is over but you still have some time
       if(withinTrainingTypeRange){
-        primaryMsg = "Move To Your Next Set";
-        secondaryMsg = "You're Within " + trainingName + " Training Range";
+        if(trainingName.length > 0){
+          primaryMsg = "Move To Your Next Set";
+          secondaryMsg = "You're Within " + trainingName + " Training Range";
+        }
+        else{
+          primaryMsg = "You Can Move To Your Next Set";
+          secondaryMsg = "Whenever You're Ready";
+        }
       }
       else{
         if((totalDurationPassed - buffer) < selectedDuration){

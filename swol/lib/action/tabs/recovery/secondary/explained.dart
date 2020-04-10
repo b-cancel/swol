@@ -44,10 +44,13 @@ class ExplainFunctionality extends StatelessWidget {
                   ),
                   children: [
                     TextSpan(
-                      text:
-                          "Each type of training gives you the best results if you work within its ",
+                      text: "Each type of training gives you the best results" +
+                          " if you work within its ",
                     ),
-                    TextSpan(style: bold, text: "Break Time Range\n\n"),
+                    TextSpan(
+                      style: bold,
+                      text: "Break Time Range\n\n",
+                    ),
                     //-------------------------
                     TextSpan(
                       text: "Since you are current doing ",
@@ -56,19 +59,62 @@ class ExplainFunctionality extends StatelessWidget {
                       style: bold,
                       text: trainingName + " Training\n",
                     ),
-                    TextSpan(text: "You should wait between "),
+                    TextSpan(
+                      text: "You should wait between ",
+                    ),
                     TextSpan(
                       style: bold,
                       text: trainingTypeToMin(trainingName),
                     ),
-                    TextSpan(text: " and "),
+                    TextSpan(
+                      text: " and ",
+                    ),
                     TextSpan(
                       style: bold,
                       text: trainingTypeToMax(trainingName),
                     ),
-                    TextSpan(text: " before moving on to your next set\n")
+                    TextSpan(
+                      text: " before moving on to your next set\n",
+                    ),
                     //-------------------------
                   ],
+                ),
+              ),
+              Visibility(
+                visible: trainingName.length > 0,
+                child: RichText(
+                  textScaleFactor: MediaQuery.of(
+                    context,
+                  ).textScaleFactor,
+                  text: TextSpan(
+                    style: TextStyle(
+                      color: Colors.black,
+                    ),
+                    children: [
+                      TextSpan(
+                        text: "Since you are current doing ",
+                      ),
+                      TextSpan(
+                        style: bold,
+                        text: trainingName + " Training\n",
+                      ),
+                      TextSpan(
+                        text: "You should wait between ",
+                      ),
+                      TextSpan(
+                        style: bold,
+                        text: trainingTypeToMin(trainingName),
+                      ),
+                      TextSpan(text: " and "),
+                      TextSpan(
+                        style: bold,
+                        text: trainingTypeToMax(trainingName),
+                      ),
+                      TextSpan(
+                        text: " before moving on to your next set\n",
+                      ),
+                    ],
+                  ),
                 ),
               ),
               RichText(
@@ -110,13 +156,17 @@ class ExplainFunctionality extends StatelessWidget {
 }
 
 String durationToTrainingType(Duration duration) {
-  //NOTE: If you aren't taking a break longer than 15 seconds 
+  //NOTE: If you aren't taking a break longer than 15 seconds
   //you aren't doing endurance training
   //but lets not bust our heads about this
   //not being able to stop them from pluging in a break time of 0 a system problem
   //or rather a picker problem, more than anything else
   if (duration <= Duration(minutes: 1)) {
-    return "Endurance";
+    if (duration < Duration(seconds: 15)) {
+      return "";
+    } else {
+      return "Endurance";
+    }
   } else if (duration <= Duration(minutes: 2)) {
     return "Hypertrohpy";
   } else if (duration <= Duration(minutes: 3)) {
@@ -126,6 +176,7 @@ String durationToTrainingType(Duration duration) {
   }
 }
 
+//should never be passed on empty string
 String trainingTypeToMin(String training) {
   if (training == "Endurance")
     return "15 seconds";
@@ -137,6 +188,7 @@ String trainingTypeToMin(String training) {
     return "3 minutes";
 }
 
+//should never be passed on empty string
 String trainingTypeToMax(String training) {
   if (training == "Endurance")
     return "1 minutes";

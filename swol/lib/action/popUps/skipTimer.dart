@@ -27,139 +27,146 @@ maybeSkipTimer(
     exercise.recoveryPeriod,
   );
 
-  TextStyle bold = TextStyle(
-    fontWeight: FontWeight.bold,
-  );
+  //they select a break too short for it to matter
+  //if they skip their break
+  //also helps us avoid the edge case of durationToTrainingType
+  if (trainingSelected.length <= 0) {
+    ifSkip();
+  } else {
+    TextStyle bold = TextStyle(
+      fontWeight: FontWeight.bold,
+    );
 
-  //show the dialog
-  showCustomHeaderIconPopUp(
-    context,
-    [
-      Text(
-        "Skip Break?",
-        style: TextStyle(
-          fontSize: 28,
+    //show the dialog
+    showCustomHeaderIconPopUp(
+      context,
+      [
+        Text(
+          "Skip Break?",
+          style: TextStyle(
+            fontSize: 28,
+          ),
         ),
-      ),
-    ],
-    [
-      Padding(
-        padding: EdgeInsets.symmetric(
-          horizontal: 16.0,
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            RichText(
-              textScaleFactor: MediaQuery.of(
-                context,
-              ).textScaleFactor,
-              text: TextSpan(
-                style: TextStyle(
-                  color: Colors.black,
+      ],
+      [
+        Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: 16.0,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              RichText(
+                textScaleFactor: MediaQuery.of(
+                  context,
+                ).textScaleFactor,
+                text: TextSpan(
+                  style: TextStyle(
+                    color: Colors.black,
+                  ),
+                  children: [
+                    TextSpan(
+                      text: "In order to recover fully from ",
+                    ),
+                    TextSpan(
+                      style: bold,
+                      text: trainingSelected + " Training",
+                    ),
+                    TextSpan(text: " you should wait between "),
+                    TextSpan(
+                      style: bold,
+                      text: trainingTypeToMin(trainingSelected),
+                    ),
+                    TextSpan(text: " and "),
+                    TextSpan(
+                      style: bold,
+                      text: trainingTypeToMax(trainingSelected),
+                    ),
+                    TextSpan(text: " before moving on to your next set\n"),
+                  ],
                 ),
-                children: [
-                  TextSpan(
-                    text: "In order to recover fully from ",
-                  ),
-                  TextSpan(
-                    style: bold,
-                    text: trainingSelected + " Training",
-                  ),
-                  TextSpan(text: " you should wait between "),
-                  TextSpan(
-                    style: bold,
-                    text: trainingTypeToMin(trainingSelected),
-                  ),
-                  TextSpan(text: " and "),
-                  TextSpan(
-                    style: bold,
-                    text: trainingTypeToMax(trainingSelected),
-                  ),
-                  TextSpan(text: " before moving on to your next set\n"),
-                ],
               ),
-            ),
-            UpdatingBreakSet(
-              trainingName: trainingSelected,
-              exercise: exercise,
-              selectedWaitTime: DurationFormat.format(
-                exercise.recoveryPeriod,
-                //no longer
-                showYears: false,
-                showMonths: false,
-                showWeeks: false,
-                showDays: false,
-                showHours: false,
-                //yes medium
-                showMinutes: true,
-                showSeconds: true,
-                //no tiny
-                showMilliseconds: false,
-                showMicroseconds: false,
-                //option
-                len: 2, //long
-                spaceBetween: true,
-              ),
-            ),
-            RichText(
-              textScaleFactor: MediaQuery.of(
-                context,
-              ).textScaleFactor,
-              text: TextSpan(
-                style: TextStyle(
-                  color: Colors.black,
+              UpdatingBreakSet(
+                trainingName: trainingSelected,
+                exercise: exercise,
+                selectedWaitTime: DurationFormat.format(
+                  exercise.recoveryPeriod,
+                  //no longer
+                  showYears: false,
+                  showMonths: false,
+                  showWeeks: false,
+                  showDays: false,
+                  showHours: false,
+                  //yes medium
+                  showMinutes: true,
+                  showSeconds: true,
+                  //no tiny
+                  showMilliseconds: false,
+                  showMicroseconds: false,
+                  //option
+                  len: 2, //long
+                  spaceBetween: true,
                 ),
-                children: [
-                  TextSpan(
-                    text: "\nAre you sure you want to ",
-                  ),
-                  TextSpan(
-                    text: "Skip the rest of your break?",
-                    style: bold,
-                  ),
-                ],
               ),
-            ),
-          ],
+              RichText(
+                textScaleFactor: MediaQuery.of(
+                  context,
+                ).textScaleFactor,
+                text: TextSpan(
+                  style: TextStyle(
+                    color: Colors.black,
+                  ),
+                  children: [
+                    TextSpan(
+                      text: "\nAre you sure you want to ",
+                    ),
+                    TextSpan(
+                      text: "Skip the rest of your break?",
+                      style: bold,
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+      Transform.translate(
+        offset: Offset(0, 4),
+        child: Theme(
+          data: MyTheme.dark,
+          child: AnimatedMiniNormalTimer(
+            exercise: exercise,
+            startTime: startTime,
+          ),
         ),
       ),
-    ],
-    Transform.translate(
-      offset: Offset(0, 4),
-      child: Theme(
-        data: MyTheme.dark,
-        child: AnimatedMiniNormalTimer(
-          exercise: exercise,
-          startTime: startTime,
+      headerBackground: headerColor,
+      regularPadding: false,
+      isDense: false,
+      animationType: AnimType.TOPSLIDE,
+      clearBtn: FlatButton(
+        child: Text(
+          "Don't Skip",
         ),
+        onPressed: () {
+          Navigator.pop(context);
+        },
       ),
-    ),
-    headerBackground: headerColor,
-    regularPadding: false,
-    isDense: false,
-    animationType: AnimType.TOPSLIDE,
-    clearBtn: FlatButton(
-      child: Text(
-        "Don't Skip",
-      ),
-      onPressed: () {
-        Navigator.pop(context);
-      },
-    ),
-    colorBtn: RaisedButton(
-      child: Text(
-        "Skip Break",
-      ),
-      onPressed: () {
-        //pop ourselves
-        Navigator.pop(context);
+      colorBtn: RaisedButton(
+        child: Text(
+          "Skip Break",
+        ),
+        onPressed: () {
+          //pop ourselves
+          Navigator.pop(context);
 
-        //proceed as expected
-        ifSkip();
-      },
-    ),
-  );
+          //proceed as expected
+          ifSkip();
+        },
+      ),
+    );
+  }
 }
 
 class UpdatingBreakSet extends StatelessWidget {
