@@ -1,3 +1,3 @@
 # swol
 
-[Imgur](https://i.imgur.com/Ob7aOEn.png)
+<img src="https://i.imgur.com/Ob7aOEn.png"/>
