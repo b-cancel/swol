@@ -10,3 +10,7 @@
   <img src="https://media.giphy.com/media/Rgz7qmqwOImQxM8ygX/giphy.gif"/>
   <img src="https://media.giphy.com/media/RLOvYGkKt6jvsIyovu/giphy.gif"/>
 </p>
+
+Swol helps you use One Rep Max Equations to reach your Weightlifting Goals Faster.
+Know exactly how much weight you should be lifting given your training type and your previous set, 
+so that you are always pushing at your max but never beyond it to avoid injury and maximize results.
