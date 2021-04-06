@@ -20,21 +20,26 @@ dependencies:
   flutter:
     sdk: flutter
 
-  #request permission for both the vibration and notifiations
-  permission_handler: ^4.4.0+hotfix.1
-
-  #notify users their break is done
-  flutter_local_notifications: ^1.2.0+4
-
-  #PICKER (for time picking)
-  flutter_picker: ^1.1.0 #WEB ISSUES
-
   #get application path for android and IOS
   #seems to only work for mobile
   #find alternative for web (https://pub.dev/packages/async_resource)
-  path_provider: ^1.6.5
+  path_provider:  ^2.0.1
+
+  #request permission for both the vibration and notifiations
+  permission_handler: ^6.1.1
+
+  #LAUNCH URL (has web method but I need to implement and test)
+  #https://github.com/flutter/plugins/tree/master/packages/url_launcher/url_launcher_web
+  #NOTE: alternative methods exist
+  url_launcher: ^6.0.3
+
+  #notify users their break is done
+  flutter_local_notifications: ^5.0.0+1
 
   #-------------------------ABOVE PROBLEMATIC-------------------------
+
+  #PICKER (for time picking)
+  flutter_picker: ^1.1.0 #WEB ISSUES
 
   #used so that gifs only play once
   #PROBABLY WILL CAUSE WEB ISSUES 
@@ -48,11 +53,6 @@ dependencies:
   feature_discovery: ^0.6.0 #I THINK MAY CAUSE WEB ISSUES (wait on response)
 
   #-------------------------ABOVE MAYBE PROBLEMATIC-------------------------
-
-  #LAUNCH URL (has web method but I need to implement and test)
-  #https://github.com/flutter/plugins/tree/master/packages/url_launcher/url_launcher_web
-  #NOTE: alternative methods exist
-  url_launcher: ^5.4.1 #NO WEB SUPPORT
 
   #ICONS
   font_awesome_flutter: ^8.4.0 #MAYBE WEB ISSUES (repair know)

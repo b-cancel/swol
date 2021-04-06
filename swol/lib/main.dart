@@ -109,7 +109,8 @@ class _GrabSystemDataState extends State<GrabSystemData> {
 
     //app_icon needs to be a added as a drawable resource to the Android head project
     //just plug it in the folder, nothing else special needed
-    var initializationSettingsAndroid = AndroidInitializationSettings('app_icon_other');
+    var initializationSettingsAndroid =
+        AndroidInitializationSettings('app_icon_other');
 
     //initialize IOS settings
     //and make sure that the notification is "triggered"
@@ -158,8 +159,8 @@ class _GrabSystemDataState extends State<GrabSystemData> {
     );
 
     var initializationSettings = InitializationSettings(
-      initializationSettingsAndroid,
-      initializationSettingsIOS,
+      android: initializationSettingsAndroid,
+      iOS: initializationSettingsIOS,
     );
 
     await flutterLocalNotificationsPlugin.initialize(
@@ -233,7 +234,7 @@ class _SplashScreenState extends State<SplashScreen>
             ),
             Center(
               child: Container(
-                width: MediaQuery.of(context).size.width * (2/3),
+                width: MediaQuery.of(context).size.width * (2 / 3),
                 child: Image.asset(
                   "assets/splash/splashCut.png",
                   //width: 1080/2, //1080,
