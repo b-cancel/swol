@@ -258,7 +258,7 @@ requestThatYouGoToAppSettings(
     ),
     colorBtn: RaisedButton(
       onPressed: () {
-        PermissionHandler().openAppSettings();
+        openAppSettings();
         //NOTE: that complete WILL run not here
         //but it will run in the widget below
         //when we detect that you have given us permission
@@ -309,9 +309,7 @@ class _PopOnResumeIfPermissionGrantedState
   }
 
   popAndCompleteIfPermissionGranted() async {
-    PermissionStatus status = await PermissionHandler().checkPermissionStatus(
-      PermissionGroup.notification,
-    );
+    PermissionStatus status = await Permission.notification.status;
 
     if (status == PermissionStatus.granted) {
       Navigator.of(context).pop();

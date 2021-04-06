@@ -23,13 +23,14 @@ class NotificationSwitch extends StatefulWidget {
 }
 
 //although unlikely
-//its possible for the user to 
+//its possible for the user to
 //1. initially have granted to permission
 //2. then MANUALLY turn it off
 //and EXPECT the button to turn it on to be there
 //since its so unlikely and the solution would REQUIRE us to reload every second
 //and that may cause more problems in the general cases we ignore that problem
-class _NotificationSwitchState extends State<NotificationSwitch> with WidgetsBindingObserver{
+class _NotificationSwitchState extends State<NotificationSwitch>
+    with WidgetsBindingObserver {
   bool showButton;
   PermissionStatus status;
 
@@ -57,26 +58,23 @@ class _NotificationSwitchState extends State<NotificationSwitch> with WidgetsBin
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
-  
+
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
       updateShowButton();
     }
   }
-  
-  updateShowButton({statusOutdated: true})async{
-    if(statusOutdated){
-      status = await PermissionHandler().checkPermissionStatus(
-        PermissionGroup.notification,
-      );
+
+  updateShowButton({statusOutdated: true}) async {
+    if (statusOutdated) {
+      status = await Permission.notification.status;
     }
 
     //schedule notification or cancel it
-    if(status == PermissionStatus.granted){
+    if (status == PermissionStatus.granted) {
       scheduleNotification(widget.exercise);
-    }
-    else{
+    } else {
       safeCancelNotification(widget.exercise.id);
     }
 
@@ -88,7 +86,7 @@ class _NotificationSwitchState extends State<NotificationSwitch> with WidgetsBin
   }
 
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.all(24),
       child: Visibility(
@@ -97,7 +95,7 @@ class _NotificationSwitchState extends State<NotificationSwitch> with WidgetsBin
           tooltip: 'Enable Notifications',
           onPressed: () async {
             requestNotificationPermission(
-              status, 
+              status,
               updateShowButton,
               automaticallyOpened: false,
             );

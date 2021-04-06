@@ -127,10 +127,7 @@ showRestrictedPopUp(
       onPressed: () async {
         //maybe the user made the required change
         //check again
-        PermissionStatus status =
-            await PermissionHandler().checkPermissionStatus(
-          PermissionGroup.notification,
-        );
+        PermissionStatus status = await Permission.notification.status;
 
         //pop ourselves
         Navigator.of(

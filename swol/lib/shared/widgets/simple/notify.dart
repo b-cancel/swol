@@ -26,14 +26,12 @@ import 'package:swol/main.dart';
 
 //NOTE: onComplete MUST RUN regardless of anything
 askForPermissionIfNotGrantedAndWeNeverAsked(
-    BuildContext context, 
-    Function onComplete,
-  ) async {
+  BuildContext context,
+  Function onComplete,
+) async {
   //regardless of whether its been requested before
   //we first check if it needs to be requested
-  PermissionStatus status = await PermissionHandler().checkPermissionStatus(
-    PermissionGroup.notification,
-  );
+  PermissionStatus status = await Permission.notification.status;
 
   //we don't have the permission
   if (status != PermissionStatus.granted) {
@@ -51,7 +49,7 @@ askForPermissionIfNotGrantedAndWeNeverAsked(
       //not granted or restricted
       //might be denied or unknown
       await requestNotificationPermission(
-        status, 
+        status,
         onComplete,
         automaticallyOpened: true,
       );
@@ -80,9 +78,7 @@ scheduleNotification(AnExercise exercise) async {
   bool inTheFuture = notificationDT.isAfter(DateTime.now());
   if (inTheFuture) {
     //check if we have permission to schedule a notification
-    PermissionStatus status = await PermissionHandler().checkPermissionStatus(
-      PermissionGroup.notification,
-    );
+    PermissionStatus status = await Permission.notification.status;
 
     //if we do then do so
     if (status == PermissionStatus.granted) {
@@ -93,11 +89,13 @@ scheduleNotification(AnExercise exercise) async {
       var androidPlatformChannelSpecifics = AndroidNotificationDetails(
         'swol-ID', 'swol-Name', 'swol-Description',
         //user must act now
-        importance: Importance.Max,
-        priority: Priority.Max,
+        importance: Importance.max,
+        priority: Priority.max,
         //not BigText, BigPicture, Message, or Media
+        //TODO-----
         //Maybe Inbox or Messaging
-        style: AndroidNotificationStyle.Default,
+        //style: AndroidNotificationStyle.Default,
+        //TODO-----
         styleInformation: DefaultStyleInformation(
           false, //content not html
           false, //title not html
@@ -119,8 +117,8 @@ scheduleNotification(AnExercise exercise) async {
         showProgress: false,
         indeterminate: false,
         //updates won't happen
-        channelAction: AndroidNotificationChannelAction.CreateIfNotExists,
-        visibility: NotificationVisibility.Public,
+        channelAction: AndroidNotificationChannelAction.createIfNotExists,
+        visibility: NotificationVisibility.public,
         //for older versions of android
         ticker: 'Set Break Complete',
       );
@@ -134,12 +132,12 @@ scheduleNotification(AnExercise exercise) async {
 
       //combine stuff for both platforms
       var platformChannelSpecifics = NotificationDetails(
-        androidPlatformChannelSpecifics,
-        iOSPlatformChannelSpecifics,
+        android: androidPlatformChannelSpecifics,
+        iOS: iOSPlatformChannelSpecifics,
       );
 
       //schedule the notification
-      await flutterLocalNotificationsPlugin.schedule(
+      await flutterLocalNotificationsPlugin.zonedSchedule(
         //pass ID so we can remove it by id if needed
         id,
         //title
@@ -154,6 +152,10 @@ scheduleNotification(AnExercise exercise) async {
         payload: id.toString(),
         //it should also trigger in low power mode
         androidAllowWhileIdle: true,
+
+        //TODO: make sure this is correct one day
+        uiLocalNotificationDateInterpretation:
+            UILocalNotificationDateInterpretation.wallClockTime,
       );
     }
   }
