@@ -62,16 +62,15 @@ class App extends StatelessWidget {
     SystemChrome.setSystemUIOverlayStyle(ThemeChanger.darkStyle);
 
     //main app build
-    return BotToastInit(
-      child: FeatureDiscovery(
-        child: MaterialApp(
-          title: 'SWOL',
-          navigatorObservers: [
-            BotToastNavigatorObserver()
-          ], //2.registered route observer
-          theme: MyTheme.dark,
-          home: GrabSystemData(),
-        ),
+    return FeatureDiscovery(
+      child: MaterialApp(
+        title: 'SWOL',
+        builder: BotToastInit(), //1. call BotToastInit
+        navigatorObservers: [
+          BotToastNavigatorObserver()
+        ], //2.registered route observer
+        theme: MyTheme.dark,
+        home: GrabSystemData(),
       ),
     );
   }

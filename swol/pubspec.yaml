@@ -36,6 +36,24 @@ dependencies:
   #notify users their break is done
   flutter_local_notifications: ^5.0.0+1
 
+  #VIBRATION
+  vibration: ^1.7.3
+
+  #feature discovery
+  feature_discovery: ^0.14.0 #I THINK MAY CAUSE WEB ISSUES (wait on response)
+
+  #SETTINGS
+  shared_preferences: ^2.0.5 #CONFIRMED NO ISSUES AFTER 0.5.6 (m)
+
+  #toast (work as customizable tool tips)
+  bot_toast: ^4.0.1
+
+  #inidicate that a list is a list
+  flutter_staggered_animations: ^1.0.0
+
+  loading_indicator: ^2.0.1
+
+  #TODO: check updates above
   #-------------------------ABOVE PROBLEMATIC-------------------------
 
   #PICKER (for time picking)
@@ -49,28 +67,16 @@ dependencies:
   #STATUS AND NAVIGATION BAR
   #flutter_statusbarcolor: ^0.2.3 #MAYBE WEB ISSUES
 
-  #feature discovery
-  feature_discovery: ^0.6.0 #I THINK MAY CAUSE WEB ISSUES (wait on response)
-
   #-------------------------ABOVE MAYBE PROBLEMATIC-------------------------
 
   #ICONS
   font_awesome_flutter: ^8.4.0 #MAYBE WEB ISSUES (repair know)
 
-  #SETTINGS
-  shared_preferences: ^0.5.6+3 #CONFIRMED NO ISSUES AFTER 0.5.6 (m)
-
   #double chevron shimmer
   shimmer: ^1.0.1
 
-  #inidicate that a list is a list
-  flutter_staggered_animations: ^0.1.2
-
   #info pop up
   awesome_dialog: ^0.1.3
-
-  #toast (work as customizable tool tips)
-  bot_toast: ^2.2.0
 
   #custom clipper
   flutter_custom_clippers: ^1.1.0
@@ -82,7 +88,6 @@ dependencies:
   #progress indicators (pulse)
   progress_indicators: ^0.1.4
   loading_indicator_view: ^1.1.0
-  loading_indicator: ^1.1.0
   flutter_spinkit: ^4.0.0
 
   #ANIMATION (for rotating arrow in expandable tile)
@@ -103,9 +108,6 @@ dependencies:
 
   #SCROLL TO TOP (for my expandable)
   scroll_to_index: '1.0.2' 
-
-  #VIBRATION
-  vibration: ^1.2.2
 
   #LOADING (for big timer)
   liquid_progress_indicator: ^0.3.2
@@ -136,10 +138,10 @@ dev_dependencies:
     sdk: flutter
 
   #SPLASH SCREEN
-  flutter_native_splash: ^0.1.7+2
+  flutter_native_splash: ^1.1.7+1
 
   #LAUNCHER
-  flutter_launcher_icons: ^0.7.2+1
+  flutter_launcher_icons: ^0.9.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

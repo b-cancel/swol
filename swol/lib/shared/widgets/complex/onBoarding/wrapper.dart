@@ -33,7 +33,7 @@ class FeatureWrapper extends StatelessWidget {
   final bool doneInsteadOfNext;
   final Color backgroundColor;
 
-  //NOTE: [1] Dismiss or [2] OnComplete are both going to be called 
+  //NOTE: [1] Dismiss or [2] OnComplete are both going to be called
   //because we HAVE TO close the current discovery feature
   //before moving onto the next feature discovery or finishing up the discoveries
   //we could have chosen either to use as our "pivot" be we chose [1]
@@ -54,7 +54,7 @@ class FeatureWrapper extends StatelessWidget {
   //all the actions below use the pivot
   //2 -> calls [1] manually
   //3 -> calls [1] manually
-  //    NOTE: 3 is the same as 2 except we have them seperate 
+  //    NOTE: 3 is the same as 2 except we have them seperate
   //          just in case later on we want to seperate these 2 functions
   //          tapping outside the buttons and going next may be unexpected
   //4 -> reconfigured the variable that [1] reacts to, then call [1] manually
@@ -70,28 +70,34 @@ class FeatureWrapper extends StatelessWidget {
       text: text,
       isLeft: left,
       isTop: top,
-      onTapNext: () => FeatureDiscovery.dismiss(context),
-      onTapPrev: (prevFeature == null) ? null : (){
-        continueForward.value = false;
-        //because of the above dismiss will react differently
-        FeatureDiscovery.dismiss(context);
-      },
+      onTapNext: () => FeatureDiscovery.dismissAll(context),
+      onTapPrev: (prevFeature == null)
+          ? null
+          : () {
+              continueForward.value = false;
+              //because of the above dismiss will react differently
+              FeatureDiscovery.dismissAll(context);
+            },
       showDone: doneInsteadOfNext,
     );
 
     String imageUrl;
-    if(top && left) imageUrl = "assets/biceps/topLeft.png";
-    else if(top && left == false) imageUrl = "assets/biceps/topRight.png";
-    else if(top == false && left) imageUrl = "assets/biceps/bottomLeft.png";
-    else imageUrl = "assets/biceps/bottomRight.png";
+    if (top && left)
+      imageUrl = "assets/biceps/topLeft.png";
+    else if (top && left == false)
+      imageUrl = "assets/biceps/topRight.png";
+    else if (top == false && left)
+      imageUrl = "assets/biceps/bottomLeft.png";
+    else
+      imageUrl = "assets/biceps/bottomRight.png";
 
     Widget image = OnBoardingImage(
       width: MediaQuery.of(context).size.width,
-      multiplier: (2/3),
+      multiplier: (2 / 3),
       imageUrl: imageUrl,
       //NOTE: the top onBoardings are center aligned
       isLeft: top ? null : (left == false),
-      onTap: () => FeatureDiscovery.dismiss(context),
+      onTap: () => FeatureDiscovery.dismissAll(context),
     );
 
     return DescribedFeatureOverlay(
@@ -102,7 +108,7 @@ class FeatureWrapper extends StatelessWidget {
           IgnorePointer(
             child: FloatingActionButton(
               heroTag: null,
-              onPressed: (){},
+              onPressed: () {},
               backgroundColor: backgroundColor,
               child: Text(""),
             ),
@@ -115,12 +121,16 @@ class FeatureWrapper extends StatelessWidget {
           ),
         ],
       ),
-      targetColor: top ? Theme.of(context).primaryColor : Theme.of(context).primaryColorDark,
+      targetColor: top
+          ? Theme.of(context).primaryColor
+          : Theme.of(context).primaryColorDark,
       //background
       title: top ? textWidget : image,
       textColor: Colors.white,
       description: top ? image : textWidget,
-      backgroundColor: top ? Theme.of(context).primaryColorDark : Theme.of(context).primaryColor,
+      backgroundColor: top
+          ? Theme.of(context).primaryColorDark
+          : Theme.of(context).primaryColor,
       //settings
       contentLocation: top ? ContentLocation.below : ContentLocation.above,
       overflowMode: OverflowMode.wrapBackground,
@@ -128,17 +138,16 @@ class FeatureWrapper extends StatelessWidget {
       //child
       child: child,
       //functions
-      onComplete: () async{ 
-        if(nextFeature != null) nextFeature();
+      onComplete: () async {
+        if (nextFeature != null) nextFeature();
         continueForward.value = true; //reset
         return true; //keep it simple always return true
       },
-      onDismiss: () async{
-        if(continueForward.value){
-          if(nextFeature != null) nextFeature();
-        }
-        else{
-          if(prevFeature != null) prevFeature();
+      onDismiss: () async {
+        if (continueForward.value) {
+          if (nextFeature != null) nextFeature();
+        } else {
+          if (prevFeature != null) prevFeature();
         }
         continueForward.value = true; //reset
         return true; //keep it simple always return true

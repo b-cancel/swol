@@ -27,7 +27,7 @@
     }
     */
 
-    int flutter_native_splash = 1;
+    //int flutter_native_splash = 1;
     UIApplication.sharedApplication.statusBarHidden = false;
 
   [GeneratedPluginRegistrant registerWithRegistry:self];

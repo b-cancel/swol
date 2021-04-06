@@ -12,7 +12,7 @@ PODS:
     - Flutter
   - url_launcher (0.0.1):
     - Flutter
-  - vibration (1.2.2):
+  - vibration (1.7.3):
     - Flutter
 
 DEPENDENCIES:
@@ -49,9 +49,9 @@ SPEC CHECKSUMS:
   loading_indicator_view: fb6f8efecc1cd030dc3a42a39f9107eef908da86
   path_provider: abfe2b5c733d04e238b0d8691db0cfd63a27a93c
   permission_handler: ccb20a9fad0ee9b1314a52b70b76b473c5f8dab0
-  shared_preferences: 430726339841afefe5142b9c1f50cb6bd7793e01
+  shared_preferences: af6bfa751691cdc24be3045c43ec037377ada40d
   url_launcher: 6fef411d543ceb26efce54b05a0a40bfd74cbbef
-  vibration: 2f659072a9e03ae160974238b728c96e98bce2b5
+  vibration: b5a33e764c3f609a975b9dca73dce20fdde627dc
 
 PODFILE CHECKSUM: 8e679eca47255a8ca8067c4c67aab20e64cb974d
 
