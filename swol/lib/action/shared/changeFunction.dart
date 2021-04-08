@@ -31,7 +31,6 @@ class _ChangeFunctionState extends State<ChangeFunction> {
   final ValueNotifier<bool> lastFunction = new ValueNotifier<bool>(false);
   final ValueNotifier<bool> firstFunction = new ValueNotifier<bool>(false);
 
-  var carousel;
   CarouselController carouselController;
 
   updateCarousel({bool alsoSetState: true}) {
@@ -44,75 +43,6 @@ class _ChangeFunctionState extends State<ChangeFunction> {
     //calc inital page
     int selectedID = widget.functionID.value;
     int selectedPage = ExercisePage.orderedIDs.value.indexOf(selectedID);
-
-    //new carousel
-    carousel = CarouselSlider(
-      carouselController: carouselController,
-      options: CarouselOptions(
-        initialPage:
-            selectedPage, //DOES NOT WORK initially after the first time
-        height: 36,
-        enableInfiniteScroll: false,
-        autoPlay: false,
-        scrollDirection: Axis.vertical,
-        viewportFraction: 1.0,
-        onPageChanged: (int selectedIndex, CarouselPageChangedReason reason) {
-          //the index of the page not the ID of the function
-          int selectedID = ExercisePage.orderedIDs.value[selectedIndex];
-          if (widget.functionID.value != selectedID) {
-            Vibrator.vibrateOnce();
-            widget.functionID.value = selectedID;
-          }
-
-          //updates outer arrows
-          int idIsAtHighest = ExercisePage.orderedIDs.value[0];
-          int idIsAtLowest = ExercisePage.orderedIDs.value[7];
-          firstFunction.value = (widget.functionID.value == idIsAtLowest);
-          lastFunction.value = (widget.functionID.value == idIsAtHighest);
-        },
-      ),
-      items: ExercisePage.orderedIDs.value.map((functionID) {
-        return Builder(
-          builder: (BuildContext context) {
-            //no matter what this is going to span the entirety of the space
-            return Center(
-              child: Container(
-                height: 36,
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    Visibility(
-                      visible: widget.middleArrows,
-                      child: InnerArrows(
-                        hideArrow: functionID == idIsAtLowest,
-                        functionID: functionID,
-                        isUpArrow: false,
-                      ),
-                    ),
-                    Text(
-                      Functions.functions[functionID],
-                      textScaleFactor: 1,
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    Visibility(
-                      visible: widget.middleArrows,
-                      child: InnerArrows(
-                        hideArrow: functionID == idIsAtHighest,
-                        functionID: functionID,
-                        isUpArrow: true,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            );
-          },
-        );
-      }).toList(),
-    );
 
     //set state if needed
     List<int> beforeWait = ExercisePage.orderedIDs.value;
@@ -139,9 +69,7 @@ class _ChangeFunctionState extends State<ChangeFunction> {
               //TODO: duplicatable by simply moving to the next
 
               //this check is preventative because I can't seem to duplicate the problem
-              if (carousel.runtimeType == CarouselSlider) {
-                if (mounted) carouselController.jumpToPage(selectedPage);
-              }
+              if (mounted) carouselController.jumpToPage(selectedPage);
             });
           }
         }
@@ -150,10 +78,33 @@ class _ChangeFunctionState extends State<ChangeFunction> {
     //ELSE: the carousel is being build in init
   }
 
+  Widget carousel;
+
   @override
   void initState() {
     //super init
     super.initState();
+
+    //update first last without setting state
+    int idIsAtHighest = ExercisePage.orderedIDs.value[0];
+    int idIsAtLowest = ExercisePage.orderedIDs.value[7];
+    firstFunction.value = (widget.functionID.value == idIsAtLowest);
+    lastFunction.value = (widget.functionID.value == idIsAtHighest);
+
+    //calc inital page
+    int selectedID = widget.functionID.value;
+    int selectedPage = ExercisePage.orderedIDs.value.indexOf(selectedID);
+
+    carousel = CarouselRefed(
+      carouselController: carouselController,
+      selectedPage: selectedPage,
+      functionID: widget.functionID,
+      firstFunction: firstFunction,
+      lastFunction: lastFunction,
+      middleArrows: widget.middleArrows,
+      idIsAtLowest: idIsAtLowest,
+      idIsAtHighest: idIsAtHighest,
+    );
 
     //make carousel (and also sets first and last)
     updateCarousel(alsoSetState: false);
@@ -173,7 +124,7 @@ class _ChangeFunctionState extends State<ChangeFunction> {
 
   upOneFunction() {
     if (firstFunction.value == false) {
-      carousel.nextPage(
+      carouselController.nextPage(
         duration: ExercisePage.transitionDuration,
         curve: Curves.bounceIn,
       );
@@ -182,7 +133,7 @@ class _ChangeFunctionState extends State<ChangeFunction> {
 
   downOneFunction() {
     if (lastFunction.value == false) {
-      carousel.previousPage(
+      carouselController.previousPage(
         duration: ExercisePage.transitionDuration,
         curve: Curves.bounceIn,
       );
@@ -245,6 +196,99 @@ class _ChangeFunctionState extends State<ChangeFunction> {
           ),
         ),
       ),
+    );
+  }
+}
+
+class CarouselRefed extends StatelessWidget {
+  CarouselRefed({
+    @required this.carouselController,
+    @required this.selectedPage,
+    @required this.functionID,
+    @required this.firstFunction,
+    @required this.lastFunction,
+    @required this.middleArrows,
+    @required this.idIsAtLowest,
+    @required this.idIsAtHighest,
+  });
+
+  final CarouselController carouselController;
+  final int selectedPage;
+  final ValueNotifier functionID;
+  final ValueNotifier firstFunction;
+  final ValueNotifier lastFunction;
+  final bool middleArrows;
+  final int idIsAtLowest;
+  final int idIsAtHighest;
+
+  @override
+  Widget build(BuildContext context) {
+    return CarouselSlider(
+      carouselController: carouselController,
+      options: CarouselOptions(
+        initialPage:
+            selectedPage, //DOES NOT WORK initially after the first time
+        height: 36,
+        enableInfiniteScroll: false,
+        autoPlay: false,
+        scrollDirection: Axis.vertical,
+        viewportFraction: 1.0,
+        onPageChanged: (int selectedIndex, CarouselPageChangedReason reason) {
+          //the index of the page not the ID of the function
+          int selectedID = ExercisePage.orderedIDs.value[selectedIndex];
+          if (functionID.value != selectedID) {
+            Vibrator.vibrateOnce();
+            functionID.value = selectedID;
+          }
+
+          //updates outer arrows
+          int idIsAtHighest = ExercisePage.orderedIDs.value[0];
+          int idIsAtLowest = ExercisePage.orderedIDs.value[7];
+          firstFunction.value = (functionID.value == idIsAtLowest);
+          lastFunction.value = (functionID.value == idIsAtHighest);
+        },
+      ),
+      items: ExercisePage.orderedIDs.value.map((functionID) {
+        return Builder(
+          builder: (BuildContext context) {
+            //no matter what this is going to span the entirety of the space
+            return Center(
+              child: Container(
+                height: 36,
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Visibility(
+                      visible: middleArrows,
+                      child: InnerArrows(
+                        hideArrow: functionID == idIsAtLowest,
+                        functionID: functionID,
+                        isUpArrow: false,
+                      ),
+                    ),
+                    Text(
+                      Functions.functions[functionID],
+                      textScaleFactor: 1,
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Visibility(
+                      visible: middleArrows,
+                      child: InnerArrows(
+                        hideArrow: functionID == idIsAtHighest,
+                        functionID: functionID,
+                        isUpArrow: true,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        );
+      }).toList(),
     );
   }
 }
