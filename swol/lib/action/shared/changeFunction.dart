@@ -32,6 +32,7 @@ class _ChangeFunctionState extends State<ChangeFunction> {
   final ValueNotifier<bool> firstFunction = new ValueNotifier<bool>(false);
 
   var carousel;
+  CarouselController carouselController;
 
   updateCarousel({bool alsoSetState: true}) {
     //update first last without setting state
@@ -46,6 +47,7 @@ class _ChangeFunctionState extends State<ChangeFunction> {
 
     //new carousel
     carousel = CarouselSlider(
+      carouselController: carouselController,
       options: CarouselOptions(
         initialPage:
             selectedPage, //DOES NOT WORK initially after the first time
@@ -138,7 +140,7 @@ class _ChangeFunctionState extends State<ChangeFunction> {
 
               //this check is preventative because I can't seem to duplicate the problem
               if (carousel.runtimeType == CarouselSlider) {
-                if (mounted) carousel.jumpToPage(selectedPage);
+                if (mounted) carouselController.jumpToPage(selectedPage);
               }
             });
           }

@@ -75,13 +75,14 @@ class _TrainingTypeSectionsState extends State<TrainingTypeSections> {
   List<List<CardTable>> sectionsOfCards;
   List<Widget> carousels;
   var mainCarousel;
+  CarouselController carouselController;
 
   sectionIDToCarouselAction() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mainCarousel == null)
         sectionIDToCarouselAction();
       else {
-        mainCarousel.animateToPage(
+        carouselController.animateToPage(
           widget.sectionID.value,
           duration: ExercisePage.transitionDuration,
           curve: Curves.linear,
@@ -176,6 +177,7 @@ class _TrainingTypeSectionsState extends State<TrainingTypeSections> {
     for (int i = 0; i < sectionsOfCards.length; i++) {
       carousels.add(
         CarouselSlider(
+          carouselController: carouselController,
           options: CarouselOptions(
             height: cardHeight,
             //so they can compare both
@@ -205,7 +207,7 @@ class _TrainingTypeSectionsState extends State<TrainingTypeSections> {
 
     //init call for initial focus
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      mainCarousel.jumpToPage(widget.sectionID.value);
+      carouselController.jumpToPage(widget.sectionID.value);
     });
 
     //listener for further actions

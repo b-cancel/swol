@@ -39,6 +39,7 @@ class AnimatedRangeInformation extends StatefulWidget {
 
 class _AnimatedRangeInformationState extends State<AnimatedRangeInformation> {
   var carousel;
+  CarouselController carouselController;
   int sectionGrown;
 
   setSectionGrown({bool jump: false}) {
@@ -55,9 +56,9 @@ class _AnimatedRangeInformationState extends State<AnimatedRangeInformation> {
     }
 
     if (jump)
-      carousel.jumpToPage(sectionGrown);
+      carouselController.jumpToPage(sectionGrown);
     else {
-      carousel.animateToPage(
+      carouselController.animateToPage(
         sectionGrown,
         duration: ExercisePage.transitionDuration,
         curve: Curves.easeInOut,
@@ -95,6 +96,7 @@ class _AnimatedRangeInformationState extends State<AnimatedRangeInformation> {
 
     //create carousel seperately so we can control it
     carousel = CarouselSlider(
+      carouselController: carouselController,
       options: CarouselOptions(
         height: chosenHeight, //overrides aspect ratio
         //we don't want to have a hint at the other sections
