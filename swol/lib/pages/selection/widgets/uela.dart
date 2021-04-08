@@ -1,4 +1,6 @@
 //flutter
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -45,7 +47,7 @@ class _UELAState extends State<UELA> {
           ),
           contentPadding: EdgeInsets.all(0),
           content: UelaBody(
-            holding: holding, 
+            holding: holding,
             afterConfirm: widget.afterConfirm,
           ),
         ),
@@ -186,9 +188,12 @@ class UelaBody extends StatelessWidget {
                     hasTopIcon: false,
                     secondary: FlatButton(
                       onPressed: () {
+                        exit(0);
+                        /*
                         SystemChannels.platform.invokeMethod(
                           'SystemNavigator.pop',
                         );
+                        */
                       },
                       child: Text("Close App"),
                     ),

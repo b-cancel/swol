@@ -46,26 +46,29 @@ class _ChangeFunctionState extends State<ChangeFunction> {
 
     //new carousel
     carousel = CarouselSlider(
-      initialPage: selectedPage, //DOES NOT WORK initially after the first time
-      height: 36,
-      enableInfiniteScroll: false,
-      autoPlay: false,
-      scrollDirection: Axis.vertical,
-      viewportFraction: 1.0,
-      onPageChanged: (int selectedIndex) {
-        //the index of the page not the ID of the function
-        int selectedID = ExercisePage.orderedIDs.value[selectedIndex];
-        if (widget.functionID.value != selectedID) {
-          Vibrator.vibrateOnce();
-          widget.functionID.value = selectedID;
-        }
+      options: CarouselOptions(
+        initialPage:
+            selectedPage, //DOES NOT WORK initially after the first time
+        height: 36,
+        enableInfiniteScroll: false,
+        autoPlay: false,
+        scrollDirection: Axis.vertical,
+        viewportFraction: 1.0,
+        onPageChanged: (int selectedIndex, CarouselPageChangedReason reason) {
+          //the index of the page not the ID of the function
+          int selectedID = ExercisePage.orderedIDs.value[selectedIndex];
+          if (widget.functionID.value != selectedID) {
+            Vibrator.vibrateOnce();
+            widget.functionID.value = selectedID;
+          }
 
-        //updates outer arrows
-        int idIsAtHighest = ExercisePage.orderedIDs.value[0];
-        int idIsAtLowest = ExercisePage.orderedIDs.value[7];
-        firstFunction.value = (widget.functionID.value == idIsAtLowest);
-        lastFunction.value = (widget.functionID.value == idIsAtHighest);
-      },
+          //updates outer arrows
+          int idIsAtHighest = ExercisePage.orderedIDs.value[0];
+          int idIsAtLowest = ExercisePage.orderedIDs.value[7];
+          firstFunction.value = (widget.functionID.value == idIsAtLowest);
+          lastFunction.value = (widget.functionID.value == idIsAtHighest);
+        },
+      ),
       items: ExercisePage.orderedIDs.value.map((functionID) {
         return Builder(
           builder: (BuildContext context) {
@@ -134,8 +137,8 @@ class _ChangeFunctionState extends State<ChangeFunction> {
               //TODO: duplicatable by simply moving to the next
 
               //this check is preventative because I can't seem to duplicate the problem
-              if(carousel.runtimeType == CarouselSlider){
-                if(mounted) carousel.jumpToPage(selectedPage);
+              if (carousel.runtimeType == CarouselSlider) {
+                if (mounted) carousel.jumpToPage(selectedPage);
               }
             });
           }

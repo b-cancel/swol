@@ -12,7 +12,7 @@ import 'package:swol/shared/methods/theme.dart';
 import 'package:swol/shared/structs/range.dart';
 
 //guides the users and instructs them all at once with minimal UI
-//used 2 times, both in add exercise... 
+//used 2 times, both in add exercise...
 //1. recovery time info
 //2. rep target info
 //in change recovery time... recovery time info
@@ -33,46 +33,48 @@ class AnimatedRangeInformation extends StatefulWidget {
   final bool hideNameButtons;
 
   @override
-  _AnimatedRangeInformationState createState() => _AnimatedRangeInformationState();
+  _AnimatedRangeInformationState createState() =>
+      _AnimatedRangeInformationState();
 }
 
 class _AnimatedRangeInformationState extends State<AnimatedRangeInformation> {
   var carousel;
   int sectionGrown;
 
-  setSectionGrown({bool jump: false}){
-    for(int i = 0; i < widget.ranges.length; i++){
-      if(i == (widget.ranges.length - 1)) sectionGrown = i;
-      else{
+  setSectionGrown({bool jump: false}) {
+    for (int i = 0; i < widget.ranges.length; i++) {
+      if (i == (widget.ranges.length - 1))
+        sectionGrown = i;
+      else {
         Duration thisDuration = Duration(seconds: widget.ranges[i].endSeconds);
-        if(widget.selectedDuration.value <= thisDuration){
+        if (widget.selectedDuration.value <= thisDuration) {
           sectionGrown = i;
           break;
         }
       }
     }
 
-    if(jump) carousel.jumpToPage(sectionGrown);
-    else{
+    if (jump)
+      carousel.jumpToPage(sectionGrown);
+    else {
       carousel.animateToPage(
-        sectionGrown, 
-        duration: ExercisePage.transitionDuration, 
+        sectionGrown,
+        duration: ExercisePage.transitionDuration,
         curve: Curves.easeInOut,
       );
     }
-    
   }
 
   @override
   void initState() {
     //set initial section grown
-    WidgetsBinding.instance.addPostFrameCallback((_){
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       setSectionGrown(jump: true);
     });
 
     //listen to changes to update section grown
     widget.selectedDuration.addListener(setSectionGrown);
-    
+
     //super init
     super.initState();
   }
@@ -93,15 +95,17 @@ class _AnimatedRangeInformationState extends State<AnimatedRangeInformation> {
 
     //create carousel seperately so we can control it
     carousel = CarouselSlider(
-      height: chosenHeight, //overrides aspect ratio
-      //we don't want to have a hint at the other sections
-      //hinting would require too much space
-      //and the current UI expresses that there are other sections already
-      viewportFraction: 1.0,
-      //not needed since we control the carousel with the controller
-      enableInfiniteScroll: false,
-      //user should never be able to scroll this themeselves
-      scrollPhysics: NeverScrollableScrollPhysics(),
+      options: CarouselOptions(
+        height: chosenHeight, //overrides aspect ratio
+        //we don't want to have a hint at the other sections
+        //hinting would require too much space
+        //and the current UI expresses that there are other sections already
+        viewportFraction: 1.0,
+        //not needed since we control the carousel with the controller
+        enableInfiniteScroll: false,
+        //user should never be able to scroll this themeselves
+        scrollPhysics: NeverScrollableScrollPhysics(),
+      ),
       //-----unrefined
       items: widget.ranges.map((aRange) {
         return Builder(
@@ -128,7 +132,7 @@ class _AnimatedRangeInformationState extends State<AnimatedRangeInformation> {
                   visible: (widget.hideNameButtons == false),
                   child: Padding(
                     padding: EdgeInsets.only(
-                      top:  widget.darkTheme ? 24.0 : 0,
+                      top: widget.darkTheme ? 24.0 : 0,
                     ),
                     child: TrainingNameButton(
                       width: thisWidth,

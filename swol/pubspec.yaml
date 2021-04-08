@@ -37,7 +37,7 @@ dependencies:
   flutter_local_notifications: ^5.0.0+1
 
   #VIBRATION
-  vibration: ^1.7.3
+  #vibration: ^1.7.3
 
   #feature discovery
   feature_discovery: ^0.14.0 #I THINK MAY CAUSE WEB ISSUES (wait on response)
@@ -83,7 +83,7 @@ dependencies:
 
   #swiper
   #flutter_swiper: ^1.1.6 #100rated (alternate)
-  carousel_slider: ^1.4.1 #100rated
+  carousel_slider: ^3.0.0 #100rated
 
   #progress indicators (pulse)
   progress_indicators: ^0.1.4

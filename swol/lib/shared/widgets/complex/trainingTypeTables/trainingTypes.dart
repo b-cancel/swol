@@ -27,13 +27,15 @@ class AllTrainingTypes extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<int> sections = new List<int>();
-    for(int i = 0; i < 3; i++){
+    for (int i = 0; i < 3; i++) {
       //adjust the section being added
       int sectionToAdd = i + sectionWithInitialFocus;
 
       //add the section (adjust for wrap around above)
-      if(sectionToAdd <= 2) sections.add(sectionToAdd);
-      else sections.add(sectionToAdd - 3);
+      if (sectionToAdd <= 2)
+        sections.add(sectionToAdd);
+      else
+        sections.add(sectionToAdd - 3);
     }
 
     return TrainingTypeSections(
@@ -57,7 +59,7 @@ class TrainingTypeSections extends StatefulWidget {
   }) : super(key: key);
 
   final bool cardBackground;
-  final List<List<int>> sections; 
+  final List<List<int>> sections;
   final ValueNotifier<int> sectionID;
   final int highlightField;
   final Color shadowColor;
@@ -74,13 +76,14 @@ class _TrainingTypeSectionsState extends State<TrainingTypeSections> {
   List<Widget> carousels;
   var mainCarousel;
 
-  sectionIDToCarouselAction(){
-    WidgetsBinding.instance.addPostFrameCallback((_){
-      if(mainCarousel == null) sectionIDToCarouselAction();
-      else{
+  sectionIDToCarouselAction() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mainCarousel == null)
+        sectionIDToCarouselAction();
+      else {
         mainCarousel.animateToPage(
           widget.sectionID.value,
-          duration: ExercisePage.transitionDuration, 
+          duration: ExercisePage.transitionDuration,
           curve: Curves.linear,
         );
       }
@@ -94,7 +97,7 @@ class _TrainingTypeSectionsState extends State<TrainingTypeSections> {
     cardHeight = 256.0; //this is just the height that feels the nicest
 
     //create all default card
-    enduranceCard = CardTable( 
+    enduranceCard = CardTable(
       cardBackground: widget.cardBackground,
       height: cardHeight,
       items: [
@@ -115,12 +118,12 @@ class _TrainingTypeSectionsState extends State<TrainingTypeSections> {
       cardBackground: widget.cardBackground,
       height: cardHeight,
       items: [
-        "\tHypertrophy",//NOTE: extra space for dumbell
+        "\tHypertrophy", //NOTE: extra space for dumbell
         "Heavy",
         "1:05 to 2:00",
         "7 to 12",
         "3 to 5",
-        "Hypertrophy", 
+        "Hypertrophy",
         "Size",
         "Joints & Tissue",
       ],
@@ -147,15 +150,22 @@ class _TrainingTypeSectionsState extends State<TrainingTypeSections> {
 
     //create section
     sectionsOfCards = new List<List<CardTable>>();
-    for(int i = 0; i < widget.sections.length; i++){
+    for (int i = 0; i < widget.sections.length; i++) {
       List<int> aSection = widget.sections[i];
       List<CardTable> aCardSection = new List<CardTable>();
-      for(int s = 0; s < aSection.length; s++){
+      for (int s = 0; s < aSection.length; s++) {
         int cardType = aSection[s];
-        switch(cardType){ //0,1,2
-          case 0: aCardSection.add(enduranceCard); break;
-          case 1: aCardSection.add(hypertrophyCard); break;
-          default: aCardSection.add(strengthCard); break;
+        switch (cardType) {
+          //0,1,2
+          case 0:
+            aCardSection.add(enduranceCard);
+            break;
+          case 1:
+            aCardSection.add(hypertrophyCard);
+            break;
+          default:
+            aCardSection.add(strengthCard);
+            break;
         }
       }
       sectionsOfCards.add(aCardSection);
@@ -163,15 +173,17 @@ class _TrainingTypeSectionsState extends State<TrainingTypeSections> {
 
     //create carosels based on that
     carousels = new List<Widget>();
-    for(int i = 0; i < sectionsOfCards.length; i++){
+    for (int i = 0; i < sectionsOfCards.length; i++) {
       carousels.add(
         CarouselSlider(
-          height: cardHeight,
-          //so they can compare both
-          enableInfiniteScroll: (sectionsOfCards[i].length > 1),
-          enlargeCenterPage: true,
-          autoPlay: false,
-          viewportFraction: .75,
+          options: CarouselOptions(
+            height: cardHeight,
+            //so they can compare both
+            enableInfiniteScroll: (sectionsOfCards[i].length > 1),
+            enlargeCenterPage: true,
+            autoPlay: false,
+            viewportFraction: .75,
+          ),
           items: sectionsOfCards[i],
         ),
       );
@@ -179,18 +191,20 @@ class _TrainingTypeSectionsState extends State<TrainingTypeSections> {
 
     //create main carousel
     mainCarousel = CarouselSlider(
-      scrollPhysics: NeverScrollableScrollPhysics(),
-      height: cardHeight,
-      //so they can compare both
-      enableInfiniteScroll: (carousels.length > 1),
-      enlargeCenterPage: true,
-      autoPlay: false,
-      viewportFraction: 1.0,
+      options: CarouselOptions(
+        scrollPhysics: NeverScrollableScrollPhysics(),
+        height: cardHeight,
+        //so they can compare both
+        enableInfiniteScroll: (carousels.length > 1),
+        enlargeCenterPage: true,
+        autoPlay: false,
+        viewportFraction: 1.0,
+      ),
       items: carousels,
     );
 
     //init call for initial focus
-    WidgetsBinding.instance.addPostFrameCallback((_){
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       mainCarousel.jumpToPage(widget.sectionID.value);
     });
 
@@ -217,7 +231,7 @@ class _TrainingTypeSectionsState extends State<TrainingTypeSections> {
         child: Row(
           children: <Widget>[
             Container(
-              height: cardHeight, 
+              height: cardHeight,
               child: CardTable(
                 cardBackground: widget.cardBackground,
                 height: cardHeight,
@@ -252,7 +266,7 @@ class _TrainingTypeSectionsState extends State<TrainingTypeSections> {
                           begin: Alignment.centerLeft,
                           end: Alignment.centerRight,
                           // Add one stop for each color. Stops should increase from 0 to 1
-                          stops: [0.1,1.0],
+                          stops: [0.1, 1.0],
                           colors: [
                             widget.shadowColor,
                             widget.shadowColor.withOpacity(0)
