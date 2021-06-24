@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 class TextWithCorners extends StatelessWidget {
   const TextWithCorners({
-    Key key,
-    @required this.text,
+    Key? key,
+    required this.text,
     this.radius,
     this.useAccent: false,
   }) : super(key: key);
@@ -22,7 +22,7 @@ class TextWithCorners extends StatelessWidget {
         children: <Widget>[
           Container(
             padding: EdgeInsets.symmetric(
-              horizontal: radius.x, 
+              horizontal: radius.x,
             ),
             width: MediaQuery.of(context).size.width,
             alignment: Alignment.center,
@@ -48,7 +48,9 @@ class TextWithCorners extends StatelessWidget {
             child: Visibility(
               visible: radius != null,
               child: Corner(
-                cornerColor: useAccent ? Theme.of(context).accentColor : Theme.of(context).cardColor,
+                cornerColor: useAccent
+                    ? Theme.of(context).accentColor
+                    : Theme.of(context).cardColor,
                 cardRadius: radius,
                 isLeft: true,
               ),
@@ -61,7 +63,9 @@ class TextWithCorners extends StatelessWidget {
               visible: radius != null,
               child: Corner(
                 cardRadius: radius,
-                cornerColor: useAccent ? Theme.of(context).accentColor : Theme.of(context).cardColor,
+                cornerColor: useAccent
+                    ? Theme.of(context).accentColor
+                    : Theme.of(context).cardColor,
               ),
             ),
           ),
@@ -73,10 +77,10 @@ class TextWithCorners extends StatelessWidget {
 
 class Corner extends StatelessWidget {
   const Corner({
-    Key key,
+    Key? key,
     this.cornerColor,
     this.backgroundColor,
-    @required this.cardRadius,
+    required this.cardRadius,
     this.isLeft: false,
   }) : super(key: key);
 
@@ -101,7 +105,7 @@ class Corner extends StatelessWidget {
         ),
       ),
     );
-    
+
     Widget backColored = Container(
       height: 56,
       width: 56,
@@ -120,7 +124,7 @@ class Corner extends StatelessWidget {
     );
 
     Widget child;
-    if(isLeft){
+    if (isLeft) {
       child = Stack(
         children: <Widget>[
           Positioned(
@@ -135,8 +139,7 @@ class Corner extends StatelessWidget {
           ),
         ],
       );
-    }
-    else{
+    } else {
       child = Stack(
         children: <Widget>[
           Positioned(

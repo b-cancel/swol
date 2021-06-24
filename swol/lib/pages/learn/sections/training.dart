@@ -9,7 +9,7 @@ import 'package:swol/pages/learn/description.dart';
 //widget
 class TrainingBody extends StatelessWidget {
   const TrainingBody({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

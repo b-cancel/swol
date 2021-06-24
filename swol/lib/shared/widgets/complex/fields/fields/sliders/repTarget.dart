@@ -13,8 +13,8 @@ import 'package:swol/shared/methods/theme.dart';
 //NOTE: this widget should not dispose its passed rep target
 class RepTargetField extends StatefulWidget {
   RepTargetField({
-    @required this.repTarget,
-    @required this.subtle,
+    required this.repTarget,
+    required this.subtle,
     this.darkTheme: true,
   });
 
@@ -29,7 +29,7 @@ class RepTargetField extends StatefulWidget {
 class _RepTargetFieldState extends State<RepTargetField> {
   ValueNotifier<Duration> repTargetDuration;
 
-  repTargetUpdate(){
+  repTargetUpdate() {
     //update duration that is used by tick slider
     repTargetDuration.value = Duration(
       seconds: widget.repTarget.value * 5,
@@ -56,7 +56,7 @@ class _RepTargetFieldState extends State<RepTargetField> {
     widget.repTarget.removeListener(repTargetUpdate);
     //DO NOT DISPOSE REP TARGET since it was passed
 
-    //super dispose 
+    //super dispose
     super.dispose();
   }
 
@@ -81,8 +81,8 @@ class _RepTargetFieldState extends State<RepTargetField> {
 //used by rep target (BoxFit.contained) and within white theme
 class AnimRepTargetInfoWhite extends StatelessWidget {
   const AnimRepTargetInfoWhite({
-    Key key,
-    @required this.repTargetDuration,
+    Key? key,
+    required this.repTargetDuration,
     this.darkTheme: true,
   }) : super(key: key);
 
@@ -106,8 +106,8 @@ class AnimRepTargetInfoWhite extends StatelessWidget {
           right: SlideRangeExtent(
             buttonText: "6",
           ),
-          startSeconds: (1*5),
-          endSeconds: (6*5),
+          startSeconds: (1 * 5),
+          endSeconds: (6 * 5),
         ),
         Range(
           name: "Hypertrophy Training",
@@ -118,8 +118,8 @@ class AnimRepTargetInfoWhite extends StatelessWidget {
           right: SlideRangeExtent(
             buttonText: "12",
           ),
-          startSeconds: (7*5),
-          endSeconds: (12*5),
+          startSeconds: (7 * 5),
+          endSeconds: (12 * 5),
         ),
         Range(
           name: "Endurance Training",
@@ -129,11 +129,12 @@ class AnimRepTargetInfoWhite extends StatelessWidget {
           ),
           right: SlideRangeExtent(
             buttonText: "35",
-            tipText: "Any More, and we will have trouble estimating your 1 Rep Max",
+            tipText:
+                "Any More, and we will have trouble estimating your 1 Rep Max",
             tipToLeft: false,
           ),
-          startSeconds: (13*5),
-          endSeconds: (35*5),
+          startSeconds: (13 * 5),
+          endSeconds: (35 * 5),
         )
       ],
     );

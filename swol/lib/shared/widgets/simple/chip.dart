@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 class ListTileChipShell extends StatelessWidget {
   const ListTileChipShell({
-    Key key,
-    @required this.chip,
+    Key? key,
+    required this.chip,
   }) : super(key: key);
 
   final Widget chip;
@@ -26,8 +26,8 @@ class ListTileChipShell extends StatelessWidget {
 
 class MyChip extends StatelessWidget {
   const MyChip({
-    Key key,
-    @required this.chipString,
+    Key? key,
+    required this.chipString,
     this.inverse: false,
   }) : super(key: key);
 
@@ -36,14 +36,18 @@ class MyChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Color chipColor = (inverse) ? Theme.of(context).primaryColorDark : Theme.of(context).accentColor;
-    Color textColor = (inverse) ? Theme.of(context).accentColor : Theme.of(context).primaryColorDark;
+    Color chipColor = (inverse)
+        ? Theme.of(context).primaryColorDark
+        : Theme.of(context).accentColor;
+    Color textColor = (inverse)
+        ? Theme.of(context).accentColor
+        : Theme.of(context).primaryColorDark;
 
     return Container(
       alignment: Alignment.topLeft,
       child: MyCustomChip(
-        chipColor: chipColor, 
-        chipString: chipString, 
+        chipColor: chipColor,
+        chipString: chipString,
         textColor: textColor,
       ),
     );
@@ -52,10 +56,10 @@ class MyChip extends StatelessWidget {
 
 class MyCustomChip extends StatelessWidget {
   const MyCustomChip({
-    Key key,
-    @required this.chipColor,
-    @required this.chipString,
-    @required this.textColor,
+    Key? key,
+    required this.chipColor,
+    required this.chipString,
+    required this.textColor,
     this.extraPadding,
   }) : super(key: key);
 

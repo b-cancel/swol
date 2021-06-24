@@ -12,11 +12,11 @@ import 'package:swol/shared/widgets/complex/fields/fields/function.dart';
 //widget
 class SuggestionChanger extends StatelessWidget {
   const SuggestionChanger({
-    Key key,
-    @required this.functionID,
-    @required this.repTarget,
-    @required this.arrowRadius,
-    @required this.cardRadius,
+    Key? key,
+    required this.functionID,
+    required this.repTarget,
+    required this.arrowRadius,
+    required this.cardRadius,
   }) : super(key: key);
 
   final ValueNotifier<int> functionID;
@@ -118,8 +118,8 @@ class SuggestionChanger extends StatelessWidget {
 
 class PredictionFormulaSpacer extends StatelessWidget {
   const PredictionFormulaSpacer({
-    Key key,
-    @required this.arrowRadius,
+    Key? key,
+    required this.arrowRadius,
   }) : super(key: key);
 
   final Radius arrowRadius;

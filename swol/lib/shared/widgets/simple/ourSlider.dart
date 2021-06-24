@@ -11,19 +11,19 @@ import 'package:swol/shared/methods/vibrate.dart';
 //NOTE: in both cases things start from 1
 class CustomSlider extends StatelessWidget {
   const CustomSlider({
-    @required this.value,
-    @required this.lastTick,
+    required this.value,
+    required this.lastTick,
     this.isDark: true,
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   final ValueNotifier<int> value;
   final int lastTick;
   final bool isDark;
 
-  onChange(int handlerIndex, dynamic lowerValue, dynamic upperValue){
+  onChange(int handlerIndex, dynamic lowerValue, dynamic upperValue) {
     double val = lowerValue;
-    if(val.toInt() != value.value){
+    if (val.toInt() != value.value) {
       Vibrator.vibrateOnce(
         duration: Duration(milliseconds: 150),
       );
@@ -56,12 +56,14 @@ class CustomSlider extends StatelessWidget {
     );
 
     //build tick lines
-    List<Widget> ticks = new List<Widget>();
-    for(int i = 1; i <= lastTick; i++){
-      if(i % 5 == 0) ticks.add(bigTick);
-      else ticks.add(littleTick);
+    List<Widget> ticks = [];
+    for (int i = 1; i <= lastTick; i++) {
+      if (i % 5 == 0)
+        ticks.add(bigTick);
+      else
+        ticks.add(littleTick);
 
-      if(i != lastTick){
+      if (i != lastTick) {
         ticks.add(spacer);
       }
     }
@@ -93,7 +95,7 @@ class CustomSlider extends StatelessWidget {
                   decoration: BoxDecoration(
                     color: Theme.of(context).accentColor,
                     border: Border.all(
-                      width: 2, 
+                      width: 2,
                       color: Colors.black,
                     ),
                     borderRadius: BorderRadius.circular(8),
@@ -106,7 +108,7 @@ class CustomSlider extends StatelessWidget {
                   decoration: BoxDecoration(
                     color: tickColor,
                     border: Border.all(
-                      width: 2, 
+                      width: 2,
                       color: Colors.black,
                     ),
                     borderRadius: BorderRadius.circular(8),
@@ -119,9 +121,7 @@ class CustomSlider extends StatelessWidget {
         ),
         Container(
           child: MediaQuery(
-            data: MediaQuery.of(context).copyWith(
-              textScaleFactor: 1.5
-            ),
+            data: MediaQuery.of(context).copyWith(textScaleFactor: 1.5),
             child: FlutterSlider(
               step: 1,
               jump: true,
@@ -135,34 +135,34 @@ class CustomSlider extends StatelessWidget {
                 scale: 1.25,
               ),
               handler: FlutterSliderHandler(
-                child: Container(
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    border: Border.all(width: 2, color: Colors.black),
-                    color: isDark ? Theme.of(context).accentColor : MyTheme.dark.scaffoldBackgroundColor,
-                  ),
-                  child: Center(
-                    child: Icon(
-                      Icons.repeat, 
-                      size: 25,
-                      color: Colors.white,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(width: 2, color: Colors.black),
+                      color: isDark
+                          ? Theme.of(context).accentColor
+                          : MyTheme.dark.scaffoldBackgroundColor,
+                    ),
+                    child: Center(
+                      child: Icon(
+                        Icons.repeat,
+                        size: 25,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
-                ),
-                foregroundDecoration: BoxDecoration()
-              ),
+                  foregroundDecoration: BoxDecoration()),
               tooltip: FlutterSliderTooltip(
                 alwaysShowTooltip: true,
                 textStyle: TextStyle(
-                  fontSize: 16, 
+                  fontSize: 16,
                   fontWeight: FontWeight.bold,
                   color: isDark ? Colors.white : Colors.black,
                 ),
                 boxStyle: FlutterSliderTooltipBox(
-                  decoration: BoxDecoration(
-                    //color: Theme.of(context).backgroundColor,
-                  )
-                ),
+                    decoration: BoxDecoration(
+                        //color: Theme.of(context).backgroundColor,
+                        )),
                 numberFormat: intl.NumberFormat(),
               ),
               trackBar: FlutterSliderTrackBar(

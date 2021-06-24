@@ -20,7 +20,7 @@ import 'package:swol/action/page.dart';
 
 class ExerciseNotesStateless extends StatelessWidget {
   ExerciseNotesStateless({
-    @required this.exercise,
+    required this.exercise,
   });
 
   final AnExercise exercise;
@@ -38,7 +38,7 @@ class ExerciseNotesStateless extends StatelessWidget {
 //widget
 class ExerciseNotes extends StatefulWidget {
   ExerciseNotes({
-    @required this.exercise,
+    required this.exercise,
   });
 
   final AnExercise exercise;
@@ -61,7 +61,7 @@ class _ExerciseNotesState extends State<ExerciseNotes> {
 
   //init
   @override
-  void initState() { 
+  void initState() {
     //super init
     super.initState();
 
@@ -80,7 +80,7 @@ class _ExerciseNotesState extends State<ExerciseNotes> {
   }
 
   @override
-  void dispose() { 
+  void dispose() {
     //remove listeners
     name.removeListener(updateName);
     note.removeListener(updateNote);
@@ -88,14 +88,14 @@ class _ExerciseNotesState extends State<ExerciseNotes> {
 
     //inform static for notifcation
     ExerciseNotesStateless.inStack = false;
-    
+
     //super dispose
     super.dispose();
   }
 
   final FocusNode noteFocusNode = FocusNode();
 
-  goBackToExercisePage(){
+  goBackToExercisePage() {
     //close any keyboard that may be open
     FocusScope.of(context).unfocus();
     //indicate that we should refocus inf needed
@@ -105,7 +105,7 @@ class _ExerciseNotesState extends State<ExerciseNotes> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () async{
+      onWillPop: () async {
         goBackToExercisePage();
         return true;
       },
@@ -164,7 +164,7 @@ class _ExerciseNotesState extends State<ExerciseNotes> {
                     editOneAtATime: true,
                   ),
                 ],
-              ), 
+              ),
             ),
           ],
         ),
@@ -175,23 +175,23 @@ class _ExerciseNotesState extends State<ExerciseNotes> {
 
 class BigActionButton extends StatelessWidget {
   BigActionButton({
-    @required this.exercise,
-    @required this.delete,
+    required this.exercise,
+    required this.delete,
   });
 
   final AnExercise exercise;
   final bool delete;
 
   //functions
-  deleteFunc(){
+  deleteFunc() {
     //stop the notification that may be running
     safeCancelNotification(exercise.id);
 
     //delete the exercise
     ExerciseData.deleteExercise(exercise.id);
   }
-  
-  hideFunc(){
+
+  hideFunc() {
     //stop the notification that may be running
     safeCancelNotification(exercise.id);
 
@@ -199,61 +199,65 @@ class BigActionButton extends StatelessWidget {
     exercise.tempWeight = null;
     exercise.tempReps = null;
     exercise.tempSetCount = null;
-    exercise.tempStartTime = new ValueNotifier<DateTime>(AnExercise.nullDateTime);
+    exercise.tempStartTime =
+        new ValueNotifier<DateTime>(AnExercise.nullDateTime);
 
     //mark as hidden
     exercise.lastTimeStamp = LastTimeStamp.hiddenDateTime();
   }
 
   //pop ups for archiving or deleting
-  areyouSurePopUp(BuildContext context, {Color color, IconData icon}){
+  areyouSurePopUp(BuildContext context, {Color color, IconData icon}) {
     String name = "\"" + exercise.name + "\"";
     showDialog<void>(
       context: context,
       barrierDismissible: true,
       builder: (BuildContext context) {
         return ConfirmActionMessage(
-          buttonColor: color, 
-          image: (delete) ? Padding(
-            padding: EdgeInsets.only(
-              bottom: 36,
-              top: 24,
-            ),
-            child: Container(
-              height: 140,
-              child: PlayGifOnce(
-                assetName: "assets/popUpGifs/delete.gif",
-                runTimeMS: 6120,
-                frameCount: 98,
-              ),
-            ),
-          )
-          : Padding(
-            padding: const EdgeInsets.only( 
-              top: 24.0,
-              bottom: 24,
-            ),
-            child: Container(
-              height: 140,
-              child: PlayGifOnce(
-                assetName: "assets/popUpGifs/hide.gif",
-                runTimeMS: 3660,
-                //remove last frame cuz its gross
-                frameCount: 32 - 1,
-              ),
-            ),
-          ),
-          iconSpace: (delete) ? 8 : 16, 
-          icon: icon, 
-          actionString: (delete) ? "Delete" : "Hide", 
-          message: (delete) 
-            ? DeleteMessage(theName: name) 
-            : HideMessage(theName: name), 
-          actionFunction: (){
-            if(delete) deleteFunc();
-            else hideFunc();
-          }, 
-        ); 
+          buttonColor: color,
+          image: (delete)
+              ? Padding(
+                  padding: EdgeInsets.only(
+                    bottom: 36,
+                    top: 24,
+                  ),
+                  child: Container(
+                    height: 140,
+                    child: PlayGifOnce(
+                      assetName: "assets/popUpGifs/delete.gif",
+                      runTimeMS: 6120,
+                      frameCount: 98,
+                    ),
+                  ),
+                )
+              : Padding(
+                  padding: const EdgeInsets.only(
+                    top: 24.0,
+                    bottom: 24,
+                  ),
+                  child: Container(
+                    height: 140,
+                    child: PlayGifOnce(
+                      assetName: "assets/popUpGifs/hide.gif",
+                      runTimeMS: 3660,
+                      //remove last frame cuz its gross
+                      frameCount: 32 - 1,
+                    ),
+                  ),
+                ),
+          iconSpace: (delete) ? 8 : 16,
+          icon: icon,
+          actionString: (delete) ? "Delete" : "Hide",
+          message: (delete)
+              ? DeleteMessage(theName: name)
+              : HideMessage(theName: name),
+          actionFunction: () {
+            if (delete)
+              deleteFunc();
+            else
+              hideFunc();
+          },
+        );
       },
     );
   }
@@ -269,7 +273,7 @@ class BigActionButton extends StatelessWidget {
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-          onTap: (){
+          onTap: () {
             areyouSurePopUp(
               context,
               icon: icon,

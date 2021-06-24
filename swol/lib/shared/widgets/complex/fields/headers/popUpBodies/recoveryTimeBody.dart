@@ -10,7 +10,7 @@ import 'package:swol/shared/methods/theme.dart';
 //widget
 class RecoveryTimePopUpBody extends StatelessWidget {
   const RecoveryTimePopUpBody({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

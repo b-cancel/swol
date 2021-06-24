@@ -31,12 +31,11 @@ class ShakingAlarm extends StatelessWidget {
             ),
             Positioned.fill(
               child: Center(
-                child: Icon(
-                  FontAwesomeIcons.times,
-                  color: Theme.of(context).cardColor,
-                  size: 14,
-                )
-              ),
+                  child: Icon(
+                FontAwesomeIcons.times,
+                color: Theme.of(context).cardColor,
+                size: 14,
+              )),
             ),
           ],
         ),
@@ -47,9 +46,9 @@ class ShakingAlarm extends StatelessWidget {
 
 class TimerShaker extends StatelessWidget {
   const TimerShaker({
-    Key key,
-    @required this.controller,
-    @required this.noTimeLeft,
+    Key? key,
+    required this.controller,
+    required this.noTimeLeft,
   }) : super(key: key);
 
   final AnimationController controller;
@@ -67,19 +66,20 @@ class TimerShaker extends StatelessWidget {
             child: Container(
               width: 14,
               child: FittedBox(
-                fit: BoxFit.fitWidth,
-                child: Container(
-                  //NOTE: width and height are placeholders to avoid an error
-                  width: 50,
-                  height: 50,
-                  child: Image(
-                  image: new AssetImage(
-                    (noTimeLeft) ? "assets/alarmTick.gif" : "assets/tickStill.png",
-                  ),
-                  color: Colors.white,
-                ),
-                )
-              ),
+                  fit: BoxFit.fitWidth,
+                  child: Container(
+                    //NOTE: width and height are placeholders to avoid an error
+                    width: 50,
+                    height: 50,
+                    child: Image(
+                      image: new AssetImage(
+                        (noTimeLeft)
+                            ? "assets/alarmTick.gif"
+                            : "assets/tickStill.png",
+                      ),
+                      color: Colors.white,
+                    ),
+                  )),
             ),
           ),
         ),

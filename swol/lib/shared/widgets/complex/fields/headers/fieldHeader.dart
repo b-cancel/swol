@@ -10,11 +10,11 @@ import 'package:swol/shared/methods/theme.dart';
 //widget
 class HeaderWithInfo extends StatelessWidget {
   const HeaderWithInfo({
-    Key key,
-    @required this.header,
-    @required this.title,
-    @required this.subtitle,
-    @required this.body,
+    Key? key,
+    required this.header,
+    required this.title,
+    required this.subtitle,
+    required this.body,
     this.isDense: false,
     this.subtle: false,
   }) : super(key: key);
@@ -31,9 +31,9 @@ class HeaderWithInfo extends StatelessWidget {
     return Theme(
       data: MyTheme.dark,
       child: _HeaderWithInfoDark(
-        header: header, 
+        header: header,
         subtle: subtle,
-        onPressed: (){
+        onPressed: () {
           infoPopUpFunction(
             //using white context
             //assumed for the users within this class
@@ -52,10 +52,10 @@ class HeaderWithInfo extends StatelessWidget {
 
 class _HeaderWithInfoDark extends StatelessWidget {
   const _HeaderWithInfoDark({
-    Key key,
-    @required this.header,
-    @required this.subtle,
-    @required this.onPressed,
+    Key? key,
+    required this.header,
+    required this.subtle,
+    required this.onPressed,
   }) : super(key: key);
 
   final String header;
@@ -80,7 +80,9 @@ class _HeaderWithInfoDark extends StatelessWidget {
             onPressed: () => onPressed(),
             icon: Icon(
               Icons.info,
-              color: subtle ? Theme.of(context).primaryColorDark : Theme.of(context).accentColor,
+              color: subtle
+                  ? Theme.of(context).primaryColorDark
+                  : Theme.of(context).accentColor,
             ),
           ),
         )

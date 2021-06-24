@@ -17,8 +17,8 @@ import 'package:swol/main.dart';
 
 class AnimatedTitleAction extends StatelessWidget {
   const AnimatedTitleAction({
-    Key key,
-    @required this.screenWidth,
+    Key? key,
+    required this.screenWidth,
   }) : super(key: key);
 
   final double screenWidth;
@@ -27,14 +27,11 @@ class AnimatedTitleAction extends StatelessWidget {
   Widget build(BuildContext context) {
     return AnimatedBuilder(
       animation: App.navSpread,
-      builder: (context,child){
+      builder: (context, child) {
         return AnimatedContainer(
           transform: Matrix4.translation(
             vect.Vector3(
-              (App.navSpread.value == true) ? screenWidth/2 : 0,
-              0,
-              0
-            ),  
+                (App.navSpread.value == true) ? screenWidth / 2 : 0, 0, 0),
           ),
           duration: ExercisePage.transitionDuration,
           child: FeatureWrapper(
@@ -45,17 +42,17 @@ class AnimatedTitleAction extends StatelessWidget {
                 FontAwesomeIcons.leanpub,
               ),
             ),
-            text: "Tap here to LEARN"
-            + " about the concepts,"
-            + " math, and science" 
-            + " behind our app",
+            text: "Tap here to LEARN" +
+                " about the concepts," +
+                " math, and science" +
+                " behind our app",
             child: IconButton(
-              onPressed: (){
+              onPressed: () {
                 App.navSpread.value = true;
                 Navigator.push(
-                  context, 
+                  context,
                   PageTransition(
-                    type: PageTransitionType.rightToLeft, 
+                    type: PageTransitionType.rightToLeft,
                     duration: ExercisePage.transitionDuration,
                     child: LearnExercise(),
                   ),
@@ -65,10 +62,10 @@ class AnimatedTitleAction extends StatelessWidget {
             ),
             top: true,
             left: false,
-            prevFeature: (){
+            prevFeature: () {
               OnBoarding.discoverSwolLogo(context);
             },
-            nextFeature: (){
+            nextFeature: () {
               OnBoarding.discoverAddExercise(context);
             },
           ),
@@ -80,9 +77,9 @@ class AnimatedTitleAction extends StatelessWidget {
 
 class AnimatedTitle extends StatelessWidget {
   const AnimatedTitle({
-    Key key,
-    @required this.screenWidth,
-    @required this.statusBarHeight,
+    Key? key,
+    required this.screenWidth,
+    required this.statusBarHeight,
   }) : super(key: key);
 
   final double screenWidth;
@@ -92,30 +89,29 @@ class AnimatedTitle extends StatelessWidget {
   Widget build(BuildContext context) {
     return AnimatedBuilder(
       animation: App.navSpread,
-      builder: (context, child){
+      builder: (context, child) {
         return AnimatedContainer(
           duration: ExercisePage.transitionDuration,
           transform: Matrix4.translation(
             vect.Vector3(
-              (App.navSpread.value == true) ? -screenWidth/2 : 0,
+              (App.navSpread.value == true) ? -screenWidth / 2 : 0,
               0,
               0,
-            ),  
+            ),
           ),
           child: FeatureWrapper(
-            featureID: AFeature.SwolLogo.toString(),
-            tapTarget: SwolLogo(),
-            text: "What you're going to be"
-            + " after STICKING TO ANY exercise routine",
-            child: SwolLogo(
-              height: statusBarHeight,
-            ),
-            top: true,
-            left: true,
-            nextFeature: (){
-              OnBoarding.discoverLearnPage(context);
-            }
-          ),
+              featureID: AFeature.SwolLogo.toString(),
+              tapTarget: SwolLogo(),
+              text: "What you're going to be" +
+                  " after STICKING TO ANY exercise routine",
+              child: SwolLogo(
+                height: statusBarHeight,
+              ),
+              top: true,
+              left: true,
+              nextFeature: () {
+                OnBoarding.discoverLearnPage(context);
+              }),
         );
       },
     );
@@ -125,7 +121,7 @@ class AnimatedTitle extends StatelessWidget {
 class SwolLogo extends StatelessWidget {
   const SwolLogo({
     this.height,
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   final height;
@@ -162,8 +158,7 @@ class SwolLogo extends StatelessWidget {
               ),
               Text(
                 "S W O L",
-                style: TextStyle(
-                ),
+                style: TextStyle(),
               ),
             ],
           ),

@@ -7,8 +7,8 @@ import 'package:swol/action/popUps/textValid.dart';
 //widgets reused in multiple pop ups
 class SetDescription extends StatelessWidget {
   SetDescription({
-    @required this.weight,
-    @required this.reps,
+    required this.weight,
+    required this.reps,
     this.isError: false,
   });
 
@@ -82,9 +82,9 @@ class SetDescription extends StatelessWidget {
 
 class SetProblem extends StatelessWidget {
   SetProblem({
-    @required this.weightValid,
-    @required this.repsValid,
-    @required this.setValid,
+    required this.weightValid,
+    required this.repsValid,
+    required this.setValid,
     this.isError: false,
   });
 
@@ -148,7 +148,7 @@ class SetProblem extends StatelessWidget {
 
 class GoBackAndFix extends StatelessWidget {
   const GoBackAndFix({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -194,8 +194,8 @@ class GoBackAndFix extends StatelessWidget {
 
 class RevertToPrevious extends StatelessWidget {
   const RevertToPrevious({
-    Key key,
-    @required this.exercise,
+    Key? key,
+    required this.exercise,
   }) : super(key: key);
 
   final AnExercise exercise;

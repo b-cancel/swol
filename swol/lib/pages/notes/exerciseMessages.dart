@@ -9,14 +9,14 @@ import 'package:swol/shared/widgets/simple/popUpAdjustments.dart';
 //widget
 class ConfirmActionMessage extends StatelessWidget {
   const ConfirmActionMessage({
-    Key key,
-    @required this.buttonColor,
-    @required this.image,
-    @required this.iconSpace,
-    @required this.icon,
-    @required this.actionString,
-    @required this.message,
-    @required this.actionFunction,
+    Key? key,
+    required this.buttonColor,
+    required this.image,
+    required this.iconSpace,
+    required this.icon,
+    required this.actionString,
+    required this.message,
+    required this.actionFunction,
   }) : super(key: key);
 
   final Color buttonColor;
@@ -86,7 +86,7 @@ class ConfirmActionMessage extends StatelessWidget {
               ),
               BottomButtonsThatResizeTRBL(
                 hasTopIcon: false,
-                secondary: FlatButton(
+                secondary: TextButton(
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
@@ -97,8 +97,10 @@ class ConfirmActionMessage extends StatelessWidget {
                     ),
                   ),
                 ),
-                primary: RaisedButton(
-                  color: buttonColor,
+                primary: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    primary: buttonColor,
+                  ),
                   onPressed: () {
                     //get rid of keyboard that MAY be shown
                     FocusScope.of(context).unfocus();
@@ -135,8 +137,8 @@ class ConfirmActionMessage extends StatelessWidget {
 
 class HideMessage extends StatelessWidget {
   const HideMessage({
-    Key key,
-    @required this.theName,
+    Key? key,
+    required this.theName,
   }) : super(key: key);
 
   final String theName;
@@ -187,8 +189,8 @@ class HideMessage extends StatelessWidget {
 
 class DeleteMessage extends StatelessWidget {
   const DeleteMessage({
-    Key key,
-    @required this.theName,
+    Key? key,
+    required this.theName,
   }) : super(key: key);
 
   final String theName;

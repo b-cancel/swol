@@ -6,24 +6,21 @@ import 'package:flutter/material.dart';
 //used by 2. one rep max chip (chips stacking no big deal)
 //used by 3. used by reference link to tell the user the link navigation didnt work
 openSnackBar(
-  BuildContext context, 
-  Color color, 
-  IconData icon,
-  {
-    bool dismissBeforeShow: true,
-    bool quickDismissBeforeShow: false,
-    bool dismissible: true,
-    bool showForever: false,
-    //main
-    String message: "", 
-    ValueNotifier<String> updatingMessage,
-  }
-){
+  BuildContext context,
+  Color color,
+  IconData icon, {
+  bool dismissBeforeShow: true,
+  bool quickDismissBeforeShow: false,
+  bool dismissible: true,
+  bool showForever: false,
+  //main
+  String message: "",
+  ValueNotifier<String> updatingMessage,
+}) {
   //dismiss if desired
-  if(dismissBeforeShow){
+  if (dismissBeforeShow) {
     Scaffold.of(context).hideCurrentSnackBar();
-  }
-  else if(quickDismissBeforeShow){
+  } else if (quickDismissBeforeShow) {
     Scaffold.of(context).removeCurrentSnackBar();
   }
 
@@ -38,36 +35,38 @@ openSnackBar(
   //show snackbar
   Scaffold.of(context).showSnackBar(
     SnackBar(
-      backgroundColor: color == Colors.yellow ? Theme.of(context).primaryColorDark : Theme.of(context).scaffoldBackgroundColor,
+      backgroundColor: color == Colors.yellow
+          ? Theme.of(context).primaryColorDark
+          : Theme.of(context).scaffoldBackgroundColor,
       behavior: SnackBarBehavior.floating,
       //show "forever" if needed
       duration: showForever ? Duration(hours: 1) : Duration(seconds: 4),
-      content: dismissible 
-      //if its dismissible also make it possible to dismiss on tap
-      ? GestureDetector(
-        behavior: HitTestBehavior.opaque,
-        onTap: (){
-          Scaffold.of(context).hideCurrentSnackBar();
-        },
-        child: content,
-      ) 
-      //make it undissmisible if needed
-      : GestureDetector(
-        behavior: HitTestBehavior.opaque,
-        onVerticalDragStart: (_){},
-        child: content,
-      ),
+      content: dismissible
+          //if its dismissible also make it possible to dismiss on tap
+          ? GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              onTap: () {
+                Scaffold.of(context).hideCurrentSnackBar();
+              },
+              child: content,
+            )
+          //make it undissmisible if needed
+          : GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              onVerticalDragStart: (_) {},
+              child: content,
+            ),
     ),
   );
 }
 
 class SnackBarBody extends StatelessWidget {
   const SnackBarBody({
-    @required this.icon,
-    @required this.color,
+    required this.icon,
+    required this.color,
     this.updatingMessage,
     this.message,
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   final IconData icon;
@@ -77,37 +76,35 @@ class SnackBarBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisSize: MainAxisSize.max,
-      children:[
-        Padding(
-          padding: const EdgeInsets.only(
-            right: 8.0,
-          ),
-          child: Icon(
-            icon,
-            size: 24.0,
-            color: color,
-          ),
+    return Row(mainAxisSize: MainAxisSize.max, children: [
+      Padding(
+        padding: const EdgeInsets.only(
+          right: 8.0,
         ),
-        Flexible(
-          child: DefaultTextStyle(
-            style: TextStyle(
-              color: Colors.white,
-            ),
-            child: updatingMessage == null ? Text(message)
-            : UpdatingText(updatingText: updatingMessage),
-          ),
+        child: Icon(
+          icon,
+          size: 24.0,
+          color: color,
         ),
-      ]
-    );
+      ),
+      Flexible(
+        child: DefaultTextStyle(
+          style: TextStyle(
+            color: Colors.white,
+          ),
+          child: updatingMessage == null
+              ? Text(message)
+              : UpdatingText(updatingText: updatingMessage),
+        ),
+      ),
+    ]);
   }
 }
 
 class UpdatingText extends StatefulWidget {
   UpdatingText({
-    @required this.updatingText,
-  }); 
+    required this.updatingText,
+  });
 
   final ValueNotifier<String> updatingText;
 
@@ -116,18 +113,18 @@ class UpdatingText extends StatefulWidget {
 }
 
 class _UpdatingTextState extends State<UpdatingText> {
-  updateState(){
-    if(mounted) setState(() {});
+  updateState() {
+    if (mounted) setState(() {});
   }
 
   @override
-  void initState() { 
+  void initState() {
     super.initState();
     widget.updatingText.addListener(updateState);
   }
 
   @override
-  void dispose() { 
+  void dispose() {
     widget.updatingText.addListener(updateState);
     super.dispose();
   }

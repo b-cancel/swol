@@ -1,12 +1,11 @@
-
 import 'package:flutter/material.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
 import 'package:swol/shared/widgets/simple/scrollToTop.dart';
 
 class CardWithScrollToTop extends StatefulWidget {
   const CardWithScrollToTop({
-    Key key,
-    @required this.child,
+    Key? key,
+    required this.child,
   }) : super(key: key);
 
   final Widget child;
@@ -21,15 +20,15 @@ class _CardWithScrollToTopState extends State<CardWithScrollToTop> {
   final AutoScrollController autoScrollController = new AutoScrollController();
 
   //on top udpate
-  onTopUpdate(){
+  onTopUpdate() {
     ScrollPosition position = autoScrollController.position;
     double currentOffset = autoScrollController.offset;
 
     //Determine whether we are on the top of the scroll area
     if (currentOffset <= position.minScrollExtent) {
       onTop.value = true;
-    }
-    else onTop.value = false;
+    } else
+      onTop.value = false;
   }
 
   @override
@@ -39,7 +38,7 @@ class _CardWithScrollToTopState extends State<CardWithScrollToTop> {
   }
 
   @override
-  void dispose() { 
+  void dispose() {
     autoScrollController.removeListener(onTopUpdate);
     super.dispose();
   }

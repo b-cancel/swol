@@ -10,7 +10,7 @@ import 'package:swol/shared/methods/theme.dart';
 class LinkField extends StatelessWidget {
   LinkField({
     this.editOneAtATime: false,
-    @required this.url,
+    required this.url,
   });
 
   final bool editOneAtATime;
@@ -41,7 +41,7 @@ class LinkField extends StatelessWidget {
 
 class _LinkPopUpBody extends StatelessWidget {
   const _LinkPopUpBody({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

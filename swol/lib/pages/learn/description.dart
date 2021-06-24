@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 
 class SectionDescription extends StatelessWidget {
   const SectionDescription({
-    Key key,
-    @required this.children,
+    Key? key,
+    required this.children,
   }) : super(key: key);
 
   final List<TextSpan> children;

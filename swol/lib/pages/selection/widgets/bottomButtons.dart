@@ -19,7 +19,7 @@ import 'package:swol/main.dart';
 //widget
 class AddExerciseButton extends StatelessWidget {
   AddExerciseButton({
-    @required this.longTransitionDuration,
+    required this.longTransitionDuration,
   });
 
   final Duration longTransitionDuration;
@@ -35,23 +35,22 @@ class AddExerciseButton extends StatelessWidget {
         child: FeatureWrapper(
           featureID: AFeature.AddExercise.toString(),
           tapTarget: FloatingActionButton(
-            onPressed: null, 
+            onPressed: null,
             backgroundColor: Theme.of(context).accentColor,
             child: Icon(Icons.add),
           ),
-          text: "Tap here to ADD a"
-          + " new exercise",
+          text: "Tap here to ADD a" + " new exercise",
           child: AddNewHero(
             inAppBar: false,
             longTransitionDuration: longTransitionDuration,
           ),
           top: false,
           left: true,
-          prevFeature: (){
+          prevFeature: () {
             OnBoarding.discoverLearnPage(context);
           },
           doneInsteadOfNext: true,
-          nextFeature: (){
+          nextFeature: () {
             SharedPrefsExt.setInitialControlsShown(true);
           },
         ),
@@ -68,11 +67,11 @@ class SearchExerciseButton extends StatefulWidget {
 class _SearchExerciseButtonState extends State<SearchExerciseButton> {
   bool showSearch;
 
-  updateState(){
-    if(mounted){
+  updateState() {
+    if (mounted) {
       setState(() {});
       showSearch = ((ExerciseData?.exercisesOrder?.value?.length ?? 0) > 1);
-      if(SharedPrefsExt.getSearchShown().value == false && showSearch){
+      if (SharedPrefsExt.getSearchShown().value == false && showSearch) {
         OnBoarding.discoverSearchExercise(context);
       }
     }
@@ -86,7 +85,7 @@ class _SearchExerciseButtonState extends State<SearchExerciseButton> {
   }
 
   @override
-  void dispose() { 
+  void dispose() {
     ExerciseData.exercisesOrder.removeListener(updateState);
     super.dispose();
   }
@@ -107,17 +106,15 @@ class _SearchExerciseButtonState extends State<SearchExerciseButton> {
               backgroundColor: Theme.of(context).accentColor,
               onPressed: null,
             ),
-            text: "Tap here to"
-            + " SEARCH through"
-            + " your exercises",
+            text: "Tap here to" + " SEARCH through" + " your exercises",
             child: FloatingActionButton(
               backgroundColor: Theme.of(context).accentColor,
-              onPressed: (){
+              onPressed: () {
                 App.navSpread.value = true;
                 Navigator.push(
-                  context, 
+                  context,
                   PageTransition(
-                    type: PageTransitionType.downToUp, 
+                    type: PageTransitionType.downToUp,
                     duration: ExercisePage.transitionDuration,
                     child: SearchExercise(),
                   ),
@@ -127,7 +124,7 @@ class _SearchExerciseButtonState extends State<SearchExerciseButton> {
             ),
             top: false,
             left: false,
-            nextFeature: (){
+            nextFeature: () {
               SharedPrefsExt.setSearchShown(true);
             },
           ),
@@ -139,7 +136,7 @@ class _SearchExerciseButtonState extends State<SearchExerciseButton> {
 
 class ButtonSpacer extends StatelessWidget {
   const ButtonSpacer({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -169,7 +166,7 @@ class ButtonSpacer extends StatelessWidget {
 
 class AddExerciseFiller extends StatelessWidget {
   const AddExerciseFiller({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

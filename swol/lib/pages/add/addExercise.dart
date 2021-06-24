@@ -26,10 +26,10 @@ import 'package:swol/main.dart';
 //main widget
 class AddExercise extends StatefulWidget {
   AddExercise({
-    Key key,
+    Key? key,
 
     //NOTE: 200 ms above the norm so they can see the sweat animation
-    @required this.longTransitionDuration,
+    required this.longTransitionDuration,
     this.showListDuration: const Duration(milliseconds: 350),
     this.showSaveDuration: const Duration(milliseconds: 350),
 
@@ -142,9 +142,8 @@ class _AddExerciseState extends State<AddExercise> {
   */
 
   final ValueNotifier<String> updateableTipMessage =
-    new ValueNotifier<String>("");
-  final ValueNotifier<bool> tipIsShowing = 
-    new ValueNotifier<bool>(false);
+      new ValueNotifier<String>("");
+  final ValueNotifier<bool> tipIsShowing = new ValueNotifier<bool>(false);
 
   @override
   Widget build(BuildContext context) {
@@ -153,9 +152,9 @@ class _AddExerciseState extends State<AddExercise> {
       ReloadingCard(
         notifier: nameError,
         child: NameField(
-          nameToUpdate: name, 
-          showError: nameError, 
-          namePresent: namePresent, 
+          nameToUpdate: name,
+          showError: nameError,
+          namePresent: namePresent,
           nameFocusNode: nameFocusNode,
           noteFocusNode: noteFocusNode,
           autofocus: false,
@@ -177,7 +176,7 @@ class _AddExerciseState extends State<AddExercise> {
         ),
       ),
       RecoveryTimeCard(
-        recoveryPeriod: recoveryPeriod, 
+        recoveryPeriod: recoveryPeriod,
       ),
       SliderCard(
         child: SetTargetField(
@@ -186,7 +185,7 @@ class _AddExerciseState extends State<AddExercise> {
       ),
       NonReloadingCard(
         child: PredictionField(
-          functionID: functionID, 
+          functionID: functionID,
           repTarget: repTarget,
         ),
       ),
@@ -199,7 +198,7 @@ class _AddExerciseState extends State<AddExercise> {
 
     //build
     return WillPopScope(
-      onWillPop: ()async{
+      onWillPop: () async {
         FocusScope.of(context).unfocus();
         App.navSpread.value = false;
         return true; //can still pop
@@ -235,21 +234,22 @@ class _AddExerciseState extends State<AddExercise> {
                           right: 8.0,
                         ),
                         child: SaveButton(
-                          delay: widget.longTransitionDuration + widget.delayBeforeSaveShow,
-                          showSaveButton: showSaveButton, 
+                          delay: widget.longTransitionDuration +
+                              widget.delayBeforeSaveShow,
+                          showSaveButton: showSaveButton,
                           nameFocusNode: nameFocusNode,
                           nameError: nameError,
                           //transition duration
                           showSaveDuration: widget.showSaveDuration,
                           //variables
-                          namePresent: namePresent, 
-                          name: name, 
-                          url: url, 
-                          note: note, 
-                          functionIndex: functionID, 
-                          repTarget: repTarget, 
-                          recoveryPeriod: recoveryPeriod, 
-                          setTarget: setTarget, 
+                          namePresent: namePresent,
+                          name: name,
+                          url: url,
+                          note: note,
+                          functionIndex: functionID,
+                          repTarget: repTarget,
+                          recoveryPeriod: recoveryPeriod,
+                          setTarget: setTarget,
                         ),
                       ),
                     ),

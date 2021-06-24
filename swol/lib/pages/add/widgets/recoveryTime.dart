@@ -14,8 +14,8 @@ import 'package:swol/shared/structs/range.dart';
 //widget
 class RecoveryTimeCard extends StatelessWidget {
   const RecoveryTimeCard({
-    Key key,
-    @required this.recoveryPeriod,
+    Key? key,
+    required this.recoveryPeriod,
   }) : super(key: key);
 
   final ValueNotifier<Duration> recoveryPeriod;
@@ -36,7 +36,7 @@ class RecoveryTimeCard extends StatelessWidget {
           children: <Widget>[
             RecoveryTimeHeader(),
             RecoveryTimeWidget(
-              recoveryPeriod: recoveryPeriod, 
+              recoveryPeriod: recoveryPeriod,
             ),
           ],
         ),
@@ -47,8 +47,8 @@ class RecoveryTimeCard extends StatelessWidget {
 
 class RecoveryTimeWidget extends StatelessWidget {
   const RecoveryTimeWidget({
-    Key key,
-    @required this.recoveryPeriod,
+    Key? key,
+    required this.recoveryPeriod,
   }) : super(key: key);
 
   final ValueNotifier<Duration> recoveryPeriod;
@@ -61,7 +61,7 @@ class RecoveryTimeWidget extends StatelessWidget {
         Theme(
           data: MyTheme.light,
           child: AnimRecoveryTimeInfoToWhiteTheme(
-            recoveryPeriod: recoveryPeriod, 
+            recoveryPeriod: recoveryPeriod,
           ),
         ),
         Padding(
@@ -95,8 +95,8 @@ class RecoveryTimeWidget extends StatelessWidget {
 
 class AnimRecoveryTimeInfoToWhiteTheme extends StatelessWidget {
   const AnimRecoveryTimeInfoToWhiteTheme({
-    Key key,
-    @required this.recoveryPeriod,
+    Key? key,
+    required this.recoveryPeriod,
     this.darkTheme: true,
     this.hideNameButtons: false,
   }) : super(key: key);

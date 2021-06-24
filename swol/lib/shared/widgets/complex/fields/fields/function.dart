@@ -14,9 +14,9 @@ import 'package:swol/shared/widgets/simple/toLearnPage.dart';
 //widget
 class PredictionField extends StatelessWidget {
   const PredictionField({
-    Key key,
-    @required this.functionID,
-    @required this.repTarget,
+    Key? key,
+    required this.functionID,
+    required this.repTarget,
     this.subtle: false,
   }) : super(key: key);
 
@@ -66,7 +66,7 @@ class PredictionFormulaHeader extends StatelessWidget {
 
 class PredictionFormulasPopUpBody extends StatelessWidget {
   const PredictionFormulasPopUpBody({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -138,8 +138,8 @@ class PredictionFormulasPopUpBody extends StatelessWidget {
 
 class FunctionDropDown extends StatefulWidget {
   FunctionDropDown({
-    @required this.functionID,
-    @required this.repTarget,
+    required this.functionID,
+    required this.repTarget,
   });
 
   final ValueNotifier<int> functionID;

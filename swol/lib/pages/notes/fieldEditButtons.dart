@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 //the shared widget uses it ONLY for the notes section
 class FieldEditButtons extends StatelessWidget {
   FieldEditButtons({
-    @required this.darkButtons,
-    @required this.onPressTop,
-    @required this.topIcon,
-    @required this.showTopButton,
-    @required this.onPressBottom,
-    @required this.bottomIcon,
+    required this.darkButtons,
+    required this.onPressTop,
+    required this.topIcon,
+    required this.showTopButton,
+    required this.onPressBottom,
+    required this.bottomIcon,
   });
 
   final bool darkButtons;
@@ -21,8 +21,11 @@ class FieldEditButtons extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Color buttonColor = darkButtons ? Theme.of(context).primaryColor : Theme.of(context).accentColor;
-    Color iconColor = (darkButtons == false) ? Theme.of(context).primaryColor : Colors.white;
+    Color buttonColor = darkButtons
+        ? Theme.of(context).primaryColor
+        : Theme.of(context).accentColor;
+    Color iconColor =
+        (darkButtons == false) ? Theme.of(context).primaryColor : Colors.white;
     return IntrinsicWidth(
       child: Container(
         color: buttonColor,
@@ -30,20 +33,25 @@ class FieldEditButtons extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
-            (showTopButton) ? _TopButton(
-              onPressTop: onPressTop, 
-              buttonColor: buttonColor, 
-              topIcon: topIcon, 
-              iconColor: iconColor, 
-              darkButtons: darkButtons,
-            ) : Container(),
+            (showTopButton)
+                ? _TopButton(
+                    onPressTop: onPressTop,
+                    buttonColor: buttonColor,
+                    topIcon: topIcon,
+                    iconColor: iconColor,
+                    darkButtons: darkButtons,
+                  )
+                : Container(),
             Expanded(
-              child: FlatButton(
+              child: TextButton(
                 onPressed: () => onPressBottom(),
-                padding: EdgeInsets.all(0),
-                color: buttonColor,
+                //padding: EdgeInsets.all(0),
+                style: TextButton.styleFrom(
+                  //TODO: confirm this is creates the intended effect
+                  primary: buttonColor,
+                ),
                 child: Icon(
-                  bottomIcon,  
+                  bottomIcon,
                   color: iconColor,
                 ),
               ),
@@ -57,12 +65,12 @@ class FieldEditButtons extends StatelessWidget {
 
 class _TopButton extends StatelessWidget {
   const _TopButton({
-    Key key,
-    @required this.onPressTop,
-    @required this.buttonColor,
-    @required this.topIcon,
-    @required this.iconColor,
-    @required this.darkButtons,
+    Key? key,
+    required this.onPressTop,
+    required this.buttonColor,
+    required this.topIcon,
+    required this.iconColor,
+    required this.darkButtons,
   }) : super(key: key);
 
   final Function onPressTop;
@@ -78,12 +86,15 @@ class _TopButton extends StatelessWidget {
         mainAxisSize: MainAxisSize.max,
         children: <Widget>[
           Expanded(
-            child: FlatButton(
+            child: TextButton(
               onPressed: () => onPressTop(),
-              padding: EdgeInsets.all(0),
-              color: buttonColor,
+              //padding: EdgeInsets.all(0),
+              style: TextButton.styleFrom(
+                //TODO: confirm this is creates the intended effect
+                primary: buttonColor,
+              ),
               child: Icon(
-                topIcon,  
+                topIcon,
                 color: iconColor,
               ),
             ),
@@ -97,7 +108,7 @@ class _TopButton extends StatelessWidget {
 
 class _ButtonSpacer extends StatelessWidget {
   _ButtonSpacer({
-    @required this.isDark,
+    required this.isDark,
   });
 
   final bool isDark;
@@ -110,7 +121,9 @@ class _ButtonSpacer extends StatelessWidget {
         horizontal: 8,
       ),
       child: Container(
-        color: isDark ? Theme.of(context).primaryColorDark : Theme.of(context).cardColor,
+        color: isDark
+            ? Theme.of(context).primaryColorDark
+            : Theme.of(context).cardColor,
         height: 2,
         child: Container(),
       ),

@@ -26,7 +26,7 @@ class SearchExercise extends StatefulWidget {
 
 class _SearchExerciseState extends State<SearchExercise> {
   //query vars
-  List<int> queryResults = new List<int>();
+  List<int> queryResults = [];
   TextEditingController search = new TextEditingController();
 
   //NOTE: since they don't change while we are searching
@@ -179,8 +179,8 @@ class _SearchExerciseState extends State<SearchExercise> {
 
 class SearchBar extends StatelessWidget {
   const SearchBar({
-    Key key,
-    @required this.search,
+    Key? key,
+    required this.search,
   }) : super(key: key);
 
   final TextEditingController search;
@@ -256,14 +256,14 @@ class SearchBar extends StatelessWidget {
 
 class SearchBody extends StatelessWidget {
   const SearchBody({
-    Key key,
-    @required this.noRecentsToShow,
-    @required this.showRecentsSearches,
-    @required this.search,
-    @required this.exercises,
-    @required this.queryResults,
-    @required this.updateState,
-    @required this.statusBar,
+    Key? key,
+    required this.noRecentsToShow,
+    required this.showRecentsSearches,
+    required this.search,
+    required this.exercises,
+    required this.queryResults,
+    required this.updateState,
+    required this.statusBar,
   }) : super(key: key);
 
   final bool noRecentsToShow;
@@ -276,12 +276,11 @@ class SearchBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (noRecentsToShow){
+    if (noRecentsToShow) {
       return NoRecentSearches(
         statusBar: statusBar,
       );
-    }
-    else {
+    } else {
       if (showRecentsSearches) {
         return RecentSearches(
           updateState: () => updateState(),
@@ -299,9 +298,9 @@ class SearchBody extends StatelessWidget {
 
 class SearchResults extends StatelessWidget {
   const SearchResults({
-    Key key,
-    @required this.queryResults,
-    @required this.exercises,
+    Key? key,
+    required this.queryResults,
+    required this.exercises,
   }) : super(key: key);
 
   final List<int> queryResults;

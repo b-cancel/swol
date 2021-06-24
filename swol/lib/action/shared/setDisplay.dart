@@ -26,14 +26,14 @@ enum Pivot { Weight, Reps, RepTarget }
 //widget
 class SetDisplay extends StatefulWidget {
   const SetDisplay({
-    Key key,
+    Key? key,
     //if its passed then use LAST
     //else use locals updated by stuff all over
     this.exercise,
     //other
-    @required this.title,
+    required this.title,
     this.extraCurvy: false,
-    @required this.useAccent,
+    required this.useAccent,
     //optional
     this.heroUp,
     this.heroAnimTravel,
@@ -362,7 +362,7 @@ class _SetDisplayState extends State<SetDisplay> {
 
 class UpdatingSetText extends StatelessWidget {
   UpdatingSetText({
-    @required this.isWeight,
+    required this.isWeight,
     this.exercise,
   });
 
@@ -392,9 +392,9 @@ class UpdatingSetText extends StatelessWidget {
 
 class ButtonWrapper extends StatelessWidget {
   ButtonWrapper({
-    @required this.child,
-    @required this.backgroundColor,
-    @required this.foregroundColor,
+    required this.child,
+    required this.backgroundColor,
+    required this.foregroundColor,
     this.usingRT: false,
   });
 

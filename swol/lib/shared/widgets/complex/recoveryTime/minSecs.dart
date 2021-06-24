@@ -1,12 +1,12 @@
-//show min and seconds below timer 
+//show min and seconds below timer
 //don't show S below min or seconds if the value is 1
 //super small detail but simple too
 import 'package:flutter/material.dart';
 
 class MinsSecsBelowTimePicker extends StatefulWidget {
   const MinsSecsBelowTimePicker({
-    Key key,
-    @required this.duration,
+    Key? key,
+    required this.duration,
     this.darkTheme: true,
   }) : super(key: key);
 
@@ -14,18 +14,19 @@ class MinsSecsBelowTimePicker extends StatefulWidget {
   final bool darkTheme;
 
   @override
-  _MinsSecsBelowTimePickerState createState() => _MinsSecsBelowTimePickerState();
+  _MinsSecsBelowTimePickerState createState() =>
+      _MinsSecsBelowTimePickerState();
 }
 
 class _MinsSecsBelowTimePickerState extends State<MinsSecsBelowTimePicker> {
   ValueNotifier<bool> showMinS;
   ValueNotifier<bool> showSecS;
 
-  manualSetState(){
-    if(mounted) setState(() {});
+  manualSetState() {
+    if (mounted) setState(() {});
   }
 
-  durationToShowSs(){
+  durationToShowSs() {
     //get minutes and seconds seperately
     int mins = widget.duration.value.inMinutes;
     int secs = (widget.duration.value - Duration(minutes: mins)).inSeconds;
@@ -33,11 +34,10 @@ class _MinsSecsBelowTimePickerState extends State<MinsSecsBelowTimePicker> {
     bool secS = (secs != 1);
 
     //create or update valuenotifiers
-    if(showMinS == null && showSecS == null){
+    if (showMinS == null && showSecS == null) {
       showMinS = new ValueNotifier(minS);
       showSecS = new ValueNotifier(secS);
-    }
-    else{
+    } else {
       showMinS.value = minS;
       showSecS.value = secS;
     }
@@ -86,8 +86,7 @@ class _MinsSecsBelowTimePickerState extends State<MinsSecsBelowTimePicker> {
               child: FittedBox(
                 fit: BoxFit.cover,
                 child: Text(
-                  "MINUTE"
-                  + ((showMinS.value) ? "S" : " "),
+                  "MINUTE" + ((showMinS.value) ? "S" : " "),
                 ),
               ),
             ),
@@ -104,8 +103,7 @@ class _MinsSecsBelowTimePickerState extends State<MinsSecsBelowTimePicker> {
               child: FittedBox(
                 fit: BoxFit.cover,
                 child: Text(
-                  "SECOND"
-                  + ((showSecS.value) ? "S" : " "),
+                  "SECOND" + ((showSecS.value) ? "S" : " "),
                 ),
               ),
             ),

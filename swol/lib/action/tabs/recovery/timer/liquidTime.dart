@@ -44,10 +44,10 @@ import 'package:swol/shared/methods/theme.dart';
 //build
 class Timer extends StatefulWidget {
   Timer({
-    @required this.exercise,
-    @required this.timeStarted,
-    @required this.changeableTimerDuration,
-    @required this.showAreYouSure,
+    required this.exercise,
+    required this.timeStarted,
+    required this.changeableTimerDuration,
+    required this.showAreYouSure,
     this.showArrows: true,
     this.showIcon: true,
   });
@@ -69,7 +69,8 @@ class _TimerState extends State<Timer> with TickerProviderStateMixin {
   //we grab how much time has passed initially and never grab it again
   //so that when we are transitioning to the next page
   //and the timerStart time changes to null the whole screen doesn't go red
-  ValueNotifier<DateTime> timerStart = new ValueNotifier(AnExercise.nullDateTime);
+  ValueNotifier<DateTime> timerStart =
+      new ValueNotifier(AnExercise.nullDateTime);
 
   //color constants
   final Color greyBackground = const Color(0xFFBFBFBF);
@@ -312,7 +313,7 @@ class _TimerState extends State<Timer> with TickerProviderStateMixin {
         color: Colors.transparent,
         child: Theme(
           data: MyTheme.light,
-          child: ActualButton( 
+          child: ActualButton(
             color: Theme.of(context).scaffoldBackgroundColor,
             changeableTimerDuration: widget.changeableTimerDuration,
           ),
@@ -389,7 +390,10 @@ class _TimerState extends State<Timer> with TickerProviderStateMixin {
                                                 child: Container(),
                                               ),
                                               Container(
-                                                width: MediaQuery.of(context).size.width / 5,
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width /
+                                                    5,
                                                 child: Container(
                                                   padding: EdgeInsets.only(
                                                     top: 16,
@@ -399,7 +403,8 @@ class _TimerState extends State<Timer> with TickerProviderStateMixin {
                                                     child: Stack(
                                                       children: <Widget>[
                                                         OnlyEditButton(
-                                                          durationString: breakTimeString,
+                                                          durationString:
+                                                              breakTimeString,
                                                         ),
                                                         changeTimeWidget,
                                                       ],

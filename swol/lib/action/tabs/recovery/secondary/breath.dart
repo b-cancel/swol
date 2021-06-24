@@ -5,7 +5,7 @@ import 'package:swol/shared/widgets/simple/heros/curveMod.dart';
 
 class ToBreath extends StatelessWidget {
   const ToBreath({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -13,11 +13,11 @@ class ToBreath extends StatelessWidget {
     return Center(
       child: InkWell(
         borderRadius: BorderRadius.circular(50),
-        onTap: (){
+        onTap: () {
           Navigator.push(
-            context, 
+            context,
             PageTransition(
-              type: PageTransitionType.fade, 
+              type: PageTransitionType.fade,
               duration: ExercisePage.transitionDuration,
               child: BreathStateless(),
             ),
@@ -29,7 +29,11 @@ class ToBreath extends StatelessWidget {
           child: Hero(
             tag: 'breath',
             createRectTween: (begin, end) {
-              return CustomRectTween(a: begin, b: end);
+              if (begin != null && end != null) {
+                return CustomRectTween(a: begin, b: end);
+              } else {
+                return CustomRectTween();
+              }
             },
             child: new Image(
               image: new AssetImage("assets/gifs/breathMod.gif"),
@@ -54,7 +58,7 @@ class BreathStateless extends StatelessWidget {
 
 class BreathStateful extends StatefulWidget {
   const BreathStateful({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -63,13 +67,13 @@ class BreathStateful extends StatefulWidget {
 
 class _BreathStatefulState extends State<BreathStateful> {
   @override
-  void initState() { 
+  void initState() {
     super.initState();
     BreathStateless.inStack = true;
   }
 
   @override
-  void dispose() { 
+  void dispose() {
     BreathStateless.inStack = false;
     super.dispose();
   }
@@ -78,8 +82,8 @@ class _BreathStatefulState extends State<BreathStateful> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: FlatButton(
-          onPressed: (){
+        child: TextButton(
+          onPressed: () {
             Navigator.of(context).pop();
           },
           child: Container(

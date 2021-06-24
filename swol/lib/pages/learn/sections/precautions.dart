@@ -8,7 +8,7 @@ import 'package:swol/pages/learn/description.dart';
 //widget
 class PrecautionsBody extends StatelessWidget {
   const PrecautionsBody({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

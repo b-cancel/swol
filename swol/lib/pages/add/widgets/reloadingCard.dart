@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 //used only by addition
 class ReloadingCard extends StatefulWidget {
   const ReloadingCard({
-    Key key,
-    @required this.child,
-    @required this.notifier,
+    Key? key,
+    required this.child,
+    required this.notifier,
   }) : super(key: key);
 
   final Widget child;
@@ -17,8 +17,8 @@ class ReloadingCard extends StatefulWidget {
 }
 
 class _ReloadingCardState extends State<ReloadingCard> {
-  updateState(){
-    if(mounted) setState(() {});
+  updateState() {
+    if (mounted) setState(() {});
   }
 
   @override
@@ -41,8 +41,8 @@ class _ReloadingCardState extends State<ReloadingCard> {
 
 class NonReloadingCard extends StatelessWidget {
   const NonReloadingCard({
-    Key key,
-    @required this.child,
+    Key? key,
+    required this.child,
   }) : super(key: key);
 
   final Widget child;
@@ -66,7 +66,7 @@ class NonReloadingCard extends StatelessWidget {
 
 class SliderCard extends StatelessWidget {
   SliderCard({
-    @required this.child,
+    required this.child,
   });
 
   final Widget child;

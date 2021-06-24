@@ -3,16 +3,16 @@ import 'package:swol/action/tabs/recovery/secondary/timeDisplay.dart';
 
 //utility (max is 9:59 but we indicate we are maxed out with 9:99)
 //negative durations will show as 0:00
-List<String> durationToCustomDisplay(Duration duration){
+List<String> durationToCustomDisplay(Duration duration) {
   String only1stDigit = "0";
   String always2Digits = "00";
 
-  if(duration > Duration.zero){
+  if (duration > Duration.zero) {
     //seperate minutes
     int minutes = duration.inMinutes ?? 0;
 
     //9 minutes or less have passed (still displayable)
-    if(minutes <= 9){
+    if (minutes <= 9) {
       //ensure the duration.inMinutes returns atleast 0
       only1stDigit = minutes.toString(); //9 through 0
 
@@ -24,12 +24,12 @@ List<String> durationToCustomDisplay(Duration duration){
       always2Digits = seconds.toString(); //0 through 59
 
       //anything less than 10
-      if(always2Digits.length < 2){ //0 -> 9
+      if (always2Digits.length < 2) {
+        //0 -> 9
         always2Digits = "0" + always2Digits;
       }
       //ELSE: 10 -> 59
-    }
-    else{
+    } else {
       only1stDigit = "9";
       always2Digits = "99";
     }
@@ -40,8 +40,8 @@ List<String> durationToCustomDisplay(Duration duration){
 
 class OnlyEditButton extends StatelessWidget {
   const OnlyEditButton({
-    Key key,
-    @required this.durationString,
+    Key? key,
+    required this.durationString,
   }) : super(key: key);
 
   final String durationString;
@@ -53,8 +53,7 @@ class OnlyEditButton extends StatelessWidget {
         fit: BoxFit.contain,
         child: DefaultTextStyle(
           style: TextStyle(
-            color: Theme.of(context)
-                .primaryColorDark,
+            color: Theme.of(context).primaryColorDark,
           ),
           child: EditIcon(
             text: durationString,

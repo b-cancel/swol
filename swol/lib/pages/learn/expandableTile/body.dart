@@ -8,9 +8,9 @@ import 'package:shimmer/shimmer.dart';
 //widget
 class TileBody extends StatelessWidget {
   const TileBody({
-    @required this.child,
-    @required this.theOnlyException,
-    Key key,
+    required this.child,
+    required this.theOnlyException,
+    Key? key,
   }) : super(key: key);
 
   final Widget child;
@@ -60,7 +60,9 @@ class TileBody extends StatelessWidget {
           children: <Widget>[
             Positioned.fill(
               child: Container(
-                color: theOnlyException ? Theme.of(context).primaryColor : Theme.of(context).cardColor,
+                color: theOnlyException
+                    ? Theme.of(context).primaryColor
+                    : Theme.of(context).cardColor,
               ),
             ),
             Container(
@@ -68,7 +70,7 @@ class TileBody extends StatelessWidget {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.only(
                   bottomLeft: Radius.circular(12.0),
-                  bottomRight:  Radius.circular(12.0),
+                  bottomRight: Radius.circular(12.0),
                 ),
                 color: Theme.of(context).primaryColorDark,
               ),

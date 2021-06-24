@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 class ClearButton extends StatelessWidget {
   const ClearButton({
-    Key key,
-    @required this.ctrl,
+    Key? key,
+    required this.ctrl,
   }) : super(key: key);
 
   final TextEditingController ctrl;
@@ -17,10 +17,10 @@ class ClearButton extends StatelessWidget {
       child: Transform.translate(
         offset: Offset(8, 0),
         child: IconButton(
-          onPressed: (){
+          onPressed: () {
             ctrl.text = "";
           },
-          color: Colors.grey, 
+          color: Colors.grey,
           highlightColor: Colors.grey,
           icon: Icon(
             Icons.close,

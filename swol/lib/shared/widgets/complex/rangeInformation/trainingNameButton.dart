@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 
 class TrainingNameButton extends StatelessWidget {
   const TrainingNameButton({
-    Key key,
-    @required this.width,
-    @required this.sectionName,
-    @required this.sectionTap,
+    Key? key,
+    required this.width,
+    required this.sectionName,
+    required this.sectionTap,
   }) : super(key: key);
 
   final double width;
@@ -47,22 +47,20 @@ class TrainingNameButton extends StatelessWidget {
       width: width,
       height: 32,
       alignment: Alignment.topCenter,
-      child: RaisedButton(
-        shape: RoundedRectangleBorder(
-          borderRadius: new BorderRadius.circular(24.0),
-          side: BorderSide(color: Colors.white),
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          visualDensity: VisualDensity.compact,
+          shape: RoundedRectangleBorder(
+            borderRadius: new BorderRadius.circular(24.0),
+            side: BorderSide(color: Colors.white),
+          ),
+          //everything transparent
+          primary: Colors.transparent,
+          onPrimary: Colors.transparent,
+          onSurface: Colors.transparent,
+          shadowColor: Colors.transparent,
         ),
-        padding: EdgeInsets.all(0),
-        //everything transparent
-        color: Colors.transparent,
-        splashColor: Colors.transparent,
-        disabledColor: Colors.transparent,
-        focusColor: Colors.transparent,
-        hoverColor: Colors.transparent,
-        //only when touched
-        highlightColor: Theme.of(context).accentColor,
-        colorBrightness: Brightness.dark,
-        onPressed: sectionTap,
+        onPressed: () => sectionTap(),
         child: content,
       ),
     );

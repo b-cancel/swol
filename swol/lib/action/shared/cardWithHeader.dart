@@ -7,8 +7,8 @@ import 'package:swol/shared/functions/goldenRatio.dart';
 //widget
 class CardWithHeader extends StatelessWidget {
   CardWithHeader({
-    @required this.header,
-    @required this.child,
+    required this.header,
+    required this.child,
     this.aLittleSmaller: false,
     this.topRound: true,
   });

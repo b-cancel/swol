@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 
 class OnBoardingImage extends StatelessWidget {
   OnBoardingImage({
-    @required this.width,
-    @required this.multiplier,
-    @required this.imageUrl,
+    required this.width,
+    required this.multiplier,
+    required this.imageUrl,
     this.isLeft,
     this.onTap,
   });
@@ -19,7 +19,7 @@ class OnBoardingImage extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
-      onTap: (onTap == null) ? (){} : () => onTap(),
+      onTap: (onTap == null) ? () {} : () => onTap(),
       //NOTE: invisible container required to make tap target large
       child: Container(
         color: Colors.transparent,
@@ -28,8 +28,11 @@ class OnBoardingImage extends StatelessWidget {
           child: Container(
             width: width,
             height: width,
-            alignment: (isLeft == null) ? Alignment.center
-            : (isLeft) ? Alignment.centerLeft : Alignment.centerRight,
+            alignment: (isLeft == null)
+                ? Alignment.center
+                : (isLeft)
+                    ? Alignment.centerLeft
+                    : Alignment.centerRight,
             child: Container(
               width: width * multiplier,
               child: Image.asset(

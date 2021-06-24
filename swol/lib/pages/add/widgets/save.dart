@@ -13,21 +13,20 @@ import 'package:swol/main.dart';
 //widget
 class SaveButton extends StatefulWidget {
   const SaveButton({
-    Key key,
-    @required this.delay,
-    @required this.showSaveButton,
-    
-    @required this.namePresent,
-    @required this.nameFocusNode,
-    @required this.name,
-    @required this.url,
-    @required this.note,
-    @required this.functionIndex,
-    @required this.repTarget,
-    @required this.recoveryPeriod,
-    @required this.setTarget,
-    @required this.nameError,
-    @required this.showSaveDuration,
+    Key? key,
+    required this.delay,
+    required this.showSaveButton,
+    required this.namePresent,
+    required this.nameFocusNode,
+    required this.name,
+    required this.url,
+    required this.note,
+    required this.functionIndex,
+    required this.repTarget,
+    required this.recoveryPeriod,
+    required this.setTarget,
+    required this.nameError,
+    required this.showSaveDuration,
   }) : super(key: key);
 
   final Duration delay;
@@ -50,12 +49,11 @@ class SaveButton extends StatefulWidget {
 }
 
 class _SaveButtonState extends State<SaveButton> {
-
   //so it can be added and removed from listeners
-  updateState(){
-    if(mounted) setState(() {});
+  updateState() {
+    if (mounted) setState(() {});
   }
-  
+
   @override
   void initState() {
     //add listeners
@@ -63,22 +61,20 @@ class _SaveButtonState extends State<SaveButton> {
     widget.namePresent.addListener(updateState);
 
     //start onbaording if needed
-    if(SharedPrefsExt.getSaveShown().value == false){
+    if (SharedPrefsExt.getSaveShown().value == false) {
       //NOTE: this will eventually request the focus of name
       OnBoarding.discoverSaveExercise(context);
 
       //the user already knows where the save button is
       widget.showSaveButton.value = true;
-    }
-    else{
+    } else {
       //autofocus on the name as soon as possible
-      WidgetsBinding.instance.addPostFrameCallback((_){
+      WidgetsBinding.instance.addPostFrameCallback((_) {
         FocusScope.of(context).requestFocus(widget.nameFocusNode);
       });
 
       //remind the user of the save button location
-      Future.delayed(
-        widget.delay, (){
+      Future.delayed(widget.delay, () {
         widget.showSaveButton.value = true;
       });
     }
@@ -100,7 +96,7 @@ class _SaveButtonState extends State<SaveButton> {
   Widget build(BuildContext context) {
     return FeatureWrapper(
       featureID: AFeature.SaveExercise.toString(),
-      tapTarget: RaisedButton(
+      tapTarget: ElevatedButton(
         onPressed: null,
         child: Text(
           "Save",
@@ -109,9 +105,9 @@ class _SaveButtonState extends State<SaveButton> {
           ),
         ),
       ),
-      text: "Only after naming the exercise"
-      + " will the button become active"
-      + " and allow you to save",
+      text: "Only after naming the exercise" +
+          " will the button become active" +
+          " and allow you to save",
       child: AnimatedContainer(
         duration: widget.showSaveDuration,
         curve: Curves.bounceInOut,
@@ -122,12 +118,14 @@ class _SaveButtonState extends State<SaveButton> {
         ),
         child: FittedBox(
           fit: BoxFit.contain,
-          child: RaisedButton(
-            color: (widget.namePresent.value) 
-            ? Theme.of(context).accentColor 
-            : Colors.grey,
-            onPressed: ()async{
-              if(widget.namePresent.value){
+          child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              primary: (widget.namePresent.value)
+                  ? Theme.of(context).accentColor
+                  : Colors.grey,
+            ),
+            onPressed: () async {
+              if (widget.namePresent.value) {
                 //remove keyboard
                 FocusScope.of(context).unfocus();
 
@@ -155,8 +153,7 @@ class _SaveButtonState extends State<SaveButton> {
                 //exit pop up
                 App.navSpread.value = false;
                 Navigator.pop(context);
-              }
-              else{
+              } else {
                 //show the error if needed
                 widget.nameError.value = true;
 
@@ -179,7 +176,7 @@ class _SaveButtonState extends State<SaveButton> {
       left: false,
       //only 1 thing
       doneInsteadOfNext: true,
-      nextFeature: (){
+      nextFeature: () {
         //the user knows where the save button is
         SharedPrefsExt.setSaveShown(true);
 

@@ -10,7 +10,7 @@ class FunctionCardTable extends StatelessWidget {
   final bool cardBackground;
 
   List<Widget> buildFields(BuildContext context, List<String> items) {
-    List<Widget> buildFields = new List<Widget>();
+    List<Widget> buildFields = [];
     for (int i = 0; i < items.length; i++) {
       buildFields.add(
         MyCustomChip(
@@ -57,9 +57,9 @@ class FunctionCardTable extends StatelessWidget {
               ),
               Container(
                 padding: EdgeInsets.all(8),
-                color: cardBackground 
-                ? Theme.of(context).scaffoldBackgroundColor
-                : Theme.of(context).cardColor,
+                color: cardBackground
+                    ? Theme.of(context).scaffoldBackgroundColor
+                    : Theme.of(context).cardColor,
                 child: Padding(
                   padding: EdgeInsets.only(
                     bottom: 8.0,

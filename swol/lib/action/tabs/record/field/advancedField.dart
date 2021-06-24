@@ -17,8 +17,8 @@ import 'package:swol/shared/methods/theme.dart';
 //widget
 class RecordFields extends StatefulWidget {
   RecordFields({
-    @required this.weightFocusNode,
-    @required this.repsFocusNode,
+    required this.weightFocusNode,
+    required this.repsFocusNode,
   });
 
   final FocusNode weightFocusNode;

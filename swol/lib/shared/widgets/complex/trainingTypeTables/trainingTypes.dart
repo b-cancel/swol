@@ -26,7 +26,7 @@ class AllTrainingTypes extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<int> sections = new List<int>();
+    List<int> sections = [];
     for (int i = 0; i < 3; i++) {
       //adjust the section being added
       int sectionToAdd = i + sectionWithInitialFocus;
@@ -50,10 +50,10 @@ class AllTrainingTypes extends StatelessWidget {
 
 class TrainingTypeSections extends StatefulWidget {
   const TrainingTypeSections({
-    Key key,
-    @required this.cardBackground,
-    @required this.sections,
-    @required this.sectionID,
+    Key? key,
+    required this.cardBackground,
+    required this.sections,
+    required this.sectionID,
     this.highlightField: -1,
     this.shadowColor: Colors.white,
   }) : super(key: key);
@@ -150,10 +150,10 @@ class _TrainingTypeSectionsState extends State<TrainingTypeSections> {
     );
 
     //create section
-    sectionsOfCards = new List<List<CardTable>>();
+    sectionsOfCards = [];
     for (int i = 0; i < widget.sections.length; i++) {
       List<int> aSection = widget.sections[i];
-      List<CardTable> aCardSection = new List<CardTable>();
+      List<CardTable> aCardSection = [];
       for (int s = 0; s < aSection.length; s++) {
         int cardType = aSection[s];
         switch (cardType) {
@@ -173,7 +173,7 @@ class _TrainingTypeSectionsState extends State<TrainingTypeSections> {
     }
 
     //create carosels based on that
-    carousels = new List<Widget>();
+    carousels = [];
     for (int i = 0; i < sectionsOfCards.length; i++) {
       carousels.add(
         CarouselSlider(

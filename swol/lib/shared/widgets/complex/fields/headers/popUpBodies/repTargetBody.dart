@@ -9,7 +9,7 @@ import 'package:swol/shared/methods/theme.dart';
 //widget
 class RepTargetPopUpBody extends StatelessWidget {
   const RepTargetPopUpBody({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

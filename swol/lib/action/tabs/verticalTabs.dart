@@ -18,9 +18,9 @@ class VerticalTabs extends StatefulWidget {
   final int initialPage;
 
   VerticalTabs({
-    @required this.exercise,
-    @required this.statusBarHeight,
-    @required this.initialPage,
+    required this.exercise,
+    required this.statusBarHeight,
+    required this.initialPage,
   });
 
   @override
@@ -31,7 +31,7 @@ class _VerticalTabsState extends State<VerticalTabs>
     with TickerProviderStateMixin {
   //updated by suggest, reused by adjustment widget
   final ValueNotifier<List<double>> functionIDToWeightFromRT =
-      new ValueNotifier<List<double>>(new List<double>(8));
+      new ValueNotifier<List<double>>([8]);
 
   //for the "hero" widget (if not up then down)
   ValueNotifier<bool> goalSetUp;

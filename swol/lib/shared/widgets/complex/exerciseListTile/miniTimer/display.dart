@@ -16,9 +16,9 @@ import 'package:swol/shared/structs/anExercise.dart';
 class WatchUI extends StatelessWidget {
   //NOTE: defaults is the mini version of the watch
   WatchUI({
-    @required this.controller,
-    @required this.exercise,
-    @required this.startTime,
+    required this.controller,
+    required this.exercise,
+    required this.startTime,
   });
 
   final AnimationController controller;
@@ -34,14 +34,14 @@ class WatchUI extends StatelessWidget {
 
     //sizes
     double size = 56;
-    
+
     String generatedTag = "timer" + exercise.id.toString();
 
     //the box I think will be in the hero
     //so that the fitted box within it can grow the widget inside of it
     return Hero(
       tag: generatedTag,
-      child: Container( 
+      child: Container(
         //color: Colors.black,
         child: FittedBox(
           fit: BoxFit.contain,
@@ -70,11 +70,11 @@ class WatchUI extends StatelessWidget {
                 ),
                 //-----shaking thingymajig for both
                 TimerShaker(
-                  controller: controller, 
+                  controller: controller,
                   noTimeLeft: noTimeLeft,
                 ),
                 //-----circle that show progress
-                ProgressCircle( 
+                ProgressCircle(
                   exercise: exercise,
                   controller: controller,
                   startTime: startTime,
@@ -140,7 +140,7 @@ class WatchButtons extends StatelessWidget {
           left: isRight ? 0 : 8,
         ),
         child: Transform.rotate(
-          angle: (- math.pi / 4) * (isRight ? 1 : -1),
+          angle: (-math.pi / 4) * (isRight ? 1 : -1),
           child: Container(
             color: Colors.white,
             height: 6,

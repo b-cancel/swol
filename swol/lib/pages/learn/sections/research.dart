@@ -8,7 +8,7 @@ import 'package:swol/pages/learn/description.dart';
 //widget
 class ResearchBody extends StatelessWidget {
   const ResearchBody({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -135,9 +135,9 @@ class ResearchBody extends StatelessWidget {
 
 class ResearchCard extends StatelessWidget {
   const ResearchCard({
-    Key key,
-    @required this.title,
-    @required this.items,
+    Key? key,
+    required this.title,
+    required this.items,
     this.lessBottomPadding: false,
   }) : super(key: key);
 
@@ -147,7 +147,7 @@ class ResearchCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> listItems = new List<Widget>();
+    List<Widget> listItems = [];
     for (int i = 0; i < items.length; i++) {
       listItems.add(
         ListItem(

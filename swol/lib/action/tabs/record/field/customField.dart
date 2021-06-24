@@ -10,12 +10,12 @@ import 'package:swol/action/popUps/textValid.dart';
 //widget
 class RecordField extends StatefulWidget {
   RecordField({
-    @required this.focusNode,
-    @required this.controller,
-    @required this.isLeft,
-    @required this.borderSize,
-    @required this.otherFocusNode,
-    @required this.otherController,
+    required this.focusNode,
+    required this.controller,
+    required this.isLeft,
+    required this.borderSize,
+    required this.otherFocusNode,
+    required this.otherController,
   });
 
   final FocusNode focusNode;
@@ -98,7 +98,7 @@ class _RecordFieldState extends State<RecordField> {
       ),
     );
 
-    Radius normalCurve = Radius.circular(24); 
+    Radius normalCurve = Radius.circular(24);
     //NOTE: without toolbar shown our multiplier can drop to 3
     //else must be 4
     double multiplier = 3;
@@ -115,7 +115,9 @@ class _RecordFieldState extends State<RecordField> {
           topLeft: widget.isLeft ? normalCurve : Radius.zero,
         ),
         child: Material(
-          color: widget.focusNode.hasFocus ? Theme.of(context).accentColor : Colors.transparent,
+          color: widget.focusNode.hasFocus
+              ? Theme.of(context).accentColor
+              : Colors.transparent,
           child: Stack(
             alignment:
                 widget.isLeft ? Alignment.centerRight : Alignment.centerLeft,
@@ -234,9 +236,11 @@ class _RecordFieldState extends State<RecordField> {
                               FocusScope.of(context).unfocus();
                             } else {
                               //in case the otherController has just a 0
-                              if(widget.otherController.text == "0") widget.otherController.clear();
+                              if (widget.otherController.text == "0")
+                                widget.otherController.clear();
                               //focus on the next field
-                              FocusScope.of(context).requestFocus(widget.otherFocusNode);
+                              FocusScope.of(context)
+                                  .requestFocus(widget.otherFocusNode);
                               //NOTE: cursor automatically gets shifted to the end
                             }
                           },

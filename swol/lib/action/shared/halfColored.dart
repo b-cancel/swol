@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 class TopBackgroundColored extends StatelessWidget {
   TopBackgroundColored({
-    @required this.child,
-    @required this.color,
+    required this.child,
+    required this.color,
   });
 
   final Widget child;
@@ -14,17 +14,14 @@ class TopBackgroundColored extends StatelessWidget {
     return Stack(
       children: <Widget>[
         Positioned.fill(
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              Expanded(
-                child: Container(
-                  color: color,
-                ),
+          child: Column(mainAxisSize: MainAxisSize.max, children: [
+            Expanded(
+              child: Container(
+                color: color,
               ),
-              Expanded(child: Container()),
-            ]
-          ),
+            ),
+            Expanded(child: Container()),
+          ]),
         ),
         child,
       ],

@@ -12,8 +12,8 @@ import 'package:swol/shared/methods/theme.dart';
 //widget
 class SetTargetField extends StatelessWidget {
   const SetTargetField({
-    Key key,
-    @required this.setTarget,
+    Key? key,
+    required this.setTarget,
     this.subtle: false,
   }) : super(key: key);
 
@@ -37,7 +37,7 @@ class SetTargetField extends StatelessWidget {
 
 class SetTargetHeader extends StatelessWidget {
   const SetTargetHeader({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -57,7 +57,7 @@ class SetTargetHeader extends StatelessWidget {
 
 class SetTargetPopUpBody extends StatelessWidget {
   const SetTargetPopUpBody({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

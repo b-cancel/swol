@@ -43,7 +43,7 @@ class _LearnExerciseState extends State<LearnExercise> {
   final AutoScrollController autoScrollController = new AutoScrollController();
 
   //is opens
-  List<ValueNotifier<bool>> allIsOpens = new List<ValueNotifier<bool>>();
+  List<ValueNotifier<bool>> allIsOpens = [];
 
   //my be automatically open to show the user what this section of the app is about
   ValueNotifier<bool> introductionIsOpen;
@@ -56,40 +56,38 @@ class _LearnExerciseState extends State<LearnExercise> {
   ValueNotifier<bool> experimentIsOpen = new ValueNotifier(false);
   ValueNotifier<bool> researchIsOpen = new ValueNotifier(false);
 
-  maybeCloseOthers(ValueNotifier<bool> isOpen){
+  maybeCloseOthers(ValueNotifier<bool> isOpen) {
     //the user has tapped something
     //so they will have seen how the drop down works
     SharedPrefsExt.setIntroductionShown(true);
 
     //a section is being opened
-    if(isOpen.value){
+    if (isOpen.value) {
       //close others
       closeOthers(isOpen);
 
       //scroll to other
       Future.delayed(
-        //TODO: ideally a more fool proof solution (1.5 duration may not cover un-planned delay)
-        //we currently just set the variables in "allIsOpens" to false
-        //but the animation kind of happens on its own
-        //requires seperate set of variables that confirm if it finished its animation
-        //add if necessary
-        ExercisePage.transitionDuration * 1.5, 
-        (){
-          //scroll to index
-          autoScrollController.scrollToIndex(
-            allIsOpens.indexOf(isOpen), 
-            preferPosition: AutoScrollPosition.begin,
-          );
-        }
-      );
+          //TODO: ideally a more fool proof solution (1.5 duration may not cover un-planned delay)
+          //we currently just set the variables in "allIsOpens" to false
+          //but the animation kind of happens on its own
+          //requires seperate set of variables that confirm if it finished its animation
+          //add if necessary
+          ExercisePage.transitionDuration * 1.5, () {
+        //scroll to index
+        autoScrollController.scrollToIndex(
+          allIsOpens.indexOf(isOpen),
+          preferPosition: AutoScrollPosition.begin,
+        );
+      });
     }
   }
 
-  closeOthers(ValueNotifier<bool> passedNotifier){
-    for(int i = 0; i < allIsOpens.length; i++){
+  closeOthers(ValueNotifier<bool> passedNotifier) {
+    for (int i = 0; i < allIsOpens.length; i++) {
       ValueNotifier<bool> thisNotifier = allIsOpens[i];
-      if(thisNotifier != passedNotifier){
-        if(thisNotifier.value){
+      if (thisNotifier != passedNotifier) {
+        if (thisNotifier.value) {
           thisNotifier.value = false;
         }
       }
@@ -114,7 +112,7 @@ class _LearnExerciseState extends State<LearnExercise> {
     );
 
     //make controller list
-    allIsOpens = new List<ValueNotifier<bool>>();
+    allIsOpens = [];
     allIsOpens.addAll([
       introductionIsOpen,
       definitionIsOpen,
@@ -136,7 +134,7 @@ class _LearnExerciseState extends State<LearnExercise> {
   }
 
   @override
-  void dispose() { 
+  void dispose() {
     //remove listeners
     introductionIsOpen.removeListener(introductionUpdate);
     definitionIsOpen.removeListener(definitionUpdate);
@@ -145,7 +143,7 @@ class _LearnExerciseState extends State<LearnExercise> {
     oneRepMaxIsOpen.removeListener(oneRepMaxUpdate);
     experimentIsOpen.removeListener(experimentUpdate);
     researchIsOpen.removeListener(researchUpdate);
-    
+
     //super dispose
     super.dispose();
   }
@@ -155,7 +153,7 @@ class _LearnExerciseState extends State<LearnExercise> {
     Color theSemiWhite = Colors.white.withOpacity(0.5);
 
     return WillPopScope(
-      onWillPop: ()async{
+      onWillPop: () async {
         App.navSpread.value = false;
         return true; //can still pop
       },
@@ -175,16 +173,16 @@ class _LearnExerciseState extends State<LearnExercise> {
                 child: Text("Learn"),
               ),
             ],
-          ), 
+          ),
           actions: <Widget>[
             IconButton(
               icon: Icon(Icons.close),
-              onPressed: (){
+              onPressed: () {
                 App.navSpread.value = false;
                 Navigator.of(context).pop();
               },
             ),
-          ], 
+          ],
         ),
         body: DefaultTextStyle(
           style: TextStyle(
@@ -197,32 +195,32 @@ class _LearnExerciseState extends State<LearnExercise> {
                 autoScrollController: autoScrollController,
                 index: 0,
                 isOpen: introductionIsOpen,
-                headerIcon: FontAwesomeIcons.solidLightbulb, 
-                headerText: "Introduction", 
+                headerIcon: FontAwesomeIcons.solidLightbulb,
+                headerText: "Introduction",
                 expandedChild: IntroductionBody(),
               ),
               ExpandableTile(
                 autoScrollController: autoScrollController,
                 index: 1,
                 isOpen: definitionIsOpen,
-                headerIcon: Icons.chrome_reader_mode, 
-                headerText: "Definitions", 
+                headerIcon: Icons.chrome_reader_mode,
+                headerText: "Definitions",
                 expandedChild: DefinitionBody(),
               ),
               ExpandableTile(
                 autoScrollController: autoScrollController,
                 index: 2,
                 isOpen: trainingIsOpen,
-                headerIcon: FontAwesomeIcons.dumbbell, 
+                headerIcon: FontAwesomeIcons.dumbbell,
                 size: 18,
-                headerText: "Training", 
+                headerText: "Training",
                 expandedChild: TrainingBody(),
               ),
               ExpandableTile(
                 autoScrollController: autoScrollController,
                 index: 3,
                 isOpen: precautionIsOpen,
-                headerIcon: Icons.warning, 
+                headerIcon: Icons.warning,
                 headerText: "Precautions",
                 expandedChild: PrecautionsBody(),
               ),
@@ -230,16 +228,16 @@ class _LearnExerciseState extends State<LearnExercise> {
                 autoScrollController: autoScrollController,
                 index: 4,
                 isOpen: oneRepMaxIsOpen,
-                headerIcon: FontAwesomeIcons.trophy, 
+                headerIcon: FontAwesomeIcons.trophy,
                 size: 20,
-                headerText: "One Rep Max", 
+                headerText: "One Rep Max",
                 expandedChild: OneRepMaxBody(),
               ),
               ExpandableTile(
                 autoScrollController: autoScrollController,
                 index: 5,
                 isOpen: experimentIsOpen,
-                headerIcon: FontAwesomeIcons.calculator, 
+                headerIcon: FontAwesomeIcons.calculator,
                 headerText: "The Calculator",
                 expandedChild: ExperimentBody(),
               ),
@@ -247,7 +245,7 @@ class _LearnExerciseState extends State<LearnExercise> {
                 autoScrollController: autoScrollController,
                 index: 6,
                 isOpen: researchIsOpen,
-                headerIcon: FontAwesomeIcons.book, 
+                headerIcon: FontAwesomeIcons.book,
                 headerText: "Further Research",
                 expandedChild: ResearchBody(),
                 theOnlyException: true,
@@ -261,7 +259,7 @@ class _LearnExerciseState extends State<LearnExercise> {
                     child: Container(
                       height: 56,
                       //basically fit height
-                      width: 406 / (250/56),
+                      width: 406 / (250 / 56),
                       child: Image(
                         //image dimesions: 250 x 406
                         image: new AssetImage("assets/littleBrain.png"),

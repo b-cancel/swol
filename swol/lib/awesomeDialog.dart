@@ -22,7 +22,7 @@ class MyAwesomeDialog {
   final bool useRootNavigator;
 
   MyAwesomeDialog(
-      {@required this.context,
+      {required this.context,
       this.dialogType,
       this.customHeader,
       this.body,
@@ -107,11 +107,11 @@ class MyVerticalStackDialog extends StatelessWidget {
   final bool isDense;
   final AlignmentGeometry aligment;
   const MyVerticalStackDialog({
-    Key key,
+    Key? key,
     this.body,
     this.aligment,
     this.isDense,
-    @required this.header,
+    required this.header,
   }) : super(key: key);
 
   @override

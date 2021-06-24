@@ -9,7 +9,7 @@ import 'package:swol/other/otherHelper.dart';
 //NOTE: we must switch between this fella and the above so that our reloading of the leading widget works
 class AnimatedMiniNormalTimer extends StatefulWidget {
   AnimatedMiniNormalTimer({
-    @required this.exercise,
+    required this.exercise,
     this.startTime,
   });
 
@@ -17,17 +17,19 @@ class AnimatedMiniNormalTimer extends StatefulWidget {
   final DateTime startTime;
 
   @override
-  _AnimatedMiniNormalTimerState createState() => _AnimatedMiniNormalTimerState();
+  _AnimatedMiniNormalTimerState createState() =>
+      _AnimatedMiniNormalTimerState();
 }
 
-class _AnimatedMiniNormalTimerState extends State<AnimatedMiniNormalTimer> with SingleTickerProviderStateMixin{
+class _AnimatedMiniNormalTimerState extends State<AnimatedMiniNormalTimer>
+    with SingleTickerProviderStateMixin {
   final Duration maxDuration = const Duration(minutes: 5);
   AnimationController controller;
   DateTime startTime;
 
   //function removable from listeners
-  updateState(){
-    if(mounted) setState(() {});
+  updateState() {
+    if (mounted) setState(() {});
   }
 
   //wrapper for update state
@@ -46,15 +48,12 @@ class _AnimatedMiniNormalTimerState extends State<AnimatedMiniNormalTimer> with 
     controller.addListener(updateState);
     controller.addStatusListener(updateStateAnim);
 
-    startTime = widget.startTime ?? 
-      widget.exercise.tempStartTime.value;
+    startTime = widget.startTime ?? widget.exercise.tempStartTime.value;
 
     //start animation
     //NOTICE: this value never really changes, once its started... its started...
     //NOTE: again by now we know timerStart isnt null
-    Duration timePassed = DateTime.now().difference(
-      startTime
-    );
+    Duration timePassed = DateTime.now().difference(startTime);
     controller.forward(
       from: timeToLerpValue(timePassed),
     );
@@ -78,8 +77,7 @@ class _AnimatedMiniNormalTimerState extends State<AnimatedMiniNormalTimer> with 
   //build
   @override
   Widget build(BuildContext context) {
-    startTime = widget.startTime ?? 
-    widget.exercise.tempStartTime.value;
+    startTime = widget.startTime ?? widget.exercise.tempStartTime.value;
 
     return WatchUI(
       controller: controller,

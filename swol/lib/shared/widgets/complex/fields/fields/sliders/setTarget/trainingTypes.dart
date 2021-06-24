@@ -11,9 +11,9 @@ import 'package:swol/shared/methods/theme.dart';
 //widgets
 class SetTargetToTrainingTypeIndicator extends StatefulWidget {
   SetTargetToTrainingTypeIndicator({
-    @required this.setTarget,
-    @required this.wholeWidth,
-    @required this.oneSidePadding,
+    required this.setTarget,
+    required this.wholeWidth,
+    required this.oneSidePadding,
   });
 
   final ValueNotifier<int> setTarget;
@@ -21,23 +21,26 @@ class SetTargetToTrainingTypeIndicator extends StatefulWidget {
   final double oneSidePadding;
 
   @override
-  _SetTargetToTrainingTypeIndicatorState createState() => _SetTargetToTrainingTypeIndicatorState();
+  _SetTargetToTrainingTypeIndicatorState createState() =>
+      _SetTargetToTrainingTypeIndicatorState();
 }
 
-class _SetTargetToTrainingTypeIndicatorState extends State<SetTargetToTrainingTypeIndicator> {
+class _SetTargetToTrainingTypeIndicatorState
+    extends State<SetTargetToTrainingTypeIndicator> {
   int section;
   ScrollController controller = new ScrollController();
 
-  setTargetToSection(){
-    if(widget.setTarget.value > 7) section = 4;
-    else{
+  setTargetToSection() {
+    if (widget.setTarget.value > 7)
+      section = 4;
+    else {
       section = widget.setTarget.value - 3;
       section = (section < 0) ? 0 : section;
     }
 
-    WidgetsBinding.instance.addPostFrameCallback((_){
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       controller.animateTo(
-        (((widget.wholeWidth - (2 * widget.oneSidePadding))/4) * section),
+        (((widget.wholeWidth - (2 * widget.oneSidePadding)) / 4) * section),
         duration: ExercisePage.transitionDuration,
         curve: Curves.easeInOut,
       );
@@ -68,14 +71,14 @@ class _SetTargetToTrainingTypeIndicatorState extends State<SetTargetToTrainingTy
   Widget build(BuildContext context) {
     double tickWidth = 4;
     double totalScreenWidth = MediaQuery.of(context).size.width - 48;
-    double totalSliderWidth = (totalScreenWidth/4) * 8;
+    double totalSliderWidth = (totalScreenWidth / 4) * 8;
 
     double tickSpace = tickWidth * 9;
     double spacerSpace = totalSliderWidth - tickSpace;
     double spacerWidth = spacerSpace / 8;
 
-    List<Widget> ticksAndStuff = new List<Widget>();
-    
+    List<Widget> ticksAndStuff = [];
+
     //add our first tick
     ticksAndStuff.add(
       Tick(
@@ -86,7 +89,7 @@ class _SetTargetToTrainingTypeIndicatorState extends State<SetTargetToTrainingTy
     );
 
     //add spacer then tick 8 times
-    for(int i = 0; i < 8; i++){
+    for (int i = 0; i < 8; i++) {
       //spacer
       ticksAndStuff.add(
         Container(
@@ -99,14 +102,14 @@ class _SetTargetToTrainingTypeIndicatorState extends State<SetTargetToTrainingTy
         Tick(
           tickWidth: tickWidth,
           setTarget: widget.setTarget,
-          value: (i+2),
+          value: (i + 2),
         ),
       );
     }
 
     return Container(
       //NOTE: MUST BE manually set
-      height: 92 , 
+      height: 92,
       width: totalSliderWidth,
       child: Stack(
         children: <Widget>[
@@ -123,9 +126,9 @@ class _SetTargetToTrainingTypeIndicatorState extends State<SetTargetToTrainingTy
                   ),
                   Theme(
                     //light so that our pop ups work properly
-                    data: MyTheme.light, 
+                    data: MyTheme.light,
                     child: ThePills(
-                      setTarget: widget.setTarget, 
+                      setTarget: widget.setTarget,
                       totalScreenWidth: totalScreenWidth,
                     ),
                   ),
@@ -149,19 +152,19 @@ class _SetTargetToTrainingTypeIndicatorState extends State<SetTargetToTrainingTy
 
 class NoMoreThan6Sets extends StatelessWidget {
   const NoMoreThan6Sets({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: (){
+      onTap: () {
         showWidgetToolTip(
-          context, 
+          context,
           Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.end,
-            children:[
+            children: [
               Flexible(
                 child: Text(
                   "Any More than 6 sets, might do you more harm than good",
@@ -179,11 +182,10 @@ class NoMoreThan6Sets extends StatelessWidget {
           width: 36,
           height: 36,
           decoration: BoxDecoration(
-            border: Border.all(
-              color: Theme.of(context).primaryColorDark,
-              width: 2,
-            )
-          ),
+              border: Border.all(
+            color: Theme.of(context).primaryColorDark,
+            width: 2,
+          )),
           padding: EdgeInsets.symmetric(
             horizontal: 4,
             vertical: 4,
@@ -200,10 +202,10 @@ class NoMoreThan6Sets extends StatelessWidget {
 
 class Tick extends StatefulWidget {
   const Tick({
-    Key key,
-    @required this.tickWidth,
-    @required this.setTarget,
-    @required this.value,
+    Key? key,
+    required this.tickWidth,
+    required this.setTarget,
+    required this.value,
   }) : super(key: key);
 
   final double tickWidth;
@@ -217,14 +219,14 @@ class Tick extends StatefulWidget {
 class _TickState extends State<Tick> {
   bool tickActive;
 
-  updateState(){
-    if(mounted){
+  updateState() {
+    if (mounted) {
       setTargetToTickActive();
       setState(() {});
     }
   }
 
-  setTargetToTickActive(){
+  setTargetToTickActive() {
     tickActive = (widget.setTarget.value == widget.value);
   }
 
@@ -252,7 +254,9 @@ class _TickState extends State<Tick> {
   Widget build(BuildContext context) {
     return Container(
       width: widget.tickWidth,
-      color: (tickActive) ? Theme.of(context).accentColor : MyTheme.dark.backgroundColor,
+      color: (tickActive)
+          ? Theme.of(context).accentColor
+          : MyTheme.dark.backgroundColor,
     );
   }
 }

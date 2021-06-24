@@ -282,8 +282,8 @@ bool doBothMatch(AnExercise exercise) {
 
 class CustomToast extends StatelessWidget {
   CustomToast({
-    @required this.child,
-    @required this.padding,
+    required this.child,
+    required this.padding,
     this.action,
     this.isWarning: true,
   });
@@ -349,7 +349,7 @@ class CustomToast extends StatelessWidget {
                     ),
                     Visibility(
                       visible: action != null,
-                      child: RaisedButton(
+                      child: ElevatedButton(
                         onPressed: () => action(),
                         child: Text(
                           "Continue",

@@ -6,10 +6,10 @@ import 'package:flutter_gifimage/flutter_gifimage.dart';
 
 class PlayGifOnce extends StatefulWidget {
   PlayGifOnce({
-    @required this.assetName,
+    required this.assetName,
     //both of the values must be extracted manually
-    @required this.frameCount,
-    @required this.runTimeMS,
+    required this.frameCount,
+    required this.runTimeMS,
     //optional
     this.colorWhite: true,
   });
@@ -23,14 +23,15 @@ class PlayGifOnce extends StatefulWidget {
   _PlayGifOnceState createState() => _PlayGifOnceState();
 }
 
-class _PlayGifOnceState extends State<PlayGifOnce> with SingleTickerProviderStateMixin{
+class _PlayGifOnceState extends State<PlayGifOnce>
+    with SingleTickerProviderStateMixin {
   GifController controller;
 
   @override
-  void initState() { 
+  void initState() {
     super.initState();
     controller = GifController(vsync: this);
-    WidgetsBinding.instance.addPostFrameCallback((_){
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       Duration runTime = Duration(milliseconds: widget.runTimeMS);
       controller.animateTo(
         //32 frame but the index starts at 0 so -1
@@ -41,21 +42,20 @@ class _PlayGifOnceState extends State<PlayGifOnce> with SingleTickerProviderStat
   }
 
   @override
-  void dispose() { 
+  void dispose() {
     controller.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    if(widget.colorWhite){
+    if (widget.colorWhite) {
       return GifImage(
         color: Colors.white,
         controller: controller,
         image: AssetImage(widget.assetName),
       );
-    }
-    else{
+    } else {
       return GifImage(
         controller: controller,
         image: AssetImage(widget.assetName),

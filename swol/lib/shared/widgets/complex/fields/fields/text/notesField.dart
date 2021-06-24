@@ -11,7 +11,7 @@ import 'package:swol/shared/methods/theme.dart';
 class NotesField extends StatelessWidget {
   NotesField({
     this.editOneAtATime: false,
-    @required this.noteToUpdate,
+    required this.noteToUpdate,
     this.noteFocusNode,
   });
 
@@ -49,7 +49,7 @@ class NotesField extends StatelessWidget {
 
 class _NotePopUpBody extends StatelessWidget {
   const _NotePopUpBody({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

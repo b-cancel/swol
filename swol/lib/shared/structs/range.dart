@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class Range{
+class Range {
   final String name;
   final Widget left;
   final Widget right;
@@ -9,11 +9,11 @@ class Range{
   final int endSeconds;
 
   Range({
-    @required this.name,
-    @required this.left,
-    @required this.right,
-    @required this.onTap,
-    @required this.startSeconds,
-    @required this.endSeconds,
+    required this.name,
+    required this.left,
+    required this.right,
+    required this.onTap,
+    required this.startSeconds,
+    required this.endSeconds,
   });
 }

@@ -6,8 +6,8 @@ import 'package:swol/shared/widgets/simple/heros/curveMod.dart';
 
 class ExerciseBegin extends StatelessWidget {
   ExerciseBegin({
-    @required this.inAppBar,
-    @required this.exercise,
+    required this.inAppBar,
+    required this.exercise,
   });
 
   final bool inAppBar;
@@ -15,17 +15,20 @@ class ExerciseBegin extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if(exercise == null){
+    if (exercise == null) {
       return ExerciseTitleBeginHelper(
         percentToAppBar: (inAppBar) ? 1 : 0,
       );
-    }
-    else{
+    } else {
       String generatedTag = "exerciseBegin" + exercise.id.toString();
       return Hero(
         tag: generatedTag,
         createRectTween: (begin, end) {
-          return CustomRectTween(a: begin, b: end);
+          if (begin != null && end != null) {
+            return CustomRectTween(a: begin, b: end);
+          } else {
+            return CustomRectTween();
+          }
         },
         flightShuttleBuilder: (
           BuildContext flightContext,
@@ -36,7 +39,7 @@ class ExerciseBegin extends StatelessWidget {
         ) {
           return AnimatedBuilder(
             animation: animation,
-            builder: (context, child){
+            builder: (context, child) {
               return ExerciseTitleBeginHelper(
                 percentToAppBar: animation.value,
               );
@@ -53,7 +56,7 @@ class ExerciseBegin extends StatelessWidget {
 
 class ExerciseTitleBeginHelper extends StatelessWidget {
   ExerciseTitleBeginHelper({
-    @required this.percentToAppBar,
+    required this.percentToAppBar,
   });
 
   final double percentToAppBar;
@@ -64,12 +67,13 @@ class ExerciseTitleBeginHelper extends StatelessWidget {
       angle: (-math.pi / 4) * (4 * percentToAppBar),
       child: Container(
         decoration: new BoxDecoration(
-          color: (percentToAppBar == 0 || percentToAppBar == 1) ? Colors.transparent
-          : Color.lerp(
-            Theme.of(context).cardColor, 
-            Theme.of(context).primaryColor, 
-            percentToAppBar,
-          ),
+          color: (percentToAppBar == 0 || percentToAppBar == 1)
+              ? Colors.transparent
+              : Color.lerp(
+                  Theme.of(context).cardColor,
+                  Theme.of(context).primaryColor,
+                  percentToAppBar,
+                ),
           shape: BoxShape.circle,
         ),
         child: Icon(Icons.chevron_right),
@@ -80,8 +84,8 @@ class ExerciseTitleBeginHelper extends StatelessWidget {
 
 class ContinueOrComplete extends StatelessWidget {
   const ContinueOrComplete({
-    @required this.afterLastSet,
-    Key key,
+    required this.afterLastSet,
+    Key? key,
   }) : super(key: key);
 
   final bool afterLastSet;

@@ -34,9 +34,9 @@ import 'package:swol/shared/widgets/simple/toLearnPage.dart';
 //widget
 class ExerciseList extends StatefulWidget {
   ExerciseList({
-    @required this.autoScrollController,
-    @required this.statusBarHeight,
-    @required this.onTop,
+    required this.autoScrollController,
+    required this.statusBarHeight,
+    required this.onTop,
   });
 
   final AutoScrollController autoScrollController;
@@ -573,16 +573,16 @@ class _ExerciseListState extends State<ExerciseList> {
   List<Widget> slivers;
   beforeManualBuild() {
     //list to separate stuff into
-    List<AnExercise> inProgressOnes = new List<AnExercise>();
-    List<AnExercise> newOnes = new List<AnExercise>();
-    List<AnExercise> regularOnes = new List<AnExercise>();
-    List<AnExercise> hiddenOnes = new List<AnExercise>();
+    List<AnExercise> inProgressOnes = [];
+    List<AnExercise> newOnes = [];
+    List<AnExercise> regularOnes = [];
+    List<AnExercise> hiddenOnes = [];
 
     //where to combine the list above into
-    List<List<AnExercise>> groupsOfExercises = new List<List<AnExercise>>();
+    List<List<AnExercise>> groupsOfExercises = [];
 
     //will contain the actual slivers
-    List<Widget> sliverList = new List<Widget>();
+    List<Widget> sliverList = [];
 
     //a little bit of math
     List<double> goldenBS = measurementToGoldenRatioBS(
@@ -649,8 +649,7 @@ class _ExerciseListState extends State<ExerciseList> {
           //add to dictionary
           if (timeTillFinish2IndexInProgressOnes.containsKey(timeTillFinish) ==
               false) {
-            timeTillFinish2IndexInProgressOnes[timeTillFinish] =
-                new List<int>();
+            timeTillFinish2IndexInProgressOnes[timeTillFinish] = [];
           }
           timeTillFinish2IndexInProgressOnes[timeTillFinish].add(i);
         }
@@ -661,7 +660,7 @@ class _ExerciseListState extends State<ExerciseList> {
         timesTillFinish.sort();
 
         //iterate through keys to grab sorted order
-        List<AnExercise> newInProgressOnes = new List<AnExercise>();
+        List<AnExercise> newInProgressOnes = [];
         for (int i = 0; i < timesTillFinish.length; i++) {
           Duration thisTimeTillFinish = timesTillFinish[i];
           List<int> indicesInProgressOnes =
@@ -729,7 +728,7 @@ class _ExerciseListState extends State<ExerciseList> {
         //add a new group because its needed
         if (makeNewGroup) {
           groupsOfExercises.add(
-            List<AnExercise>(),
+            [],
           );
         }
 
@@ -776,12 +775,12 @@ class _ExerciseListState extends State<ExerciseList> {
 
           //only use short length stuff if there is only one thing to show
           //better for scaling and such
-          if(title.contains(" ")){
+          if (title.contains(" ")) {
             //make sure only the last couples things
             List items = title.split(" ");
 
             //we will be good no matter what
-            if(items.length == 2){
+            if (items.length == 2) {
               title = DurationFormat.format(
                 timeSince,
                 showMinutes: false,
@@ -790,9 +789,9 @@ class _ExerciseListState extends State<ExerciseList> {
                 showMicroseconds: false,
                 len: 0, //medium
               );
-            }
-            else{ //remove hours for starters
-              if(title.contains("h")){
+            } else {
+              //remove hours for starters
+              if (title.contains("h")) {
                 title = DurationFormat.format(
                   timeSince,
                   //---
@@ -812,7 +811,7 @@ class _ExerciseListState extends State<ExerciseList> {
           }
 
           //make sure title isn't empty
-          if(title.length <= 0){
+          if (title.length <= 0) {
             title = "Most Recent";
           }
 
@@ -858,9 +857,9 @@ class _ExerciseListState extends State<ExerciseList> {
         //and the hidden section exists (its the last section)
         if (index == (indexOfLastSection - 1) && haveHidden) {
           bottomColor = Theme.of(context).accentColor;
-        } else{
+        } else {
           //if atleast a single regular section
-          if(regularOnes.length > 0){
+          if (regularOnes.length > 0) {
             //TODO: check further
             //this is what I get when I optimize...
             if (specialSectionsOnTop > index) {
@@ -868,12 +867,12 @@ class _ExerciseListState extends State<ExerciseList> {
             } else {
               bottomColor = Theme.of(context).primaryColor;
             }
-          }
-          else{ //we only have inprogress, new, hidden (if anything)
-            if(index == 2){ //nothing can be below us
+          } else {
+            //we only have inprogress, new, hidden (if anything)
+            if (index == 2) {
+              //nothing can be below us
               bottomColor = Theme.of(context).primaryColor;
-            }
-            else{
+            } else {
               //CASES TO ADDRESS
               //  N,I,H
 
@@ -890,26 +889,27 @@ class _ExerciseListState extends State<ExerciseList> {
               int sectionCount = groupsOfExercises.length;
 
               //use section count
-              if(sectionCount == 1){ //CASE [4],6,7,8
+              if (sectionCount == 1) {
+                //CASE [4],6,7,8
                 bottomColor = Theme.of(context).primaryColor;
-              }
-              else{ //CASE 1,2,3,[5]
+              } else {
+                //CASE 1,2,3,[5]
                 //2 or 3 items
                 //CASES TO ADDRESS
                 //   N    I     H
                 //1. t,   t,    t
                 //2. t,   t,    [f] => N, I
                 //3. t,   [f],  t   => N, H
-                //5. [f], t,    t   => I, H  
-                if(sectionCount == 2){ //CASE 2,3,5
-                  if(index == 0){
+                //5. [f], t,    t   => I, H
+                if (sectionCount == 2) {
+                  //CASE 2,3,5
+                  if (index == 0) {
                     bottomColor = Theme.of(context).accentColor;
-                  }
-                  else{
+                  } else {
                     bottomColor = Theme.of(context).primaryColor;
                   }
-                }
-                else{ //we have 3 sections [CASE 1]
+                } else {
+                  //we have 3 sections [CASE 1]
                   //the section with index 2 wont highlight because of above
                   //if(index == 0 || index == 1)
                   bottomColor = Theme.of(context).accentColor;
@@ -946,7 +946,7 @@ class _ExerciseListState extends State<ExerciseList> {
 
     //add header because we always have one
     slivers?.clear();
-    slivers = new List<Widget>();
+    slivers = [];
     slivers.add(
       HeaderForOneHandedUse(
         listOfGroupOfExercises: groupsOfExercises,

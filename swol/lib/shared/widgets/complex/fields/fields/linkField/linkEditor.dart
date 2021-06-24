@@ -13,9 +13,9 @@ import 'package:swol/pages/notes/fieldEditButtons.dart';
 //widgets
 class LinkEditor extends StatefulWidget {
   const LinkEditor({
-    Key key,
-    @required this.editOneAtATime,
-    @required this.url,
+    Key? key,
+    required this.editOneAtATime,
+    required this.url,
   }) : super(key: key);
 
   //params
@@ -29,38 +29,36 @@ class LinkEditor extends StatefulWidget {
 class _LinkEditorState extends State<LinkEditor> {
   ValueNotifier<bool> isEditing = new ValueNotifier(false);
 
-  updateState(){
-    if(mounted) setState(() {});
+  updateState() {
+    if (mounted) setState(() {});
   }
 
   @override
-  void initState() { 
+  void initState() {
     super.initState();
-    if(widget.editOneAtATime){
+    if (widget.editOneAtATime) {
       isEditing.addListener(updateState);
-    }
-    else{
+    } else {
       widget.url.addListener(updateState);
     }
   }
 
   @override
-  void dispose() { 
-    if(widget.editOneAtATime){
+  void dispose() {
+    if (widget.editOneAtATime) {
       isEditing.addListener(updateState);
-    }
-    else{
+    } else {
       widget.url.addListener(updateState);
     }
     super.dispose();
   }
 
-  showWarning(String message){
+  showWarning(String message) {
     openSnackBar(
-      context, 
-      Colors.yellow, 
+      context,
+      Colors.yellow,
       Icons.warning,
-      message: message, 
+      message: message,
     );
   }
 
@@ -71,13 +69,17 @@ class _LinkEditorState extends State<LinkEditor> {
 
     //NOTE: only show the edit buttons sometimes (clear and paste)
     bool showEditButtons;
-    if(widget.editOneAtATime == false) showEditButtons = true;
-    else{
-      if(isEditing.value) showEditButtons = true;
-      else showEditButtons = false;
+    if (widget.editOneAtATime == false)
+      showEditButtons = true;
+    else {
+      if (isEditing.value)
+        showEditButtons = true;
+      else
+        showEditButtons = false;
     }
 
-    bool showClearAndConfirmButtons = (showEditButtons && widget.url.value != "");
+    bool showClearAndConfirmButtons =
+        (showEditButtons && widget.url.value != "");
     bool showPasteButton = showEditButtons;
 
     //ez condition
@@ -89,11 +91,13 @@ class _LinkEditorState extends State<LinkEditor> {
       children: <Widget>[
         //IF we can only edit one at a time AND we are not editing
         showToEditButton ? EditButton(isEditing: isEditing) : Container(),
-        (showClearAndConfirmButtons) ? ConfirmOrClear(
-          isEditing: isEditing,
-          editOneAtATime: widget.editOneAtATime,
-          url: widget.url,
-        ): Container(),
+        (showClearAndConfirmButtons)
+            ? ConfirmOrClear(
+                isEditing: isEditing,
+                editOneAtATime: widget.editOneAtATime,
+                url: widget.url,
+              )
+            : Container(),
         //-------------------------
         Visibility(
           visible: emptyUrl == false,
@@ -104,13 +108,15 @@ class _LinkEditorState extends State<LinkEditor> {
         ),
         //-------------------------
         //if we are in the position to edit the field
-        showPasteButton ? _PasteButton(
-          url: widget.url,
-          emptyUrl: emptyUrl,
-          isEditing: isEditing,
-          showWarning: showWarning,
-          editingOneAtATime: widget.editOneAtATime,
-        ) : Container(),
+        showPasteButton
+            ? _PasteButton(
+                url: widget.url,
+                emptyUrl: emptyUrl,
+                isEditing: isEditing,
+                showWarning: showWarning,
+                editingOneAtATime: widget.editOneAtATime,
+              )
+            : Container(),
       ],
     );
 
@@ -121,13 +127,13 @@ class _LinkEditorState extends State<LinkEditor> {
       ), //instrinc height below
       child: IntrinsicHeight(
         child: Conditional(
-          condition: widget.editOneAtATime && emptyUrl, 
+          condition: widget.editOneAtATime && emptyUrl,
           ifTrue: Container(
             height: 48,
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
-                _PasteButton( 
+                _PasteButton(
                   url: widget.url,
                   emptyUrl: emptyUrl,
                   isEditing: isEditing,
@@ -136,7 +142,7 @@ class _LinkEditorState extends State<LinkEditor> {
                 ),
               ],
             ),
-          ), 
+          ),
           ifFalse: normalOne,
         ),
       ),
@@ -146,18 +152,21 @@ class _LinkEditorState extends State<LinkEditor> {
 
 class EditButton extends StatelessWidget {
   const EditButton({
-    Key key,
-    @required this.isEditing,
+    Key? key,
+    required this.isEditing,
   }) : super(key: key);
 
   final ValueNotifier<bool> isEditing;
 
   @override
   Widget build(BuildContext context) {
-    return FlatButton(
-      color: Theme.of(context).accentColor,
-      padding: EdgeInsets.all(0),
-      onPressed: (){
+    return TextButton(
+      //padding: EdgeInsets.all(0),
+      //TODO: ensure this creates the desired effect
+      style: TextButton.styleFrom(
+        primary: Theme.of(context).accentColor,
+      ),
+      onPressed: () {
         isEditing.value = true;
         FocusScope.of(context).unfocus();
       },
@@ -171,10 +180,10 @@ class EditButton extends StatelessWidget {
 
 class ConfirmOrClear extends StatelessWidget {
   const ConfirmOrClear({
-    Key key,
-    @required this.isEditing,
-    @required this.editOneAtATime,
-    @required this.url,
+    Key? key,
+    required this.isEditing,
+    required this.editOneAtATime,
+    required this.url,
   }) : super(key: key);
 
   final ValueNotifier<bool> isEditing;
@@ -185,12 +194,12 @@ class ConfirmOrClear extends StatelessWidget {
   Widget build(BuildContext context) {
     return FieldEditButtons(
       darkButtons: true,
-      onPressTop: (){
+      onPressTop: () {
         isEditing.value = false;
       },
       topIcon: Icons.check,
       showTopButton: editOneAtATime,
-      onPressBottom: (){
+      onPressBottom: () {
         url.value = "";
         isEditing.value = false;
       },
@@ -201,8 +210,8 @@ class ConfirmOrClear extends StatelessWidget {
 
 class LaunchLinkButton extends StatelessWidget {
   LaunchLinkButton({
-    @required this.url,
-    @required this.showWarning,
+    required this.url,
+    required this.showWarning,
   });
 
   final ValueNotifier<String> url;
@@ -211,14 +220,17 @@ class LaunchLinkButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: FlatButton(
-        color: Theme.of(context).backgroundColor,
-        padding: EdgeInsets.all(0),
-        onPressed: ()async{
+      child: TextButton(
+        //padding: EdgeInsets.all(0),
+        style: TextButton.styleFrom(
+          primary: Theme.of(context).backgroundColor,
+        ),
+        onPressed: () async {
           if (await canLaunch(url.value)) {
             //launch the launchable url
             await launch(url.value);
-          } else showWarning("Could Not Open Link");
+          } else
+            showWarning("Could Not Open Link");
         },
         child: Container(
           padding: EdgeInsets.all(8),
@@ -237,12 +249,12 @@ class LaunchLinkButton extends StatelessWidget {
 
 class _PasteButton extends StatelessWidget {
   const _PasteButton({
-    Key key,
-    @required this.url,
-    @required this.emptyUrl,
-    @required this.isEditing,
-    @required this.showWarning,
-    @required this.editingOneAtATime,
+    Key? key,
+    required this.url,
+    required this.emptyUrl,
+    required this.isEditing,
+    required this.showWarning,
+    required this.editingOneAtATime,
   }) : super(key: key);
 
   final ValueNotifier<String> url;
@@ -253,27 +265,28 @@ class _PasteButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Widget button = FlatButton(
-      color: Theme.of(context).accentColor,
-      padding: EdgeInsets.all(0),
-      onPressed: (){
+    Widget button = TextButton(
+      //padding: EdgeInsets.all(0),
+      style: TextButton.styleFrom(
+        primary: Theme.of(context).accentColor,
+      ),
+      onPressed: () {
         //unfocus from others
-        if(editingOneAtATime){
+        if (editingOneAtATime) {
           FocusScope.of(context).unfocus();
         }
-        
+
         //clip board operation
         Clipboard.getData('text/plain').then((clipboardContent) {
-          if(clipboardContent?.text != null){
+          if (clipboardContent?.text != null) {
             //pass new url text
             url.value = clipboardContent.text;
-            
+
             //cause reload
-            if(editingOneAtATime){
+            if (editingOneAtATime) {
               isEditing.value = true;
             }
-          }
-          else{
+          } else {
             //show clipboard empty
             showWarning("The Clipboard Is Empty");
           }
@@ -292,12 +305,11 @@ class _PasteButton extends StatelessWidget {
     );
 
     //different
-    if(emptyUrl){
+    if (emptyUrl) {
       return Expanded(
         child: button,
       );
-    }
-    else{
+    } else {
       return button;
     }
   }

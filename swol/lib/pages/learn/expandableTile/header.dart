@@ -14,12 +14,12 @@ import 'package:swol/shared/widgets/simple/curvedCorner.dart';
 //widget
 class TileHeader extends StatelessWidget {
   const TileHeader({
-    @required this.isOpen,
-    @required this.openOrClose,
-    @required this.headerIcon,
-    @required this.headerText,
-    @required this.size,
-    Key key,
+    required this.isOpen,
+    required this.openOrClose,
+    required this.headerIcon,
+    required this.headerText,
+    required this.size,
+    Key? key,
   }) : super(key: key);
 
   final ValueNotifier<bool> isOpen;
@@ -30,9 +30,8 @@ class TileHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Color innerColor =  (isOpen.value)
-    ? Theme.of(context).primaryColorDark
-    : Colors.white;
+    Color innerColor =
+        (isOpen.value) ? Theme.of(context).primaryColorDark : Colors.white;
 
     return AnimatedContainer(
       duration: ExercisePage.transitionDuration,
@@ -43,7 +42,9 @@ class TileHeader extends StatelessWidget {
         bottom: isOpen.value ? 0 : 12,
       ),
       decoration: BoxDecoration(
-        color: isOpen.value ? Theme.of(context).accentColor :  Theme.of(context).cardColor,
+        color: isOpen.value
+            ? Theme.of(context).accentColor
+            : Theme.of(context).cardColor,
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(isOpen.value ? 0 : 12),
           topRight: Radius.circular(isOpen.value ? 0 : 12),
@@ -54,76 +55,79 @@ class TileHeader extends StatelessWidget {
       child: Stack(
         children: <Widget>[
           Positioned(
-            bottom: 0,
-            left: 0,
-            right: 0,
-            child: Visibility(
-              visible: true,
-              child: AnimatedContainer(
-                duration: ExercisePage.transitionDuration,
-                width: MediaQuery.of(context).size.width,
-                child: Transform.translate(
-                  offset: Offset(
-                    0, 
-                    //size of curve, size of other curve
-                    isOpen.value ? 24 : -6, //to hide given other curves
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      Container(
-                        width: 24,
-                        height: 24,
-                        child: FittedBox(
-                          fit: BoxFit.contain,
-                          child: ClipPath(
-                            clipper: CornerClipper(
-                              isTop: true,
-                              isLeft: true,
-                            ),
-                            child: AnimatedContainer(
-                              duration: ExercisePage.transitionDuration,
-                              //color switch to match button
-                              decoration: new BoxDecoration(
-                                color: isOpen.value ? Theme.of(context).accentColor : Theme.of(context).cardColor,
+              bottom: 0,
+              left: 0,
+              right: 0,
+              child: Visibility(
+                visible: true,
+                child: AnimatedContainer(
+                  duration: ExercisePage.transitionDuration,
+                  width: MediaQuery.of(context).size.width,
+                  child: Transform.translate(
+                    offset: Offset(
+                      0,
+                      //size of curve, size of other curve
+                      isOpen.value ? 24 : -6, //to hide given other curves
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Container(
+                          width: 24,
+                          height: 24,
+                          child: FittedBox(
+                            fit: BoxFit.contain,
+                            child: ClipPath(
+                              clipper: CornerClipper(
+                                isTop: true,
+                                isLeft: true,
                               ),
-                              //this is what primarily animates
-                              height: 1,
-                              width: 1,
+                              child: AnimatedContainer(
+                                duration: ExercisePage.transitionDuration,
+                                //color switch to match button
+                                decoration: new BoxDecoration(
+                                  color: isOpen.value
+                                      ? Theme.of(context).accentColor
+                                      : Theme.of(context).cardColor,
+                                ),
+                                //this is what primarily animates
+                                height: 1,
+                                width: 1,
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                      Container(
-                        width: 24,
-                        height: 24,
-                        child: FittedBox(
-                          fit: BoxFit.contain,
-                          child: ClipPath(
-                            clipper: CornerClipper(
-                              isTop: true,
-                              isLeft: false,
-                            ),
-                            child: AnimatedContainer(
-                              duration: ExercisePage.transitionDuration,
-                              //color switch to match button
-                              decoration: new BoxDecoration(
-                                color: isOpen.value ? Theme.of(context).accentColor : Theme.of(context).cardColor,
+                        Container(
+                          width: 24,
+                          height: 24,
+                          child: FittedBox(
+                            fit: BoxFit.contain,
+                            child: ClipPath(
+                              clipper: CornerClipper(
+                                isTop: true,
+                                isLeft: false,
                               ),
-                              //this is what primarily animates
-                              height: 1,
-                              width: 1,
+                              child: AnimatedContainer(
+                                duration: ExercisePage.transitionDuration,
+                                //color switch to match button
+                                decoration: new BoxDecoration(
+                                  color: isOpen.value
+                                      ? Theme.of(context).accentColor
+                                      : Theme.of(context).cardColor,
+                                ),
+                                //this is what primarily animates
+                                height: 1,
+                                width: 1,
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            )
-          ),
+              )),
           Material(
             color: Colors.transparent,
             child: InkWell(
@@ -179,8 +183,8 @@ class TileHeader extends StatelessWidget {
 
 class RotatingIcon extends StatelessWidget {
   RotatingIcon({
-    @required this.color,
-    @required this.isOpen,
+    required this.color,
+    required this.isOpen,
   });
 
   //passed params
@@ -200,16 +204,22 @@ class RotatingIcon extends StatelessWidget {
     return Animator<double>(
       resetAnimationOnRebuild: true,
       tween: isOpen.value
-        ? Tween<double>(
-            begin: tweenBeginning.value == -1 ? normalRotation : tweenBeginning.value, 
-            end: otherRotation,
-        )
-        : Tween<double>(
-            begin: tweenBeginning.value == -1 ? otherRotation : tweenBeginning.value, 
-            end: normalRotation,
-        ),
+          ? Tween<double>(
+              begin: tweenBeginning.value == -1
+                  ? normalRotation
+                  : tweenBeginning.value,
+              end: otherRotation,
+            )
+          : Tween<double>(
+              begin: tweenBeginning.value == -1
+                  ? otherRotation
+                  : tweenBeginning.value,
+              end: normalRotation,
+            ),
       duration: Duration(
-        milliseconds: ((ExercisePage.transitionDuration.inMilliseconds * fractionOfDuration.value).toInt()),
+        milliseconds: ((ExercisePage.transitionDuration.inMilliseconds *
+                fractionOfDuration.value)
+            .toInt()),
       ),
       customListener: (animator) {
         tweenBeginning.value = animator.animation.value;

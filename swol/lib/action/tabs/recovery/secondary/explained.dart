@@ -9,9 +9,9 @@ import 'package:swol/shared/methods/theme.dart';
 //widget
 class ExplainFunctionality extends StatelessWidget {
   const ExplainFunctionality({
-    Key key,
-    @required this.trainingName,
-    @required this.sectionWithInitialFocus,
+    Key? key,
+    required this.trainingName,
+    required this.sectionWithInitialFocus,
   }) : super(key: key);
 
   final String trainingName;
@@ -159,7 +159,7 @@ String durationToTrainingType(Duration duration) {
   //NOTE: If you aren't taking a break longer than 15 seconds
   //you aren't doing endurance training
   //exceptions current covered
-  //although they really should be covered by using asserts 
+  //although they really should be covered by using asserts
   //instead of just cuz I know and have read the code
   if (duration <= Duration(minutes: 1)) {
     if (duration < Duration(seconds: 15)) {

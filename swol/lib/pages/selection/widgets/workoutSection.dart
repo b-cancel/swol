@@ -12,12 +12,12 @@ import 'package:swol/shared/structs/anExercise.dart';
 //widget
 class SectionHeader extends StatelessWidget {
   const SectionHeader({
-    Key key,
-    @required this.title,
-    @required this.subtitle,
-    @required this.sectionType,
-    @required this.highlightTop,
-    @required this.topColor,
+    Key? key,
+    required this.title,
+    required this.subtitle,
+    required this.sectionType,
+    required this.highlightTop,
+    required this.topColor,
   }) : super(key: key);
 
   final String title;
@@ -113,11 +113,11 @@ class SectionHeader extends StatelessWidget {
 
 class SectionBody extends StatelessWidget {
   const SectionBody({
-    Key key,
-    @required this.topColor,
-    @required this.bottomColor,
-    @required this.thisGroup,
-    @required this.sectionType,
+    Key? key,
+    required this.topColor,
+    required this.bottomColor,
+    required this.thisGroup,
+    required this.sectionType,
   }) : super(key: key);
 
   final Color topColor;
@@ -181,7 +181,7 @@ class SectionBody extends StatelessWidget {
 
 class ListTileDivider extends StatelessWidget {
   const ListTileDivider({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

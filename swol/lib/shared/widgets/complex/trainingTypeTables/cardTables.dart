@@ -8,9 +8,9 @@ import 'package:swol/shared/widgets/simple/conditional.dart';
 //widget
 class CardTable extends StatelessWidget {
   CardTable({
-    @required this.height,
-    @required this.items,
-    @required this.cardBackground,
+    required this.height,
+    required this.items,
+    required this.cardBackground,
     this.highlightField,
     this.persistent: false,
     this.icon,
@@ -32,7 +32,7 @@ class CardTable extends StatelessWidget {
     Color colorOdd = Theme.of(context).primaryColor;
 
     //build the fields
-    List<Widget> buildFields = new List<Widget>();
+    List<Widget> buildFields = [];
     for (int i = 0; i < items.length; i++) {
       bool isHeader = i == 0;
 
@@ -98,12 +98,12 @@ class CardTable extends StatelessWidget {
                   ),
                   //todo: perhaps fitted box .contains
                   Conditional(
-                    condition: persistent, 
+                    condition: persistent,
                     ifTrue: FittedBox(
                       alignment: Alignment.centerLeft,
                       fit: BoxFit.contain,
                       child: fieldText,
-                    ), 
+                    ),
                     ifFalse: Flexible(
                       child: fieldText,
                     ),

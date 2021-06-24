@@ -30,253 +30,246 @@ requestThatYouGoToAppSettings(
     );
   };
 
-  //pop up
-  showCustomHeaderIconPopUp(
-    ExercisePage.globalKey.currentContext,
-    [
-      Text(
-        "Manually",
-        style: TextStyle(
-          fontSize: 24,
+  BuildContext? globalBuildContext = ExercisePage.globalKey.currentContext;
+  if (globalBuildContext != null) {
+    double textScaleFactor = MediaQuery.of(globalBuildContext).textScaleFactor;
+    //pop up
+    showCustomHeaderIconPopUp(
+      globalBuildContext,
+      [
+        Text(
+          "Manually",
+          style: TextStyle(
+            fontSize: 24,
+          ),
         ),
-      ),
-      Text(
-        "Enable Notifications",
-        style: TextStyle(
-          fontSize: 24,
+        Text(
+          "Enable Notifications",
+          style: TextStyle(
+            fontSize: 24,
+          ),
         ),
-      ),
-      Text(
-        "In App Settings",
-        style: TextStyle(
-          fontSize: 18,
+        Text(
+          "In App Settings",
+          style: TextStyle(
+            fontSize: 18,
+          ),
         ),
-      ),
-    ],
-    [
-      Padding(
-        padding: EdgeInsets.symmetric(
-          horizontal: 16,
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            RichText(
-              textScaleFactor: MediaQuery.of(
-                ExercisePage.globalKey.currentContext,
-              ).textScaleFactor,
-              text: TextSpan(
-                style: TextStyle(
-                  color: Colors.black,
-                ),
-                children: [
-                  TextSpan(
-                    text: "Since ",
+      ],
+      [
+        Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: 16,
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              RichText(
+                textScaleFactor: textScaleFactor,
+                text: TextSpan(
+                  style: TextStyle(
+                    color: Colors.black,
                   ),
-                  TextSpan(
-                    text: "you manually disabled notifications",
+                  children: [
+                    TextSpan(
+                      text: "Since ",
+                    ),
+                    TextSpan(
+                      text: "you manually disabled notifications",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    TextSpan(
+                      text: ", you will need to manually re-enable them.\n\n",
+                    ),
+                    TextSpan(
+                      text: "You can do so, by\n",
+                    ),
+                  ],
+                ),
+              ),
+              ListItem(
+                circleText: "1",
+                circleTextColor: Colors.white,
+                circleColor: Colors.blue,
+                content: RichText(
+                  textScaleFactor: textScaleFactor,
+                  text: TextSpan(
                     style: TextStyle(
-                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
                     ),
-                  ),
-                  TextSpan(
-                    text: ", you will need to manually re-enable them.\n\n",
-                  ),
-                  TextSpan(
-                    text: "You can do so, by\n",
-                  ),
-                ],
-              ),
-            ),
-            ListItem(
-              circleText: "1",
-              circleTextColor: Colors.white,
-              circleColor: Colors.blue,
-              content: RichText(
-                textScaleFactor: MediaQuery.of(
-                  ExercisePage.globalKey.currentContext,
-                ).textScaleFactor,
-                text: TextSpan(
-                  style: TextStyle(
-                    color: Colors.black,
-                  ),
-                  children: [
-                    TextSpan(
-                      text: "Navigating to the ",
-                    ),
-                    TextSpan(
-                      text: "App Info",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
+                    children: [
+                      TextSpan(
+                        text: "Navigating to the ",
                       ),
-                    ),
-                    TextSpan(
-                      text: " page, with the button on the bottom right",
-                    ),
-                  ],
+                      TextSpan(
+                        text: "App Info",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      TextSpan(
+                        text: " page, with the button on the bottom right",
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-            ListItem(
-              circleText: "2",
-              circleTextColor: Colors.white,
-              circleColor: Colors.blue,
-              content: RichText(
-                textScaleFactor: MediaQuery.of(
-                  ExercisePage.globalKey.currentContext,
-                ).textScaleFactor,
-                text: TextSpan(
-                  style: TextStyle(
-                    color: Colors.black,
-                  ),
-                  children: [
-                    TextSpan(
-                      text: "Scrolling to the ",
+              ListItem(
+                circleText: "2",
+                circleTextColor: Colors.white,
+                circleColor: Colors.blue,
+                content: RichText(
+                  textScaleFactor: textScaleFactor,
+                  text: TextSpan(
+                    style: TextStyle(
+                      color: Colors.black,
                     ),
-                    TextSpan(
-                      text: "App Settings Section",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
+                    children: [
+                      TextSpan(
+                        text: "Scrolling to the ",
                       ),
-                    ),
-                  ],
+                      TextSpan(
+                        text: "App Settings Section",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-            ListItem(
-              circleText: "3",
-              circleTextColor: Colors.white,
-              circleColor: Colors.blue,
-              content: RichText(
-                textScaleFactor: MediaQuery.of(
-                  ExercisePage.globalKey.currentContext,
-                ).textScaleFactor,
-                text: TextSpan(
-                  style: TextStyle(
-                    color: Colors.black,
-                  ),
-                  children: [
-                    TextSpan(
-                      text: "Tapping ",
+              ListItem(
+                circleText: "3",
+                circleTextColor: Colors.white,
+                circleColor: Colors.blue,
+                content: RichText(
+                  textScaleFactor: textScaleFactor,
+                  text: TextSpan(
+                    style: TextStyle(
+                      color: Colors.black,
                     ),
-                    TextSpan(
-                      text: "Notifications",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
+                    children: [
+                      TextSpan(
+                        text: "Tapping ",
                       ),
-                    ),
-                  ],
+                      TextSpan(
+                        text: "Notifications",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-            ListItem(
-              circleText: "4",
-              circleTextColor: Colors.white,
-              circleColor: Colors.blue,
-              content: RichText(
-                textScaleFactor: MediaQuery.of(
-                  ExercisePage.globalKey.currentContext,
-                ).textScaleFactor,
-                text: TextSpan(
-                  style: TextStyle(
-                    color: Colors.black,
-                  ),
-                  children: [
-                    TextSpan(
-                      text: "Turning On ",
+              ListItem(
+                circleText: "4",
+                circleTextColor: Colors.white,
+                circleColor: Colors.blue,
+                content: RichText(
+                  textScaleFactor: textScaleFactor,
+                  text: TextSpan(
+                    style: TextStyle(
+                      color: Colors.black,
                     ),
-                    TextSpan(
-                      text: "Show notifications",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
+                    children: [
+                      TextSpan(
+                        text: "Turning On ",
                       ),
-                    ),
-                  ],
+                      TextSpan(
+                        text: "Show notifications",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-            ListItem(
-              circleText: "5",
-              circleTextColor: Colors.white,
-              circleColor: Colors.blue,
-              content: RichText(
-                textScaleFactor: MediaQuery.of(
-                  ExercisePage.globalKey.currentContext,
-                ).textScaleFactor,
-                text: TextSpan(
-                  style: TextStyle(
-                    color: Colors.black,
-                  ),
-                  children: [
-                    TextSpan(
-                      text: "Making sure all the switches in the ",
+              ListItem(
+                circleText: "5",
+                circleTextColor: Colors.white,
+                circleColor: Colors.blue,
+                content: RichText(
+                  textScaleFactor: textScaleFactor,
+                  text: TextSpan(
+                    style: TextStyle(
+                      color: Colors.black,
                     ),
-                    TextSpan(
-                      text: "Categories Section",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
+                    children: [
+                      TextSpan(
+                        text: "Making sure all the switches in the ",
                       ),
-                    ),
-                    TextSpan(
-                      text: " are set to On",
-                    ),
-                  ],
+                      TextSpan(
+                        text: "Categories Section",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      TextSpan(
+                        text: " are set to On",
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
+        ),
+      ],
+      Icon(
+        Icons.settings,
+        color: Colors.white,
+      ),
+      //animationType: null,
+      headerBackground: MyTheme.dark.cardColor,
+      dismissOnTouchOutside: automaticallyOpened == false,
+      clearBtn: WillPopScope(
+        onWillPop: () async {
+          //negative action
+          onDeny();
+
+          //allow pop
+          return true;
+        },
+        child: TextButton(
+          child: new Text("Nevermind"),
+          onPressed: () {
+            //pop ourselves
+            if (globalBuildContext != null) {
+              Navigator.of(
+                globalBuildContext,
+              ).pop();
+            }
+            //show button if needed
+            onDeny();
+          },
         ),
       ),
-    ],
-    Icon(
-      Icons.settings,
-      color: Colors.white,
-    ),
-    animationType: null,
-    headerBackground: MyTheme.dark.cardColor,
-    dismissOnTouchOutside: automaticallyOpened == false,
-    clearBtn: WillPopScope(
-      onWillPop: () async {
-        //negative action
-        onDeny();
-
-        //allow pop
-        return true;
-      },
-      child: FlatButton(
-        child: new Text("Nevermind"),
+      colorBtn: ElevatedButton(
         onPressed: () {
-          //pop ourselves
-          Navigator.of(
-            ExercisePage.globalKey.currentContext,
-          ).pop();
-
-          //show button if needed
-          onDeny();
+          openAppSettings();
+          //NOTE: that complete WILL run not here
+          //but it will run in the widget below
+          //when we detect that you have given us permission
+          //the pop up will be auto dismissed
+          //and onComplete will run
         },
+        child: PopOnResumeIfPermissionGranted(
+          child: Text("App Info"),
+          onComplete: onComplete,
+        ),
       ),
-    ),
-    colorBtn: RaisedButton(
-      onPressed: () {
-        openAppSettings();
-        //NOTE: that complete WILL run not here
-        //but it will run in the widget below
-        //when we detect that you have given us permission
-        //the pop up will be auto dismissed
-        //and onComplete will run
-      },
-      child: PopOnResumeIfPermissionGranted(
-        child: Text("App Info"),
-        onComplete: onComplete,
-      ),
-    ),
-  );
+    );
+  }
 }
 
 class PopOnResumeIfPermissionGranted extends StatefulWidget {
   PopOnResumeIfPermissionGranted({
-    @required this.child,
-    @required this.onComplete,
+    required this.child,
+    required this.onComplete,
   });
 
   final Widget child;
@@ -292,12 +285,12 @@ class _PopOnResumeIfPermissionGrantedState
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addObserver(this);
+    WidgetsBinding.instance?.addObserver(this);
   }
 
   @override
   void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
+    WidgetsBinding.instance?.removeObserver(this);
     super.dispose();
   }
 

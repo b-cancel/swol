@@ -18,9 +18,9 @@ import 'package:swol/shared/structs/range.dart';
 //in change recovery time... recovery time info
 class AnimatedRangeInformation extends StatefulWidget {
   AnimatedRangeInformation({
-    Key key,
-    @required this.selectedDuration,
-    @required this.ranges,
+    Key? key,
+    required this.selectedDuration,
+    required this.ranges,
     this.bigTickNumber: 30,
     this.darkTheme: true,
     this.hideNameButtons: false,

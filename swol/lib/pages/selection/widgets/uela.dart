@@ -17,7 +17,7 @@ import 'package:swol/shared/widgets/simple/playOnceGif.dart';
 //widget
 class UELA extends StatefulWidget {
   UELA({
-    @required this.afterConfirm,
+    required this.afterConfirm,
   });
 
   final Function afterConfirm;
@@ -58,9 +58,9 @@ class _UELAState extends State<UELA> {
 
 class UelaBody extends StatelessWidget {
   const UelaBody({
-    Key key,
-    @required this.holding,
-    @required this.afterConfirm,
+    Key? key,
+    required this.holding,
+    required this.afterConfirm,
   }) : super(key: key);
 
   final ValueNotifier<bool> holding;
@@ -186,7 +186,7 @@ class UelaBody extends StatelessWidget {
                   ),
                   BottomButtonsThatResizeTRBL(
                     hasTopIcon: false,
-                    secondary: FlatButton(
+                    secondary: TextButton(
                       onPressed: () {
                         exit(0);
                         /*
@@ -206,8 +206,10 @@ class UelaBody extends StatelessWidget {
                         holding.value = false;
                       },
                       child: IgnorePointer(
-                        child: RaisedButton(
-                          color: Theme.of(context).accentColor,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            primary: Theme.of(context).accentColor,
+                          ),
                           onPressed: () {},
                           child: Text(
                             "Hold To Agree",
@@ -232,8 +234,8 @@ class UelaBody extends StatelessWidget {
 
 class TheCountDown extends StatelessWidget {
   const TheCountDown({
-    @required this.afterConfirm,
-    Key key,
+    required this.afterConfirm,
+    Key? key,
   }) : super(key: key);
 
   final Function afterConfirm;
@@ -278,7 +280,7 @@ class TheCountDown extends StatelessWidget {
 
 class TopPicture extends StatelessWidget {
   const TopPicture({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -302,8 +304,8 @@ class TopPicture extends StatelessWidget {
 
 class BasicCountDown extends StatefulWidget {
   BasicCountDown({
-    @required this.seconds,
-    @required this.afterConfirm,
+    required this.seconds,
+    required this.afterConfirm,
   });
 
   final int seconds;

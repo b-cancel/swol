@@ -14,9 +14,9 @@ import 'package:swol/pages/add/widgets/recoveryTime.dart';
 //function
 class ActualButton extends StatelessWidget {
   const ActualButton({
-    Key key,
-    @required this.color,
-    @required this.changeableTimerDuration,
+    Key? key,
+    required this.color,
+    required this.changeableTimerDuration,
   }) : super(key: key);
 
   final Color color;
@@ -58,7 +58,7 @@ class ActualButton extends StatelessWidget {
           ),
           headerBackground: Colors.black,
           isDense: true,
-          clearBtn: FlatButton(
+          clearBtn: TextButton(
             child: Text(
               "Cancel",
               style: TextStyle(
@@ -69,7 +69,7 @@ class ActualButton extends StatelessWidget {
               Navigator.pop(context);
             },
           ),
-          colorBtn: RaisedButton(
+          colorBtn: ElevatedButton(
             child: Text(
               "Change",
             ),
@@ -87,8 +87,8 @@ class ActualButton extends StatelessWidget {
 //the main beef and content that switches or slides between the different options as the user edits the setting
 class ChangeRecoveryTimeWidget extends StatefulWidget {
   ChangeRecoveryTimeWidget({
-    Key key,
-    @required this.recoveryPeriod,
+    Key? key,
+    required this.recoveryPeriod,
   }) : super(key: key);
 
   final ValueNotifier<Duration> recoveryPeriod;

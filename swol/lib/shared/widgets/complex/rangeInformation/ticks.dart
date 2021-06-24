@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 //generate ticks
 class RangeTicks extends StatefulWidget {
   RangeTicks({
-    @required this.startTick,
-    @required this.endTick,
-    @required this.bigTickNumber,
+    required this.startTick,
+    required this.endTick,
+    required this.bigTickNumber,
     this.selectedDuration,
     this.darkTheme,
   });
@@ -22,8 +22,8 @@ class RangeTicks extends StatefulWidget {
 }
 
 class _RangeTicksState extends State<RangeTicks> {
-  updateState(){
-    if(mounted) setState(() {});
+  updateState() {
+    if (mounted) setState(() {});
   }
 
   @override
@@ -49,9 +49,9 @@ class _RangeTicksState extends State<RangeTicks> {
     int selected = widget.selectedDuration.value.inSeconds;
 
     //generate ticks
-    List<Widget> ticks = new List<Widget>();
+    List<Widget> ticks = [];
     int tickCount = ((widget.endTick - widget.startTick) ~/ 5) + 1;
-    for(int i = 0; i < tickCount; i++){
+    for (int i = 0; i < tickCount; i++) {
       int thisTick = widget.startTick + (i * 5);
       bool highlight = (thisTick == selected);
       bool bigTick = ((thisTick % widget.bigTickNumber) == 0);
@@ -66,9 +66,11 @@ class _RangeTicksState extends State<RangeTicks> {
             child: Container(
               height: (bigTick) ? 16 : 8,
               width: tickWidth,
-              color: (highlight) 
-              ? Theme.of(context).accentColor
-              : (widget.darkTheme) ? Theme.of(context).backgroundColor : Colors.grey.withOpacity(0.5),
+              color: (highlight)
+                  ? Theme.of(context).accentColor
+                  : (widget.darkTheme)
+                      ? Theme.of(context).backgroundColor
+                      : Colors.grey.withOpacity(0.5),
             ),
           ),
         ),

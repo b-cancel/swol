@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class ScrollViewWithShadow extends StatefulWidget {
   ScrollViewWithShadow({
-    @required this.child,
+    required this.child,
     this.transparentWhite: true,
   });
 
@@ -18,7 +18,7 @@ class _ScrollViewWithShadowState extends State<ScrollViewWithShadow> {
   final ValueNotifier<bool> onTop = new ValueNotifier<bool>(false);
   final ValueNotifier<bool> onBottom = new ValueNotifier<bool>(false);
 
-  scrollUpdate(){
+  scrollUpdate() {
     ScrollPosition position = ctrl.position;
     double currentOffset = ctrl.offset;
     onTop.value = (currentOffset <= position.minScrollExtent);
@@ -27,7 +27,7 @@ class _ScrollViewWithShadowState extends State<ScrollViewWithShadow> {
 
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((_){
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       scrollUpdate();
     });
     ctrl.addListener(scrollUpdate);
@@ -35,7 +35,7 @@ class _ScrollViewWithShadowState extends State<ScrollViewWithShadow> {
   }
 
   @override
-  void dispose() { 
+  void dispose() {
     ctrl.removeListener(scrollUpdate);
     super.dispose();
   }
@@ -49,12 +49,12 @@ class _ScrollViewWithShadowState extends State<ScrollViewWithShadow> {
           child: widget.child,
         ),
         ScrollShadow(
-          active: onTop, 
+          active: onTop,
           isTop: true,
           transparentWhite: widget.transparentWhite,
         ),
         ScrollShadow(
-          active: onBottom, 
+          active: onBottom,
           isTop: false,
           transparentWhite: widget.transparentWhite,
         ),
@@ -66,9 +66,9 @@ class _ScrollViewWithShadowState extends State<ScrollViewWithShadow> {
 //just the shadow that appears
 class ScrollShadow extends StatefulWidget {
   ScrollShadow({
-    @required this.active,
-    @required this.isTop,
-    @required this.transparentWhite,
+    required this.active,
+    required this.isTop,
+    required this.transparentWhite,
   });
 
   final ValueNotifier<bool> active;
@@ -80,8 +80,8 @@ class ScrollShadow extends StatefulWidget {
 }
 
 class _ScrollShadowState extends State<ScrollShadow> {
-  updateState(){
-    if(mounted){
+  updateState() {
+    if (mounted) {
       setState(() {});
     }
   }
@@ -93,7 +93,7 @@ class _ScrollShadowState extends State<ScrollShadow> {
   }
 
   @override
-  void dispose() { 
+  void dispose() {
     widget.active.removeListener(updateState);
     super.dispose();
   }
@@ -115,7 +115,7 @@ class _ScrollShadowState extends State<ScrollShadow> {
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              widget.isTop ? edge : middle, 
+              widget.isTop ? edge : middle,
               widget.isTop ? middle : edge,
             ],
             stops: [0, 1],
@@ -125,13 +125,12 @@ class _ScrollShadowState extends State<ScrollShadow> {
     );
 
     //position
-    if(widget.isTop){
+    if (widget.isTop) {
       return Positioned(
         top: 0,
         child: theShadow,
       );
-    }
-    else{
+    } else {
       return Positioned(
         bottom: 0,
         child: theShadow,
@@ -143,9 +142,9 @@ class _ScrollShadowState extends State<ScrollShadow> {
 //padding in all directions
 class BottomButtonsThatResizeTRBL extends StatelessWidget {
   const BottomButtonsThatResizeTRBL({
-    Key key,
-    @required this.secondary,
-    @required this.primary,
+    Key? key,
+    required this.secondary,
+    required this.primary,
     this.hasTopIcon: true,
   }) : super(key: key);
 
@@ -178,7 +177,7 @@ class BottomButtonsThatResizeTRBL extends StatelessWidget {
                     textTheme: ButtonTextTheme.primary,
                     buttonColor: Theme.of(context).accentColor,
                   ),
-                ), 
+                ),
                 child: primary,
               ),
             ],
@@ -192,8 +191,8 @@ class BottomButtonsThatResizeTRBL extends StatelessWidget {
 //padding all directions
 class TitleThatContainsTRBL extends StatelessWidget {
   const TitleThatContainsTRBL({
-    Key key,
-    @required this.child,
+    Key? key,
+    required this.child,
     this.hasTopIcon: true,
   }) : super(key: key);
 

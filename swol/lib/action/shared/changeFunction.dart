@@ -16,8 +16,8 @@ import 'package:swol/other/functions/helper.dart';
 //NOTE: should not dispose predictionID since the value was passed
 class ChangeFunction extends StatefulWidget {
   ChangeFunction({
-    @required this.functionID,
-    @required this.middleArrows,
+    required this.functionID,
+    required this.middleArrows,
   });
 
   final ValueNotifier<int> functionID;
@@ -202,14 +202,14 @@ class _ChangeFunctionState extends State<ChangeFunction> {
 
 class CarouselRefed extends StatelessWidget {
   CarouselRefed({
-    @required this.carouselController,
-    @required this.selectedPage,
-    @required this.functionID,
-    @required this.firstFunction,
-    @required this.lastFunction,
-    @required this.middleArrows,
-    @required this.idIsAtLowest,
-    @required this.idIsAtHighest,
+    required this.carouselController,
+    required this.selectedPage,
+    required this.functionID,
+    required this.firstFunction,
+    required this.lastFunction,
+    required this.middleArrows,
+    required this.idIsAtLowest,
+    required this.idIsAtHighest,
   });
 
   final CarouselController carouselController;
@@ -295,8 +295,8 @@ class CarouselRefed extends StatelessWidget {
 
 class OuterArrows extends StatefulWidget {
   OuterArrows({
-    @required this.disabled,
-    @required this.icon,
+    required this.disabled,
+    required this.icon,
   });
 
   final ValueNotifier<bool> disabled;
@@ -343,9 +343,9 @@ class _OuterArrowsState extends State<OuterArrows> {
 
 class InnerArrows extends StatefulWidget {
   InnerArrows({
-    @required this.functionID,
-    @required this.isUpArrow,
-    @required this.hideArrow,
+    required this.functionID,
+    required this.isUpArrow,
+    required this.hideArrow,
   });
 
   final int functionID;

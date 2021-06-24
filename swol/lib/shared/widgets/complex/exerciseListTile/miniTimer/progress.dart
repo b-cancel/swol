@@ -13,9 +13,9 @@ import 'package:swol/shared/structs/anExercise.dart';
 //shared
 class ProgressCircle extends StatelessWidget {
   ProgressCircle({
-    @required this.exercise,
-    @required this.startTime,
-    @required this.controller,
+    required this.exercise,
+    required this.startTime,
+    required this.controller,
   });
 
   final AnExercise exercise;
@@ -30,22 +30,23 @@ class ProgressCircle extends StatelessWidget {
     return Positioned.fill(
       child: Padding(
         padding: EdgeInsets.all(9.5),
-        //the outer rim of this circle 
+        //the outer rim of this circle
         //will match the outer rim of the alarm clock's circle
         child: Stack(
           children: <Widget>[
             //background that hides the waves until the end
             Positioned.fill(
-              child: Container(
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: controller.value == 1 ? Colors.transparent : Theme.of(context).primaryColorDark,
-                ),
-              )
-            ),
+                child: Container(
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: controller.value == 1
+                    ? Colors.transparent
+                    : Theme.of(context).primaryColorDark,
+              ),
+            )),
             //pie slice that show exactly how much time has passed
             GrowingPieSlice(
-              controller: controller, 
+              controller: controller,
               stillTimer: stillTimer,
             ),
             //pie slices that show time passed and time selected
@@ -68,8 +69,8 @@ class ProgressCircle extends StatelessWidget {
             Visibility(
               visible: controller.value != 1,
               child: CircleTicks(),
-            ),  
-            //the rim of the circle          
+            ),
+            //the rim of the circle
             CircleRim(controller: controller),
           ],
         ),
@@ -80,9 +81,9 @@ class ProgressCircle extends StatelessWidget {
 
 class GrowingPieSlice extends StatelessWidget {
   const GrowingPieSlice({
-    Key key,
-    @required this.controller,
-    @required this.stillTimer,
+    Key? key,
+    required this.controller,
+    required this.stillTimer,
   }) : super(key: key);
 
   final AnimationController controller;
@@ -112,8 +113,8 @@ class GrowingPieSlice extends StatelessWidget {
 
 class CircleRim extends StatelessWidget {
   const CircleRim({
-    Key key,
-    @required this.controller,
+    Key? key,
+    required this.controller,
   }) : super(key: key);
 
   final AnimationController controller;
@@ -151,7 +152,7 @@ class CircleTicks extends StatelessWidget {
     //4.5 degrees 3.75 seconds
 
     //create the original tick
-    double halfTickWidth = 9; 
+    double halfTickWidth = 9;
     Widget tick = TriangleAngle(
       size: 1,
       start: 360.0 - halfTickWidth,
@@ -160,8 +161,8 @@ class CircleTicks extends StatelessWidget {
     );
 
     //create all the ticks by rotating the original
-    List<Widget> ticks = new List<Widget>();
-    for(int i = 0; i < 5; i++){
+    List<Widget> ticks = [];
+    for (int i = 0; i < 5; i++) {
       ticks.add(
         Positioned.fill(
           child: FittedBox(

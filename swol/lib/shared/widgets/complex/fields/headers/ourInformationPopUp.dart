@@ -13,7 +13,7 @@ infoPopUpFunction(
   BuildContext context, {
   String title,
   String subtitle,
-  @required Widget body,
+  required Widget body,
   isDense: false,
 }) {
   showBasicHeaderIconPopUp(

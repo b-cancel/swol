@@ -32,117 +32,121 @@ showRestrictedPopUp(
     );
   };
 
-  //pop up
-  showBasicHeaderIconPopUp(
-    ExercisePage.globalKey.currentContext,
-    [
-      Text(
-        "You Are Restricted",
-        style: TextStyle(
-          fontSize: 28,
-        ),
-      ),
-      Text(
-        "from granting us access",
-        style: TextStyle(
-          fontSize: 24,
-        ),
-      ),
-    ],
-    [
-      Padding(
-        padding: EdgeInsets.symmetric(
-          horizontal: 16,
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            RichText(
-              textScaleFactor: MediaQuery.of(
-                ExercisePage.globalKey.currentContext,
-              ).textScaleFactor,
-              text: TextSpan(
-                style: TextStyle(
-                  color: Colors.black,
-                ),
-                children: [
-                  TextSpan(
-                    text: "Parental Controls",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  TextSpan(
-                    text: " or a ",
-                  ),
-                  TextSpan(
-                    text: "Security Option",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  TextSpan(
-                      text:
-                          " isn't going to allow you to grant us access.\n\n"),
-                  TextSpan(
-                    text: "Remove The Restriction",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  TextSpan(text: " and Try Again.\n\n"),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    ],
-    DialogType.ERROR,
-    dismissOnTouchOutside: automaticallyOpened == false,
-    animationType: null,
-    clearBtn: WillPopScope(
-      onWillPop: () async {
-        //negative action
-        onDeny();
+  BuildContext? globalBuildContext = ExercisePage.globalKey.currentContext;
 
-        //allow pop
-        return true;
-      },
-      child: FlatButton(
-        child: new Text("I'll do it later"),
-        onPressed: () {
+  if (globalBuildContext != null) {
+    //pop up
+    showBasicHeaderIconPopUp(
+      globalBuildContext,
+      [
+        Text(
+          "You Are Restricted",
+          style: TextStyle(
+            fontSize: 28,
+          ),
+        ),
+        Text(
+          "from granting us access",
+          style: TextStyle(
+            fontSize: 24,
+          ),
+        ),
+      ],
+      [
+        Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: 16,
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              RichText(
+                textScaleFactor: MediaQuery.of(
+                  globalBuildContext,
+                ).textScaleFactor,
+                text: TextSpan(
+                  style: TextStyle(
+                    color: Colors.black,
+                  ),
+                  children: [
+                    TextSpan(
+                      text: "Parental Controls",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    TextSpan(
+                      text: " or a ",
+                    ),
+                    TextSpan(
+                      text: "Security Option",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    TextSpan(
+                        text:
+                            " isn't going to allow you to grant us access.\n\n"),
+                    TextSpan(
+                      text: "Remove The Restriction",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    TextSpan(text: " and Try Again.\n\n"),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+      DialogType.ERROR,
+      dismissOnTouchOutside: automaticallyOpened == false,
+      //animationType: null,
+      clearBtn: WillPopScope(
+        onWillPop: () async {
+          //negative action
+          onDeny();
+
+          //allow pop
+          return true;
+        },
+        child: TextButton(
+          child: new Text("I'll do it later"),
+          onPressed: () {
+            //pop ourselves
+            Navigator.of(
+              globalBuildContext,
+            ).pop();
+
+            //show button if needed
+            onDeny();
+          },
+        ),
+      ),
+      colorBtn: ElevatedButton(
+        child: Text("Try Again"),
+        onPressed: () async {
+          //maybe the user made the required change
+          //check again
+          PermissionStatus status = await Permission.notification.status;
+
           //pop ourselves
           Navigator.of(
-            ExercisePage.globalKey.currentContext,
+            globalBuildContext,
           ).pop();
 
-          //show button if needed
-          onDeny();
+          //the user wants to allow
+          //but now handle all the different ways
+          //we MIGHT have to go about that
+          onAllow(
+            status,
+            onComplete,
+            automaticallyOpened,
+          );
         },
       ),
-    ),
-    colorBtn: RaisedButton(
-      child: Text("Try Again"),
-      onPressed: () async {
-        //maybe the user made the required change
-        //check again
-        PermissionStatus status = await Permission.notification.status;
-
-        //pop ourselves
-        Navigator.of(
-          ExercisePage.globalKey.currentContext,
-        ).pop();
-
-        //the user wants to allow
-        //but now handle all the different ways
-        //we MIGHT have to go about that
-        onAllow(
-          status,
-          onComplete,
-          automaticallyOpened,
-        );
-      },
-    ),
-  );
+    );
+  }
 }

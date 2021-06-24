@@ -90,7 +90,7 @@ movePastSetTarget(
     ],
     DialogType.WARNING,
     animationType: AnimType.BOTTOMSLIDE,
-    clearBtn: FlatButton(
+    clearBtn: TextButton(
       child: Text(
         "Finished",
       ),
@@ -98,7 +98,7 @@ movePastSetTarget(
         Navigator.pop(context);
       },
     ),
-    colorBtn: RaisedButton(
+    colorBtn: ElevatedButton(
       child: Text(
         "Do Another Set",
       ),

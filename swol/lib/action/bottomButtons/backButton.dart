@@ -14,9 +14,9 @@ import 'package:swol/action/page.dart';
 class BottomBackButton extends StatefulWidget {
   const BottomBackButton({
     this.backAction,
-    @required this.verticalPadding,
-    @required this.color,
-    Key key,
+    required this.verticalPadding,
+    required this.color,
+    Key? key,
   }) : super(key: key);
 
   final Function backAction;
@@ -132,8 +132,8 @@ class _BottomBackButtonState extends State<BottomBackButton> {
 
 class BottomRight extends StatelessWidget {
   const BottomRight({
-    Key key,
-    @required this.color,
+    Key? key,
+    required this.color,
   }) : super(key: key);
 
   final Color color;
@@ -155,8 +155,8 @@ class BottomRight extends StatelessWidget {
 
 class ActualBackButton extends StatelessWidget {
   const ActualBackButton({
-    Key key,
-    @required this.verticalPadding,
+    Key? key,
+    required this.verticalPadding,
   }) : super(key: key);
 
   final double verticalPadding;

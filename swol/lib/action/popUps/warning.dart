@@ -72,7 +72,7 @@ Future<bool> warningThenPop(BuildContext context, AnExercise exercise) async {
   //2. the user want to go back by deleting the mistyped set
   //    which ofcourse won't start the timer and therefore not have a notification
 
-  Function scheduleThenBack = (){
+  Function scheduleThenBack = () {
     //regardless of whether the permission was given
 
     //try to schedlue notification
@@ -96,7 +96,7 @@ Future<bool> warningThenPop(BuildContext context, AnExercise exercise) async {
     bool timerStarted = exercise.tempStartTime.value != AnExercise.nullDateTime;
     if (timerStarted) {
       askForPermissionIfNotGrantedAndWeNeverAsked(
-        context, 
+        context,
         scheduleThenBack,
       );
     } else {
@@ -208,7 +208,7 @@ Future<bool> warningThenPop(BuildContext context, AnExercise exercise) async {
         ],
         DialogType.WARNING,
         animationType: AnimType.LEFTSLIDE,
-        clearBtn: FlatButton(
+        clearBtn: TextButton(
           child: Text(
             (newSet ? "Delete The Set" : "Revert Back"),
           ),
@@ -227,13 +227,13 @@ Future<bool> warningThenPop(BuildContext context, AnExercise exercise) async {
             } else {
               //we are reverting back so we do schedule
               askForPermissionIfNotGrantedAndWeNeverAsked(
-                context, 
+                context,
                 scheduleThenBack,
               );
             }
           },
         ),
-        colorBtn: RaisedButton(
+        colorBtn: ElevatedButton(
           child: Text(
             "Let Me Fix It",
           ),

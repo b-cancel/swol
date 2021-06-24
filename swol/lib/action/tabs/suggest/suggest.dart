@@ -16,10 +16,10 @@ import 'package:swol/other/functions/1RM&R=W.dart';
 //widget
 class Suggestion extends StatefulWidget {
   Suggestion({
-    @required this.exercise,
-    @required this.heroUp,
-    @required this.heroAnimTravel,
-    @required this.functionIDToWeightFromRT,
+    required this.exercise,
+    required this.heroUp,
+    required this.heroAnimTravel,
+    required this.functionIDToWeightFromRT,
   });
 
   final AnExercise exercise;
@@ -59,7 +59,7 @@ class _SuggestionState extends State<Suggestion> {
     ExercisePage.setGoalReps.value = repTarget.value.toDouble();
 
     //recalculate all weight with new rep target
-    List<double> functionIDToWeight = new List<double>(8);
+    List<double> functionIDToWeight = [8];
     for (int functionID = 0; functionID < 8; functionID++) {
       double weight = ToWeight.fromRepAnd1Rm(
         //rep target used

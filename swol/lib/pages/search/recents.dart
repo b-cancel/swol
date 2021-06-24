@@ -10,7 +10,7 @@ import 'package:swol/shared/widgets/simple/curvedCorner.dart';
 //widget
 class NoRecentSearches extends StatelessWidget {
   NoRecentSearches({
-    @required this.statusBar,
+    required this.statusBar,
   });
 
   final double statusBar;
@@ -31,9 +31,9 @@ class NoRecentSearches extends StatelessWidget {
 
 class RecentsOrResultsHeader extends StatelessWidget {
   const RecentsOrResultsHeader({
-    Key key,
-    @required this.showRecentsSearches,
-    @required this.resultCount,
+    Key? key,
+    required this.showRecentsSearches,
+    required this.resultCount,
   }) : super(key: key);
 
   final bool showRecentsSearches;
@@ -98,8 +98,8 @@ class RecentsOrResultsHeader extends StatelessWidget {
 
 class RecentSearches extends StatelessWidget {
   RecentSearches({
-    @required this.updateState,
-    @required this.search,
+    required this.updateState,
+    required this.search,
   });
 
   final Function updateState;
@@ -241,7 +241,7 @@ class RecentSearches extends StatelessWidget {
             decoration: BoxDecoration(
               color: Theme.of(context).cardColor,
             ),
-            child: FlatButton(
+            child: TextButton(
               materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
               padding: EdgeInsets.all(0),
               onPressed: () {

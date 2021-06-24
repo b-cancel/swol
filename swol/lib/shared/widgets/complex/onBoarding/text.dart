@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 
 class OnBoardingText extends StatelessWidget {
   OnBoardingText({
-    @required this.text,
+    required this.text,
     this.isLeft: true,
-    @required this.isTop,
+    required this.isTop,
     this.onTapNext,
     this.onTapPrev,
-    @required this.showDone,
+    required this.showDone,
   });
 
   final String text;
@@ -21,12 +21,13 @@ class OnBoardingText extends StatelessWidget {
   Widget build(BuildContext context) {
     //NOTE: its seperate so we can change it quickly later
     //if need be
-    Function secondaryOnTapNext = (onTapNext == null) ? (){} : () => onTapNext();
+    Function secondaryOnTapNext =
+        (onTapNext == null) ? () {} : () => onTapNext();
 
     Widget invisibleExpandedButton = Expanded(
       child: GestureDetector(
         onTap: () => secondaryOnTapNext(),
-        behavior: HitTestBehavior.opaque, 
+        behavior: HitTestBehavior.opaque,
         child: Container(
           color: Colors.transparent,
           child: Text(""),
@@ -39,9 +40,8 @@ class OnBoardingText extends StatelessWidget {
       color: Colors.transparent,
       child: Column(
         mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: isLeft 
-        ? CrossAxisAlignment.start 
-        : CrossAxisAlignment.end,
+        crossAxisAlignment:
+            isLeft ? CrossAxisAlignment.start : CrossAxisAlignment.end,
         children: <Widget>[
           GestureDetector(
             onTap: () => secondaryOnTapNext(),
@@ -64,55 +64,58 @@ class OnBoardingText extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
                 (isLeft == false) ? invisibleExpandedButton : Container(),
-                (onTapPrev == null) ? Container()
-                : GestureDetector(
-                  onTap: () => onTapPrev(),
-                  child: Container(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 8,
-                      ),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(12),
-                          bottomLeft: Radius.circular(12),
-                        ),
-                        clipBehavior: Clip.hardEdge,
-                        child: Material(
-                          color: Colors.transparent,
-                          child: InkWell(
-                            highlightColor: Theme.of(context).accentColor,
-                            onTap: () => onTapPrev(),
-                            child: Container(
-                              padding: EdgeInsets.symmetric(
-                                horizontal: 16,
-                                vertical: 8,
+                (onTapPrev == null)
+                    ? Container()
+                    : GestureDetector(
+                        onTap: () => onTapPrev(),
+                        child: Container(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                              vertical: 8,
+                            ),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(12),
+                                bottomLeft: Radius.circular(12),
                               ),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(12),
-                                  bottomLeft: Radius.circular(12),
-                                ),
-                                border: Border.all(
-                                  color: isTop ? Theme.of(context).primaryColor : Theme.of(context).primaryColorDark,
-                                  width: 2,
-                                )
-                              ),
-                              child: Text(
-                                "Back",
-                                style: TextStyle(
-                                  fontSize: 14,
+                              clipBehavior: Clip.hardEdge,
+                              child: Material(
+                                color: Colors.transparent,
+                                child: InkWell(
+                                  highlightColor: Theme.of(context).accentColor,
+                                  onTap: () => onTapPrev(),
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal: 16,
+                                      vertical: 8,
+                                    ),
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.only(
+                                          topLeft: Radius.circular(12),
+                                          bottomLeft: Radius.circular(12),
+                                        ),
+                                        border: Border.all(
+                                          color: isTop
+                                              ? Theme.of(context).primaryColor
+                                              : Theme.of(context)
+                                                  .primaryColorDark,
+                                          width: 2,
+                                        )),
+                                    child: Text(
+                                      "Back",
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                  ),
                                 ),
                               ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                  ),
-                ),
                 GestureDetector(
-                  onTap: (onTapNext == null) ? (){} : () => onTapNext(),
+                  onTap: (onTapNext == null) ? () {} : () => onTapNext(),
                   child: Container(
                     child: Padding(
                       padding: EdgeInsets.only(

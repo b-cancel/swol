@@ -13,13 +13,13 @@ import 'package:swol/pages/learn/expandableTile/body.dart';
 //widget
 class ExpandableTile extends StatefulWidget {
   const ExpandableTile({
-    Key key,
-    @required this.autoScrollController,
-    @required this.index,
-    @required this.isOpen,
-    @required this.headerIcon,
-    @required this.headerText,
-    @required this.expandedChild,
+    Key? key,
+    required this.autoScrollController,
+    required this.index,
+    required this.isOpen,
+    required this.headerIcon,
+    required this.headerText,
+    required this.expandedChild,
     this.theOnlyException: true,
     this.size,
   }) : super(key: key);
@@ -47,12 +47,12 @@ class _ExpandableTileState extends State<ExpandableTile> {
       child: SliverStickyHeader(
         header: AnimatedBuilder(
           animation: widget.isOpen,
-          builder: (context, child){
+          builder: (context, child) {
             return TileHeader(
               headerIcon: widget.headerIcon,
               headerText: widget.headerText,
               size: widget.size,
-              openOrClose: (){
+              openOrClose: () {
                 widget.isOpen.value = !widget.isOpen.value;
                 setState(() {});
               },
@@ -64,27 +64,27 @@ class _ExpandableTileState extends State<ExpandableTile> {
           delegate: new SliverChildListDelegate([
             AnimatedBuilder(
               animation: widget.isOpen,
-              builder: (context, child){
+              builder: (context, child) {
                 return AnimatedSwitcher(
                   duration: ExercisePage.transitionDuration,
-                  transitionBuilder: (widget, animation){
+                  transitionBuilder: (widget, animation) {
                     return SizeTransition(
                       child: widget,
                       sizeFactor: Tween<double>(
-                        begin: 0, 
+                        begin: 0,
                         end: 1,
                       ).animate(animation),
                     );
                   },
-                  child: (widget.isOpen.value) 
-                  ? TileBody(
-                    child: widget.expandedChild,
-                    theOnlyException: widget.theOnlyException,
-                  )
-                  : Container(
-                    height: 0,
-                    width: MediaQuery.of(context).size.width,
-                  ),
+                  child: (widget.isOpen.value)
+                      ? TileBody(
+                          child: widget.expandedChild,
+                          theOnlyException: widget.theOnlyException,
+                        )
+                      : Container(
+                          height: 0,
+                          width: MediaQuery.of(context).size.width,
+                        ),
                 );
               },
             ),

@@ -116,7 +116,7 @@ maybeChangeSetTarget(
     DialogType.WARNING,
     isDense: true,
     animationType: AnimType.LEFTSLIDE,
-    clearBtn: FlatButton(
+    clearBtn: TextButton(
       child: Text(
         "Keep Going",
       ),
@@ -124,7 +124,7 @@ maybeChangeSetTarget(
         Navigator.pop(context);
       },
     ),
-    colorBtn: RaisedButton(
+    colorBtn: ElevatedButton(
       child: Text(
         "Finish Excercise",
       ),
@@ -144,8 +144,8 @@ maybeChangeSetTarget(
 
 class ChangeSetTargetWidget extends StatefulWidget {
   ChangeSetTargetWidget({
-    Key key,
-    @required this.setTarget,
+    Key? key,
+    required this.setTarget,
   }) : super(key: key);
 
   final ValueNotifier<int> setTarget;

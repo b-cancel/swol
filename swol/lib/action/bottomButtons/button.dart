@@ -10,10 +10,10 @@ import 'package:swol/shared/methods/theme.dart';
 //widget
 class BottomButtons extends StatelessWidget {
   BottomButtons({
-    @required this.color,
-    @required this.exerciseID,
-    @required this.forwardAction,
-    @required this.forwardActionWidget,
+    required this.color,
+    required this.exerciseID,
+    required this.forwardAction,
+    required this.forwardActionWidget,
     this.backAction,
   });
 
@@ -38,15 +38,14 @@ class BottomButtons extends StatelessWidget {
               right: 0,
               bottom: 0,
               child: Container(
-                height: 24,
-                width: MediaQuery.of(context).size.width,
-                decoration: BoxDecoration(
-                  color: color,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(24),
-                  ),
-                )
-              ),
+                  height: 24,
+                  width: MediaQuery.of(context).size.width,
+                  decoration: BoxDecoration(
+                    color: color,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(24),
+                    ),
+                  )),
             ),
             //the buttons that are larger than they seem to be
             Buttons(
@@ -65,9 +64,9 @@ class BottomButtons extends StatelessWidget {
 
 class Buttons extends StatelessWidget {
   const Buttons({
-    @required this.exerciseID,
-    @required this.forwardAction,
-    @required this.forwardActionWidget,
+    required this.exerciseID,
+    required this.forwardAction,
+    required this.forwardActionWidget,
     this.backAction,
     this.color,
   });
@@ -85,13 +84,13 @@ class Buttons extends StatelessWidget {
       mainAxisSize: MainAxisSize.max,
       mainAxisAlignment: MainAxisAlignment.end,
       children: <Widget>[
-        BottomBackButton( 
+        BottomBackButton(
           backAction: backAction,
           verticalPadding: extraVerticalPadding,
           color: color,
         ),
         BottomNextButton(
-          forwardAction: forwardAction, 
+          forwardAction: forwardAction,
           forwardActionWidget: forwardActionWidget,
           exerciseID: exerciseID,
           color: color,

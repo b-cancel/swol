@@ -9,9 +9,9 @@ import 'package:swol/shared/methods/theme.dart';
 //widgets
 class ThePills extends StatelessWidget {
   const ThePills({
-    Key key,
-    @required this.setTarget,
-    @required this.totalScreenWidth,
+    Key? key,
+    required this.setTarget,
+    required this.totalScreenWidth,
   }) : super(key: key);
 
   final ValueNotifier<int> setTarget;
@@ -25,10 +25,10 @@ class ThePills extends StatelessWidget {
 
     //total screenwidth is the right size (1/4 of it is a section)
     return ThePillsDark(
-      totalScreenWidth: totalScreenWidth, 
-      setTarget: setTarget, 
-      strengthTraining: strengthTraining, 
-      hypertrophyTraining: hypertrophyTraining, 
+      totalScreenWidth: totalScreenWidth,
+      setTarget: setTarget,
+      strengthTraining: strengthTraining,
+      hypertrophyTraining: hypertrophyTraining,
       enduranceTraining: enduranceTraining,
     );
   }
@@ -36,12 +36,12 @@ class ThePills extends StatelessWidget {
 
 class ThePillsDark extends StatelessWidget {
   const ThePillsDark({
-    Key key,
-    @required this.totalScreenWidth,
-    @required this.setTarget,
-    @required this.strengthTraining,
-    @required this.hypertrophyTraining,
-    @required this.enduranceTraining,
+    Key? key,
+    required this.totalScreenWidth,
+    required this.setTarget,
+    required this.strengthTraining,
+    required this.hypertrophyTraining,
+    required this.enduranceTraining,
   }) : super(key: key);
 
   final double totalScreenWidth;
@@ -56,14 +56,14 @@ class ThePillsDark extends StatelessWidget {
       data: MyTheme.dark,
       child: Container(
         //seven sections in between since there are 9 clicks
-        width: (totalScreenWidth/4) * 8,
+        width: (totalScreenWidth / 4) * 8,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             Pill(
               setTarget: setTarget,
-              actives: [4,5,6], 
-              sectionSize: totalScreenWidth/4,
+              actives: [4, 5, 6],
+              sectionSize: totalScreenWidth / 4,
               name: "Strength Training",
               openPopUp: strengthTraining,
               leftMultiplier: 2.75,
@@ -72,8 +72,8 @@ class ThePillsDark extends StatelessWidget {
             ),
             Pill(
               setTarget: setTarget,
-              actives: [3,4,5], 
-              sectionSize: totalScreenWidth/4,
+              actives: [3, 4, 5],
+              sectionSize: totalScreenWidth / 4,
               name: "Hypertrophy Training",
               openPopUp: hypertrophyTraining,
               leftMultiplier: 1.75,
@@ -81,8 +81,8 @@ class ThePillsDark extends StatelessWidget {
             ),
             Pill(
               setTarget: setTarget,
-              actives: [1,2,3], //+1
-              sectionSize: totalScreenWidth/4,
+              actives: [1, 2, 3], //+1
+              sectionSize: totalScreenWidth / 4,
               name: "Endurance Training",
               openPopUp: enduranceTraining,
               leftMultiplier: 0,
@@ -98,14 +98,14 @@ class ThePillsDark extends StatelessWidget {
 
 class Pill extends StatefulWidget {
   const Pill({
-    Key key,
-    @required this.sectionSize,
-    @required this.setTarget,
-    @required this.actives,
-    @required this.name,
-    @required this.openPopUp,
-    @required this.leftMultiplier,
-    @required this.rightMultiplier,
+    Key? key,
+    required this.sectionSize,
+    required this.setTarget,
+    required this.actives,
+    required this.name,
+    required this.openPopUp,
+    required this.leftMultiplier,
+    required this.rightMultiplier,
     this.paddingTop: true,
     this.paddingBottom: true,
   }) : super(key: key);
@@ -127,12 +127,12 @@ class Pill extends StatefulWidget {
 class _PillState extends State<Pill> {
   bool active;
 
-  setTargetToActive(){
+  setTargetToActive() {
     active = widget.actives.contains(widget.setTarget.value);
   }
 
-  updateState(){
-    if(mounted){
+  updateState() {
+    if (mounted) {
       setTargetToActive();
       setState(() {});
     }
@@ -190,12 +190,16 @@ class _PillState extends State<Pill> {
                   ),
                   border: Border(
                     left: widget.leftMultiplier == 0 ? borderSide : borderSide,
-                    right: widget.rightMultiplier == 0 ? BorderSide.none : borderSide,
+                    right: widget.rightMultiplier == 0
+                        ? BorderSide.none
+                        : borderSide,
                     //defaults
                     top: borderSide,
                     bottom: borderSide,
                   ),
-                  color: active ? Theme.of(context).accentColor : Theme.of(context).primaryColor,
+                  color: active
+                      ? Theme.of(context).accentColor
+                      : Theme.of(context).primaryColor,
                 ),
                 child: Material(
                   color: Colors.transparent,
@@ -217,13 +221,17 @@ class _PillState extends State<Pill> {
                                 child: Icon(
                                   Icons.info,
                                   size: 16,
-                                  color: active ? Theme.of(context).primaryColor : Colors.white,
+                                  color: active
+                                      ? Theme.of(context).primaryColor
+                                      : Colors.white,
                                 ),
                               ),
                               Text(
                                 widget.name,
                                 style: TextStyle(
-                                  color: active ? Theme.of(context).primaryColor : Colors.white,
+                                  color: active
+                                      ? Theme.of(context).primaryColor
+                                      : Colors.white,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),

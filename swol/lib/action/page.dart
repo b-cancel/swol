@@ -24,7 +24,7 @@ import 'package:swol/action/popUps/warning.dart';
 //3. but also wrap the rest of the widgets in the dark theme
 class ExercisePage extends StatelessWidget {
   ExercisePage({
-    @required this.exercise,
+    required this.exercise,
   });
 
   final AnExercise exercise;
@@ -59,11 +59,10 @@ class ExercisePage extends StatelessWidget {
       new ValueNotifier<bool>(false); //being listened
   //keeps track of all 1 rep maxes after they are calculated once
   //so we don't have to calculate them literally millions of times
-  static final List<double> oneRepMaxes =
-      new List<double>(8); //not being listened to
+  static final List<double> oneRepMaxes = [8]; //not being listened to
   //function order calcualted by suggest or set record once and then used to generate the carousel
   static final ValueNotifier<List<int>> orderedIDs =
-      new ValueNotifier<List<int>>(new List<int>(8));
+      new ValueNotifier<List<int>>([8]);
   //keeps track of the index in the SORTED list of IDs that gives us a result that mostly matches our set
   static ValueNotifier<int> closestIndex = new ValueNotifier<int>(-1);
   //NOTE: these are shown as INTs but are actually DOUBLEs to avoid issues with calculations and sorting later
@@ -96,7 +95,7 @@ class ExercisePage extends StatelessWidget {
 
 class ExercisePageDark extends StatefulWidget {
   ExercisePageDark({
-    @required this.exercise,
+    required this.exercise,
   });
 
   final AnExercise exercise;
@@ -119,7 +118,7 @@ class _ExercisePageDarkState extends State<ExercisePageDark> {
       if (widget.exercise.tempStartTime.value == AnExercise.nullDateTime) {
         //start the timer
         widget.exercise.tempStartTime = ValueNotifier<DateTime>(
-              DateTime.now(),
+          DateTime.now(),
         );
 
         //fix things when sarting FIRST set
@@ -149,7 +148,7 @@ class _ExercisePageDarkState extends State<ExercisePageDark> {
     if (ExercisePage.nextSet.value) {
       //in order for the timer to start it has to be a value other than this
       //this covers the edge case where the user quick taps the next button
-      
+
       //worst case scenario this little exception cover won't break anything
       if (widget.exercise.tempStartTime.value != AnExercise.nullDateTime) {
         //cancel the notifcation that perhaps didn't trigger
@@ -193,7 +192,7 @@ class _ExercisePageDarkState extends State<ExercisePageDark> {
     }
   }
 
-  resetToDefault(){
+  resetToDefault() {
     //reset all statics to defaults
     ExercisePage.exerciseID.value = -1;
     ExercisePage.pageNumber.value = 0; //this will properly update itself later
@@ -201,8 +200,6 @@ class _ExercisePageDarkState extends State<ExercisePageDark> {
     //notifiers
     ExercisePage.setWeight.value = "";
     ExercisePage.setReps.value = "";
-
-    
 
     //functions
     ExercisePage.causeRefocusIfInvalid.value = false;
@@ -214,7 +211,7 @@ class _ExercisePageDarkState extends State<ExercisePageDark> {
     //one rep maxes is final but we can reset
     //but we should because it will set the size of the list to 0
     //2. orderedIDs
-    ExercisePage.orderedIDs.value = new List<int>(8);
+    ExercisePage.orderedIDs.value = [8];
 
     //closest index reset
     ExercisePage.closestIndex.value = -1;
@@ -255,7 +252,8 @@ class _ExercisePageDarkState extends State<ExercisePageDark> {
     int tempReps = widget?.exercise?.tempReps;
 
     //extra step needed because null.toString() isn't null
-    ExercisePage.setWeight.value = (tempWeight != null) ? tempWeight.toString() : "";
+    ExercisePage.setWeight.value =
+        (tempWeight != null) ? tempWeight.toString() : "";
     ExercisePage.setReps.value = (tempReps != null) ? tempReps.toString() : "";
 
     //one rep maxes
@@ -291,12 +289,12 @@ class _ExercisePageDarkState extends State<ExercisePageDark> {
   Widget build(BuildContext context) {
     //set the first page we will be at based on startTimerValue
     int initialPage;
-    bool timerStarted = (widget.exercise.tempStartTime.value != AnExercise.nullDateTime);
+    bool timerStarted =
+        (widget.exercise.tempStartTime.value != AnExercise.nullDateTime);
     bool lastSetPresent = (widget.exercise.lastWeight != null);
-    if(timerStarted){
+    if (timerStarted) {
       initialPage = 2;
-    }
-    else{
+    } else {
       initialPage = (lastSetPresent) ? 0 : 1;
     }
 
@@ -335,7 +333,7 @@ class _ExercisePageDarkState extends State<ExercisePageDark> {
 
 class PageTitle extends StatelessWidget {
   PageTitle({
-    @required this.exercise,
+    required this.exercise,
   });
 
   final AnExercise exercise;
@@ -415,9 +413,11 @@ updateOrderOfIDs(List<double> functionIDToValue) {
   for (int functionID = 0; functionID < 8; functionID++) {
     double value = functionIDToValue[functionID];
     if (valueToFunctionIDs.containsKey(value) == false) {
-      valueToFunctionIDs[value] = new List();
+      valueToFunctionIDs[value] = [];
     }
-    valueToFunctionIDs[value].add(functionID);
+    if (valueToFunctionIDs[value] != null) {
+      valueToFunctionIDs[value]!.add(functionID);
+    }
   }
 
   //grab the keys and sort them
@@ -425,12 +425,14 @@ updateOrderOfIDs(List<double> functionIDToValue) {
   values.sort((b, a) => a.compareTo(b)); //largest to smallest
 
   //build up your ordered IDs
-  List<int> orderedIDs = new List<int>(8);
+  List<int> orderedIDs = [8];
   if (values.length == functionIDToValue.length) {
     for (int i = 0; i < values.length; i++) {
       double value = values[i];
-      int id = valueToFunctionIDs[value].removeLast();
-      orderedIDs[i] = id;
+      if (valueToFunctionIDs[value] != null) {
+        int id = valueToFunctionIDs[value]!.removeLast();
+        orderedIDs[i] = id;
+      }
     }
   } else {
     //we have duplicate results
@@ -443,11 +445,13 @@ updateOrderOfIDs(List<double> functionIDToValue) {
     for (int index = 0; index < values.length; index++) {
       double value = values[index];
       //grab all the indices with this value
-      List<int> indices = valueToFunctionIDs[value];
-      for (int i = 0; i < indices.length; i++) {
-        //add them in order
-        orderedIDs[position] = indices[i];
-        position++;
+      if (valueToFunctionIDs[value] != null) {
+        List<int> indices = valueToFunctionIDs[value]!;
+        for (int i = 0; i < indices.length; i++) {
+          //add them in order
+          orderedIDs[position] = indices[i];
+          position++;
+        }
       }
     }
   }

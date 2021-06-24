@@ -21,12 +21,12 @@ import 'package:swol/other/functions/W&R=1RM.dart';
 //widget
 class MakeFunctionAdjustment extends StatefulWidget {
   const MakeFunctionAdjustment({
-    Key key,
-    @required this.topColor,
-    @required this.heroUp,
-    @required this.heroAnimTravel,
-    @required this.exercise,
-    @required this.functionIDToWeightFromRT,
+    Key? key,
+    required this.topColor,
+    required this.heroUp,
+    required this.heroAnimTravel,
+    required this.exercise,
+    required this.functionIDToWeightFromRT,
   }) : super(key: key);
 
   final Color topColor;
@@ -43,11 +43,11 @@ class _MakeFunctionAdjustmentState extends State<MakeFunctionAdjustment> {
   final ValueNotifier<int> predictionID = new ValueNotifier<int>(0);
 
   //rep estimates
-  final List<double> repEstimates = new List<double>(8);
+  final List<double> repEstimates = [8];
   bool allRepsEstimatesValid = false;
 
   //weight estimates
-  final List<double> weightEstimates = new List<double>(8);
+  final List<double> weightEstimates = [8];
   bool allWeightEstimatesValid = false;
 
   updatePredictionID() {
@@ -336,7 +336,7 @@ class _MakeFunctionAdjustmentState extends State<MakeFunctionAdjustment> {
 
   getPercentDifferences() {
     //get the values we will use to sort the function IDs
-    List<double> percentDifferences = new List<double>(8);
+    List<double> percentDifferences = [8];
     for (int functionID = 0; functionID < 8; functionID++) {
       //get the 1RM from this Set
       double calculated1RM = To1RM.fromWeightAndReps(

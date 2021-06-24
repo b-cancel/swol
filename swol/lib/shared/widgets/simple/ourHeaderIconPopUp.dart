@@ -10,8 +10,7 @@ showBasicHeaderIconPopUp(
   BuildContext context, //should be light context
   List<Widget> titles,
   List<Widget> children,
-  DialogType dialogType,
-  {
+  DialogType dialogType, {
   AnimType animationType: AnimType.SCALE,
   bool dismissOnTouchOutside: true,
   bool isDense: false,
@@ -22,7 +21,7 @@ showBasicHeaderIconPopUp(
   //for some reason this only happens in addExercise
   //when opening popups for name, notes, link, and recovery time
   //still its annoying and hence must die
-  FocusScope.of(context).unfocus(); 
+  FocusScope.of(context).unfocus();
 
   //show pop up
   MyAwesomeDialog(
@@ -33,9 +32,9 @@ showBasicHeaderIconPopUp(
     animType: animationType,
     dialogType: dialogType,
     body: AwesomeBody(
-      titles: titles, 
-      children: children, 
-      clearBtn: clearBtn, 
+      titles: titles,
+      children: children,
+      clearBtn: clearBtn,
       colorBtn: colorBtn,
     ),
   ).show();
@@ -60,7 +59,7 @@ showCustomHeaderIconPopUp(
   //for some reason this only happens in addExercise
   //when opening popups for name, notes, link, and recovery time
   //still its annoying and hence must die
-  FocusScope.of(context).unfocus(); 
+  FocusScope.of(context).unfocus();
 
   //show pop up
   MyAwesomeDialog(
@@ -75,9 +74,9 @@ showCustomHeaderIconPopUp(
       header: header,
     ),
     body: AwesomeBody(
-      titles: titles, 
-      children: children, 
-      clearBtn: clearBtn, 
+      titles: titles,
+      children: children,
+      clearBtn: clearBtn,
       colorBtn: colorBtn,
     ),
   ).show();
@@ -85,10 +84,10 @@ showCustomHeaderIconPopUp(
 
 class AwesomeHeader extends StatelessWidget {
   const AwesomeHeader({
-    @required this.headerBackground,
-    @required this.regularPadding,
-    @required this.header,
-    Key key,
+    required this.headerBackground,
+    required this.regularPadding,
+    required this.header,
+    Key? key,
   }) : super(key: key);
 
   final Color headerBackground;
@@ -136,11 +135,11 @@ class AwesomeHeader extends StatelessWidget {
 
 class AwesomeBody extends StatelessWidget {
   const AwesomeBody({
-    Key key,
-    @required this.titles,
-    @required this.children,
-    @required this.clearBtn,
-    @required this.colorBtn,
+    Key? key,
+    required this.titles,
+    required this.children,
+    required this.clearBtn,
+    required this.colorBtn,
   }) : super(key: key);
 
   final List<Widget> titles;
@@ -170,10 +169,12 @@ class AwesomeBody extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: children,
           ),
-          hasAtleastOneButton ? BottomButtonsThatResizeTRBL(
-            secondary: clearBtn ?? Container(),
-            primary: colorBtn ?? Container(),
-          ) : Container()
+          hasAtleastOneButton
+              ? BottomButtonsThatResizeTRBL(
+                  secondary: clearBtn ?? Container(),
+                  primary: colorBtn ?? Container(),
+                )
+              : Container()
         ],
       ),
     );

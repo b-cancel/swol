@@ -22,13 +22,13 @@ import 'package:swol/shared/widgets/simple/popUpAdjustments.dart';
 //widget
 class SetRecord extends StatelessWidget {
   SetRecord({
-    @required this.exercise,
-    @required this.statusBarHeight,
-    @required this.heroUp,
-    @required this.heroAnimTravel,
-    @required this.functionIDToWeightFromRT,
-    @required this.weightFocusNode,
-    @required this.repsFocusNode,
+    required this.exercise,
+    required this.statusBarHeight,
+    required this.heroUp,
+    required this.heroAnimTravel,
+    required this.functionIDToWeightFromRT,
+    required this.weightFocusNode,
+    required this.repsFocusNode,
   });
 
   final AnExercise exercise;
@@ -68,7 +68,7 @@ class SetRecord extends StatelessWidget {
         : Theme.of(context).cardColor;
 
     //widget
-    Widget recordSetFields = CardWithHeader( 
+    Widget recordSetFields = CardWithHeader(
       header: "Record Set",
       aLittleSmaller: true,
       child: RecordFields(
@@ -182,14 +182,14 @@ class SetRecord extends StatelessWidget {
 
 class SetRecordButtonsWithWhiteContext extends StatelessWidget {
   const SetRecordButtonsWithWhiteContext({
-    Key key,
-    @required this.cardColor,
-    @required this.buttonsColor,
-    @required this.exercise,
-    @required this.timerNotStarted,
-    @required this.backAction,
-    @required this.weightFocusNode,
-    @required this.repsFocusNode,
+    Key? key,
+    required this.cardColor,
+    required this.buttonsColor,
+    required this.exercise,
+    required this.timerNotStarted,
+    required this.backAction,
+    required this.weightFocusNode,
+    required this.repsFocusNode,
   }) : super(key: key);
 
   final Color cardColor;
@@ -292,10 +292,10 @@ class SetRecordButtonsWithWhiteContext extends StatelessWidget {
 //alert the user if neccesary
 class TimerGlimpse extends StatefulWidget {
   const TimerGlimpse({
-    @required this.exercise,
-    @required this.weightFocusNode,
-    @required this.repsFocusNode,
-    Key key,
+    required this.exercise,
+    required this.weightFocusNode,
+    required this.repsFocusNode,
+    Key? key,
   }) : super(key: key);
 
   final AnExercise exercise;

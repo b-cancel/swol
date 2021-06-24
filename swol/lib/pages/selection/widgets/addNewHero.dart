@@ -16,9 +16,9 @@ import 'package:swol/shared/widgets/simple/heros/curveMod.dart';
 
 class AddNewHero extends StatelessWidget {
   const AddNewHero({
-    Key key,
-    @required this.inAppBar,
-    @required this.longTransitionDuration,
+    Key? key,
+    required this.inAppBar,
+    required this.longTransitionDuration,
   }) : super(key: key);
 
   final bool inAppBar;
@@ -29,7 +29,11 @@ class AddNewHero extends StatelessWidget {
     return Hero(
       tag: 'addNew',
       createRectTween: (begin, end) {
-        return CustomRectTween(a: begin, b: end);
+        if (begin != null && end != null) {
+          return CustomRectTween(a: begin, b: end);
+        } else {
+          return CustomRectTween();
+        }
       },
       flightShuttleBuilder: (
         BuildContext flightContext,
@@ -58,9 +62,9 @@ class AddNewHero extends StatelessWidget {
 
 class AddNewHeroHelper extends StatelessWidget {
   const AddNewHeroHelper({
-    Key key,
-    @required this.percentToAppBar,
-    @required this.longTransitionDuration,
+    Key? key,
+    required this.percentToAppBar,
+    required this.longTransitionDuration,
   }) : super(key: key);
 
   final double percentToAppBar;
@@ -92,7 +96,7 @@ class AddNewHeroHelper extends StatelessWidget {
         };
       }
     } //Tapping while transitioning does nothing
-    else{
+    else {
       onTap = () {};
     }
 

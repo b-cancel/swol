@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 //build
 class CurvedCorner extends StatelessWidget {
   CurvedCorner({
-    @required this.isTop,
-    @required this.isLeft,
+    required this.isTop,
+    required this.isLeft,
     this.backgroundColor,
-    @required this.cornerColor,
+    required this.cornerColor,
     this.size: 24,
   });
 
@@ -43,18 +43,19 @@ class CurvedCorner extends StatelessWidget {
 
 class CornerClipper extends CustomClipper<Path> {
   CornerClipper({
-    @required this.isTop,
+    required this.isTop,
     this.isLeft: true,
   });
 
   final bool isTop;
   final bool isLeft;
-  
+
   @override
   Path getClip(Size size) {
     return new Path()
       ..addOval(new Rect.fromCircle(
-          center: new Offset((isLeft ? size.width : 0), (isTop ? size.height : 0)),
+          center:
+              new Offset((isLeft ? size.width : 0), (isTop ? size.height : 0)),
           radius: size.width * 1))
       ..addRect(new Rect.fromLTWH(0.0, 0.0, size.width, size.height))
       ..fillType = PathFillType.evenOdd;

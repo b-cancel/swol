@@ -9,10 +9,7 @@ import 'package:flutter_picker/flutter_picker.dart';
 import 'package:swol/shared/methods/vibrate.dart';
 
 //you only need to get so precise
-const List<int> secondOptions = [
-   0, 5, 10, 15, 20, 25,
-   30, 35, 40, 45, 50, 55
-];
+const List<int> secondOptions = [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55];
 
 //NOTE: the max time we really care for is 5 minutes
 //but adding a 5 to the minutes means we get really close to 6
@@ -31,7 +28,7 @@ const Times = '''
 //widget
 class RecoveryTimePicker extends StatefulWidget {
   RecoveryTimePicker({
-    @required this.duration,
+    required this.duration,
     this.darkTheme: true,
     this.numberSize: 48,
     this.height: 100,
@@ -51,11 +48,11 @@ class RecoveryTimePicker extends StatefulWidget {
 }
 
 class _RecoveryTimePickerState extends State<RecoveryTimePicker> {
-  List<int> separateMinutesAndSeconds(Duration duration){
+  List<int> separateMinutesAndSeconds(Duration duration) {
     int minutes = duration.inMinutes;
     duration = duration - Duration(minutes: minutes);
     int seconds = duration.inSeconds;
-    return [minutes,seconds];
+    return [minutes, seconds];
   }
 
   @override
@@ -79,39 +76,38 @@ class _RecoveryTimePickerState extends State<RecoveryTimePicker> {
         PickerDelimiter(
           child: Center(
             child: Container(
-              padding: EdgeInsets.symmetric(
-                horizontal: widget.colenSpacing,
-              ),
-              height: widget.numberSize,
-              child: Column(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Container(
-                    width: widget.colenSize,
-                    height: widget.colenSize,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: delimeterColor,
+                padding: EdgeInsets.symmetric(
+                  horizontal: widget.colenSpacing,
+                ),
+                height: widget.numberSize,
+                child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Container(
+                      width: widget.colenSize,
+                      height: widget.colenSize,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: delimeterColor,
+                      ),
                     ),
-                  ),
-                  Container(
-                    width: widget.colenSize,
-                    height: widget.colenSize,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: delimeterColor,
+                    Container(
+                      width: widget.colenSize,
+                      height: widget.colenSize,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: delimeterColor,
+                      ),
                     ),
-                  ),
-                ],
-              )
-            ),
+                  ],
+                )),
           ),
         ),
       ],
       height: widget.height,
       selecteds: [minutesSeconds[0], secondOptions.indexOf(minutesSeconds[1])],
-      onSelect: (Picker picker, int index, List<int> ints){
+      onSelect: (Picker picker, int index, List<int> ints) {
         //haptics
         Vibrator.vibrateOnce(
           duration: Duration(milliseconds: 250),
@@ -127,7 +123,7 @@ class _RecoveryTimePickerState extends State<RecoveryTimePicker> {
 
         //update duration
         widget.duration.value = Duration(
-          minutes: newMinutes, 
+          minutes: newMinutes,
           seconds: newSeconds,
         );
       },

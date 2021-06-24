@@ -10,12 +10,12 @@ import 'package:swol/shared/widgets/simple/conditional.dart';
 //widget
 class DoneButton extends StatelessWidget {
   DoneButton({
-    @required this.show,
-    @required this.color,
-    @required this.setsPassed,
+    required this.show,
+    required this.color,
+    required this.setsPassed,
     //stay the same throughout
-    @required this.exerciseID,
-    @required this.animationCurve,
+    required this.exerciseID,
+    required this.animationCurve,
   });
 
   final bool show;
@@ -77,7 +77,11 @@ class DoneButton extends StatelessWidget {
             child: Hero(
               tag: "exerciseComplete" + exerciseID.toString(),
               createRectTween: (begin, end) {
-                return CustomRectTween(a: begin, b: end);
+                if (begin != null && end != null) {
+                  return CustomRectTween(a: begin, b: end);
+                } else {
+                  return CustomRectTween();
+                }
               },
               child: Material(
                 color: Colors.transparent,

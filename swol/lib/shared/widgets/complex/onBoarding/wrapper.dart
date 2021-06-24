@@ -10,10 +10,10 @@ import 'package:swol/shared/widgets/complex/OnBoarding/text.dart';
 
 class FeatureWrapper extends StatelessWidget {
   FeatureWrapper({
-    @required this.featureID,
-    @required this.tapTarget,
-    @required this.text,
-    @required this.child,
+    required this.featureID,
+    required this.tapTarget,
+    required this.text,
+    required this.child,
     this.top: true,
     this.left: true,
     this.prevFeature,

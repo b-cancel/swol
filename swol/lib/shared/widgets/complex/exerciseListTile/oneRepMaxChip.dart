@@ -19,8 +19,8 @@ import 'package:swol/other/functions/helper.dart';
 //2. generate a message to show if the user taps the chipd
 class ExerciseTileSubtitle extends StatefulWidget {
   ExerciseTileSubtitle({
-    @required this.exercise,
-    @required Key key,
+    required this.exercise,
+    required Key? key,
   }) : super(key: key);
 
   final AnExercise exercise;
@@ -30,14 +30,14 @@ class ExerciseTileSubtitle extends StatefulWidget {
 }
 
 class _ExerciseTileSubtitleState extends State<ExerciseTileSubtitle> {
-  actualUpdate(Duration randomDuration){
+  actualUpdate(Duration randomDuration) {
     //a set was just completed so there WILL be a new last set
-    if(widget.exercise.tempStartTime.value == AnExercise.nullDateTime){
-      if(mounted) setState(() {});
+    if (widget.exercise.tempStartTime.value == AnExercise.nullDateTime) {
+      if (mounted) setState(() {});
     }
   }
 
-  updateState(){
+  updateState() {
     //waits for all the other variables to be set
     WidgetsBinding.instance.addPostFrameCallback(actualUpdate);
   }
@@ -52,7 +52,7 @@ class _ExerciseTileSubtitleState extends State<ExerciseTileSubtitle> {
   }
 
   @override
-  void dispose() { 
+  void dispose() {
     //only changes when started or ended
     widget.exercise.tempStartTime.removeListener(updateState);
 
@@ -88,7 +88,8 @@ class _ExerciseTileSubtitleState extends State<ExerciseTileSubtitle> {
       String snackbarMessage = "Your 1 Rep Max";
 
       //only calculate the 1 rep max and all its related values if you must
-      if (widget.exercise.lastReps != 1) { //we KNOW its not null
+      if (widget.exercise.lastReps != 1) {
+        //we KNOW its not null
         isOneRepMaxEstimated = true;
 
         //estimate one rep max
@@ -126,10 +127,9 @@ class _ExerciseTileSubtitleState extends State<ExerciseTileSubtitle> {
           //    b. suggestions to improve
           double mean = oneRepMaxValues[1];
           int percentOfDeviation;
-          if(mean.toInt() == 0 || standardDevaition.toInt() == 0){
+          if (mean.toInt() == 0 || standardDevaition.toInt() == 0) {
             percentOfDeviation = 0;
-          }
-          else{
+          } else {
             percentOfDeviation = ((standardDevaition / mean) * 100).toInt();
           }
 

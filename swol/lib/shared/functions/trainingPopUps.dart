@@ -12,13 +12,13 @@ import 'package:swol/shared/widgets/simple/toLearnPage.dart';
 import 'package:swol/shared/methods/theme.dart';
 
 //enum to make it easier to pass the "Icon"
-enum FitIcons {Endurance, Hypertrophy, HypAndStr, Strength}
+enum FitIcons { Endurance, Hypertrophy, HypAndStr, Strength }
 
 //short cuts
 Function makeEnduranceTrainingPopUp(
-  BuildContext context, 
+  BuildContext context,
   int highlightField,
-){
+) {
   return _makeTrainingTypePopUp(
     context: context,
     title: "Endurance Training",
@@ -29,9 +29,9 @@ Function makeEnduranceTrainingPopUp(
 }
 
 Function makeHypertrophyTrainingPopUp(
-  BuildContext context, 
+  BuildContext context,
   int highlightField,
-){
+) {
   return _makeTrainingTypePopUp(
     context: context,
     title: "Hypertrophy Training",
@@ -42,9 +42,9 @@ Function makeHypertrophyTrainingPopUp(
 }
 
 Function makeHypertrophyStrengthTrainingPopUp(
-  BuildContext context, 
+  BuildContext context,
   int highlightField,
-){
+) {
   return _makeTrainingTypePopUp(
     context: context,
     title: "Hypertrophy/Strength",
@@ -56,9 +56,9 @@ Function makeHypertrophyStrengthTrainingPopUp(
 }
 
 Function makeStrengthTrainingPopUp(
-  BuildContext context, 
+  BuildContext context,
   int highlightField,
-){
+) {
   return _makeTrainingTypePopUp(
     context: context,
     title: "Strength Training",
@@ -70,58 +70,58 @@ Function makeStrengthTrainingPopUp(
 
 //the dad function
 Function _makeTrainingTypePopUp({
-    @required BuildContext context,
-    @required String title,
-    @required FitIcons iconID,
-    //0,1,2,3(hypertrophy/strength)
-    bool showStrength: false,
-    bool showHypertrophy: false,
-    bool showEndurance: false,
-    int highlightField: -1,
-}){
-  return (){
+  required BuildContext context,
+  required String title,
+  required FitIcons iconID,
+  //0,1,2,3(hypertrophy/strength)
+  bool showStrength: false,
+  bool showHypertrophy: false,
+  bool showEndurance: false,
+  int highlightField: -1,
+}) {
+  return () {
     Color iconColor = Colors.white;
     Widget headerIcon;
-    switch(iconID){
-      case FitIcons.Endurance: 
+    switch (iconID) {
+      case FitIcons.Endurance:
         headerIcon = Transform.translate(
           offset: Offset(0, -1),
           child: Padding(
             padding: EdgeInsets.all(3.0),
             child: Icon(
-              FontAwesomeIcons.weight, 
+              FontAwesomeIcons.weight,
               color: iconColor,
             ),
           ),
-        ); 
-      break;
-      case FitIcons.Hypertrophy: 
-      //adjustments required for oddly sized icon
+        );
+        break;
+      case FitIcons.Hypertrophy:
+        //adjustments required for oddly sized icon
         headerIcon = Transform.translate(
           offset: Offset(-3, -1),
           child: Padding(
             padding: EdgeInsets.all(3.0),
             child: Icon(
-              FontAwesomeIcons.dumbbell, 
+              FontAwesomeIcons.dumbbell,
               color: iconColor,
             ),
           ),
         );
-      break;
-      case FitIcons.Strength: 
+        break;
+      case FitIcons.Strength:
         //adjustments required for oddly sized icon
         headerIcon = Transform.translate(
           offset: Offset(0, -1),
           child: Padding(
             padding: EdgeInsets.all(3.0),
             child: Icon(
-              FontAwesomeIcons.weightHanging, 
+              FontAwesomeIcons.weightHanging,
               color: iconColor,
             ),
           ),
-        ); 
-      break;
-      default: 
+        );
+        break;
+      default:
         headerIcon = OneOrTheOtherIcon(
           one: Transform.translate(
             offset: Offset(-3, 0),
@@ -137,7 +137,7 @@ Function _makeTrainingTypePopUp({
           iconColor: iconColor,
           backgroundColor: Colors.black,
         );
-      break;
+        break;
     }
 
     //show pop up
@@ -190,10 +190,10 @@ class ScrollableTrainingTypes extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<int> sections = new List<int>();
-    if(showEndurance) sections.add(0);
-    if(showHypertrophy) sections.add(1);
-    if(showStrength) sections.add(2);
+    List<int> sections = [];
+    if (showEndurance) sections.add(0);
+    if (showHypertrophy) sections.add(1);
+    if (showStrength) sections.add(2);
 
     return TrainingTypeSections(
       cardBackground: false,

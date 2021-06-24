@@ -16,9 +16,9 @@ import 'package:swol/other/durationFormat.dart';
 //tile might need reloading
 class ExerciseTileLeading extends StatefulWidget {
   ExerciseTileLeading({
-    @required this.exercise,
-    @required this.tileInSearch,
-    @required Key key,
+    required this.exercise,
+    required this.tileInSearch,
+    required Key? key,
   }) : super(key: key);
 
   final AnExercise exercise;
@@ -59,7 +59,7 @@ class _ExerciseTileLeadingState extends State<ExerciseTileLeading> {
     super.dispose();
   }
 
-  grabFormattedDT(){
+  grabFormattedDT() {
     String dt = DurationFormat.format(
       DateTime.now().difference(widget.exercise.lastTimeStamp),
       showMinutes: false,
@@ -74,9 +74,9 @@ class _ExerciseTileLeadingState extends State<ExerciseTileLeading> {
 
     //5 things must be there
     //so hours must be there
-    if(units.length > 4){
+    if (units.length > 4) {
       //years, months, weeks, days, hours
-       String dt = DurationFormat.format(
+      String dt = DurationFormat.format(
         DateTime.now().difference(widget.exercise.lastTimeStamp),
         showHours: false,
         //---
@@ -93,15 +93,15 @@ class _ExerciseTileLeadingState extends State<ExerciseTileLeading> {
 
     //add spacing where needed
     String result = "";
-    for(int i = 0; i < units.length - 1; i++){
+    for (int i = 0; i < units.length - 1; i++) {
       result += units[i];
-      result += (i%2 == 0) ? " " : "\n";
+      result += (i % 2 == 0) ? " " : "\n";
     }
 
     //the result
     result = result + units.last;
-    
-    //return 
+
+    //return
     return result.length > 0 ? result : "Just\nNow";
   }
 
@@ -128,7 +128,11 @@ class _ExerciseTileLeadingState extends State<ExerciseTileLeading> {
               (isLastSet ? "Complete" : "Continue") +
               widget.exercise.id.toString(),
           createRectTween: (begin, end) {
-            return CustomRectTween(a: begin, b: end);
+            if (begin != null && end != null) {
+              return CustomRectTween(a: begin, b: end);
+            } else {
+              return CustomRectTween();
+            }
           },
           child: FittedBox(
             fit: BoxFit.contain,
@@ -161,9 +165,7 @@ class _ExerciseTileLeadingState extends State<ExerciseTileLeading> {
             } else {
               return FittedBox(
                 fit: BoxFit.contain,
-                child: Text(
-                  grabFormattedDT()
-                ),
+                child: Text(grabFormattedDT()),
               );
             }
           }

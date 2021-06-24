@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class TriangleUp extends StatelessWidget {
   const TriangleUp({
-    Key key,
+    Key? key,
     this.widthDivisor: 1,
   }) : super(key: key);
 
@@ -22,7 +22,7 @@ class TriangleUp extends StatelessWidget {
 
 class TriangleDown extends StatelessWidget {
   const TriangleDown({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -53,16 +53,15 @@ class TrianglePainter extends CustomPainter {
     paint.color = Colors.black;
 
     var path = Path();
-    if(faceDown){
+    if (faceDown) {
       path.lineTo(0, 0);
       path.lineTo(size.width, 0);
-      path.lineTo(size.width/2, size.height);
+      path.lineTo(size.width / 2, size.height);
       path.lineTo(0, 0);
-    }
-    else{
+    } else {
       path.lineTo(0, size.height);
       path.lineTo(size.width, size.height);
-      path.lineTo(size.width/2, 0);
+      path.lineTo(size.width / 2, 0);
       path.lineTo(0, size.height);
     }
     path.close();

@@ -146,7 +146,7 @@ maybeSkipTimer(
       regularPadding: false,
       isDense: false,
       animationType: AnimType.TOPSLIDE,
-      clearBtn: FlatButton(
+      clearBtn: TextButton(
         child: Text(
           "Don't Skip",
         ),
@@ -154,7 +154,7 @@ maybeSkipTimer(
           Navigator.pop(context);
         },
       ),
-      colorBtn: RaisedButton(
+      colorBtn: ElevatedButton(
         child: Text(
           "Skip Break",
         ),
@@ -172,9 +172,9 @@ maybeSkipTimer(
 
 class UpdatingBreakSet extends StatelessWidget {
   UpdatingBreakSet({
-    @required this.trainingName,
-    @required this.selectedWaitTime,
-    @required this.exercise,
+    required this.trainingName,
+    required this.selectedWaitTime,
+    required this.exercise,
   });
 
   final String trainingName;
@@ -195,27 +195,26 @@ class UpdatingBreakSet extends StatelessWidget {
     );
 
     String timeWaited;
-    if(timePassed.inSeconds > 0){
+    if (timePassed.inSeconds > 0) {
       timeWaited = DurationFormat.format(
-      timePassed,
-      //no longer
-      showYears: false,
-      showMonths: false,
-      showWeeks: false,
-      showDays: false,
-      showHours: false,
-      //yes medium
-      showMinutes: true,
-      showSeconds: true,
-      //no tiny
-      showMilliseconds: false,
-      showMicroseconds: false,
-      //option
-      len: 2, //long
-      spaceBetween: true,
-    );
-    }
-    else{
+        timePassed,
+        //no longer
+        showYears: false,
+        showMonths: false,
+        showWeeks: false,
+        showDays: false,
+        showHours: false,
+        //yes medium
+        showMinutes: true,
+        showSeconds: true,
+        //no tiny
+        showMilliseconds: false,
+        showMicroseconds: false,
+        //option
+        len: 2, //long
+        spaceBetween: true,
+      );
+    } else {
       timeWaited = "0 seconds";
     }
 

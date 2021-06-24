@@ -12,9 +12,9 @@ class NameField extends StatelessWidget {
   NameField({
     this.editOneAtATime: false,
     this.nameFocusNode,
-    @required this.nameToUpdate,
-    @required this.showError,
-    @required this.autofocus,
+    required this.nameToUpdate,
+    required this.showError,
+    required this.autofocus,
     this.namePresent, //only needed when the save button is activated with this
     this.noteFocusNode,
   });
@@ -62,7 +62,7 @@ class NameField extends StatelessWidget {
 
 class _NamePopUpBody extends StatelessWidget {
   const _NamePopUpBody({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

@@ -142,7 +142,7 @@ maybeError(
         animationType: AnimType.BOTTOMSLIDE,
         clearBtn: timerNotStarted
             ? null
-            : FlatButton(
+            : TextButton(
                 child: Text(
                   "Revert Back",
                 ),
@@ -165,7 +165,7 @@ maybeError(
               ),
         colorBtn: timerNotStarted
             ? null
-            : RaisedButton(
+            : ElevatedButton(
                 child: Text(
                   "Let Me Fix It",
                 ),

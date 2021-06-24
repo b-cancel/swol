@@ -9,7 +9,7 @@ import 'package:swol/pages/learn/description.dart';
 //widget
 class ExperimentBody extends StatelessWidget {
   const ExperimentBody({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

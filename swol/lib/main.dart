@@ -202,7 +202,7 @@ class _GrabSystemDataState extends State<GrabSystemData> {
 //splash screen used as loading indicator below
 class SplashScreen extends StatefulWidget {
   const SplashScreen({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -277,7 +277,7 @@ class _SplashScreenState extends State<SplashScreen>
 class PumpingHeart extends StatefulWidget {
   // ignore: prefer_const_constructors_in_immutables
   PumpingHeart({
-    Key key,
+    Key? key,
     this.color,
     this.size = 50.0,
     this.itemBuilder,

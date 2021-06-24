@@ -3,10 +3,10 @@ import 'package:swol/pages/notes/fieldEditButtons.dart';
 
 class EditOneAtATimeButtons extends StatelessWidget {
   const EditOneAtATimeButtons({
-    Key key,
-    @required this.undo,
-    @required this.showTopButton,
-    @required this.isEditing,
+    Key? key,
+    required this.undo,
+    required this.showTopButton,
+    required this.isEditing,
   }) : super(key: key);
 
   final Function undo;
@@ -21,15 +21,15 @@ class EditOneAtATimeButtons extends StatelessWidget {
       ),
       child: ClipRRect(
         borderRadius: new BorderRadius.only(
-          topLeft:  const  Radius.circular(16.0),
-          bottomLeft: const  Radius.circular(16.0),
+          topLeft: const Radius.circular(16.0),
+          bottomLeft: const Radius.circular(16.0),
         ),
         child: FieldEditButtons(
           darkButtons: false,
           onPressTop: () => undo(),
           topIcon: Icons.undo,
           showTopButton: showTopButton,
-          onPressBottom: (){
+          onPressBottom: () {
             isEditing.value = !isEditing.value;
           },
           bottomIcon: (isEditing.value) ? Icons.check : Icons.edit,

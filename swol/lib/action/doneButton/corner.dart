@@ -1,5 +1,3 @@
-
-
 //flutter
 import 'package:flutter/material.dart';
 import 'package:swol/action/page.dart';
@@ -10,11 +8,11 @@ import 'package:swol/shared/widgets/simple/curvedCorner.dart';
 //widget
 class DoneCorner extends StatelessWidget {
   DoneCorner({
-    @required this.show,
-    @required this.color,
+    required this.show,
+    required this.color,
     //stay the same throughout
-    @required this.animationCurve,
-    @required this.isTop,
+    required this.animationCurve,
+    required this.isTop,
   });
 
   final bool show;
@@ -28,7 +26,7 @@ class DoneCorner extends StatelessWidget {
     double size = show ? 24 : 0;
     //just enough to show both animations
     //without the weird spikes
-    double portionOfScreen = 12; 
+    double portionOfScreen = 12;
     double xOffset = show ? 0 : -portionOfScreen;
     Matrix4 newTransform = Matrix4.translationValues(
       xOffset,
@@ -70,4 +68,3 @@ class DoneCorner extends StatelessWidget {
     );
   }
 }
-

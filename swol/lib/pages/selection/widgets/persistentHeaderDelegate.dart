@@ -3,12 +3,12 @@ import 'package:swol/shared/structs/anExercise.dart';
 
 class HeaderForOneHandedUse extends StatelessWidget {
   const HeaderForOneHandedUse({
-    Key key,
-    @required this.listOfGroupOfExercises,
-    @required this.openHeight,
-    @required this.newWorkoutSection,
-    @required this.hiddenWorkoutSection,
-    @required this.inprogressWorkoutSection,
+    Key? key,
+    required this.listOfGroupOfExercises,
+    required this.openHeight,
+    required this.newWorkoutSection,
+    required this.hiddenWorkoutSection,
+    required this.inprogressWorkoutSection,
   }) : super(key: key);
 
   final List<List<AnExercise>> listOfGroupOfExercises;
@@ -53,9 +53,9 @@ class PersistentHeaderDelegate extends SliverPersistentHeaderDelegate {
   int workoutCount;
 
   PersistentHeaderDelegate({
-    @required this.semiClosedHeight,
-    @required this.closedHeight,
-    @required this.openHeight,
+    required this.semiClosedHeight,
+    required this.closedHeight,
+    required this.openHeight,
     this.workoutCount: 0,
   });
 

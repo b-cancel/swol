@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 
 class Conditional extends StatelessWidget {
   Conditional({
-    @required this.condition,
-    @required this.ifTrue,
-    @required this.ifFalse,
+    required this.condition,
+    required this.ifTrue,
+    required this.ifFalse,
   });
 
   final bool condition;
@@ -13,7 +13,9 @@ class Conditional extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if(condition) return ifTrue;
-    else return ifFalse;
+    if (condition)
+      return ifTrue;
+    else
+      return ifFalse;
   }
 }

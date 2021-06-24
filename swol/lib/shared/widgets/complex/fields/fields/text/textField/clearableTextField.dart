@@ -11,12 +11,12 @@ import 'clearButton.dart';
 //widget
 class TextFieldWithClearButton extends StatefulWidget {
   const TextFieldWithClearButton({
-    Key key,
-    @required this.isName,
-    @required this.valueToUpdate,
-    @required this.hint,
-    @required this.error,
-    @required this.editOneAtAtTime,
+    Key? key,
+    required this.isName,
+    required this.valueToUpdate,
+    required this.hint,
+    required this.error,
+    required this.editOneAtAtTime,
     this.autofocus: false,
     this.focusNode, //If passed then use this
     this.present, //If passed then use this

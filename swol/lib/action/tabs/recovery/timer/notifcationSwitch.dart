@@ -13,7 +13,7 @@ import 'package:swol/shared/widgets/simple/notify.dart';
 //build
 class NotificationSwitch extends StatefulWidget {
   NotificationSwitch({
-    @required this.exercise,
+    required this.exercise,
   });
 
   final AnExercise exercise;

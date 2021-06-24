@@ -5,8 +5,8 @@ import 'package:swol/shared/widgets/simple/heros/curveMod.dart';
 
 class ExerciseTitleHero extends StatelessWidget {
   ExerciseTitleHero({
-    @required this.exercise,
-    @required this.inAppBar,
+    required this.exercise,
+    required this.inAppBar,
     this.onTap,
   });
 
@@ -20,7 +20,11 @@ class ExerciseTitleHero extends StatelessWidget {
     return Hero(
       tag: generatedTag,
       createRectTween: (begin, end) {
-        return CustomRectTween(a: begin, b: end);
+        if (begin != null && end != null) {
+          return CustomRectTween(a: begin, b: end);
+        } else {
+          return CustomRectTween();
+        }
       },
       flightShuttleBuilder: (
         BuildContext flightContext,
@@ -53,8 +57,8 @@ class ExerciseTitleHero extends StatelessWidget {
 
 class ExerciseTitleHeroHelper extends StatelessWidget {
   ExerciseTitleHeroHelper({
-    @required this.percentToAppBar,
-    @required this.exercise,
+    required this.percentToAppBar,
+    required this.exercise,
     this.onTap,
   });
 
@@ -72,7 +76,7 @@ class ExerciseTitleHeroHelper extends StatelessWidget {
           color: (percentToAppBar == 0 || percentToAppBar == 1)
               ? Colors.transparent
               : Color.lerp(
-                  Theme.of(context).cardColor, 
+                  Theme.of(context).cardColor,
                   Theme.of(context).primaryColor,
                   percentToAppBar,
                 ),

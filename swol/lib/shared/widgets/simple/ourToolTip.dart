@@ -5,13 +5,15 @@ import 'package:flutter/material.dart';
 import 'package:bot_toast/bot_toast.dart';
 
 //checked for text size modification
-showWidgetToolTip(BuildContext context, Widget widget, {
+showWidgetToolTip(
+  BuildContext context,
+  Widget widget, {
   int seconds: 4,
   PreferDirection direction: PreferDirection.topRight,
-}){
+}) {
   BotToast.showAttachedWidget(
     enableSafeArea: true,
-    attachedBuilder: (_){
+    attachedBuilder: (_) {
       return Card(
         color: Theme.of(context).scaffoldBackgroundColor,
         child: Padding(
@@ -28,10 +30,12 @@ showWidgetToolTip(BuildContext context, Widget widget, {
 }
 
 //function
-showToolTip(BuildContext context, String text, {
+showToolTip(
+  BuildContext context,
+  String text, {
   PreferDirection direction: PreferDirection.topRight,
   bool showIcon: true,
-}){
+}) {
   BotToast.showAttachedWidget(
     enableSafeArea: true,
     attachedBuilder: (_) => OurToolTip(
@@ -48,9 +52,9 @@ showToolTip(BuildContext context, String text, {
 //widget
 class OurToolTip extends StatelessWidget {
   const OurToolTip({
-    Key key,
-    @required this.text,
-    @required this.showIcon,
+    Key? key,
+    required this.text,
+    required this.showIcon,
   }) : super(key: key);
 
   final String text;
@@ -60,7 +64,7 @@ class OurToolTip extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
-      onTap: (){
+      onTap: () {
         BotToast.cleanAll();
       },
       child: Card(
@@ -86,14 +90,13 @@ class OurToolTip extends StatelessWidget {
             ),
             //this is what's actually important
             Flexible(
-              child: Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Text(
-                  text,
-                  maxLines: 3,
-                ),
-              )
-            ),
+                child: Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Text(
+                text,
+                maxLines: 3,
+              ),
+            )),
           ],
         ),
       ),

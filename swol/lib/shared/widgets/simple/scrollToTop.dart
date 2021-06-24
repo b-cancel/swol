@@ -12,9 +12,9 @@ import 'package:swol/shared/methods/vibrate.dart';
 //widget
 class ScrollToTopButton extends StatefulWidget {
   const ScrollToTopButton({
-    Key key,
-    @required this.onTop,
-    @required this.autoScrollController,
+    Key? key,
+    required this.onTop,
+    required this.autoScrollController,
   }) : super(key: key);
 
   final ValueNotifier<bool> onTop;
@@ -25,8 +25,8 @@ class ScrollToTopButton extends StatefulWidget {
 }
 
 class _ScrollToTopButtonState extends State<ScrollToTopButton> {
-  updateState(){
-    if(mounted) setState((){});
+  updateState() {
+    if (mounted) setState(() {});
   }
 
   @override
@@ -50,19 +50,20 @@ class _ScrollToTopButtonState extends State<ScrollToTopButton> {
       child: Container(
         alignment: Alignment.bottomCenter,
         padding: EdgeInsets.only(bottom: 16),
-        child:  AnimatedContainer(
+        child: AnimatedContainer(
           duration: ExercisePage.transitionDuration,
           transform: Matrix4.translation(
             vect.Vector3(
-              0, 
-              (widget.onTop.value) ? (16.0 + 56) : 0.0, 
+              0,
+              (widget.onTop.value) ? (16.0 + 56) : 0.0,
               0,
             ),
           ),
           child: FloatingActionButton(
             heroTag: 'toTop',
-            backgroundColor: Theme.of(context).primaryColorDark.withOpacity(0.5),
-            onPressed: (){
+            backgroundColor:
+                Theme.of(context).primaryColorDark.withOpacity(0.5),
+            onPressed: () {
               Vibrator.vibrateOnce();
               //scrollToIndex -> too slow to find index
               //jumpTo -> happens instant but scrolling to top should have some animation
@@ -73,7 +74,7 @@ class _ScrollToTopButtonState extends State<ScrollToTopButton> {
             child: FittedBox(
               fit: BoxFit.contain,
               child: Transform.translate(
-                offset: Offset(0,-12), //-4),
+                offset: Offset(0, -12), //-4),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[

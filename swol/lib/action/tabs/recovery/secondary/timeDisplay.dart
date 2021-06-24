@@ -13,16 +13,16 @@ import 'package:swol/shared/widgets/simple/ourToolTip.dart';
 //showing time in a semi nice format for both timer and stopwatch widgets
 class TimeDisplay extends StatelessWidget {
   const TimeDisplay({
-    Key key,
-    @required this.textContainerSize,
-    @required this.topNumber,
+    Key? key,
+    required this.textContainerSize,
+    required this.topNumber,
     this.topArrowUp,
-    @required this.breakTime,
-    @required this.timePassed,
+    required this.breakTime,
+    required this.timePassed,
     this.showBottomArrow: false,
-    @required this.isTimer,
+    required this.isTimer,
     this.showIcon: false,
-    @required this.changeTimeWidget,
+    required this.changeTimeWidget,
   }) : super(key: key);
 
   final double textContainerSize;
@@ -39,16 +39,17 @@ class TimeDisplay extends StatelessWidget {
   Widget build(BuildContext context) {
     //based on all the calculated variables above show the various numbers
     List<String> passedStrings = durationToCustomDisplay(timePassed);
-    String passedString = passedStrings[0] +" : " +passedStrings[1]; 
-    
+    String passedString = passedStrings[0] + " : " + passedStrings[1];
+
     //calculate triangle bits
-    Widget topTriangle = (topArrowUp == null) ? Container()
-    : Container(
-      child: FittedBox(
-        fit: BoxFit.contain,
-        child: topArrowUp ? TriangleUp() : TriangleDown(),
-      ),
-    );
+    Widget topTriangle = (topArrowUp == null)
+        ? Container()
+        : Container(
+            child: FittedBox(
+              fit: BoxFit.contain,
+              child: topArrowUp ? TriangleUp() : TriangleDown(),
+            ),
+          );
 
     //reurn
     return Transform.translate(
@@ -68,7 +69,9 @@ class TimeDisplay extends StatelessWidget {
                     bottom: (isTimer) ? 0 : 16,
                   ),
                   child: Icon(
-                    isTimer ? Ionicons.getIconData("ios-timer") : Ionicons.getIconData("ios-stopwatch"),
+                    isTimer
+                        ? Ionicons.getIconData("ios-timer")
+                        : Ionicons.getIconData("ios-stopwatch"),
                     color: Theme.of(context).primaryColor,
                     size: 48,
                   ),
@@ -78,7 +81,9 @@ class TimeDisplay extends StatelessWidget {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
-                  mainAxisAlignment: topArrowUp == true ? MainAxisAlignment.start : MainAxisAlignment.end,
+                  mainAxisAlignment: topArrowUp == true
+                      ? MainAxisAlignment.start
+                      : MainAxisAlignment.end,
                   children: <Widget>[
                     Visibility(
                       visible: topArrowUp == true,
@@ -93,7 +98,9 @@ class TimeDisplay extends StatelessWidget {
                         child: InkWell(
                           onTap: () => showToolTip(
                             context,
-                            topArrowUp ? "Extra Time Waited" : "Time Left To Wait",
+                            topArrowUp
+                                ? "Extra Time Waited"
+                                : "Time Left To Wait",
                             direction: PreferDirection.topCenter,
                             showIcon: false,
                           ),
@@ -191,8 +198,8 @@ class EditIcon extends StatelessWidget {
     this.invisible: false,
     this.showArrow: false,
     this.roundedRight: false,
-    @required this.text,
-    Key key,
+    required this.text,
+    Key? key,
   }) : super(key: key);
 
   final bool invisible;
@@ -202,7 +209,8 @@ class EditIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Color borderColor = invisible ? Colors.transparent : Theme.of(context).primaryColor;
+    Color borderColor =
+        invisible ? Colors.transparent : Theme.of(context).primaryColor;
     BorderSide borderSide = BorderSide(
       color: borderColor,
       width: 2,
@@ -211,30 +219,30 @@ class EditIcon extends StatelessWidget {
     //build
     return Container(
       decoration: BoxDecoration(
-        border: Border.fromBorderSide(
-          borderSide,
-        ),
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(8),
-          bottomLeft: Radius.circular(8),
-          bottomRight: Radius.circular(roundedRight ? 8 : 0),
-          topRight: Radius.circular(roundedRight ? 8 : 0),
-        )
-      ),
+          border: Border.fromBorderSide(
+            borderSide,
+          ),
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(8),
+            bottomLeft: Radius.circular(8),
+            bottomRight: Radius.circular(roundedRight ? 8 : 0),
+            topRight: Radius.circular(roundedRight ? 8 : 0),
+          )),
       child: IntrinsicWidth(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            showArrow == false ? Container() 
-            : Container(
-              height: 6,
-              child: TriangleUp(
-                //anything larger than 12 makes no difference
-                widthDivisor: 12, 
-              ),
-            ),
+            showArrow == false
+                ? Container()
+                : Container(
+                    height: 6,
+                    child: TriangleUp(
+                      //anything larger than 12 makes no difference
+                      widthDivisor: 12,
+                    ),
+                  ),
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
@@ -254,19 +262,20 @@ class EditIcon extends StatelessWidget {
                     ),
                   ),
                 ),
-                (invisible) ? Container() : Container(
-                  padding: EdgeInsets.all(2),
-                  decoration: BoxDecoration(
-                    border: Border(
-                      left: borderSide,
-                    )
-                  ),
-                  child: Icon(
-                    Icons.edit,
-                    size: 18,
-                    color: borderColor,
-                  ),
-                ),
+                (invisible)
+                    ? Container()
+                    : Container(
+                        padding: EdgeInsets.all(2),
+                        decoration: BoxDecoration(
+                            border: Border(
+                          left: borderSide,
+                        )),
+                        child: Icon(
+                          Icons.edit,
+                          size: 18,
+                          color: borderColor,
+                        ),
+                      ),
               ],
             ),
           ],

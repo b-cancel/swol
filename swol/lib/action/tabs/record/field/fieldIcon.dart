@@ -7,12 +7,12 @@ import 'package:swol/action/shared/tooltips/setToolTips.dart';
 //widget
 class TappableIcon extends StatefulWidget {
   const TappableIcon({
-    Key key,
-    @required this.focusNode,
-    @required this.iconSize,
-    @required this.borderSize,
-    @required this.icon,
-    @required this.isLeft,
+    Key? key,
+    required this.focusNode,
+    required this.iconSize,
+    required this.borderSize,
+    required this.icon,
+    required this.isLeft,
   }) : super(key: key);
 
   final FocusNode focusNode;
@@ -54,10 +54,9 @@ class _TappableIconState extends State<TappableIcon> {
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: () {
-        if (widget.isLeft){
+        if (widget.isLeft) {
           showWeightToolTip(context);
-        }
-        else{
+        } else {
           showRepsToolTip(context);
         }
       },
@@ -72,7 +71,9 @@ class _TappableIconState extends State<TappableIcon> {
           width: widget.iconSize,
           height: widget.iconSize,
           decoration: BoxDecoration(
-            color: widget.focusNode.hasFocus ? Theme.of(context).accentColor : Colors.transparent,
+            color: widget.focusNode.hasFocus
+                ? Theme.of(context).accentColor
+                : Colors.transparent,
             borderRadius: BorderRadius.only(
               topRight: widget.isLeft ? tinyCurve : Radius.zero,
               bottomLeft: widget.isLeft ? Radius.zero : tinyCurve,
@@ -92,7 +93,9 @@ class _TappableIconState extends State<TappableIcon> {
                       Offset(widget.borderSize * (widget.isLeft ? -1 : 1), 0),
                   child: Container(
                     decoration: BoxDecoration(
-                      color: widget.focusNode.hasFocus ? Theme.of(context).accentColor : Theme.of(context).cardColor,
+                      color: widget.focusNode.hasFocus
+                          ? Theme.of(context).accentColor
+                          : Theme.of(context).cardColor,
                       borderRadius: BorderRadius.only(
                         topRight: widget.isLeft ? tinyCurve : Radius.zero,
                         bottomLeft: widget.isLeft ? Radius.zero : tinyCurve,

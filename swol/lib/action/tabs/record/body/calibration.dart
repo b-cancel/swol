@@ -9,7 +9,7 @@ import 'package:swol/shared/functions/goldenRatio.dart';
 //widget
 class CalibrationHeader extends StatelessWidget {
   CalibrationHeader({
-    @required this.header,
+    required this.header,
   });
 
   final String header;

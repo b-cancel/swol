@@ -8,9 +8,9 @@ import 'package:swol/other/otherHelper.dart';
 //widget
 class CircleProgress extends StatelessWidget {
   CircleProgress({
-    @required this.fullRed,
-    @required this.startTime,
-    @required this.recoveryPeriod,
+    required this.fullRed,
+    required this.startTime,
+    required this.recoveryPeriod,
   });
 
   final bool fullRed;
@@ -19,14 +19,13 @@ class CircleProgress extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if(fullRed){
+    if (fullRed) {
       return Container(
         width: 1,
         height: 1,
         color: Colors.red,
       );
-    }
-    else{
+    } else {
       //time calcs
       DateTime timerStarted = startTime;
       Duration timePassed = DateTime.now().difference(timerStarted);
@@ -37,8 +36,10 @@ class CircleProgress extends StatelessWidget {
       double timePassedAngle = (timeToLerpValue(timePassed)).clamp(0.0, 1.0);
 
       //create angles
-      double firstAngle = (thereIsStillTime ? timePassedAngle : timeSetAngle) * 360;
-      double secondAngle = (thereIsStillTime ? timeSetAngle : timePassedAngle) * 360;
+      double firstAngle =
+          (thereIsStillTime ? timePassedAngle : timeSetAngle) * 360;
+      double secondAngle =
+          (thereIsStillTime ? timeSetAngle : timePassedAngle) * 360;
 
       //output
       return Container(
@@ -55,7 +56,8 @@ class CircleProgress extends StatelessWidget {
             TriangleAngle(
               start: firstAngle,
               end: secondAngle,
-              color: thereIsStillTime ? Theme.of(context).accentColor : Colors.red,
+              color:
+                  thereIsStillTime ? Theme.of(context).accentColor : Colors.red,
               size: 1,
             ),
           ],

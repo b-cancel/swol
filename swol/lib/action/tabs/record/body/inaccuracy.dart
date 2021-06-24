@@ -16,9 +16,9 @@ import 'package:swol/other/functions/W&R=1RM.dart';
 //widget
 class InaccuracyCalculator extends StatefulWidget {
   const InaccuracyCalculator({
-    Key key,
-    @required this.exercise,
-    @required this.predictionID,
+    Key? key,
+    required this.exercise,
+    required this.predictionID,
   }) : super(key: key);
 
   final AnExercise exercise;
@@ -114,8 +114,8 @@ class WaitingForValid extends StatelessWidget {
 //and when we go into this we KNOW that our last set stuff is set
 class PercentOff extends StatefulWidget {
   PercentOff({
-    @required this.exercise,
-    @required this.predictionID,
+    required this.exercise,
+    required this.predictionID,
   });
 
   final AnExercise exercise;
@@ -126,9 +126,9 @@ class PercentOff extends StatefulWidget {
 }
 
 class _PercentOffState extends State<PercentOff> {
-  List<double> oneRepMaxes = new List<double>(8);
-  List<int> functionIdToPercentDifferences = new List<int>(8);
-  List<int> functionIdToPercentDifferencesAbsolute = new List<int>(8);
+  List<double> oneRepMaxes = [8];
+  List<int> functionIdToPercentDifferences = [8];
+  List<int> functionIdToPercentDifferencesAbsolute = [8];
   Map<int, List<int>> absDifferenceTofunctionID = new Map<int, List<int>>();
   int smallestAbsDifference;
   int ourIndex;
@@ -166,9 +166,11 @@ class _PercentOffState extends State<PercentOff> {
 
       //keep counter
       if (absDifferenceTofunctionID.containsKey(absDifference) == false) {
-        absDifferenceTofunctionID[absDifference] = new List<int>();
+        absDifferenceTofunctionID[absDifference] = [];
       }
-      absDifferenceTofunctionID[absDifference].add(functionID);
+      if (absDifferenceTofunctionID[absDifference] != null) {
+        absDifferenceTofunctionID[absDifference]!.add(functionID);
+      }
     }
 
     //get the smallest difference
@@ -216,7 +218,7 @@ class _PercentOffState extends State<PercentOff> {
 
           //initialize list
           if (distToFunctionIDs.containsKey(distanceFromUs) == false) {
-            distToFunctionIDs[distanceFromUs] = new List<int>();
+            distToFunctionIDs[distanceFromUs] = [];
           }
 
           //add to list
@@ -237,7 +239,7 @@ class _PercentOffState extends State<PercentOff> {
               ExercisePage.orderedIDs.value.indexOf(closestFunctionID);
         } else {
           //get all the indices of the valid function
-          List<int> validIndices = new List<int>(validFunctionIDs.length);
+          List<int> validIndices = [validFunctionIDs.length];
           for (int index = 0; index < validFunctionIDs.length; index++) {
             int functionID = validFunctionIDs[index];
             validIndices[index] =

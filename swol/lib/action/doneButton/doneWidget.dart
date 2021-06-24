@@ -38,9 +38,9 @@ enum Complete { ForgotToFinish, DeleteNewSet, Normal }
 
 class FloatingDoneButton extends StatefulWidget {
   FloatingDoneButton({
-    @required this.exercise,
-    @required this.animationCurve,
-    @required this.cardColor,
+    required this.exercise,
+    required this.animationCurve,
+    required this.cardColor,
   });
 
   final AnExercise exercise;
@@ -53,9 +53,9 @@ class FloatingDoneButton extends StatefulWidget {
 
 class _FloatingDoneButtonState extends State<FloatingDoneButton> {
   //show and hides entire button
-  bool showButton; 
+  bool showButton;
   //required so gestures wouldn't be registered by the hidden box
-  bool fullyHidden; 
+  bool fullyHidden;
 
   //whether or not this particular page wants the button to show
   bool shouldShow() {
@@ -71,8 +71,7 @@ class _FloatingDoneButtonState extends State<FloatingDoneButton> {
 
     if (pageWithButton) {
       return nullTSC == false;
-    }
-    else {
+    } else {
       //the page that usually doesn't have a done button
       //does have the done button but only for the calibration set
       //and only if all other conditions are met
@@ -264,7 +263,8 @@ class _FloatingDoneButtonState extends State<FloatingDoneButton> {
                               completeSets(
                                 setsPassedFromHere,
                                 //only if we forgot to finish are temps ALREADY null
-                                setTempsToNull: completionType != Complete.ForgotToFinish,
+                                setTempsToNull:
+                                    completionType != Complete.ForgotToFinish,
                                 //only if we are completing under normal circumstances
                                 //do we also have to copy the temp variables and save them to last
                                 tempToLast: completionType == Complete.Normal,
@@ -366,12 +366,12 @@ class _FloatingDoneButtonState extends State<FloatingDoneButton> {
 
 class WrappedInDarkness extends StatelessWidget {
   const WrappedInDarkness({
-    Key key,
-    @required this.showButton,
-    @required this.cardColor,
-    @required this.setsPassedFromHere,
-    @required this.excerciseID,
-    @required this.animationCurve,
+    Key? key,
+    required this.showButton,
+    required this.cardColor,
+    required this.setsPassedFromHere,
+    required this.excerciseID,
+    required this.animationCurve,
   }) : super(key: key);
 
   final bool showButton;

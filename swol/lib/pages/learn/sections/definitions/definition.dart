@@ -39,9 +39,9 @@ class ADefinition extends StatelessWidget {
 
 class _DefinitionOfWord extends StatelessWidget {
   const _DefinitionOfWord({
-    Key key,
-    @required this.definition,
-    @required this.extra,
+    Key? key,
+    required this.definition,
+    required this.extra,
   }) : super(key: key);
 
   final List<TextSpan> definition;
@@ -125,8 +125,8 @@ class _DefinitionOfWord extends StatelessWidget {
 
 class _WordToDefine extends StatelessWidget {
   const _WordToDefine({
-    Key key,
-    @required this.word,
+    Key? key,
+    required this.word,
   }) : super(key: key);
 
   final String word;

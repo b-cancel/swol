@@ -8,11 +8,11 @@ import 'package:swol/shared/widgets/simple/heros/curveMod.dart';
 //widget
 class BottomNextButton extends StatelessWidget {
   const BottomNextButton({
-    Key key,
-    @required this.color,
-    @required this.forwardAction,
-    @required this.forwardActionWidget,
-    @required this.exerciseID,
+    Key? key,
+    required this.color,
+    required this.forwardAction,
+    required this.forwardActionWidget,
+    required this.exerciseID,
   }) : super(key: key);
 
   final Color color;
@@ -48,8 +48,12 @@ class BottomNextButton extends StatelessWidget {
           //this is the actuall button with stuff in it
           child: Hero(
             tag: "exerciseContinue" + exerciseID.toString(),
-            createRectTween: (begin, end) {
-              return CustomRectTween(a: begin, b: end);
+            createRectTween: (Rect? begin, Rect? end) {
+              if (begin != null && end != null) {
+                return CustomRectTween(a: begin, b: end);
+              } else {
+                return CustomRectTween();
+              }
             },
             child: Material(
               color: Colors.transparent,
