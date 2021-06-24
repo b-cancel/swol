@@ -14,7 +14,7 @@ class AnimatedMiniNormalTimer extends StatefulWidget {
   });
 
   final AnExercise exercise;
-  final DateTime startTime;
+  final DateTime? startTime;
 
   @override
   _AnimatedMiniNormalTimerState createState() =>
@@ -24,8 +24,8 @@ class AnimatedMiniNormalTimer extends StatefulWidget {
 class _AnimatedMiniNormalTimerState extends State<AnimatedMiniNormalTimer>
     with SingleTickerProviderStateMixin {
   final Duration maxDuration = const Duration(minutes: 5);
-  AnimationController controller;
-  DateTime startTime;
+  late AnimationController controller;
+  late DateTime startTime;
 
   //function removable from listeners
   updateState() {

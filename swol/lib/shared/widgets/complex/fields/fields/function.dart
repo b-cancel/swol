@@ -206,23 +206,25 @@ class _FunctionDropDownState extends State<FunctionDropDown> {
         isExpanded: true,
         iconSize: 24,
         elevation: 16,
-        onChanged: (int newValue) {
-          Vibrator.vibrateOnce();
-          setState(() {
-            widget.functionID.value = newValue;
-          });
+        onChanged: (int? newValue) {
+          if (newValue != null) {
+            Vibrator.vibrateOnce();
+            setState(() {
+              widget.functionID.value = newValue;
+            });
+          }
         },
         items: Functions
             .repTargetToFunctionIndicesOrder[selectedFunctionOrder.value]
-            .map<DropdownMenuItem<int>>((int functionID) {
+            ?.map<DropdownMenuItem<int>>((int functionID) {
           bool selected = (functionID == widget.functionID.value);
           String thisFunctionString = Functions.functions[functionID];
 
           //indices
           int idAtEnd = Functions
-              .repTargetToFunctionIndicesOrder[selectedFunctionOrder.value][0];
+              .repTargetToFunctionIndicesOrder[selectedFunctionOrder.value]![0];
           int idAtStart = Functions
-              .repTargetToFunctionIndicesOrder[selectedFunctionOrder.value][7];
+              .repTargetToFunctionIndicesOrder[selectedFunctionOrder.value]![7];
 
           //widget
           return DropdownMenuItem<int>(

@@ -20,12 +20,12 @@ class NameField extends StatelessWidget {
   });
 
   final bool editOneAtATime;
-  final FocusNode nameFocusNode;
+  final FocusNode? nameFocusNode;
   final ValueNotifier<String> nameToUpdate;
   final ValueNotifier<bool> showError;
   final bool autofocus;
-  final ValueNotifier<bool> namePresent;
-  final FocusNode noteFocusNode;
+  final ValueNotifier<bool>? namePresent;
+  final FocusNode? noteFocusNode;
 
   @override
   Widget build(BuildContext context) {

@@ -27,7 +27,7 @@ class RepTargetField extends StatefulWidget {
 }
 
 class _RepTargetFieldState extends State<RepTargetField> {
-  ValueNotifier<Duration> repTargetDuration;
+  late ValueNotifier<Duration> repTargetDuration;
 
   repTargetUpdate() {
     //update duration that is used by tick slider

@@ -95,8 +95,8 @@ class _ExerciseTileSubtitleState extends State<ExerciseTileSubtitle> {
         //estimate one rep max
         List oneRepMaxValues = Functions.getOneRepMaxValues(
           //we KNOW both are VALID
-          widget.exercise.lastWeight,
-          widget.exercise.lastReps,
+          widget.exercise.lastWeight!,
+          widget.exercise.lastReps!,
         );
 
         //update onRepMaxWidget

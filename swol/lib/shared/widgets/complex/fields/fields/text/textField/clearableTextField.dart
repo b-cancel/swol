@@ -15,7 +15,7 @@ class TextFieldWithClearButton extends StatefulWidget {
     required this.isName,
     required this.valueToUpdate,
     required this.hint,
-    required this.error,
+    this.error,
     required this.editOneAtAtTime,
     this.autofocus: false,
     this.focusNode, //If passed then use this
@@ -26,12 +26,12 @@ class TextFieldWithClearButton extends StatefulWidget {
   final bool isName;
   final ValueNotifier<String> valueToUpdate;
   final String hint;
-  final String error;
+  final String? error;
   final bool editOneAtAtTime;
   final bool autofocus;
-  final FocusNode focusNode;
-  final ValueNotifier<bool> present;
-  final FocusNode noteFocusNode;
+  final FocusNode? focusNode;
+  final ValueNotifier<bool>? present;
+  final FocusNode? noteFocusNode;
 
   @override
   _TextFieldWithClearButtonState createState() =>
@@ -40,24 +40,21 @@ class TextFieldWithClearButton extends StatefulWidget {
 
 class _TextFieldWithClearButtonState extends State<TextFieldWithClearButton> {
   TextEditingController ctrl = new TextEditingController();
-  ValueNotifier<bool> isEditing;
+  late ValueNotifier<bool> isEditing;
   ValueNotifier<FocusNode> focusNodeVN = new ValueNotifier(new FocusNode());
-  ValueNotifier<bool> present;
+  late ValueNotifier<bool> present;
 
   //init
   @override
   void initState() {
     //set isEditing init
-    if (widget.editOneAtAtTime)
-      isEditing = new ValueNotifier(false);
-    else
-      isEditing = new ValueNotifier(true);
+    isEditing = new ValueNotifier(widget.editOneAtAtTime ? false : true);
 
     //handle focus passed or not
     if (widget.focusNode == null) {
       focusNodeVN.value = new FocusNode();
     } else
-      focusNodeVN.value = widget.focusNode;
+      focusNodeVN.value = widget.focusNode!;
 
     //set the initial value of the fields
     setCtrlWithValue();
@@ -69,7 +66,7 @@ class _TextFieldWithClearButtonState extends State<TextFieldWithClearButton> {
     if (widget.present == null) {
       present = new ValueNotifier(ctrl.text != "");
     } else
-      present = widget.present;
+      present = widget.present!;
 
     //handle autofocus
     //autofocus name

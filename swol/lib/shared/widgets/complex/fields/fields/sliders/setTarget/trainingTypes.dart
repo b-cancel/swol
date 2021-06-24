@@ -27,13 +27,13 @@ class SetTargetToTrainingTypeIndicator extends StatefulWidget {
 
 class _SetTargetToTrainingTypeIndicatorState
     extends State<SetTargetToTrainingTypeIndicator> {
-  int section;
+  late int section;
   ScrollController controller = new ScrollController();
 
   setTargetToSection() {
-    if (widget.setTarget.value > 7)
+    if (widget.setTarget.value > 7) {
       section = 4;
-    else {
+    } else {
       section = widget.setTarget.value - 3;
       section = (section < 0) ? 0 : section;
     }
@@ -217,7 +217,7 @@ class Tick extends StatefulWidget {
 }
 
 class _TickState extends State<Tick> {
-  bool tickActive;
+  late bool tickActive;
 
   updateState() {
     if (mounted) {

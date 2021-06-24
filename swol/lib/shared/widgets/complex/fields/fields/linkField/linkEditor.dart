@@ -20,7 +20,7 @@ class LinkEditor extends StatefulWidget {
 
   //params
   final bool editOneAtATime;
-  final ValueNotifier<String> url;
+  final ValueNotifier<String?> url;
 
   @override
   _LinkEditorState createState() => _LinkEditorState();
@@ -83,7 +83,7 @@ class _LinkEditorState extends State<LinkEditor> {
     bool showPasteButton = showEditButtons;
 
     //ez condition
-    bool emptyUrl = (widget.url.value == null || widget.url.value.length == 0);
+    bool emptyUrl = (widget.url.value == null || widget.url.value!.length == 0);
 
     //normal widget
     Widget normalOne = Row(
@@ -188,7 +188,7 @@ class ConfirmOrClear extends StatelessWidget {
 
   final ValueNotifier<bool> isEditing;
   final bool editOneAtATime;
-  final ValueNotifier<String> url;
+  final ValueNotifier<String?> url;
 
   @override
   Widget build(BuildContext context) {
@@ -214,7 +214,7 @@ class LaunchLinkButton extends StatelessWidget {
     required this.showWarning,
   });
 
-  final ValueNotifier<String> url;
+  final ValueNotifier<String?> url;
   final Function showWarning;
 
   @override
@@ -226,16 +226,19 @@ class LaunchLinkButton extends StatelessWidget {
           primary: Theme.of(context).backgroundColor,
         ),
         onPressed: () async {
-          if (await canLaunch(url.value)) {
+          if (url.value != null && await canLaunch(url.value!)) {
             //launch the launchable url
-            await launch(url.value);
-          } else
+            await launch(url.value!);
+          } else {
             showWarning("Could Not Open Link");
+          }
         },
         child: Container(
           padding: EdgeInsets.all(8),
           child: Text(
-            (url.value == "") ? 'Tap Paste to add the link' : url.value,
+            (url.value == null || url.value == "")
+                ? 'Tap Paste to add the link'
+                : url.value!,
             style: TextStyle(
               color: (url.value == "") ? Colors.grey : Colors.white,
             ),
@@ -257,7 +260,7 @@ class _PasteButton extends StatelessWidget {
     required this.editingOneAtATime,
   }) : super(key: key);
 
-  final ValueNotifier<String> url;
+  final ValueNotifier<String?> url;
   final bool emptyUrl;
   final ValueNotifier<bool> isEditing;
   final Function showWarning;
@@ -280,7 +283,7 @@ class _PasteButton extends StatelessWidget {
         Clipboard.getData('text/plain').then((clipboardContent) {
           if (clipboardContent?.text != null) {
             //pass new url text
-            url.value = clipboardContent.text;
+            url.value = clipboardContent?.text ?? "";
 
             //cause reload
             if (editingOneAtATime) {

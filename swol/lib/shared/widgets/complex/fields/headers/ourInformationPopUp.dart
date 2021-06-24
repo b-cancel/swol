@@ -11,8 +11,8 @@ import 'package:swol/shared/widgets/simple/ourHeaderIconPopUp.dart';
 //widget
 infoPopUpFunction(
   BuildContext context, {
-  String title,
-  String subtitle,
+  String? title,
+  String? subtitle,
   required Widget body,
   isDense: false,
 }) {

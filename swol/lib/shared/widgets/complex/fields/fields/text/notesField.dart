@@ -17,7 +17,7 @@ class NotesField extends StatelessWidget {
 
   final bool editOneAtATime;
   final ValueNotifier<String> noteToUpdate;
-  final FocusNode noteFocusNode;
+  final FocusNode? noteFocusNode;
 
   @override
   Widget build(BuildContext context) {

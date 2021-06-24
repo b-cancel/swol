@@ -125,7 +125,7 @@ class Pill extends StatefulWidget {
 }
 
 class _PillState extends State<Pill> {
-  bool active;
+  late bool active;
 
   setTargetToActive() {
     active = widget.actives.contains(widget.setTarget.value);
