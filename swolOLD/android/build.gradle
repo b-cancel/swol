@@ -1,0 +1,64 @@
+buildscript {
+    repositories {
+        google()
+        jcenter()
+    }
+
+    dependencies {
+        //used to be 3.2.1
+        classpath 'com.android.tools.build:gradle:3.3.1'
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        jcenter()
+    }
+}
+
+rootProject.buildDir = '../build'
+subprojects {
+    project.buildDir = "${rootProject.buildDir}/${project.name}"
+}
+subprojects {
+    project.evaluationDependsOn(':app')
+}
+
+//code from
+//https://github.com/flutter/flutter/issues/27254#issuecomment-461692152
+//that I got from
+//https://github.com/flutter/flutter/issues/27679
+//still warnings but not it builds
+/*
+Launching lib\main.dart on SM G973U in debug mode...
+warning: unknown enum constant Scope.LIBRARY_GROUP_PREFIX
+warning: unknown enum constant Scope.LIBRARY_GROUP_PREFIX
+warning: unknown enum constant Scope.LIBRARY_GROUP_PREFIX
+3 warnings
+Note: C:\Users\bryan\AppData\Roaming\Pub\Cache\hosted\pub.dartlang.org\path_provider-1.6.1\android\src\main\java\io\flutter\plugins\pathprovider\PathProviderPlugin.java uses or overrides a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+C:\Users\bryan\AppData\Roaming\Pub\Cache\hosted\pub.dartlang.org\shared_preferences-0.5.6+2\android\src\main\java\io\flutter\plugins\sharedpreferences\SharedPreferencesPlugin.java:25: warning: [deprecation] getFlutterEngine() in FlutterPluginBinding has been deprecated
+    setupChannel(binding.getFlutterEngine().getDartExecutor(), binding.getApplicationContext());
+                        ^
+1 warning
+Note: Some input files use or override a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+√ Built build\app\outputs\apk\debug\app-debug.apk.
+*/
+/*
+subprojects {
+    project.configurations.all {
+	resolutionStrategy.eachDependency { details ->
+            if (details.requested.group == 'androidx.core' &&
+	       !details.requested.name.contains('androidx')) {
+		details.useVersion "1.0.1"
+            }
+	}
+    }    
+}
+*/
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}

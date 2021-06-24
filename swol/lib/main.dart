@@ -11,7 +11,6 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:feature_discovery/feature_discovery.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:bot_toast/bot_toast.dart';
 
 //internal: shared

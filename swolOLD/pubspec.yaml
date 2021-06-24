@@ -1,0 +1,201 @@
+name: swol
+description: A new Flutter project.
+
+# The following defines the version and build number for your application.
+# A version number is three numbers separated by dots, like 1.2.43
+# followed by an optional build number separated by a +.
+# Both the version and the builder number may be overridden in flutter
+# build by specifying --build-name and --build-number, respectively.
+# In Android, build-name is used as versionName while build-number used as versionCode.
+# Read more about Android versioning at https://developer.android.com/studio/publish/versioning
+# In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
+# Read more about iOS versioning at
+# https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.1.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  #get application path for android and IOS
+  #seems to only work for mobile
+  #find alternative for web (https://pub.dev/packages/async_resource)
+  path_provider:  ^2.0.1
+
+  #request permission for both the vibration and notifiations
+  permission_handler: ^6.1.1
+
+  #LAUNCH URL (has web method but I need to implement and test)
+  #https://github.com/flutter/plugins/tree/master/packages/url_launcher/url_launcher_web
+  #NOTE: alternative methods exist
+  url_launcher: ^6.0.3
+
+  #notify users their break is done
+  flutter_local_notifications: ^5.0.0+1
+
+  #VIBRATION
+  #vibration: ^1.7.3
+
+  #feature discovery
+  feature_discovery: ^0.14.0 #I THINK MAY CAUSE WEB ISSUES (wait on response)
+
+  #SETTINGS
+  shared_preferences: ^2.0.5 #CONFIRMED NO ISSUES AFTER 0.5.6 (m)
+
+  #toast (work as customizable tool tips)
+  bot_toast: ^4.0.1
+
+  #inidicate that a list is a list
+  flutter_staggered_animations: ^1.0.0
+
+  loading_indicator: ^2.0.1
+
+  #TODO: check updates above
+  #-------------------------ABOVE PROBLEMATIC-------------------------
+
+  #PICKER (for time picking)
+  flutter_picker: ^1.1.0 #WEB ISSUES
+
+  #used so that gifs only play once
+  #PROBABLY WILL CAUSE WEB ISSUES 
+  #but since only Flutter Tag maybe Flutter also works?
+  flutter_gifimage: ^1.0.1 
+
+  #STATUS AND NAVIGATION BAR
+  #flutter_statusbarcolor: ^0.2.3 #MAYBE WEB ISSUES
+
+  #-------------------------ABOVE MAYBE PROBLEMATIC-------------------------
+
+  #ICONS
+  font_awesome_flutter: ^8.4.0 #MAYBE WEB ISSUES (repair know)
+
+  #double chevron shimmer
+  shimmer: ^1.0.1
+
+  #info pop up
+  awesome_dialog: ^0.1.3
+
+  #custom clipper
+  flutter_custom_clippers: ^1.1.0
+
+  #swiper
+  #flutter_swiper: ^1.1.6 #100rated (alternate)
+  carousel_slider: ^3.0.0 #100rated
+
+  #progress indicators (pulse)
+  progress_indicators: ^0.1.4
+  loading_indicator_view: ^1.1.0
+  flutter_spinkit: ^4.0.0
+
+  #ANIMATION (for rotating arrow in expandable tile)
+  animator: ^1.0.0+1
+
+  #AUTO SIZE TEXT (might need it later)
+  auto_size_text: ^2.1.0
+
+  #STRING PROCESS (for search)
+  diacritic: ^0.1.1
+
+  #SLIDER
+  flutter_xlider: ^2.5.2
+  intl: ^0.15.8
+
+  #STICKY HEADERS (nothing older works)
+  flutter_sticky_header: ^0.4.0 
+
+  #SCROLL TO TOP (for my expandable)
+  scroll_to_index: '1.0.2' 
+
+  #LOADING (for big timer)
+  liquid_progress_indicator: ^0.3.2
+
+  #regular old icon
+  flutter_icons: ^0.3.1
+
+  #TRANSITIONS
+  page_transition: ^1.1.5
+  #animations: ^1.0.0+5 #TODO use for improvements later
+
+flutter_native_splash:
+  image: assets/splash/splashCut.png
+  color: "000000"
+  # fill: true
+  # android_disable_fullscreen: false
+
+flutter_icons:
+  android: "launcher_icon" 
+  ios: true
+  #Required but not used if adaptive icons are supported
+  image_path: "assets/launcher/icon2.png"
+  adaptive_icon_foreground: "assets/launcher/icon3.png"
+  adaptive_icon_background: "#000000"
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  #SPLASH SCREEN
+  flutter_native_splash: ^1.1.7+1
+
+  #LAUNCHER
+  flutter_launcher_icons: ^0.9.0
+
+# For information on the generic Dart part of this file, see the
+# following page: https://dart.dev/tools/pub/pubspec
+
+# The following section is specific to Flutter.
+flutter:
+
+  # The following line ensures that the Material Icons font is
+  # included with your application, so that you can use the icons in
+  # the material Icons class.
+  uses-material-design: true
+
+  # To add assets to your application, add an assets section, like this:
+  assets:
+   - assets/splash/splashCut.png
+   - assets/gifs/breathMod.gif #should loop
+   - assets/gifs/breathModBright.gif #should loop
+   - assets/biceps/topLeft.png
+   - assets/biceps/topRight.png
+   - assets/biceps/normal.png
+   - assets/biceps/bottomLeft.png
+   - assets/biceps/bottomRight.png
+   - assets/alarm.gif #should loop
+   - assets/alarmTick.gif #should loop
+   - assets/tickStill.png
+   - assets/littleBrain.png
+   - assets/popUpGifs/hide.gif
+   - assets/popUpGifs/delete.gif
+   - assets/popUpGifs/agree.gif
+   - assets/impatient.gif
+   - assets/notification/blueShadow.gif
+   - assets/notification/cropedLocation.gif
+  # An image asset can refer to one or more resolution-specific "variants", see
+  # https://flutter.dev/assets-and-images/#resolution-aware.
+
+  # For details regarding adding assets from package dependencies, see
+  # https://flutter.dev/assets-and-images/#from-packages
+
+  # To add custom fonts to your application, add a fonts section here,
+  # in this "flutter" section. Each entry in this list should have a
+  # "family" key with the font family name, and a "fonts" key with a
+  # list giving the asset and other descriptors for the font. For
+  # example:
+  # fonts:
+  #   - family: Schyler
+  #     fonts:
+  #       - asset: fonts/Schyler-Regular.ttf
+  #       - asset: fonts/Schyler-Italic.ttf
+  #         style: italic
+  #   - family: Trajan Pro
+  #     fonts:
+  #       - asset: fonts/TrajanPro.ttf
+  #       - asset: fonts/TrajanPro_Bold.ttf
+  #         weight: 700
+  #
+  # For details regarding fonts from package dependencies,
+  # see https://flutter.dev/custom-fonts/#from-packages
