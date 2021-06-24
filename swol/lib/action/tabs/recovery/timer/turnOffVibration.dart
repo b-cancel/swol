@@ -8,14 +8,14 @@ import 'package:flutter_icons/flutter_icons.dart';
 import 'package:swol/shared/methods/vibrate.dart';
 
 //build
-class VibrationSwitch extends StatefulWidget { 
+class VibrationSwitch extends StatefulWidget {
   @override
   _VibrationSwitchState createState() => _VibrationSwitchState();
 }
 
 class _VibrationSwitchState extends State<VibrationSwitch> {
-  updateState(){
-    if(mounted) setState(() {});
+  updateState() {
+    if (mounted) setState(() {});
   }
 
   @override
@@ -25,7 +25,7 @@ class _VibrationSwitchState extends State<VibrationSwitch> {
   }
 
   @override
-  void dispose() { 
+  void dispose() {
     Vibrator.isVibrating.removeListener(updateState);
     super.dispose();
   }
@@ -41,7 +41,7 @@ class _VibrationSwitchState extends State<VibrationSwitch> {
           tooltip: 'Turn Off Vibration',
           onPressed: () => Vibrator.stopVibration(),
           icon: Icon(
-            MaterialCommunityIcons.getIconData("vibrate-off")
+            MaterialCommunityIcons.vibrate_off,
           ),
         ),
       ),

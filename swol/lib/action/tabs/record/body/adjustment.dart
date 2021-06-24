@@ -61,7 +61,7 @@ class _MakeFunctionAdjustmentState extends State<MakeFunctionAdjustment> {
     //we use 1RM and weight to get reps
     //this is bause maybe we wanted them to do 125 for 5 but they only had 120
     //so ideally we want to match their weight here and take it from ther
-    String setWeightString = ExercisePage?.setWeight?.value ?? "";
+    String setWeightString = ExercisePage.setWeight.value;
     bool weightRecordedValid = isTextValid(setWeightString);
     double weight = weightRecordedValid ? double.parse(setWeightString) : 0;
 
@@ -70,14 +70,16 @@ class _MakeFunctionAdjustmentState extends State<MakeFunctionAdjustment> {
       //if the weight is valid you can estimate reps
       //calculate all the rep-estimates for all functions
       for (int thisFunctionID = 0; thisFunctionID < 8; thisFunctionID++) {
+        //TODO: make sure this is how I want to handle this
         repEstimates[thisFunctionID] = ToReps.from1RMandWeight(
-          ExercisePage.oneRepMaxes[thisFunctionID],
-          //use recorded weight
-          //since we are assuming
-          //that's what the user couldn't change
-          weight,
-          thisFunctionID,
-        ); //no such thing as 9.5 reps
+              ExercisePage.oneRepMaxes[thisFunctionID],
+              //use recorded weight
+              //since we are assuming
+              //that's what the user couldn't change
+              weight,
+              thisFunctionID,
+            ) ??
+            0; //no such thing as 9.5 reps
       }
 
       //make sure all yield valid resuls
@@ -114,7 +116,7 @@ class _MakeFunctionAdjustmentState extends State<MakeFunctionAdjustment> {
   //we update the weight estimates
   repsWereUpdated({bool updateTheGoal: true}) {
     //we use 1RM and reps to get weights
-    String setRepsString = ExercisePage?.setReps?.value ?? "";
+    String setRepsString = ExercisePage.setReps.value;
     bool repsRecordedValid = isTextValid(setRepsString);
     int reps = repsRecordedValid ? int.parse(setRepsString) : 0;
 
@@ -122,11 +124,13 @@ class _MakeFunctionAdjustmentState extends State<MakeFunctionAdjustment> {
     if (repsRecordedValid) {
       //calculate are weight estimates
       for (int thisFunctionID = 0; thisFunctionID < 8; thisFunctionID++) {
+        //TODO: make sure If this is how I want to handle this
         weightEstimates[thisFunctionID] = ToWeight.fromRepAnd1Rm(
-          reps,
-          ExercisePage.oneRepMaxes[thisFunctionID],
-          thisFunctionID,
-        );
+              reps,
+              ExercisePage.oneRepMaxes[thisFunctionID],
+              thisFunctionID,
+            ) ??
+            0;
       }
 
       //make sure all yield valid results
@@ -315,8 +319,12 @@ class _MakeFunctionAdjustmentState extends State<MakeFunctionAdjustment> {
         valuesToSortWith = widget.functionIDToWeightFromRT.value;
 
         //avoid init issue
-        double weight =
-            widget?.functionIDToWeightFromRT?.value[predictionID.value] ?? 0;
+        List<double> potentials = widget.functionIDToWeightFromRT.value;
+        double weight = 0;
+        if (potentials.contains(predictionID.value)) {
+          weight = potentials[predictionID.value];
+        }
+
         //get calculated weight
         ExercisePage.setGoalWeight.value = weight;
 
@@ -339,11 +347,13 @@ class _MakeFunctionAdjustmentState extends State<MakeFunctionAdjustment> {
     List<double> percentDifferences = [8];
     for (int functionID = 0; functionID < 8; functionID++) {
       //get the 1RM from this Set
+      //TODO: make sure this is how I want to solve this
       double calculated1RM = To1RM.fromWeightAndReps(
-        double.parse(ExercisePage.setWeight.value),
-        int.parse(ExercisePage.setReps.value),
-        functionID,
-      );
+            double.parse(ExercisePage.setWeight.value),
+            int.parse(ExercisePage.setReps.value),
+            functionID,
+          ) ??
+          0;
 
       //get the difference between this and what was expected
       double calculatedDifference = calcPercentDifference(

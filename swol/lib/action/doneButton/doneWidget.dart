@@ -276,7 +276,7 @@ class _FloatingDoneButtonState extends State<FloatingDoneButton> {
                           showButton: showButton,
                           cardColor: cardColor,
                           setsPassedFromHere: setsPassedFromHere,
-                          excerciseID: widget.exercise.id!,
+                          excerciseID: widget.exercise.id,
                           animationCurve: widget.animationCurve,
                         ),
                       ),
@@ -304,7 +304,7 @@ class _FloatingDoneButtonState extends State<FloatingDoneButton> {
   }) {
     Function onFinished = () {
       //cancel the notification that may be running
-      safeCancelNotification(widget.exercise.id!);
+      safeCancelNotification(widget.exercise.id);
 
       //time stamp
       DateTime newTimeStamp = DateTime.now();

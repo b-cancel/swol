@@ -84,11 +84,13 @@ class Functions {
     List<double> possibleOneRepMaxes = [];
     List<double> possibleDifferentFunctionOneRepMaxes = [];
     for (int functionID = 0; functionID < 8; functionID++) {
+      //TODO: confirm this is how I want to solve this
       double oneRepMax = To1RM.fromWeightAndReps(
-        weight.toDouble(),
-        reps,
-        functionID,
-      );
+            weight.toDouble(),
+            reps,
+            functionID,
+          ) ??
+          0;
 
       //add all
       possibleOneRepMaxes.add(oneRepMax);
@@ -139,8 +141,10 @@ class Functions {
     return sum / values.length;
   }
 
-  static double getStandardDeviation(List<double> values, {double mean}) {
-    if (mean == null) mean = getMean(values);
+  static double getStandardDeviation(List<double> values, {double? mean}) {
+    if (mean == null) {
+      mean = getMean(values);
+    }
 
     double massiveSum = 0;
     for (int i = 0; i < values.length; i++) {

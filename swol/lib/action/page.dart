@@ -152,7 +152,10 @@ class _ExercisePageDarkState extends State<ExercisePageDark> {
       //worst case scenario this little exception cover won't break anything
       if (widget.exercise.tempStartTime.value != AnExercise.nullDateTime) {
         //cancel the notifcation that perhaps didn't trigger
-        safeCancelNotification(widget.exercise.id);
+        int? exID = widget.exercise.id;
+        if (exID != null) {
+          safeCancelNotification(exID);
+        }
 
         //must be done first
         //so that our suggest page has access to right 1 rep maxes
@@ -273,15 +276,17 @@ class _ExercisePageDarkState extends State<ExercisePageDark> {
     super.dispose();
   }
 
-  updateOneRepMaxes({int weight, int reps}) {
-    weight = weight ?? (widget?.exercise?.lastWeight ?? 0);
-    reps = reps ?? (widget?.exercise?.lastReps ?? 0);
+  updateOneRepMaxes({int? weight, int? reps}) {
+    weight = weight ?? (widget.exercise.lastWeight ?? 0);
+    reps = reps ?? (widget.exercise.lastReps ?? 0);
     for (int functionID = 0; functionID < 8; functionID++) {
+      //TODO: confirm if this is who I want to handle this
       ExercisePage.oneRepMaxes[functionID] = To1RM.fromWeightAndReps(
-        weight.toDouble(),
-        reps,
-        functionID,
-      );
+            weight.toDouble(),
+            reps,
+            functionID,
+          ) ??
+          0;
     }
   }
 

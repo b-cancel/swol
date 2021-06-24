@@ -21,7 +21,7 @@ class AnExercise {
   //---Settings
 
   //NOTE: this is saved by the addExercise function
-  int? id;
+  late int id;
 
   //basic
   late String _name;
@@ -46,9 +46,9 @@ class AnExercise {
   }
 
   //other
-  int? _predictionID;
-  int? get predictionID => _predictionID;
-  set predictionID(int? newPredictionID) {
+  late int _predictionID;
+  int get predictionID => _predictionID;
+  set predictionID(int newPredictionID) {
     _predictionID = newPredictionID;
     ExerciseData.updateFile();
   }

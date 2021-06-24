@@ -80,7 +80,7 @@ class TileBody extends StatelessWidget {
                   baseColor: Theme.of(context).primaryColor,
                   highlightColor: Theme.of(context).cardColor,
                   child: Icon(
-                    MaterialCommunityIcons.getIconData("chevron-double-down"),
+                    MaterialCommunityIcons.chevron_double_down,
                     size: 36,
                     color: Theme.of(context).primaryColor,
                   ),

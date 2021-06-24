@@ -130,8 +130,8 @@ class _PercentOffState extends State<PercentOff> {
   List<int> functionIdToPercentDifferences = [8];
   List<int> functionIdToPercentDifferencesAbsolute = [8];
   Map<int, List<int>> absDifferenceTofunctionID = new Map<int, List<int>>();
-  int smallestAbsDifference;
-  int ourIndex;
+  late int smallestAbsDifference;
+  late int ourIndex;
 
   updateOneRepMaxes() {
     absDifferenceTofunctionID.clear();
@@ -140,11 +140,13 @@ class _PercentOffState extends State<PercentOff> {
     for (int functionID = 0; functionID < 8; functionID++) {
       //calc
       //NOTE: must calculate with these values since thats what the user typed
+      //TODO: make sure this is how I want to handle this
       double calculated1RM = To1RM.fromWeightAndReps(
-        double.parse(ExercisePage.setWeight.value),
-        int.parse(ExercisePage.setReps.value),
-        functionID,
-      );
+            double.parse(ExercisePage.setWeight.value),
+            int.parse(ExercisePage.setReps.value),
+            functionID,
+          ) ??
+          0;
 
       //save
       oneRepMaxes[functionID] = calculated1RM;
@@ -191,8 +193,12 @@ class _PercentOffState extends State<PercentOff> {
     if (ourAbsPercentDifference == smallestAbsDifference) {
       ExercisePage.closestIndex.value = ourIndex;
     } else {
-      List<int> potentialClosestFunctionIDs =
-          absDifferenceTofunctionID[smallestAbsDifference];
+      List<int> potentialClosestFunctionIDs = [];
+      if (absDifferenceTofunctionID.containsKey(smallestAbsDifference)) {
+        potentialClosestFunctionIDs =
+            absDifferenceTofunctionID[smallestAbsDifference]!;
+      }
+
       if (potentialClosestFunctionIDs.length == 1) {
         int closestFunctionID = potentialClosestFunctionIDs[0];
         ExercisePage.closestIndex.value =
@@ -222,7 +228,7 @@ class _PercentOffState extends State<PercentOff> {
           }
 
           //add to list
-          distToFunctionIDs[distanceFromUs].add(potentialFunction);
+          distToFunctionIDs[distanceFromUs]!.add(potentialFunction);
         }
 
         //now we pick the smallest distance
@@ -230,7 +236,10 @@ class _PercentOffState extends State<PercentOff> {
         distances.sort(); //smallest to largest
         int smallestDistance = distances[0];
 
-        List<int> validFunctionIDs = distToFunctionIDs[smallestDistance];
+        List<int> validFunctionIDs = [];
+        if (distToFunctionIDs.containsKey(smallestDistance)) {
+          validFunctionIDs = distToFunctionIDs[smallestDistance]!;
+        }
 
         //if only one then great!
         if (validFunctionIDs.length == 1) {

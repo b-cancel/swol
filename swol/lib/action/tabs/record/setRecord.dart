@@ -48,7 +48,7 @@ class SetRecord extends StatelessWidget {
 
     //determine what page we are showing
     bool calibrationRequired = exercise.lastWeight == null;
-    Function backAction;
+    Function? backAction;
     if (calibrationRequired == false) {
       backAction = () {
         ExercisePage.pageNumber.value = 0;
@@ -84,7 +84,7 @@ class SetRecord extends StatelessWidget {
         buttonsColor: buttonsColor,
         exercise: exercise,
         timerNotStarted: timerNotStarted,
-        backAction: backAction,
+        backAction: (backAction != null ? () => backAction!() : null),
         weightFocusNode: weightFocusNode,
         repsFocusNode: repsFocusNode,
       ),
@@ -129,7 +129,7 @@ class SetRecord extends StatelessWidget {
                     baseColor: Theme.of(context).primaryColor,
                     highlightColor: Theme.of(context).cardColor,
                     child: Icon(
-                      MaterialCommunityIcons.getIconData("chevron-double-up"),
+                      MaterialCommunityIcons.chevron_double_up,
                       size: 36,
                       color: Theme.of(context).primaryColor,
                     ),
@@ -187,7 +187,7 @@ class SetRecordButtonsWithWhiteContext extends StatelessWidget {
     required this.buttonsColor,
     required this.exercise,
     required this.timerNotStarted,
-    required this.backAction,
+    this.backAction,
     required this.weightFocusNode,
     required this.repsFocusNode,
   }) : super(key: key);
@@ -196,7 +196,7 @@ class SetRecordButtonsWithWhiteContext extends StatelessWidget {
   final Color buttonsColor;
   final AnExercise exercise;
   final bool timerNotStarted;
-  final Function backAction;
+  final Function? backAction;
   final FocusNode weightFocusNode;
   final FocusNode repsFocusNode;
 
@@ -272,7 +272,7 @@ class SetRecordButtonsWithWhiteContext extends StatelessWidget {
         ),
         BottomButtons(
           color: buttonsColor,
-          exerciseID: exercise.id!,
+          exerciseID: exercise.id,
           forwardAction: () {
             maybeError(
               context,
@@ -307,8 +307,6 @@ class TimerGlimpse extends StatefulWidget {
 }
 
 class _TimerGlimpseState extends State<TimerGlimpse> {
-  int subscribeID;
-
   updateState() {
     if (mounted) {
       setState(() {});
