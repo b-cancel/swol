@@ -184,7 +184,7 @@ class _SuggestionState extends State<Suggestion> {
             ),
             child: BottomButtons(
               color: buttonsColor,
-              exerciseID: widget.exercise.id,
+              exerciseID: widget.exercise.id!,
               forwardAction: () {
                 ExercisePage.pageNumber.value = 1;
               },

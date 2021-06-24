@@ -19,7 +19,7 @@ class BottomBackButton extends StatefulWidget {
     Key? key,
   }) : super(key: key);
 
-  final Function backAction;
+  final Function? backAction;
   final double verticalPadding;
   final Color color;
 
@@ -101,7 +101,7 @@ class _BottomBackButtonState extends State<BottomBackButton> {
 
                 //go back
                 //MUST HAPPEN AFTER so that pageNumber hasn't yet updated
-                widget.backAction();
+                widget.backAction!();
               },
               child: Container(
                 padding: EdgeInsets.only(

@@ -15,7 +15,7 @@ class SlideRangeExtent extends StatelessWidget {
   }) : super(key: key);
 
   final String buttonText;
-  final String tipText;
+  final String? tipText;
   final bool tipToLeft;
 
   @override
@@ -71,7 +71,7 @@ class SlideRangeExtent extends StatelessWidget {
               children: [
                 Flexible(
                   child: Text(
-                    tipText,
+                    tipText ?? "",
                     textAlign: tipToLeft ? TextAlign.left : TextAlign.right,
                   ),
                 )

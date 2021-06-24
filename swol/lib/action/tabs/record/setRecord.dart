@@ -272,7 +272,7 @@ class SetRecordButtonsWithWhiteContext extends StatelessWidget {
         ),
         BottomButtons(
           color: buttonsColor,
-          exerciseID: exercise.id,
+          exerciseID: exercise.id!,
           forwardAction: () {
             maybeError(
               context,

@@ -7,12 +7,12 @@ import 'package:swol/shared/widgets/simple/popUpAdjustments.dart';
 
 //widget
 class MyAwesomeDialog {
-  final DialogType dialogType;
-  final Widget customHeader;
+  final DialogType? dialogType;
+  final Widget? customHeader;
   final BuildContext context;
   final Widget body;
   final bool barrierDismissible;
-  final Function onDissmissCallback;
+  final Function? onDissmissCallback;
   final AnimType animType;
   final AlignmentGeometry aligment;
   final bool isDense;
@@ -23,18 +23,14 @@ class MyAwesomeDialog {
       {required this.context,
       this.dialogType,
       this.customHeader,
-      this.body,
+      required this.body,
       this.onDissmissCallback,
       this.isDense = false,
       this.barrierDismissible = true,
       this.headerAnimationLoop = true,
       this.aligment = Alignment.center,
       this.animType = AnimType.SCALE,
-      this.useRootNavigator = false})
-      : assert(
-          (dialogType != null || customHeader != null),
-          context != null,
-        );
+      this.useRootNavigator = false});
 
   Future show() {
     return showDialog(
@@ -43,41 +39,39 @@ class MyAwesomeDialog {
         builder: (BuildContext context) {
           switch (animType) {
             case AnimType.SCALE:
-              return Scale(
-                scalebegin: 0.1,
+              return ScaleFade(
+                //TODO: check
+                //scalebegin: 0.1,
                 curve: Curves.fastLinearToSlowEaseIn,
                 child: _buildDialog(),
               );
-              break;
             case AnimType.LEFTSLIDE:
               return Slide(
                 from: SlideFrom.LEFT,
                 child: _buildDialog(),
               );
-              break;
             case AnimType.RIGHSLIDE:
               return Slide(
                 from: SlideFrom.RIGHT,
                 child: _buildDialog(),
               );
-              break;
             case AnimType.BOTTOMSLIDE:
               return Slide(
                 from: SlideFrom.BOTTOM,
                 child: _buildDialog(),
               );
-              break;
             case AnimType.TOPSLIDE:
               return Slide(
                 from: SlideFrom.TOP,
                 child: _buildDialog(),
               );
-              break;
             default:
               return _buildDialog();
           }
         }).then((_) {
-      if (onDissmissCallback != null) onDissmissCallback();
+      if (onDissmissCallback != null) {
+        onDissmissCallback!();
+      }
     });
   }
 
@@ -86,7 +80,7 @@ class MyAwesomeDialog {
       header: customHeader ??
           FlareHeader(
             loop: headerAnimationLoop,
-            dialogType: this.dialogType,
+            dialogType: dialogType ?? DialogType.NO_HEADER,
           ),
       body: this.body,
       isDense: isDense,
@@ -106,9 +100,9 @@ class MyVerticalStackDialog extends StatelessWidget {
   final AlignmentGeometry aligment;
   const MyVerticalStackDialog({
     Key? key,
-    this.body,
-    this.aligment,
-    this.isDense,
+    required this.body,
+    required this.aligment,
+    required this.isDense,
     required this.header,
   }) : super(key: key);
 

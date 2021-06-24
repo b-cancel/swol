@@ -25,13 +25,13 @@ class PlayGifOnce extends StatefulWidget {
 
 class _PlayGifOnceState extends State<PlayGifOnce>
     with SingleTickerProviderStateMixin {
-  GifController controller;
+  late GifController controller;
 
   @override
   void initState() {
     super.initState();
     controller = GifController(vsync: this);
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
       Duration runTime = Duration(milliseconds: widget.runTimeMS);
       controller.animateTo(
         //32 frame but the index starts at 0 so -1

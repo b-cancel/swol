@@ -207,7 +207,7 @@ class RecoveryButtonsWithWhiteContext extends StatelessWidget {
   Widget build(BuildContext context) {
     return BottomButtons(
       color: buttonsColor,
-      exerciseID: exercise.id,
+      exerciseID: exercise.id!,
       forwardAction: () {
         if (exercise.tempStartTime.value != AnExercise.nullDateTime) {
           Function ifMoveToNextSet = () {

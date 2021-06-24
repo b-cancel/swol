@@ -46,9 +46,9 @@ class AnExercise {
   }
 
   //other
-  late int _predictionID;
-  int get predictionID => _predictionID;
-  set predictionID(int newPredictionID) {
+  int? _predictionID;
+  int? get predictionID => _predictionID;
+  set predictionID(int? newPredictionID) {
     _predictionID = newPredictionID;
     ExerciseData.updateFile();
   }
@@ -94,32 +94,32 @@ class AnExercise {
     ExerciseData.updateFile();
   }
 
-  late int _lastWeight;
-  int get lastWeight => _lastWeight;
-  set lastWeight(int newLastWeight) {
+  int? _lastWeight;
+  int? get lastWeight => _lastWeight;
+  set lastWeight(int? newLastWeight) {
     _lastWeight = newLastWeight;
     ExerciseData.updateFile();
   }
 
-  late int _lastReps;
-  int get lastReps => _lastReps;
-  set lastReps(int newLastReps) {
+  int? _lastReps;
+  int? get lastReps => _lastReps;
+  set lastReps(int? newLastReps) {
     _lastReps = newLastReps;
     ExerciseData.updateFile();
   }
 
   //---Temporary
 
-  late int _tempWeight;
-  int get tempWeight => _tempWeight;
-  set tempWeight(int newTempWeight) {
+  int? _tempWeight;
+  int? get tempWeight => _tempWeight;
+  set tempWeight(int? newTempWeight) {
     _tempWeight = newTempWeight;
     ExerciseData.updateFile();
   }
 
-  late int _tempReps;
-  int get tempReps => _tempReps;
-  set tempReps(int newTempReps) {
+  int? _tempReps;
+  int? get tempReps => _tempReps;
+  set tempReps(int? newTempReps) {
     _tempReps = newTempReps;
     ExerciseData.updateFile();
   }
@@ -133,9 +133,9 @@ class AnExercise {
     ExerciseData.updateFile();
   }
 
-  late int _tempSetCount;
-  int get tempSetCount => _tempSetCount;
-  set tempSetCount(int newTempSetCount) {
+  int? _tempSetCount;
+  int? get tempSetCount => _tempSetCount;
+  set tempSetCount(int? newTempSetCount) {
     _tempSetCount = newTempSetCount;
     ExerciseData.updateFile();
   }

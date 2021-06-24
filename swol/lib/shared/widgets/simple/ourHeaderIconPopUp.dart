@@ -14,8 +14,8 @@ showBasicHeaderIconPopUp(
   AnimType animationType: AnimType.SCALE,
   bool dismissOnTouchOutside: true,
   bool isDense: false,
-  Widget clearBtn,
-  Widget colorBtn,
+  Widget? clearBtn,
+  Widget? colorBtn,
 }) {
   //unfocus so whatever was focused before doesnt annoying scroll us back
   //for some reason this only happens in addExercise
@@ -52,8 +52,8 @@ showCustomHeaderIconPopUp(
   bool isDense: false,
   Color headerBackground: Colors.blue,
   bool useRootNavigator: false,
-  Widget clearBtn,
-  Widget colorBtn,
+  Widget? clearBtn,
+  Widget? colorBtn,
 }) {
   //unfocus so whatever was focused before doesnt annoying scroll us back
   //for some reason this only happens in addExercise
@@ -138,14 +138,14 @@ class AwesomeBody extends StatelessWidget {
     Key? key,
     required this.titles,
     required this.children,
-    required this.clearBtn,
-    required this.colorBtn,
+    this.clearBtn,
+    this.colorBtn,
   }) : super(key: key);
 
   final List<Widget> titles;
   final List<Widget> children;
-  final Widget clearBtn;
-  final Widget colorBtn;
+  final Widget? clearBtn;
+  final Widget? colorBtn;
 
   @override
   Widget build(BuildContext context) {

@@ -24,14 +24,14 @@ import 'package:swol/shared/structs/anExercise.dart';
 //the simply navigate to the learn page
 class SuggestToLearnPage extends StatelessWidget {
   goToLearnAfterSetUpdateComplete() {
-    BuildContext rootContext = GrabSystemData.rootContext;
+    BuildContext rootContext = GrabSystemData.rootContext!;
     bool gestureInProgress = Navigator.of(rootContext).userGestureInProgress;
     if (gestureInProgress == false) {
       if (ExercisePage.updateSet.value) {
         //wait for the set to finish updating
         //NOTE: the statement is set back to false automatically
         //when its set to true, it updates stuff, then set itself to false
-        WidgetsBinding.instance.addPostFrameCallback((_) {
+        WidgetsBinding.instance?.addPostFrameCallback((_) {
           goToLearnAfterSetUpdateComplete();
         });
       } else {
@@ -41,7 +41,7 @@ class SuggestToLearnPage extends StatelessWidget {
   }
 
   goToLearn() {
-    BuildContext rootContext = GrabSystemData.rootContext;
+    BuildContext rootContext = GrabSystemData.rootContext!;
     bool gestureInProgress = Navigator.of(rootContext).userGestureInProgress;
     if (gestureInProgress == false) {
       if (Navigator.canPop(rootContext)) {
@@ -96,8 +96,8 @@ class SuggestToLearnPage extends StatelessWidget {
 
             //all the data needed to determine if we need to generate a pop up
 
-            if (ExerciseData.getExercises().containsKey(exerciseID)) {
-              AnExercise exercise = ExerciseData.getExercises()[exerciseID];
+            if (ExerciseData.getExercises()?.containsKey(exerciseID) ?? false) {
+              AnExercise exercise = ExerciseData.getExercises()![exerciseID]!;
 
               //if both match proceed as expected
               if (doBothMatch(exercise)) {
@@ -251,17 +251,17 @@ bool isSetValid() {
   return (newWeightValid && newRepsValid);
 }
 
-bool isNewSet(AnExercise exercise) {
+bool isNewSet(AnExercise? exercise) {
   //NOTE: IF tempWeight is filled that so is tempReps
-  int tempWeightInt = exercise?.tempWeight;
+  int? tempWeightInt = exercise?.tempWeight;
   String tempWeight = (tempWeightInt != null) ? tempWeightInt.toString() : "";
   return tempWeight == "";
 }
 
-bool doBothMatch(AnExercise exercise) {
+bool doBothMatch(AnExercise? exercise) {
   //grab temps
-  int tempWeightInt = exercise?.tempWeight;
-  int tempRepsInt = exercise?.tempReps;
+  int? tempWeightInt = exercise?.tempWeight;
+  int? tempRepsInt = exercise?.tempReps;
 
   //extra step needed because null.toString() isn't null
   String tempWeight = (tempWeightInt != null) ? tempWeightInt.toString() : "";
@@ -289,7 +289,7 @@ class CustomToast extends StatelessWidget {
   });
 
   final Widget child;
-  final Function action;
+  final Function? action;
   final double padding;
   final bool isWarning;
 
@@ -350,7 +350,7 @@ class CustomToast extends StatelessWidget {
                     Visibility(
                       visible: action != null,
                       child: ElevatedButton(
-                        onPressed: () => action(),
+                        onPressed: () => action!(),
                         child: Text(
                           "Continue",
                           style: bold,

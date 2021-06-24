@@ -53,9 +53,9 @@ class FloatingDoneButton extends StatefulWidget {
 
 class _FloatingDoneButtonState extends State<FloatingDoneButton> {
   //show and hides entire button
-  bool showButton;
+  late bool showButton;
   //required so gestures wouldn't be registered by the hidden box
-  bool fullyHidden;
+  late bool fullyHidden;
 
   //whether or not this particular page wants the button to show
   bool shouldShow() {
@@ -92,7 +92,7 @@ class _FloatingDoneButtonState extends State<FloatingDoneButton> {
 
       //wait a frame for fully hidden to regsiter
       //so animation can then play
-      WidgetsBinding.instance.addPostFrameCallback((_) {
+      WidgetsBinding.instance?.addPostFrameCallback((_) {
         showButton = true;
         setState(() {});
       });
@@ -276,7 +276,7 @@ class _FloatingDoneButtonState extends State<FloatingDoneButton> {
                           showButton: showButton,
                           cardColor: cardColor,
                           setsPassedFromHere: setsPassedFromHere,
-                          excerciseID: widget.exercise.id,
+                          excerciseID: widget.exercise.id!,
                           animationCurve: widget.animationCurve,
                         ),
                       ),
@@ -304,7 +304,7 @@ class _FloatingDoneButtonState extends State<FloatingDoneButton> {
   }) {
     Function onFinished = () {
       //cancel the notification that may be running
-      safeCancelNotification(widget.exercise.id);
+      safeCancelNotification(widget.exercise.id!);
 
       //time stamp
       DateTime newTimeStamp = DateTime.now();

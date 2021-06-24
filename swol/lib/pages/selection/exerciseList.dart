@@ -95,7 +95,7 @@ class _ExerciseListState extends State<ExerciseList> {
   //  3. and our set is the same as it was before
 
   toPage2AfterSetUpdateComplete() {
-    BuildContext rootContext = GrabSystemData.rootContext;
+    BuildContext rootContext = GrabSystemData.rootContext!;
     bool gestureInProgress = Navigator.of(rootContext).userGestureInProgress;
     if (gestureInProgress == false) {
       if (ExercisePage.updateSet.value) {
@@ -435,7 +435,7 @@ class _ExerciseListState extends State<ExerciseList> {
   }
 
   popThenGoToExerciseAfterSetUpdateComplete(int exerciseID) {
-    BuildContext rootContext = GrabSystemData.rootContext;
+    BuildContext rootContext = GrabSystemData.rootContext!;
     bool gestureInProgress = Navigator.of(rootContext).userGestureInProgress;
     if (gestureInProgress == false) {
       if (ExercisePage.updateSet.value) {
@@ -456,7 +456,7 @@ class _ExerciseListState extends State<ExerciseList> {
   //if skips out on the warnings that usually pop out
   //and doesn't autostart the set for the exercise that we are leaving
   popThenGoToExercise(int exerciseID) {
-    BuildContext rootContext = GrabSystemData.rootContext;
+    BuildContext rootContext = GrabSystemData.rootContext!;
     bool gestureInProgress = Navigator.of(rootContext).userGestureInProgress;
     if (gestureInProgress == false) {
       if (Navigator.canPop(rootContext)) {
@@ -490,7 +490,7 @@ class _ExerciseListState extends State<ExerciseList> {
   }
 
   travelAfterDisposeComplete(AnExercise exercise) {
-    BuildContext rootContext = GrabSystemData.rootContext;
+    BuildContext rootContext = GrabSystemData.rootContext!;
     bool gestureInProgress = Navigator.of(rootContext).userGestureInProgress;
     if (gestureInProgress == false) {
       //dipose has run because the exercise open in the page is none

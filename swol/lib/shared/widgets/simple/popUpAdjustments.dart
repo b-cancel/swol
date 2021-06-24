@@ -27,7 +27,7 @@ class _ScrollViewWithShadowState extends State<ScrollViewWithShadow> {
 
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
       scrollUpdate();
     });
     ctrl.addListener(scrollUpdate);

@@ -21,7 +21,7 @@ class BottomButtons extends StatelessWidget {
   final int exerciseID;
   final Function forwardAction;
   final Widget forwardActionWidget;
-  final Function backAction;
+  final Function? backAction;
 
   @override
   Widget build(BuildContext context) {
@@ -68,13 +68,13 @@ class Buttons extends StatelessWidget {
     required this.forwardAction,
     required this.forwardActionWidget,
     this.backAction,
-    this.color,
+    required this.color,
   });
 
   final int exerciseID;
   final Function forwardAction;
   final Widget forwardActionWidget;
-  final Function backAction;
+  final Function? backAction;
   final Color color;
 
   @override
