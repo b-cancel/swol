@@ -17,11 +17,10 @@ class DefinitionBody extends StatelessWidget {
               text: "Some definitions to ",
             ),
             TextSpan(
-              text: "clarify what is being referred to",
-              style: TextStyle(
-                fontWeight: FontWeight.w900,
-              )
-            ),
+                text: "clarify what is being referred to",
+                style: TextStyle(
+                  fontWeight: FontWeight.w900,
+                )),
             TextSpan(
               text: " throughout the app",
             ),
@@ -46,8 +45,8 @@ class DefinitionBody extends StatelessWidget {
                     ),
                   ),
                   TextSpan(
-                    text: " is an abbreviation of repetitions. "
-                    + "It refers to the amount of ",
+                    text: " is an abbreviation of repetitions. " +
+                        "It refers to the amount of ",
                   ),
                   TextSpan(
                     text: "times you were able to lift",
@@ -130,7 +129,8 @@ class DefinitionBody extends StatelessWidget {
                     text: "A set includes both the ",
                   ),
                   TextSpan(
-                    text: "weight and the amount of times you were able to lift",
+                    text:
+                        "weight and the amount of times you were able to lift",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                     ),
@@ -194,7 +194,8 @@ class DefinitionBody extends StatelessWidget {
                 word: "Workout",
                 definition: [
                   TextSpan(
-                    text: "A workout is a list of exercises done one after the other with a gap of ",
+                    text:
+                        "A workout is a list of exercises done one after the other with a gap of ",
                   ),
                   TextSpan(
                     text: "at most",
@@ -202,10 +203,9 @@ class DefinitionBody extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  TextSpan(
-                    text: " 1 hour and a half between each."
-                  ),
+                  TextSpan(text: " 1 hour and a half between each."),
                 ],
+                extra: null,
               ),
               //-------------------------One Rep Max
               ADefinition(
@@ -220,9 +220,7 @@ class DefinitionBody extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  TextSpan(
-                    text: " is the "
-                  ),
+                  TextSpan(text: " is the "),
                   TextSpan(
                     text: "maximum",
                     style: TextStyle(

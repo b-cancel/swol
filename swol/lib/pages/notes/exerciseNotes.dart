@@ -207,7 +207,11 @@ class BigActionButton extends StatelessWidget {
   }
 
   //pop ups for archiving or deleting
-  areyouSurePopUp(BuildContext context, {Color color, IconData icon}) {
+  areyouSurePopUp(
+    BuildContext context, {
+    required Color color,
+    required IconData icon,
+  }) {
     String name = "\"" + exercise.name + "\"";
     showDialog<void>(
       context: context,

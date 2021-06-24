@@ -30,7 +30,7 @@ class ExpandableTile extends StatefulWidget {
   final IconData headerIcon;
   final String headerText;
   final Widget expandedChild;
-  final double size;
+  final double? size;
   final bool theOnlyException;
 
   @override

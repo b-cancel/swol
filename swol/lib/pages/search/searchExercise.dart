@@ -53,13 +53,15 @@ class _SearchExerciseState extends State<SearchExercise> {
       for (int key = 0; key < keys.length; key++) {
         //grab basic data
         int keyIsID = keys[key];
-        AnExercise thisExercise = exercises[keyIsID];
+        AnExercise? thisExercise = exercises[keyIsID];
 
         //extract thing we are searching for
-        String exerciseName =
-            removeDiacritics(thisExercise.name).toLowerCase().trim();
-        if (exerciseName.contains(searchString)) {
-          queryResults.add(keyIsID);
+        if (thisExercise != null) {
+          String exerciseName =
+              removeDiacritics(thisExercise.name).toLowerCase().trim();
+          if (exerciseName.contains(searchString)) {
+            queryResults.add(keyIsID);
+          }
         }
       }
     }
@@ -83,7 +85,7 @@ class _SearchExerciseState extends State<SearchExercise> {
 
   @override
   Widget build(BuildContext context) {
-    bool showRecentsSearches = (search.text == null || search.text == "");
+    bool showRecentsSearches = (search.text == "");
     bool noRecentSearches = (SearchesData.getRecentSearches().length == 0);
     bool noRecentsToShow = (showRecentsSearches && noRecentSearches);
 
@@ -220,7 +222,7 @@ class SearchBar extends StatelessWidget {
                   scrollPadding: EdgeInsets.all(0),
                   textInputAction: TextInputAction.search,
                   onSubmitted: (str) {
-                    if (search.text != null && search.text != "") {
+                    if (search.text != "") {
                       SearchesData.addToSearches(search.text);
                     }
                   },
@@ -319,7 +321,8 @@ class SearchResults extends StatelessWidget {
         physics: ClampingScrollPhysics(),
         itemCount: queryResults.length,
         itemBuilder: (context, index) {
-          AnExercise exercise = exercises[queryResults[index]];
+          int res = queryResults[index];
+          AnExercise exercise = exercises[res]!;
           return ExerciseTile(
             key: ValueKey(exercise.id),
             exercise: exercise,

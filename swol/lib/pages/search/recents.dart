@@ -110,8 +110,12 @@ class RecentSearches extends StatelessWidget {
   final ValueNotifier<bool> removalLocked = new ValueNotifier<bool>(false);
 
   //once search item built
-  buildSearch(BuildContext context, int index, Animation<double> animation,
-      {String passedTerm}) {
+  buildSearch(
+    BuildContext context,
+    int index,
+    Animation<double> animation, {
+    String? passedTerm,
+  }) {
     //make sure we have a valid search term
     String searchTerm;
     if (passedTerm != null)
@@ -242,8 +246,8 @@ class RecentSearches extends StatelessWidget {
               color: Theme.of(context).cardColor,
             ),
             child: TextButton(
-              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-              padding: EdgeInsets.all(0),
+              //materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              //padding: EdgeInsets.all(0),
               onPressed: () {
                 SearchesData.removeAllSearches();
                 updateState();

@@ -184,7 +184,7 @@ class _ExerciseListState extends State<ExerciseList> {
     } else {
       //active page is 0 or 1
       int exerciseID = ExercisePage.exerciseID.value;
-      AnExercise exercise = (ExerciseData.getExercises())[exerciseID];
+      AnExercise exercise = ExerciseData.getExercises()[exerciseID]!;
 
       //handle what happens, might have to manually move and that MAY cause problems
       if (doBothMatch(exercise)) {
@@ -362,7 +362,7 @@ class _ExerciseListState extends State<ExerciseList> {
         } else {
           //check the validity of the current exercise set
           if (ExerciseData.getExercises().containsKey(currExerciseID)) {
-            AnExercise exercise = ExerciseData.getExercises()[currExerciseID];
+            AnExercise exercise = ExerciseData.getExercises()[currExerciseID]!;
 
             //we have to navigate away... IF WE CAN
             if (doBothMatch(exercise)) {
@@ -482,7 +482,7 @@ class _ExerciseListState extends State<ExerciseList> {
   travelToExercise(int exerciseID) {
     if (ExerciseData.getExercises().containsKey(exerciseID)) {
       AnExercise exerciseWeMightTravelTo =
-          ExerciseData.getExercises()[exerciseID];
+          ExerciseData.getExercises()[exerciseID]!;
 
       //wait a bit so that init runs
       travelAfterDisposeComplete(exerciseWeMightTravelTo);
@@ -546,7 +546,7 @@ class _ExerciseListState extends State<ExerciseList> {
     );
 
     //Updates every time we update[timestamp], add, or remove some exercise
-    ExerciseData.exercisesOrder.addListener(updateState);
+    ExerciseData.exercisesOrder?.addListener(updateState);
     exerciseToTravelTo.addListener(tryToGoToExercise);
     super.initState();
   }
@@ -557,7 +557,7 @@ class _ExerciseListState extends State<ExerciseList> {
       manualBeforeManualBuild,
     );
     exerciseToTravelTo.removeListener(tryToGoToExercise);
-    ExerciseData.exercisesOrder.addListener(updateState);
+    ExerciseData.exercisesOrder?.addListener(updateState);
     super.dispose();
   }
 
@@ -570,7 +570,7 @@ class _ExerciseListState extends State<ExerciseList> {
   }
 
   //prevents unecessary calculation when navigating
-  List<Widget> slivers;
+  List<Widget>? slivers;
   beforeManualBuild() {
     //list to separate stuff into
     List<AnExercise> inProgressOnes = [];
@@ -591,8 +591,8 @@ class _ExerciseListState extends State<ExerciseList> {
     double openHeaderHeight = goldenBS[1] - widget.statusBarHeight;
 
     //try to see if we have workouts to add
-    List<int> exerciseOrder = ExerciseData.exercisesOrder.value;
-    if (exerciseOrder.length == 0) {
+    List<int>? exerciseOrder = ExerciseData.exercisesOrder?.value;
+    if (exerciseOrder == null || exerciseOrder.length == 0) {
       sliverList.add(AddExerciseFiller());
     } else {
       //NOTE: I don't need to call this pretty much ever again since I should be able to pass and update the reference
@@ -601,20 +601,22 @@ class _ExerciseListState extends State<ExerciseList> {
       //seperate exercises given their TimeStampTypes
       for (int i = 0; i < exerciseOrder.length; i++) {
         int thisExerciseID = exerciseOrder[i];
-        AnExercise thisExercise = exercises[thisExerciseID];
-        TimeStampType thisExerciseType = LastTimeStamp.returnTimeStampType(
-          thisExercise.lastTimeStamp,
-        );
+        if (exercises.containsKey(thisExerciseID)) {
+          AnExercise thisExercise = exercises[thisExerciseID]!;
+          TimeStampType thisExerciseType = LastTimeStamp.returnTimeStampType(
+            thisExercise.lastTimeStamp,
+          );
 
-        //send to proper list
-        if (thisExerciseType == TimeStampType.InProgress) {
-          inProgressOnes.add(thisExercise);
-        } else if (thisExerciseType == TimeStampType.New) {
-          newOnes.add(thisExercise);
-        } else if (thisExerciseType == TimeStampType.Other) {
-          regularOnes.add(thisExercise);
-        } else {
-          hiddenOnes.add(thisExercise);
+          //send to proper list
+          if (thisExerciseType == TimeStampType.InProgress) {
+            inProgressOnes.add(thisExercise);
+          } else if (thisExerciseType == TimeStampType.New) {
+            newOnes.add(thisExercise);
+          } else if (thisExerciseType == TimeStampType.Other) {
+            regularOnes.add(thisExercise);
+          } else {
+            hiddenOnes.add(thisExercise);
+          }
         }
       }
 
@@ -651,7 +653,7 @@ class _ExerciseListState extends State<ExerciseList> {
               false) {
             timeTillFinish2IndexInProgressOnes[timeTillFinish] = [];
           }
-          timeTillFinish2IndexInProgressOnes[timeTillFinish].add(i);
+          timeTillFinish2IndexInProgressOnes[timeTillFinish]!.add(i);
         }
 
         //sort keys
@@ -663,27 +665,30 @@ class _ExerciseListState extends State<ExerciseList> {
         List<AnExercise> newInProgressOnes = [];
         for (int i = 0; i < timesTillFinish.length; i++) {
           Duration thisTimeTillFinish = timesTillFinish[i];
-          List<int> indicesInProgressOnes =
-              timeTillFinish2IndexInProgressOnes[thisTimeTillFinish];
+          if (timeTillFinish2IndexInProgressOnes
+              .containsKey(thisTimeTillFinish)) {
+            List<int> indicesInProgressOnes =
+                timeTillFinish2IndexInProgressOnes[thisTimeTillFinish]!;
 
-          //cover main cases
-          if (indicesInProgressOnes.length == 1) {
-            int theIndex = indicesInProgressOnes[0];
+            //cover main cases
+            if (indicesInProgressOnes.length == 1) {
+              int theIndex = indicesInProgressOnes[0];
 
-            AnExercise theExercise = inProgressOnes[theIndex];
-            newInProgressOnes.add(theExercise);
-          } else {
-            //2 different exercises have their timers finishing at the exact same time
-            //NOTE:currently our sorting order views things like so
-            //what was started first is on top
-            //which is exatly how we want to be this bit sorted so just add them as they appear
-
-            //but they where started at different times
-            //which every one was started first goes on the bottom
-            for (int i = 0; i < indicesInProgressOnes.length; i++) {
-              int theIndex = indicesInProgressOnes[i];
               AnExercise theExercise = inProgressOnes[theIndex];
               newInProgressOnes.add(theExercise);
+            } else {
+              //2 different exercises have their timers finishing at the exact same time
+              //NOTE:currently our sorting order views things like so
+              //what was started first is on top
+              //which is exatly how we want to be this bit sorted so just add them as they appear
+
+              //but they where started at different times
+              //which every one was started first goes on the bottom
+              for (int i = 0; i < indicesInProgressOnes.length; i++) {
+                int theIndex = indicesInProgressOnes[i];
+                AnExercise theExercise = inProgressOnes[theIndex];
+                newInProgressOnes.add(theExercise);
+              }
             }
           }
         }
@@ -699,7 +704,7 @@ class _ExerciseListState extends State<ExerciseList> {
 
       //create the groups of the regular ones
       //travel them in the opposite direction
-      DateTime lastDateTime;
+      DateTime? lastDateTime;
       for (int i = 0; i < regularOnes.length; i++) {
         //array from back to front
         int index = (regularOnes.length - 1) - i;
@@ -759,7 +764,7 @@ class _ExerciseListState extends State<ExerciseList> {
 
         //vars to set
         String title;
-        String subtitle;
+        String? subtitle;
 
         //set title and subtitle
         if (sectionType == TimeStampType.Other) {
@@ -816,7 +821,8 @@ class _ExerciseListState extends State<ExerciseList> {
           }
 
           //gen subtitle
-          subtitle = "on a " + DurationFormat.weekDayToString[oldestDT.weekday];
+          subtitle = "on a " +
+              (DurationFormat.weekDayToString[oldestDT.weekday] ?? "???");
         } else {
           title = LastTimeStamp.timeStampTypeToString(sectionType);
           if (sectionType != TimeStampType.InProgress) {
@@ -947,7 +953,7 @@ class _ExerciseListState extends State<ExerciseList> {
     //add header because we always have one
     slivers?.clear();
     slivers = [];
-    slivers.add(
+    slivers!.add(
       HeaderForOneHandedUse(
         listOfGroupOfExercises: groupsOfExercises,
         inprogressWorkoutSection: (inProgressOnes.length > 0),
@@ -958,7 +964,7 @@ class _ExerciseListState extends State<ExerciseList> {
     );
 
     //add all the other widgets below it
-    slivers.addAll(sliverList);
+    slivers!.addAll(sliverList);
   }
 
   //build
@@ -971,7 +977,7 @@ class _ExerciseListState extends State<ExerciseList> {
         children: <Widget>[
           CustomScrollView(
             controller: widget.autoScrollController,
-            slivers: slivers,
+            slivers: slivers!,
           ),
           SearchExerciseButton(),
           AddExerciseButton(

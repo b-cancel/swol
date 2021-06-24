@@ -46,7 +46,7 @@ class _LearnExerciseState extends State<LearnExercise> {
   List<ValueNotifier<bool>> allIsOpens = [];
 
   //my be automatically open to show the user what this section of the app is about
-  ValueNotifier<bool> introductionIsOpen;
+  late ValueNotifier<bool> introductionIsOpen;
 
   //automatically closed
   ValueNotifier<bool> definitionIsOpen = new ValueNotifier(false);

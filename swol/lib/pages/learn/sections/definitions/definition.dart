@@ -4,15 +4,15 @@ import 'package:flutter/material.dart';
 //widgets
 class ADefinition extends StatelessWidget {
   ADefinition({
-    this.word,
-    this.definition,
+    required this.word,
+    required this.definition,
     this.extra,
     this.lessBottomPadding: false,
   });
 
   final String word;
   final List<TextSpan> definition;
-  final List<TextSpan> extra;
+  final List<TextSpan>? extra;
   final bool lessBottomPadding;
 
   @override
@@ -41,11 +41,11 @@ class _DefinitionOfWord extends StatelessWidget {
   const _DefinitionOfWord({
     Key? key,
     required this.definition,
-    required this.extra,
+    this.extra,
   }) : super(key: key);
 
   final List<TextSpan> definition;
-  final List<TextSpan> extra;
+  final List<TextSpan>? extra;
 
   @override
   Widget build(BuildContext context) {

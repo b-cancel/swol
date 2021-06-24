@@ -317,7 +317,7 @@ class BasicCountDown extends StatefulWidget {
 
 class _BasicCountDownState extends State<BasicCountDown>
     with SingleTickerProviderStateMixin {
-  AnimationController controller;
+  late AnimationController controller;
 
   updateState() {
     if (mounted) setState(() {});
@@ -361,7 +361,8 @@ class _BasicCountDownState extends State<BasicCountDown>
     double progress;
     Widget centerWidget;
     if (controller.isAnimating) {
-      Duration timePassed = controller.lastElapsedDuration;
+      //TODO: confirm fix
+      Duration timePassed = controller.lastElapsedDuration ?? Duration.zero;
       int secondsPassed = timePassed.inSeconds;
       int secondsLeft = widget.seconds - secondsPassed;
       Duration msLeft = timePassed - Duration(seconds: secondsPassed);

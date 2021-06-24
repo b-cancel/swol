@@ -65,12 +65,12 @@ class SearchExerciseButton extends StatefulWidget {
 }
 
 class _SearchExerciseButtonState extends State<SearchExerciseButton> {
-  bool showSearch;
+  late bool showSearch;
 
   updateState() {
     if (mounted) {
       setState(() {});
-      showSearch = ((ExerciseData?.exercisesOrder?.value?.length ?? 0) > 1);
+      showSearch = ((ExerciseData?.exercisesOrder?.value.length ?? 0) > 1);
       if (SharedPrefsExt.getSearchShown().value == false && showSearch) {
         OnBoarding.discoverSearchExercise(context);
       }
@@ -79,14 +79,14 @@ class _SearchExerciseButtonState extends State<SearchExerciseButton> {
 
   @override
   void initState() {
-    showSearch = ((ExerciseData?.exercisesOrder?.value?.length ?? 0) > 1);
-    ExerciseData.exercisesOrder.addListener(updateState);
+    showSearch = ((ExerciseData?.exercisesOrder?.value.length ?? 0) > 1);
+    ExerciseData.exercisesOrder?.addListener(updateState);
     super.initState();
   }
 
   @override
   void dispose() {
-    ExerciseData.exercisesOrder.removeListener(updateState);
+    ExerciseData.exercisesOrder?.removeListener(updateState);
     super.dispose();
   }
 
