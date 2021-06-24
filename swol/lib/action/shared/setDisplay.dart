@@ -40,14 +40,14 @@ class SetDisplay extends StatefulWidget {
     this.animate: false,
   }) : super(key: key);
 
-  final AnExercise exercise;
+  final AnExercise? exercise;
   //other
   final String title;
   final bool extraCurvy;
   final bool useAccent;
   //optional
-  final ValueNotifier<bool> heroUp;
-  final double heroAnimTravel;
+  final ValueNotifier<bool>? heroUp;
+  final double? heroAnimTravel;
   final bool animate;
 
   @override
@@ -56,7 +56,7 @@ class SetDisplay extends StatefulWidget {
 
 class _SetDisplayState extends State<SetDisplay> {
   updateState() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
       if (mounted) setState(() {});
     });
   }
@@ -74,7 +74,7 @@ class _SetDisplayState extends State<SetDisplay> {
 
     //change hero position
     if (widget.heroUp != null) {
-      widget.heroUp.addListener(updateState);
+      widget.heroUp?.addListener(updateState);
     }
   }
 
@@ -82,7 +82,7 @@ class _SetDisplayState extends State<SetDisplay> {
   void dispose() {
     //remove change hero position
     if (widget.heroUp != null) {
-      widget.heroUp.removeListener(updateState);
+      widget.heroUp?.removeListener(updateState);
     }
 
     //remove pivot change detectors
@@ -105,7 +105,7 @@ class _SetDisplayState extends State<SetDisplay> {
         ? Theme.of(context).accentColor
         : Theme.of(context).cardColor;
     if (widget.heroUp != null) {
-      backgroundColor = widget.heroUp.value
+      backgroundColor = widget.heroUp!.value
           ? Theme.of(context).accentColor
           : Theme.of(context).cardColor;
     }
@@ -113,28 +113,30 @@ class _SetDisplayState extends State<SetDisplay> {
     Color foregroundColor =
         widget.useAccent ? Theme.of(context).primaryColorDark : Colors.white;
     if (widget.heroUp != null) {
-      foregroundColor = widget.heroUp.value
+      foregroundColor = widget.heroUp!.value
           ? Theme.of(context).primaryColorDark
           : Colors.white;
     }
 
     double movementY = 0;
     if (widget.heroUp != null) {
-      if (widget.useAccent)
-        movementY = widget.heroUp.value ? 0 : widget.heroAnimTravel;
-      else
-        movementY = widget.heroUp.value ? -widget.heroAnimTravel : 0;
+      if (widget.useAccent) {
+        movementY = widget.heroUp!.value ? 0 : (widget.heroAnimTravel ?? 0);
+      } else {
+        movementY =
+            -1 * (widget.heroUp!.value ? (widget.heroAnimTravel ?? 0) : 0);
+      }
     }
 
     //what is our pivot
-    Pivot goalSetPivot;
+    Pivot? goalSetPivot;
     if (widget.exercise == null) {
       //we aren't showing the last set
       if (ExercisePage.pageNumber.value == 0) {
         goalSetPivot = Pivot.RepTarget;
       } else {
         bool weightValid = isTextValid(ExercisePage.setWeight.value);
-        double calculatedGoalWeight = ExercisePage?.setGoalWeight?.value ?? 0;
+        double calculatedGoalWeight = ExercisePage.setGoalWeight.value;
         //NOTE: here we do round since setWeight will ALWAYS BE an integer
         if (weightValid &&
             int.parse(ExercisePage.setWeight.value) ==
@@ -143,14 +145,15 @@ class _SetDisplayState extends State<SetDisplay> {
           goalSetPivot = Pivot.Weight;
         } else {
           bool repsValid = isTextValid(ExercisePage.setReps.value);
-          double calculatedReps = ExercisePage?.setGoalReps?.value ?? 0;
+          double calculatedReps = ExercisePage.setGoalReps.value;
           //NOTE: here we do round since setWeight will ALWAYS BE an integer
           if (repsValid &&
               int.parse(ExercisePage.setReps.value) == calculatedReps.round()) {
             //we are using our GOAL WEIGHT as our pivot
             goalSetPivot = Pivot.Reps;
-          } else
+          } else {
             goalSetPivot = Pivot.RepTarget;
+          }
         }
       }
     }
@@ -366,7 +369,7 @@ class UpdatingSetText extends StatelessWidget {
     this.exercise,
   });
 
-  final AnExercise exercise;
+  final AnExercise? exercise;
   final bool isWeight;
 
   @override
@@ -379,14 +382,19 @@ class UpdatingSetText extends StatelessWidget {
       else
         value = ExercisePage.setGoalReps.value.round();
     } else {
-      if (isWeight)
-        value = exercise.lastWeight;
-      else
-        value = exercise.lastReps;
+      if (isWeight) {
+        value = exercise?.lastWeight ?? -1;
+      } else {
+        value = exercise?.lastReps ?? -1;
+      }
     }
 
     //widget
-    return Text(value.toString());
+    if (value == -1) {
+      return Text("");
+    } else {
+      return Text(value.toString());
+    }
   }
 }
 
@@ -469,40 +477,41 @@ class ButtonWrapper extends StatelessWidget {
                       child: FittedBox(
                         fit: BoxFit.contain,
                         child: Container(
-                            width: 24,
-                            height: 24,
-                            padding: EdgeInsets.only(
-                              top: 4,
-                              right: 2,
-                            ),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: backgroundColor,
-                                borderRadius: BorderRadius.only(
-                                  topRight: Radius.circular(6.0),
-                                  bottomRight: Radius.circular(6.0),
-                                ),
+                          width: 24,
+                          height: 24,
+                          padding: EdgeInsets.only(
+                            top: 4,
+                            right: 2,
+                          ),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: backgroundColor,
+                              borderRadius: BorderRadius.only(
+                                topRight: Radius.circular(6.0),
+                                bottomRight: Radius.circular(6.0),
                               ),
-                              padding: EdgeInsets.all(2),
-                              child: FittedBox(
-                                fit: BoxFit.contain,
-                                alignment: Alignment.center,
-                                child: Conditional(
-                                  condition: usingRT,
-                                  ifTrue: Text(
-                                    "RT",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: foregroundColor,
-                                    ),
-                                  ),
-                                  ifFalse: Icon(
-                                    Icons.lock,
+                            ),
+                            padding: EdgeInsets.all(2),
+                            child: FittedBox(
+                              fit: BoxFit.contain,
+                              alignment: Alignment.center,
+                              child: Conditional(
+                                condition: usingRT,
+                                ifTrue: Text(
+                                  "RT",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
                                     color: foregroundColor,
                                   ),
                                 ),
+                                ifFalse: Icon(
+                                  Icons.lock,
+                                  color: foregroundColor,
+                                ),
                               ),
-                            )),
+                            ),
+                          ),
+                        ),
                       ),
                     ),
                   ),

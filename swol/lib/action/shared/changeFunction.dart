@@ -31,8 +31,6 @@ class _ChangeFunctionState extends State<ChangeFunction> {
   final ValueNotifier<bool> lastFunction = new ValueNotifier<bool>(false);
   final ValueNotifier<bool> firstFunction = new ValueNotifier<bool>(false);
 
-  CarouselController carouselController;
-
   updateCarousel({bool alsoSetState: true}) {
     //update first last without setting state
     int idIsAtHighest = ExercisePage.orderedIDs.value[0];
@@ -48,7 +46,7 @@ class _ChangeFunctionState extends State<ChangeFunction> {
     List<int> beforeWait = ExercisePage.orderedIDs.value;
     if (alsoSetState) {
       //wait a frame to avoid problems when transitioning to another page
-      WidgetsBinding.instance.addPostFrameCallback((_) {
+      WidgetsBinding.instance?.addPostFrameCallback((_) {
         if (mounted) {
           //NOTE: must to string for proper compare
           if (beforeWait.toString() !=
@@ -62,7 +60,7 @@ class _ChangeFunctionState extends State<ChangeFunction> {
             //NOTE: the order of functions isn't changing
             //NOTE: neither is the select page working
             //so the ongoing theory is that its the fault of carousel
-            WidgetsBinding.instance.addPostFrameCallback((_) {
+            WidgetsBinding.instance?.addPostFrameCallback((_) {
               //TODO: figure out why sometimes the carousel here has no pages
 
               //TODO isbreaking because we are trying to access a page in the pageview before its built
@@ -78,7 +76,8 @@ class _ChangeFunctionState extends State<ChangeFunction> {
     //ELSE: the carousel is being build in init
   }
 
-  Widget carousel;
+  late Widget carousel;
+  late CarouselController carouselController;
 
   @override
   void initState() {
@@ -309,7 +308,7 @@ class OuterArrows extends StatefulWidget {
 class _OuterArrowsState extends State<OuterArrows> {
   updateState() {
     //NOTE: wait a frame to avoid reloading issues
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
       if (mounted) setState(() {});
     });
   }
@@ -361,7 +360,7 @@ class _InnerArrowsState extends State<InnerArrows> {
     //NOTE: we wait one frame because while the transition is happening
     //its possible that we get a new function order
     //and therefore closestIndex updates
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
       if (mounted) setState(() {});
     });
   }
@@ -380,7 +379,7 @@ class _InnerArrowsState extends State<InnerArrows> {
 
   @override
   Widget build(BuildContext context) {
-    Color arrowColor;
+    Color arrowColor = Theme.of(context).cardColor;
 
     //check if the set is valid
     bool weightValid = isTextValid(ExercisePage.setWeight.value);

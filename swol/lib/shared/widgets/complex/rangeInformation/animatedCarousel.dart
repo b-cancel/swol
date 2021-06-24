@@ -69,7 +69,7 @@ class _AnimatedRangeInformationState extends State<AnimatedRangeInformation> {
   @override
   void initState() {
     //set initial section grown
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
       setSectionGrown(jump: true);
     });
 

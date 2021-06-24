@@ -23,6 +23,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  
+  flutter_native_timezone: ^2.0.0
 
   #get application path for android and IOS
   #seems to only work for mobile

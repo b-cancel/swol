@@ -38,7 +38,7 @@ class _SetTargetToTrainingTypeIndicatorState
       section = (section < 0) ? 0 : section;
     }
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
       controller.animateTo(
         (((widget.wholeWidth - (2 * widget.oneSidePadding)) / 4) * section),
         duration: ExercisePage.transitionDuration,

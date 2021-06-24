@@ -75,7 +75,7 @@ class _TextFieldWithClearButtonState extends State<TextFieldWithClearButton> {
     //autofocus name
     if (widget.editOneAtAtTime == false) {
       if (widget.autofocus) {
-        WidgetsBinding.instance.addPostFrameCallback((_) {
+        WidgetsBinding.instance?.addPostFrameCallback((_) {
           Future.delayed(
               //wait a little bit so animations page transition animation complete
               ExercisePage.transitionDuration, () {
@@ -88,7 +88,7 @@ class _TextFieldWithClearButtonState extends State<TextFieldWithClearButton> {
       //if our focus node no longer has focus
       //we revert back to our old value
       //and we change is editing
-      WidgetsBinding.instance.addPostFrameCallback((_) {
+      WidgetsBinding.instance?.addPostFrameCallback((_) {
         focusNodeVN.value.addListener(focusSwitch);
       });
     }
@@ -210,7 +210,7 @@ class _TextFieldWithClearButtonState extends State<TextFieldWithClearButton> {
   //only used when (widget.editOneAtAtTime)
   //so that when switch focus, without saving directly, we simply put back the value that was there
   focusSwitch() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
       if (focusNodeVN.value.hasFocus == false) {
         isEditing.value = false; //triggers the function below
       }
@@ -220,7 +220,7 @@ class _TextFieldWithClearButtonState extends State<TextFieldWithClearButton> {
   isEditingUpdate() {
     if (isEditing.value) {
       //we want to edit, request focus
-      WidgetsBinding.instance.addPostFrameCallback((_) {
+      WidgetsBinding.instance?.addPostFrameCallback((_) {
         if (focusNodeVN.value.hasFocus == false) {
           FocusScope.of(context).requestFocus(focusNodeVN.value);
         }

@@ -69,7 +69,7 @@ class _SaveButtonState extends State<SaveButton> {
       widget.showSaveButton.value = true;
     } else {
       //autofocus on the name as soon as possible
-      WidgetsBinding.instance.addPostFrameCallback((_) {
+      WidgetsBinding.instance?.addPostFrameCallback((_) {
         FocusScope.of(context).requestFocus(widget.nameFocusNode);
       });
 

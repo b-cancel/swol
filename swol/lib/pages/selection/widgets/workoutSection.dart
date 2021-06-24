@@ -14,14 +14,14 @@ class SectionHeader extends StatelessWidget {
   const SectionHeader({
     Key? key,
     required this.title,
-    required this.subtitle,
+    this.subtitle,
     required this.sectionType,
     required this.highlightTop,
     required this.topColor,
   }) : super(key: key);
 
   final String title;
-  final String subtitle;
+  final String? subtitle;
   final TimeStampType sectionType;
   final bool highlightTop;
   final Color topColor;
@@ -187,13 +187,14 @@ class ListTileDivider extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: EdgeInsets.only(
-          left: 16,
-          right: 16,
-        ),
-        child: Container(
-          height: 1,
-          color: Theme.of(context).scaffoldBackgroundColor,
-        ));
+      padding: EdgeInsets.only(
+        left: 16,
+        right: 16,
+      ),
+      child: Container(
+        height: 1,
+        color: Theme.of(context).scaffoldBackgroundColor,
+      ),
+    );
   }
 }

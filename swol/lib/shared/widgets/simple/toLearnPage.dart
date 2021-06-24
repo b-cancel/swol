@@ -350,7 +350,7 @@ class CustomToast extends StatelessWidget {
                     Visibility(
                       visible: action != null,
                       child: ElevatedButton(
-                        onPressed: () => action!(),
+                        onPressed: action != null ? () => action!() : null,
                         child: Text(
                           "Continue",
                           style: bold,

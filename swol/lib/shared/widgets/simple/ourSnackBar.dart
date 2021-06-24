@@ -15,13 +15,13 @@ openSnackBar(
   bool showForever: false,
   //main
   String message: "",
-  ValueNotifier<String> updatingMessage,
+  ValueNotifier<String>? updatingMessage,
 }) {
   //dismiss if desired
   if (dismissBeforeShow) {
-    Scaffold.of(context).hideCurrentSnackBar();
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
   } else if (quickDismissBeforeShow) {
-    Scaffold.of(context).removeCurrentSnackBar();
+    ScaffoldMessenger.of(context).removeCurrentSnackBar();
   }
 
   //main content
@@ -33,7 +33,7 @@ openSnackBar(
   );
 
   //show snackbar
-  Scaffold.of(context).showSnackBar(
+  ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
       backgroundColor: color == Colors.yellow
           ? Theme.of(context).primaryColorDark
@@ -46,7 +46,7 @@ openSnackBar(
           ? GestureDetector(
               behavior: HitTestBehavior.opaque,
               onTap: () {
-                Scaffold.of(context).hideCurrentSnackBar();
+                ScaffoldMessenger.of(context).hideCurrentSnackBar();
               },
               child: content,
             )
@@ -71,8 +71,8 @@ class SnackBarBody extends StatelessWidget {
 
   final IconData icon;
   final Color color;
-  final ValueNotifier<String> updatingMessage;
-  final String message;
+  final ValueNotifier<String>? updatingMessage;
+  final String? message;
 
   @override
   Widget build(BuildContext context) {
@@ -93,8 +93,8 @@ class SnackBarBody extends StatelessWidget {
             color: Colors.white,
           ),
           child: updatingMessage == null
-              ? Text(message)
-              : UpdatingText(updatingText: updatingMessage),
+              ? Text(message ?? "")
+              : UpdatingText(updatingText: updatingMessage!),
         ),
       ),
     ]);

@@ -172,7 +172,7 @@ class _VerticalTabsState extends State<VerticalTabs>
   //3. if we are moving towards the "suggest page"
   //    the next button is immediately hidden
   waitForTransitionBegin(double startOffset) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
       double currentOffset = pageViewController.offset;
       if (currentOffset == startOffset)
         waitForTransitionBegin(startOffset);

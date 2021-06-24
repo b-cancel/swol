@@ -102,7 +102,7 @@ class _ExerciseListState extends State<ExerciseList> {
         //wait for the set to finish updating
         //NOTE: the statement is set back to false automatically
         //when its set to true, it updates stuff, then set itself to false
-        WidgetsBinding.instance.addPostFrameCallback((_) {
+        WidgetsBinding.instance?.addPostFrameCallback((_) {
           toPage2AfterSetUpdateComplete();
         });
       } else {
@@ -442,7 +442,7 @@ class _ExerciseListState extends State<ExerciseList> {
         //wait for the set to finish updating
         //NOTE: the statement is set back to false automatically
         //when its set to true, it updates stuff, then set itself to false
-        WidgetsBinding.instance.addPostFrameCallback((_) {
+        WidgetsBinding.instance?.addPostFrameCallback((_) {
           popThenGoToExerciseAfterSetUpdateComplete(exerciseID);
         });
       } else {
@@ -514,7 +514,7 @@ class _ExerciseListState extends State<ExerciseList> {
           ),
         );
       } else {
-        WidgetsBinding.instance.addPostFrameCallback((_) {
+        WidgetsBinding.instance?.addPostFrameCallback((_) {
           travelAfterDisposeComplete(exercise);
         });
       }
@@ -529,13 +529,13 @@ class _ExerciseListState extends State<ExerciseList> {
     /*
     //wait one frame before trying to travel
     //otherwise things will break
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
       travelToExercise(exerciseToTravelTo.value);
     });
     */
 
     //wait to have mediaquery available
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
       beforeManualBuild();
       setState(() {});
     });

@@ -19,7 +19,7 @@ toNextPageAfterSetUpdateComplete() {
     //wait for the set to finish updating
     //NOTE: the statement is set back to false automatically
     //when its set to true, it updates stuff, then set itself to false
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
       toNextPageAfterSetUpdateComplete();
     });
   } else {
@@ -157,7 +157,7 @@ maybeError(
                   Navigator.of(context).pop();
 
                   //PRECAUTION: wait a frame to wait for setWeight and setReps to update
-                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                  WidgetsBinding.instance?.addPostFrameCallback((_) {
                     ExercisePage.updateSet.value = true; //start the set
                     toNextPageAfterSetUpdateComplete();
                   });

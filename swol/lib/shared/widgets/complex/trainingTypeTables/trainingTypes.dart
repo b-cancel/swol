@@ -78,7 +78,7 @@ class _TrainingTypeSectionsState extends State<TrainingTypeSections> {
   CarouselController carouselController;
 
   sectionIDToCarouselAction() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
       if (mainCarousel == null)
         sectionIDToCarouselAction();
       else {
@@ -206,7 +206,7 @@ class _TrainingTypeSectionsState extends State<TrainingTypeSections> {
     );
 
     //init call for initial focus
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
       carouselController.jumpToPage(widget.sectionID.value);
     });
 

@@ -153,7 +153,7 @@ class RecentSearches extends StatelessWidget {
                   onTap: () {
                     //NOTE: this should allow other deletions to complete
                     //and therefore letting us confirm lock our or not
-                    WidgetsBinding.instance.addPostFrameCallback(
+                    WidgetsBinding.instance?.addPostFrameCallback(
                       (_) {
                         if (removalLocked.value == false) {
                           //lock removal

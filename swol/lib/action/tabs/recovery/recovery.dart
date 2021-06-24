@@ -54,7 +54,7 @@ class _RecoveryState extends State<Recovery>
 
     //encourage the user to reap the benefits of the system
     //after everything loads up so nothing crashes IF a pop up is going to be comming up
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
       //TODO: perhaps use the highlighting notification thing WITHIN the page here
       //NOTE: Im hinting at a certain plugin
       //that is most definately overkill for something so small

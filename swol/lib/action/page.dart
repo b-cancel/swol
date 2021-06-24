@@ -127,7 +127,7 @@ class _ExercisePageDarkState extends State<ExercisePageDark> {
         }
 
         //this is a new set
-        widget.exercise.tempSetCount += 1;
+        widget.exercise.tempSetCount = widget.exercise.tempSetCount! + 1;
 
         //we are recording our FIRST set so may go back to it
         //if we delete it instead of deciding to continue

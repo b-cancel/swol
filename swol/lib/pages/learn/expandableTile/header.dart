@@ -18,7 +18,7 @@ class TileHeader extends StatelessWidget {
     required this.openOrClose,
     required this.headerIcon,
     required this.headerText,
-    required this.size,
+    this.size,
     Key? key,
   }) : super(key: key);
 
@@ -26,7 +26,7 @@ class TileHeader extends StatelessWidget {
   final Function openOrClose;
   final IconData headerIcon;
   final String headerText;
-  final double size;
+  final double? size;
 
   @override
   Widget build(BuildContext context) {
@@ -131,7 +131,7 @@ class TileHeader extends StatelessWidget {
           Material(
             color: Colors.transparent,
             child: InkWell(
-              onTap: openOrClose,
+              onTap: () => openOrClose(),
               child: Container(
                 child: Row(
                   children: <Widget>[
@@ -164,7 +164,7 @@ class TileHeader extends StatelessWidget {
                       ),
                     ),
                     IconButton(
-                      onPressed: openOrClose,
+                      onPressed: () => openOrClose(),
                       icon: RotatingIcon(
                         color: innerColor,
                         isOpen: isOpen,
@@ -225,13 +225,16 @@ class RotatingIcon extends StatelessWidget {
         tweenBeginning.value = animator.animation.value;
         fractionOfDuration.value = animator.controller.value;
       },
-      builder: (anim) => Transform.rotate(
-        angle: anim.value,
-        child: Icon(
-          Icons.keyboard_arrow_down,
-          color: color,
-        ),
-      ),
+      builder:
+          (BuildContext context, AnimatorState<double> anim, Widget? child) {
+        return Transform.rotate(
+          angle: anim.value,
+          child: Icon(
+            Icons.keyboard_arrow_down,
+            color: color,
+          ),
+        );
+      },
     );
   }
 }

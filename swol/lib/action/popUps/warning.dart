@@ -41,8 +41,8 @@ Future<bool> warningThenPop(BuildContext context, AnExercise exercise) async {
   //  NOTE: assuming we allow manually updating temps after initially set
 
   //grab temps
-  int tempWeightInt = exercise?.tempWeight;
-  int tempRepsInt = exercise?.tempReps;
+  int? tempWeightInt = exercise.tempWeight;
+  int? tempRepsInt = exercise.tempReps;
   //extra step needed because null.toString() isn't null
   String tempWeight = (tempWeightInt != null) ? tempWeightInt.toString() : "";
   String tempReps = (tempRepsInt != null) ? tempRepsInt.toString() : "";

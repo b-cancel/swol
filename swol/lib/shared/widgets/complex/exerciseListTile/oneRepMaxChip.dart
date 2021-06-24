@@ -39,7 +39,7 @@ class _ExerciseTileSubtitleState extends State<ExerciseTileSubtitle> {
 
   updateState() {
     //waits for all the other variables to be set
-    WidgetsBinding.instance.addPostFrameCallback(actualUpdate);
+    WidgetsBinding.instance?.addPostFrameCallback(actualUpdate);
   }
 
   @override

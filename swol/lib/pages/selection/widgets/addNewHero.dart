@@ -72,7 +72,7 @@ class AddNewHeroHelper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Function onTap;
+    Function? onTap;
     if (percentToAppBar == 0 || percentToAppBar == 1) {
       if (percentToAppBar == 1) {
         onTap = () {
@@ -87,7 +87,7 @@ class AddNewHeroHelper extends StatelessWidget {
             context,
             PageTransition(
               duration: longTransitionDuration,
-              type: PageTransitionType.downToUp,
+              type: PageTransitionType.bottomToTop,
               child: AddExercise(
                 longTransitionDuration: longTransitionDuration,
               ),
@@ -95,9 +95,6 @@ class AddNewHeroHelper extends StatelessWidget {
           );
         };
       }
-    } //Tapping while transitioning does nothing
-    else {
-      onTap = () {};
     }
 
     //NOTE in all cases below (regular button first, then app bar button)
@@ -105,7 +102,7 @@ class AddNewHeroHelper extends StatelessWidget {
       condition: percentToAppBar == 0,
       ifTrue: FloatingActionButton(
         heroTag: null,
-        onPressed: onTap,
+        onPressed: onTap != null ? () => onTap!() : null,
         backgroundColor: Theme.of(context).accentColor,
         child: Icon(
           Icons.add,
@@ -130,7 +127,7 @@ class AddNewHeroHelper extends StatelessWidget {
           child: Material(
             color: Colors.transparent,
             child: InkWell(
-              onTap: onTap,
+              onTap: onTap != null ? () => onTap!() : null,
               child: Container(
                 padding: EdgeInsets.symmetric(
                   horizontal: 16,

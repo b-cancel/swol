@@ -140,7 +140,7 @@ class _TipGeneratorState extends State<TipGenerator> {
     if (widget.updateableTipMessage.value != "") {
       widget.updateableTipMessage.value = "";
       widget.tipIsShowing.value = false;
-      Scaffold.of(context).hideCurrentSnackBar();
+      ScaffoldMessenger.of(context).hideCurrentSnackBar();
     }
   }
 

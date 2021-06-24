@@ -114,7 +114,7 @@ class _SearchExerciseButtonState extends State<SearchExerciseButton> {
                 Navigator.push(
                   context,
                   PageTransition(
-                    type: PageTransitionType.downToUp,
+                    type: PageTransitionType.bottomToTop,
                     duration: ExercisePage.transitionDuration,
                     child: SearchExercise(),
                   ),

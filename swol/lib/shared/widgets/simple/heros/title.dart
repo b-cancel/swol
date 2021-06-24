@@ -12,7 +12,7 @@ class ExerciseTitleHero extends StatelessWidget {
 
   final AnExercise exercise;
   final bool inAppBar;
-  final Function onTap;
+  final Function? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +49,7 @@ class ExerciseTitleHero extends StatelessWidget {
       child: ExerciseTitleHeroHelper(
         percentToAppBar: (inAppBar) ? 1 : 0,
         exercise: exercise,
-        onTap: onTap,
+        onTap: onTap != null ? () => onTap!() : null,
       ),
     );
   }
@@ -64,14 +64,14 @@ class ExerciseTitleHeroHelper extends StatelessWidget {
 
   final double percentToAppBar;
   final AnExercise exercise;
-  final Function onTap;
+  final Function? onTap;
 
   @override
   Widget build(BuildContext context) {
     return Material(
       color: Colors.transparent,
       child: InkWell(
-        onTap: onTap,
+        onTap: onTap != null ? () => onTap!() : null,
         child: Container(
           color: (percentToAppBar == 0 || percentToAppBar == 1)
               ? Colors.transparent
