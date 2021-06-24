@@ -131,9 +131,14 @@ class _SaveButtonState extends State<SaveButton> {
 
                 DateTime theNewDateTime = LastTimeStamp.newDateTime();
 
+                //ID handling
+                int ourID = ExerciseData.nextID;
+                ExerciseData.nextID = ourID + 1;
+
                 //add workout to our list
                 await ExerciseData.addExercise(
                   AnExercise(
+                    ourID,
                     //basic
                     widget.name.value,
                     widget.url.value,

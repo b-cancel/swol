@@ -13,7 +13,7 @@ class CurvedCorner extends StatelessWidget {
 
   final bool isTop;
   final bool isLeft;
-  final Color backgroundColor;
+  final Color? backgroundColor;
   final Color cornerColor;
   final double size;
 

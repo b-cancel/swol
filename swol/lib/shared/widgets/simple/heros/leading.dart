@@ -7,11 +7,11 @@ import 'package:swol/shared/widgets/simple/heros/curveMod.dart';
 class ExerciseBegin extends StatelessWidget {
   ExerciseBegin({
     required this.inAppBar,
-    required this.exercise,
+    this.exercise,
   });
 
   final bool inAppBar;
-  final AnExercise exercise;
+  final AnExercise? exercise;
 
   @override
   Widget build(BuildContext context) {
@@ -20,15 +20,14 @@ class ExerciseBegin extends StatelessWidget {
         percentToAppBar: (inAppBar) ? 1 : 0,
       );
     } else {
-      String generatedTag = "exerciseBegin" + exercise.id.toString();
+      String generatedTag = "exerciseBegin" + exercise!.id.toString();
       return Hero(
         tag: generatedTag,
         createRectTween: (begin, end) {
-          if (begin != null && end != null) {
-            return CustomRectTween(a: begin, b: end);
-          } else {
-            return CustomRectTween();
-          }
+          return CustomRectTween(
+            a: begin,
+            b: end,
+          );
         },
         flightShuttleBuilder: (
           BuildContext flightContext,

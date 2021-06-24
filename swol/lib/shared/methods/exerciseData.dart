@@ -14,13 +14,13 @@ import 'package:swol/other/otherHelper.dart';
 //1. grabs exercises from storage
 //2. places exercises to storage
 class ExerciseData {
-  static int? nextID;
+  static late int nextID;
   static File? _exerciseFile;
 
   //main struct we are maintaining (id -> exercise)
   //NOTE: we could use hashset but its slower than a map for deletion
   //and accessing specific items
-  static Map<int, AnExercise>? _exercises;
+  static late Map<int, AnExercise> _exercises;
   //NOTE: value notifier here is required since
   //we listen to order to determine whether we need to update the list
   //NOTE: silly mistake but we need a list, hash set doesn't maintain order
@@ -28,7 +28,7 @@ class ExerciseData {
   static ValueNotifier<List<int>>? exercisesOrder;
 
   //lets us control add and removing from the list with more precision
-  static Map<int, AnExercise>? getExercises() {
+  static Map<int, AnExercise> getExercises() {
     return _exercises;
   }
 
@@ -62,7 +62,7 @@ class ExerciseData {
       List<dynamic> map = json.decode(fileData);
       for (int i = 0; i < map.length; i++) {
         AnExercise thisExercise = AnExercise.fromJson(map[i]);
-        int thisID = thisExercise.id ?? -1;
+        int thisID = thisExercise.id;
         maxID = (thisID > maxID) ? thisID : maxID;
         await addExercise(
           thisExercise,
@@ -81,14 +81,8 @@ class ExerciseData {
     AnExercise theExercise, {
     bool updateOrderAndFile: true,
   }) async {
-    //give it an ID (IF needed)
-    if (theExercise.id == null) {
-      theExercise.id = nextID;
-      nextID = nextID! + 1;
-    }
-
     //add to exercises
-    _exercises![theExercise.id!] = theExercise;
+    _exercises[theExercise.id] = theExercise;
 
     //NOTE: since inprogress items are to be viewed above new items
     //we do have to update order
@@ -99,8 +93,8 @@ class ExerciseData {
   }
 
   static deleteExercise(int id) {
-    if (_exercises!.containsKey(id)) {
-      _exercises!.remove(id);
+    if (_exercises.containsKey(id)) {
+      _exercises.remove(id);
 
       //update file
       updateOrder();
@@ -114,10 +108,10 @@ class ExerciseData {
   static updateOrder() {
     //modify to then sort
     Map<DateTime, int> dateTimeToID = new Map<DateTime, int>();
-    List<int> keys = _exercises!.keys.toList();
+    List<int> keys = _exercises.keys.toList();
     for (int i = 0; i < keys.length; i++) {
       int keyIsID = keys[i];
-      AnExercise? exercise = _exercises![keyIsID];
+      AnExercise? exercise = _exercises[keyIsID];
       if (exercise != null) {
         dateTimeToID[exercise.lastTimeStamp] = keyIsID;
       }
@@ -164,7 +158,7 @@ class ExerciseData {
   }
 
   static String _exercisesToString() {
-    List<AnExercise> exercises = _exercises!.values.toList();
+    List<AnExercise> exercises = _exercises.values.toList();
     String string = "[";
     for (int i = 0; i < exercises.length; i++) {
       String str = json.encode(exercises[i].toJson());

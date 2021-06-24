@@ -12,14 +12,14 @@ class OnBoardingImage extends StatelessWidget {
   final double width;
   final double multiplier;
   final String imageUrl;
-  final bool isLeft;
-  final Function onTap;
+  final bool? isLeft;
+  final Function? onTap;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
-      onTap: (onTap == null) ? () {} : () => onTap(),
+      onTap: (onTap == null) ? () {} : () => onTap!(),
       //NOTE: invisible container required to make tap target large
       child: Container(
         color: Colors.transparent,
@@ -30,7 +30,7 @@ class OnBoardingImage extends StatelessWidget {
             height: width,
             alignment: (isLeft == null)
                 ? Alignment.center
-                : (isLeft)
+                : (isLeft!)
                     ? Alignment.centerLeft
                     : Alignment.centerRight,
             child: Container(

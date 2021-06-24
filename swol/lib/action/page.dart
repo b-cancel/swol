@@ -152,10 +152,7 @@ class _ExercisePageDarkState extends State<ExercisePageDark> {
       //worst case scenario this little exception cover won't break anything
       if (widget.exercise.tempStartTime.value != AnExercise.nullDateTime) {
         //cancel the notifcation that perhaps didn't trigger
-        int? exID = widget.exercise.id;
-        if (exID != null) {
-          safeCancelNotification(exID);
-        }
+        safeCancelNotification(widget.exercise.id);
 
         //must be done first
         //so that our suggest page has access to right 1 rep maxes
@@ -251,8 +248,8 @@ class _ExercisePageDarkState extends State<ExercisePageDark> {
     //after this our notifiers initially set our controllers
     //our controllers update our notifiers
     //and then our notifiers ONLY update our temps under very specific conditions
-    int tempWeight = widget?.exercise?.tempWeight;
-    int tempReps = widget?.exercise?.tempReps;
+    int? tempWeight = widget.exercise.tempWeight;
+    int? tempReps = widget.exercise.tempReps;
 
     //extra step needed because null.toString() isn't null
     ExercisePage.setWeight.value =
@@ -377,11 +374,22 @@ class PageTitle extends StatelessWidget {
               padding: EdgeInsets.symmetric(
                 vertical: 8.0,
               ),
-              child: OutlineButton.icon(
-                highlightedBorderColor: Theme.of(context).accentColor,
+              child: OutlinedButton(
+                style: OutlinedButton.styleFrom(
+                  primary: Theme.of(context).accentColor,
+                ),
                 onPressed: () => toNotes(context),
-                icon: Icon(Icons.edit),
-                label: Text("Notes"),
+                child: Row(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(
+                        right: 6,
+                      ),
+                      child: Icon(Icons.edit),
+                    ),
+                    Text("Notes"),
+                  ],
+                ),
               ),
             ),
           ),

@@ -13,8 +13,8 @@ class OnBoardingText extends StatelessWidget {
   final String text;
   final bool isLeft;
   final bool isTop;
-  final Function onTapNext;
-  final Function onTapPrev;
+  final Function? onTapNext;
+  final Function? onTapPrev;
   final bool showDone;
 
   @override
@@ -22,7 +22,7 @@ class OnBoardingText extends StatelessWidget {
     //NOTE: its seperate so we can change it quickly later
     //if need be
     Function secondaryOnTapNext =
-        (onTapNext == null) ? () {} : () => onTapNext();
+        (onTapNext == null) ? () {} : () => onTapNext!();
 
     Widget invisibleExpandedButton = Expanded(
       child: GestureDetector(
@@ -67,7 +67,7 @@ class OnBoardingText extends StatelessWidget {
                 (onTapPrev == null)
                     ? Container()
                     : GestureDetector(
-                        onTap: () => onTapPrev(),
+                        onTap: onTapPrev != null ? () => onTapPrev!() : null,
                         child: Container(
                           child: Padding(
                             padding: const EdgeInsets.symmetric(
@@ -83,7 +83,9 @@ class OnBoardingText extends StatelessWidget {
                                 color: Colors.transparent,
                                 child: InkWell(
                                   highlightColor: Theme.of(context).accentColor,
-                                  onTap: () => onTapPrev(),
+                                  onTap: onTapPrev != null
+                                      ? () => onTapPrev!()
+                                      : null,
                                   child: Container(
                                     padding: EdgeInsets.symmetric(
                                       horizontal: 16,
@@ -115,7 +117,7 @@ class OnBoardingText extends StatelessWidget {
                         ),
                       ),
                 GestureDetector(
-                  onTap: (onTapNext == null) ? () {} : () => onTapNext(),
+                  onTap: (onTapNext == null) ? () {} : () => onTapNext!(),
                   child: Container(
                     child: Padding(
                       padding: EdgeInsets.only(

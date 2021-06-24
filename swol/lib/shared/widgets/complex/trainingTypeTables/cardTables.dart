@@ -19,9 +19,9 @@ class CardTable extends StatelessWidget {
   final double height;
   final List<String> items;
   final bool cardBackground;
-  final int highlightField;
+  final int? highlightField;
   final bool persistent;
-  final IconData icon;
+  final IconData? icon;
 
   @override
   Widget build(BuildContext context) {

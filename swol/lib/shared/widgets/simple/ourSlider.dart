@@ -123,7 +123,11 @@ class CustomSlider extends StatelessWidget {
           child: MediaQuery(
             data: MediaQuery.of(context).copyWith(textScaleFactor: 1.5),
             child: FlutterSlider(
-              step: 1,
+              //TODO confirm this is correct
+              step: FlutterSliderStep(
+                step: 1,
+                isPercentRange: false,
+              ),
               jump: true,
               values: [value.value.toDouble()],
               min: 1,
@@ -160,10 +164,12 @@ class CustomSlider extends StatelessWidget {
                   color: isDark ? Colors.white : Colors.black,
                 ),
                 boxStyle: FlutterSliderTooltipBox(
-                    decoration: BoxDecoration(
-                        //color: Theme.of(context).backgroundColor,
-                        )),
-                numberFormat: intl.NumberFormat(),
+                  decoration: BoxDecoration(
+                      //color: Theme.of(context).backgroundColor,
+                      ),
+                ),
+                //TODO: confirm we don't need the line below
+                //numberFormat: intl.NumberFormat(),
               ),
               trackBar: FlutterSliderTrackBar(
                 activeTrackBarHeight: 16,

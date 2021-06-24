@@ -49,11 +49,10 @@ class BottomNextButton extends StatelessWidget {
           child: Hero(
             tag: "exerciseContinue" + exerciseID.toString(),
             createRectTween: (Rect? begin, Rect? end) {
-              if (begin != null && end != null) {
-                return CustomRectTween(a: begin, b: end);
-              } else {
-                return CustomRectTween();
-              }
+              return CustomRectTween(
+                a: begin,
+                b: end,
+              );
             },
             child: Material(
               color: Colors.transparent,

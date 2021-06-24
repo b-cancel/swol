@@ -2,16 +2,13 @@ import 'package:flutter/material.dart';
 
 class ListItem extends StatelessWidget {
   ListItem({
-    this.content,
+    required this.content,
     this.rightPadding: 8,
-
     this.circleText = "",
     this.circleTextColor = Colors.black,
-
     this.circleColor = Colors.white,
     this.circlePadding = 2,
     this.circleSize,
-    
     this.bottomSpacing = 12.0,
   });
 
@@ -23,17 +20,20 @@ class ListItem extends StatelessWidget {
 
   final Color circleColor;
   final double circlePadding;
-  final double circleSize;
+  final double? circleSize;
 
   final double bottomSpacing;
 
   @override
   Widget build(BuildContext context) {
     double actualCircleSize;
-    if(circleSize != null) actualCircleSize = circleSize;
-    else{
-      if(circleText == "") actualCircleSize = 12;
-      else actualCircleSize = 18;
+    if (circleSize != null) {
+      actualCircleSize = circleSize!;
+    } else {
+      if (circleText == "")
+        actualCircleSize = 12;
+      else
+        actualCircleSize = 18;
     }
 
     return Container(

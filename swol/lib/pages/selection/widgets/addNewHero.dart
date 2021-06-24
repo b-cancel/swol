@@ -29,11 +29,10 @@ class AddNewHero extends StatelessWidget {
     return Hero(
       tag: 'addNew',
       createRectTween: (begin, end) {
-        if (begin != null && end != null) {
-          return CustomRectTween(a: begin, b: end);
-        } else {
-          return CustomRectTween();
-        }
+        return CustomRectTween(
+          a: begin,
+          b: end,
+        );
       },
       flightShuttleBuilder: (
         BuildContext flightContext,

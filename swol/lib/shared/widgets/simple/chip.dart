@@ -66,7 +66,7 @@ class MyCustomChip extends StatelessWidget {
   final Color chipColor;
   final String chipString;
   final Color textColor;
-  final EdgeInsets extraPadding;
+  final EdgeInsets? extraPadding;
 
   @override
   Widget build(BuildContext context) {

@@ -142,6 +142,8 @@ class AnExercise {
 
   //build
   AnExercise(
+    int idParam,
+
     //basic data
     String name,
     String url,
@@ -156,6 +158,8 @@ class AnExercise {
     //date time
     DateTime lastTimeStamp,
   ) {
+    this.id = idParam;
+
     //variables that have notifiers
     //that are required to have atleast a default value
     _tempStartTime = new ValueNotifier<DateTime>(

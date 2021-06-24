@@ -8,11 +8,7 @@ import 'package:flutter/material.dart';
 //plugin
 import 'package:path_provider/path_provider.dart';
 
-double? lerpDouble(num? a, num? b, double t) {
-  if (a == null && b == null) {
-    return null;
-  }
-
+double lerpDouble(num? a, num? b, double t) {
   a ??= 0.0;
   b ??= 0.0;
   return a + (b - a) * t;

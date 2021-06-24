@@ -96,8 +96,8 @@ class SuggestToLearnPage extends StatelessWidget {
 
             //all the data needed to determine if we need to generate a pop up
 
-            if (ExerciseData.getExercises()?.containsKey(exerciseID) ?? false) {
-              AnExercise exercise = ExerciseData.getExercises()![exerciseID]!;
+            if (ExerciseData.getExercises().containsKey(exerciseID)) {
+              AnExercise exercise = ExerciseData.getExercises()[exerciseID]!;
 
               //if both match proceed as expected
               if (doBothMatch(exercise)) {

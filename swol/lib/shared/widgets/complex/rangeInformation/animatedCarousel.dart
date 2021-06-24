@@ -39,14 +39,14 @@ class AnimatedRangeInformation extends StatefulWidget {
 
 class _AnimatedRangeInformationState extends State<AnimatedRangeInformation> {
   var carousel;
-  CarouselController carouselController;
-  int sectionGrown;
+  late CarouselController carouselController;
+  int? sectionGrown;
 
   setSectionGrown({bool jump: false}) {
     for (int i = 0; i < widget.ranges.length; i++) {
-      if (i == (widget.ranges.length - 1))
+      if (i == (widget.ranges.length - 1)) {
         sectionGrown = i;
-      else {
+      } else {
         Duration thisDuration = Duration(seconds: widget.ranges[i].endSeconds);
         if (widget.selectedDuration.value <= thisDuration) {
           sectionGrown = i;
@@ -55,11 +55,11 @@ class _AnimatedRangeInformationState extends State<AnimatedRangeInformation> {
       }
     }
 
-    if (jump)
-      carouselController.jumpToPage(sectionGrown);
-    else {
+    if (jump) {
+      carouselController.jumpToPage(sectionGrown!);
+    } else {
       carouselController.animateToPage(
-        sectionGrown,
+        sectionGrown!,
         duration: ExercisePage.transitionDuration,
         curve: Curves.easeInOut,
       );

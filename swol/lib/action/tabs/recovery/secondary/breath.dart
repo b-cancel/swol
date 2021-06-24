@@ -29,11 +29,10 @@ class ToBreath extends StatelessWidget {
           child: Hero(
             tag: 'breath',
             createRectTween: (begin, end) {
-              if (begin != null && end != null) {
-                return CustomRectTween(a: begin, b: end);
-              } else {
-                return CustomRectTween();
-              }
+              return CustomRectTween(
+                a: begin,
+                b: end,
+              );
             },
             child: new Image(
               image: new AssetImage("assets/gifs/breathMod.gif"),

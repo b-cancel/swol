@@ -77,11 +77,10 @@ class DoneButton extends StatelessWidget {
             child: Hero(
               tag: "exerciseComplete" + exerciseID.toString(),
               createRectTween: (begin, end) {
-                if (begin != null && end != null) {
-                  return CustomRectTween(a: begin, b: end);
-                } else {
-                  return CustomRectTween();
-                }
+                return CustomRectTween(
+                  a: begin,
+                  b: end,
+                );
               },
               child: Material(
                 color: Colors.transparent,

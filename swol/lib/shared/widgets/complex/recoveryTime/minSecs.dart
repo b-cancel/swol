@@ -19,8 +19,8 @@ class MinsSecsBelowTimePicker extends StatefulWidget {
 }
 
 class _MinsSecsBelowTimePickerState extends State<MinsSecsBelowTimePicker> {
-  ValueNotifier<bool> showMinS;
-  ValueNotifier<bool> showSecS;
+  ValueNotifier<bool>? showMinS;
+  ValueNotifier<bool>? showSecS;
 
   manualSetState() {
     if (mounted) setState(() {});
@@ -38,8 +38,8 @@ class _MinsSecsBelowTimePickerState extends State<MinsSecsBelowTimePicker> {
       showMinS = new ValueNotifier(minS);
       showSecS = new ValueNotifier(secS);
     } else {
-      showMinS.value = minS;
-      showSecS.value = secS;
+      showMinS!.value = minS;
+      showSecS!.value = secS;
     }
   }
 
@@ -50,8 +50,8 @@ class _MinsSecsBelowTimePickerState extends State<MinsSecsBelowTimePicker> {
 
     //add listenerss
     widget.duration.addListener(durationToShowSs);
-    showMinS.addListener(manualSetState);
-    showSecS.addListener(manualSetState);
+    showMinS?.addListener(manualSetState);
+    showSecS?.addListener(manualSetState);
 
     //super init
     super.initState();
@@ -61,8 +61,8 @@ class _MinsSecsBelowTimePickerState extends State<MinsSecsBelowTimePicker> {
   void dispose() {
     //remove listeners
     widget.duration.removeListener(durationToShowSs);
-    showMinS.removeListener(manualSetState);
-    showSecS.removeListener(manualSetState);
+    showMinS?.removeListener(manualSetState);
+    showSecS?.removeListener(manualSetState);
 
     //super dispose
     super.dispose();
@@ -86,7 +86,7 @@ class _MinsSecsBelowTimePickerState extends State<MinsSecsBelowTimePicker> {
               child: FittedBox(
                 fit: BoxFit.cover,
                 child: Text(
-                  "MINUTE" + ((showMinS.value) ? "S" : " "),
+                  "MINUTE" + ((showMinS!.value) ? "S" : " "),
                 ),
               ),
             ),
@@ -103,7 +103,7 @@ class _MinsSecsBelowTimePickerState extends State<MinsSecsBelowTimePicker> {
               child: FittedBox(
                 fit: BoxFit.cover,
                 child: Text(
-                  "SECOND" + ((showSecS.value) ? "S" : " "),
+                  "SECOND" + ((showSecS!.value) ? "S" : " "),
                 ),
               ),
             ),

@@ -69,19 +69,19 @@ class TrainingTypeSections extends StatefulWidget {
 }
 
 class _TrainingTypeSectionsState extends State<TrainingTypeSections> {
-  Widget enduranceCard;
-  Widget hypertrophyCard;
-  Widget strengthCard;
-  List<List<CardTable>> sectionsOfCards;
-  List<Widget> carousels;
-  var mainCarousel;
-  CarouselController carouselController;
+  late Widget enduranceCard;
+  late Widget hypertrophyCard;
+  late Widget strengthCard;
+  late List<List<Widget>> sectionsOfCards;
+  late List<Widget> carousels;
+  CarouselSlider? mainCarousel; //late? or maybe null?
+  late CarouselController carouselController;
 
   sectionIDToCarouselAction() {
     WidgetsBinding.instance?.addPostFrameCallback((_) {
-      if (mainCarousel == null)
+      if (mainCarousel == null) {
         sectionIDToCarouselAction();
-      else {
+      } else {
         carouselController.animateToPage(
           widget.sectionID.value,
           duration: ExercisePage.transitionDuration,
@@ -91,7 +91,7 @@ class _TrainingTypeSectionsState extends State<TrainingTypeSections> {
     });
   }
 
-  double cardHeight;
+  late double cardHeight;
 
   @override
   void initState() {
@@ -153,7 +153,7 @@ class _TrainingTypeSectionsState extends State<TrainingTypeSections> {
     sectionsOfCards = [];
     for (int i = 0; i < widget.sections.length; i++) {
       List<int> aSection = widget.sections[i];
-      List<CardTable> aCardSection = [];
+      List<Widget> aCardSection = [];
       for (int s = 0; s < aSection.length; s++) {
         int cardType = aSection[s];
         switch (cardType) {
@@ -254,7 +254,7 @@ class _TrainingTypeSectionsState extends State<TrainingTypeSections> {
             Expanded(
               child: Stack(
                 children: <Widget>[
-                  mainCarousel,
+                  mainCarousel ?? Container(),
                   Positioned(
                     top: 0,
                     bottom: 0,

@@ -28,8 +28,8 @@ class FeatureWrapper extends StatelessWidget {
   final Widget child;
   final bool top;
   final bool left;
-  final Function prevFeature;
-  final Function nextFeature;
+  final Function? prevFeature;
+  final Function? nextFeature;
   final bool doneInsteadOfNext;
   final Color backgroundColor;
 
@@ -139,15 +139,15 @@ class FeatureWrapper extends StatelessWidget {
       child: child,
       //functions
       onComplete: () async {
-        if (nextFeature != null) nextFeature();
+        if (nextFeature != null) nextFeature!();
         continueForward.value = true; //reset
         return true; //keep it simple always return true
       },
       onDismiss: () async {
         if (continueForward.value) {
-          if (nextFeature != null) nextFeature();
+          if (nextFeature != null) nextFeature!();
         } else {
-          if (prevFeature != null) prevFeature();
+          if (prevFeature != null) prevFeature!();
         }
         continueForward.value = true; //reset
         return true; //keep it simple always return true

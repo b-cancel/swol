@@ -70,105 +70,104 @@ askForPermissionIfNotGrantedAndWeNeverAsked(
 //we only schedule it IF we have the permission
 //NOTE: asking for permission is a completely seperate process because of the cases described ON TOP
 scheduleNotification(AnExercise exercise) async {
-  int? id = exercise.id;
-  if (id != null) {
-    //generate the DT that we want the notification to come up on
-    DateTime notificationDT = exercise.tempStartTime.value.add(
-      exercise.recoveryPeriod,
-    );
+  int id = exercise.id;
 
-    //only schedule it if it hasn't yet passed
-    bool inTheFuture = notificationDT.isAfter(DateTime.now());
-    if (inTheFuture) {
-      //check if we have permission to schedule a notification
-      PermissionStatus status = await Permission.notification.status;
+  //generate the DT that we want the notification to come up on
+  DateTime notificationDT = exercise.tempStartTime.value.add(
+    exercise.recoveryPeriod,
+  );
 
-      //if we do then do so
-      if (status == PermissionStatus.granted) {
-        //safe cancel before to avoid dups or errors
-        await safeCancelNotification(id);
+  //only schedule it if it hasn't yet passed
+  bool inTheFuture = notificationDT.isAfter(DateTime.now());
+  if (inTheFuture) {
+    //check if we have permission to schedule a notification
+    PermissionStatus status = await Permission.notification.status;
 
-        //create the notification for this exercise
-        var androidPlatformChannelSpecifics = AndroidNotificationDetails(
-          'swol-ID', 'swol-Name', 'swol-Description',
-          //user must act now
-          importance: Importance.max,
-          priority: Priority.max,
-          //not BigText, BigPicture, Message, or Media
-          //TODO-----
-          //Maybe Inbox or Messaging
-          //style: AndroidNotificationStyle.Default,
-          //TODO-----
-          styleInformation: DefaultStyleInformation(
-            false, //content not html
-            false, //title not html
-          ),
-          //ultimate alert
-          playSound: true,
-          enableVibration: true,
-          enableLights: true,
-          //when the user taps it, it dismisses
-          autoCancel: true,
-          //the user can dismiss it
-          ongoing: false,
-          //the first alert should push them
-          //by the second they have already lost the benefit
-          onlyAlertOnce: true,
-          //easier for the user to find
-          channelShowBadge: true,
-          //no progress showing
-          showProgress: false,
-          indeterminate: false,
-          //updates won't happen
-          channelAction: AndroidNotificationChannelAction.createIfNotExists,
-          visibility: NotificationVisibility.public,
-          //for older versions of android
-          ticker: 'Set Break Complete',
-        );
+    //if we do then do so
+    if (status == PermissionStatus.granted) {
+      //safe cancel before to avoid dups or errors
+      await safeCancelNotification(id);
 
-        //permission request is handled elsewhere
-        var iOSPlatformChannelSpecifics = IOSNotificationDetails(
-          presentAlert: false,
-          presentBadge: false,
-          presentSound: false,
-        );
+      //create the notification for this exercise
+      var androidPlatformChannelSpecifics = AndroidNotificationDetails(
+        'swol-ID', 'swol-Name', 'swol-Description',
+        //user must act now
+        importance: Importance.max,
+        priority: Priority.max,
+        //not BigText, BigPicture, Message, or Media
+        //TODO-----
+        //Maybe Inbox or Messaging
+        //style: AndroidNotificationStyle.Default,
+        //TODO-----
+        styleInformation: DefaultStyleInformation(
+          false, //content not html
+          false, //title not html
+        ),
+        //ultimate alert
+        playSound: true,
+        enableVibration: true,
+        enableLights: true,
+        //when the user taps it, it dismisses
+        autoCancel: true,
+        //the user can dismiss it
+        ongoing: false,
+        //the first alert should push them
+        //by the second they have already lost the benefit
+        onlyAlertOnce: true,
+        //easier for the user to find
+        channelShowBadge: true,
+        //no progress showing
+        showProgress: false,
+        indeterminate: false,
+        //updates won't happen
+        channelAction: AndroidNotificationChannelAction.createIfNotExists,
+        visibility: NotificationVisibility.public,
+        //for older versions of android
+        ticker: 'Set Break Complete',
+      );
 
-        //combine stuff for both platforms
-        var platformChannelSpecifics = NotificationDetails(
-          android: androidPlatformChannelSpecifics,
-          iOS: iOSPlatformChannelSpecifics,
-        );
+      //permission request is handled elsewhere
+      var iOSPlatformChannelSpecifics = IOSNotificationDetails(
+        presentAlert: false,
+        presentBadge: false,
+        presentSound: false,
+      );
 
-        //TZDateTime notificationDT
-        tz.initializeTimeZones();
-        String currentTimeZone = await FlutterNativeTimezone.getLocalTimezone();
-        tz.Location location = tz.getLocation(currentTimeZone);
-        tz.TZDateTime tzDateTime = tz.TZDateTime.from(
-          notificationDT,
-          location,
-        );
+      //combine stuff for both platforms
+      var platformChannelSpecifics = NotificationDetails(
+        android: androidPlatformChannelSpecifics,
+        iOS: iOSPlatformChannelSpecifics,
+      );
 
-        //schedule the notification
-        await flutterLocalNotificationsPlugin.zonedSchedule(
-          //pass ID so we can remove it by id if needed
-          id,
-          //title
-          'Set Break Complete for \"' + exercise.name + '\"',
-          //content
-          '\"Tap Here\" to start your next set',
-          //when the notification will pop up
-          tzDateTime,
-          //pass details created above
-          platformChannelSpecifics,
-          //pass ID so we can open to that page when user taps the excercise
-          payload: id.toString(),
-          //it should also trigger in low power mode
-          androidAllowWhileIdle: true,
-          //TODO: make sure this is correct one day
-          uiLocalNotificationDateInterpretation:
-              UILocalNotificationDateInterpretation.wallClockTime,
-        );
-      }
+      //TZDateTime notificationDT
+      tz.initializeTimeZones();
+      String currentTimeZone = await FlutterNativeTimezone.getLocalTimezone();
+      tz.Location location = tz.getLocation(currentTimeZone);
+      tz.TZDateTime tzDateTime = tz.TZDateTime.from(
+        notificationDT,
+        location,
+      );
+
+      //schedule the notification
+      await flutterLocalNotificationsPlugin.zonedSchedule(
+        //pass ID so we can remove it by id if needed
+        id,
+        //title
+        'Set Break Complete for \"' + exercise.name + '\"',
+        //content
+        '\"Tap Here\" to start your next set',
+        //when the notification will pop up
+        tzDateTime,
+        //pass details created above
+        platformChannelSpecifics,
+        //pass ID so we can open to that page when user taps the excercise
+        payload: id.toString(),
+        //it should also trigger in low power mode
+        androidAllowWhileIdle: true,
+        //TODO: make sure this is correct one day
+        uiLocalNotificationDateInterpretation:
+            UILocalNotificationDateInterpretation.wallClockTime,
+      );
     }
   }
 }

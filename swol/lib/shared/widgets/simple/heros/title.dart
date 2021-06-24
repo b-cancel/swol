@@ -20,11 +20,10 @@ class ExerciseTitleHero extends StatelessWidget {
     return Hero(
       tag: generatedTag,
       createRectTween: (begin, end) {
-        if (begin != null && end != null) {
-          return CustomRectTween(a: begin, b: end);
-        } else {
-          return CustomRectTween();
-        }
+        return CustomRectTween(
+          a: begin,
+          b: end,
+        );
       },
       flightShuttleBuilder: (
         BuildContext flightContext,

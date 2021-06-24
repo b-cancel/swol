@@ -7,8 +7,8 @@ class RangeTicks extends StatefulWidget {
     required this.startTick,
     required this.endTick,
     required this.bigTickNumber,
-    this.selectedDuration,
-    this.darkTheme,
+    required this.selectedDuration,
+    required this.darkTheme,
   });
 
   final int startTick;

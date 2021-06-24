@@ -12,18 +12,18 @@ class OneOrTheOtherIcon extends StatelessWidget {
 
   final Widget one;
   final Widget other;
-  final Color backgroundColor;
-  final Color iconColor;
+  final Color? backgroundColor;
+  final Color? iconColor;
 
   @override
   Widget build(BuildContext context) {
     double size = 16;
 
-    Color backgroundC = (backgroundColor == null)
+    Color backgroundC = ((backgroundColor == null)
         ? Theme.of(context).cardColor
-        : backgroundColor;
+        : backgroundColor)!;
     Color iconC =
-        (iconColor == null) ? Colors.white.withOpacity(0.75) : iconColor;
+        ((iconColor == null) ? Colors.white.withOpacity(0.75) : iconColor)!;
 
     return Container(
       height: size,

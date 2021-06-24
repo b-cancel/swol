@@ -184,7 +184,7 @@ class _ExerciseListState extends State<ExerciseList> {
     } else {
       //active page is 0 or 1
       int exerciseID = ExercisePage.exerciseID.value;
-      AnExercise exercise = ExerciseData.getExercises()[exerciseID];
+      AnExercise exercise = (ExerciseData.getExercises())[exerciseID];
 
       //handle what happens, might have to manually move and that MAY cause problems
       if (doBothMatch(exercise)) {

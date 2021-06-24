@@ -128,11 +128,10 @@ class _ExerciseTileLeadingState extends State<ExerciseTileLeading> {
               (isLastSet ? "Complete" : "Continue") +
               widget.exercise.id.toString(),
           createRectTween: (begin, end) {
-            if (begin != null && end != null) {
-              return CustomRectTween(a: begin, b: end);
-            } else {
-              return CustomRectTween();
-            }
+            return CustomRectTween(
+              a: begin,
+              b: end,
+            );
           },
           child: FittedBox(
             fit: BoxFit.contain,
