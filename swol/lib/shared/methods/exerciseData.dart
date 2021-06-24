@@ -14,21 +14,21 @@ import 'package:swol/other/otherHelper.dart';
 //1. grabs exercises from storage
 //2. places exercises to storage
 class ExerciseData {
-  static int nextID;
-  static File _exerciseFile;
+  static int? nextID;
+  static File? _exerciseFile;
 
   //main struct we are maintaining (id -> exercise)
   //NOTE: we could use hashset but its slower than a map for deletion
   //and accessing specific items
-  static Map<int, AnExercise> _exercises;
+  static Map<int, AnExercise>? _exercises;
   //NOTE: value notifier here is required since
   //we listen to order to determine whether we need to update the list
   //NOTE: silly mistake but we need a list, hash set doesn't maintain order
   //TODO: look into perhaps using "LinkedHashSet"
-  static ValueNotifier<List<int>> exercisesOrder;
+  static ValueNotifier<List<int>>? exercisesOrder;
 
   //lets us control add and removing from the list with more precision
-  static Map<int, AnExercise> getExercises() {
+  static Map<int, AnExercise>? getExercises() {
     return _exercises;
   }
 
@@ -40,21 +40,21 @@ class ExerciseData {
       _exerciseFile = await StringJson.nameToFileReference("excercises");
 
       //get access to the file
-      bool exists = await _exerciseFile.exists();
+      bool exists = (await _exerciseFile?.exists()) ?? false;
 
       //read in file data
       String fileData;
       if (exists == false) {
-        await _exerciseFile.create();
+        await _exerciseFile!.create();
         //NOTE: don't use safeSave here because
         //1. we need this to complete before continuing
         //2. we know this file hasn't been written to before
         //  - since this is its init function
-        await _exerciseFile.writeAsString("[]");
+        await _exerciseFile!.writeAsString("[]");
       }
 
       //read in our data
-      fileData = await _exerciseFile.readAsString();
+      fileData = await _exerciseFile!.readAsString();
       _exercises = Map<int, AnExercise>();
 
       //grab the contacts
@@ -62,7 +62,8 @@ class ExerciseData {
       List<dynamic> map = json.decode(fileData);
       for (int i = 0; i < map.length; i++) {
         AnExercise thisExercise = AnExercise.fromJson(map[i]);
-        maxID = (thisExercise.id > maxID) ? thisExercise.id : maxID;
+        int thisID = thisExercise.id ?? -1;
+        maxID = (thisID > maxID) ? thisID : maxID;
         await addExercise(
           thisExercise,
           updateOrderAndFile: false, //we update the order at the end
@@ -83,11 +84,11 @@ class ExerciseData {
     //give it an ID (IF needed)
     if (theExercise.id == null) {
       theExercise.id = nextID;
-      nextID += 1;
+      nextID = nextID! + 1;
     }
 
     //add to exercises
-    _exercises[theExercise.id] = theExercise;
+    _exercises![theExercise.id!] = theExercise;
 
     //NOTE: since inprogress items are to be viewed above new items
     //we do have to update order
@@ -98,31 +99,33 @@ class ExerciseData {
   }
 
   static deleteExercise(int id) {
-    if (_exercises.containsKey(id)) {
-      _exercises.remove(id);
+    if (_exercises!.containsKey(id)) {
+      _exercises!.remove(id);
 
       //update file
       updateOrder();
       updateFile();
-    } else
+    } else {
       print("EXERCISE DOESN'T EXIST");
+    }
   }
 
   //TODO: there is a better way to do this
   static updateOrder() {
     //modify to then sort
     Map<DateTime, int> dateTimeToID = new Map<DateTime, int>();
-    List<int> keys = _exercises.keys.toList();
+    List<int> keys = _exercises!.keys.toList();
     for (int i = 0; i < keys.length; i++) {
       int keyIsID = keys[i];
-      AnExercise exercise = _exercises[keyIsID];
-      dateTimeToID[exercise.lastTimeStamp] = keyIsID;
+      AnExercise? exercise = _exercises![keyIsID];
+      if (exercise != null) {
+        dateTimeToID[exercise.lastTimeStamp] = keyIsID;
+      }
     }
 
     //sort
     List<DateTime> dates = dateTimeToID.keys.toList();
-    Function compare = (DateTime a, DateTime b) => b.compareTo(a);
-    dates.sort(compare);
+    dates.sort((DateTime a, DateTime b) => b.compareTo(a));
     //NOTE: dates are now sorted
 
     //initialize the structure we use if needed
@@ -135,30 +138,33 @@ class ExerciseData {
     List<int> newOrder = [];
     for (int i = 0; i < dates.length; i++) {
       DateTime thisDate = dates[i];
-      int thisID = dateTimeToID[thisDate];
+      int? thisID = dateTimeToID[thisDate];
+      if (thisID != null) {
+        //check if order matches
+        //if it does we save ourselves an extra reload
+        allMatch = (allMatch && thisID == exercisesOrder!.value[i]);
 
-      //check if order matches
-      //if it does we save ourselves an extra reload
-      allMatch = (allMatch && thisID == exercisesOrder.value[i]);
-
-      //add this id in case not everything matches
-      newOrder.add(thisID);
+        //add this id in case not everything matches
+        newOrder.add(thisID);
+      }
     }
 
     //official update
     if (allMatch == false) {
-      exercisesOrder.value = newOrder;
+      exercisesOrder!.value = newOrder;
     }
   }
 
   //should never have to update from anywhere else
   static updateFile() async {
     String newFileData = _exercisesToString();
-    SafeWrite.write(_exerciseFile, newFileData);
+    if (_exerciseFile != null) {
+      SafeWrite.write(_exerciseFile!, newFileData);
+    }
   }
 
   static String _exercisesToString() {
-    List<AnExercise> exercises = _exercises.values.toList();
+    List<AnExercise> exercises = _exercises!.values.toList();
     String string = "[";
     for (int i = 0; i < exercises.length; i++) {
       String str = json.encode(exercises[i].toJson());

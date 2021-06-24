@@ -2,8 +2,6 @@
 import 'package:flutter/material.dart';
 
 //plugin
-import 'package:awesome_dialog/anims/anims.dart';
-import 'package:awesome_dialog/anims/flare_header.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:swol/shared/widgets/simple/popUpAdjustments.dart';
 

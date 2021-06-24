@@ -44,13 +44,11 @@ Wrapping text in flexible fixes overflow issue
 //required for loading pages to come up
 class App extends StatelessWidget {
   //the cost of having a cool little animation that is trigger from EVERYWHERE
-  static ValueNotifier<bool> navSpread;
+  static ValueNotifier<bool> navSpread = ValueNotifier<bool>(false);
 
   //build
   @override
   Widget build(BuildContext context) {
-    navSpread = new ValueNotifier<bool>(false);
-
     //its specifically designed for portrait mode
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
@@ -77,14 +75,14 @@ class App extends StatelessWidget {
 
 //grabbing system data
 class GrabSystemData extends StatefulWidget {
-  static BuildContext rootContext;
+  static BuildContext? rootContext;
 
   @override
   _GrabSystemDataState createState() => _GrabSystemDataState();
 }
 
 class _GrabSystemDataState extends State<GrabSystemData> {
-  SharedPreferences preferences;
+  SharedPreferences? preferences;
 
   @override
   void initState() {
@@ -98,7 +96,7 @@ class _GrabSystemDataState extends State<GrabSystemData> {
     await SearchesData.searchesInit();
     await ExerciseData.exercisesInit();
     preferences = await SharedPreferences.getInstance();
-    SharedPrefsExt.init(preferences);
+    SharedPrefsExt.init(preferences!);
 
     //start up the notification system
     //needed if you intend to initialize in the `main` function
@@ -119,16 +117,17 @@ class _GrabSystemDataState extends State<GrabSystemData> {
       requestSoundPermission: false,
       onDidReceiveLocalNotification: (
         int id,
-        String title,
-        String body,
-        String payload,
+        String? title,
+        String? body,
+        String? payload,
       ) async {
+        //TODO REPAIRED NOT CHECKED
         // display a dialog with the notification details, tap ok to go to another page
         showDialog(
           context: context,
           builder: (BuildContext context) => CupertinoAlertDialog(
-            title: Text(title),
-            content: Text(body),
+            title: title != null ? Text(title) : null,
+            content: body != null ? Text(body) : null,
             actions: [
               CupertinoDialogAction(
                 isDefaultAction: false,
@@ -176,8 +175,9 @@ class _GrabSystemDataState extends State<GrabSystemData> {
       It will be up to developers to ensure that they don't process the same notification twice 
       (e.g. by storing and comparing the notification id).
       */
+      //TODO REPAIRED NOT CHECKED
       //In the real world, this payload could represent the id of the item you want to display the details of.
-      onSelectNotification: (String payload) async {
+      onSelectNotification: (String? payload) async {
         //updates what excercise to travel to
         //which will then cause us to travel to it
         if (payload != null) {
@@ -192,10 +192,11 @@ class _GrabSystemDataState extends State<GrabSystemData> {
 
   @override
   Widget build(BuildContext context) {
-    if (preferences == null)
+    if (preferences == null) {
       return SplashScreen();
-    else
+    } else {
       return ExerciseSelectStateless();
+    }
   }
 }
 
@@ -278,21 +279,14 @@ class PumpingHeart extends StatefulWidget {
   // ignore: prefer_const_constructors_in_immutables
   PumpingHeart({
     Key? key,
-    this.color,
+    required this.color,
     this.size = 50.0,
-    this.itemBuilder,
     this.duration = const Duration(milliseconds: 2400),
-    this.controller,
-  })  : assert(
-            !(itemBuilder is IndexedWidgetBuilder && color is Color) &&
-                !(itemBuilder == null && color == null),
-            'You should specify either a itemBuilder or a color'),
-        assert(size != null),
-        super(key: key);
+    required this.controller,
+  }) : super(key: key);
 
   final Color color;
   final double size;
-  final IndexedWidgetBuilder itemBuilder;
   final Duration duration;
   final AnimationController controller;
 
@@ -302,18 +296,18 @@ class PumpingHeart extends StatefulWidget {
 
 class _PumpingHeartState extends State<PumpingHeart>
     with SingleTickerProviderStateMixin {
-  AnimationController _controller;
-  Animation<double> _anim1;
+  late AnimationController _controller;
+  late Animation<double> _anim1;
 
   @override
   void initState() {
     super.initState();
-    _controller = (widget.controller ??
-        AnimationController(vsync: this, duration: widget.duration))
+    _controller = (AnimationController(vsync: this, duration: widget.duration))
       ..repeat();
     _anim1 = Tween(begin: 1.0, end: 1.25).animate(CurvedAnimation(
       parent: _controller,
-      curve: const Interval(0.0, 1.0, curve: MyCurve()),
+      //TODO: REPAIRED NOT CHECKED
+      curve: Curves.elasticInOut,
     ));
   }
 
@@ -332,12 +326,10 @@ class _PumpingHeartState extends State<PumpingHeart>
   }
 
   Widget _itemBuilder(int index) {
-    return widget.itemBuilder != null
-        ? widget.itemBuilder(context, index)
-        : Icon(
-            FontAwesomeIcons.solidHeart,
-            color: widget.color,
-            size: widget.size,
-          );
+    return Icon(
+      FontAwesomeIcons.solidHeart,
+      color: widget.color,
+      size: widget.size,
+    );
   }
 }

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 //my own definition of dark and light
-class MyTheme{
+class MyTheme {
   //set changes on theme
   //Color.fromRGBO(255, 255, 255, 1); //O always set to 1
   //Color.fromARGB(255, 255, 255, 255); //A always set to 255
@@ -11,9 +11,9 @@ class MyTheme{
   //setup for light theme
   static ThemeData dark = ThemeData.dark().copyWith(
     accentColor: ThemeData.light().accentColor,
-    textSelectionColor: ThemeData.light().accentColor,
+    //textSelectionColor: ThemeData.light().accentColor,
     //NOTE: you can only set this once aparently
-    textSelectionHandleColor: ThemeData.dark().primaryColorDark,
+    //textSelectionHandleColor: ThemeData.dark().primaryColorDark,
   );
   static ThemeData light = ThemeData.light();
 }

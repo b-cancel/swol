@@ -28,7 +28,7 @@ import 'package:swol/shared/widgets/simple/scrollToTop.dart';
 //  so if you did legs on monday and 3 other work outs
 //  when its monday again you expect that workout to be on top with the first workout you did to be on top in the section
 
-class ExerciseSelectStateless extends StatelessWidget { 
+class ExerciseSelectStateless extends StatelessWidget {
   static ValueNotifier<bool> manualOrderUpdate = new ValueNotifier<bool>(false);
 
   @override
@@ -47,30 +47,30 @@ class _ExerciseSelectState extends State<ExerciseSelect> {
   final AutoScrollController autoScrollController = new AutoScrollController();
   final ValueNotifier<bool> onTop = new ValueNotifier(true);
 
-  updateOnTopValue(){
+  updateOnTopValue() {
     ScrollPosition position = autoScrollController.position;
     double currentOffset = autoScrollController.offset;
 
     //Determine whether we are on the top of the scroll area
-    if (currentOffset <= position.minScrollExtent){
+    if (currentOffset <= position.minScrollExtent) {
       onTop.value = true;
-    }
-    else onTop.value = false;
+    } else
+      onTop.value = false;
   }
 
   @override
-  void initState() { 
+  void initState() {
     //create function to be called after the user accept the uela
-    Function maybeShowInitialControls = (){
-      if(SharedPrefsExt.getInitialControlsShown().value == false){
+    Function maybeShowInitialControls = () {
+      if (SharedPrefsExt.getInitialControlsShown().value == false) {
         OnBoarding.discoverSwolLogo(context);
       }
     };
 
     //ask for permission after the frame loads
-    WidgetsBinding.instance.addPostFrameCallback((_){
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
       //pop up that comes up asking for permission
-      if(SharedPrefsExt.getTermAgreed().value == false){
+      if (SharedPrefsExt.getTermAgreed().value == false) {
         showDialog(
           context: context,
           barrierDismissible: false,
@@ -80,8 +80,8 @@ class _ExerciseSelectState extends State<ExerciseSelect> {
             );
           },
         );
-      } 
-      else maybeShowInitialControls();
+      } else
+        maybeShowInitialControls();
     });
 
     //show or hide the to top button
@@ -111,7 +111,7 @@ class _ExerciseSelectState extends State<ExerciseSelect> {
       appBar: AppBar(
         backgroundColor: Theme.of(context).primaryColorDark,
         title: AnimatedTitle(
-          screenWidth: screenWidth, 
+          screenWidth: screenWidth,
           statusBarHeight: statusBarHeight,
         ),
         actions: <Widget>[
@@ -126,10 +126,18 @@ class _ExerciseSelectState extends State<ExerciseSelect> {
           children: <Widget>[
             //the list or lack of exercises
             //and the search button under certain conditions
+
+            //TODO: uncomment when ready
+            /*
             ExerciseList(
               autoScrollController: autoScrollController,
               statusBarHeight: statusBarHeight,
               onTop: onTop,
+            ),
+            */
+
+            Center(
+              child: Text("uncomment list"),
             ),
             ScrollToTopButton(
               onTop: onTop,
