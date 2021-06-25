@@ -80,9 +80,9 @@ class _TimerState extends State<Timer> with TickerProviderStateMixin {
   final Duration maxBreakDuration = const Duration(minutes: 5);
 
   //main Controller
-  AnimationController maxTimerController;
-  AnimationController maxBreakController;
-  AnimationController chosenBreakController;
+  late AnimationController maxTimerController;
+  late AnimationController maxBreakController;
+  late AnimationController chosenBreakController;
 
   //function removable from listeners
   updateState() {

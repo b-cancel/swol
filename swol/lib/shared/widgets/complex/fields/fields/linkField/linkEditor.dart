@@ -161,9 +161,9 @@ class EditButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextButton(
-      //padding: EdgeInsets.all(0),
       //TODO: ensure this creates the desired effect
       style: TextButton.styleFrom(
+        padding: EdgeInsets.all(0),
         primary: Theme.of(context).accentColor,
       ),
       onPressed: () {
@@ -221,8 +221,8 @@ class LaunchLinkButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: TextButton(
-        //padding: EdgeInsets.all(0),
         style: TextButton.styleFrom(
+          padding: EdgeInsets.all(0),
           primary: Theme.of(context).backgroundColor,
         ),
         onPressed: () async {
@@ -269,8 +269,8 @@ class _PasteButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Widget button = TextButton(
-      //padding: EdgeInsets.all(0),
       style: TextButton.styleFrom(
+        padding: EdgeInsets.all(0),
         primary: Theme.of(context).accentColor,
       ),
       onPressed: () {

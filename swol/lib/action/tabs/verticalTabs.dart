@@ -34,10 +34,10 @@ class _VerticalTabsState extends State<VerticalTabs>
       new ValueNotifier<List<double>>([8]);
 
   //for the "hero" widget (if not up then down)
-  ValueNotifier<bool> goalSetUp;
+  late ValueNotifier<bool> goalSetUp;
 
   //handle page switches
-  PageController pageViewController;
+  late PageController pageViewController;
 
   //init
   @override

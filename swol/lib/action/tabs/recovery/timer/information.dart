@@ -101,8 +101,8 @@ class InfoOutlineDarkButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //the two varialbes that will inform the user what is happening
-    String primaryMsg;
-    String secondaryMsg;
+    String? primaryMsg;
+    String? secondaryMsg;
 
     //fill the message given the conditions
     bool stillTimeLeft = totalDurationPassed < selectedDuration;
@@ -177,19 +177,21 @@ class InfoOutlineDarkButton extends StatelessWidget {
           ),
           child: FittedBox(
             fit: BoxFit.contain,
-            child: OutlineButton(
-              highlightedBorderColor: Theme.of(context).accentColor,
-              borderSide: BorderSide(
-                color: isWhite
-                    ? Colors.white.withOpacity(0.5)
-                    : Theme.of(context).primaryColorDark,
-                width: 2,
+            child: OutlinedButton(
+              style: OutlinedButton.styleFrom(
+                primary: Theme.of(context).accentColor,
+                side: BorderSide(
+                  color: isWhite
+                      ? Colors.white.withOpacity(0.5)
+                      : Theme.of(context).primaryColorDark,
+                  width: 2,
+                ),
+                padding: EdgeInsets.symmetric(
+                  horizontal: 8,
+                  vertical: 4,
+                ),
               ),
               onPressed: () => showInfo(),
-              padding: EdgeInsets.symmetric(
-                horizontal: 8,
-                vertical: 4,
-              ),
               child: FittedBox(
                 fit: BoxFit.contain,
                 child: DefaultTextStyle(
@@ -203,14 +205,14 @@ class InfoOutlineDarkButton extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
                       Text(
-                        primaryMsg ?? "",
+                        primaryMsg,
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 18,
                         ),
                       ),
                       Text(
-                        secondaryMsg ?? "",
+                        secondaryMsg,
                         style: TextStyle(
                           fontSize: 12,
                         ),

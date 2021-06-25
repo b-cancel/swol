@@ -31,8 +31,8 @@ class NotificationSwitch extends StatefulWidget {
 //and that may cause more problems in the general cases we ignore that problem
 class _NotificationSwitchState extends State<NotificationSwitch>
     with WidgetsBindingObserver {
-  bool showButton;
-  PermissionStatus status;
+  late bool showButton;
+  late PermissionStatus status;
 
   updateState() {
     if (mounted) setState(() {});
@@ -50,12 +50,12 @@ class _NotificationSwitchState extends State<NotificationSwitch>
     updateShowButton();
 
     //for on resume
-    WidgetsBinding.instance.addObserver(this);
+    WidgetsBinding.instance?.addObserver(this);
   }
 
   @override
   void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
+    WidgetsBinding.instance?.removeObserver(this);
     super.dispose();
   }
 

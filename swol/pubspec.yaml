@@ -23,7 +23,20 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+
+  #EXTRA SETUP REQUIRED
+  #https://pub.dev/packages/permission_handler 
+  #(vibration and notification permission explanations)
+  #https://pub.dev/packages/url_launcher
+  #(setup url shemes)
+  #https://pub.dev/packages/flutter_local_notifications
+  #(notification settings setup)
+  #https://pub.dev/packages/vibration
+  #(vibration request)
+  #flutter_native_splash -> re-setup splash screen
+  #flutter_icons -> re-setup icon
   
+  #for the new notifications plugin
   flutter_native_timezone: ^2.0.0
 
   #get application path for android and IOS
@@ -43,7 +56,7 @@ dependencies:
   flutter_local_notifications: ^6.0.0
 
   #VIBRATION
-  #vibration: ^1.7.3
+  vibration: ^1.7.3
 
   #feature discovery
   feature_discovery: ^0.14.0 #I THINK MAY CAUSE WEB ISSUES (wait on response)

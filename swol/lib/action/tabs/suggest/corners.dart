@@ -9,7 +9,7 @@ class TextWithCorners extends StatelessWidget {
   }) : super(key: key);
 
   final String text;
-  final Radius radius;
+  final Radius? radius;
   final bool useAccent;
 
   @override
@@ -22,7 +22,8 @@ class TextWithCorners extends StatelessWidget {
         children: <Widget>[
           Container(
             padding: EdgeInsets.symmetric(
-              horizontal: radius.x,
+              //TODO: is this how I want to handle this?
+              horizontal: (radius?.x ?? 24),
             ),
             width: MediaQuery.of(context).size.width,
             alignment: Alignment.center,
@@ -51,7 +52,7 @@ class TextWithCorners extends StatelessWidget {
                 cornerColor: useAccent
                     ? Theme.of(context).accentColor
                     : Theme.of(context).cardColor,
-                cardRadius: radius,
+                cardRadius: radius!,
                 isLeft: true,
               ),
             ),
@@ -62,7 +63,7 @@ class TextWithCorners extends StatelessWidget {
             child: Visibility(
               visible: radius != null,
               child: Corner(
-                cardRadius: radius,
+                cardRadius: radius!,
                 cornerColor: useAccent
                     ? Theme.of(context).accentColor
                     : Theme.of(context).cardColor,
@@ -84,8 +85,8 @@ class Corner extends StatelessWidget {
     this.isLeft: false,
   }) : super(key: key);
 
-  final Color cornerColor;
-  final Color backgroundColor;
+  final Color? cornerColor;
+  final Color? backgroundColor;
   final Radius cardRadius;
   final bool isLeft;
 

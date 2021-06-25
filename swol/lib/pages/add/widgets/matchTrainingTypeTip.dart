@@ -166,7 +166,7 @@ class _TipGeneratorState extends State<TipGenerator> {
 
     //handle set target
     int currSetTar = widget.setTarget.value;
-    TrainingID setTargetID;
+    TrainingID? setTargetID;
     if (1 <= currSetTar && currSetTar <= 3) {
       setTargetID = TrainingID.Endurance;
     }
@@ -202,7 +202,7 @@ class _TipGeneratorState extends State<TipGenerator> {
     );
     bool goodSetTarget = otherMatchesRepTarget(
       repTargetID,
-      setTargetID,
+      setTargetID!,
     );
 
     //show tip if needed

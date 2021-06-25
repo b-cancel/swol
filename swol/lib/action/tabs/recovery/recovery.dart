@@ -29,8 +29,8 @@ class Recovery extends StatefulWidget {
 
 class _RecoveryState extends State<Recovery>
     with SingleTickerProviderStateMixin {
-  ValueNotifier<Duration> recoveryDuration;
-  ValueNotifier<bool> showAreYouSure;
+  late ValueNotifier<Duration> recoveryDuration;
+  late ValueNotifier<bool> showAreYouSure;
 
   //function that is removable from listener
   updateRecoveryDuration() {
@@ -207,7 +207,7 @@ class RecoveryButtonsWithWhiteContext extends StatelessWidget {
   Widget build(BuildContext context) {
     return BottomButtons(
       color: buttonsColor,
-      exerciseID: exercise.id!,
+      exerciseID: exercise.id,
       forwardAction: () {
         if (exercise.tempStartTime.value != AnExercise.nullDateTime) {
           Function ifMoveToNextSet = () {
@@ -227,7 +227,7 @@ class RecoveryButtonsWithWhiteContext extends StatelessWidget {
           //NOTE: we only bother the user if they match
           //because we are warning the user that they are going above their target
           int target = exercise.setTarget;
-          int current = exercise.tempSetCount;
+          int current = exercise.tempSetCount ?? 0;
           if (target == current) {
             movePastSetTarget(
               context,

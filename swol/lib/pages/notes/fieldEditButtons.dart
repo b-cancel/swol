@@ -45,8 +45,8 @@ class FieldEditButtons extends StatelessWidget {
             Expanded(
               child: TextButton(
                 onPressed: () => onPressBottom(),
-                //padding: EdgeInsets.all(0),
                 style: TextButton.styleFrom(
+                  padding: EdgeInsets.all(0),
                   //TODO: confirm this is creates the intended effect
                   primary: buttonColor,
                 ),
@@ -88,8 +88,8 @@ class _TopButton extends StatelessWidget {
           Expanded(
             child: TextButton(
               onPressed: () => onPressTop(),
-              //padding: EdgeInsets.all(0),
               style: TextButton.styleFrom(
+                padding: EdgeInsets.all(0),
                 //TODO: confirm this is creates the intended effect
                 primary: buttonColor,
               ),

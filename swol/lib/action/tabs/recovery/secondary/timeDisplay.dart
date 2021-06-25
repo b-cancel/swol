@@ -27,7 +27,7 @@ class TimeDisplay extends StatelessWidget {
 
   final double textContainerSize;
   final String topNumber;
-  final bool topArrowUp;
+  final bool? topArrowUp;
   final String breakTime;
   final Duration timePassed;
   final bool showBottomArrow;
@@ -47,7 +47,7 @@ class TimeDisplay extends StatelessWidget {
         : Container(
             child: FittedBox(
               fit: BoxFit.contain,
-              child: topArrowUp ? TriangleUp() : TriangleDown(),
+              child: topArrowUp! ? TriangleUp() : TriangleDown(),
             ),
           );
 
@@ -69,9 +69,7 @@ class TimeDisplay extends StatelessWidget {
                     bottom: (isTimer) ? 0 : 16,
                   ),
                   child: Icon(
-                    isTimer
-                        ? Ionicons.getIconData("ios-timer")
-                        : Ionicons.getIconData("ios-stopwatch"),
+                    isTimer ? Ionicons.ios_timer : Ionicons.ios_stopwatch,
                     color: Theme.of(context).primaryColor,
                     size: 48,
                   ),
@@ -98,7 +96,8 @@ class TimeDisplay extends StatelessWidget {
                         child: InkWell(
                           onTap: () => showToolTip(
                             context,
-                            topArrowUp
+                            //TODO: is this how I want to handle this?
+                            (topArrowUp ?? true)
                                 ? "Extra Time Waited"
                                 : "Time Left To Wait",
                             direction: PreferDirection.topCenter,

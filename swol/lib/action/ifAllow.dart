@@ -14,13 +14,13 @@ import 'package:swol/main.dart';
 //NOTE: according to "https://pub.dev/packages/notification_permissions"
 
 //DEFAULT STATE
-//In iOS, a permission is unknown when the user hasn’t accepted or refuse the notification permissions. 
-//In Android this state will never occur, 
-//  since the permission will be granted by default 
+//In iOS, a permission is unknown when the user hasn’t accepted or refuse the notification permissions.
+//In Android this state will never occur,
+//  since the permission will be granted by default
 //  and it will be denied if the user goes to the app settings and turns off notifications for the app.
 
 //ACTION
-//In iOS, if the permission is unknown, it will show an alert window asking the user for the permission. 
+//In iOS, if the permission is unknown, it will show an alert window asking the user for the permission.
 //  On the other hand, if the permission is denied it has the same behaviour as Android, opening the app settings
 //On Android, if the permission is denied, this method will open the app settings.
 
@@ -31,7 +31,7 @@ onAllow(
   //NOTE: onAllow can be called from
   //1. notification pop up (in which case keep automaticallyOpened)
   //2. restricted pop up (in which case keep automaticallyOpened)
-  //3. button location pop up (in which case... 
+  //3. button location pop up (in which case...
   //    they already know where the button is
   //    no need to remind them
   bool automaticallyOpened,
@@ -45,12 +45,12 @@ onAllow(
     //but actually... because this is the notification permission...
     //and its automatically granted... no pop up exists
     //so regardless of the status
-    //which according to Android will 
+    //which according to Android will
     //ATLEAST not be unknown (since this is an IOS only thing)
     //we will be brining up the AppSettings pop up
-    requestThatYouGoToAppSettings( 
-      status, 
-      onComplete, 
+    requestThatYouGoToAppSettings(
+      status,
+      onComplete,
       automaticallyOpened,
     );
   } else if (Platform.isIOS) {
@@ -58,7 +58,7 @@ onAllow(
     //1. unknown 2. denied 3. restricted
     if (status == PermissionStatus.restricted) {
       showRestrictedPopUp(
-        status, 
+        status,
         onComplete,
         automaticallyOpened,
       );
@@ -66,24 +66,25 @@ onAllow(
       //IF it hasn't been requested before its going to be unknown
       //IF it has been requested before but it was denied it will be denied
       bool permissionGiven = await flutterLocalNotificationsPlugin
-        .resolvePlatformSpecificImplementation<
-            IOSFlutterLocalNotificationsPlugin>()
-      ?.requestPermissions(
-        alert: true,
-        badge: true,
-        sound: true,
-      );
+              .resolvePlatformSpecificImplementation<
+                  IOSFlutterLocalNotificationsPlugin>()
+              ?.requestPermissions(
+                alert: true,
+                badge: true,
+                sound: true,
+                //TODO: is this how I want to handle this?
+              ) ??
+          false;
 
       //TODO: figure out what happens if the user rejects ONE of these
       //does permissionGiven get returned as false
 
       //if they didn't grant the permission tell them where to enable it if they change their mind
       //only if they didn't open it through the button
-      if(permissionGiven){
+      if (permissionGiven) {
         //they did what we expected, so we continue
         onComplete();
-      }
-      else{
+      } else {
         //inform them of where they can change their mind
         maybeShowButtonLocation(
           status,
@@ -92,6 +93,5 @@ onAllow(
         );
       }
     }
-    
   }
 }

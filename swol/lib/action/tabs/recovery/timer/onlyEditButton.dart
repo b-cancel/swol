@@ -9,7 +9,7 @@ List<String> durationToCustomDisplay(Duration duration) {
 
   if (duration > Duration.zero) {
     //seperate minutes
-    int minutes = duration.inMinutes ?? 0;
+    int minutes = duration.inMinutes;
 
     //9 minutes or less have passed (still displayable)
     if (minutes <= 9) {
@@ -20,7 +20,7 @@ List<String> durationToCustomDisplay(Duration duration) {
       duration = duration - Duration(minutes: minutes);
 
       //seperate seconds
-      int seconds = duration.inSeconds ?? 0;
+      int seconds = duration.inSeconds;
       always2Digits = seconds.toString(); //0 through 59
 
       //anything less than 10
