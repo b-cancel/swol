@@ -77,7 +77,7 @@ class _ChangeFunctionState extends State<ChangeFunction> {
   }
 
   late Widget carousel;
-  late CarouselController carouselController;
+  CarouselController carouselController = CarouselController();
 
   @override
   void initState() {

@@ -22,10 +22,11 @@ class TrainingBody extends StatelessWidget {
               text: "There are many reasons you may want to workout\nBut ",
             ),
             TextSpan(
-                text: "you should have One Primary Goal ",
-                style: TextStyle(
-                  fontWeight: FontWeight.w900,
-                )),
+              text: "you should have One Primary Goal ",
+              style: TextStyle(
+                fontWeight: FontWeight.w900,
+              ),
+            ),
           ],
         ),
         Column(

@@ -75,7 +75,7 @@ class _TrainingTypeSectionsState extends State<TrainingTypeSections> {
   late List<List<Widget>> sectionsOfCards;
   late List<Widget> carousels;
   CarouselSlider? mainCarousel; //late? or maybe null?
-  late CarouselController carouselController;
+  CarouselController carouselController = CarouselController();
 
   sectionIDToCarouselAction() {
     WidgetsBinding.instance?.addPostFrameCallback((_) {

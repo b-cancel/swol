@@ -70,7 +70,7 @@ class _SearchExerciseButtonState extends State<SearchExerciseButton> {
   updateState() {
     if (mounted) {
       setState(() {});
-      showSearch = ((ExerciseData?.exercisesOrder?.value.length ?? 0) > 1);
+      showSearch = ((ExerciseData.exercisesOrder?.value.length ?? 0) > 1);
       if (SharedPrefsExt.getSearchShown().value == false && showSearch) {
         OnBoarding.discoverSearchExercise(context);
       }
@@ -79,7 +79,7 @@ class _SearchExerciseButtonState extends State<SearchExerciseButton> {
 
   @override
   void initState() {
-    showSearch = ((ExerciseData?.exercisesOrder?.value.length ?? 0) > 1);
+    showSearch = ((ExerciseData.exercisesOrder?.value.length ?? 0) > 1);
     ExerciseData.exercisesOrder?.addListener(updateState);
     super.initState();
   }

@@ -8,10 +8,13 @@ import 'package:flutter/services.dart';
 
 //plugins
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_native_timezone/flutter_native_timezone.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:bot_toast/bot_toast.dart';
+import 'package:timezone/data/latest.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
 
 //internal: shared
 import 'package:swol/shared/methods/extensions/sharedPreferences.dart';
@@ -91,6 +94,12 @@ class _GrabSystemDataState extends State<GrabSystemData> {
     super.initState();
   }
 
+  Future<void> _configureLocalTimeZone() async {
+    tz.initializeTimeZones();
+    String timeZoneName = await FlutterNativeTimezone.getLocalTimezone();
+    tz.setLocalLocation(tz.getLocation(timeZoneName));
+  }
+
   asyncInit() async {
     //grab all data from files
     await SearchesData.searchesInit();
@@ -103,10 +112,13 @@ class _GrabSystemDataState extends State<GrabSystemData> {
     //or in my case just in case
     WidgetsFlutterBinding.ensureInitialized();
 
+    await _configureLocalTimeZone();
+
     //app_icon needs to be a added as a drawable resource to the Android head project
     //just plug it in the folder, nothing else special needed
-    var initializationSettingsAndroid =
-        AndroidInitializationSettings('app_icon_other');
+    var initializationSettingsAndroid = AndroidInitializationSettings(
+      '@mipmap/ic_launcher',
+    );
 
     //initialize IOS settings
     //and make sure that the notification is "triggered"

@@ -40,8 +40,6 @@ class LearnExercise extends StatefulWidget {
 }
 
 class _LearnExerciseState extends State<LearnExercise> {
-  final AutoScrollController autoScrollController = new AutoScrollController();
-
   //is opens
   List<ValueNotifier<bool>> allIsOpens = [];
 
@@ -61,37 +59,7 @@ class _LearnExerciseState extends State<LearnExercise> {
     //so they will have seen how the drop down works
     SharedPrefsExt.setIntroductionShown(true);
 
-    //a section is being opened
-    if (isOpen.value) {
-      //close others
-      closeOthers(isOpen);
-
-      //scroll to other
-      Future.delayed(
-          //TODO: ideally a more fool proof solution (1.5 duration may not cover un-planned delay)
-          //we currently just set the variables in "allIsOpens" to false
-          //but the animation kind of happens on its own
-          //requires seperate set of variables that confirm if it finished its animation
-          //add if necessary
-          ExercisePage.transitionDuration * 1.5, () {
-        //scroll to index
-        autoScrollController.scrollToIndex(
-          allIsOpens.indexOf(isOpen),
-          preferPosition: AutoScrollPosition.begin,
-        );
-      });
-    }
-  }
-
-  closeOthers(ValueNotifier<bool> passedNotifier) {
-    for (int i = 0; i < allIsOpens.length; i++) {
-      ValueNotifier<bool> thisNotifier = allIsOpens[i];
-      if (thisNotifier != passedNotifier) {
-        if (thisNotifier.value) {
-          thisNotifier.value = false;
-        }
-      }
-    }
+    //used to close all other setctions if a section was opened
   }
 
   introductionUpdate() => maybeCloseOthers(introductionIsOpen);
@@ -189,10 +157,8 @@ class _LearnExerciseState extends State<LearnExercise> {
             fontSize: 16,
           ),
           child: CustomScrollView(
-            controller: autoScrollController,
             slivers: [
               ExpandableTile(
-                autoScrollController: autoScrollController,
                 index: 0,
                 isOpen: introductionIsOpen,
                 headerIcon: FontAwesomeIcons.solidLightbulb,
@@ -200,7 +166,6 @@ class _LearnExerciseState extends State<LearnExercise> {
                 expandedChild: IntroductionBody(),
               ),
               ExpandableTile(
-                autoScrollController: autoScrollController,
                 index: 1,
                 isOpen: definitionIsOpen,
                 headerIcon: Icons.chrome_reader_mode,
@@ -208,7 +173,6 @@ class _LearnExerciseState extends State<LearnExercise> {
                 expandedChild: DefinitionBody(),
               ),
               ExpandableTile(
-                autoScrollController: autoScrollController,
                 index: 2,
                 isOpen: trainingIsOpen,
                 headerIcon: FontAwesomeIcons.dumbbell,
@@ -217,7 +181,6 @@ class _LearnExerciseState extends State<LearnExercise> {
                 expandedChild: TrainingBody(),
               ),
               ExpandableTile(
-                autoScrollController: autoScrollController,
                 index: 3,
                 isOpen: precautionIsOpen,
                 headerIcon: Icons.warning,
@@ -225,7 +188,6 @@ class _LearnExerciseState extends State<LearnExercise> {
                 expandedChild: PrecautionsBody(),
               ),
               ExpandableTile(
-                autoScrollController: autoScrollController,
                 index: 4,
                 isOpen: oneRepMaxIsOpen,
                 headerIcon: FontAwesomeIcons.trophy,
@@ -234,7 +196,6 @@ class _LearnExerciseState extends State<LearnExercise> {
                 expandedChild: OneRepMaxBody(),
               ),
               ExpandableTile(
-                autoScrollController: autoScrollController,
                 index: 5,
                 isOpen: experimentIsOpen,
                 headerIcon: FontAwesomeIcons.calculator,
@@ -242,7 +203,6 @@ class _LearnExerciseState extends State<LearnExercise> {
                 expandedChild: ExperimentBody(),
               ),
               ExpandableTile(
-                autoScrollController: autoScrollController,
                 index: 6,
                 isOpen: researchIsOpen,
                 headerIcon: FontAwesomeIcons.book,

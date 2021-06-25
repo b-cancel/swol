@@ -126,18 +126,10 @@ class _ExerciseSelectState extends State<ExerciseSelect> {
           children: <Widget>[
             //the list or lack of exercises
             //and the search button under certain conditions
-
-            //TODO: uncomment when ready
-            /*
             ExerciseList(
               autoScrollController: autoScrollController,
               statusBarHeight: statusBarHeight,
               onTop: onTop,
-            ),
-            */
-
-            Center(
-              child: Text("uncomment list"),
             ),
             ScrollToTopButton(
               onTop: onTop,
