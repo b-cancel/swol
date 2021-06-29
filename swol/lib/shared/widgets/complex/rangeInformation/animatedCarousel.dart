@@ -39,7 +39,7 @@ class AnimatedRangeInformation extends StatefulWidget {
 
 class _AnimatedRangeInformationState extends State<AnimatedRangeInformation> {
   var carousel;
-  late CarouselController carouselController;
+  CarouselController carouselController = CarouselController();
   int? sectionGrown;
 
   setSectionGrown({bool jump: false}) {

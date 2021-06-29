@@ -177,6 +177,7 @@ class AnExercise {
     _setTarget = setTarget;
 
     //NOTE: the update to the file should only happen after everything else
+    this.backUpTimeStamp = lastTimeStamp;
     this.lastTimeStamp = lastTimeStamp;
   }
 

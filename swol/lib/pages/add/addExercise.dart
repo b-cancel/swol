@@ -97,53 +97,46 @@ class _AddExerciseState extends State<AddExercise> {
   //repTarget also updates setTarget and recovery
   //since those two should be set based on repTarget
 
-  /*
-  //update the others if they haven't already been edited manually
-  final ValueNotifier<bool> recoverySet = new ValueNotifier<bool>(false);
-  final ValueNotifier<bool> setSet = new ValueNotifier(false);
-  updateOthers(){
-    //rep target
-    //strength 1 to 6
-    //hypertrophy 7 to 12
-    //endurance 13 and 35
-
-    //recovery period
-    //strength 3:05 to 5
-    //str/hype 3 to 2:05
-    //hypertrophy 2 to 1:05
-    //endurance 1 to 0
-    //---recovery period with just basics
-    //strength 2:35 -> 5        mid: 3:45
-    //hypertrohpy 1:05 -> 2:30  mid: 1:45
-    //endurance 0 -> 1          mid: 30 seconds
-
-    //set target
-    //end 1 to 2
-    //end/hyp 3
-    //hyp/str 4, 5
-    //str 6
-    //---set target with just basics
-    //strength: 5,6     mid: 5
-    //hypertrohpy: 3,4  mid: 3
-    //endurance: 1,2    mid: 2
-  }
-  
-  @override
-  void initState() { 
-    super.initState();
-    repTarget.addListener(updateOthers);
-  }
-
-  @override
-  void dispose() { 
-    repTarget.removeListener(updateOthers);
-    super.dispose();
-  }
-  */
-
   final ValueNotifier<String> updateableTipMessage =
       new ValueNotifier<String>("");
   final ValueNotifier<bool> tipIsShowing = new ValueNotifier<bool>(false);
+
+  final ValueNotifier<int> goalID = new ValueNotifier(1);
+
+  setSelectedValue() {
+    //Focus on:
+    //Getting Strong  |   4 sets  | 6 reps  | 3:00 minutes of break
+    //Getting Big     |   3 sets  | 9 reps  | 2:00 minutes of break
+    //Getting Agile   |   2 sets  | 12 reps | 1:00 minute of break
+    if (goalID.value == 0) {
+      setTarget.value = 4;
+      repTarget.value = 6;
+      recoveryPeriod.value = Duration(
+        minutes: 3,
+      );
+    } else if (goalID.value == 1) {
+      setTarget.value = 3;
+      repTarget.value = 9;
+      recoveryPeriod.value = Duration(
+        minutes: 2,
+      );
+    } else {
+      setTarget.value = 2;
+      repTarget.value = 12;
+      recoveryPeriod.value = Duration(
+        minutes: 1,
+      );
+    }
+
+    //this won't really be used soon
+    functionID.value = 0;
+  }
+
+  @override
+  void initState() {
+    setSelectedValue();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -169,6 +162,8 @@ class _AddExerciseState extends State<AddExercise> {
       NonReloadingCard(
         child: LinkField(url: url),
       ),
+
+      /*
       SliderCard(
         child: RepTargetField(
           repTarget: repTarget,
@@ -194,6 +189,7 @@ class _AddExerciseState extends State<AddExercise> {
         tipIsShowing: tipIsShowing,
         updateableTipMessage: updateableTipMessage,
       ),
+      */
     ];
 
     //build

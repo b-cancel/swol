@@ -80,10 +80,13 @@ class ExercisePage extends StatelessWidget {
       data: MyTheme.dark,
       child: WillPopScope(
         onWillPop: () async {
+          /*
           return await warningThenPop(
             context,
             exercise,
           );
+          */
+          return true;
         },
         child: ExercisePageDark(
           exercise: exercise,

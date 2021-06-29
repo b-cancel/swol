@@ -100,18 +100,19 @@ class AnimatedTitle extends StatelessWidget {
             ),
           ),
           child: FeatureWrapper(
-              featureID: AFeature.SwolLogo.toString(),
-              tapTarget: SwolLogo(),
-              text: "What you're going to be" +
-                  " after STICKING TO ANY exercise routine",
-              child: SwolLogo(
-                height: statusBarHeight,
-              ),
-              top: true,
-              left: true,
-              nextFeature: () {
-                OnBoarding.discoverLearnPage(context);
-              }),
+            featureID: AFeature.SwolLogo.toString(),
+            tapTarget: SwolLogo(),
+            text: "What you're going to be" +
+                " after STICKING TO ANY exercise routine",
+            child: SwolLogo(
+              height: statusBarHeight,
+            ),
+            top: true,
+            left: true,
+            nextFeature: () {
+              OnBoarding.discoverLearnPage(context);
+            },
+          ),
         );
       },
     );

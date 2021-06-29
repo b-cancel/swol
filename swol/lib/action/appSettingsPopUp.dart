@@ -238,11 +238,9 @@ requestThatYouGoToAppSettings(
           child: new Text("Nevermind"),
           onPressed: () {
             //pop ourselves
-            if (globalBuildContext != null) {
-              Navigator.of(
-                globalBuildContext,
-              ).pop();
-            }
+            Navigator.of(
+              globalBuildContext,
+            ).pop();
             //show button if needed
             onDeny();
           },
