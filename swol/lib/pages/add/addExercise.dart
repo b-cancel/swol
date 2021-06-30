@@ -217,37 +217,40 @@ class _AddExerciseState extends State<AddExercise> {
                       width: 2,
                     ),
                   ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      Expanded(
-                        child: FocusButton(
-                          iconData: FontAwesomeIcons.weight,
-                          focus: "Get Agile",
-                          trainingType: "Endurance",
-                          selectedGoal: goalID,
-                          ourGoalIndex: 0,
+                  child: IntrinsicHeight(
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Expanded(
+                          child: FocusButton(
+                            iconData: FontAwesomeIcons.weight,
+                            focus: "Get Agile",
+                            trainingType: "Endurance",
+                            selectedGoal: goalID,
+                            ourGoalIndex: 0,
+                          ),
                         ),
-                      ),
-                      Expanded(
-                        child: FocusButton(
-                          iconData: FontAwesomeIcons.dumbbell,
-                          focus: "Get Big",
-                          trainingType: "Hypertrophy",
-                          selectedGoal: goalID,
-                          ourGoalIndex: 1,
+                        Expanded(
+                          child: FocusButton(
+                            iconData: FontAwesomeIcons.dumbbell,
+                            focus: "Get Big",
+                            trainingType: "Hypertrophy",
+                            selectedGoal: goalID,
+                            ourGoalIndex: 1,
+                          ),
                         ),
-                      ),
-                      Expanded(
-                        child: FocusButton(
-                          iconData: FontAwesomeIcons.weightHanging,
-                          focus: "Get Strong",
-                          trainingType: "Strength",
-                          selectedGoal: goalID,
-                          ourGoalIndex: 2,
+                        Expanded(
+                          child: FocusButton(
+                            iconData: FontAwesomeIcons.weightHanging,
+                            focus: "Get Strong",
+                            trainingType: "Strength",
+                            selectedGoal: goalID,
+                            ourGoalIndex: 2,
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ],
@@ -410,28 +413,35 @@ class FocusButton extends StatelessWidget {
                   color: foreColor,
                 ),
               ),
-              Padding(
-                padding: EdgeInsets.only(
-                  top: 8.0,
-                ),
-                child: Text(
-                  focus,
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: foreColor,
-                  ),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.only(
-                  top: 4,
-                ),
-                child: Text(
-                  trainingType + "\n" + "Training",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: foreColor,
-                  ),
+              FittedBox(
+                fit: BoxFit.scaleDown,
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(
+                        top: 8.0,
+                      ),
+                      child: Text(
+                        focus,
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: foreColor,
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(
+                        top: 4,
+                      ),
+                      child: Text(
+                        trainingType + "\n" + "Training",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: foreColor,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ],
