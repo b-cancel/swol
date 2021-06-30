@@ -31,7 +31,7 @@ class _VerticalTabsState extends State<VerticalTabs>
     with TickerProviderStateMixin {
   //updated by suggest, reused by adjustment widget
   final ValueNotifier<List<double>> functionIDToWeightFromRT =
-      new ValueNotifier<List<double>>([8]);
+      new ValueNotifier<List<double>>(List.filled(8, 0));
 
   //for the "hero" widget (if not up then down)
   late ValueNotifier<bool> goalSetUp;

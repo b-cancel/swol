@@ -57,14 +57,17 @@ class ExercisePage extends StatelessWidget {
       new ValueNotifier<bool>(false); //being listened
   static final ValueNotifier<bool> nextSet =
       new ValueNotifier<bool>(false); //being listened
+
   //keeps track of all 1 rep maxes after they are calculated once
   //so we don't have to calculate them literally millions of times
-  static final List<double> oneRepMaxes = [8]; //not being listened to
+  static final List<double> oneRepMaxes =
+      List.filled(8, 0); //not being listened to
   //function order calcualted by suggest or set record once and then used to generate the carousel
   static final ValueNotifier<List<int>> orderedIDs =
-      new ValueNotifier<List<int>>([8]);
+      new ValueNotifier<List<int>>(List.filled(8, 0));
   //keeps track of the index in the SORTED list of IDs that gives us a result that mostly matches our set
   static ValueNotifier<int> closestIndex = new ValueNotifier<int>(-1);
+
   //NOTE: these are shown as INTs but are actually DOUBLEs to avoid issues with calculations and sorting later
   //used so that we can set the goal set from both the suggest and record page
   static final ValueNotifier<double> setGoalWeight =
@@ -80,13 +83,10 @@ class ExercisePage extends StatelessWidget {
       data: MyTheme.dark,
       child: WillPopScope(
         onWillPop: () async {
-          /*
           return await warningThenPop(
             context,
             exercise,
           );
-          */
-          return true;
         },
         child: ExercisePageDark(
           exercise: exercise,
@@ -279,14 +279,18 @@ class _ExercisePageDarkState extends State<ExercisePageDark> {
   updateOneRepMaxes({int? weight, int? reps}) {
     weight = weight ?? (widget.exercise.lastWeight ?? 0);
     reps = reps ?? (widget.exercise.lastReps ?? 0);
+    print("len: " + ExercisePage.oneRepMaxes.length.toString());
     for (int functionID = 0; functionID < 8; functionID++) {
-      //TODO: confirm if this is who I want to handle this
-      ExercisePage.oneRepMaxes[functionID] = To1RM.fromWeightAndReps(
-            weight.toDouble(),
-            reps,
-            functionID,
-          ) ??
-          0;
+      if (weight == 0 || reps == 0) {
+        ExercisePage.oneRepMaxes[functionID] = 0;
+      } else {
+        ExercisePage.oneRepMaxes[functionID] = To1RM.fromWeightAndReps(
+              weight.toDouble(),
+              reps,
+              functionID,
+            ) ??
+            0;
+      }
     }
   }
 
@@ -441,7 +445,7 @@ updateOrderOfIDs(List<double> functionIDToValue) {
   values.sort((b, a) => a.compareTo(b)); //largest to smallest
 
   //build up your ordered IDs
-  List<int> orderedIDs = [8];
+  List<int> orderedIDs = List.filled(8, 0);
   if (values.length == functionIDToValue.length) {
     for (int i = 0; i < values.length; i++) {
       double value = values[i];

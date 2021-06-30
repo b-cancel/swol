@@ -43,11 +43,11 @@ class _MakeFunctionAdjustmentState extends State<MakeFunctionAdjustment> {
   final ValueNotifier<int> predictionID = new ValueNotifier<int>(0);
 
   //rep estimates
-  final List<double> repEstimates = [8];
+  final List<double> repEstimates = List.filled(8, 0);
   bool allRepsEstimatesValid = false;
 
   //weight estimates
-  final List<double> weightEstimates = [8];
+  final List<double> weightEstimates = List.filled(8, 0);
   bool allWeightEstimatesValid = false;
 
   updatePredictionID() {
@@ -344,7 +344,7 @@ class _MakeFunctionAdjustmentState extends State<MakeFunctionAdjustment> {
 
   getPercentDifferences() {
     //get the values we will use to sort the function IDs
-    List<double> percentDifferences = [8];
+    List<double> percentDifferences = List.filled(8, 0);
     for (int functionID = 0; functionID < 8; functionID++) {
       //get the 1RM from this Set
       //TODO: make sure this is how I want to solve this

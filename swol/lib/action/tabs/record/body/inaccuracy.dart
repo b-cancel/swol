@@ -126,9 +126,9 @@ class PercentOff extends StatefulWidget {
 }
 
 class _PercentOffState extends State<PercentOff> {
-  List<double> oneRepMaxes = [8];
-  List<int> functionIdToPercentDifferences = [8];
-  List<int> functionIdToPercentDifferencesAbsolute = [8];
+  List<double> oneRepMaxes = List.filled(8, 0);
+  List<int> functionIdToPercentDifferences = List.filled(8, 0);
+  List<int> functionIdToPercentDifferencesAbsolute = List.filled(8, 0);
   Map<int, List<int>> absDifferenceTofunctionID = new Map<int, List<int>>();
   late int smallestAbsDifference;
   late int ourIndex;
