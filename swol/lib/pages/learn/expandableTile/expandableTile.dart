@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 
 //plugins
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
-import 'package:scroll_to_index/scroll_to_index.dart';
 import 'package:swol/action/page.dart';
 
 //internal

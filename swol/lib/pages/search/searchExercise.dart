@@ -16,7 +16,6 @@ import 'package:swol/pages/search/searchesData.dart';
 import 'package:swol/pages/search/recents.dart';
 import 'package:swol/main.dart';
 import 'package:swol/shared/widgets/simple/conditional.dart';
-import 'package:swol/shared/widgets/simple/curvedCorner.dart';
 
 //widget
 class SearchExercise extends StatefulWidget {

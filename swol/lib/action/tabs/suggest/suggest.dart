@@ -1,6 +1,5 @@
 //flutter
 import 'package:flutter/material.dart';
-import 'package:swol/action/doneButton/doneWidget.dart';
 
 //internal: action
 import 'package:swol/action/tabs/suggest/changeSuggestion.dart';

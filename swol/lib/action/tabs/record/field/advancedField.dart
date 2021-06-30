@@ -134,7 +134,9 @@ class _RecordFieldsState extends State<RecordFields> {
       //NOTE: must be edited here since the color differ
       //from what they are for the name, notes, and link field
       data: MyTheme.dark.copyWith(
-        textSelectionColor: MyTheme.dark.primaryColorDark,
+        textSelectionTheme: TextSelectionThemeData(
+          selectionColor: MyTheme.dark.primaryColorDark,
+        ),
         //NOTE: probably due to a flutter bug I can't set the selection
         //"textSelectionHandleColor" here because it just won't show
       ),

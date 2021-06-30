@@ -3,25 +3,26 @@ import 'package:flutter/material.dart';
 
 //plugins
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 //internal: addition
-import 'package:swol/pages/add/widgets/recoveryTime.dart';
 import 'package:swol/pages/add/widgets/matchTrainingTypeTip.dart';
 import 'package:swol/pages/add/widgets/reloadingCard.dart';
 import 'package:swol/pages/add/widgets/save.dart';
+import 'package:swol/shared/methods/theme.dart';
 
 //internal: shared
-import 'package:swol/shared/widgets/complex/fields/fields/sliders/setTarget/setTarget.dart';
-import 'package:swol/shared/widgets/complex/fields/fields/sliders/repTarget.dart';
 import 'package:swol/shared/widgets/complex/fields/fields/text/notesField.dart';
 import 'package:swol/shared/widgets/complex/fields/fields/linkField/link.dart';
 import 'package:swol/shared/widgets/complex/fields/fields/text/nameField.dart';
-import 'package:swol/shared/widgets/complex/fields/fields/function.dart';
 import 'package:swol/shared/structs/anExercise.dart';
 
 //internal: other
 import 'package:swol/pages/selection/widgets/addNewHero.dart';
 import 'package:swol/main.dart';
+import 'package:swol/shared/widgets/complex/fields/headers/fieldHeader.dart';
+import 'package:swol/shared/widgets/complex/trainingTypeTables/trainingTypes.dart';
+import 'package:swol/shared/widgets/simple/toLearnPage.dart';
 
 //main widget
 class AddExercise extends StatefulWidget {
@@ -154,6 +155,100 @@ class _AddExerciseState extends State<AddExercise> {
         ),
       ),
       NonReloadingCard(
+        child: AnimatedBuilder(
+          animation: goalID,
+          builder: (context, snapshot) {
+            return Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Theme(
+                  data: MyTheme.light,
+                  child: HeaderWithInfo(
+                    header: "Main Focus",
+                    title: "Main Focus",
+                    subtitle: "we'll help you stay focused",
+                    body: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 24,
+                          ),
+                          child: RichText(
+                            textScaleFactor: MediaQuery.of(
+                              context,
+                            ).textScaleFactor,
+                            text: TextSpan(
+                              style: TextStyle(
+                                color: Colors.black,
+                              ),
+                              children: [
+                                TextSpan(
+                                  text:
+                                      "by selecting a rep goal, set recovery time, and set goal for you",
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Theme(
+                          data: MyTheme.dark,
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(
+                              vertical: 8,
+                            ),
+                            child: AllTrainingTypes(
+                              sectionWithInitialFocus: goalID.value,
+                            ),
+                          ),
+                        ),
+                        SuggestToLearnPage(),
+                      ],
+                    ),
+                  ),
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.transparent,
+                    borderRadius: BorderRadius.circular(4),
+                    border: Border.all(
+                      color: Colors.blue,
+                      width: 2,
+                    ),
+                  ),
+                  child: Row(
+                    children: [
+                      FocusButton(
+                        iconData: FontAwesomeIcons.weight,
+                        focus: "Get Agile",
+                        trainingType: "Endurance",
+                        selectedGoal: goalID,
+                        ourGoalIndex: 0,
+                      ),
+                      FocusButton(
+                        iconData: FontAwesomeIcons.dumbbell,
+                        focus: "Get Big",
+                        trainingType: "Hypertrophy",
+                        selectedGoal: goalID,
+                        ourGoalIndex: 1,
+                      ),
+                      FocusButton(
+                        iconData: FontAwesomeIcons.weightHanging,
+                        focus: "Get Strong",
+                        trainingType: "Strength",
+                        selectedGoal: goalID,
+                        ourGoalIndex: 2,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            );
+          },
+        ),
+      ),
+      NonReloadingCard(
         child: NotesField(
           noteToUpdate: note,
           noteFocusNode: noteFocusNode,
@@ -162,34 +257,6 @@ class _AddExerciseState extends State<AddExercise> {
       NonReloadingCard(
         child: LinkField(url: url),
       ),
-
-      /*
-      SliderCard(
-        child: RepTargetField(
-          repTarget: repTarget,
-          subtle: false,
-        ),
-      ),
-      RecoveryTimeCard(
-        recoveryPeriod: recoveryPeriod,
-      ),
-      SliderCard(
-        child: SetTargetField(
-          setTarget: setTarget,
-        ),
-      ),
-      NonReloadingCard(
-        child: PredictionField(
-          functionID: functionID,
-          repTarget: repTarget,
-        ),
-      ),
-      //Tip Generator with spacing
-      TipSpacing(
-        tipIsShowing: tipIsShowing,
-        updateableTipMessage: updateableTipMessage,
-      ),
-      */
     ];
 
     //build
@@ -286,6 +353,81 @@ class _AddExerciseState extends State<AddExercise> {
                 );
               },
             ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class FocusButton extends StatelessWidget {
+  const FocusButton({
+    required this.iconData,
+    required this.focus,
+    required this.trainingType,
+    required this.selectedGoal,
+    required this.ourGoalIndex,
+    Key? key,
+  }) : super(key: key);
+
+  final IconData iconData;
+  final String focus;
+  final String trainingType;
+  final ValueNotifier<int> selectedGoal;
+  final int ourGoalIndex;
+
+  @override
+  Widget build(BuildContext context) {
+    bool isSelected = selectedGoal.value == ourGoalIndex;
+    Color backColor = isSelected ? Colors.blue : Colors.transparent;
+    Color foreColor = isSelected ? Colors.white : Colors.white;
+    return Material(
+      color: backColor,
+      borderRadius: BorderRadius.circular(4),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(4),
+        onTap: () {
+          selectedGoal.value = ourGoalIndex;
+        },
+        child: Padding(
+          padding: EdgeInsets.all(16),
+          child: Column(
+            children: [
+              Transform.translate(
+                offset: Offset(
+                  iconData == FontAwesomeIcons.dumbbell ? -3 : 0,
+                  0,
+                ),
+                child: Icon(
+                  iconData,
+                  color: foreColor,
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(
+                  top: 8.0,
+                ),
+                child: Text(
+                  focus,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: foreColor,
+                  ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(
+                  top: 4,
+                ),
+                child: Text(
+                  trainingType + "\n" + "Training",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: foreColor,
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
       ),

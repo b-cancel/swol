@@ -161,10 +161,9 @@ class EditButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextButton(
-      //TODO: ensure this creates the desired effect
       style: TextButton.styleFrom(
         padding: EdgeInsets.all(0),
-        primary: Theme.of(context).accentColor,
+        backgroundColor: Theme.of(context).accentColor,
       ),
       onPressed: () {
         isEditing.value = true;
@@ -223,7 +222,7 @@ class LaunchLinkButton extends StatelessWidget {
       child: TextButton(
         style: TextButton.styleFrom(
           padding: EdgeInsets.all(0),
-          primary: Theme.of(context).backgroundColor,
+          backgroundColor: Theme.of(context).backgroundColor,
         ),
         onPressed: () async {
           if (url.value != null && await canLaunch(url.value!)) {
@@ -271,7 +270,9 @@ class _PasteButton extends StatelessWidget {
     Widget button = TextButton(
       style: TextButton.styleFrom(
         padding: EdgeInsets.all(0),
-        primary: Theme.of(context).accentColor,
+        backgroundColor: Theme.of(context).accentColor,
+        //text color
+        primary: Colors.white,
       ),
       onPressed: () {
         //unfocus from others
@@ -301,7 +302,7 @@ class _PasteButton extends StatelessWidget {
       child: Text(
         emptyUrl == false ? "Paste" : "Tap Here To Paste A Link",
         style: TextStyle(
-          color: Theme.of(context).primaryColorDark,
+          color: Colors.white,
           fontWeight: FontWeight.bold,
         ),
       ),

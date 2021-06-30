@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 
 //plugin
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:swol/shared/widgets/simple/conditional.dart';
 
 //internal
 import 'package:swol/shared/widgets/simple/ourSnackBar.dart';

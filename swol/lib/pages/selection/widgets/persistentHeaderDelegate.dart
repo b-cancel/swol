@@ -50,7 +50,7 @@ class PersistentHeaderDelegate extends SliverPersistentHeaderDelegate {
   double semiClosedHeight;
   double closedHeight;
   double openHeight;
-  int workoutCount;
+  int? workoutCount;
 
   PersistentHeaderDelegate({
     required this.semiClosedHeight,
@@ -62,11 +62,11 @@ class PersistentHeaderDelegate extends SliverPersistentHeaderDelegate {
   @override
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
-    String subtitle = "";
-    if (workoutCount != null && workoutCount > 0) {
+    String subtitle = "Workouts";
+    if (workoutCount != null && workoutCount! > 0) {
       subtitle = workoutCount.toString();
       subtitle = subtitle + " Workout";
-      if (workoutCount > 1) subtitle += "s";
+      if (workoutCount! > 1) subtitle += "s";
     }
 
     //-----Used to clip the Exercises Title

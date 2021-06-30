@@ -6,8 +6,6 @@ import 'package:flutter/material.dart';
 
 //plugin
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:scroll_to_index/scroll_to_index.dart';
-import 'package:swol/action/page.dart';
 
 //internal: learn
 import 'package:swol/pages/learn/expandableTile/expandableTile.dart';

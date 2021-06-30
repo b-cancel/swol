@@ -208,13 +208,14 @@ class _RecordFieldState extends State<RecordField> {
                               widget.isLeft ? 4 : 3,
                             ),
                             //super guarantee only digits
-                            WhitelistingTextInputFormatter.digitsOnly,
+                            FilteringTextInputFormatter.digitsOnly,
                           ],
                           //line count
                           expands: false, //only 1 line at all times
                           minLines: 1,
                           maxLines: 1,
-                          maxLengthEnforced: true,
+                          maxLengthEnforcement:
+                              MaxLengthEnforcement.truncateAfterCompositionEnds,
                           //next to go to other field
                           textInputAction: TextInputAction.next,
                           //NOTE: on submitted seems to be working just as well
