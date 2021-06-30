@@ -84,13 +84,11 @@ class Functions {
     List<double> possibleOneRepMaxes = [];
     List<double> possibleDifferentFunctionOneRepMaxes = [];
     for (int functionID = 0; functionID < 8; functionID++) {
-      //TODO: confirm this is how I want to solve this
       double oneRepMax = To1RM.fromWeightAndReps(
-            weight.toDouble(),
-            reps,
-            functionID,
-          ) ??
-          0;
+        weight.toDouble(),
+        reps,
+        functionID,
+      );
 
       //add all
       possibleOneRepMaxes.add(oneRepMax);

@@ -346,11 +346,10 @@ class _MakeFunctionAdjustmentState extends State<MakeFunctionAdjustment> {
       //get the 1RM from this Set
       //TODO: make sure this is how I want to solve this
       double calculated1RM = To1RM.fromWeightAndReps(
-            double.parse(ExercisePage.setWeight.value),
-            int.parse(ExercisePage.setReps.value),
-            functionID,
-          ) ??
-          0;
+        double.parse(ExercisePage.setWeight.value),
+        int.parse(ExercisePage.setReps.value),
+        functionID,
+      );
 
       //get the difference between this and what was expected
       double calculatedDifference = calcPercentDifference(

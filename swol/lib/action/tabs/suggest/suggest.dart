@@ -58,7 +58,7 @@ class _SuggestionState extends State<Suggestion> {
     ExercisePage.setGoalReps.value = repTarget.value.toDouble();
 
     //recalculate all weight with new rep target
-    List<double> functionIDToWeight = [8];
+    List<double> functionIDToWeight = List.filled(8, 0);
     for (int functionID = 0; functionID < 8; functionID++) {
       double weight = ToWeight.fromRepAnd1Rm(
         //rep target used

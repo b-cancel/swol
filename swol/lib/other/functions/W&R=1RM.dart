@@ -7,7 +7,7 @@ class To1RM {
   //at all weight ranges, the function that approximate the one failing the most
   //is the one to its right
   //BACKUP ORDER: brzycki, mcGlothinOrLander, almazan, epleyOrBaechle [non failing]
-  static double? fromWeightAndReps(double weight, int reps, int predictionID) {
+  static double fromWeightAndReps(double weight, int reps, int predictionID) {
     if (weight > 0 && reps > 0) {
       switch (predictionID) {
         case 0:

@@ -214,7 +214,7 @@ class _ExercisePageDarkState extends State<ExercisePageDark> {
     //one rep maxes is final but we can reset
     //but we should because it will set the size of the list to 0
     //2. orderedIDs
-    ExercisePage.orderedIDs.value = [8];
+    ExercisePage.orderedIDs.value = List.filled(8, 0);
 
     //closest index reset
     ExercisePage.closestIndex.value = -1;
@@ -279,18 +279,12 @@ class _ExercisePageDarkState extends State<ExercisePageDark> {
   updateOneRepMaxes({int? weight, int? reps}) {
     weight = weight ?? (widget.exercise.lastWeight ?? 0);
     reps = reps ?? (widget.exercise.lastReps ?? 0);
-    print("len: " + ExercisePage.oneRepMaxes.length.toString());
     for (int functionID = 0; functionID < 8; functionID++) {
-      if (weight == 0 || reps == 0) {
-        ExercisePage.oneRepMaxes[functionID] = 0;
-      } else {
-        ExercisePage.oneRepMaxes[functionID] = To1RM.fromWeightAndReps(
-              weight.toDouble(),
-              reps,
-              functionID,
-            ) ??
-            0;
-      }
+      ExercisePage.oneRepMaxes[functionID] = To1RM.fromWeightAndReps(
+        weight.toDouble(),
+        reps,
+        functionID,
+      );
     }
   }
 

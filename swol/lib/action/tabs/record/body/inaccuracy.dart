@@ -140,13 +140,11 @@ class _PercentOffState extends State<PercentOff> {
     for (int functionID = 0; functionID < 8; functionID++) {
       //calc
       //NOTE: must calculate with these values since thats what the user typed
-      //TODO: make sure this is how I want to handle this
       double calculated1RM = To1RM.fromWeightAndReps(
-            double.parse(ExercisePage.setWeight.value),
-            int.parse(ExercisePage.setReps.value),
-            functionID,
-          ) ??
-          0;
+        double.parse(ExercisePage.setWeight.value),
+        int.parse(ExercisePage.setReps.value),
+        functionID,
+      );
 
       //save
       oneRepMaxes[functionID] = calculated1RM;
