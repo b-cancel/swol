@@ -218,27 +218,34 @@ class _AddExerciseState extends State<AddExercise> {
                     ),
                   ),
                   child: Row(
+                    mainAxisSize: MainAxisSize.max,
                     children: [
-                      FocusButton(
-                        iconData: FontAwesomeIcons.weight,
-                        focus: "Get Agile",
-                        trainingType: "Endurance",
-                        selectedGoal: goalID,
-                        ourGoalIndex: 0,
+                      Expanded(
+                        child: FocusButton(
+                          iconData: FontAwesomeIcons.weight,
+                          focus: "Get Agile",
+                          trainingType: "Endurance",
+                          selectedGoal: goalID,
+                          ourGoalIndex: 0,
+                        ),
                       ),
-                      FocusButton(
-                        iconData: FontAwesomeIcons.dumbbell,
-                        focus: "Get Big",
-                        trainingType: "Hypertrophy",
-                        selectedGoal: goalID,
-                        ourGoalIndex: 1,
+                      Expanded(
+                        child: FocusButton(
+                          iconData: FontAwesomeIcons.dumbbell,
+                          focus: "Get Big",
+                          trainingType: "Hypertrophy",
+                          selectedGoal: goalID,
+                          ourGoalIndex: 1,
+                        ),
                       ),
-                      FocusButton(
-                        iconData: FontAwesomeIcons.weightHanging,
-                        focus: "Get Strong",
-                        trainingType: "Strength",
-                        selectedGoal: goalID,
-                        ourGoalIndex: 2,
+                      Expanded(
+                        child: FocusButton(
+                          iconData: FontAwesomeIcons.weightHanging,
+                          focus: "Get Strong",
+                          trainingType: "Strength",
+                          selectedGoal: goalID,
+                          ourGoalIndex: 2,
+                        ),
                       ),
                     ],
                   ),
