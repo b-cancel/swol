@@ -62,7 +62,7 @@ class PersistentHeaderDelegate extends SliverPersistentHeaderDelegate {
   @override
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
-    String subtitle = "Workouts";
+    String subtitle = "";
     if (workoutCount != null && workoutCount! > 0) {
       subtitle = workoutCount.toString();
       subtitle = subtitle + " Workout";

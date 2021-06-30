@@ -19,7 +19,7 @@ class OnBoardingImage extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
-      onTap: (onTap == null) ? () {} : () => onTap!(),
+      onTap: (onTap == null) ? null : () => onTap!(),
       //NOTE: invisible container required to make tap target large
       child: Container(
         color: Colors.transparent,

@@ -124,6 +124,7 @@ class _SearchExerciseButtonState extends State<SearchExerciseButton> {
             ),
             top: false,
             left: false,
+            doneInsteadOfNext: true,
             nextFeature: () {
               SharedPrefsExt.setSearchShown(true);
             },

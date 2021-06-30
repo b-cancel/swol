@@ -20,18 +20,12 @@ class OnBoardingText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //NOTE: its seperate so we can change it quickly later
-    //if need be
-    Function secondaryOnTapNext =
-        (onTapNext == null) ? () {} : () => onTapNext!();
+    //if need be(onTapNext == null) ? null : () => onTapNext!(),
 
     Widget invisibleExpandedButton = Expanded(
-      child: GestureDetector(
-        onTap: () => secondaryOnTapNext(),
-        behavior: HitTestBehavior.opaque,
-        child: Container(
-          color: Colors.transparent,
-          child: Text(""),
-        ),
+      child: Container(
+        color: Colors.transparent,
+        child: Text(""),
       ),
     );
 
@@ -43,104 +37,106 @@ class OnBoardingText extends StatelessWidget {
         crossAxisAlignment:
             isLeft ? CrossAxisAlignment.start : CrossAxisAlignment.end,
         children: <Widget>[
-          GestureDetector(
-            onTap: () => secondaryOnTapNext(),
-            child: Container(
-              color: Colors.transparent,
-              alignment: isLeft ? Alignment.centerLeft : Alignment.centerRight,
-              child: Text(
-                text,
-                textAlign: isLeft ? TextAlign.left : TextAlign.right,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18,
-                ),
+          Container(
+            color: Colors.transparent,
+            alignment: isLeft ? Alignment.centerLeft : Alignment.centerRight,
+            child: Text(
+              text,
+              textAlign: isLeft ? TextAlign.left : TextAlign.right,
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
               ),
             ),
           ),
-          IntrinsicHeight(
-            child: Row(
-              mainAxisSize: MainAxisSize.max,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                (isLeft == false) ? invisibleExpandedButton : Container(),
-                (onTapPrev == null)
-                    ? Container()
-                    : GestureDetector(
-                        onTap: onTapPrev != null ? () => onTapPrev!() : null,
-                        child: Container(
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                              vertical: 8,
+          Padding(
+            padding: EdgeInsets.symmetric(
+              vertical: 8.0,
+            ),
+            child: IntrinsicHeight(
+              child: Row(
+                mainAxisSize: MainAxisSize.max,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                  (isLeft == false) ? invisibleExpandedButton : Container(),
+                  (onTapPrev == null)
+                      ? Container()
+                      : Material(
+                          color: Colors.transparent,
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(12),
+                            bottomLeft: Radius.circular(12),
+                          ),
+                          child: InkWell(
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(12),
+                              bottomLeft: Radius.circular(12),
                             ),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(12),
-                                bottomLeft: Radius.circular(12),
+                            highlightColor: Theme.of(context).accentColor,
+                            onTap:
+                                onTapPrev != null ? () => onTapPrev!() : null,
+                            child: Container(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 16,
+                                vertical: 8,
                               ),
-                              clipBehavior: Clip.hardEdge,
-                              child: Material(
-                                color: Colors.transparent,
-                                child: InkWell(
-                                  highlightColor: Theme.of(context).accentColor,
-                                  onTap: onTapPrev != null
-                                      ? () => onTapPrev!()
-                                      : null,
-                                  child: Container(
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal: 16,
-                                      vertical: 8,
-                                    ),
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.only(
-                                          topLeft: Radius.circular(12),
-                                          bottomLeft: Radius.circular(12),
-                                        ),
-                                        border: Border.all(
-                                          color: isTop
-                                              ? Theme.of(context).primaryColor
-                                              : Theme.of(context)
-                                                  .primaryColorDark,
-                                          width: 2,
-                                        )),
-                                    child: Text(
-                                      "Back",
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                      ),
-                                    ),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(12),
+                                    bottomLeft: Radius.circular(12),
                                   ),
+                                  border: Border.all(
+                                    color: isTop
+                                        ? Theme.of(context).primaryColor
+                                        : Theme.of(context).primaryColorDark,
+                                    width: 2,
+                                  )),
+                              child: Text(
+                                "Back",
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
                                 ),
                               ),
                             ),
                           ),
                         ),
+                  Material(
+                    borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(12),
+                      bottomRight: Radius.circular(12),
+                    ),
+                    color: Colors.blue,
+                    child: InkWell(
+                      onTap: (onTapNext == null) ? null : () => onTapNext!(),
+                      borderRadius: BorderRadius.only(
+                        topRight: Radius.circular(12),
+                        bottomRight: Radius.circular(12),
                       ),
-                GestureDetector(
-                  onTap: (onTapNext == null) ? () {} : () => onTapNext!(),
-                  child: Container(
-                    child: Padding(
-                      padding: EdgeInsets.only(
-                        left: (onTapPrev == null) ? 0 : 16,
-                        right: 0,
-                        top: 16,
-                        bottom: 16,
-                      ),
-                      child: Center(
-                        child: Container(
-                          child: Text(
-                            showDone ? "Got It!" : "Next",
-                            style: TextStyle(
-                              fontSize: 14,
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(
+                          vertical: 8,
+                          horizontal: 16,
+                        ),
+                        child: Center(
+                          child: Container(
+                            child: Text(
+                              showDone ? "Got It!" : "Next",
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
                             ),
                           ),
                         ),
                       ),
                     ),
                   ),
-                ),
-                isLeft ? invisibleExpandedButton : Container(),
-              ],
+                  isLeft ? invisibleExpandedButton : Container(),
+                ],
+              ),
             ),
           ),
         ],
