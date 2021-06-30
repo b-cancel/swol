@@ -322,143 +322,160 @@ class _TimerState extends State<Timer> with TickerProviderStateMixin {
     );
 
     //return
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      mainAxisSize: MainAxisSize.min,
-      children: <Widget>[
-        Visibility(
-          visible: maxTimerController.value != 1,
-          child: infoButton,
-        ),
-        Stack(
-          children: [
-            Positioned(
-              top: 0,
-              left: 0,
-              child: VibrationSwitch(),
-            ),
-            Positioned(
-              top: 0,
-              right: 0,
-              child: NotificationSwitch(
-                exercise: widget.exercise,
-              ),
-            ),
-            Hero(
-              tag: generatedHeroTag,
-              child: Container(
-                child: FittedBox(
-                  fit: BoxFit.contain,
+    return IntrinsicHeight(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          Visibility(
+            visible: maxTimerController.value != 1,
+            child: infoButton,
+          ),
+          Expanded(
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                Positioned(
+                  top: 0,
+                  left: 0,
+                  child: VibrationSwitch(),
+                ),
+                Positioned(
+                  top: 0,
+                  right: 0,
+                  child: NotificationSwitch(
+                    exercise: widget.exercise,
+                  ),
+                ),
+                Hero(
+                  tag: generatedHeroTag,
                   child: Container(
-                    height: MediaQuery.of(context).size.width,
-                    width: MediaQuery.of(context).size.width,
-                    padding: EdgeInsets.all(24),
-                    child: ClipOval(
-                      child: Stack(
-                        children: <Widget>[
-                          PulsingBackground(),
-                          LiquidCircularProgressIndicator(
-                            //animated values
-                            value: 1 - progressValue,
-                            valueColor: waveColor,
-                            backgroundColor: backgroundColor,
-                            //set values
-                            borderColor: Colors.transparent,
-                            borderWidth: 0,
-                            direction: Axis.vertical,
-                          ),
-                          Conditional(
-                            condition: maxTimerController.value == 1,
-                            ifTrue: Stack(
-                              children: [
-                                changeTimeWidget,
-                                Positioned.fill(
-                                  child: Center(
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.stretch,
-                                      children: <Widget>[
-                                        Container(
-                                          child: infoButton,
-                                        ),
-                                        Container(
-                                          child: Row(
-                                            mainAxisSize: MainAxisSize.max,
+                    child: FittedBox(
+                      fit: BoxFit.scaleDown,
+                      alignment: Alignment.center,
+                      child: Center(
+                        child: Container(
+                          height: MediaQuery.of(context).size.width,
+                          width: MediaQuery.of(context).size.width,
+                          padding: EdgeInsets.all(24),
+                          child: ClipOval(
+                            child: Stack(
+                              children: <Widget>[
+                                PulsingBackground(),
+                                LiquidCircularProgressIndicator(
+                                  //animated values
+                                  value: 1 - progressValue,
+                                  valueColor: waveColor,
+                                  backgroundColor: backgroundColor,
+                                  //set values
+                                  borderColor: Colors.transparent,
+                                  borderWidth: 0,
+                                  direction: Axis.vertical,
+                                ),
+                                Conditional(
+                                  condition: maxTimerController.value == 1,
+                                  ifTrue: Stack(
+                                    children: [
+                                      changeTimeWidget,
+                                      Positioned.fill(
+                                        child: Center(
+                                          child: Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.stretch,
                                             children: <Widget>[
-                                              Expanded(
-                                                child: Container(),
+                                              Container(
+                                                child: infoButton,
                                               ),
                                               Container(
-                                                width: MediaQuery.of(context)
-                                                        .size
-                                                        .width /
-                                                    5,
-                                                child: Container(
-                                                  padding: EdgeInsets.only(
-                                                    top: 16,
-                                                  ),
-                                                  child: FittedBox(
-                                                    fit: BoxFit.contain,
-                                                    child: Stack(
-                                                      children: <Widget>[
-                                                        OnlyEditButton(
-                                                          durationString:
-                                                              breakTimeString,
-                                                        ),
-                                                        changeTimeWidget,
-                                                      ],
+                                                child: Row(
+                                                  mainAxisSize:
+                                                      MainAxisSize.max,
+                                                  children: <Widget>[
+                                                    Expanded(
+                                                      child: Container(),
                                                     ),
-                                                  ),
+                                                    Container(
+                                                      width:
+                                                          MediaQuery.of(context)
+                                                                  .size
+                                                                  .width /
+                                                              5,
+                                                      child: Container(
+                                                        padding:
+                                                            EdgeInsets.only(
+                                                          top: 16,
+                                                        ),
+                                                        child: FittedBox(
+                                                          fit: BoxFit.contain,
+                                                          child: Stack(
+                                                            children: <Widget>[
+                                                              OnlyEditButton(
+                                                                durationString:
+                                                                    breakTimeString,
+                                                              ),
+                                                              changeTimeWidget,
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    Expanded(
+                                                      child: Container(),
+                                                    ),
+                                                  ],
                                                 ),
-                                              ),
-                                              Expanded(
-                                                child: Container(),
                                               ),
                                             ],
                                           ),
                                         ),
-                                      ],
-                                    ),
+                                      ),
+                                    ],
                                   ),
-                                ),
-                              ],
-                            ),
-                            ifFalse: Stack(
-                              children: [
-                                changeTimeWidget,
-                                Center(
-                                  child: TimeDisplay(
-                                    textContainerSize:
-                                        MediaQuery.of(context).size.width -
-                                            (24 * 2),
-                                    topNumber: topNumber,
-                                    breakTime: breakTimeString,
-                                    timePassed: totalDurationPassed,
-                                    //easy variables
-                                    topArrowUp: widget.showArrows
-                                        ? (firstTimerRunning ? false : true)
-                                        : null,
-                                    isTimer: (firstTimerRunning) ? true : false,
-                                    showBottomArrow:
-                                        widget.showArrows ? true : false,
-                                    showIcon: widget.showIcon,
-                                    changeTimeWidget: changeTimeWidget,
+                                  ifFalse: Stack(
+                                    children: [
+                                      changeTimeWidget,
+                                      Center(
+                                        child: TimeDisplay(
+                                          textContainerSize:
+                                              MediaQuery.of(context)
+                                                      .size
+                                                      .width -
+                                                  (24 * 2),
+                                          topNumber: topNumber,
+                                          breakTime: breakTimeString,
+                                          timePassed: totalDurationPassed,
+                                          //easy variables
+                                          topArrowUp: widget.showArrows
+                                              ? (firstTimerRunning
+                                                  ? false
+                                                  : true)
+                                              : null,
+                                          isTimer: (firstTimerRunning)
+                                              ? true
+                                              : false,
+                                          showBottomArrow:
+                                              widget.showArrows ? true : false,
+                                          showIcon: widget.showIcon,
+                                          changeTimeWidget: changeTimeWidget,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ],
                             ),
                           ),
-                        ],
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
+              ],
             ),
-          ],
-        ),
-      ],
+          ),
+        ],
+      ),
     );
   }
 }

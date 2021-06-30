@@ -72,14 +72,13 @@ class _MakeFunctionAdjustmentState extends State<MakeFunctionAdjustment> {
       for (int thisFunctionID = 0; thisFunctionID < 8; thisFunctionID++) {
         //TODO: make sure this is how I want to handle this
         repEstimates[thisFunctionID] = ToReps.from1RMandWeight(
-              ExercisePage.oneRepMaxes[thisFunctionID],
-              //use recorded weight
-              //since we are assuming
-              //that's what the user couldn't change
-              weight,
-              thisFunctionID,
-            ) ??
-            0; //no such thing as 9.5 reps
+          ExercisePage.oneRepMaxes[thisFunctionID],
+          //use recorded weight
+          //since we are assuming
+          //that's what the user couldn't change
+          weight,
+          thisFunctionID,
+        );
       }
 
       //make sure all yield valid resuls
@@ -124,13 +123,11 @@ class _MakeFunctionAdjustmentState extends State<MakeFunctionAdjustment> {
     if (repsRecordedValid) {
       //calculate are weight estimates
       for (int thisFunctionID = 0; thisFunctionID < 8; thisFunctionID++) {
-        //TODO: make sure If this is how I want to handle this
         weightEstimates[thisFunctionID] = ToWeight.fromRepAnd1Rm(
-              reps,
-              ExercisePage.oneRepMaxes[thisFunctionID],
-              thisFunctionID,
-            ) ??
-            0;
+          reps,
+          ExercisePage.oneRepMaxes[thisFunctionID],
+          thisFunctionID,
+        );
       }
 
       //make sure all yield valid results

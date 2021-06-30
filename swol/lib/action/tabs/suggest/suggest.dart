@@ -60,16 +60,14 @@ class _SuggestionState extends State<Suggestion> {
     //recalculate all weight with new rep target
     List<double> functionIDToWeight = [8];
     for (int functionID = 0; functionID < 8; functionID++) {
-      //TODO: is this how I want to handle this?
       double weight = ToWeight.fromRepAnd1Rm(
-            //rep target used
-            repTarget.value,
-            //one rep max that uses the same function as below
-            ExercisePage.oneRepMaxes[functionID],
-            //function index to use
-            functionID,
-          ) ??
-          0;
+        //rep target used
+        repTarget.value,
+        //one rep max that uses the same function as below
+        ExercisePage.oneRepMaxes[functionID],
+        //function index to use
+        functionID,
+      );
 
       functionIDToWeight[functionID] = weight;
     }

@@ -99,36 +99,27 @@ class _RecoveryState extends State<Recovery>
         crossAxisAlignment: CrossAxisAlignment.center,
         //everything including bottom button and spacing
         children: <Widget>[
-          TimerWrapper(
-            buttonsColor: buttonsColor,
-            child: Timer(
-              exercise: widget.exercise,
-              timeStarted: widget.exercise.tempStartTime.value,
-              changeableTimerDuration: recoveryDuration,
-              showAreYouSure: showAreYouSure,
-              showIcon: false,
+          Expanded(
+            child: TimerWrapper(
+              buttonsColor: buttonsColor,
+              child: Timer(
+                exercise: widget.exercise,
+                timeStarted: widget.exercise.tempStartTime.value,
+                changeableTimerDuration: recoveryDuration,
+                showAreYouSure: showAreYouSure,
+                showIcon: false,
+              ),
             ),
           ),
-          Expanded(
+          Center(
             child: Container(
-              padding: EdgeInsets.only(
-                //24 to clear button
-                //extra 24 to clear curve
-                bottom: 24.0, // + 24,
-              ),
-              child: Container(
-                //color: Colors.blue,
-                child: Center(
-                  child: Container(
-                    width: MediaQuery.of(context).size.width,
-                    child: ToBreath(),
-                  ),
-                ),
-              ),
+              width: MediaQuery.of(context).size.width,
+              child: ToBreath(),
             ),
           ),
           Theme(
             data: MyTheme.light,
+            //extra padding so finish button is allways visible
             child: RecoveryButtonsWithWhiteContext(
               showAreYouSure: showAreYouSure,
               buttonsColor: buttonsColor,

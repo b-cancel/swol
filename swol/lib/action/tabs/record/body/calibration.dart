@@ -94,39 +94,26 @@ class CalibrationBody extends StatelessWidget {
     //minor setting
     TextStyle defaultTextStyle = TextStyle(fontSize: 16);
 
-    //to make title nice size
-    double feelsGoodWidth = MediaQuery.of(context).size.width;
-    List<double> goldenWidth = measurementToGoldenRatioBS(feelsGoodWidth);
-    List<double> goldenWidth2 = measurementToGoldenRatioBS(goldenWidth[1]);
-
     //widget to be golden ratio centered
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
+        /*
         Padding(
           padding: EdgeInsets.only(
             bottom: 24.0,
           ),
-          child: Row(
-            children: <Widget>[
-              Container(
-                width: goldenWidth[0] + goldenWidth2[0],
-                child: Text(
-                  "Without a previous set, we can't give you suggestions",
-                  style: TextStyle(
-                    fontSize: 20,
-                  ),
-                ),
-              ),
-              Expanded(
-                child: Container(),
-              ),
-            ],
+          child: Text(
+            "Without a previous set, we can't give you suggestions",
+            style: TextStyle(
+              fontSize: 20,
+            ),
           ),
         ),
+        */
         ListItem(
           circleText: "1",
-          circleSize: 36,
+          circleSize: 18,
           circleColor: Theme.of(context).accentColor,
           content: RichText(
             textScaleFactor: MediaQuery.of(
@@ -171,7 +158,7 @@ class CalibrationBody extends StatelessWidget {
         ),
         ListItem(
           circleText: "2",
-          circleSize: 36,
+          circleSize: 18,
           circleColor: Theme.of(context).accentColor,
           content: RichText(
             textScaleFactor: MediaQuery.of(
@@ -207,7 +194,7 @@ class CalibrationBody extends StatelessWidget {
         ),
         ListItem(
           circleText: "3",
-          circleSize: 36,
+          circleSize: 18,
           circleColor: Theme.of(context).accentColor,
           bottomSpacing: 0,
           content: RichText(

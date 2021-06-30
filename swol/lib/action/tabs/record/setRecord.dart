@@ -17,7 +17,6 @@ import 'package:swol/action/page.dart';
 //internal: shared
 import 'package:swol/shared/structs/anExercise.dart';
 import 'package:swol/shared/methods/theme.dart';
-import 'package:swol/shared/widgets/simple/popUpAdjustments.dart';
 
 //widget
 class SetRecord extends StatelessWidget {
@@ -101,29 +100,20 @@ class SetRecord extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               mainAxisSize: MainAxisSize.max,
               children: <Widget>[
-                CalibrationHeader(
-                  header: "Calibration Set",
-                ),
-                Expanded(
-                  child: ScrollViewWithShadow(
-                    transparentWhite: false,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).cardColor,
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(24),
-                        ),
-                      ),
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 16,
-                      ),
-                      child: CalibrationBody(),
+                Container(
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).cardColor,
+                    borderRadius: BorderRadius.vertical(
+                      bottom: Radius.circular(24),
                     ),
                   ),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 16,
+                  ),
+                  child: CalibrationBody(),
                 ),
-                Container(
-                  height: 48.0,
+                Expanded(
                   child: Shimmer.fromColors(
                     direction: ShimmerDirection.ltr,
                     baseColor: Theme.of(context).primaryColor,
@@ -236,7 +226,9 @@ class SetRecordButtonsWithWhiteContext extends StatelessWidget {
                               color: buttonsColor,
                             ),
                           ),
-                          Expanded(child: Container()),
+                          Expanded(
+                            child: Container(),
+                          ),
                         ],
                       ),
                     ),

@@ -8,8 +8,7 @@ class To1RM {
   //is the one to its right
   //BACKUP ORDER: brzycki, mcGlothinOrLander, almazan, epleyOrBaechle [non failing]
   static double? fromWeightAndReps(double weight, int reps, int predictionID) {
-    bool positiveWeight = (weight > 0);
-    if (positiveWeight) {
+    if (weight > 0 && reps > 0) {
       switch (predictionID) {
         case 0:
           return brzycki(weight, reps);
@@ -28,8 +27,9 @@ class To1RM {
         default:
           return lombardi(weight, reps);
       }
-    } else
-      return null;
+    } else {
+      return 0;
+    }
   }
 
   //1 Brzycki Function

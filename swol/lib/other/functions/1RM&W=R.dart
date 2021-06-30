@@ -2,10 +2,8 @@ import 'dart:math' as math;
 
 //PROPER weight range: 1 - > ???
 class ToReps {
-  static double? from1RMandWeight(double max, double weight, int predictionID) {
-    bool positiveMax = (max > 0);
-    bool positiveWeight = (weight > 0);
-    if (positiveMax && positiveWeight) {
+  static double from1RMandWeight(double max, double weight, int predictionID) {
+    if (max > 0 && weight > 0) {
       switch (predictionID) {
         case 0:
           return brzycki(weight, max);
@@ -24,8 +22,9 @@ class ToReps {
         default:
           return lombardi(weight, max);
       }
-    } else
-      return null;
+    } else {
+      return 0;
+    }
   }
 
   //1 Brzycki Function

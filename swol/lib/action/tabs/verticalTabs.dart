@@ -95,15 +95,6 @@ class _VerticalTabsState extends State<VerticalTabs>
     //how long to travel 3 feet? 3/2 = 1.5 seconds
     double totalTravel = (bottomPadding * 2) + topPadding;
 
-    //height calcs
-    double totalHeight = MediaQuery.of(context).size.height;
-    double appBarHeight = 56;
-    double panelHeight = totalHeight - widget.statusBarHeight - appBarHeight;
-
-    //width calcs
-    double totalWidth = MediaQuery.of(context).size.width;
-    List<double> widthBS = measurementToGoldenRatioBS(totalWidth);
-
     //all the stuffs
     return Stack(
       children: <Widget>[
