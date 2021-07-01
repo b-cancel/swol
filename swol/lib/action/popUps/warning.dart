@@ -8,6 +8,7 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:swol/action/popUps/textValid.dart';
 import 'package:swol/action/popUps/reusable.dart';
 import 'package:swol/action/page.dart';
+import 'package:swol/permissions/specific/specificAsk.dart';
 
 //internal: other
 import 'package:swol/shared/widgets/simple/ourHeaderIconPopUp.dart';
@@ -15,30 +16,37 @@ import 'package:swol/shared/widgets/simple/notify.dart';
 import 'package:swol/shared/structs/anExercise.dart';
 import 'package:swol/main.dart';
 
+backToExercises(BuildContext context) {
+  //may have to unfocus
+  FocusScope.of(context).unfocus();
+  //animate the header
+  App.navSpread.value = false;
+  //pop the page
+  Navigator.of(context).pop();
+}
+
+scheduleIfPossibleThenBackToExercises(
+  BuildContext context,
+  AnExercise exercise,
+) {
+  //regardless of whether the permission was given
+
+  //try to schedlue notification
+  //Case 1: here you already have processed a Valid Set
+  //Case 2: we are reverting so nothing new was updated
+  //we already have tempStartTime
+  //and recoveryPeriod that we need
+  //to schedule it since the timer started and no change has been made
+  scheduleNotificationIfPossible(exercise);
+
+  //perform expected action
+  backToExercises(context);
+}
+
 //determine whether we should warn the user
 Future<bool> warningThenPop(BuildContext context, AnExercise exercise) async {
   //NOTE: we can assume TEMPS ARE ALWAYS VALID
   //IF they ARENT EMPTY
-
-  //-------------------------BEFORE the timer starts
-  //our temps are EMPTY, our notifiers MAY BE
-
-  //IF notifiers and temps match
-  //  then both empty -> no pop up
-  //ELSE
-  //  notifier filled, temp empty -> POP UP
-
-  //-------------------------AFTER the timer starts
-  //our temps are NOT EMPTY, our notifiers MAY BE
-
-  //IF notifier and temps match
-  //  then both not empty -> no pop up
-  //ELSE
-  // notifiers updated, temp not empty -> POP UP
-
-  //-------------------------IN BOTH cases
-  //IF our notifers DO NOT MATCH our temps -> bring up pop up
-  //  NOTE: assuming we allow manually updating temps after initially set
 
   //grab temps
   int? tempWeightInt = exercise.tempWeight;
@@ -72,20 +80,10 @@ Future<bool> warningThenPop(BuildContext context, AnExercise exercise) async {
   //2. the user want to go back by deleting the mistyped set
   //    which ofcourse won't start the timer and therefore not have a notification
 
-  Function scheduleThenBack = () {
-    //regardless of whether the permission was given
-
-    //try to schedlue notification
-    //Case 1: here you already have processed a Valid Set
-    //Case 2: we are reverting so nothing new was updated
-    //we already have tempStartTime
-    //and recoveryPeriod that we need
-    //to schedule it since the timer started and no change has been made
-    scheduleNotification(exercise);
-
-    //perform expected action
-    backToExercises(context);
-  };
+  //check if valid
+  bool newWeightValid = isTextParsedIsLargerThan0(newWeight);
+  bool newRepsValid = isTextParsedIsLargerThan0(newReps);
+  bool newSetValid = newWeightValid && newRepsValid;
 
   //Of both match the cases to address drop significantly
   if (bothMatch) {
@@ -93,12 +91,9 @@ Future<bool> warningThenPop(BuildContext context, AnExercise exercise) async {
     //if the timer HASN'T STARTED this happens by BEING EMTPY
     //if the timer HAS STARTED this happens by NOT BEING EMPTY
 
-    bool timerStarted = exercise.tempStartTime.value != AnExercise.nullDateTime;
-    if (timerStarted) {
-      askForPermissionIfNotGrantedAndWeNeverAsked(
-        context,
-        scheduleThenBack,
-      );
+    if (newSetValid) {
+      await askForPermissionIfNotGrantedAndWeNeverAsked();
+      scheduleIfPossibleThenBack();
     } else {
       //timer hasn't started, both fields are empty
       //dont pester the user
@@ -111,11 +106,6 @@ Future<bool> warningThenPop(BuildContext context, AnExercise exercise) async {
     //either we are initially setting the value
     //or we are updating the value
 
-    //check if valid
-    bool newWeightValid = isTextValid(newWeight);
-    bool newRepsValid = isTextValid(newReps);
-    bool newSetValid = newWeightValid && newRepsValid;
-
     /*
     IF the set is valid -> we start the set or update it
       since its very unlikely that the user will ACCIDENTALLY place 2 valid values
@@ -127,38 +117,38 @@ Future<bool> warningThenPop(BuildContext context, AnExercise exercise) async {
 
     //change display for pop up and
     //whether we wait to schedule the notification
-    bool newSet = (tempWeight == "");
+    bool isNewSet = (tempWeight == "");
 
     //if its valid horray! no extra pop ups
     if (newSetValid) {
-      askForPermissionIfNotGrantedAndWeNeverAsked(context, () {
-        //regardless of whether the permission was given
+      await askForPermissionIfNotGrantedAndWeNeverAsked();
+      //regardless of whether the permission was given
 
-        //will start or update the set
-        ExercisePage.updateSet.value = true;
+      //will start or update the set
+      ExercisePage.updateSet.value = true;
 
-        //expected action
-        backToExercises(context);
+      //expected action
+      backToExercises(context);
 
-        //schedule notification AFTER the set finishes updating
-        if (newSet) {
-          scheduleNotificationAfterUpdate(exercise);
-        } //things are set as they should be before this action
-        else {
-          //as in I have the time the timer started
-          //because this set is an update
-          //and the recovery period is set
-          scheduleNotification(exercise);
-        }
-      });
+      //schedule notification AFTER the set finishes updating
+      if (isNewSet) {
+        scheduleNotificationAfterUpdate(exercise);
+      } //things are set as they should be before this action
+      else {
+        //as in I have the time the timer started
+        //because this set is an update
+        //and the recovery period is set
+        scheduleNotificationIfPossible(exercise);
+      }
     } else {
       //remove focus so the pop up doesnt bring it back
       FocusScope.of(context).unfocus();
 
       //possible because either both are filled or neither
-      String title = newSet ? "Begin Your Set Break" : "You Must Fix Your Set";
+      String title =
+          isNewSet ? "Begin Your Set Break" : "You Must Fix Your Set";
       String subtitle =
-          newSet ? "so we can save your set" : "before we save it";
+          isNewSet ? "so we can save your set" : "before we save it";
 
       //bring up pop up
       showBasicHeaderIconPopUp(
@@ -197,7 +187,7 @@ Future<bool> warningThenPop(BuildContext context, AnExercise exercise) async {
                 ),
                 GoBackAndFix(),
                 Visibility(
-                  visible: newSet == false,
+                  visible: isNewSet == false,
                   child: RevertToPrevious(
                     exercise: exercise,
                   ),
@@ -210,7 +200,7 @@ Future<bool> warningThenPop(BuildContext context, AnExercise exercise) async {
         animationType: AnimType.LEFTSLIDE,
         clearBtn: TextButton(
           child: Text(
-            (newSet ? "Delete The Set" : "Revert Back"),
+            (isNewSet ? "Delete The Set" : "Revert Back"),
           ),
           onPressed: () async {
             //NOTE: we revert back to the previous values
@@ -222,14 +212,12 @@ Future<bool> warningThenPop(BuildContext context, AnExercise exercise) async {
 
             //we deleted the new set so now notification is needed
             //the timer hasn't started and won't because the set has been deleted
-            if (newSet) {
+            if (isNewSet) {
               backToExercises(context);
             } else {
               //we are reverting back so we do schedule
-              askForPermissionIfNotGrantedAndWeNeverAsked(
-                context,
-                scheduleThenBack,
-              );
+              await askForPermissionIfNotGrantedAndWeNeverAsked();
+              scheduleIfPossibleThenBack();
             }
           },
         ),
@@ -266,13 +254,4 @@ Future<bool> warningThenPop(BuildContext context, AnExercise exercise) async {
   //at any point
   //just we just do it manually to simply the problem
   return false;
-}
-
-backToExercises(BuildContext context) {
-  //may have to unfocus
-  FocusScope.of(context).unfocus();
-  //animate the header
-  App.navSpread.value = false;
-  //pop the page
-  Navigator.of(context).pop();
 }

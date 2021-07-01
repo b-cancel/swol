@@ -7,8 +7,6 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 
 //internal
 import 'package:swol/shared/widgets/simple/ourHeaderIconPopUp.dart';
-import 'package:swol/action/buttonLocationPopUp.dart';
-import 'package:swol/action/ifAllow.dart';
 import 'package:swol/action/page.dart';
 
 //we only care to tell the user where the button is when they deny
@@ -25,11 +23,15 @@ showRestrictedPopUp(
   Function onDeny = () {
     //make sure the user knows where they can re-enable
     //if they didnt already get here from pressing the button
+
+    //TODO: un comment below
+    /*
     maybeShowButtonLocation(
       status,
       onComplete,
       automaticallyOpened,
     );
+    */
   };
 
   BuildContext? globalBuildContext = ExercisePage.globalKey.currentContext;
@@ -140,11 +142,14 @@ showRestrictedPopUp(
           //the user wants to allow
           //but now handle all the different ways
           //we MIGHT have to go about that
+          //TODO: un comment below
+          /*
           onAllow(
             status,
             onComplete,
             automaticallyOpened,
           );
+          */
         },
       ),
     );

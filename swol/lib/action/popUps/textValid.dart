@@ -1,4 +1,4 @@
-bool isTextValid(String? text) {
+bool isTextParsedIsLargerThan0(String? text) {
   if (text == null)
     return false;
   else {

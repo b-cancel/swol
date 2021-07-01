@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 //plugins
 import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:swol/permissions/specific/specificAsk.dart';
 
 //internal
 import 'package:swol/shared/structs/anExercise.dart';
@@ -65,14 +66,12 @@ class _NotificationSwitchState extends State<NotificationSwitch>
     }
   }
 
-  updateShowButton({statusOutdated: true}) async {
-    if (statusOutdated) {
-      status = await Permission.notification.status;
-    }
+  updateShowButton() async {
+    status = await Permission.notification.status;
 
     //schedule notification or cancel it
     if (status == PermissionStatus.granted) {
-      scheduleNotification(widget.exercise);
+      scheduleNotificationIfPossible(widget.exercise);
     } else {
       safeCancelNotification(widget.exercise.id);
     }
@@ -93,11 +92,10 @@ class _NotificationSwitchState extends State<NotificationSwitch>
         child: IconButton(
           tooltip: 'Enable Notifications',
           onPressed: () async {
-            requestNotificationPermission(
-              status,
-              updateShowButton,
+            await requestNotificationPermission(
               automaticallyOpened: false,
             );
+            updateShowButton();
           },
           icon: Container(
             child: Stack(

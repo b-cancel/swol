@@ -56,8 +56,8 @@ class _InaccuracyCalculatorState extends State<InaccuracyCalculator> {
   @override
   Widget build(BuildContext context) {
     //check if we can show how far off they were from the target
-    bool weightValid = isTextValid(ExercisePage.setWeight.value);
-    bool repsValid = isTextValid(ExercisePage.setReps.value);
+    bool weightValid = isTextParsedIsLargerThan0(ExercisePage.setWeight.value);
+    bool repsValid = isTextParsedIsLargerThan0(ExercisePage.setReps.value);
     bool setValid = weightValid && repsValid;
 
     //build

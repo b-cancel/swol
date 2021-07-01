@@ -135,7 +135,8 @@ class _SetDisplayState extends State<SetDisplay> {
       if (ExercisePage.pageNumber.value == 0) {
         goalSetPivot = Pivot.RepTarget;
       } else {
-        bool weightValid = isTextValid(ExercisePage.setWeight.value);
+        bool weightValid =
+            isTextParsedIsLargerThan0(ExercisePage.setWeight.value);
         double calculatedGoalWeight = ExercisePage.setGoalWeight.value;
         //NOTE: here we do round since setWeight will ALWAYS BE an integer
         if (weightValid &&
@@ -144,7 +145,8 @@ class _SetDisplayState extends State<SetDisplay> {
           //we are using our GOAL WEIGHT as our pivot
           goalSetPivot = Pivot.Weight;
         } else {
-          bool repsValid = isTextValid(ExercisePage.setReps.value);
+          bool repsValid =
+              isTextParsedIsLargerThan0(ExercisePage.setReps.value);
           double calculatedReps = ExercisePage.setGoalReps.value;
           //NOTE: here we do round since setWeight will ALWAYS BE an integer
           if (repsValid &&

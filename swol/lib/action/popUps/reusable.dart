@@ -18,8 +18,8 @@ class SetDescription extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool invalidWeight = isTextValid(weight) == false;
-    bool invalidReps = isTextValid(reps) == false;
+    bool invalidWeight = isTextParsedIsLargerThan0(weight) == false;
+    bool invalidReps = isTextParsedIsLargerThan0(reps) == false;
     String weightS = (weight != "1") ? "s" : "";
     String repsS = (reps != "1") ? "s" : "";
 

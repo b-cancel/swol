@@ -9,6 +9,7 @@ import 'package:swol/action/bottomButtons/button.dart';
 import 'package:swol/action/popUps/skipTimer.dart';
 import 'package:swol/action/page.dart';
 import 'package:swol/pages/selection/exerciseListPage.dart';
+import 'package:swol/permissions/specific/specificAsk.dart';
 
 //internal: shared
 import 'package:swol/shared/structs/anExercise.dart';
@@ -38,7 +39,7 @@ class _RecoveryState extends State<Recovery>
 
     //cases to test below
     //to shorter one, to longer one, to shorter one after longer completed, to longer one after shorter completed
-    scheduleNotification(widget.exercise);
+    scheduleNotificationIfPossible(widget.exercise);
 
     //manually update inprogress sorting
     ExerciseSelectStateless.manualOrderUpdate.value = true;
@@ -54,17 +55,10 @@ class _RecoveryState extends State<Recovery>
 
     //encourage the user to reap the benefits of the system
     //after everything loads up so nothing crashes IF a pop up is going to be comming up
-    WidgetsBinding.instance?.addPostFrameCallback((_) {
-      //TODO: perhaps use the highlighting notification thing WITHIN the page here
-      //NOTE: Im hinting at a certain plugin
-      //that is most definately overkill for something so small
-      //but... meh... Just in case its an onboarding technique
-      askForPermissionIfNotGrantedAndWeNeverAsked(
-        context,
-        () {
-          scheduleNotification(widget.exercise);
-        },
-      );
+    WidgetsBinding.instance?.addPostFrameCallback((_) async {
+      if (await askForPermissionIfNotGrantedAndWeNeverAsked()) {
+        scheduleNotificationIfPossible(widget.exercise);
+      }
     });
 
     //super init

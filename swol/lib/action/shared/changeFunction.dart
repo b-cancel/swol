@@ -382,8 +382,8 @@ class _InnerArrowsState extends State<InnerArrows> {
     Color arrowColor = Theme.of(context).cardColor;
 
     //check if the set is valid
-    bool weightValid = isTextValid(ExercisePage.setWeight.value);
-    bool repsValid = isTextValid(ExercisePage.setReps.value);
+    bool weightValid = isTextParsedIsLargerThan0(ExercisePage.setWeight.value);
+    bool repsValid = isTextParsedIsLargerThan0(ExercisePage.setReps.value);
     bool setValid = weightValid && repsValid;
 
     //if it is then we may have a closestIndex

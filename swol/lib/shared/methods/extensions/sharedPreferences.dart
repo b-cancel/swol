@@ -9,6 +9,8 @@ enum ValueName {
   IntroductionShown,
   SaveShown, //ties with vibration requested
   SearchShown,
+  //for permission
+  NotificationRequested,
 }
 
 //NOTE: ideally this would contain extension methods
@@ -26,6 +28,8 @@ class SharedPrefsExt {
     ValueName.IntroductionShown: false,
     ValueName.SaveShown: false,
     ValueName.SearchShown: false,
+    //for permission
+    ValueName.NotificationRequested: false,
   };
 
   //used throughout privately
@@ -59,6 +63,8 @@ class SharedPrefsExt {
       _nameToValueNotifier[ValueName.SaveShown]!;
   static ValueNotifier getSearchShown() =>
       _nameToValueNotifier[ValueName.SearchShown]!;
+  static ValueNotifier getNotificationRequested() =>
+      _nameToValueNotifier[ValueName.NotificationRequested]!;
 
   //setters (must update local and global)
   static setIsDark(bool isDark) => _setLocalGlobal(ValueName.IsDark, isDark);
@@ -72,6 +78,8 @@ class SharedPrefsExt {
       _setLocalGlobal(ValueName.SaveShown, saveShown);
   static setSearchShown(bool searchShown) =>
       _setLocalGlobal(ValueName.SearchShown, searchShown);
+  static setNotificationRequested(bool notificationRequested) =>
+      _setLocalGlobal(ValueName.NotificationRequested, notificationRequested);
 
   //-------------------------private-------------------------
 

@@ -17,7 +17,7 @@ import 'package:swol/main.dart';
 
 //we only schedule it IF we have the permission
 //NOTE: asking for permission is a completely seperate process because of the cases described ON TOP
-scheduleNotification(AnExercise exercise) async {
+scheduleNotificationIfPossible(AnExercise exercise) async {
   int id = exercise.id;
 
   //generate the DT that we want the notification to come up on
@@ -32,7 +32,7 @@ scheduleNotification(AnExercise exercise) async {
     PermissionStatus status = await Permission.notification.status;
 
     //if we do then do so
-    if (status == PermissionStatus.granted) {
+    if (status.isGranted || status.isLimited) {
       //safe cancel before to avoid dups or errors
       await safeCancelNotification(id);
 
@@ -123,7 +123,7 @@ scheduleNotification(AnExercise exercise) async {
 scheduleNotificationAfterUpdate(AnExercise exercise) {
   if (ExercisePage.updateSet.value == false) {
     //update is complete because the value was set to false
-    scheduleNotification(exercise);
+    scheduleNotificationIfPossible(exercise);
   } else {
     //wait another frame for the update to finish
     WidgetsBinding.instance?.addPostFrameCallback((_) {

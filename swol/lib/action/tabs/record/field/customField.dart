@@ -237,7 +237,8 @@ class _RecordFieldState extends State<RecordField> {
 
                               //so although sometimes staying on our own field makes more sense
                               //we don't do that because the user EXPECTS some OBVIOUS action
-                              if (isTextValid(widget.otherController.text)) {
+                              if (isTextParsedIsLargerThan0(
+                                  widget.otherController.text)) {
                                 //the other controller has a valid value
                                 //so we perform the only other possible action
                                 FocusScope.of(context).unfocus();

@@ -96,7 +96,7 @@ class _RecordFieldsState extends State<RecordFields> {
     //when going BACK TO page 0
     if (ExercisePage.pageNumber.value == 1) {
       //maybe focus on weight
-      if (isTextValid(weightController.text) == false) {
+      if (isTextParsedIsLargerThan0(weightController.text) == false) {
         //clear with value that could be nothing but invalid
         if (weightController.text == "0") weightController.clear();
         //request focus
@@ -104,7 +104,7 @@ class _RecordFieldsState extends State<RecordFields> {
         //NOTE: cursor automatically gets shifted to the end
       } else {
         //maybe focus on reps
-        if (isTextValid(repsController.text) == false) {
+        if (isTextParsedIsLargerThan0(repsController.text) == false) {
           //clear with value that could be nothing but invalid
           if (repsController.text == "0") repsController.clear();
           //request focus

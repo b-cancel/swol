@@ -27,7 +27,8 @@ showEnableNotificationsButtonLocation() async {
               //we ONLY open this pop up IF automaticallyOpen so...
 
               //run the negative option
-              onComplete();
+              //TODO: un comment below
+              //onComplete();
 
               //allow pop
               return true;
@@ -198,7 +199,8 @@ showEnableNotificationsButtonLocation() async {
                     Navigator.of(context).pop();
 
                     //run on complete
-                    onComplete();
+                    //TODO: un comment below
+                    //onComplete();
                   },
                 ),
                 /*

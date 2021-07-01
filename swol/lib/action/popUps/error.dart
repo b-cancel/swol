@@ -41,8 +41,8 @@ maybeError(
     String reps = ExercisePage.setReps.value;
 
     //validity
-    bool weightValid = isTextValid(weight);
-    bool repsValid = isTextValid(reps);
+    bool weightValid = isTextParsedIsLargerThan0(weight);
+    bool repsValid = isTextParsedIsLargerThan0(reps);
     bool setValid = weightValid && repsValid;
 
     //we are valid and can therefore move on

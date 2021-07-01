@@ -244,8 +244,8 @@ bool isSetValid() {
   String newReps = ExercisePage.setReps.value;
 
   //check validity
-  bool newWeightValid = isTextValid(newWeight);
-  bool newRepsValid = isTextValid(newReps);
+  bool newWeightValid = isTextParsedIsLargerThan0(newWeight);
+  bool newRepsValid = isTextParsedIsLargerThan0(newReps);
 
   //ret
   return (newWeightValid && newRepsValid);

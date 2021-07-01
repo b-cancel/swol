@@ -62,7 +62,7 @@ class _MakeFunctionAdjustmentState extends State<MakeFunctionAdjustment> {
     //this is bause maybe we wanted them to do 125 for 5 but they only had 120
     //so ideally we want to match their weight here and take it from ther
     String setWeightString = ExercisePage.setWeight.value;
-    bool weightRecordedValid = isTextValid(setWeightString);
+    bool weightRecordedValid = isTextParsedIsLargerThan0(setWeightString);
     double weight = weightRecordedValid ? double.parse(setWeightString) : 0;
 
     //check conditions
@@ -116,7 +116,7 @@ class _MakeFunctionAdjustmentState extends State<MakeFunctionAdjustment> {
   repsWereUpdated({bool updateTheGoal: true}) {
     //we use 1RM and reps to get weights
     String setRepsString = ExercisePage.setReps.value;
-    bool repsRecordedValid = isTextValid(setRepsString);
+    bool repsRecordedValid = isTextParsedIsLargerThan0(setRepsString);
     int reps = repsRecordedValid ? int.parse(setRepsString) : 0;
 
     //reps are valid so if we can use them
@@ -332,8 +332,8 @@ class _MakeFunctionAdjustmentState extends State<MakeFunctionAdjustment> {
     }
 
     //update the sorting of things
-    bool weightValid = isTextValid(ExercisePage.setWeight.value);
-    bool repsValid = isTextValid(ExercisePage.setReps.value);
+    bool weightValid = isTextParsedIsLargerThan0(ExercisePage.setWeight.value);
+    bool repsValid = isTextParsedIsLargerThan0(ExercisePage.setReps.value);
     bool setValid = weightValid && repsValid;
     if (setValid) valuesToSortWith = getPercentDifferences();
     updateOrderOfIDs(valuesToSortWith);

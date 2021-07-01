@@ -44,7 +44,7 @@ Future<NextAction> tryToGetPermission(
   print("retreivable: " +
       retreivableStatus.toString() +
       " VS actual: " +
-      (actualStatus != null ? actualStatus.toString() : "Unknown"));
+      actualStatus.toString());
 
   //!this shouldn't happen but I know that it does
   //when we permanently deny in android...
@@ -58,12 +58,6 @@ Future<NextAction> tryToGetPermission(
   //* somewhat reliably whether the pop up came up (CASE A) or whether it didn't (CASE B)
   if (retreivableStatus != actualStatus) {
     print("+\n+\n+ERROR+\n+\n+");
-  }
-
-  //I needed the null status for some checks above
-  //but I didn't change anything below, so I revert back to it's default behavior
-  if (actualStatus == null) {
-    actualStatus = PermissionStatus.denied;
   }
 
   //to handle edge case that print ERROR above
