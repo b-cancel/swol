@@ -327,9 +327,9 @@ class _BasicCountDownState extends State<BasicCountDown>
     if (status == AnimationStatus.completed) {
       //vibrate to let the user know they are done
       Vibrator.vibrateOnce();
-      //give permission
+      //agree
       SharedPrefsExt.setTermsAgreed(true);
-      //pop the permission pop up
+      //pop the agreement pop up
       Navigator.of(context).pop();
       //start showing basic features (if they haven't yet been shown)
       widget.afterConfirm();
