@@ -7,7 +7,6 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 //internal
 import 'package:swol/shared/structs/anExercise.dart';
-import 'package:swol/action/notificationPopUp.dart';
 import 'package:swol/shared/widgets/simple/notify.dart';
 
 //build
