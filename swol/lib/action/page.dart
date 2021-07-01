@@ -111,7 +111,7 @@ class _ExercisePageDarkState extends State<ExercisePageDark> {
   //TODO: all below behavior
   /* 
   ***ON CALLIBRATION SET***
-  1. when going from record calibration -> timer... START TIMER 
+  1. when going from record -> timer... START TIMER 
       & haven't asked for notification permission before... ASK...
 
   ***ON OTHER SETS***
@@ -120,10 +120,10 @@ class _ExercisePageDarkState extends State<ExercisePageDark> {
   1. going from suggest -> record && new set values 100% empty... START TIMER
       & haven't asked for notification permission before... ASK...
   2. going from record -> suggest && new set values 100% empty... RESET TIMER
-  ---
   */
 
-  //TODO: URGENT before we used to update the set & start the timer at once... now its seperate... adjust accordingly
+  //TODO: wherever this occurs... ExercisePage.updateSet.value = true;... check it...
+
   updateSet() {
     //also cover resume case
     if (ExercisePage.updateSet.value) {
@@ -134,7 +134,11 @@ class _ExercisePageDarkState extends State<ExercisePageDark> {
       widget.exercise.tempReps = int.parse(setReps);
 
       //IF we are "SAVING FOR THE FIRST TIME" and "NOT UPDATING" the set
+      //!NOTE this happens when going away from the calibration set
+      //which ofcourse should not happen
       if (widget.exercise.tempStartTime.value == AnExercise.nullDateTime) {
+        print("starting timer from update set");
+
         //start the timer
         widget.exercise.tempStartTime = ValueNotifier<DateTime>(
           DateTime.now(),

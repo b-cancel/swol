@@ -102,6 +102,7 @@ class _BreathStatefulState extends State<BreathStateful> {
                       "Breath With The Shape",
                       style: TextStyle(
                         fontWeight: FontWeight.w100,
+                        color: Colors.white,
                       ),
                     ),
                   ),

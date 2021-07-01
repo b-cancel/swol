@@ -64,6 +64,10 @@ Future<bool> warningThenPop(BuildContext context, AnExercise exercise) async {
       //will start or update the set
       ExercisePage.updateSet.value = true;
 
+      //!this runs when going back from record calibration set page
+      //TODO: now that we started the timer AND recorded the set... we should probably ask for permission the first time if we haven't asked before
+      print("new set valid");
+
       //expected action
       backToExercises(context);
     } else {
