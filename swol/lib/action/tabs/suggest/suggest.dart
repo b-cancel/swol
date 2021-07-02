@@ -185,7 +185,16 @@ class _SuggestionState extends State<Suggestion> {
               color: buttonsColor,
               exerciseID: widget.exercise.id,
               forwardAction: () {
+                //move to page 1
                 ExercisePage.pageNumber.value = 1;
+
+                //start the timer IF it hasn't been started already
+                bool timerStarted = (widget.exercise.tempStartTime.value !=
+                    AnExercise.nullDateTime);
+                if (timerStarted == false) {
+                  //start timer
+                  ExercisePage.toggleTimer.value = true;
+                }
               },
               forwardActionWidget: Row(
                 mainAxisSize: MainAxisSize.min,

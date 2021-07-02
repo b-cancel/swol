@@ -115,6 +115,8 @@ class _ExercisePageDarkState extends State<ExercisePageDark> {
       bool timerStarted =
           (widget.exercise.tempStartTime.value != AnExercise.nullDateTime);
       if (timerStarted) {
+        print("timer started... stop timer");
+
         //if started stop it
         widget.exercise.tempStartTime = ValueNotifier<DateTime>(
           AnExercise.nullDateTime,
@@ -123,6 +125,8 @@ class _ExercisePageDarkState extends State<ExercisePageDark> {
         //undo previous order
         widget.exercise.lastTimeStamp = widget.exercise.backUpTimeStamp;
       } else {
+        print("timer stopped... start timer");
+
         //if stoped start it
         widget.exercise.tempStartTime = ValueNotifier<DateTime>(
           DateTime.now(),
@@ -136,14 +140,6 @@ class _ExercisePageDarkState extends State<ExercisePageDark> {
       ExercisePage.toggleTimer.value = false;
     }
   }
-
-  //TODO: all below behavior
-  /* 
-  ***ON OTHER SETS***
-  1. going from suggest -> record && new set values 100% empty... START TIMER
-      & haven't asked for notification permission before... ASK...
-  2. going from record -> suggest && new set values 100% empty... RESET TIMER
-  */
 
   updateSet() {
     //also cover resume case

@@ -139,7 +139,7 @@ class _VerticalTabsState extends State<VerticalTabs>
   //NOTE: since this is triggered by a change to a notifier
   //we will never go to a page that we are already at
   updatePage() {
-    //close the keybaord since we have been on page 1 (record)
+    //close the keybaord since we MAY have been on page 1 (record)
     FocusScope.of(context).unfocus();
 
     //grab start offset so we know when to start the "hero" transition

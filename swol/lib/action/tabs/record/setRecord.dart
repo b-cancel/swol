@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 //plugins
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:swol/action/popUps/textValid.dart';
 
 //internal: action
 import 'package:swol/action/tabs/record/field/advancedField.dart';
@@ -46,11 +47,28 @@ class SetRecord extends StatelessWidget {
     double spaceToRedistribute = fullHeight - appBarHeight - statusBarHeight;
 
     //determine what page we are showing
-    bool calibrationRequired = exercise.lastWeight == null;
+    bool calibrationRequired = (exercise.lastWeight == null);
     Function? backAction;
     if (calibrationRequired == false) {
       backAction = () {
+        //go back to page 0
         ExercisePage.pageNumber.value = 0;
+
+        //in the calibration set the timer hasn't started yet
+        //so make sure the timer has started before thinking about reseting if
+        bool timerStarted =
+            (exercise.tempStartTime.value != AnExercise.nullDateTime);
+        if (timerStarted) {
+          //reset the timer IF we haven't recorded a set yet
+          String newWeight = ExercisePage.setWeight.value;
+          String newReps = ExercisePage.setReps.value;
+          bool newWeightValid = isTextParsedIsLargerThan0(newWeight);
+          bool newRepsValid = isTextParsedIsLargerThan0(newReps);
+          bool newSetValid = newWeightValid && newRepsValid;
+          if (newSetValid == false) {
+            ExercisePage.toggleTimer.value = true;
+          }
+        }
       };
     }
 
