@@ -74,7 +74,7 @@ class SuggestToLearnPage extends StatelessWidget {
       child: InkWell(
         //this function can only be triggered from
         //1. add exercise page
-        //2. excercise page 0
+        //2. exercise page 0
         //so...
         onTap: () {
           //pop to make space for snackbar
@@ -83,7 +83,7 @@ class SuggestToLearnPage extends StatelessWidget {
           //ID to be used below
           int exerciseID = ExercisePage.exerciseID.value;
 
-          //we triggered it from addExcercise page
+          //we triggered it from addExercise page
           //the will learn that their data will be wiped the first time
           //NOTE: so adding a CONFIRM box or pop up is unecesarry
           //TODO: eventually save things temporarily and then let them be restored

@@ -126,7 +126,7 @@ maybeChangeSetTarget(
     ),
     colorBtn: ElevatedButton(
       child: Text(
-        "Finish Excercise",
+        "Finish Exercise",
       ),
       onPressed: () {
         //update set target

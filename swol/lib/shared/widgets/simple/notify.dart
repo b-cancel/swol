@@ -108,7 +108,7 @@ scheduleNotificationIfPossible(AnExercise exercise) async {
         tzDateTime,
         //pass details created above
         platformChannelSpecifics,
-        //pass ID so we can open to that page when user taps the excercise
+        //pass ID so we can open to that page when user taps the exercise
         payload: id.toString(),
         //it should also trigger in low power mode
         androidAllowWhileIdle: true,

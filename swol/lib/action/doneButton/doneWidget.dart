@@ -276,7 +276,7 @@ class _FloatingDoneButtonState extends State<FloatingDoneButton> {
                           showButton: showButton,
                           cardColor: cardColor,
                           setsPassedFromHere: setsPassedFromHere,
-                          excerciseID: widget.exercise.id,
+                          exerciseID: widget.exercise.id,
                           animationCurve: widget.animationCurve,
                         ),
                       ),
@@ -371,14 +371,14 @@ class WrappedInDarkness extends StatelessWidget {
     required this.showButton,
     required this.cardColor,
     required this.setsPassedFromHere,
-    required this.excerciseID,
+    required this.exerciseID,
     required this.animationCurve,
   }) : super(key: key);
 
   final bool showButton;
   final Color cardColor;
   final int setsPassedFromHere;
-  final int excerciseID;
+  final int exerciseID;
   final Curve animationCurve;
 
   @override
@@ -397,7 +397,7 @@ class WrappedInDarkness extends StatelessWidget {
           show: showButton,
           color: cardColor,
           setsPassed: setsPassedFromHere,
-          exerciseID: excerciseID,
+          exerciseID: exerciseID,
           animationCurve: animationCurve,
         ),
       ],

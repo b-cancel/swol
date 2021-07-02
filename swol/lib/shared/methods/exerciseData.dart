@@ -37,7 +37,7 @@ class ExerciseData {
     if (_exerciseFile == null) {
       //get what the file reference should be
       //todo keeping this one mispelled so I can keep my workouts...
-      _exerciseFile = await StringJson.nameToFileReference("excercises");
+      _exerciseFile = await StringJson.nameToFileReference("exercises");
 
       //get access to the file
       bool exists = (await _exerciseFile?.exists()) ?? false;

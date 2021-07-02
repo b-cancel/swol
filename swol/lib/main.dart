@@ -154,7 +154,7 @@ class _GrabSystemDataState extends State<GrabSystemData> {
                 onPressed: () async {
                   Navigator.of(context).pop();
 
-                  //updates what excercise to travel to
+                  //updates what exercise to travel to
                   //which will then cause us to travel to it
                   if (payload != null) {
                     exerciseToTravelTo.value = int.parse(payload);
@@ -190,7 +190,7 @@ class _GrabSystemDataState extends State<GrabSystemData> {
       //TODO REPAIRED NOT CHECKED
       //In the real world, this payload could represent the id of the item you want to display the details of.
       onSelectNotification: (String? payload) async {
-        //updates what excercise to travel to
+        //updates what exercise to travel to
         //which will then cause us to travel to it
         if (payload != null) {
           exerciseToTravelTo.value = int.parse(payload);

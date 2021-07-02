@@ -524,7 +524,7 @@ class _ExerciseListState extends State<ExerciseList> {
   //init
   @override
   void initState() {
-    //TODO: below commented out because the new goToExcercise from notification
+    //TODO: below commented out because the new goToExercise from notification
     //may break with this
     /*
     //wait one frame before trying to travel
@@ -540,7 +540,7 @@ class _ExerciseListState extends State<ExerciseList> {
       setState(() {});
     });
 
-    //allows any excercise to manually update order
+    //allows any exercise to manually update order
     ExerciseSelectStateless.manualOrderUpdate.addListener(
       manualBeforeManualBuild,
     );

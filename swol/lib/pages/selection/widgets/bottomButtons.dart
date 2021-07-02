@@ -175,7 +175,7 @@ class AddExerciseFiller extends StatelessWidget {
       hasScrollBody: false,
       child: Center(
         child: Text(
-          "Add An Exercise Below!",
+          "add an exercise below",
           style: TextStyle(
             fontWeight: FontWeight.bold,
           ),

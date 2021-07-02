@@ -131,7 +131,7 @@ class ExperimentBody extends StatelessWidget {
                           style: bold,
                         ),
                         TextSpan(
-                          text: " for every excercise, and" +
+                          text: " for every exercise, and" +
                               " give you an idea of ",
                         ),
                         TextSpan(
