@@ -14,7 +14,25 @@ import 'package:swol/shared/widgets/simple/ourHeaderIconPopUp.dart';
 import 'package:swol/shared/structs/anExercise.dart';
 import 'package:swol/main.dart';
 
-backToExercises(BuildContext context) {
+backToExercisesResetTimerIfSetNotValid(
+    BuildContext context, AnExercise exercise) {
+  //if the timer has started...
+  bool timerStarted = (exercise.tempStartTime.value != AnExercise.nullDateTime);
+  if (timerStarted) {
+    //it should ONLY CONTINUE IF the set being saved is valid
+    String newWeight = ExercisePage.setWeight.value;
+    String newReps = ExercisePage.setReps.value;
+    bool newWeightValid = isTextParsedIsLargerThan0(newWeight);
+    bool newRepsValid = isTextParsedIsLargerThan0(newReps);
+    bool newSetValid = newWeightValid && newRepsValid;
+
+    //if not valid reset the timer
+    if (newSetValid == false) {
+      //reset the timer
+      ExercisePage.toggleTimer.value = true;
+    }
+  }
+
   //may have to unfocus
   FocusScope.of(context).unfocus();
   //animate the header
@@ -48,19 +66,23 @@ Future<bool> warningThenPop(BuildContext context, AnExercise exercise) async {
   bool matchingReps = (newReps == tempReps);
   bool bothMatch = matchingWeight && matchingReps;
 
+  //check if valid
+  bool newWeightValid = isTextParsedIsLargerThan0(newWeight);
+  bool newRepsValid = isTextParsedIsLargerThan0(newReps);
+  bool newSetValid = newWeightValid && newRepsValid;
+
   //Of both match the cases to address drop significantly
   if (bothMatch) {
     //temp and new BOTH empty -OR- BOTH filled
-    //in either case they match, so nothing has changed
-    backToExercises(context);
+    //both filled so nothing has changed
+    backToExercisesResetTimerIfSetNotValid(
+      context,
+      exercise,
+    );
   } else {
-    //check if valid
-    bool newWeightValid = isTextParsedIsLargerThan0(newWeight);
-    bool newRepsValid = isTextParsedIsLargerThan0(newReps);
-    bool newSetValid = newWeightValid && newRepsValid;
-
     //if its valid horray! no extra pop ups
     if (newSetValid) {
+      //MUST BE ABOVE UPDATE SET
       bool setUpdated =
           (exercise.tempWeight != null && exercise.tempReps != null);
 
@@ -72,16 +94,25 @@ Future<bool> warningThenPop(BuildContext context, AnExercise exercise) async {
       //and it also means the timer has not started because we never moved from the suggestion page to the record page
       //which is what usually starts the timer
       if (exercise.lastWeight == null && setUpdated == false) {
-        ExercisePage.toggleTimer.value = true;
+        //the timer MAY HAVE started before it was needed... reset it
+
+        //I can't see any case where the timer would have already started here
+        //but I'm covering the case anyways
+        bool timerStarted =
+            (exercise.tempStartTime.value != AnExercise.nullDateTime);
+        if (timerStarted == false) {
+          //start the timer
+          ExercisePage.toggleTimer.value = true;
+        }
 
         //TODO: possibly ask for permission to notify the user with a pop up
-
-        //TODO: confirm... after the pop up sequences runs its course regardless of response
-        backToExercises(context);
-      } else {
-        //expected action
-        backToExercises(context);
       }
+
+      //expected action
+      backToExercisesResetTimerIfSetNotValid(
+        context,
+        exercise,
+      );
     } else {
       //if both don't match
       //either we are initially setting the value
@@ -162,7 +193,10 @@ Future<bool> warningThenPop(BuildContext context, AnExercise exercise) async {
 
             //we deleted the new set so now notification is needed
             //the timer hasn't started and won't because the set has been deleted
-            backToExercises(context);
+            backToExercisesResetTimerIfSetNotValid(
+              context,
+              exercise,
+            );
           },
         ),
         colorBtn: ElevatedButton(

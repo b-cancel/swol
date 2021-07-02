@@ -47,8 +47,31 @@ maybeError(
 
     //we are valid and can therefore move on
     if (setValid) {
-      //move onto the next set
-      ExercisePage.updateSet.value = true; //start the set
+      //MUST BE ABOVE UPDATE SET
+      bool setUpdated =
+          (exercise.tempWeight != null && exercise.tempReps != null);
+
+      //will START or UPDATE the set
+      ExercisePage.updateSet.value = true;
+
+      //if not last set... then this is the calibration set...
+      //which means it's possible we have not yet asked for notification permissions for the first time
+      //and it also means the timer has not started because we never moved from the suggestion page to the record page
+      //which is what usually starts the timer
+      if (exercise.lastWeight == null && setUpdated == false) {
+        //the timer MAY HAVE started before it was needed... reset it
+
+        //I can't see any case where the timer would have already started here
+        //but I'm covering the case anyways
+        bool timerStarted =
+            (exercise.tempStartTime.value != AnExercise.nullDateTime);
+        if (timerStarted == false) {
+          //start the timer
+          ExercisePage.toggleTimer.value = true;
+        }
+      }
+
+      //continue
       toNextPageAfterSetUpdateComplete();
     } else {
       //change the buttons shows a the wording a tad\
@@ -147,6 +170,8 @@ maybeError(
                   "Revert Back",
                 ),
                 onPressed: () {
+                  //TODO: test this
+
                   //revert back (no need to update set)
                   //we KNOW the temps are VALID
                   //else the timer would not have started
