@@ -34,6 +34,13 @@ class ExercisePage extends StatelessWidget {
   //static vars used through out initializaed with their default values
   static GlobalKey globalKey = GlobalKey();
 
+  //function trigger that can be accessed from nearly anywhere
+  static final ValueNotifier<bool> updateSet =
+      new ValueNotifier<bool>(false); //being listened
+  static final ValueNotifier<bool> nextSet =
+      new ValueNotifier<bool>(false); //being listened
+  static final ValueNotifier<bool> toggleTimer = new ValueNotifier<bool>(false);
+
   //any more is super annoying
   //use for ENTIRE app
   static Duration transitionDuration = const Duration(milliseconds: 300);
@@ -51,11 +58,6 @@ class ExercisePage extends StatelessWidget {
       new ValueNotifier<String>(""); //being listened
   //used so that we can cause a field refocusing from different parts of the app
   static final ValueNotifier<bool> causeRefocusIfInvalid =
-      new ValueNotifier<bool>(false); //being listened
-  //function trigger that can be accessed from nearly anywhere
-  static final ValueNotifier<bool> updateSet =
-      new ValueNotifier<bool>(false); //being listened
-  static final ValueNotifier<bool> nextSet =
       new ValueNotifier<bool>(false); //being listened
 
   //keeps track of all 1 rep maxes after they are calculated once
@@ -108,42 +110,57 @@ class ExercisePageDark extends StatefulWidget {
 }
 
 class _ExercisePageDarkState extends State<ExercisePageDark> {
+  toggleTimer() {
+    if (ExercisePage.toggleTimer.value) {
+      bool timerStarted =
+          (widget.exercise.tempStartTime.value != AnExercise.nullDateTime);
+      if (timerStarted) {
+        //if started stop it
+        widget.exercise.tempStartTime = ValueNotifier<DateTime>(
+          AnExercise.nullDateTime,
+        );
+
+        //undo previous order
+        widget.exercise.lastTimeStamp = widget.exercise.backUpTimeStamp;
+      } else {
+        //if stoped start it
+        widget.exercise.tempStartTime = ValueNotifier<DateTime>(
+          DateTime.now(),
+        );
+
+        //keep items ordered
+        widget.exercise.lastTimeStamp = LastTimeStamp.inProgressDateTime();
+      }
+
+      //action complete
+      ExercisePage.toggleTimer.value = false;
+    }
+  }
+
   //TODO: all below behavior
   /* 
-  ***ON CALLIBRATION SET***
-  1. when going from record -> timer... START TIMER 
-      & haven't asked for notification permission before... ASK...
-
   ***ON OTHER SETS***
-  0. going back from any of the pages... IF the new set values have not been recorded... RESET TIMER
-  ---
   1. going from suggest -> record && new set values 100% empty... START TIMER
       & haven't asked for notification permission before... ASK...
   2. going from record -> suggest && new set values 100% empty... RESET TIMER
   */
 
-  //TODO: wherever this occurs... ExercisePage.updateSet.value = true;... check it...
-
   updateSet() {
     //also cover resume case
     if (ExercisePage.updateSet.value) {
+      bool setUpdated = (widget.exercise.tempWeight != null &&
+          widget.exercise.tempReps != null);
+
       //whenever we begin or resume the set we KNOW our setWeight and setReps are valid
-      String setWeight = ExercisePage.setWeight.value;
-      String setReps = ExercisePage.setReps.value;
-      widget.exercise.tempWeight = int.parse(setWeight);
-      widget.exercise.tempReps = int.parse(setReps);
+      String newSetWeight = ExercisePage.setWeight.value;
+      String newSetReps = ExercisePage.setReps.value;
+
+      //save our NEW or UPDATE set
+      widget.exercise.tempWeight = int.parse(newSetWeight);
+      widget.exercise.tempReps = int.parse(newSetReps);
 
       //IF we are "SAVING FOR THE FIRST TIME" and "NOT UPDATING" the set
-      //!NOTE this happens when going away from the calibration set
-      //which ofcourse should not happen
-      if (widget.exercise.tempStartTime.value == AnExercise.nullDateTime) {
-        print("starting timer from update set");
-
-        //start the timer
-        widget.exercise.tempStartTime = ValueNotifier<DateTime>(
-          DateTime.now(),
-        );
-
+      if (setUpdated == false) {
         //fix things when sarting FIRST set
         if (widget.exercise.tempSetCount == null) {
           widget.exercise.tempSetCount = 0;
@@ -154,13 +171,11 @@ class _ExercisePageDarkState extends State<ExercisePageDark> {
 
         //we are recording our FIRST set so may go back to it
         //if we delete it instead of deciding to continue
+        //TODO: why do we do this only for the first time?
         if (widget.exercise.tempSetCount == 1) {
           widget.exercise.backUpTimeStamp = widget.exercise.lastTimeStamp;
         }
       }
-
-      //set or update in progress time stamp so the order is kept with focus on the top item
-      widget.exercise.lastTimeStamp = LastTimeStamp.inProgressDateTime();
 
       //action complete
       ExercisePage.updateSet.value = false;
@@ -261,6 +276,7 @@ class _ExercisePageDarkState extends State<ExercisePageDark> {
     resetToDefault();
 
     //add listeners
+    ExercisePage.toggleTimer.addListener(toggleTimer);
     ExercisePage.updateSet.addListener(updateSet);
     ExercisePage.nextSet.addListener(nextSet);
 
@@ -286,6 +302,7 @@ class _ExercisePageDarkState extends State<ExercisePageDark> {
   @override
   void dispose() {
     //remove listeners
+    ExercisePage.toggleTimer.removeListener(toggleTimer);
     ExercisePage.updateSet.removeListener(updateSet);
     ExercisePage.nextSet.removeListener(nextSet);
 

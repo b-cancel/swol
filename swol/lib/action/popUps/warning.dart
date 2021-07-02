@@ -61,15 +61,27 @@ Future<bool> warningThenPop(BuildContext context, AnExercise exercise) async {
 
     //if its valid horray! no extra pop ups
     if (newSetValid) {
-      //will start or update the set
+      bool setUpdated =
+          (exercise.tempWeight != null && exercise.tempReps != null);
+
+      //will START or UPDATE the set
       ExercisePage.updateSet.value = true;
 
-      //!this runs when going back from record calibration set page
-      //TODO: now that we started the timer AND recorded the set... we should probably ask for permission the first time if we haven't asked before
-      print("new set valid");
+      //if not last set... then this is the calibration set...
+      //which means it's possible we have not yet asked for notification permissions for the first time
+      //and it also means the timer has not started because we never moved from the suggestion page to the record page
+      //which is what usually starts the timer
+      if (exercise.lastWeight == null && setUpdated == false) {
+        ExercisePage.toggleTimer.value = true;
 
-      //expected action
-      backToExercises(context);
+        //TODO: possibly ask for permission to notify the user with a pop up
+
+        //TODO: confirm... after the pop up sequences runs its course regardless of response
+        backToExercises(context);
+      } else {
+        //expected action
+        backToExercises(context);
+      }
     } else {
       //if both don't match
       //either we are initially setting the value
