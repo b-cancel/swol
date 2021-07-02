@@ -8,6 +8,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:swol/shared/widgets/simple/oneOrTheOtherIcon.dart';
 import 'package:swol/shared/structs/anExercise.dart';
 import 'package:swol/other/functions/helper.dart';
+import 'package:swol/shared/widgets/simple/ourSnackBar.dart';
 
 //given the
 //1. last weight
@@ -82,9 +83,12 @@ class _ExerciseTileSubtitleState extends State<ExerciseTileSubtitle> {
 
       //NOTE: contains defaults for when this set is indeed a one rep max
       bool isOneRepMaxEstimated = false;
+      String oneRepMaxString = widget.exercise.lastWeight.toString();
+      String plusOrMinusString = "";
+
       Widget oneRepMaxWidget = Text(
         //we KNOW its not null
-        widget.exercise.lastWeight.toString(),
+        oneRepMaxString,
         style: BOLD,
       );
 
@@ -101,8 +105,10 @@ class _ExerciseTileSubtitleState extends State<ExerciseTileSubtitle> {
         );
 
         //update onRepMaxWidget
+        oneRepMaxString =
+            oneRepMaxValues[0][widget.exercise.predictionID].round().toString();
         oneRepMaxWidget = Text(
-          oneRepMaxValues[0][widget.exercise.predictionID].round().toString(),
+          oneRepMaxString,
           style: BOLD,
         );
 
@@ -131,28 +137,40 @@ class _ExerciseTileSubtitleState extends State<ExerciseTileSubtitle> {
           // ((standardDevaition / mean) * 100).toInt();
         }
 
+        if (deviation.toInt() > 0) {
+          plusOrMinusString = deviation.toString();
+        }
+
         //we are here because we have some level of uncertainty so we need to display that
         oneRepMaxWidget = Row(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             oneRepMaxWidget,
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 2.0,
+            Visibility(
+              visible: deviation.toInt() > 0,
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 2.0,
+                    ),
+                    child: OneOrTheOtherIcon(
+                      one: Icon(
+                        FontAwesomeIcons.plus,
+                        color: Colors.white.withOpacity(0.75),
+                      ),
+                      other: Icon(
+                        FontAwesomeIcons.minus,
+                        color: Colors.white.withOpacity(0.75),
+                      ),
+                    ),
+                  ),
+                  Text(
+                    deviation.toInt().toString(),
+                  ),
+                ],
               ),
-              child: OneOrTheOtherIcon(
-                one: Icon(
-                  FontAwesomeIcons.plus,
-                  color: Colors.white.withOpacity(0.75),
-                ),
-                other: Icon(
-                  FontAwesomeIcons.minus,
-                  color: Colors.white.withOpacity(0.75),
-                ),
-              ),
-            ),
-            Text(
-              deviation.toInt().toString(),
             ),
           ],
         );
@@ -160,66 +178,77 @@ class _ExerciseTileSubtitleState extends State<ExerciseTileSubtitle> {
       //ELSE: this is the users 1 rm
 
       //create the subtitle given the retreived values
-      return Row(
-        mainAxisSize: MainAxisSize.max,
-        children: <Widget>[
-          Container(
-            child: Padding(
-              padding: EdgeInsets.only(
-                top: 2.0,
-                right: 16.0,
-                bottom: 4.0,
-              ),
-              //NOTE: can join rounded edges but not border with rounded edges
-              //which is why those are seperate below
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  //-------------------------1 RM tag
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).primaryColorDark,
-                      borderRadius: new BorderRadius.only(
-                        topLeft: Radius.circular(borderRadius),
-                        bottomLeft: Radius.circular(borderRadius),
-                      ),
-                    ),
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 4,
-                      vertical: 5, //1 pixel to account for border width
-                    ),
-                    child: Text(
-                      (isOneRepMaxEstimated ? "E-" : "") + "1RM",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                  //-------------------------Value
-                  Container(
-                    padding: EdgeInsets.all(4),
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        //default width of 1.0
+      return GestureDetector(
+        onTap: () {
+          openSnackBar(
+            context,
+            Colors.blue,
+            Icons.info_outline,
+            message: "Your " +
+                (isOneRepMaxEstimated ? "Estimated " : "") +
+                "One Rep Max is " +
+                oneRepMaxString +
+                (plusOrMinusString.length > 0
+                    ? "\ngive or take " + plusOrMinusString
+                    : ""),
+          );
+        },
+        child: Row(
+          mainAxisSize: MainAxisSize.max,
+          children: <Widget>[
+            Container(
+              child: Padding(
+                padding: EdgeInsets.only(
+                  top: 2.0,
+                  right: 16.0,
+                  bottom: 4.0,
+                ),
+                //NOTE: can join rounded edges but not border with rounded edges
+                //which is why those are seperate below
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    //-------------------------1 RM tag
+                    Container(
+                      decoration: BoxDecoration(
                         color: Theme.of(context).primaryColorDark,
+                        borderRadius: new BorderRadius.only(
+                          topLeft: Radius.circular(borderRadius),
+                          bottomLeft: Radius.circular(borderRadius),
+                        ),
                       ),
-                      borderRadius: new BorderRadius.only(
-                        bottomRight: Radius.circular(borderRadius),
-                        topRight: Radius.circular(borderRadius),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 4,
+                        vertical: 5, //1 pixel to account for border width
+                      ),
+                      child: Text(
+                        (isOneRepMaxEstimated ? "E-" : "") + "1RM",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
-                    child: oneRepMaxWidget,
-                  ),
-                ],
+                    //-------------------------Value
+                    Container(
+                      padding: EdgeInsets.all(4),
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          //default width of 1.0
+                          color: Theme.of(context).primaryColorDark,
+                        ),
+                        borderRadius: new BorderRadius.only(
+                          bottomRight: Radius.circular(borderRadius),
+                          topRight: Radius.circular(borderRadius),
+                        ),
+                      ),
+                      child: oneRepMaxWidget,
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-          Expanded(
-            child: Container(
-              color: Colors.blue,
-            ),
-          ),
-        ],
+          ],
+        ),
       );
     }
   }
