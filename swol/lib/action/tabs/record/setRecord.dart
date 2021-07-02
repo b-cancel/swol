@@ -74,9 +74,9 @@ class SetRecord extends StatelessWidget {
 
     //calc sets passed for bottom buttons
     int setsPassed = exercise.tempSetCount ?? 0;
-    bool timerNotStarted =
-        exercise.tempStartTime.value == AnExercise.nullDateTime;
-    if (timerNotStarted) setsPassed += 1;
+    if (exercise.tempStartTime.value == AnExercise.nullDateTime) {
+      setsPassed += 1;
+    }
 
     //color for bottom buttons
     bool lastSetOrBefore = setsPassed <= exercise.setTarget;
@@ -100,7 +100,6 @@ class SetRecord extends StatelessWidget {
         cardColor: Theme.of(context).cardColor,
         buttonsColor: buttonsColor,
         exercise: exercise,
-        timerNotStarted: timerNotStarted,
         backAction: (backAction != null ? () => backAction!() : null),
         weightFocusNode: weightFocusNode,
         repsFocusNode: repsFocusNode,
@@ -194,7 +193,6 @@ class SetRecordButtonsWithWhiteContext extends StatelessWidget {
     required this.cardColor,
     required this.buttonsColor,
     required this.exercise,
-    required this.timerNotStarted,
     this.backAction,
     required this.weightFocusNode,
     required this.repsFocusNode,
@@ -203,7 +201,6 @@ class SetRecordButtonsWithWhiteContext extends StatelessWidget {
   final Color cardColor;
   final Color buttonsColor;
   final AnExercise exercise;
-  final bool timerNotStarted;
   final Function? backAction;
   final FocusNode weightFocusNode;
   final FocusNode repsFocusNode;
@@ -290,7 +287,7 @@ class SetRecordButtonsWithWhiteContext extends StatelessWidget {
             );
           },
           forwardActionWidget: Text(
-            timerNotStarted ? "Take Set Break" : "Return To Break",
+            "To Break Timer",
           ),
           backAction: backAction,
         ),

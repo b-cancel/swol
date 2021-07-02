@@ -14,8 +14,7 @@ import 'package:swol/shared/widgets/simple/ourHeaderIconPopUp.dart';
 import 'package:swol/shared/structs/anExercise.dart';
 import 'package:swol/main.dart';
 
-backToExercisesResetTimerIfSetNotValid(
-    BuildContext context, AnExercise exercise) {
+resetTimerIfSetNotValid(AnExercise exercise) {
   //if the timer has started...
   bool timerStarted = (exercise.tempStartTime.value != AnExercise.nullDateTime);
   if (timerStarted) {
@@ -32,7 +31,9 @@ backToExercisesResetTimerIfSetNotValid(
       ExercisePage.toggleTimer.value = true;
     }
   }
+}
 
+backToExercise(BuildContext context) {
   //may have to unfocus
   FocusScope.of(context).unfocus();
   //animate the header
@@ -75,9 +76,15 @@ Future<bool> warningThenPop(BuildContext context, AnExercise exercise) async {
   if (bothMatch) {
     //temp and new BOTH empty -OR- BOTH filled
     //both filled so nothing has changed
-    backToExercisesResetTimerIfSetNotValid(
+
+    //both empty
+    if (newSetValid == false) {
+      resetTimerIfSetNotValid(exercise);
+    }
+
+    //continue
+    backToExercise(
       context,
-      exercise,
     );
   } else {
     //if its valid horray! no extra pop ups
@@ -109,9 +116,8 @@ Future<bool> warningThenPop(BuildContext context, AnExercise exercise) async {
       }
 
       //expected action
-      backToExercisesResetTimerIfSetNotValid(
+      backToExercise(
         context,
-        exercise,
       );
     } else {
       //if both don't match
@@ -191,11 +197,15 @@ Future<bool> warningThenPop(BuildContext context, AnExercise exercise) async {
             //pop ourselves
             Navigator.of(context).pop();
 
+            //delete the set resets the timer... revert back does not
+            if (isNewSet) {
+              resetTimerIfSetNotValid(exercise);
+            }
+
             //we deleted the new set so now notification is needed
             //the timer hasn't started and won't because the set has been deleted
-            backToExercisesResetTimerIfSetNotValid(
+            backToExercise(
               context,
-              exercise,
             );
           },
         ),

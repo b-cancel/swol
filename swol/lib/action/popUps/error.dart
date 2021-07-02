@@ -75,10 +75,8 @@ maybeError(
       toNextPageAfterSetUpdateComplete();
     } else {
       //change the buttons shows a the wording a tad\
-      bool timerNotStarted =
-          (exercise.tempStartTime.value) == AnExercise.nullDateTime;
-      String continueString =
-          (timerNotStarted) ? "Begin Your Set Break" : "Return To Your Break";
+      bool canRevert =
+          (exercise.tempWeight != null && exercise.tempReps != null);
 
       //show the dialog
       showBasicHeaderIconPopUp(
@@ -91,7 +89,7 @@ maybeError(
             ),
           ),
           Text(
-            "To " + continueString,
+            "Break Timer",
             style: TextStyle(
               fontSize: 14,
             ),
@@ -134,27 +132,15 @@ maybeError(
                       ),
                       TextSpan(
                         text: " Your Set",
-                        style: TextStyle(
-                          fontWeight: timerNotStarted
-                              ? FontWeight.bold
-                              : FontWeight.normal,
-                        ),
-                      ),
-                      TextSpan(
-                        text: " to " + continueString,
+                        style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                     ],
                   ),
                 ),
                 Visibility(
-                  visible: timerNotStarted == false,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      RevertToPrevious(
-                        exercise: exercise,
-                      ),
-                    ],
+                  visible: canRevert,
+                  child: RevertToPrevious(
+                    exercise: exercise,
                   ),
                 ),
               ],
@@ -163,15 +149,13 @@ maybeError(
         ],
         DialogType.ERROR,
         animationType: AnimType.BOTTOMSLIDE,
-        clearBtn: timerNotStarted
+        clearBtn: canRevert == false
             ? null
             : TextButton(
                 child: Text(
                   "Revert Back",
                 ),
                 onPressed: () {
-                  //TODO: test this
-
                   //revert back (no need to update set)
                   //we KNOW the temps are VALID
                   //else the timer would not have started
@@ -183,27 +167,26 @@ maybeError(
 
                   //PRECAUTION: wait a frame to wait for setWeight and setReps to update
                   WidgetsBinding.instance?.addPostFrameCallback((_) {
-                    ExercisePage.updateSet.value = true; //start the set
+                    //used to update set here since starting the timer was combined with it...
+                    //but that is no longer the case
                     toNextPageAfterSetUpdateComplete();
                   });
                 },
               ),
-        colorBtn: timerNotStarted
-            ? null
-            : ElevatedButton(
-                child: Text(
-                  "Let Me Fix It",
-                ),
-                onPressed: () {
-                  //pop ourselves
-                  Navigator.of(context).pop();
+        colorBtn: ElevatedButton(
+          child: Text(
+            "Let Me Fix It",
+          ),
+          onPressed: () {
+            //pop ourselves
+            Navigator.of(context).pop();
 
-                  //If the pop up came up the values typed are not valid
-                  //if we reverted then the refocus will do nothing
-                  //since the function will see that both values are valid
-                  ExercisePage.causeRefocusIfInvalid.value = true;
-                },
-              ),
+            //If the pop up came up the values typed are not valid
+            //if we reverted then the refocus will do nothing
+            //since the function will see that both values are valid
+            ExercisePage.causeRefocusIfInvalid.value = true;
+          },
+        ),
       );
     }
   }

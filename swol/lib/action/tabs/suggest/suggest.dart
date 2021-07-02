@@ -116,6 +116,8 @@ class _SuggestionState extends State<Suggestion> {
 
     //calc sets passed for bottom buttons
     int setsPassed = widget.exercise.tempSetCount ?? 0;
+    //TODO: this should still work since if we are in the suggest page & our timer isn't null
+    //that should only be because our set was valid and we didn't reset it when comming from record
     bool timerNotStarted =
         widget.exercise.tempStartTime.value == AnExercise.nullDateTime;
     if (timerNotStarted) setsPassed += 1;

@@ -109,6 +109,7 @@ class _ExerciseTileLeadingState extends State<ExerciseTileLeading> {
   @override
   Widget build(BuildContext context) {
     //NOTE: timer takes precendence over regular inprogress
+    //TODO: this should still work eventhough we separated the timer and the set update
     if (widget.exercise.tempStartTime.value != AnExercise.nullDateTime) {
       return AnimatedMiniNormalTimer(
         exercise: widget.exercise,

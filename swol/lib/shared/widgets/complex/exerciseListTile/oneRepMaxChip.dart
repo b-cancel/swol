@@ -29,8 +29,9 @@ class ExerciseTileSubtitle extends StatefulWidget {
 }
 
 class _ExerciseTileSubtitleState extends State<ExerciseTileSubtitle> {
-  actualUpdate(Duration randomDuration) {
+  actualUpdate() {
     //a set was just completed so there WILL be a new last set
+    //TODO: this should still work eventhough we separated the timer and the set update
     if (widget.exercise.tempStartTime.value == AnExercise.nullDateTime) {
       if (mounted) setState(() {});
     }
@@ -38,7 +39,9 @@ class _ExerciseTileSubtitleState extends State<ExerciseTileSubtitle> {
 
   updateState() {
     //waits for all the other variables to be set
-    WidgetsBinding.instance?.addPostFrameCallback(actualUpdate);
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
+      actualUpdate();
+    });
   }
 
   @override
