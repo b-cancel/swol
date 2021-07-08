@@ -1,11 +1,14 @@
 //returns true if granted, false if not
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:swol/action/page.dart';
 import 'package:swol/shared/methods/extensions/sharedPreferences.dart';
-import 'package:swol/shared/methods/theme.dart';
-import 'package:swol/shared/widgets/simple/playOnceGif.dart';
-import 'package:swol/shared/widgets/simple/popUpAdjustments.dart';
+import 'dart:io' show Platform;
+
+import '../../main.dart';
+import 'buttonLocationPopUp.dart';
+import 'explainWhyPermission.dart';
 
 //requires a seperate shared preferences variable because this permission is granted by default by some systems
 //specifically android
@@ -30,8 +33,11 @@ Future<bool> askForPermissionIfNotGrantedAndWeNeverAsked() async {
       if (SharedPrefsExt.getNotificationRequested().value) {
         return false;
       } else {
+        //we are asking, so we have asked automatically atleast once
+        SharedPrefsExt.setNotificationRequested(true);
+
         //access not granted & we HAVE NOT already asked them directly
-        return await requestNotificationPermission(
+        return await reactToExplainingNotificationPermission(
           automaticallyOpened: true,
         );
       }
@@ -39,208 +45,90 @@ Future<bool> askForPermissionIfNotGrantedAndWeNeverAsked() async {
   }
 }
 
-Future<bool> requestNotificationPermission({
+Future<bool> reactToExplainingNotificationPermission({
   required bool automaticallyOpened,
 }) async {
   BuildContext? context = ExercisePage.globalKey.currentContext;
   if (context == null) {
     return false;
   } else {
-    SharedPrefsExt.setNotificationRequested(true);
-    bool willAllow = await explainNotificationPermission(
-      context,
-      automaticallyOpened: automaticallyOpened,
-    );
-
-    //TODO: you know they will allow now actually ask them
-    return willAllow;
-
-    /*
-  //functions
-    Function onDeny = () {
-      //make sure the user knows where the button is
-      //will always call on complete
-      maybeShowButtonLocation(
-        status,
-        onComplete,
-        automaticallyOpened,
+    //explain why we are asking first (restricted doesn't matter yet)
+    if (await explainNotificationPermission(context)) {
+      //they would accept
+      if (await reactToWouldAcceptNotificationPermission(
+        context,
+        automaticallyOpened: automaticallyOpened,
+      )) {
+        return true;
+      } else {
+        //they said they would grant us permission and they didn't
+        return await reactToNotificationPermissionRejected(
+          context,
+          automaticallyOpened: automaticallyOpened,
+        );
+      }
+    } else {
+      //after explaining why they still didn't want to
+      return await reactToNotificationPermissionRejected(
+        context,
+        automaticallyOpened: automaticallyOpened,
       );
-    };
-  */
-    /*
-  onAllow(
-                                status,
-                                onComplete,
-                                automaticallyOpened,
-                              );
-  */
+    }
   }
 }
 
-//true if allow
-//false if deny
-Future<bool> explainNotificationPermission(
+//TODO: platform specific permission request
+Future<bool> reactToWouldAcceptNotificationPermission(
   BuildContext context, {
   required bool automaticallyOpened,
 }) async {
-  return await showDialog(
-    context: context,
-    //the user MUST respond
-    barrierDismissible: false,
-    //show pop up
-    builder: (BuildContext context) {
-      //convert the pop ups that appear after this one closes into light ones
-      //primarily for scenarios where you have the icon pop ups
-      return Theme(
-        data: MyTheme.light,
-        child: WillPopScope(
-          //the user MUST respond
-          onWillPop: () async {
-            return false;
-          },
-          child: AlertDialog(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(
-                Radius.circular(12.0),
-              ),
-            ),
-            contentPadding: EdgeInsets.all(0),
-            content: ScrollViewWithShadow(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  ClipRRect(
-                    borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(12.0),
-                      topLeft: Radius.circular(12.0),
-                    ),
-                    child: Container(
-                      color: Theme.of(context).accentColor,
-                      child: Center(
-                        child: Container(
-                          width: 128,
-                          height: 128,
-                          child: FittedBox(
-                            fit: BoxFit.contain,
-                            child: PlayGifOnce(
-                              assetName: "assets/notification/blueShadow.gif",
-                              frameCount: 125,
-                              runTimeMS: 2500,
-                              colorWhite: false,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(
-                      top: 24,
-                      left: 16,
-                      right: 16,
-                    ),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        TitleThatContainsTRBL(
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Text(
-                                "To Be Notified",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 36,
-                                ),
-                              ),
-                              Text(
-                                "When Your Break Is Finished",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 18,
-                                ),
-                              ),
-                              Text(
-                                "Allow Notifications",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 24,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        RichText(
-                          textScaleFactor: MediaQuery.of(
-                            context,
-                          ).textScaleFactor,
-                          text: TextSpan(
-                            style: TextStyle(
-                              color: Colors.black,
-                            ),
-                            children: [
-                              TextSpan(
-                                text: "It's important that you recover",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              TextSpan(
-                                text: " before moving onto your next set.\n\n",
-                              ),
-                              TextSpan(text: "But "),
-                              TextSpan(
-                                text: "it's not fun to have to wait ",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              TextSpan(text: "for the clock to tick down.\n\n"),
-                              TextSpan(
-                                text:
-                                    "If you grant us access to send notifications, ",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              TextSpan(
-                                text: "we can alert you",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              TextSpan(
-                                text: " when you are ready for you next set.",
-                              ),
-                            ],
-                          ),
-                        ),
-                        BottomButtonsThatResizeTRBL(
-                          secondary: TextButton(
-                            child: new Text("Deny"),
-                            onPressed: () {
-                              Navigator.of(context).pop(false);
-                            },
-                          ),
-                          primary: ElevatedButton(
-                            child: Text("Allow"),
-                            style: ElevatedButton.styleFrom(
-                              primary: MyTheme.dark.accentColor,
-                            ),
-                            onPressed: () async {
-                              Navigator.of(context).pop(true);
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
+  //is restricted, show them the appropiate pop up
+  if (await Permission.notification.status.isRestricted) {
+  } else {
+    //TODO: handle is denied or is permanently denied
+
+    //ask on each platform
+    if (Platform.isAndroid) {
+      // Android-specific code
+      //TODO: android specific request
+      //PermissionStatus status = await Permission.notification.request();
+    } else if (Platform.isIOS) {
+      // request iOS-specific permission
+      bool? permissionGranted = await flutterLocalNotificationsPlugin
+          .resolvePlatformSpecificImplementation<
+              IOSFlutterLocalNotificationsPlugin>()
+          ?.requestPermissions(
+            alert: true,
+            badge: true,
+            sound: true,
+          );
+    }
+
+    return false;
+  }
+}
+
+//show them where they can enable the permission later if it makes sense
+Future<bool> reactToNotificationPermissionRejected(
+  BuildContext context, {
+  required bool automaticallyOpened,
+}) async {
+  //they know where to open it from
+  if (automaticallyOpened == false) {
+    //so assume their rejection is final
+    return false;
+  } else {
+    //they might not know where to open it from
+    if (await showEnableNotificationsButtonLocation(context)) {
+      //they changed their minds
+      return await reactToWouldAcceptNotificationPermission(
+        context,
+        //false since they alreayd saw where the button location is this from time around
+        automaticallyOpened: false,
       );
-    },
-  );
+    } else {
+      //they didn't change their minds
+      return false;
+    }
+  }
 }

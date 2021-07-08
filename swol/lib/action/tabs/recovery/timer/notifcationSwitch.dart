@@ -97,7 +97,7 @@ class _NotificationSwitchState extends State<NotificationSwitch>
         child: IconButton(
           tooltip: 'Enable Notifications',
           onPressed: () async {
-            if (await requestNotificationPermission(
+            if (await reactToExplainingNotificationPermission(
               automaticallyOpened: false,
             )) {
               updateShowButton();
