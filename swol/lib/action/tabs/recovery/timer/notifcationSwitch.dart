@@ -34,10 +34,6 @@ class _NotificationSwitchState extends State<NotificationSwitch>
   late bool showButton;
   late PermissionStatus status;
 
-  updateState() {
-    if (mounted) setState(() {});
-  }
-
   @override
   void initState() {
     //super init
@@ -46,6 +42,7 @@ class _NotificationSwitchState extends State<NotificationSwitch>
     //more often than not users will have it aproved
     //so the button wont show
     showButton = false;
+
     //in case we are wrong thats updated here
     updateShowButton();
 
@@ -70,17 +67,25 @@ class _NotificationSwitchState extends State<NotificationSwitch>
     status = await Permission.notification.status;
 
     //schedule notification or cancel it
-    if (status == PermissionStatus.granted) {
+    bool isGranted = (status == PermissionStatus.granted ||
+        status == PermissionStatus.limited);
+    if (isGranted) {
       scheduleNotificationIfPossible(widget.exercise);
     } else {
       safeCancelNotification(widget.exercise.id);
     }
 
-    //if anything else but granted the button should show
-    showButton = (status != PermissionStatus.granted);
+    //it's not granted AND its not restricted
+    showButton = (isGranted == false && status != PermissionStatus.restricted);
 
     //update show hide state
     updateState();
+  }
+
+  updateState() {
+    if (mounted) {
+      setState(() {});
+    }
   }
 
   @override
@@ -92,10 +97,11 @@ class _NotificationSwitchState extends State<NotificationSwitch>
         child: IconButton(
           tooltip: 'Enable Notifications',
           onPressed: () async {
-            await requestNotificationPermission(
+            if (await requestNotificationPermission(
               automaticallyOpened: false,
-            );
-            updateShowButton();
+            )) {
+              updateShowButton();
+            }
           },
           icon: Container(
             child: Stack(

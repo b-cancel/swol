@@ -14,14 +14,66 @@ import 'package:swol/action/shared/cardWithHeader.dart';
 import 'package:swol/action/bottomButtons/button.dart';
 import 'package:swol/action/popUps/error.dart';
 import 'package:swol/action/page.dart';
+import 'package:swol/permissions/specific/specificAsk.dart';
 
 //internal: shared
 import 'package:swol/shared/structs/anExercise.dart';
 import 'package:swol/shared/methods/theme.dart';
+import 'package:swol/shared/widgets/simple/notify.dart';
+
+class SetRecord extends StatefulWidget {
+  SetRecord({
+    required this.exercise,
+    required this.statusBarHeight,
+    required this.heroUp,
+    required this.heroAnimTravel,
+    required this.functionIDToWeightFromRT,
+    required this.weightFocusNode,
+    required this.repsFocusNode,
+  });
+
+  final AnExercise exercise;
+  final double statusBarHeight;
+  final ValueNotifier<bool> heroUp;
+  final double heroAnimTravel;
+  final ValueNotifier<List<double>> functionIDToWeightFromRT;
+  final FocusNode weightFocusNode;
+  final FocusNode repsFocusNode;
+
+  @override
+  _SetRecordState createState() => _SetRecordState();
+}
+
+class _SetRecordState extends State<SetRecord> {
+  @override
+  void initState() {
+    super.initState();
+    //encourage the user to reap the benefits of the system
+    //after everything loads up so nothing crashes IF a pop up is going to be comming up
+    WidgetsBinding.instance?.addPostFrameCallback((_) async {
+      if (await askForPermissionIfNotGrantedAndWeNeverAsked()) {
+        scheduleNotificationIfPossible(widget.exercise);
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SetRecordInner(
+      exercise: widget.exercise,
+      statusBarHeight: widget.statusBarHeight,
+      heroUp: widget.heroUp,
+      heroAnimTravel: widget.heroAnimTravel,
+      functionIDToWeightFromRT: widget.functionIDToWeightFromRT,
+      weightFocusNode: widget.weightFocusNode,
+      repsFocusNode: widget.repsFocusNode,
+    );
+  }
+}
 
 //widget
-class SetRecord extends StatelessWidget {
-  SetRecord({
+class SetRecordInner extends StatelessWidget {
+  SetRecordInner({
     required this.exercise,
     required this.statusBarHeight,
     required this.heroUp,

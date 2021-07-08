@@ -20,7 +20,7 @@ Future<bool> askForPermissionIfNotGrantedAndWeNeverAsked() async {
     //auto reject
     return false;
   } else {
-    //we don't have the permission
+    //check if we have the permission
     if (status == PermissionStatus.granted ||
         status == PermissionStatus.limited) {
       //auto accept

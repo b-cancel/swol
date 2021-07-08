@@ -1,10 +1,6 @@
-//flutter
-import 'package:flutter/material.dart';
-
 //plugin
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:swol/action/page.dart';
 import 'package:flutter_native_timezone/flutter_native_timezone.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
@@ -117,18 +113,6 @@ scheduleNotificationIfPossible(AnExercise exercise) async {
             UILocalNotificationDateInterpretation.wallClockTime,
       );
     }
-  }
-}
-
-scheduleNotificationAfterUpdate(AnExercise exercise) {
-  if (ExercisePage.updateSet.value == false) {
-    //update is complete because the value was set to false
-    scheduleNotificationIfPossible(exercise);
-  } else {
-    //wait another frame for the update to finish
-    WidgetsBinding.instance?.addPostFrameCallback((_) {
-      scheduleNotificationAfterUpdate(exercise);
-    });
   }
 }
 
