@@ -640,7 +640,9 @@ class _ExerciseListState extends State<ExerciseList> {
         for (int i = 0; i < inProgressOnes.length; i++) {
           AnExercise inProgressExercise = inProgressOnes[i];
           DateTime timerStart = inProgressExercise.tempStartTime.value;
-          Duration timerDuration = inProgressExercise.recoveryPeriod;
+          Duration timerDuration = Duration.zero;
+          //TODO: ignore actual recovery period, that seem pretty irelevant
+          //inProgressExercise.recoveryPeriod;
           DateTime timerEnd = timerStart.add(timerDuration);
 
           //calculate the value we will sort based on

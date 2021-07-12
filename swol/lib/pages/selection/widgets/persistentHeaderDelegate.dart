@@ -19,44 +19,90 @@ class HeaderForOneHandedUse extends StatelessWidget {
   final bool hiddenWorkoutSection;
   final bool inprogressWorkoutSection;
 
-  @override
-  Widget build(BuildContext context) {
-    DateTime? lastValidDateTime;
-    if (listOfGroupOfExercises.length > 0) {
-      //there are groups
-      //check if the last group has anything in it
-      if (listOfGroupOfExercises.last.length > 0) {
-        //there is a last group with ATLEAST one thing in it
-        DateTime lastlast = listOfGroupOfExercises.last.last.lastTimeStamp;
-        TimeStampType lastlastTimeStampType =
-            LastTimeStamp.returnTimeStampType(lastlast);
+  bool isGroupOther(List<AnExercise> group) {
+    AnExercise mostRecent = group.last;
+    TimeStampType timeStampType = LastTimeStamp.returnTimeStampType(
+      mostRecent.lastTimeStamp,
+    );
+    return timeStampType == TimeStampType.Other;
+  }
 
-        //our last last is a workout with a valid timestamp
-        if (lastlastTimeStampType == TimeStampType.Other) {
-          //use it's timestamp
-          lastValidDateTime = lastlast;
-        } else {
-          //our last last DOES NOT HAVE a valid timestamp
-          if (lastlastTimeStampType == TimeStampType.Hidden) {
-            //BUT MAYBE the group before this one is what we are looking for
-            DateTime almostLastLast =
-                listOfGroupOfExercises[listOfGroupOfExercises.length - 1]
-                    .last
-                    .lastTimeStamp;
-            TimeStampType almostLastlastTimeStampType =
-                LastTimeStamp.returnTimeStampType(almostLastLast);
-
-            //the group before the last had what we needed
-            if (almostLastlastTimeStampType == TimeStampType.Other) {
-              //use it's timestamp
-              lastValidDateTime = almostLastLast;
-            }
-          }
-          //ELSE our last last is new or in progress so none of them have valid timestamps
+  //ATLEAST one group is available
+  DateTime? getMostRecentOtherDateTime() {
+    if (isGroupOther(listOfGroupOfExercises.last)) {
+      return listOfGroupOfExercises.last.last.lastTimeStamp;
+    } else {
+      //not the last one which we already checked above
+      if (listOfGroupOfExercises.length > 1) {
+        List<AnExercise> groupBeforeTheLast =
+            listOfGroupOfExercises[listOfGroupOfExercises.length - 2];
+        if (isGroupOther(groupBeforeTheLast)) {
+          return groupBeforeTheLast.last.lastTimeStamp;
         }
       }
     }
+  }
 
+  DateTime? getMostRecentInProgressDateTime() {
+    List<AnExercise> maybeInProgressGroup = listOfGroupOfExercises[0];
+    //the in progress group if it exists is allways on top
+    if (maybeInProgressGroup.length > 0) {
+      //most recent is on the bottom for this group
+      AnExercise mostRecent = maybeInProgressGroup[0];
+      //use the last time stamp ONLY for determining the type
+      TimeStampType mostRecentTimeStampType =
+          LastTimeStamp.returnTimeStampType(mostRecent.lastTimeStamp);
+      //if its the type we are looking for then grab our actual temp start time
+      if (mostRecentTimeStampType == TimeStampType.InProgress) {
+        return mostRecent.tempStartTime.value;
+      }
+    }
+  }
+
+  //if an in progress section exists
+  // -> use the one with the date time closest to the present
+  //otherwise if any other sections exists
+  // -> use the last last exercise
+  DateTime? getMostRecentExerciseTimestamp() {
+    //in progress (0 or 1)
+    //new (0 or 1) [no usable time]
+    //other (0 or many) [only last of last is relevant]
+    //hide (0 or 1) [no usable time]
+    if (listOfGroupOfExercises.length > 0) {
+      //there are groups
+      //check if the last group has anything in it
+      DateTime? mostRecentInProgressTimeStamp =
+          getMostRecentInProgressDateTime();
+      DateTime? mostRecentOtherTimeStamp = getMostRecentOtherDateTime();
+
+      //they are both not null
+      if (mostRecentInProgressTimeStamp != null &&
+          mostRecentOtherTimeStamp != null) {
+        //choose whatever timestamp is closer to us
+        DateTime now = DateTime.now();
+        Duration nowToInProgress =
+            now.difference(mostRecentInProgressTimeStamp);
+        Duration nowToOther = now.difference(mostRecentOtherTimeStamp);
+
+        //pick the one with the smallest difference
+        if (nowToInProgress < nowToOther) {
+          return mostRecentInProgressTimeStamp;
+        } else {
+          return mostRecentOtherTimeStamp;
+        }
+      } else {
+        if (mostRecentInProgressTimeStamp != null) {
+          return mostRecentInProgressTimeStamp;
+        } else if (mostRecentOtherTimeStamp != null) {
+          return mostRecentOtherTimeStamp;
+        }
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    DateTime? lastValidDateTime = getMostRecentExerciseTimestamp();
     return SliverPersistentHeader(
       pinned: false,
       floating: false,
