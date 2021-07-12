@@ -14,6 +14,7 @@ import 'package:swol/shared/widgets/simple/conditional.dart';
 import 'package:swol/other/functions/W&R=1RM.dart';
 
 //widget
+/*
 class InaccuracyCalculator extends StatefulWidget {
   const InaccuracyCalculator({
     Key? key,
@@ -455,3 +456,4 @@ double calcPercentDifference(double last, double current) {
   //so doing better than expected yeilds positive values
   return ((change / last) * 100) * -1;
 }
+*/

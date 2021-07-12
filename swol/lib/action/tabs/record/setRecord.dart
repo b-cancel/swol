@@ -27,7 +27,6 @@ class SetRecord extends StatefulWidget {
     required this.statusBarHeight,
     required this.heroUp,
     required this.heroAnimTravel,
-    required this.functionIDToWeightFromRT,
     required this.weightFocusNode,
     required this.repsFocusNode,
   });
@@ -36,7 +35,6 @@ class SetRecord extends StatefulWidget {
   final double statusBarHeight;
   final ValueNotifier<bool> heroUp;
   final double heroAnimTravel;
-  final ValueNotifier<List<double>> functionIDToWeightFromRT;
   final FocusNode weightFocusNode;
   final FocusNode repsFocusNode;
 
@@ -64,7 +62,6 @@ class _SetRecordState extends State<SetRecord> {
       statusBarHeight: widget.statusBarHeight,
       heroUp: widget.heroUp,
       heroAnimTravel: widget.heroAnimTravel,
-      functionIDToWeightFromRT: widget.functionIDToWeightFromRT,
       weightFocusNode: widget.weightFocusNode,
       repsFocusNode: widget.repsFocusNode,
     );
@@ -78,7 +75,6 @@ class SetRecordInner extends StatelessWidget {
     required this.statusBarHeight,
     required this.heroUp,
     required this.heroAnimTravel,
-    required this.functionIDToWeightFromRT,
     required this.weightFocusNode,
     required this.repsFocusNode,
   });
@@ -87,7 +83,6 @@ class SetRecordInner extends StatelessWidget {
   final double statusBarHeight;
   final ValueNotifier<bool> heroUp;
   final double heroAnimTravel;
-  final ValueNotifier<List<double>> functionIDToWeightFromRT;
   final FocusNode weightFocusNode;
   final FocusNode repsFocusNode;
 
@@ -216,6 +211,7 @@ class SetRecordInner extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
+                /*
                 Expanded(
                   child: MakeFunctionAdjustment(
                     functionIDToWeightFromRT: functionIDToWeightFromRT,
@@ -225,6 +221,8 @@ class SetRecordInner extends StatelessWidget {
                     exercise: exercise,
                   ),
                 ),
+                */
+                Spacer(),
                 recordSetFields,
                 buttonsOnBottom,
               ],

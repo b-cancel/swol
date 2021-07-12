@@ -1,9 +1,8 @@
 //flutter
 import 'package:flutter/material.dart';
-import 'package:swol/shared/functions/goldenRatio.dart';
-import 'package:swol/shared/methods/theme.dart';
 
 //internal
+import 'package:swol/shared/methods/theme.dart';
 import 'package:swol/shared/structs/anExercise.dart';
 import 'package:swol/action/tabs/recovery/recovery.dart';
 import 'package:swol/action/doneButton/doneWidget.dart';
@@ -29,10 +28,6 @@ class VerticalTabs extends StatefulWidget {
 
 class _VerticalTabsState extends State<VerticalTabs>
     with TickerProviderStateMixin {
-  //updated by suggest, reused by adjustment widget
-  final ValueNotifier<List<double>> functionIDToWeightFromRT =
-      new ValueNotifier<List<double>>(List.filled(8, 0));
-
   //for the "hero" widget (if not up then down)
   late ValueNotifier<bool> goalSetUp;
 
@@ -107,14 +102,12 @@ class _VerticalTabsState extends State<VerticalTabs>
               exercise: widget.exercise,
               heroUp: goalSetUp,
               heroAnimTravel: totalTravel,
-              functionIDToWeightFromRT: functionIDToWeightFromRT,
             ),
             SetRecord(
               exercise: widget.exercise,
               statusBarHeight: widget.statusBarHeight,
               heroUp: goalSetUp,
               heroAnimTravel: totalTravel,
-              functionIDToWeightFromRT: functionIDToWeightFromRT,
               weightFocusNode: weightFocusNode,
               repsFocusNode: repsFocusNode,
             ),

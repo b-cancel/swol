@@ -1,9 +1,9 @@
+/*
 //flutter
 import 'package:flutter/material.dart';
 
 //internal: action
 import 'package:swol/action/tabs/record/body/inaccuracy.dart';
-import 'package:swol/action/shared/changeFunction.dart';
 import 'package:swol/action/shared/halfColored.dart';
 import 'package:swol/action/shared/setDisplay.dart';
 import 'package:swol/action/popUps/textValid.dart';
@@ -363,3 +363,4 @@ class _MakeFunctionAdjustmentState extends State<MakeFunctionAdjustment> {
     return percentDifferences;
   }
 }
+*/

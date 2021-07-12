@@ -1,25 +1,20 @@
 //flutter
 import 'package:flutter/material.dart';
 
-//plugin
-import 'package:swol/action/shared/changeFunction.dart';
-import 'package:swol/action/tabs/suggest/corners.dart';
-
 //internal: shared
 import 'package:swol/shared/widgets/complex/fields/fields/sliders/repTarget.dart';
 import 'package:swol/shared/widgets/complex/fields/fields/function.dart';
+import 'package:swol/action/tabs/suggest/corners.dart';
 
 //widget
 class SuggestionChanger extends StatelessWidget {
   const SuggestionChanger({
     Key? key,
-    required this.functionID,
     required this.repTarget,
     required this.arrowRadius,
     required this.cardRadius,
   }) : super(key: key);
 
-  final ValueNotifier<int> functionID;
   final ValueNotifier<int> repTarget;
   final Radius arrowRadius;
   final Radius cardRadius;
@@ -29,48 +24,6 @@ class SuggestionChanger extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.max,
       children: <Widget>[
-        Expanded(
-          child: PredictionFormulaSpacer(
-            arrowRadius: arrowRadius,
-          ),
-        ),
-        Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: 24.0,
-          ),
-          child: Container(
-            width: MediaQuery.of(context).size.width,
-            decoration: BoxDecoration(
-              color: Theme.of(context).cardColor,
-              borderRadius: BorderRadius.only(
-                bottomRight: cardRadius,
-                bottomLeft: cardRadius,
-              ),
-            ),
-            child: Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: 24,
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  PredictionFormulaHeader(
-                    subtle: true,
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(
-                      bottom: 8.0,
-                    ),
-                    child: ChangeFunction(
-                      functionID: functionID,
-                      middleArrows: false,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
         Expanded(
           child: Padding(
             padding: EdgeInsets.symmetric(

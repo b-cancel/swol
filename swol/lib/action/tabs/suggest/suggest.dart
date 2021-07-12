@@ -18,22 +18,17 @@ class Suggestion extends StatefulWidget {
     required this.exercise,
     required this.heroUp,
     required this.heroAnimTravel,
-    required this.functionIDToWeightFromRT,
   });
 
   final AnExercise exercise;
   final ValueNotifier<bool> heroUp;
   final double heroAnimTravel;
-  final ValueNotifier<List<double>> functionIDToWeightFromRT;
 
   @override
   _SuggestionState createState() => _SuggestionState();
 }
 
 class _SuggestionState extends State<Suggestion> {
-  //function select
-  final ValueNotifier<int> functionID = new ValueNotifier<int>(0);
-
   //set target set
   final ValueNotifier<int> repTarget = new ValueNotifier<int>(0);
 
@@ -41,40 +36,13 @@ class _SuggestionState extends State<Suggestion> {
   //and changed valus
   updateGoalWeight() {
     //grab correct goal weight
-    ExercisePage.setGoalWeight.value = widget.functionIDToWeightFromRT.value[
-        functionID.value //NOTE: before we used the exercise value here
-        ];
-  }
-
-  updatePredictionID() {
-    widget.exercise.predictionID = functionID.value;
-    //retreive new weight
-    updateGoalWeight();
+    ExercisePage.setGoalWeight.value = 0;
   }
 
   updateRepTarget() {
     //update it in the file
     widget.exercise.repTarget = repTarget.value;
     ExercisePage.setGoalReps.value = repTarget.value.toDouble();
-
-    //recalculate all weight with new rep target
-    List<double> functionIDToWeight = List.filled(8, 0);
-    for (int functionID = 0; functionID < 8; functionID++) {
-      double weight = ToWeight.fromRepAnd1Rm(
-        //rep target used
-        repTarget.value,
-        //one rep max that uses the same function as below
-        ExercisePage.oneRepMaxes[functionID],
-        //function index to use
-        functionID,
-      );
-
-      functionIDToWeight[functionID] = weight;
-    }
-    widget.functionIDToWeightFromRT.value = functionIDToWeight;
-
-    //based on new results update order
-    updateOrderOfIDs(functionIDToWeight);
 
     //update the goal by chosing from everything we
     updateGoalWeight();
@@ -86,25 +54,15 @@ class _SuggestionState extends State<Suggestion> {
     super.initState();
 
     //set inits
-    functionID.value = widget.exercise.predictionID;
     repTarget.value = widget.exercise.repTarget;
     updateRepTarget();
-
-    //add listeners
-    functionID.addListener(updatePredictionID);
     repTarget.addListener(updateRepTarget);
   }
 
   @override
   void dispose() {
-    functionID.removeListener(updatePredictionID);
     repTarget.removeListener(updateRepTarget);
-
-    //dipose stuffs
-    functionID.dispose();
     repTarget.dispose();
-
-    //super dispose
     super.dispose();
   }
 
@@ -151,7 +109,6 @@ class _SuggestionState extends State<Suggestion> {
                   ),
                   Expanded(
                     child: SuggestionChanger(
-                      functionID: functionID,
                       repTarget: repTarget,
                       arrowRadius: arrowRadius,
                       cardRadius: cardRadius,

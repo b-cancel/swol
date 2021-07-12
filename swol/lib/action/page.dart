@@ -15,7 +15,6 @@ import 'package:swol/shared/methods/theme.dart';
 //internal
 import 'package:swol/pages/notes/exerciseNotes.dart';
 import 'package:swol/action/tabs/verticalTabs.dart';
-import 'package:swol/other/functions/W&R=1RM.dart';
 import 'package:swol/action/popUps/warning.dart';
 
 //used to
@@ -59,16 +58,6 @@ class ExercisePage extends StatelessWidget {
   //used so that we can cause a field refocusing from different parts of the app
   static final ValueNotifier<bool> causeRefocusIfInvalid =
       new ValueNotifier<bool>(false); //being listened
-
-  //keeps track of all 1 rep maxes after they are calculated once
-  //so we don't have to calculate them literally millions of times
-  static final List<double> oneRepMaxes =
-      List.filled(8, 0); //not being listened to
-  //function order calcualted by suggest or set record once and then used to generate the carousel
-  static final ValueNotifier<List<int>> orderedIDs =
-      new ValueNotifier<List<int>>(List.filled(8, 0));
-  //keeps track of the index in the SORTED list of IDs that gives us a result that mostly matches our set
-  static ValueNotifier<int> closestIndex = new ValueNotifier<int>(-1);
 
   //NOTE: these are shown as INTs but are actually DOUBLEs to avoid issues with calculations and sorting later
   //used so that we can set the goal set from both the suggest and record page
@@ -184,13 +173,6 @@ class _ExercisePageDarkState extends State<ExercisePageDark> {
         //cancel the notifcation that perhaps didn't trigger
         safeCancelNotification(widget.exercise.id);
 
-        //must be done first
-        //so that our suggest page has access to right 1 rep maxes
-        updateOneRepMaxes(
-          weight: widget.exercise.tempWeight,
-          reps: widget.exercise.tempReps,
-        );
-
         //reset timer
         //TODO: figure out why at some point I marked that this NEEDED to be BEFORE everything else
         //NOTE: that at the moment I should wait for lastWeight and lastReps to update
@@ -236,16 +218,6 @@ class _ExercisePageDarkState extends State<ExercisePageDark> {
     ExercisePage.updateSet.value = false;
     ExercisePage.nextSet.value = false;
 
-    //lists
-    //1. oneRepMaxes
-    //one rep maxes is final but we can reset
-    //but we should because it will set the size of the list to 0
-    //2. orderedIDs
-    ExercisePage.orderedIDs.value = List.filled(8, 0);
-
-    //closest index reset
-    ExercisePage.closestIndex.value = -1;
-
     //goals
     ExercisePage.setGoalWeight.value = 0;
     ExercisePage.setGoalReps.value = 0;
@@ -286,9 +258,6 @@ class _ExercisePageDarkState extends State<ExercisePageDark> {
     ExercisePage.setWeight.value =
         (tempWeight != null) ? tempWeight.toString() : "";
     ExercisePage.setReps.value = (tempReps != null) ? tempReps.toString() : "";
-
-    //one rep maxes
-    updateOneRepMaxes();
   }
 
   @override
@@ -303,18 +272,6 @@ class _ExercisePageDarkState extends State<ExercisePageDark> {
 
     //super dispose
     super.dispose();
-  }
-
-  updateOneRepMaxes({int? weight, int? reps}) {
-    weight = weight ?? (widget.exercise.lastWeight ?? 0);
-    reps = reps ?? (widget.exercise.lastReps ?? 0);
-    for (int functionID = 0; functionID < 8; functionID++) {
-      ExercisePage.oneRepMaxes[functionID] = To1RM.fromWeightAndReps(
-        weight.toDouble(),
-        reps,
-        functionID,
-      );
-    }
   }
 
   @override
@@ -447,62 +404,5 @@ class PageTitle extends StatelessWidget {
         ),
       ),
     );
-  }
-}
-
-updateOrderOfIDs(List<double> functionIDToValue) {
-  //recalculate all the potential values for function order
-  Map<double, List<int>> valueToFunctionIDs = new Map<double, List<int>>();
-  for (int functionID = 0; functionID < 8; functionID++) {
-    double value = functionIDToValue[functionID];
-    if (valueToFunctionIDs.containsKey(value) == false) {
-      valueToFunctionIDs[value] = [];
-    }
-    if (valueToFunctionIDs[value] != null) {
-      valueToFunctionIDs[value]!.add(functionID);
-    }
-  }
-
-  //grab the keys and sort them
-  List<double> values = valueToFunctionIDs.keys.toList();
-  values.sort((b, a) => a.compareTo(b)); //largest to smallest
-
-  //build up your ordered IDs
-  List<int> orderedIDs = List.filled(8, 0);
-  if (values.length == functionIDToValue.length) {
-    for (int i = 0; i < values.length; i++) {
-      double value = values[i];
-      if (valueToFunctionIDs[value] != null) {
-        int id = valueToFunctionIDs[value]!.removeLast();
-        orderedIDs[i] = id;
-      }
-    }
-  } else {
-    //we have duplicate results
-    print("***********************EDGE CASE*****************");
-    //TODO: handle case where we know why
-    //case 1: when using recorded weight, and then recorded weight matches the last weight
-    //case 2: when using recorded reps, and the recorded reps match the last reps
-    //case 3: when usign rep target, and the rep target matches the last reps
-    int position = 0;
-    for (int index = 0; index < values.length; index++) {
-      double value = values[index];
-      //grab all the indices with this value
-      if (valueToFunctionIDs[value] != null) {
-        List<int> indices = valueToFunctionIDs[value]!;
-        for (int i = 0; i < indices.length; i++) {
-          //add them in order
-          orderedIDs[position] = indices[i];
-          position++;
-        }
-      }
-    }
-  }
-
-  //set the value so all notifies get notified
-  //only if there is a difference (avoid weird setState while build BUG)
-  //NOTE: you must to .toString() to compare properly
-  if (orderedIDs.toString() != ExercisePage.orderedIDs.value.toString()) {
-    ExercisePage.orderedIDs.value = orderedIDs;
   }
 }
