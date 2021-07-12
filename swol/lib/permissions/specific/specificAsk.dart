@@ -84,6 +84,7 @@ Future<bool> reactToWouldAcceptNotificationPermission(
 }) async {
   //is restricted, show them the appropiate pop up
   if (await Permission.notification.status.isRestricted) {
+    return true;
   } else {
     //TODO: handle is denied or is permanently denied
 
