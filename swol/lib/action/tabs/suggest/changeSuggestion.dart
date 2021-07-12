@@ -57,13 +57,6 @@ class SuggestionChanger extends StatelessWidget {
             ),
           ),
         ),
-        Expanded(
-          child: TextWithCorners(
-            useAccent: true,
-            text: "your next set should be",
-            radius: arrowRadius,
-          ),
-        ),
       ],
     );
   }

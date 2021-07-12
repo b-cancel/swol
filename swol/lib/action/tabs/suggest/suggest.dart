@@ -100,11 +100,27 @@ class _SuggestionState extends State<Suggestion> {
                 children: <Widget>[
                   TopBackgroundColored(
                     color: Theme.of(context).cardColor,
-                    child: SetDisplay(
-                      exercise: widget.exercise,
-                      useAccent: false,
-                      extraCurvy: true,
-                      title: "Last Set",
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(
+                            top: 8.0,
+                          ),
+                          child: Text(
+                            "under the same conditions as your",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        SetDisplay(
+                          exercise: widget.exercise,
+                          useAccent: false,
+                          extraCurvy: true,
+                          title: "Last Set",
+                        ),
+                      ],
                     ),
                   ),
                   Expanded(
@@ -112,23 +128,6 @@ class _SuggestionState extends State<Suggestion> {
                       repTarget: repTarget,
                       arrowRadius: arrowRadius,
                       cardRadius: cardRadius,
-                    ),
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).accentColor,
-                      borderRadius: BorderRadius.only(
-                        bottomRight: cardRadius,
-                        bottomLeft: cardRadius,
-                      ),
-                    ),
-                    width: MediaQuery.of(context).size.width,
-                    child: SetDisplay(
-                      useAccent: true,
-                      title: "Goal Set",
-                      heroUp: widget.heroUp,
-                      animate: true,
-                      heroAnimTravel: widget.heroAnimTravel,
                     ),
                   ),
                 ],

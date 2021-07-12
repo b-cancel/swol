@@ -97,9 +97,8 @@ class _SetDisplayState extends State<SetDisplay> {
 
   @override
   Widget build(BuildContext context) {
-    List<double> defGW = measurementToGoldenRatioBS(250);
     double curveValue = widget.extraCurvy ? 48 : 24;
-    double difference = 12;
+    double difference = 4; //12
 
     Color backgroundColor = widget.useAccent
         ? Theme.of(context).accentColor
@@ -168,7 +167,11 @@ class _SetDisplayState extends State<SetDisplay> {
       width: MediaQuery.of(context).size.width,
       decoration: BoxDecoration(
         color: backgroundColor,
-        borderRadius: BorderRadius.all(Radius.circular(curveValue)),
+        borderRadius: BorderRadius.all(
+          Radius.circular(
+            curveValue,
+          ),
+        ),
       ),
       //NOTE: I can't change alignment since that will mess up the FittedBox child
       transform: Matrix4.translation(
@@ -184,34 +187,31 @@ class _SetDisplayState extends State<SetDisplay> {
       ),
       child: Material(
         color: Colors.transparent,
-        child: FittedBox(
-          fit: BoxFit.contain,
-          child: Container(
-            width: 250,
-            height: 28,
-            child: DefaultTextStyle(
-              style: TextStyle(
-                fontSize: 24,
-                color: foregroundColor,
-              ),
+        child: Container(
+          height: 36,
+          alignment: Alignment.center,
+          child: DefaultTextStyle(
+            style: TextStyle(
+              fontSize: 24,
+              color: foregroundColor,
+            ),
+            child: FittedBox(
+              fit: BoxFit.contain,
+              alignment: Alignment.center,
               child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   Container(
-                    width: defGW[1],
-                    child: FittedBox(
-                      fit: BoxFit.fitWidth,
-                      child: Text(
-                        widget.title,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: foregroundColor,
-                        ),
+                    child: Text(
+                      widget.title,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: foregroundColor,
                       ),
                     ),
                   ),
                   Container(
-                    width: defGW[0],
                     child: Row(
                       mainAxisSize: MainAxisSize.max,
                       children: <Widget>[
@@ -246,6 +246,7 @@ class _SetDisplayState extends State<SetDisplay> {
                           },
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               //-------------------------BELOW
                               Conditional(
@@ -313,6 +314,7 @@ class _SetDisplayState extends State<SetDisplay> {
                           },
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               //-------------------------BELOW
                               Conditional(
