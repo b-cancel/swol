@@ -2,6 +2,8 @@ import 'package:swol/other/functions/1RM&R=W.dart';
 import 'package:swol/other/functions/W&R=1RM.dart';
 import 'dart:math' as math;
 
+import '1RM&W=R.dart';
+
 class Functions {
   //only for 1RM calculation
   static final Map<int, List<int>> repTargetToFunctionIndicesOrder = {
@@ -78,6 +80,75 @@ class Functions {
     6,
     7,
   ];
+
+  static List getMaxRepsWithGoalWeight({
+    required double lastWeight,
+    required int lastReps,
+    required double goalWeight,
+  }) {
+    //calculate all possible 1RMS
+    List<double> oneRMs = Functions.getOneRepMaxValues(
+      lastWeight.toInt(),
+      lastReps,
+      onlyIfNoBackUp: false,
+    )[0];
+
+    //maxes, mean, std deviation
+    return Functions.getXWeightMaxValues(
+      goalWeight,
+      oneRMs,
+    );
+  }
+
+  static List getXWeightMaxValues(
+    double weight,
+    List<double> oneRepMaxes, {
+    bool onlyIfNoBackUp: true,
+  }) {
+    List<double> possibleXWeightMaxes = [];
+    for (int functionID = 0; functionID < 8; functionID++) {
+      double xRepMax = ToReps.from1RMandWeight(
+        oneRepMaxes[functionID],
+        weight,
+        functionID,
+      );
+
+      //add all
+      possibleXWeightMaxes.add(xRepMax);
+    }
+
+    //calculate the mean and std dev
+    double theMean = getMean(
+      possibleXWeightMaxes,
+    );
+
+    double stdDeviation = getStandardDeviation(
+      possibleXWeightMaxes,
+      mean: theMean,
+    );
+
+    //NOTE: this must still return all the results
+    return [possibleXWeightMaxes, theMean, stdDeviation];
+  }
+
+  static List getMaxWeightsWithGoalReps({
+    required double lastWeight,
+    required int lastReps,
+    required int goalReps,
+  }) {
+    //calculate all possible 1RMS
+    List<double> oneRMs = Functions.getOneRepMaxValues(
+      lastWeight.toInt(),
+      lastReps,
+      onlyIfNoBackUp: false,
+    )[0];
+
+    //maxes, mean, std deviation
+    return Functions.getXRepMaxValues(
+      goalReps,
+      oneRMs,
+    );
+  }
 
   static List getXRepMaxValues(
     int reps,

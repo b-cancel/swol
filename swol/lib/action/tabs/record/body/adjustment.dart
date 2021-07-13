@@ -7,6 +7,7 @@ import 'package:swol/action/shared/halfColored.dart';
 import 'package:swol/action/shared/setDisplay.dart';
 import 'package:swol/action/popUps/textValid.dart';
 import 'package:swol/action/page.dart';
+import 'package:swol/other/functions/helper.dart';
 
 //internal: shared
 import 'package:swol/shared/widgets/simple/curvedCorner.dart';
@@ -37,56 +38,24 @@ class MakeFunctionAdjustment extends StatefulWidget {
 }
 
 class _MakeFunctionAdjustmentState extends State<MakeFunctionAdjustment> {
-  updatePredictionID() {
-    updateGoal();
-  }
-
-  //when the weight updates
-  //we update the rep estimates
-  weightWasUpdated({bool updateTheGoal: true}) {
-    //we use 1RM and weight to get reps
-    //this is bause maybe we wanted them to do 125 for 5 but they only had 120
-    //so ideally we want to match their weight here and take it from ther
-    String setWeightString = ExercisePage.setWeight.value;
-    bool weightRecordedValid = isTextParsedIsLargerThan0(setWeightString);
-    double weight = weightRecordedValid ? double.parse(setWeightString) : 0;
-
-    //update the goal
-    if (updateTheGoal) updateGoal();
-  }
-
-  //when the rep updates
-  //we update the weight estimates
-  repsWereUpdated({bool updateTheGoal: true}) {
-    //we use 1RM and reps to get weights
-    String setRepsString = ExercisePage.setReps.value;
-    bool repsRecordedValid = isTextParsedIsLargerThan0(setRepsString);
-    int reps = repsRecordedValid ? int.parse(setRepsString) : 0;
-
-    //update the goal
-    if (updateTheGoal) updateGoal();
-  }
-
   @override
   void initState() {
     //super init
     super.initState();
 
     //init values
-    weightWasUpdated(updateTheGoal: false);
-    repsWereUpdated(updateTheGoal: false);
     updateGoal();
 
     //add listeners
-    ExercisePage.setWeight.addListener(weightWasUpdated);
-    ExercisePage.setReps.addListener(repsWereUpdated);
+    ExercisePage.setWeight.addListener(updateGoal);
+    ExercisePage.setReps.addListener(updateGoal);
   }
 
   @override
   void dispose() {
     //remove listeners
-    ExercisePage.setWeight.removeListener(weightWasUpdated);
-    ExercisePage.setReps.removeListener(repsWereUpdated);
+    ExercisePage.setWeight.removeListener(updateGoal);
+    ExercisePage.setReps.removeListener(updateGoal);
 
     //super dispose
     super.dispose();
@@ -102,7 +71,7 @@ class _MakeFunctionAdjustmentState extends State<MakeFunctionAdjustment> {
 
     Widget goalSet = SetDisplay(
       useAccent: false,
-      title: "Predicted",
+      title: "Adjusted",
       heroUp: widget.heroUp,
       animate: true,
       heroAnimTravel: widget.heroAnimTravel,
@@ -170,17 +139,13 @@ class _MakeFunctionAdjustmentState extends State<MakeFunctionAdjustment> {
               ),
             ],
           ),
-          /*
           Expanded(
             child: Center(
               child: InaccuracyCalculator(
                 exercise: widget.exercise,
-                predictionID: predictionID,
               ),
             ),
           ),
-          */
-          Spacer(),
         ],
       ),
     );
@@ -189,38 +154,54 @@ class _MakeFunctionAdjustmentState extends State<MakeFunctionAdjustment> {
   //update the goal set based on init
   //and changed valus
   updateGoal() {
-    bool allRepsEstimatesValid = true;
-    bool allWeightEstimatesValid = true;
+    //we use 1RM and weight to get reps
+    //this is bause maybe we wanted them to do 125 for 5 but they only had 120
+    //so ideally we want to match their weight here and take it from ther
+    String setWeightString = ExercisePage.setWeight.value;
+    bool weightRecordedValid = isTextParsedIsLargerThan0(setWeightString);
+    double weight =
+        weightRecordedValid ? (double.tryParse(setWeightString) ?? 0) : 0;
 
-    //upate the goal set
-    if (allRepsEstimatesValid) {
-      //use recorded weight
-      //ExercisePage.setGoalWeight.value = int.parse(ExercisePage.setWeight.value).toDouble();
+    //we use 1RM and reps to get weights
+    String setRepsString = ExercisePage.setReps.value;
+    bool repsRecordedValid = isTextParsedIsLargerThan0(setRepsString);
+    int reps = repsRecordedValid ? (int.tryParse(setRepsString) ?? 0) : 0;
 
-      //get calculated reps
-      //NOTE: may be a double
-      //ExercisePage.setGoalReps.value = repEstimates[predictionID.value];
+    //if both valid -> pivot on weight...
+    //if only weight valid -> pivot on weight...
+    if ((reps > 0 && weight > 0) || weight > 0) {
+      ExercisePage.setGoalWeight.value = weight;
+
+      //calculate reps from weight and 1rm
+      List maxRepValues = Functions.getMaxRepsWithGoalWeight(
+        lastWeight: widget.exercise.lastWeight!.toDouble(),
+        lastReps: widget.exercise.lastReps!,
+        goalWeight: weight,
+      );
+
+      //adjusted will show +/- in the appropiate area
+      ExercisePage.setGoalReps.value = maxRepValues[1]; //mean
+      ExercisePage.setGoalPlusMinus.value = maxRepValues[2]; //std dev
     } else {
-      if (allWeightEstimatesValid) {
-        //get calculatd weight
-        //ExercisePage.setGoalWeight.value = weightEstimates[predictionID.value];
-
-        //use recorded reps
-        //NOTE: will only ever be integer
-        //ExercisePage.setGoalReps.value = int.parse(ExercisePage.setReps.value).toDouble();
+      //if only reps are valid -> pivot on reps
+      if (reps > 0) {
+        ExercisePage.setGoalReps.value = reps.toDouble();
       } else {
-        //get calculated weight
-        //ExercisePage.setGoalWeight.value = weight;
-
-        //use recorded reps
-        //NOTE: will only ever be integer
-        //ExercisePage.setGoalReps.value = widget.exercise.repTarget.toDouble();
+        //pivot on rep target
+        ExercisePage.setGoalReps.value =
+            widget.exercise.repTarget.abs().toDouble();
       }
-    }
 
-    //update the sorting of things
-    bool weightValid = isTextParsedIsLargerThan0(ExercisePage.setWeight.value);
-    bool repsValid = isTextParsedIsLargerThan0(ExercisePage.setReps.value);
-    bool setValid = weightValid && repsValid;
+      //calculate weight from reps and 1rm
+      List maxWeightValues = Functions.getMaxWeightsWithGoalReps(
+        lastWeight: widget.exercise.lastWeight!.toDouble(),
+        lastReps: widget.exercise.lastReps!,
+        goalReps: ExercisePage.setGoalReps.value.toInt(),
+      );
+
+      //adjusted will show +/- in the appropiate area
+      ExercisePage.setGoalWeight.value = maxWeightValues[1]; //mean
+      ExercisePage.setGoalPlusMinus.value = maxWeightValues[2]; //std dev
+    }
   }
 }

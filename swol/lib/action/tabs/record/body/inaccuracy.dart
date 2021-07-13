@@ -14,16 +14,13 @@ import 'package:swol/shared/widgets/simple/conditional.dart';
 import 'package:swol/other/functions/W&R=1RM.dart';
 
 //widget
-/*
 class InaccuracyCalculator extends StatefulWidget {
   const InaccuracyCalculator({
     Key? key,
     required this.exercise,
-    required this.predictionID,
   }) : super(key: key);
 
   final AnExercise exercise;
-  final ValueNotifier<int> predictionID;
 
   @override
   _InaccuracyCalculatorState createState() => _InaccuracyCalculatorState();
@@ -59,6 +56,8 @@ class _InaccuracyCalculatorState extends State<InaccuracyCalculator> {
     //check if we can show how far off they were from the target
     bool weightValid = isTextParsedIsLargerThan0(ExercisePage.setWeight.value);
     bool repsValid = isTextParsedIsLargerThan0(ExercisePage.setReps.value);
+
+    //show different things depending on whether or not the set is valid
     bool setValid = weightValid && repsValid;
 
     //build
@@ -67,9 +66,44 @@ class _InaccuracyCalculatorState extends State<InaccuracyCalculator> {
       child: Conditional(
         condition: setValid,
         //sets the closestIndex to ?
-        ifTrue: PercentOff(
-          exercise: widget.exercise,
-          predictionID: widget.predictionID,
+        ifTrue: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  "you can do ",
+                ),
+                Text(
+                  "another exercise",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+            Text(
+              "OR",
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  "Go ",
+                ),
+                Text(
+                  "To Break Timer",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+          ],
         ),
         //sets the closestIndex to -1
         ifFalse: WaitingForValid(),
@@ -81,36 +115,34 @@ class _InaccuracyCalculatorState extends State<InaccuracyCalculator> {
 class WaitingForValid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Center(
-        child: Column(
-          children: [
-            Container(
-              width: MediaQuery.of(context).size.width / 4,
-              child: Image(
-                image: new AssetImage("assets/impatient.gif"),
-                color: Theme.of(context).accentColor,
-              ),
-            ),
-            Container(
-              width: MediaQuery.of(context).size.width / 1.75,
-              child: FittedBox(
-                fit: BoxFit.contain,
-                child: Text(
-                  "Waiting For A Valid Set",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            ),
-          ],
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Container(
+          width: MediaQuery.of(context).size.width / 4,
+          child: Image(
+            image: new AssetImage("assets/impatient.gif"),
+            color: Theme.of(context).accentColor,
+          ),
         ),
-      ),
+        Container(
+          width: MediaQuery.of(context).size.width / 1.75,
+          child: FittedBox(
+            fit: BoxFit.contain,
+            child: Text(
+              "Waiting For A Valid Set",
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
 
+/*
 //NOTE: if this widget is displayed we KNOW that our set is valid
 //and when we go into this we KNOW that our last set stuff is set
 class PercentOff extends StatefulWidget {

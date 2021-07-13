@@ -129,7 +129,7 @@ class _RepTargetFieldState extends State<RepTargetField> {
                     ),
                   ),
                 ),
-                direction: PreferDirection.topRight,
+                direction: PreferDirection.topCenter,
                 seconds: 8,
               );
             },

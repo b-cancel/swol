@@ -37,33 +37,19 @@ class _SuggestionState extends State<Suggestion> {
   //update the goal set based on init
   //and changed valus
   updateGoalWeight() {
-    print("last weight: " + (widget.exercise.lastWeight?.toString() ?? "N/A"));
-    print("last reps: " + (widget.exercise.lastReps?.toString() ?? "N/A"));
     double lastWeight = widget.exercise.lastWeight!.toDouble();
     int lastReps = widget.exercise.lastReps!;
 
-    //calculate all possible 1RMS
-    List<double> oneRMs = Functions.getOneRepMaxValues(
-      lastWeight.toInt(),
-      lastReps,
-      onlyIfNoBackUp: false,
-    )[0];
-
     //maxes, mean, std deviation
-    List otherMaxes = Functions.getXRepMaxValues(
-      ExercisePage.setGoalReps.value.toInt(),
-      oneRMs,
+    List otherMaxes = Functions.getMaxWeightsWithGoalReps(
+      lastWeight: lastWeight,
+      lastReps: lastReps,
+      goalReps: ExercisePage.setGoalReps.value.toInt(),
     );
 
     //grab correct goal weight
     ExercisePage.setGoalWeight.value = otherMaxes[1];
     ExercisePage.setGoalPlusMinus.value = otherMaxes[2];
-    print(ExercisePage.setGoalWeight.value.toInt().toString() +
-        "+/-" +
-        ExercisePage.setGoalPlusMinus.value.toInt().toString() +
-        ' for ' +
-        ExercisePage.setGoalReps.value.toString() +
-        " reps");
   }
 
   updateRepTarget() {
