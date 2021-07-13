@@ -56,7 +56,7 @@ class _RecoveryState extends State<Recovery>
     //encourage the user to reap the benefits of the system
     //after everything loads up so nothing crashes IF a pop up is going to be comming up
     WidgetsBinding.instance?.addPostFrameCallback((_) async {
-      if (await askForPermissionIfNotGrantedAndWeNeverAsked()) {
+      if (await askForPermissionIfNotGrantedAndWeNeverAsked(context)) {
         scheduleNotificationIfPossible(widget.exercise);
       }
     });

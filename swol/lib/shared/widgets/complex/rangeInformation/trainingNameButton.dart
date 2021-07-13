@@ -6,11 +6,13 @@ class TrainingNameButton extends StatelessWidget {
     required this.width,
     required this.sectionName,
     required this.sectionTap,
+    required this.blackText,
   }) : super(key: key);
 
   final double width;
   final String sectionName;
   final Function sectionTap;
+  final bool blackText;
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +30,7 @@ class TrainingNameButton extends StatelessWidget {
             ),
             child: Icon(
               Icons.info,
+              color: blackText ? Colors.black : Colors.white,
               size: 16,
             ),
           ),
@@ -37,6 +40,7 @@ class TrainingNameButton extends StatelessWidget {
             maxLines: 1,
             style: TextStyle(
               fontWeight: FontWeight.bold,
+              color: blackText ? Colors.black : Colors.white,
             ),
           ),
         ],
@@ -52,7 +56,9 @@ class TrainingNameButton extends StatelessWidget {
           visualDensity: VisualDensity.compact,
           shape: RoundedRectangleBorder(
             borderRadius: new BorderRadius.circular(24.0),
-            side: BorderSide(color: Colors.white),
+            side: BorderSide(
+              color: blackText ? Colors.black : Colors.white,
+            ),
           ),
           //everything transparent
           primary: Colors.transparent,

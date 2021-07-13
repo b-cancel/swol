@@ -13,7 +13,8 @@ import 'explainWhyPermission.dart';
 //requires a seperate shared preferences variable because this permission is granted by default by some systems
 //specifically android
 //and ios does the same provisionally if you simply schedule a notification without asking first
-Future<bool> askForPermissionIfNotGrantedAndWeNeverAsked() async {
+Future<bool> askForPermissionIfNotGrantedAndWeNeverAsked(
+    BuildContext context) async {
   //regardless of whether its been requested before
   //we first check if it needs to be requested
   PermissionStatus status = await Permission.notification.status;
@@ -35,6 +36,9 @@ Future<bool> askForPermissionIfNotGrantedAndWeNeverAsked() async {
       } else {
         //we are asking, so we have asked automatically atleast once
         SharedPrefsExt.setNotificationRequested(true);
+
+        //unfocus in case this came up before the calibration set
+        FocusScope.of(context).unfocus();
 
         //access not granted & we HAVE NOT already asked them directly
         return await reactToExplainingNotificationPermission(

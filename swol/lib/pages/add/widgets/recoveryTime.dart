@@ -118,9 +118,11 @@ class AnimRecoveryTimeInfoToWhiteTheme extends StatelessWidget {
           left: SlideRangeExtent(
             buttonText: "15s",
             tipText: "Any Less, wouldn't be enough",
+            blackText: darkTheme == false,
           ),
           right: SlideRangeExtent(
             buttonText: "1m",
+            blackText: darkTheme == false,
           ),
           startSeconds: 15,
           endSeconds: 60,
@@ -130,9 +132,11 @@ class AnimRecoveryTimeInfoToWhiteTheme extends StatelessWidget {
           onTap: makeHypertrophyTrainingPopUp(context, 2),
           left: SlideRangeExtent(
             buttonText: "1:05",
+            blackText: darkTheme == false,
           ),
           right: SlideRangeExtent(
             buttonText: "2m",
+            blackText: darkTheme == false,
           ),
           startSeconds: 65,
           endSeconds: 120,
@@ -142,9 +146,11 @@ class AnimRecoveryTimeInfoToWhiteTheme extends StatelessWidget {
           onTap: makeHypertrophyStrengthTrainingPopUp(context, 2),
           left: SlideRangeExtent(
             buttonText: "2:05",
+            blackText: darkTheme == false,
           ),
           right: SlideRangeExtent(
             buttonText: "3m",
+            blackText: darkTheme == false,
           ),
           startSeconds: 125,
           endSeconds: 180,
@@ -154,9 +160,11 @@ class AnimRecoveryTimeInfoToWhiteTheme extends StatelessWidget {
           onTap: makeStrengthTrainingPopUp(context, 2),
           left: SlideRangeExtent(
             buttonText: "3:05",
+            blackText: darkTheme == false,
           ),
           right: SlideRangeExtent(
             buttonText: "4:55",
+            blackText: darkTheme == false,
             tipText: "Any More, will require you to warm up again",
             tipToLeft: false,
           ),

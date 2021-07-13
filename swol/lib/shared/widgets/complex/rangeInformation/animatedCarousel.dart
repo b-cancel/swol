@@ -140,6 +140,7 @@ class _AnimatedRangeInformationState extends State<AnimatedRangeInformation> {
                       width: thisWidth,
                       sectionName: aRange.name,
                       sectionTap: aRange.onTap,
+                      blackText: (widget.darkTheme == false),
                     ),
                   ),
                 ),

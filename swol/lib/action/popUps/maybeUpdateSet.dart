@@ -204,6 +204,7 @@ class _ChangeSetTargetWidgetState extends State<ChangeSetTargetWidget> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
+          /*
           Padding(
             padding: EdgeInsets.only(
               bottom: 16,
@@ -225,6 +226,7 @@ class _ChangeSetTargetWidgetState extends State<ChangeSetTargetWidget> {
               ),
             ),
           ),
+          */
           SetTargetToTrainingTypeIndicator(
             setTarget: widget.setTarget,
             wholeWidth: MediaQuery.of(context).size.width,

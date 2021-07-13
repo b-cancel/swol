@@ -11,12 +11,14 @@ class SlideRangeExtent extends StatelessWidget {
     required this.buttonText,
     this.tipText,
     this.tipToLeft: true,
+    required this.blackText,
     Key? key,
   }) : super(key: key);
 
   final String buttonText;
   final String? tipText;
   final bool tipToLeft;
+  final bool blackText;
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +27,7 @@ class SlideRangeExtent extends StatelessWidget {
           border: Border.all(
         color: (tipText == null)
             ? Colors.transparent
-            : Colors.white, //Theme.of(context).primaryColorDark,
+            : (blackText ? Colors.black : Colors.white),
         width: 2,
       )),
       padding: EdgeInsets.symmetric(
@@ -43,15 +45,15 @@ class SlideRangeExtent extends StatelessWidget {
                   ),
                   child: Icon(
                     Icons.warning,
-                    //color: Theme.of(context).primaryColorDark,
+                    color: (blackText ? Colors.black : Colors.white),
                     size: 16,
                   ),
                 ),
           Text(
             buttonText,
             style: TextStyle(
-                //color: Theme.of(context).primaryColorDark,
-                ),
+              color: (blackText ? Colors.black : Colors.white),
+            ),
           )
         ],
       ),

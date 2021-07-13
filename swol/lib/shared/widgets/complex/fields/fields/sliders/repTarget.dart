@@ -101,9 +101,11 @@ class AnimRepTargetInfoWhite extends StatelessWidget {
           onTap: makeStrengthTrainingPopUp(context, 3),
           left: new SlideRangeExtent(
             buttonText: "1",
+            blackText: darkTheme == false,
           ),
           right: SlideRangeExtent(
             buttonText: "6",
+            blackText: darkTheme == false,
           ),
           startSeconds: (1 * 5),
           endSeconds: (6 * 5),
@@ -113,9 +115,11 @@ class AnimRepTargetInfoWhite extends StatelessWidget {
           onTap: makeHypertrophyTrainingPopUp(context, 3),
           left: SlideRangeExtent(
             buttonText: "7",
+            blackText: darkTheme == false,
           ),
           right: SlideRangeExtent(
             buttonText: "12",
+            blackText: darkTheme == false,
           ),
           startSeconds: (7 * 5),
           endSeconds: (12 * 5),
@@ -125,9 +129,11 @@ class AnimRepTargetInfoWhite extends StatelessWidget {
           onTap: makeEnduranceTrainingPopUp(context, 3),
           left: SlideRangeExtent(
             buttonText: "13",
+            blackText: darkTheme == false,
           ),
           right: SlideRangeExtent(
             buttonText: "35",
+            blackText: darkTheme == false,
             tipText:
                 "Any More, and we will have trouble estimating your 1 Rep Max",
             tipToLeft: false,

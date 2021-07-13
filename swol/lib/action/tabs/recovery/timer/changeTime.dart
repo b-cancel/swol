@@ -48,8 +48,13 @@ class ActualButton extends StatelessWidget {
             ),
           ],
           [
-            ChangeRecoveryTimeWidget(
-              recoveryPeriod: possibleRecoveryDuration,
+            Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: 4,
+              ),
+              child: ChangeRecoveryTimeWidget(
+                recoveryPeriod: possibleRecoveryDuration,
+              ),
             ),
           ],
           Icon(
@@ -148,6 +153,7 @@ class _ChangeRecoveryTimeWidgetState extends State<ChangeRecoveryTimeWidget> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
+          /*
           Container(
             child: Theme(
               data: MyTheme.dark,
@@ -166,6 +172,7 @@ class _ChangeRecoveryTimeWidgetState extends State<ChangeRecoveryTimeWidget> {
               ),
             ),
           ),
+          */
           Theme(
             data: MyTheme.light,
             child: Padding(
@@ -174,13 +181,12 @@ class _ChangeRecoveryTimeWidgetState extends State<ChangeRecoveryTimeWidget> {
               ),
               child: Padding(
                 padding: EdgeInsets.only(
-                  top: 16.0,
                   bottom: 8,
                 ),
                 child: AnimRecoveryTimeInfoToWhiteTheme(
                   recoveryPeriod: widget.recoveryPeriod,
                   darkTheme: false,
-                  hideNameButtons: true,
+                  hideNameButtons: false,
                 ),
               ),
             ),
