@@ -118,7 +118,7 @@ maybeChangeSetTarget(
     animationType: AnimType.LEFTSLIDE,
     clearBtn: TextButton(
       child: Text(
-        "close",
+        "Close",
       ),
       onPressed: () {
         Navigator.pop(context);

@@ -123,7 +123,7 @@ class RepTargetHeader extends StatelessWidget {
       child: HeaderWithInfo(
         isDense: true,
         header: "Change Rep Target",
-        title: "Rep Target",
+        title: "   Rep Target   ",
         //subtitle: "Not sure? Keep the default",
         body: RepTargetPopUpBody(),
         subtle: subtle,

@@ -92,7 +92,7 @@ movePastSetTarget(
     animationType: AnimType.BOTTOMSLIDE,
     clearBtn: TextButton(
       child: Text(
-        "Finished",
+        "Finish",
       ),
       onPressed: () {
         Navigator.pop(context);

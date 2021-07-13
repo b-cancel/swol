@@ -16,6 +16,7 @@ class RecordField extends StatefulWidget {
     required this.borderSize,
     required this.otherFocusNode,
     required this.otherController,
+    required this.label,
   });
 
   final FocusNode focusNode;
@@ -24,6 +25,7 @@ class RecordField extends StatefulWidget {
   final double borderSize;
   final FocusNode otherFocusNode;
   final TextEditingController otherController;
+  final String label;
 
   @override
   _RecordFieldState createState() => _RecordFieldState();
@@ -180,6 +182,7 @@ class _RecordFieldState extends State<RecordField> {
                               border: InputBorder.none,
                               //hides digit counter
                               counterText: "",
+                              hintText: widget.label,
                             ),
                             //hide signs or decimals from keyboard if possible
                             keyboardType: TextInputType.numberWithOptions(

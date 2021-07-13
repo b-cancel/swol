@@ -116,6 +116,7 @@ class _BreathStatefulState extends State<BreathStateful> {
                     tag: 'breath',
                     child: new Image(
                       image: new AssetImage("assets/gifs/breathMod.gif"),
+                      color: Colors.blue,
                     ),
                   ),
                 ),

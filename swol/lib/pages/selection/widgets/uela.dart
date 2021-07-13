@@ -188,12 +188,12 @@ class UelaBody extends StatelessWidget {
                     hasTopIcon: false,
                     secondary: TextButton(
                       onPressed: () {
-                        exit(0);
-                        /*
-                        SystemChannels.platform.invokeMethod(
-                          'SystemNavigator.pop',
-                        );
-                        */
+                        //close the app, don't restart, encourage good behavior of sending and exiting right after done
+                        SystemChannels.platform
+                            .invokeMethod('SystemNavigator.pop');
+
+                        //this work on ios but isn't allowed, and seems like a crash on android
+                        //exit(0);
                       },
                       child: Text("Close App"),
                     ),

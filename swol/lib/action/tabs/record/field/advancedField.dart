@@ -153,6 +153,7 @@ class _RecordFieldsState extends State<RecordFields> {
               borderSize: borderSize,
               otherFocusNode: widget.repsFocusNode,
               otherController: repsController,
+              label: "lbs/kg",
             ),
             Column(
               children: <Widget>[
@@ -186,6 +187,7 @@ class _RecordFieldsState extends State<RecordFields> {
               borderSize: borderSize,
               otherFocusNode: widget.weightFocusNode,
               otherController: weightController,
+              label: "Rep(s)",
             ),
           ],
         ),
