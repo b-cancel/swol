@@ -7,6 +7,8 @@ import 'package:swol/action/bottomButtons/button.dart';
 import 'package:swol/action/shared/halfColored.dart';
 import 'package:swol/action/shared/setDisplay.dart';
 import 'package:swol/action/page.dart';
+import 'package:swol/other/functions/W&R=1RM.dart';
+import 'package:swol/other/functions/helper.dart';
 
 //internal: other
 import 'package:swol/shared/structs/anExercise.dart';
@@ -35,13 +37,39 @@ class _SuggestionState extends State<Suggestion> {
   //update the goal set based on init
   //and changed valus
   updateGoalWeight() {
+    print("last weight: " + (widget.exercise.lastWeight?.toString() ?? "N/A"));
+    print("last reps: " + (widget.exercise.lastReps?.toString() ?? "N/A"));
+    double lastWeight = widget.exercise.lastWeight!.toDouble();
+    int lastReps = widget.exercise.lastReps!;
+
+    //calculate all possible 1RMS
+    List<double> oneRMs = Functions.getOneRepMaxValues(
+      lastWeight.toInt(),
+      lastReps,
+      onlyIfNoBackUp: false,
+    )[0];
+
+    //maxes, mean, std deviation
+    List otherMaxes = Functions.getXRepMaxValues(
+      ExercisePage.setGoalReps.value.toInt(),
+      oneRMs,
+    );
+
     //grab correct goal weight
-    ExercisePage.setGoalWeight.value = 0;
+    ExercisePage.setGoalWeight.value = otherMaxes[1];
+    ExercisePage.setGoalPlusMinus.value = otherMaxes[2];
+    print(ExercisePage.setGoalWeight.value.toInt().toString() +
+        "+/-" +
+        ExercisePage.setGoalPlusMinus.value.toInt().toString() +
+        ' for ' +
+        ExercisePage.setGoalReps.value.toString() +
+        " reps");
   }
 
   updateRepTarget() {
     //update it in the file
     widget.exercise.repTarget = repTarget.value;
+    //update it locally
     ExercisePage.setGoalReps.value = repTarget.value.toDouble();
 
     //update the goal by chosing from everything we
@@ -94,26 +122,80 @@ class _SuggestionState extends State<Suggestion> {
           Expanded(
             child: Container(
               width: MediaQuery.of(context).size.width,
-              child: Column(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  TopBackgroundColored(
-                    color: Theme.of(context).cardColor,
-                    child: SetDisplay(
-                      exercise: widget.exercise,
-                      useAccent: false,
-                      extraCurvy: true,
-                      title: "Last Set",
+              child: IntrinsicHeight(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    Expanded(
+                      child: Container(
+                        color: Theme.of(context).primaryColor,
+                        child: CustomScrollView(
+                          physics: BouncingScrollPhysics(),
+                          slivers: [
+                            SliverToBoxAdapter(
+                              child: Container(
+                                color: Colors.black,
+                                child: TopBackgroundColored(
+                                  color: Theme.of(context).cardColor,
+                                  child: SetDisplay(
+                                    exercise: widget.exercise,
+                                    useAccent: false,
+                                    extraCurvy: true,
+                                    title: "Last Set",
+                                  ),
+                                ),
+                              ),
+                            ),
+                            SliverFillRemaining(
+                              hasScrollBody: false,
+                              fillOverscroll: true,
+                              child: Container(
+                                color: Colors.black,
+                                child: Center(
+                                  child: DefaultTextStyle(
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                    child: Padding(
+                                      padding: EdgeInsets.all(16),
+                                      child: Container(
+                                        height: 56,
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Text(
+                                              "under the same conditions",
+                                            ),
+                                            Container(
+                                              height: 2,
+                                            ),
+                                            Text(
+                                              "as your last set",
+                                            ),
+                                            Container(
+                                              height: 2,
+                                            ),
+                                            Text(
+                                              "you should be able to lift",
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
-                  ),
-                  Expanded(
-                    child: SuggestionChanger(
+                    SuggestionChanger(
                       repTarget: repTarget,
                       cardRadius: cardRadius,
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),

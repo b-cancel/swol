@@ -1,10 +1,13 @@
 //flutter
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:swol/action/page.dart';
 
 //internal
 import 'package:swol/shared/widgets/complex/fields/fields/sliders/sliderField.dart';
 import 'package:swol/shared/widgets/complex/rangeInformation/animatedCarousel.dart';
 import 'package:swol/shared/widgets/complex/fields/headers/fieldHeader.dart';
+import 'package:swol/shared/widgets/simple/oneOrTheOtherIcon.dart';
 import 'package:swol/shared/widgets/simple/sliderTipButton.dart';
 import 'package:swol/shared/functions/trainingPopUps.dart';
 import 'package:swol/shared/structs/range.dart';
@@ -72,6 +75,114 @@ class _RepTargetFieldState extends State<RepTargetField> {
           repTargetDuration: repTargetDuration,
           darkTheme: widget.darkTheme,
         ),
+      ),
+      belowIndicator: Padding(
+        padding: EdgeInsets.only(
+          bottom: 16,
+        ),
+        child: Container(
+          width: MediaQuery.of(context).size.width,
+          decoration: BoxDecoration(
+            color: Colors.blue,
+            borderRadius: BorderRadius.all(
+              Radius.circular(16),
+            ),
+          ),
+          height: 56,
+          padding: EdgeInsets.all(
+            8,
+          ),
+          child: FittedBox(
+            fit: BoxFit.contain,
+            child: ReloadOnGoalChange(),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class ReloadOnGoalChange extends StatefulWidget {
+  const ReloadOnGoalChange({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  _ReloadOnGoalChangeState createState() => _ReloadOnGoalChangeState();
+}
+
+class _ReloadOnGoalChangeState extends State<ReloadOnGoalChange> {
+  updateState() {
+    if (mounted) {
+      setState(() {});
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    ExercisePage.setGoalWeight.addListener(updateState);
+    ExercisePage.setGoalPlusMinus.addListener(updateState);
+    ExercisePage.setGoalReps.addListener(updateState);
+  }
+
+  @override
+  void dispose() {
+    ExercisePage.setGoalWeight.removeListener(updateState);
+    ExercisePage.setGoalPlusMinus.removeListener(updateState);
+    ExercisePage.setGoalReps.removeListener(updateState);
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    //gather
+    String weight = ExercisePage.setGoalWeight.value.toInt().toString();
+    int plusMinus = ExercisePage.setGoalPlusMinus.value.toInt().abs();
+    int reps = ExercisePage.setGoalReps.value.toInt();
+
+    //build
+    return DefaultTextStyle(
+      style: TextStyle(
+        fontWeight: FontWeight.bold,
+        color: Colors.white,
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(weight),
+          Visibility(
+            visible: plusMinus > 0,
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  height: 10,
+                  width: 10,
+                  child: FittedBox(
+                    fit: BoxFit.contain,
+                    child: OneOrTheOtherIcon(
+                      iconColor: Colors.white,
+                      backgroundColor: Colors.blue,
+                      one: Icon(
+                        FontAwesomeIcons.plus,
+                        color: Colors.white,
+                      ),
+                      other: Icon(
+                        FontAwesomeIcons.minus,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ),
+                Text(plusMinus.toString()),
+              ],
+            ),
+          ),
+          Text(" for "),
+          Text(reps.toString()),
+          Text("rep" + (reps == 1 ? "" : "s")),
+        ],
       ),
     );
   }

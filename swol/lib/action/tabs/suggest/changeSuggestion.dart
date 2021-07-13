@@ -20,83 +20,37 @@ class SuggestionChanger extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.max,
-      children: <Widget>[
-        Expanded(
-          child: Center(
-            child: DefaultTextStyle(
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    "under the same conditions",
-                  ),
-                  Container(
-                    height: 2,
-                  ),
-                  Text(
-                    "as your last set",
-                  ),
-                  Container(
-                    height: 2,
-                  ),
-                  Text(
-                    "you should be able to lift",
-                  ),
-                ],
-              ),
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      decoration: BoxDecoration(
+        color: Theme.of(context).cardColor,
+        borderRadius: BorderRadius.all(
+          cardRadius,
+        ),
+      ),
+      child: Column(
+        children: [
+          Transform.translate(
+            offset: Offset(
+              0,
+              24,
+            ),
+            child: RepTargetField(
+              repTarget: repTarget,
+              subtle: true,
+              darkTheme: true,
             ),
           ),
-        ),
-        Container(
-          width: MediaQuery.of(context).size.width,
-          decoration: BoxDecoration(
-            color: Theme.of(context).cardColor,
-            borderRadius: BorderRadius.all(
-              cardRadius,
+          Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: 16,
+            ),
+            child: RepTargetHeader(
+              subtle: true,
             ),
           ),
-          child: Column(
-            children: [
-              Container(
-                height: 56,
-                width: MediaQuery.of(context).size.width,
-                decoration: BoxDecoration(
-                  color: Colors.blue,
-                  borderRadius: BorderRadius.all(
-                    cardRadius,
-                  ),
-                ),
-                padding: EdgeInsets.all(16),
-                child: Text("hi"),
-              ),
-              Transform.translate(
-                offset: Offset(
-                  0,
-                  24,
-                ),
-                child: RepTargetField(
-                  repTarget: repTarget,
-                  subtle: true,
-                  darkTheme: true,
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: 16,
-                ),
-                child: RepTargetHeader(
-                  subtle: true,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

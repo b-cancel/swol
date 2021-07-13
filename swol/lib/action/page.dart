@@ -63,6 +63,8 @@ class ExercisePage extends StatelessWidget {
   //used so that we can set the goal set from both the suggest and record page
   static final ValueNotifier<double> setGoalWeight =
       new ValueNotifier<double>(0); //being listened
+  static final ValueNotifier<double> setGoalPlusMinus =
+      new ValueNotifier<double>(0);
   static final ValueNotifier<double> setGoalReps =
       new ValueNotifier<double>(0); //being listened
 
@@ -220,6 +222,7 @@ class _ExercisePageDarkState extends State<ExercisePageDark> {
 
     //goals
     ExercisePage.setGoalWeight.value = 0;
+    ExercisePage.setGoalPlusMinus.value = 0;
     ExercisePage.setGoalReps.value = 0;
   }
 

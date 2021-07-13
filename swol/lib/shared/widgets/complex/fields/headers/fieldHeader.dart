@@ -122,7 +122,7 @@ class RepTargetHeader extends StatelessWidget {
       data: MyTheme.light,
       child: HeaderWithInfo(
         isDense: true,
-        header: "Change Rep Target",
+        header: "Change Rep Target Above",
         title: "   Rep Target   ",
         //subtitle: "Not sure? Keep the default",
         body: RepTargetPopUpBody(),

@@ -6,6 +6,7 @@ class SliderField extends StatelessWidget {
     this.subtle: false,
     this.header,
     required this.indicator,
+    this.belowIndicator,
     required this.value,
     required this.lastTick,
   });
@@ -13,6 +14,7 @@ class SliderField extends StatelessWidget {
   final subtle;
   final Widget? header;
   final Widget indicator;
+  final Widget? belowIndicator;
   final ValueNotifier<int> value;
   final int lastTick;
 
@@ -34,20 +36,21 @@ class SliderField extends StatelessWidget {
               children: <Widget>[
                 header ?? Container(),
                 indicator,
-                Padding(
-                  padding: EdgeInsets.only(
-                    top: (subtle ? 8 : 12),
-                  ),
-                  child: Container(
-                    color: Colors.black, //line color
-                    height: 2,
-                    width: MediaQuery.of(context).size.width,
-                  ),
-                ),
               ],
             ),
           ),
         ),
+        belowIndicator ??
+            Padding(
+              padding: EdgeInsets.only(
+                top: (subtle ? 8 : 12),
+              ),
+              child: Container(
+                color: Colors.black, //line color
+                height: 2,
+                width: MediaQuery.of(context).size.width,
+              ),
+            ),
         CustomSlider(
           value: value,
           lastTick: lastTick,

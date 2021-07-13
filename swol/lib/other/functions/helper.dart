@@ -1,3 +1,4 @@
+import 'package:swol/other/functions/1RM&R=W.dart';
 import 'package:swol/other/functions/W&R=1RM.dart';
 import 'dart:math' as math;
 
@@ -78,9 +79,63 @@ class Functions {
     7,
   ];
 
+  static List getXRepMaxValues(
+    int reps,
+    List<double> oneRepMaxes, {
+    bool onlyIfNoBackUp: true,
+  }) {
+    List<double> possibleXRepMaxes = [];
+    List<double> possibleDifferentFunctionXRepMaxes = [];
+    for (int functionID = 0; functionID < 8; functionID++) {
+      double xRepMax = ToWeight.fromRepAnd1Rm(
+        reps,
+        oneRepMaxes[functionID],
+        functionID,
+      );
+
+      //add all
+      possibleXRepMaxes.add(xRepMax);
+
+      if (onlyIfNoBackUp) {
+        bool usingBackUpFunction = true;
+
+        //if we are using one of the 3 functions that use backups, make sure we aren't going to
+        if (functionID == 0 && brzyckiUsefull(reps))
+          usingBackUpFunction = false;
+        else if (functionID == 1 && mcGlothinOrLandersUsefull(reps))
+          usingBackUpFunction = false;
+        else if (functionID == 2 && almazanUsefull(reps))
+          usingBackUpFunction = false;
+        else
+          usingBackUpFunction = false; //any function without a limit
+
+        //add only those that didn't use a back up function
+        if (usingBackUpFunction == false) {
+          possibleDifferentFunctionXRepMaxes.add(xRepMax);
+        }
+      }
+    }
+
+    //calculate the mean and std dev
+    double theMean = getMean(
+      (onlyIfNoBackUp) ? possibleDifferentFunctionXRepMaxes : possibleXRepMaxes,
+    );
+
+    double stdDeviation = getStandardDeviation(
+      (onlyIfNoBackUp) ? possibleDifferentFunctionXRepMaxes : possibleXRepMaxes,
+      mean: theMean,
+    );
+
+    //NOTE: this must still return all the results
+    return [possibleXRepMaxes, theMean, stdDeviation];
+  }
+
   //NOTE: returns array with [0] all 1 rep maxes, [1] theMean, [2] stdDeviation
-  static List getOneRepMaxValues(int weight, int reps,
-      {bool onlyIfNoBackUp: true}) {
+  static List getOneRepMaxValues(
+    int weight,
+    int reps, {
+    bool onlyIfNoBackUp: true,
+  }) {
     List<double> possibleOneRepMaxes = [];
     List<double> possibleDifferentFunctionOneRepMaxes = [];
     for (int functionID = 0; functionID < 8; functionID++) {
