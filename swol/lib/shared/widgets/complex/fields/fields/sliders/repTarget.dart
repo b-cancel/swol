@@ -70,7 +70,7 @@ class _RepTargetFieldState extends State<RepTargetField> {
         data: MyTheme.light,
         child: AnimRepTargetInfoWhite(
           repTargetDuration: repTargetDuration,
-          darkTheme: widget.subtle == false,
+          darkTheme: widget.darkTheme,
         ),
       ),
     );
@@ -134,8 +134,9 @@ class AnimRepTargetInfoWhite extends StatelessWidget {
           right: SlideRangeExtent(
             buttonText: "35",
             blackText: darkTheme == false,
-            tipText:
-                "Any More, and we will have trouble estimating your 1 Rep Max",
+            tipText: "Any more than 30 reps" +
+                "\n" +
+                "has been shown to be in-effective for most",
             tipToLeft: false,
           ),
           startSeconds: (13 * 5),

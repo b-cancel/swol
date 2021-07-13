@@ -213,18 +213,14 @@ class SetRecordInner extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
-                /*
                 Expanded(
                   child: MakeFunctionAdjustment(
-                    functionIDToWeightFromRT: functionIDToWeightFromRT,
                     topColor: buttonsColor,
                     heroUp: heroUp,
                     heroAnimTravel: heroAnimTravel,
                     exercise: exercise,
                   ),
                 ),
-                */
-                Spacer(),
                 recordSetFields,
                 buttonsOnBottom,
               ],

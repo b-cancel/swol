@@ -25,10 +25,29 @@ class SuggestionChanger extends StatelessWidget {
       children: <Widget>[
         Expanded(
           child: Center(
-            child: Text(
-              "you should be able to lift",
+            child: DefaultTextStyle(
               style: TextStyle(
                 fontWeight: FontWeight.bold,
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    "under the same conditions",
+                  ),
+                  Container(
+                    height: 2,
+                  ),
+                  Text(
+                    "as your last set",
+                  ),
+                  Container(
+                    height: 2,
+                  ),
+                  Text(
+                    "you should be able to lift",
+                  ),
+                ],
               ),
             ),
           ),

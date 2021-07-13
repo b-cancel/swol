@@ -100,27 +100,11 @@ class _SuggestionState extends State<Suggestion> {
                 children: <Widget>[
                   TopBackgroundColored(
                     color: Theme.of(context).cardColor,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(
-                            top: 8.0,
-                          ),
-                          child: Text(
-                            "under the same conditions as your",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                        SetDisplay(
-                          exercise: widget.exercise,
-                          useAccent: false,
-                          extraCurvy: true,
-                          title: "Last Set",
-                        ),
-                      ],
+                    child: SetDisplay(
+                      exercise: widget.exercise,
+                      useAccent: false,
+                      extraCurvy: true,
+                      title: "Last Set",
                     ),
                   ),
                   Expanded(
