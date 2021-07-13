@@ -946,10 +946,6 @@ class _ExerciseListState extends State<ExerciseList> {
           ),
         );
       }
-
-      //add sliver so our exercises don't get hidden
-      //by the bottom floating buttons
-      sliverList.add(ButtonSpacer());
     }
 
     //add header because we always have one
@@ -980,6 +976,7 @@ class _ExerciseListState extends State<ExerciseList> {
           hasScrollBody: false,
           fillOverscroll: true,
           child: Container(
+            height: 16 + 48.0 + 16,
             color: Theme.of(context).primaryColor,
           ),
         ),

@@ -15,7 +15,7 @@ class RepTargetField extends StatefulWidget {
   RepTargetField({
     required this.repTarget,
     required this.subtle,
-    this.darkTheme: true,
+    required this.darkTheme,
   });
 
   final ValueNotifier<int> repTarget;

@@ -174,11 +174,14 @@ class AddExerciseFiller extends StatelessWidget {
   Widget build(BuildContext context) {
     return SliverFillRemaining(
       hasScrollBody: false,
-      child: Center(
-        child: Text(
-          "add an exercise below",
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
+      child: Container(
+        color: Theme.of(context).primaryColor,
+        child: Center(
+          child: Text(
+            "add an exercise below",
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ),
       ),

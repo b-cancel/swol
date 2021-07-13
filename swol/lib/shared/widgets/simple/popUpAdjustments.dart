@@ -43,6 +43,7 @@ class _ScrollViewWithShadowState extends State<ScrollViewWithShadow> {
   @override
   Widget build(BuildContext context) {
     return Stack(
+      alignment: Alignment.center,
       children: <Widget>[
         SingleChildScrollView(
           physics: BouncingScrollPhysics(),

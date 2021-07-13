@@ -187,7 +187,7 @@ class _RecordFieldsState extends State<RecordFields> {
               borderSize: borderSize,
               otherFocusNode: widget.weightFocusNode,
               otherController: weightController,
-              label: "Rep(s)",
+              label: "rep(s)",
             ),
           ],
         ),

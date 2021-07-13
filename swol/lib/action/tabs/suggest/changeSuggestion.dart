@@ -63,6 +63,7 @@ class SuggestionChanger extends StatelessWidget {
                 child: RepTargetField(
                   repTarget: repTarget,
                   subtle: true,
+                  darkTheme: true,
                 ),
               ),
               Padding(
