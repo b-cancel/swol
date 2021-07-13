@@ -166,15 +166,16 @@ class CustomSlider extends StatelessWidget {
                 //TODO: it was true
                 alwaysShowTooltip: true,
                 textStyle: TextStyle(
-                  fontSize: 12,
+                  fontSize: 14,
                   fontWeight: FontWeight.bold,
                   color: isDark ? Colors.white : Colors.black,
                 ),
                 boxStyle: FlutterSliderTooltipBox(
-                  transform: Matrix4.translationValues(0, -16, 0),
+                  transform: Matrix4.translationValues(0, -14, 0),
                   decoration: BoxDecoration(
-                      //color: Theme.of(context).backgroundColor,
-                      ),
+                    color: isDark ? Colors.black : Colors.white,
+                    shape: BoxShape.circle,
+                  ),
                 ),
                 //TODO: confirm we don't need the line below
                 //numberFormat: intl.NumberFormat(),

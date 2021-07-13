@@ -155,6 +155,7 @@ class _LearnExerciseState extends State<LearnExercise> {
             fontSize: 16,
           ),
           child: CustomScrollView(
+            physics: BouncingScrollPhysics(),
             slivers: [
               ExpandableTile(
                 index: 0,
@@ -210,7 +211,7 @@ class _LearnExerciseState extends State<LearnExercise> {
               ),
               SliverFillRemaining(
                 hasScrollBody: false,
-                fillOverscroll: false,
+                fillOverscroll: true,
                 child: Center(
                   child: Padding(
                     padding: EdgeInsets.all(16),

@@ -98,51 +98,61 @@ class _SearchExerciseState extends State<SearchExercise> {
       child: Scaffold(
         backgroundColor: Theme.of(context).primaryColorDark,
         body: SafeArea(
-          child: CustomScrollView(
-            slivers: [
-              SliverStickyHeader(
-                header: Column(
-                  children: <Widget>[
-                    SearchBar(
-                      search: search,
-                    ),
-                    Visibility(
-                      visible: noRecentsToShow == false,
-                      child: RecentsOrResultsHeader(
-                        showRecentsSearches: showRecentsSearches,
-                        resultCount: queryResults.length,
-                      ),
-                    ),
-                  ],
-                ),
-
-                /*Stack(
-                  children: <Widget>[
-                    
-                    Positioned(
-                      bottom: 0,
-                      left: 0,
-                      right: 0,
-                      child: Column(
-                        children: <Widget>[
-                          
-                          Container(
-                            width: MediaQuery.of(context).size.width,
-                            child: Transform.translate(
-                              offset: Offset(0, 24),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                mainAxisSize: MainAxisSize.max,
-                                children: [
-                                  CurvedCorner(
-                                    isTop: true,
-                                    isLeft: true,
-                                    cornerColor: Colors.red,
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              SearchBar(
+                search: search,
+              ),
+              Expanded(
+                child: (noRecentsToShow ||
+                        (search.text.length > 0 && queryResults.length == 0))
+                    ? CustomScrollView(
+                        physics: BouncingScrollPhysics(),
+                        slivers: [
+                          SliverFillRemaining(
+                            hasScrollBody: false,
+                            fillOverscroll: true,
+                            child: Center(
+                              child: Text(
+                                noRecentsToShow
+                                    ? "No Recent Searches"
+                                    : "No Results",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      )
+                    : CustomScrollView(
+                        physics: BouncingScrollPhysics(),
+                        slivers: [
+                          SliverStickyHeader(
+                            header: Column(
+                              children: <Widget>[
+                                Visibility(
+                                  visible: noRecentsToShow == false,
+                                  child: RecentsOrResultsHeader(
+                                    showRecentsSearches: showRecentsSearches,
+                                    resultCount: queryResults.length,
                                   ),
-                                  CurvedCorner(
-                                    isTop: true,
-                                    isLeft: false,
-                                    cornerColor: Colors.red,
+                                ),
+                              ],
+                            ),
+                            sliver: SliverList(
+                              delegate: new SliverChildListDelegate(
+                                [
+                                  SearchBody(
+                                    noRecentsToShow: noRecentsToShow,
+                                    showRecentsSearches: showRecentsSearches,
+                                    search: search,
+                                    queryResults: queryResults,
+                                    exercises: exercises,
+                                    updateState: () => setState(() {}),
+                                    statusBar:
+                                        MediaQuery.of(context).padding.top,
                                   ),
                                 ],
                               ),
@@ -150,25 +160,6 @@ class _SearchExerciseState extends State<SearchExercise> {
                           ),
                         ],
                       ),
-                    ),
-                  ],
-                ),
-                */
-                sliver: SliverList(
-                  delegate: new SliverChildListDelegate(
-                    [
-                      SearchBody(
-                        noRecentsToShow: noRecentsToShow,
-                        showRecentsSearches: showRecentsSearches,
-                        search: search,
-                        queryResults: queryResults,
-                        exercises: exercises,
-                        updateState: () => setState(() {}),
-                        statusBar: MediaQuery.of(context).padding.top,
-                      ),
-                    ],
-                  ),
-                ),
               ),
             ],
           ),
@@ -278,9 +269,7 @@ class SearchBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (noRecentsToShow) {
-      return NoRecentSearches(
-        statusBar: statusBar,
-      );
+      return Container();
     } else {
       if (showRecentsSearches) {
         return RecentSearches(

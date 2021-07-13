@@ -972,21 +972,34 @@ class _ExerciseListState extends State<ExerciseList> {
   //build
   @override
   Widget build(BuildContext context) {
-    if (slivers == null)
+    if (slivers == null) {
       return SplashScreen();
-    else {
-      return Stack(
-        children: <Widget>[
-          CustomScrollView(
-            controller: widget.autoScrollController,
-            slivers: slivers!,
+    } else {
+      slivers!.add(
+        SliverFillRemaining(
+          hasScrollBody: false,
+          fillOverscroll: true,
+          child: Container(
+            color: Theme.of(context).primaryColor,
           ),
-          SearchExerciseButton(),
-          AddExerciseButton(
-            //extra 150 makes it long
-            longTransitionDuration: Duration(milliseconds: 300 + 150),
-          ),
-        ],
+        ),
+      );
+      return Container(
+        color: Colors.blue,
+        child: Stack(
+          children: <Widget>[
+            CustomScrollView(
+              physics: BouncingScrollPhysics(),
+              controller: widget.autoScrollController,
+              slivers: slivers!,
+            ),
+            SearchExerciseButton(),
+            AddExerciseButton(
+              //extra 150 makes it long
+              longTransitionDuration: Duration(milliseconds: 300 + 150),
+            ),
+          ],
+        ),
       );
     }
   }

@@ -94,7 +94,7 @@ maybeChangeSetTarget(
                 ),
                 children: [
                   TextSpan(
-                    text: "If Would you like to ",
+                    text: "If you would like to ",
                   ),
                   TextSpan(
                     text: "Change your Set Target ",
@@ -118,7 +118,7 @@ maybeChangeSetTarget(
     animationType: AnimType.LEFTSLIDE,
     clearBtn: TextButton(
       child: Text(
-        "Keep Going",
+        "close",
       ),
       onPressed: () {
         Navigator.pop(context);
@@ -126,7 +126,7 @@ maybeChangeSetTarget(
     ),
     colorBtn: ElevatedButton(
       child: Text(
-        "Finish Exercise",
+        "Finish Set",
       ),
       onPressed: () {
         //update set target
@@ -232,10 +232,15 @@ class _ChangeSetTargetWidgetState extends State<ChangeSetTargetWidget> {
             wholeWidth: MediaQuery.of(context).size.width,
             oneSidePadding: 16 + 8.0,
           ),
-          CustomSlider(
-            value: widget.setTarget,
-            lastTick: 9,
-            isDark: false,
+          Padding(
+            padding: EdgeInsets.only(
+              top: 8,
+            ),
+            child: CustomSlider(
+              value: widget.setTarget,
+              lastTick: 9,
+              isDark: false,
+            ),
           ),
         ],
       ),

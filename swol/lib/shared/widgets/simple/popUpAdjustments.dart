@@ -45,6 +45,7 @@ class _ScrollViewWithShadowState extends State<ScrollViewWithShadow> {
     return Stack(
       children: <Widget>[
         SingleChildScrollView(
+          physics: BouncingScrollPhysics(),
           controller: ctrl,
           child: widget.child,
         ),
@@ -108,8 +109,26 @@ class _ScrollShadowState extends State<ScrollShadow> {
     Widget theShadow = Visibility(
       visible: widget.active.value == false,
       child: Container(
-        height: 24,
+        //height: 24,
         width: MediaQuery.of(context).size.width,
+        child: Center(
+          child: Padding(
+            padding: EdgeInsets.all(12),
+            child: Container(
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: Colors.white,
+              ),
+              padding: EdgeInsets.all(4),
+              child: Icon(
+                widget.isTop ? Icons.arrow_circle_up : Icons.arrow_circle_down,
+                color: Colors.blue,
+                size: 24,
+              ),
+            ),
+          ),
+        ),
+        /*
         decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
@@ -121,6 +140,7 @@ class _ScrollShadowState extends State<ScrollShadow> {
             stops: [0, 1],
           ),
         ),
+        */
       ),
     );
 

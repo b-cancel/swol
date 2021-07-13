@@ -137,7 +137,10 @@ class _SetTargetToTrainingTypeIndicatorState
                     top: 0,
                     bottom: 0,
                     child: Center(
-                      child: NoMoreThan6Sets(),
+                      child: Theme(
+                        data: ThemeData.dark(),
+                        child: NoMoreThan6Sets(),
+                      ),
                     ),
                   ),
                 ],
@@ -167,7 +170,9 @@ class NoMoreThan6Sets extends StatelessWidget {
             children: [
               Flexible(
                 child: Text(
-                  "Any More than 6 sets, might do you more harm than good",
+                  "Any More than 6 sets" +
+                      "\n" +
+                      "might do you more harm than good",
                   textAlign: TextAlign.right,
                 ),
               ),
@@ -183,7 +188,7 @@ class NoMoreThan6Sets extends StatelessWidget {
           height: 36,
           decoration: BoxDecoration(
               border: Border.all(
-            color: Theme.of(context).primaryColorDark,
+            color: Colors.red,
             width: 2,
           )),
           padding: EdgeInsets.symmetric(
@@ -192,7 +197,7 @@ class NoMoreThan6Sets extends StatelessWidget {
           ),
           child: Icon(
             Icons.warning,
-            color: Theme.of(context).primaryColorDark,
+            color: Colors.red,
           ),
         ),
       ),

@@ -221,17 +221,13 @@ class _PillState extends State<Pill> {
                                 child: Icon(
                                   Icons.info,
                                   size: 16,
-                                  color: active
-                                      ? Theme.of(context).primaryColor
-                                      : Colors.white,
+                                  color: Colors.white,
                                 ),
                               ),
                               Text(
                                 widget.name,
                                 style: TextStyle(
-                                  color: active
-                                      ? Theme.of(context).primaryColor
-                                      : Colors.white,
+                                  color: Colors.white,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),

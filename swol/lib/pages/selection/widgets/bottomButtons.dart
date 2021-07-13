@@ -144,6 +144,7 @@ class ButtonSpacer extends StatelessWidget {
   Widget build(BuildContext context) {
     return SliverToBoxAdapter(
       child: Container(
+        color: Theme.of(context).primaryColor,
         //56 larger button height
         //48 smaller button height
         height: 16 + 48.0 + 16,
