@@ -56,8 +56,8 @@ class TrainingNameButton extends StatelessWidget {
           ),
           //everything transparent
           primary: Colors.transparent,
-          onPrimary: Colors.transparent,
-          onSurface: Colors.transparent,
+          //onPrimary: Colors.transparent,
+          //onSurface: Colors.transparent,
           shadowColor: Colors.transparent,
         ),
         onPressed: () => sectionTap(),

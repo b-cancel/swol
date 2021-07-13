@@ -47,7 +47,7 @@ class SetTargetHeader extends StatelessWidget {
       child: HeaderWithInfo(
         header: "Set Target",
         title: "Set Target",
-        subtitle: "Not sure? Keep the default",
+        //subtitle: "Not sure? Keep the default",
         isDense: true,
         body: SetTargetPopUpBody(),
       ),

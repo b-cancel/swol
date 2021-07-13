@@ -216,10 +216,13 @@ class TitleThatContainsTRBL extends StatelessWidget {
           padding: EdgeInsets.symmetric(
             horizontal: 16,
           ),
-          child: FittedBox(
-            fit: BoxFit.contain,
-            child: Container(
-              child: child,
+          child: Container(
+            height: 48,
+            child: FittedBox(
+              fit: BoxFit.contain,
+              child: Container(
+                child: child,
+              ),
             ),
           ),
         ),

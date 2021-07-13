@@ -126,7 +126,6 @@ class _SuggestionState extends State<Suggestion> {
                   Expanded(
                     child: SuggestionChanger(
                       repTarget: repTarget,
-                      arrowRadius: arrowRadius,
                       cardRadius: cardRadius,
                     ),
                   ),

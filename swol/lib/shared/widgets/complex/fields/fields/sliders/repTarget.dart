@@ -66,7 +66,6 @@ class _RepTargetFieldState extends State<RepTargetField> {
       lastTick: 35,
       subtle: widget.subtle,
       value: widget.repTarget,
-      header: RepTargetHeader(subtle: widget.subtle),
       indicator: Theme(
         data: MyTheme.light,
         child: AnimRepTargetInfoWhite(

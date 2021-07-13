@@ -11,59 +11,6 @@ import 'package:swol/shared/widgets/simple/conditional.dart';
 import 'package:swol/shared/widgets/simple/functionTable.dart';
 import 'package:swol/shared/widgets/simple/toLearnPage.dart';
 
-//widget
-class PredictionField extends StatelessWidget {
-  const PredictionField({
-    Key? key,
-    required this.functionID,
-    required this.repTarget,
-    this.subtle: false,
-  }) : super(key: key);
-
-  final ValueNotifier<int> functionID;
-  final ValueNotifier<int> repTarget;
-  final bool subtle;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: <Widget>[
-        PredictionFormulaHeader(
-          subtle: subtle,
-        ),
-        FunctionDropDown(
-          functionID: functionID,
-          repTarget: repTarget,
-        ),
-      ],
-    );
-  }
-}
-
-class PredictionFormulaHeader extends StatelessWidget {
-  PredictionFormulaHeader({
-    this.subtle: false,
-  });
-
-  final bool subtle;
-
-  @override
-  Widget build(BuildContext context) {
-    return Theme(
-      data: MyTheme.light,
-      child: HeaderWithInfo(
-        header: "Formula",
-        title: "Prediction Formulas",
-        subtitle: "Not sure? Keep the default",
-        body: PredictionFormulasPopUpBody(),
-        isDense: false,
-        subtle: subtle,
-      ),
-    );
-  }
-}
-
 class PredictionFormulasPopUpBody extends StatelessWidget {
   const PredictionFormulasPopUpBody({
     Key? key,

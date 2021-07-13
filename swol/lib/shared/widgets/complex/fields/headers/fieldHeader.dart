@@ -13,7 +13,7 @@ class HeaderWithInfo extends StatelessWidget {
     Key? key,
     required this.header,
     required this.title,
-    required this.subtitle,
+    this.subtitle,
     required this.body,
     this.isDense: false,
     this.subtle: false,
@@ -21,7 +21,7 @@ class HeaderWithInfo extends StatelessWidget {
 
   final String header;
   final String title;
-  final String subtitle;
+  final String? subtitle;
   final Widget body;
   final bool isDense;
   final bool subtle;
@@ -81,7 +81,7 @@ class _HeaderWithInfoDark extends StatelessWidget {
             icon: Icon(
               Icons.info,
               color: subtle
-                  ? Theme.of(context).primaryColorDark
+                  ? Colors.white //Theme.of(context).primaryColorDark
                   : Theme.of(context).accentColor,
             ),
           ),
@@ -102,7 +102,7 @@ class RecoveryTimeHeader extends StatelessWidget {
         isDense: true,
         header: "Recovery Time",
         title: "Recovery Time",
-        subtitle: "Not sure? Keep the default",
+        //subtitle: "Not sure? Keep the default",
         body: RecoveryTimePopUpBody(),
       ),
     );
@@ -122,9 +122,9 @@ class RepTargetHeader extends StatelessWidget {
       data: MyTheme.light,
       child: HeaderWithInfo(
         isDense: true,
-        header: "Rep Target",
+        header: "Change Rep Target",
         title: "Rep Target",
-        subtitle: "Not sure? Keep the default",
+        //subtitle: "Not sure? Keep the default",
         body: RepTargetPopUpBody(),
         subtle: subtle,
       ),

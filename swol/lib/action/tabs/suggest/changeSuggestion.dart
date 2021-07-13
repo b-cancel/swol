@@ -5,18 +5,17 @@ import 'package:flutter/material.dart';
 import 'package:swol/shared/widgets/complex/fields/fields/sliders/repTarget.dart';
 import 'package:swol/shared/widgets/complex/fields/fields/function.dart';
 import 'package:swol/action/tabs/suggest/corners.dart';
+import 'package:swol/shared/widgets/complex/fields/headers/fieldHeader.dart';
 
 //widget
 class SuggestionChanger extends StatelessWidget {
   const SuggestionChanger({
     Key? key,
     required this.repTarget,
-    required this.arrowRadius,
     required this.cardRadius,
   }) : super(key: key);
 
   final ValueNotifier<int> repTarget;
-  final Radius arrowRadius;
   final Radius cardRadius;
 
   @override
@@ -25,36 +24,56 @@ class SuggestionChanger extends StatelessWidget {
       mainAxisSize: MainAxisSize.max,
       children: <Widget>[
         Expanded(
-          child: Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: 24,
-            ),
-            child: TextWithCorners(
-              text: "and your Rep Target",
-              radius: cardRadius,
+          child: Center(
+            child: Text(
+              "you should be able to lift",
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
         ),
-        Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: 24.0,
+        Container(
+          width: MediaQuery.of(context).size.width,
+          decoration: BoxDecoration(
+            color: Theme.of(context).cardColor,
+            borderRadius: BorderRadius.all(
+              cardRadius,
+            ),
           ),
-          child: Container(
-            width: MediaQuery.of(context).size.width,
-            decoration: BoxDecoration(
-              color: Theme.of(context).cardColor,
-              borderRadius: BorderRadius.only(
-                bottomRight: arrowRadius,
-                bottomLeft: arrowRadius,
+          child: Column(
+            children: [
+              Container(
+                height: 56,
+                width: MediaQuery.of(context).size.width,
+                decoration: BoxDecoration(
+                  color: Colors.blue,
+                  borderRadius: BorderRadius.all(
+                    cardRadius,
+                  ),
+                ),
+                padding: EdgeInsets.all(16),
+                child: Text("hi"),
               ),
-            ),
-            padding: EdgeInsets.only(
-              bottom: 12,
-            ),
-            child: RepTargetField(
-              repTarget: repTarget,
-              subtle: true,
-            ),
+              Transform.translate(
+                offset: Offset(
+                  0,
+                  24,
+                ),
+                child: RepTargetField(
+                  repTarget: repTarget,
+                  subtle: true,
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: 16,
+                ),
+                child: RepTargetHeader(
+                  subtle: true,
+                ),
+              ),
+            ],
           ),
         ),
       ],

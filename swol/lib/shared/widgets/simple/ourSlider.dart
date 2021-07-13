@@ -73,7 +73,7 @@ class CustomSlider extends StatelessWidget {
       children: <Widget>[
         Container(
           padding: EdgeInsets.only(
-            bottom: 40,
+            bottom: 40 + 14,
             left: sidePadding,
             right: sidePadding,
           ),
@@ -84,7 +84,7 @@ class CustomSlider extends StatelessWidget {
         ),
         Padding(
           padding: EdgeInsets.only(
-            bottom: 14.75,
+            bottom: 15 + 12,
             left: 16,
             right: 16,
           ),
@@ -120,8 +120,13 @@ class CustomSlider extends StatelessWidget {
           ),
         ),
         Container(
+          padding: EdgeInsets.symmetric(
+            horizontal: sidePadding / 2,
+          ),
           child: MediaQuery(
-            data: MediaQuery.of(context).copyWith(textScaleFactor: 1.5),
+            data: MediaQuery.of(context).copyWith(
+              textScaleFactor: 1.5,
+            ),
             child: FlutterSlider(
               //TODO confirm this is correct
               step: FlutterSliderStep(
@@ -139,37 +144,43 @@ class CustomSlider extends StatelessWidget {
                 scale: 1.25,
               ),
               handler: FlutterSliderHandler(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.all(width: 2, color: Colors.black),
-                      color: isDark
-                          ? Theme.of(context).accentColor
-                          : MyTheme.dark.scaffoldBackgroundColor,
-                    ),
-                    child: Center(
-                      child: Icon(
-                        Icons.repeat,
-                        size: 25,
-                        color: Colors.white,
-                      ),
+                child: Container(
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(width: 2, color: Colors.black),
+                    color: isDark
+                        ? Theme.of(context).accentColor
+                        : MyTheme.dark.scaffoldBackgroundColor,
+                  ),
+                  child: Center(
+                    child: Icon(
+                      Icons.repeat,
+                      size: 25,
+                      color: Colors.white,
                     ),
                   ),
-                  foregroundDecoration: BoxDecoration()),
+                ),
+                foregroundDecoration: BoxDecoration(),
+              ),
               tooltip: FlutterSliderTooltip(
+                //TODO: it was true
                 alwaysShowTooltip: true,
                 textStyle: TextStyle(
-                  fontSize: 16,
+                  fontSize: 12,
                   fontWeight: FontWeight.bold,
                   color: isDark ? Colors.white : Colors.black,
                 ),
                 boxStyle: FlutterSliderTooltipBox(
+                  transform: Matrix4.translationValues(0, -16, 0),
                   decoration: BoxDecoration(
                       //color: Theme.of(context).backgroundColor,
                       ),
                 ),
                 //TODO: confirm we don't need the line below
                 //numberFormat: intl.NumberFormat(),
+                format: (String str) {
+                  return double.parse(str).toInt().toString();
+                },
               ),
               trackBar: FlutterSliderTrackBar(
                 activeTrackBarHeight: 16,

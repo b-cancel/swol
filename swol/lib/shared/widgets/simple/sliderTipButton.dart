@@ -25,7 +25,7 @@ class SlideRangeExtent extends StatelessWidget {
           border: Border.all(
         color: (tipText == null)
             ? Colors.transparent
-            : Theme.of(context).primaryColorDark,
+            : Colors.white, //Theme.of(context).primaryColorDark,
         width: 2,
       )),
       padding: EdgeInsets.symmetric(
@@ -43,15 +43,15 @@ class SlideRangeExtent extends StatelessWidget {
                   ),
                   child: Icon(
                     Icons.warning,
-                    color: Theme.of(context).primaryColorDark,
+                    //color: Theme.of(context).primaryColorDark,
                     size: 16,
                   ),
                 ),
           Text(
             buttonText,
             style: TextStyle(
-              color: Theme.of(context).primaryColorDark,
-            ),
+                //color: Theme.of(context).primaryColorDark,
+                ),
           )
         ],
       ),
