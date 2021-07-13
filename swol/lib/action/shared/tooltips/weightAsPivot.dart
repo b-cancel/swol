@@ -65,7 +65,7 @@ showWeightWeightAsPivotToolTip(context) {
           Wrap(
             children: [
               Text(
-                "Expected Weight is Not Available",
+                "Expected Reps are Not Available",
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                 ),

@@ -186,9 +186,9 @@ class _ReloadOnGoalChangeState extends State<ReloadOnGoalChange> {
   @override
   Widget build(BuildContext context) {
     //gather
-    String weight = ExercisePage.setGoalWeight.value.toInt().toString();
-    int plusMinus = ExercisePage.setGoalPlusMinus.value.toInt().abs();
-    int reps = ExercisePage.setGoalReps.value.toInt();
+    String weight = ExercisePage.setGoalWeight.value.round().toString();
+    int plusMinus = ExercisePage.setGoalPlusMinus.value.round().abs();
+    int reps = ExercisePage.setGoalReps.value.round();
 
     //build
     return DefaultTextStyle(

@@ -276,6 +276,6 @@ class Functions {
       massiveSum += (val * val);
     }
 
-    return math.sqrt(massiveSum / values.length);
+    return (math.sqrt(massiveSum / values.length)).abs();
   }
 }

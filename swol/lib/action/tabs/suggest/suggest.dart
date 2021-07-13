@@ -37,8 +37,8 @@ class _SuggestionState extends State<Suggestion> {
   //update the goal set based on init
   //and changed valus
   updateGoalWeight() {
-    double lastWeight = widget.exercise.lastWeight!.toDouble();
-    int lastReps = widget.exercise.lastReps!;
+    double lastWeight = (widget.exercise.lastWeight ?? 0).toDouble();
+    int lastReps = widget.exercise.lastReps ?? 0;
 
     //maxes, mean, std deviation
     List otherMaxes = Functions.getMaxWeightsWithGoalReps(

@@ -70,6 +70,7 @@ class _MakeFunctionAdjustmentState extends State<MakeFunctionAdjustment> {
     );
 
     Widget goalSet = SetDisplay(
+      repTarget: widget.exercise.repTarget,
       useAccent: false,
       title: "Adjusted",
       heroUp: widget.heroUp,
