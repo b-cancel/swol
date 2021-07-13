@@ -35,10 +35,13 @@ class SuggestionChanger extends StatelessWidget {
               0,
               24,
             ),
-            child: RepTargetField(
-              repTarget: repTarget,
-              subtle: true,
-              darkTheme: true,
+            child: Theme(
+              data: ThemeData.light(),
+              child: RepTargetField(
+                repTarget: repTarget,
+                subtle: true,
+                darkTheme: true,
+              ),
             ),
           ),
           Padding(

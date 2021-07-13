@@ -1,4 +1,5 @@
 //flutter
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:swol/action/page.dart';
@@ -8,6 +9,7 @@ import 'package:swol/shared/widgets/complex/fields/fields/sliders/sliderField.da
 import 'package:swol/shared/widgets/complex/rangeInformation/animatedCarousel.dart';
 import 'package:swol/shared/widgets/complex/fields/headers/fieldHeader.dart';
 import 'package:swol/shared/widgets/simple/oneOrTheOtherIcon.dart';
+import 'package:swol/shared/widgets/simple/ourToolTip.dart';
 import 'package:swol/shared/widgets/simple/sliderTipButton.dart';
 import 'package:swol/shared/functions/trainingPopUps.dart';
 import 'package:swol/shared/structs/range.dart';
@@ -80,21 +82,68 @@ class _RepTargetFieldState extends State<RepTargetField> {
         padding: EdgeInsets.only(
           bottom: 16,
         ),
-        child: Container(
-          width: MediaQuery.of(context).size.width,
-          decoration: BoxDecoration(
-            color: Colors.blue,
-            borderRadius: BorderRadius.all(
-              Radius.circular(16),
+        child: Material(
+          color: Colors.blue,
+          borderRadius: BorderRadius.all(
+            Radius.circular(16),
+          ),
+          child: InkWell(
+            onTap: () {
+              showWidgetToolTip(
+                context,
+                GestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  onTap: () {
+                    BotToast.cleanAll();
+                  },
+                  child: DefaultTextStyle(
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Wrap(
+                          children: <Widget>[
+                            Text(
+                              "Edit",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
+                              ),
+                            ),
+                            Text(
+                              " your Rep Target ",
+                            ),
+                            Text(
+                              "with the slider below",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                direction: PreferDirection.topRight,
+                seconds: 8,
+              );
+            },
+            child: Container(
+              width: MediaQuery.of(context).size.width,
+              height: 56,
+              padding: EdgeInsets.all(
+                8,
+              ),
+              child: FittedBox(
+                fit: BoxFit.contain,
+                child: ReloadOnGoalChange(),
+              ),
             ),
-          ),
-          height: 56,
-          padding: EdgeInsets.all(
-            8,
-          ),
-          child: FittedBox(
-            fit: BoxFit.contain,
-            child: ReloadOnGoalChange(),
           ),
         ),
       ),
@@ -150,7 +199,17 @@ class _ReloadOnGoalChangeState extends State<ReloadOnGoalChange> {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text(weight),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(weight),
+              Icon(
+                FontAwesomeIcons.dumbbell,
+                color: Colors.white,
+                size: 6,
+              ),
+            ],
+          ),
           Visibility(
             visible: plusMinus > 0,
             child: Row(
@@ -180,7 +239,17 @@ class _ReloadOnGoalChangeState extends State<ReloadOnGoalChange> {
             ),
           ),
           Text(" for "),
-          Text(reps.toString()),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(reps.toString()),
+              Icon(
+                Icons.repeat,
+                color: Colors.white,
+                size: 6,
+              ),
+            ],
+          ),
           Text("rep" + (reps == 1 ? "" : "s")),
         ],
       ),
