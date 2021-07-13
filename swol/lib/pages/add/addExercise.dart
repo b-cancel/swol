@@ -259,13 +259,13 @@ class _AddExerciseState extends State<AddExercise> {
         ),
       ),
       NonReloadingCard(
+        child: LinkField(url: url),
+      ),
+      NonReloadingCard(
         child: NotesField(
           noteToUpdate: note,
           noteFocusNode: noteFocusNode,
         ),
-      ),
-      NonReloadingCard(
-        child: LinkField(url: url),
       ),
     ];
 
@@ -343,7 +343,8 @@ class _AddExerciseState extends State<AddExercise> {
           color: Theme.of(context).scaffoldBackgroundColor,
           child: AnimationLimiter(
             child: ListView.builder(
-              shrinkWrap: true,
+              physics: BouncingScrollPhysics(),
+              //shrinkWrap: true,
               padding: EdgeInsets.symmetric(
                 vertical: 16,
               ),

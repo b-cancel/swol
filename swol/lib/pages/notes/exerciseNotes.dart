@@ -138,6 +138,7 @@ class _ExerciseNotesState extends State<ExerciseNotes> {
           ],
         ),
         body: ListView(
+          physics: BouncingScrollPhysics(),
           children: <Widget>[
             Padding(
               padding: EdgeInsets.symmetric(
@@ -154,14 +155,14 @@ class _ExerciseNotesState extends State<ExerciseNotes> {
                     showError: nameError,
                     autofocus: true,
                   ),
+                  LinkField(
+                    url: url,
+                    editOneAtATime: true,
+                  ),
                   NotesField(
                     editOneAtATime: true,
                     noteToUpdate: note,
                     noteFocusNode: noteFocusNode,
-                  ),
-                  LinkField(
-                    url: url,
-                    editOneAtATime: true,
                   ),
                 ],
               ),

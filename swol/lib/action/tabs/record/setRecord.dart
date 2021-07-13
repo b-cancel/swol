@@ -157,6 +157,7 @@ class SetRecordInner extends StatelessWidget {
     if (calibrationRequired) {
       //clipping so "hero" doesn't show up in the other page
       scrollingPage = ListView(
+        physics: BouncingScrollPhysics(),
         children: <Widget>[
           Container(
             height: spaceToRedistribute,
@@ -205,6 +206,7 @@ class SetRecordInner extends StatelessWidget {
     } else {
       //clipping so "hero" doesn't show up in the other page
       scrollingPage = ListView(
+        physics: BouncingScrollPhysics(),
         children: <Widget>[
           Container(
             height: spaceToRedistribute,
