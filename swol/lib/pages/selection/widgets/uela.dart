@@ -1,6 +1,7 @@
 //flutter
 import 'dart:io';
 
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -13,6 +14,10 @@ import 'package:swol/shared/methods/theme.dart';
 import 'package:swol/shared/widgets/simple/popUpAdjustments.dart';
 import 'package:swol/shared/widgets/simple/triangleAngle.dart';
 import 'package:swol/shared/widgets/simple/playOnceGif.dart';
+
+import 'package:flutter_markdown/flutter_markdown.dart';
+
+import '../../../policyDialog.dart';
 
 //widget
 class UELA extends StatefulWidget {
@@ -188,6 +193,45 @@ class UelaBody extends StatelessWidget {
                               ),
                             ),
                           ),
+                          Padding(
+                            padding: EdgeInsets.only(
+                              top: 12.0,
+                            ),
+                            child: RichText(
+                              textScaleFactor: MediaQuery.of(
+                                context,
+                              ).textScaleFactor,
+                              text: TextSpan(
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: Colors.black,
+                                ),
+                                children: [
+                                  TextSpan(
+                                    text: tab + "Read our ",
+                                  ),
+                                  TextSpan(
+                                    text: " Privacy Policy Here",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w900,
+                                      color: Colors.blue,
+                                    ),
+                                    recognizer: TapGestureRecognizer()
+                                      ..onTap = () {
+                                        showDialog(
+                                          context: context,
+                                          builder: (context) {
+                                            return PolicyDialog(
+                                              mdFileName: 'privacyPolicy.md',
+                                            );
+                                          },
+                                        );
+                                      },
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
                         ],
                       ),
                     ),
@@ -256,7 +300,7 @@ class TheCountDown extends StatelessWidget {
         Container(
           decoration: BoxDecoration(
             color: Colors.black.withOpacity(0.75),
-            borderRadius: BorderRadius.circular(12),
+            shape: BoxShape.circle,
           ),
           padding: EdgeInsets.all(16),
           child: DefaultTextStyle(
@@ -266,11 +310,16 @@ class TheCountDown extends StatelessWidget {
             ),
             child: Column(
               children: <Widget>[
-                Text(
-                  "Hold To Agree",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
+                Padding(
+                  padding: EdgeInsets.only(
+                    top: 24,
+                  ),
+                  child: Text(
+                    "Hold To Agree",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                    ),
                   ),
                 ),
                 BasicCountDown(
@@ -325,19 +374,26 @@ class TopPicture extends StatelessWidget {
           ),
           Container(
             decoration: BoxDecoration(
-              color: Theme.of(context).accentColor,
+              color: Colors.white,
               shape: BoxShape.circle,
             ),
-            height: 175,
-            padding: EdgeInsets.only(
-              top: 8,
-            ),
-            child: ClipOval(
-              child: PlayGifOnce(
-                assetName: "assets/popUpGifs/agree.gif",
-                runTimeMS: 2370,
-                frameCount: 70,
-                colorWhite: false,
+            padding: EdgeInsets.all(4),
+            child: Container(
+              decoration: BoxDecoration(
+                color: Theme.of(context).accentColor,
+                shape: BoxShape.circle,
+              ),
+              height: 175,
+              padding: EdgeInsets.only(
+                top: 8,
+              ),
+              child: ClipOval(
+                child: PlayGifOnce(
+                  assetName: "assets/popUpGifs/agree.gif",
+                  runTimeMS: 2370,
+                  frameCount: 70,
+                  colorWhite: false,
+                ),
               ),
             ),
           ),

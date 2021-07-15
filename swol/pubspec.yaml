@@ -35,6 +35,9 @@ dependencies:
   #(vibration request)
   #flutter_native_splash -> re-setup splash screen
   #flutter_icons -> re-setup icon
+
+  #for privacy policy
+  flutter_markdown: ^0.6.2
   
   #for the new notifications plugin
   flutter_native_timezone: ^2.0.0
@@ -193,6 +196,7 @@ flutter:
     - assets/impatient.gif
     - assets/notification/blueShadow.gif
     - assets/notification/cropedLocation.gif
+    - assets/privacyPolicy.md
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
