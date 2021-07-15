@@ -137,3 +137,8 @@ Future<bool> reactToNotificationPermissionRejected(
     }
   }
 }
+
+//explain initial -> explainNotificationPermission
+//explain restriction -> showRestrictedPopUp
+//explain manual -> requestThatYouGoToAppSettings
+//where to find if deny from automatic -> showEnableNotificationsButtonLocation

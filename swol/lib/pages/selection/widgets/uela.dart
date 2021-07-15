@@ -377,7 +377,7 @@ class TopPicture extends StatelessWidget {
               color: Colors.white,
               shape: BoxShape.circle,
             ),
-            padding: EdgeInsets.all(4),
+            padding: EdgeInsets.all(8),
             child: Container(
               decoration: BoxDecoration(
                 color: Theme.of(context).accentColor,

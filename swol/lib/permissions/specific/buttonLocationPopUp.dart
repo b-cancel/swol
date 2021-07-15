@@ -76,7 +76,7 @@ Future<bool> showEnableNotificationsButtonLocation(BuildContext context) async {
                                           "You're Missing Out!",
                                           style: TextStyle(
                                             fontWeight: FontWeight.bold,
-                                            fontSize: 32,
+                                            fontSize: 26,
                                           ),
                                         ),
                                         Text(

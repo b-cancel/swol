@@ -138,24 +138,24 @@ Future<bool> explainNotificationPermission(BuildContext context) async {
                             ],
                           ),
                         ),
-                        BottomButtonsThatResizeTRBL(
-                          secondary: TextButton(
-                            child: Text("Deny"),
-                            onPressed: () {
-                              Navigator.of(context).pop(false);
-                            },
-                          ),
-                          primary: ElevatedButton(
-                            child: Text("Allow"),
-                            style: ElevatedButton.styleFrom(
-                              primary: MyTheme.dark.accentColor,
-                            ),
-                            onPressed: () async {
-                              Navigator.of(context).pop(true);
-                            },
-                          ),
-                        ),
                       ],
+                    ),
+                  ),
+                  BottomButtonsThatResizeTRBL(
+                    secondary: TextButton(
+                      child: Text("Deny"),
+                      onPressed: () {
+                        Navigator.of(context).pop(false);
+                      },
+                    ),
+                    primary: ElevatedButton(
+                      child: Text("Allow"),
+                      style: ElevatedButton.styleFrom(
+                        primary: MyTheme.dark.accentColor,
+                      ),
+                      onPressed: () async {
+                        Navigator.of(context).pop(true);
+                      },
                     ),
                   ),
                 ],

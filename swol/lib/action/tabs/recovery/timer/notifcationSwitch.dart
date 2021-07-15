@@ -4,6 +4,10 @@ import 'package:flutter/material.dart';
 //plugins
 import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:swol/permissions/specific/buttonLocationPopUp.dart';
+import 'package:swol/permissions/specific/explainWhyPermission.dart';
+import 'package:swol/permissions/specific/manualEnablePopUp.dart';
+import 'package:swol/permissions/specific/restrictedPopUp.dart';
 import 'package:swol/permissions/specific/specificAsk.dart';
 
 //internal
@@ -93,39 +97,51 @@ class _NotificationSwitchState extends State<NotificationSwitch>
     return Container(
       padding: EdgeInsets.all(24),
       child: Visibility(
-        visible: showButton,
-        child: IconButton(
-          tooltip: 'Enable Notifications',
-          onPressed: () async {
-            if (await reactToExplainingNotificationPermission(
-              automaticallyOpened: false,
-            )) {
-              updateShowButton();
-            }
-          },
-          icon: Container(
-            child: Stack(
-              children: [
-                Container(
-                  width: 56,
-                  height: 56,
-                  child: FittedBox(
-                    fit: BoxFit.contain,
-                    child: SpinKitDoubleBounce(
-                      color: Theme.of(context).accentColor,
-                      size: 1,
-                      duration: Duration(milliseconds: 1000),
+        visible: true, //showButton,
+        child: Theme(
+          data: ThemeData.light(),
+          child: Builder(builder: (context) {
+            return IconButton(
+              tooltip: 'Enable Notifications',
+              onPressed: () async {
+                requestThatYouGoToAppSettings(context); //dynamic
+                //showRestrictedPopUp(context); //dynamic
+                //showEnableNotificationsButtonLocation(context); //bool
+                //explainNotificationPermission(context); //bool
+                /*
+                  if (await reactToExplainingNotificationPermission(
+                    automaticallyOpened: false,
+                  )) {
+                    updateShowButton();
+                  }
+                  */
+              },
+              icon: Container(
+                child: Stack(
+                  children: [
+                    Container(
+                      width: 56,
+                      height: 56,
+                      child: FittedBox(
+                        fit: BoxFit.contain,
+                        child: SpinKitDoubleBounce(
+                          color: Theme.of(context).accentColor,
+                          size: 1,
+                          duration: Duration(milliseconds: 1000),
+                        ),
+                      ),
                     ),
-                  ),
+                    Center(
+                      child: Icon(
+                        Icons.notifications,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
                 ),
-                Center(
-                  child: Icon(
-                    Icons.notifications,
-                  ),
-                ),
-              ],
-            ),
-          ),
+              ),
+            );
+          }),
         ),
       ),
     );

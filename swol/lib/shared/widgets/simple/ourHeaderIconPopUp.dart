@@ -6,7 +6,7 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:swol/awesomeDialog.dart';
 import 'package:swol/shared/widgets/simple/popUpAdjustments.dart';
 
-showBasicHeaderIconPopUp(
+Future showBasicHeaderIconPopUp(
   BuildContext context, //should be light context
   List<Widget> titles,
   List<Widget> children,
@@ -24,24 +24,29 @@ showBasicHeaderIconPopUp(
   FocusScope.of(context).unfocus();
 
   //show pop up
-  MyAwesomeDialog(
+  return MyAwesomeDialog(
     context: context,
     isDense: isDense,
     barrierDismissible: dismissOnTouchOutside,
     headerAnimationLoop: false,
     animType: animationType,
     dialogType: dialogType,
-    body: AwesomeBody(
-      titles: titles,
-      children: children,
-      clearBtn: clearBtn,
-      colorBtn: colorBtn,
+    body: WillPopScope(
+      onWillPop: () async {
+        return (dismissOnTouchOutside);
+      },
+      child: AwesomeBody(
+        titles: titles,
+        children: children,
+        clearBtn: clearBtn,
+        colorBtn: colorBtn,
+      ),
     ),
   ).show();
 }
 
 //function
-showCustomHeaderIconPopUp(
+Future showCustomHeaderIconPopUp(
   BuildContext context, //should be light context
   List<Widget> titles,
   List<Widget> children,
@@ -62,7 +67,7 @@ showCustomHeaderIconPopUp(
   FocusScope.of(context).unfocus();
 
   //show pop up
-  MyAwesomeDialog(
+  return MyAwesomeDialog(
     context: context,
     isDense: isDense,
     barrierDismissible: dismissOnTouchOutside,
@@ -73,11 +78,16 @@ showCustomHeaderIconPopUp(
       regularPadding: regularPadding,
       header: header,
     ),
-    body: AwesomeBody(
-      titles: titles,
-      children: children,
-      clearBtn: clearBtn,
-      colorBtn: colorBtn,
+    body: WillPopScope(
+      onWillPop: () async {
+        return (dismissOnTouchOutside);
+      },
+      child: AwesomeBody(
+        titles: titles,
+        children: children,
+        clearBtn: clearBtn,
+        colorBtn: colorBtn,
+      ),
     ),
   ).show();
 }
