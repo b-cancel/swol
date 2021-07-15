@@ -1,4 +1,5 @@
 //flutter
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 
 //plugin
@@ -9,6 +10,7 @@ import 'package:swol/shared/widgets/simple/oneOrTheOtherIcon.dart';
 import 'package:swol/shared/structs/anExercise.dart';
 import 'package:swol/other/functions/helper.dart';
 import 'package:swol/shared/widgets/simple/ourSnackBar.dart';
+import 'package:swol/shared/widgets/simple/ourToolTip.dart';
 
 //given the
 //1. last weight
@@ -180,17 +182,45 @@ class _ExerciseTileSubtitleState extends State<ExerciseTileSubtitle> {
       //create the subtitle given the retreived values
       return GestureDetector(
         onTap: () {
-          openSnackBar(
+          showWidgetToolTip(
             context,
-            Colors.blue,
-            Icons.info_outline,
-            message: "Your " +
-                (isOneRepMaxEstimated ? "Estimated " : "") +
-                "One Rep Max is " +
-                oneRepMaxString +
-                (plusOrMinusString.length > 0
-                    ? "\ngive or take " + plusOrMinusString
-                    : ""),
+            DefaultTextStyle(
+              style: TextStyle(
+                color: Colors.black,
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      right: 8.0,
+                    ),
+                    child: Icon(
+                      Icons.info_outline,
+                      size: 24.0,
+                      color: Colors.blue,
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(
+                      right: 6,
+                    ),
+                    child: Text(
+                      "Your " +
+                          (isOneRepMaxEstimated ? "Estimated " : "") +
+                          "One Rep Max is " +
+                          oneRepMaxString +
+                          (plusOrMinusString.length > 0
+                              ? "\ngive or take " + plusOrMinusString
+                              : ""),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            seconds: 5,
+            direction: PreferDirection.topLeft,
+            color: Colors.white,
           );
         },
         child: Row(

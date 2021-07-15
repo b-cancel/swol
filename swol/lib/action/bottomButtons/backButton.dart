@@ -97,6 +97,15 @@ class _BottomBackButtonState extends State<BottomBackButton> {
                     showIcon: false,
                     direction: PreferDirection.bottomRight,
                   );
+                } else {
+                  if (ExercisePage.pageNumber.value == 1) {
+                    showToolTip(
+                      context,
+                      "the timer won't reset, as long as your set is valid",
+                      showIcon: false,
+                      direction: PreferDirection.bottomRight,
+                    );
+                  }
                 }
 
                 //go back

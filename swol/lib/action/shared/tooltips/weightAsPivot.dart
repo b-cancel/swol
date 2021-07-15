@@ -16,65 +16,71 @@ showWeightWeightAsPivotToolTip(context) {
       onTap: () {
         BotToast.cleanAll();
       },
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Wrap(
-            children: [
-              Text(
-                "We are using your ",
-              ),
-              Text(
-                "Recorded Weight",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
+      child: DefaultTextStyle(
+        style: TextStyle(
+          color: Colors.black,
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Wrap(
+              children: [
+                Text(
+                  "We are using your ",
                 ),
-              ),
-            ],
-          ),
-          Wrap(
-            children: [
-              Text(
-                "To calculate your ",
-              ),
-              Text(
-                "Expected Reps",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
+                Text(
+                  "Recorded Weight",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-              ),
-            ],
-          ),
-          Wrap(
-            children: [
-              Text(
-                "This ",
-              ),
-              Text(
-                "helps when",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
+              ],
+            ),
+            Wrap(
+              children: [
+                Text(
+                  "To calculate your ",
                 ),
-              ),
-              Text(
-                " the calculated",
-              ),
-            ],
-          ),
-          Wrap(
-            children: [
-              Text(
-                "Expected Reps are Not Available",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
+                Text(
+                  "Expected Reps",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-              ),
-            ],
-          ),
-        ],
+              ],
+            ),
+            Wrap(
+              children: [
+                Text(
+                  "This ",
+                ),
+                Text(
+                  "helps when",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Text(
+                  " the calculated",
+                ),
+              ],
+            ),
+            Wrap(
+              children: [
+                Text(
+                  "Expected Reps are Not Available",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     ),
+    color: Colors.white,
     direction: PreferDirection.topCenter,
     seconds: 10,
   );
@@ -88,39 +94,45 @@ showRepsWeightAsPivotToolTip(context) {
       onTap: () {
         BotToast.cleanAll();
       },
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Wrap(
-            children: [
-              Text(
-                "The ",
-              ),
-              Text(
-                "Expected Reps",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
+      child: DefaultTextStyle(
+        style: TextStyle(
+          color: Colors.black,
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Wrap(
+              children: [
+                Text(
+                  "The ",
                 ),
-              ),
-            ],
-          ),
-          Wrap(
-            children: [
-              Text(
-                "Calculated from your ",
-              ),
-              Text(
-                "Recorded Weight",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
+                Text(
+                  "Expected Reps",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-              ),
-            ],
-          ),
-        ],
+              ],
+            ),
+            Wrap(
+              children: [
+                Text(
+                  "Calculated from your ",
+                ),
+                Text(
+                  "Recorded Weight",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     ),
+    color: Colors.white,
     direction: PreferDirection.topCenter,
     seconds: 5,
   );

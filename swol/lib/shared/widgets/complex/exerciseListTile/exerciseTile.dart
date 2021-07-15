@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 //plugin
 import 'package:page_transition/page_transition.dart';
+import 'package:swol/pages/search/searchesData.dart';
 
 //internal: shared
 import 'package:swol/shared/widgets/complex/exerciseListTile/exerciseLeading.dart';
@@ -38,12 +39,11 @@ https://medium.com/flutter/keys-what-are-they-good-for-13cb51742e7d
 
 //widget
 class ExerciseTile extends StatefulWidget {
-  ExerciseTile(
-      {required this.exercise, this.tileInSearch: false, required Key? key})
+  ExerciseTile({required this.exercise, this.search, required Key? key})
       : super(key: key);
 
   final AnExercise exercise;
-  final bool tileInSearch;
+  final TextEditingController? search;
 
   @override
   _ExerciseTileState createState() => _ExerciseTileState();
@@ -72,7 +72,9 @@ class _ExerciseTileState extends State<ExerciseTile> {
         );
 
         //push or replace depending on scenario
-        if (widget.tileInSearch) {
+        if (widget.search != null) {
+          //add to recent searches
+          SearchesData.addToSearches(widget.search!.text);
           //close keyboard IF open
           FocusScope.of(context).unfocus();
           //push replacement, lets heros still work
@@ -107,7 +109,7 @@ class _ExerciseTileState extends State<ExerciseTile> {
       trailing: ExerciseTileLeading(
         key: widget.key,
         exercise: widget.exercise,
-        tileInSearch: widget.tileInSearch,
+        tileInSearch: widget.search != null,
       ),
     );
   }

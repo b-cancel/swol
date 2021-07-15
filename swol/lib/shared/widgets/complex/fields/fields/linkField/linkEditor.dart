@@ -1,7 +1,9 @@
 //flutter
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:swol/shared/widgets/simple/conditional.dart';
+import 'package:swol/shared/widgets/simple/ourToolTip.dart';
 
 //plugin
 import 'package:url_launcher/url_launcher.dart';
@@ -56,7 +58,7 @@ class _LinkEditorState extends State<LinkEditor> {
   showWarning(String message) {
     openSnackBar(
       context,
-      Colors.yellow,
+      Colors.red,
       Icons.warning,
       message: message,
     );

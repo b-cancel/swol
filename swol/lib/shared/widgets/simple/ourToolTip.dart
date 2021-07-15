@@ -10,12 +10,13 @@ showWidgetToolTip(
   Widget widget, {
   int seconds: 4,
   PreferDirection direction: PreferDirection.topRight,
+  Color? color,
 }) {
   BotToast.showAttachedWidget(
     enableSafeArea: true,
     attachedBuilder: (_) {
       return Card(
-        color: Theme.of(context).scaffoldBackgroundColor,
+        color: color ?? Theme.of(context).scaffoldBackgroundColor,
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: widget,
@@ -68,7 +69,7 @@ class OurToolTip extends StatelessWidget {
         BotToast.cleanAll();
       },
       child: Card(
-        color: Theme.of(context).scaffoldBackgroundColor,
+        color: Colors.white,
         child: Row(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -90,13 +91,17 @@ class OurToolTip extends StatelessWidget {
             ),
             //this is what's actually important
             Flexible(
-                child: Padding(
-              padding: EdgeInsets.all(8.0),
-              child: Text(
-                text,
-                maxLines: 3,
+              child: Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Text(
+                  text,
+                  maxLines: 3,
+                  style: TextStyle(
+                    color: Colors.black,
+                  ),
+                ),
               ),
-            )),
+            ),
           ],
         ),
       ),

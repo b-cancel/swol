@@ -180,15 +180,21 @@ class _NamePopUpBody extends StatelessWidget {
                   circleColor: Colors.blue,
                   circleText: "2",
                   circleTextColor: Colors.white,
-                  content: Text("Ability Formula"),
+                  content: Text("Set Target"),
                 ),
                 ListItem(
                   circleColor: Colors.blue,
                   circleText: "3",
                   circleTextColor: Colors.white,
+                  content: Text("Recovery Time"),
+                ),
+                ListItem(
+                  circleColor: Colors.blue,
+                  circleText: "4",
+                  circleTextColor: Colors.white,
                   content: Text("Rep Target"),
                   bottomSpacing: 0,
-                )
+                ),
               ],
             ),
           ),

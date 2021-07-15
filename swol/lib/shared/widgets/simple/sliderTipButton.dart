@@ -66,19 +66,25 @@ class SlideRangeExtent extends StatelessWidget {
         onTap: () {
           showWidgetToolTip(
             context,
-            Row(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment:
-                  tipToLeft ? MainAxisAlignment.start : MainAxisAlignment.end,
-              children: [
-                Flexible(
-                  child: Text(
-                    tipText ?? "",
-                    textAlign: tipToLeft ? TextAlign.left : TextAlign.right,
-                  ),
-                )
-              ],
+            DefaultTextStyle(
+              style: TextStyle(
+                color: blackText ? Colors.white : Colors.black,
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment:
+                    tipToLeft ? MainAxisAlignment.start : MainAxisAlignment.end,
+                children: [
+                  Flexible(
+                    child: Text(
+                      tipText ?? "",
+                      textAlign: tipToLeft ? TextAlign.left : TextAlign.right,
+                    ),
+                  )
+                ],
+              ),
             ),
+            color: blackText ? Colors.black : Colors.white,
             direction:
                 tipToLeft ? PreferDirection.topLeft : PreferDirection.topRight,
           );

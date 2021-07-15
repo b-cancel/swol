@@ -232,12 +232,12 @@ class RecentSearches extends StatelessWidget {
               },
               child: Padding(
                 padding: EdgeInsets.symmetric(
-                  vertical: 16.0,
+                  vertical: 6,
                 ),
                 child: Text(
                   "Clear Search History",
                   style: TextStyle(
-                    color: Theme.of(context).accentColor,
+                    color: Colors.white,
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
                   ),

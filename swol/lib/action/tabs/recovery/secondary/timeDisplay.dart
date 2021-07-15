@@ -100,6 +100,7 @@ class TimeDisplay extends StatelessWidget {
                             (topArrowUp ?? true)
                                 ? "Extra Time Waited"
                                 : "Time Left To Wait",
+
                             direction: PreferDirection.topCenter,
                             showIcon: false,
                           ),

@@ -278,6 +278,7 @@ class SearchBody extends StatelessWidget {
         );
       } else {
         return SearchResults(
+          search: search,
           queryResults: queryResults,
           exercises: exercises,
         );
@@ -290,10 +291,12 @@ class SearchResults extends StatelessWidget {
   const SearchResults({
     Key? key,
     required this.queryResults,
+    required this.search,
     required this.exercises,
   }) : super(key: key);
 
   final List<int> queryResults;
+  final TextEditingController search;
   final Map<int, AnExercise> exercises;
 
   @override
@@ -314,7 +317,7 @@ class SearchResults extends StatelessWidget {
           return ExerciseTile(
             key: ValueKey(exercise.id),
             exercise: exercise,
-            tileInSearch: true,
+            search: search,
           );
         },
         separatorBuilder: (context, index) => ListTileDivider(),

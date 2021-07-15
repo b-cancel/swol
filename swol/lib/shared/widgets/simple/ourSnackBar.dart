@@ -1,5 +1,8 @@
 //flutter
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
+
+import 'ourToolTip.dart';
 
 //standard UI
 //used by 1. name when only 1 is editable at a time to tell users then need a name (should barely ever happen)
@@ -17,46 +20,19 @@ openSnackBar(
   String message: "",
   ValueNotifier<String>? updatingMessage,
 }) {
-  //dismiss if desired
-  if (dismissBeforeShow) {
-    ScaffoldMessenger.of(context).hideCurrentSnackBar();
-  } else if (quickDismissBeforeShow) {
-    ScaffoldMessenger.of(context).removeCurrentSnackBar();
-  }
+  BotToast.cleanAll();
 
-  //main content
-  Widget content = SnackBarBody(
-    icon: icon,
-    color: color,
-    updatingMessage: updatingMessage,
-    message: message,
-  );
-
-  //show snackbar
-  ScaffoldMessenger.of(context).showSnackBar(
-    SnackBar(
-      backgroundColor: color == Colors.yellow
-          ? Theme.of(context).primaryColorDark
-          : Theme.of(context).scaffoldBackgroundColor,
-      behavior: SnackBarBehavior.floating,
-      //show "forever" if needed
-      duration: showForever ? Duration(hours: 1) : Duration(seconds: 4),
-      content: dismissible
-          //if its dismissible also make it possible to dismiss on tap
-          ? GestureDetector(
-              behavior: HitTestBehavior.opaque,
-              onTap: () {
-                ScaffoldMessenger.of(context).hideCurrentSnackBar();
-              },
-              child: content,
-            )
-          //make it undissmisible if needed
-          : GestureDetector(
-              behavior: HitTestBehavior.opaque,
-              onVerticalDragStart: (_) {},
-              child: content,
-            ),
+  showWidgetToolTip(
+    context,
+    SnackBarBody(
+      icon: icon,
+      color: color,
+      updatingMessage: updatingMessage,
+      message: message,
     ),
+    seconds: 5,
+    direction: PreferDirection.topCenter,
+    color: Colors.white,
   );
 }
 
@@ -76,28 +52,36 @@ class SnackBarBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(mainAxisSize: MainAxisSize.max, children: [
-      Padding(
-        padding: const EdgeInsets.only(
-          right: 8.0,
+    return Padding(
+      padding: EdgeInsets.only(
+        right: 6,
+      ),
+      child: DefaultTextStyle(
+        style: TextStyle(
+          color: Colors.black,
         ),
-        child: Icon(
-          icon,
-          size: 24.0,
-          color: color,
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(
+                right: 6,
+              ),
+              child: Icon(
+                icon,
+                size: 24.0,
+                color: color,
+              ),
+            ),
+            Flexible(
+              child: updatingMessage == null
+                  ? Text(message ?? "")
+                  : UpdatingText(updatingText: updatingMessage!),
+            ),
+          ],
         ),
       ),
-      Flexible(
-        child: DefaultTextStyle(
-          style: TextStyle(
-            color: Colors.white,
-          ),
-          child: updatingMessage == null
-              ? Text(message ?? "")
-              : UpdatingText(updatingText: updatingMessage!),
-        ),
-      ),
-    ]);
+    );
   }
 }
 

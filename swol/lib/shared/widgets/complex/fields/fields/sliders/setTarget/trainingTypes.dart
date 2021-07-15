@@ -174,10 +174,14 @@ class NoMoreThan6Sets extends StatelessWidget {
                       "\n" +
                       "might do you more harm than good",
                   textAlign: TextAlign.right,
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
                 ),
               ),
             ],
           ),
+          color: Colors.red,
           direction: PreferDirection.topRight,
         );
       },

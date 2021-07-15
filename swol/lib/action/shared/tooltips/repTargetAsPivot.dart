@@ -16,39 +16,45 @@ showWeightRepTargetAsPivotToolTip(context) {
       onTap: () {
         BotToast.cleanAll();
       },
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Wrap(
-            children: [
-              Text(
-                "The ",
-              ),
-              Text(
-                "Expected Weight",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
+      child: DefaultTextStyle(
+        style: TextStyle(
+          color: Colors.black,
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Wrap(
+              children: [
+                Text(
+                  "The ",
                 ),
-              ),
-            ],
-          ),
-          Wrap(
-            children: [
-              Text(
-                "Calculated from your ",
-              ),
-              Text(
-                "Rep Target",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
+                Text(
+                  "Expected Weight",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-              ),
-            ],
-          ),
-        ],
+              ],
+            ),
+            Wrap(
+              children: [
+                Text(
+                  "Calculated from your ",
+                ),
+                Text(
+                  "Rep Target",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     ),
+    color: Colors.white,
     direction: PreferDirection.topCenter,
     seconds: 5,
   );
@@ -62,39 +68,45 @@ showRepsRepTargetAsPivotToolTip(context) {
       onTap: () {
         BotToast.cleanAll();
       },
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Wrap(
-            children: [
-              Text(
-                "The ",
-              ),
-              Text(
-                "Rep Target",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
+      child: DefaultTextStyle(
+        style: TextStyle(
+          color: Colors.black,
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Wrap(
+              children: [
+                Text(
+                  "The ",
                 ),
-              ),
-            ],
-          ),
-          Wrap(
-            children: [
-              Text(
-                "Used to calculate your ",
-              ),
-              Text(
-                "Expected Weight",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
+                Text(
+                  "Rep Target",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-              ),
-            ],
-          ),
-        ],
+              ],
+            ),
+            Wrap(
+              children: [
+                Text(
+                  "Used to calculate your ",
+                ),
+                Text(
+                  "Expected Weight",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     ),
+    color: Colors.white,
     direction: PreferDirection.topCenter,
     seconds: 5,
   );

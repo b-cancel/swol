@@ -6,7 +6,6 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 //internal: addition
-import 'package:swol/pages/add/widgets/matchTrainingTypeTip.dart';
 import 'package:swol/pages/add/widgets/reloadingCard.dart';
 import 'package:swol/pages/add/widgets/save.dart';
 import 'package:swol/shared/methods/theme.dart';
@@ -166,7 +165,7 @@ class _AddExerciseState extends State<AddExercise> {
                   child: HeaderWithInfo(
                     header: "Main Focus",
                     title: "Main Focus",
-                    subtitle: "we'll help you stay focused",
+                    subtitle: "We'll help you stay focused",
                     body: Column(
                       mainAxisSize: MainAxisSize.min,
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -186,7 +185,7 @@ class _AddExerciseState extends State<AddExercise> {
                               children: [
                                 TextSpan(
                                   text:
-                                      "by selecting a rep goal, set recovery time, and set goal for you",
+                                      "By selecting a Rep Target, Recovery Time, and Set Target appropiate for your Goals",
                                 ),
                               ],
                             ),
@@ -325,13 +324,6 @@ class _AddExerciseState extends State<AddExercise> {
                           setTarget: setTarget,
                         ),
                       ),
-                    ),
-                    TipGenerator(
-                      tipIsShowing: tipIsShowing,
-                      updateableTipMessage: updateableTipMessage,
-                      recoveryPeriod: recoveryPeriod,
-                      setTarget: setTarget,
-                      repTarget: repTarget,
                     ),
                   ],
                 ),

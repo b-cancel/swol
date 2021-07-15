@@ -19,43 +19,49 @@ showWeightToolTip(
       onTap: () {
         BotToast.cleanAll();
       },
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Flexible(
-            child: Text(
-              "the weight you lifted",
+      child: DefaultTextStyle(
+        style: TextStyle(
+          color: Colors.black,
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Flexible(
+              child: Text(
+                "the weight you lifted",
+              ),
             ),
-          ),
-          Wrap(
-            children: <Widget>[
-              Text(
-                "(",
-              ),
-              Text(
-                "LBS",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
+            Wrap(
+              children: <Widget>[
+                Text(
+                  "(",
                 ),
-              ),
-              Text(
-                " or ",
-              ),
-              Text(
-                "KG",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
+                Text(
+                  "LBS",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-              ),
-              Text(
-                ")",
-              ),
-            ],
-          ),
-        ],
+                Text(
+                  " or ",
+                ),
+                Text(
+                  "KG",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Text(
+                  ")",
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     ),
+    color: Colors.white,
     direction: direction,
     seconds: 8,
   );
@@ -72,37 +78,43 @@ showRepsToolTip(
       onTap: () {
         BotToast.cleanAll();
       },
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Flexible(
-            child: Text(
-              "how many times you lifted the weight",
+      child: DefaultTextStyle(
+        style: TextStyle(
+          color: Colors.black,
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Flexible(
+              child: Text(
+                "how many times you lifted the weight",
+              ),
             ),
-          ),
-          Wrap(
-            children: <Widget>[
-              Text(
-                "Successfully",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
+            Wrap(
+              children: <Widget>[
+                Text(
+                  "Successfully",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-              ),
-              Text(
-                " and with ",
-              ),
-              Text(
-                "Good Form",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
+                Text(
+                  " and with ",
                 ),
-              ),
-            ],
-          ),
-        ],
+                Text(
+                  "Good Form",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     ),
+    color: Colors.white,
     direction: direction,
   );
 }
