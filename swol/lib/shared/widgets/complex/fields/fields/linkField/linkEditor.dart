@@ -294,7 +294,7 @@ class _PasteButton extends StatelessWidget {
             }
           } else {
             //show clipboard empty
-            showWarning("The Clipboard Is Empty");
+            showWarning("Copy what you would like to paste first");
           }
 
           //get out of edit mode

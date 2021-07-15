@@ -73,8 +73,8 @@ class _MakeFunctionAdjustmentState extends State<MakeFunctionAdjustment> {
       repTarget: widget.exercise.repTarget,
       useAccent: false,
       title: "Adjusted",
-      heroUp: widget.heroUp,
-      animate: true,
+      //heroUp: widget.heroUp,
+      //animate: true,
       heroAnimTravel: widget.heroAnimTravel,
     );
 

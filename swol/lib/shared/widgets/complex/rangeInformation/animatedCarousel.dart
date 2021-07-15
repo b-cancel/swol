@@ -92,7 +92,7 @@ class _AnimatedRangeInformationState extends State<AnimatedRangeInformation> {
   Widget build(BuildContext context) {
     double thisWidth = MediaQuery.of(context).size.width;
     //36 for the button, 24 for the ticks
-    double chosenHeight = 36.0 + (widget.darkTheme ? 24 : 0.0);
+    double chosenHeight = 36 + 24;
 
     //create carousel seperately so we can control it
     carousel = CarouselSlider(
@@ -117,31 +117,34 @@ class _AnimatedRangeInformationState extends State<AnimatedRangeInformation> {
                 //---Tick Sections
                 Positioned(
                   top: 0,
-                  child: Container(
-                    height: widget.darkTheme ? 16 : 36,
-                    width: thisWidth,
-                    child: RangeTicks(
-                      startTick: aRange.startSeconds,
-                      endTick: aRange.endSeconds,
-                      selectedDuration: widget.selectedDuration,
-                      bigTickNumber: widget.bigTickNumber,
-                      darkTheme: widget.darkTheme,
+                  child: Padding(
+                    padding: EdgeInsets.only(
+                      top: 24,
+                    ),
+                    child: Container(
+                      height: 36,
+                      width: thisWidth,
+                      child: Transform.translate(
+                        offset: Offset(0, 8),
+                        child: RangeTicks(
+                          startTick: aRange.startSeconds,
+                          endTick: aRange.endSeconds,
+                          selectedDuration: widget.selectedDuration,
+                          bigTickNumber: widget.bigTickNumber,
+                          darkTheme: widget.darkTheme,
+                        ),
+                      ),
                     ),
                   ),
                 ),
                 //---Name Sections
                 Visibility(
                   visible: (widget.hideNameButtons == false),
-                  child: Padding(
-                    padding: EdgeInsets.only(
-                      top: widget.darkTheme ? 24.0 : 0,
-                    ),
-                    child: TrainingNameButton(
-                      width: thisWidth,
-                      sectionName: aRange.name,
-                      sectionTap: aRange.onTap,
-                      blackText: (widget.darkTheme == false),
-                    ),
+                  child: TrainingNameButton(
+                    width: thisWidth,
+                    sectionName: aRange.name,
+                    sectionTap: aRange.onTap,
+                    blackText: (widget.darkTheme == false),
                   ),
                 ),
                 //---End Sections
@@ -149,24 +152,19 @@ class _AnimatedRangeInformationState extends State<AnimatedRangeInformation> {
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                   ),
-                  child: Padding(
-                    padding: EdgeInsets.only(
-                      top: (widget.darkTheme ? 24.0 : 0.0),
-                    ),
-                    child: Stack(
-                      children: <Widget>[
-                        Positioned(
-                          top: 0,
-                          left: 0,
-                          child: aRange.left,
-                        ),
-                        Positioned(
-                          top: 0,
-                          right: 0,
-                          child: aRange.right,
-                        )
-                      ],
-                    ),
+                  child: Stack(
+                    children: <Widget>[
+                      Positioned(
+                        top: 0,
+                        left: 0,
+                        child: aRange.left,
+                      ),
+                      Positioned(
+                        top: 0,
+                        right: 0,
+                        child: aRange.right,
+                      )
+                    ],
                   ),
                 ),
               ],

@@ -165,7 +165,7 @@ class _NamePopUpBody extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(
+            padding: EdgeInsets.only(
               top: 16.0,
             ),
             child: Column(

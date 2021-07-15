@@ -93,6 +93,7 @@ class RecoveryTimeWidget extends StatelessWidget {
   }
 }
 
+//pill and times on top
 class AnimRecoveryTimeInfoToWhiteTheme extends StatelessWidget {
   const AnimRecoveryTimeInfoToWhiteTheme({
     Key? key,
