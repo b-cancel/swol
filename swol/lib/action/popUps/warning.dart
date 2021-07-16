@@ -150,7 +150,7 @@ Future<bool> warningThenPop(BuildContext context, AnExercise exercise) async {
           Text(
             subtitle,
             style: TextStyle(
-              fontSize: 14,
+              fontSize: 16,
             ),
           ),
         ],

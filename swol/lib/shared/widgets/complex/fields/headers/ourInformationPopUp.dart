@@ -35,7 +35,7 @@ infoPopUpFunction(
         child: Text(
           subtitle ?? "",
           style: TextStyle(
-            fontSize: 14,
+            fontSize: 16,
           ),
         ),
       ),

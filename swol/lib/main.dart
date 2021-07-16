@@ -124,8 +124,6 @@ class _GrabSystemDataState extends State<GrabSystemData> {
         String? body,
         String? payload,
       ) async {
-        //TODO REPAIRED NOT CHECKED
-        // display a dialog with the notification details, tap ok to go to another page
         showDialog(
           context: context,
           builder: (BuildContext context) => CupertinoAlertDialog(

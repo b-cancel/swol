@@ -85,15 +85,17 @@ maybeError(
           Text(
             "Fix Your Set",
             style: TextStyle(
-              fontSize: 24,
+              fontSize: 28,
             ),
           ),
+          /*
           Text(
             "Break Timer",
             style: TextStyle(
               fontSize: 14,
             ),
           ),
+          */
         ],
         [
           Padding(

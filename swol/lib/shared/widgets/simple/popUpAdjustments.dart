@@ -237,13 +237,8 @@ class TitleThatContainsTRBL extends StatelessWidget {
           padding: EdgeInsets.symmetric(
             horizontal: 16,
           ),
-          child: MediaQuery(
-            data: MediaQuery.of(context).copyWith(
-              textScaleFactor: MediaQuery.of(
-                    context,
-                  ).textScaleFactor *
-                  .75,
-            ),
+          child: FittedBox(
+            fit: BoxFit.scaleDown,
             child: Container(
               child: child,
             ),

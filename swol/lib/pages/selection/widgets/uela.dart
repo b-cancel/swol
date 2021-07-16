@@ -115,19 +115,19 @@ class UelaBody extends StatelessWidget {
                 child: Column(
                   children: [
                     TitleThatContainsTRBL(
-                      hasTopIcon: false,
+                      hasTopIcon: true,
                       child: Column(
                         children: <Widget>[
                           Text(
                             "End User License",
                             style: TextStyle(
-                              fontSize: 24,
+                              fontSize: 28,
                             ),
                           ),
                           Text(
                             "Agreement",
                             style: TextStyle(
-                              fontSize: 24,
+                              fontSize: 28,
                             ),
                           ),
                         ],

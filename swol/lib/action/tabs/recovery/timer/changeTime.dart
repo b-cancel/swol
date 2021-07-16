@@ -37,13 +37,13 @@ class ActualButton extends StatelessWidget {
             Text(
               "Change Break Time",
               style: TextStyle(
-                fontSize: 24,
+                fontSize: 28,
               ),
             ),
             Text(
               "Don't Worry! The Timer Won't Reset",
               style: TextStyle(
-                fontSize: 14,
+                fontSize: 16,
               ),
             ),
           ],
