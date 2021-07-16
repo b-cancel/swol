@@ -111,6 +111,9 @@ class _ExercisePageDarkState extends State<ExercisePageDark> {
           AnExercise.nullDateTime,
         );
 
+        //cancel potential notification
+        safeCancelNotification(widget.exercise.id);
+
         //undo previous order
         widget.exercise.lastTimeStamp = widget.exercise.backUpTimeStamp;
       } else {
@@ -118,6 +121,9 @@ class _ExercisePageDarkState extends State<ExercisePageDark> {
         widget.exercise.tempStartTime = ValueNotifier<DateTime>(
           DateTime.now(),
         );
+
+        //potentially start notification
+        scheduleNotificationIfPossible(widget.exercise);
 
         //keep items ordered
         widget.exercise.lastTimeStamp = LastTimeStamp.inProgressDateTime();

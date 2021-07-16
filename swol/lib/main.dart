@@ -108,7 +108,7 @@ class _GrabSystemDataState extends State<GrabSystemData> {
     //app_icon needs to be a added as a drawable resource to the Android head project
     //just plug it in the folder, nothing else special needed
     var initializationSettingsAndroid = AndroidInitializationSettings(
-      '@mipmap/ic_launcher',
+      '@mipmap/launcher_icon',
     );
 
     //initialize IOS settings

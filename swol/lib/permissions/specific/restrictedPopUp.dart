@@ -78,7 +78,7 @@ showRestrictedPopUp(
     ],
     DialogType.ERROR,
     //for them to make a choice
-    dismissOnTouchOutside: false,
+    dismissable: false,
     //animationType: null,
     /*
     clearBtn: TextButton(

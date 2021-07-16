@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 //plugin
 import 'package:bot_toast/bot_toast.dart';
+import 'package:swol/action/popUps/textValid.dart';
 import 'package:swol/shared/widgets/simple/conditional.dart';
 
 //internal
@@ -99,9 +100,19 @@ class _BottomBackButtonState extends State<BottomBackButton> {
                   );
                 } else {
                   if (ExercisePage.pageNumber.value == 1) {
+                    //different reactions depending on set validity
+                    String newWeight = ExercisePage.setWeight.value;
+                    String newReps = ExercisePage.setReps.value;
+                    bool newWeightValid = isTextParsedIsLargerThan0(newWeight);
+                    bool newRepsValid = isTextParsedIsLargerThan0(newReps);
+                    bool newSetValid = newWeightValid && newRepsValid;
+
+                    //communicating circumstances found in setRecord.dart
                     showToolTip(
                       context,
-                      "the timer won't reset, as long as your set is valid",
+                      newSetValid
+                          ? "Break Timer Didn't Reset"
+                          : "Break Timer Reset",
                       showIcon: false,
                       direction: PreferDirection.bottomRight,
                     );

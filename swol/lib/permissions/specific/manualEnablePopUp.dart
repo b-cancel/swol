@@ -88,7 +88,7 @@ Future requestThatYouGoToAppSettings(BuildContext context) async {
       color: Colors.white,
     ),
     headerBackground: MyTheme.dark.cardColor,
-    dismissOnTouchOutside: false,
+    dimissable: false,
     /*
     clearBtn: TextButton(
       child: Text("Nevermind"),

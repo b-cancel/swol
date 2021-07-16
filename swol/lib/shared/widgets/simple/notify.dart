@@ -72,9 +72,11 @@ scheduleNotificationIfPossible(AnExercise exercise) async {
 
       //permission request is handled elsewhere
       var iOSPlatformChannelSpecifics = IOSNotificationDetails(
-        presentAlert: false,
-        presentBadge: false,
-        presentSound: false,
+        //all of these are for the app being in the foreground for ios 10 or above
+        //for ios 10 or below something else happens described when the notification system is initially set
+        presentAlert: true,
+        presentBadge: true,
+        presentSound: true,
       );
 
       //combine stuff for both platforms

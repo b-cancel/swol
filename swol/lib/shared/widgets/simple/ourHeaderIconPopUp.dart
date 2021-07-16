@@ -12,7 +12,7 @@ Future showBasicHeaderIconPopUp(
   List<Widget> children,
   DialogType dialogType, {
   AnimType animationType: AnimType.SCALE,
-  bool dismissOnTouchOutside: true,
+  bool dismissable: true,
   bool isDense: false,
   Widget? clearBtn,
   Widget? colorBtn,
@@ -27,13 +27,13 @@ Future showBasicHeaderIconPopUp(
   return await MyAwesomeDialog(
     context: context,
     isDense: isDense,
-    barrierDismissible: dismissOnTouchOutside,
+    barrierDismissible: dismissable,
     headerAnimationLoop: false,
     animType: animationType,
     dialogType: dialogType,
     body: WillPopScope(
       onWillPop: () async {
-        return (dismissOnTouchOutside);
+        return dismissable;
       },
       child: AwesomeBody(
         titles: titles,
@@ -52,7 +52,7 @@ Future showCustomHeaderIconPopUp(
   List<Widget> children,
   Widget header, {
   AnimType animationType: AnimType.SCALE,
-  bool dismissOnTouchOutside: true,
+  bool dimissable: true,
   bool regularPadding: true,
   bool isDense: false,
   Color headerBackground: Colors.blue,
@@ -70,7 +70,7 @@ Future showCustomHeaderIconPopUp(
   return await MyAwesomeDialog(
     context: context,
     isDense: isDense,
-    barrierDismissible: dismissOnTouchOutside,
+    barrierDismissible: dimissable,
     useRootNavigator: useRootNavigator,
     animType: animationType,
     customHeader: AwesomeHeader(
@@ -80,7 +80,7 @@ Future showCustomHeaderIconPopUp(
     ),
     body: WillPopScope(
       onWillPop: () async {
-        return false;
+        return dimissable;
       },
       child: AwesomeBody(
         titles: titles,
