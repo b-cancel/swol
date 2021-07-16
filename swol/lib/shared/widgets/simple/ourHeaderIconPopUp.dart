@@ -16,7 +16,7 @@ Future showBasicHeaderIconPopUp(
   bool isDense: false,
   Widget? clearBtn,
   Widget? colorBtn,
-}) {
+}) async {
   //unfocus so whatever was focused before doesnt annoying scroll us back
   //for some reason this only happens in addExercise
   //when opening popups for name, notes, link, and recovery time
@@ -24,7 +24,7 @@ Future showBasicHeaderIconPopUp(
   FocusScope.of(context).unfocus();
 
   //show pop up
-  return MyAwesomeDialog(
+  return await MyAwesomeDialog(
     context: context,
     isDense: isDense,
     barrierDismissible: dismissOnTouchOutside,
@@ -59,7 +59,7 @@ Future showCustomHeaderIconPopUp(
   bool useRootNavigator: false,
   Widget? clearBtn,
   Widget? colorBtn,
-}) {
+}) async {
   //unfocus so whatever was focused before doesnt annoying scroll us back
   //for some reason this only happens in addExercise
   //when opening popups for name, notes, link, and recovery time
@@ -67,7 +67,7 @@ Future showCustomHeaderIconPopUp(
   FocusScope.of(context).unfocus();
 
   //show pop up
-  return MyAwesomeDialog(
+  return await MyAwesomeDialog(
     context: context,
     isDense: isDense,
     barrierDismissible: dismissOnTouchOutside,
@@ -80,7 +80,7 @@ Future showCustomHeaderIconPopUp(
     ),
     body: WillPopScope(
       onWillPop: () async {
-        return (dismissOnTouchOutside);
+        return false;
       },
       child: AwesomeBody(
         titles: titles,

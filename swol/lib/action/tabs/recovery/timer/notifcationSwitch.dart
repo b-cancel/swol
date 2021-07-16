@@ -97,24 +97,18 @@ class _NotificationSwitchState extends State<NotificationSwitch>
     return Container(
       padding: EdgeInsets.all(24),
       child: Visibility(
-        visible: true, //showButton,
+        visible: showButton,
         child: Theme(
           data: ThemeData.light(),
           child: Builder(builder: (context) {
             return IconButton(
               tooltip: 'Enable Notifications',
               onPressed: () async {
-                requestThatYouGoToAppSettings(context); //dynamic
-                //showRestrictedPopUp(context); //dynamic
-                //showEnableNotificationsButtonLocation(context); //bool
-                //explainNotificationPermission(context); //bool
-                /*
-                  if (await reactToExplainingNotificationPermission(
-                    automaticallyOpened: false,
-                  )) {
-                    updateShowButton();
-                  }
-                  */
+                if (await reactToExplainingNotificationPermission(
+                  automaticallyOpened: false,
+                )) {
+                  updateShowButton();
+                }
               },
               icon: Container(
                 child: Stack(

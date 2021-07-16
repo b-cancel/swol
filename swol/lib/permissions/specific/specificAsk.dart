@@ -3,18 +3,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:swol/action/page.dart';
+import 'package:swol/permissions/ask.dart';
+import 'package:swol/permissions/specific/restrictedPopUp.dart';
 import 'package:swol/shared/methods/extensions/sharedPreferences.dart';
 import 'dart:io' show Platform;
 
 import '../../main.dart';
 import 'buttonLocationPopUp.dart';
 import 'explainWhyPermission.dart';
+import 'manualEnablePopUp.dart';
 
 //requires a seperate shared preferences variable because this permission is granted by default by some systems
 //specifically android
 //and ios does the same provisionally if you simply schedule a notification without asking first
 Future<bool> askForPermissionIfNotGrantedAndWeNeverAsked(
-    BuildContext context) async {
+  BuildContext context,
+) async {
   //regardless of whether its been requested before
   //we first check if it needs to be requested
   PermissionStatus status = await Permission.notification.status;
@@ -37,9 +41,6 @@ Future<bool> askForPermissionIfNotGrantedAndWeNeverAsked(
         //we are asking, so we have asked automatically atleast once
         SharedPrefsExt.setNotificationRequested(true);
 
-        //unfocus in case this came up before the calibration set
-        FocusScope.of(context).unfocus();
-
         //access not granted & we HAVE NOT already asked them directly
         return await reactToExplainingNotificationPermission(
           automaticallyOpened: true,
@@ -52,52 +53,103 @@ Future<bool> askForPermissionIfNotGrantedAndWeNeverAsked(
 Future<bool> reactToExplainingNotificationPermission({
   required bool automaticallyOpened,
 }) async {
-  BuildContext? context = ExercisePage.globalKey.currentContext;
-  if (context == null) {
-    return false;
+  PermissionStatus status = await Permission.notification.status;
+  if (status.isGranted || status.isLimited) {
+    return true;
   } else {
-    //explain why we are asking first (restricted doesn't matter yet)
-    if (await explainNotificationPermission(context)) {
-      //they would accept
-      if (await reactToWouldAcceptNotificationPermission(
-        context,
-        automaticallyOpened: automaticallyOpened,
-      )) {
-        return true;
+    BuildContext? context = ExercisePage.globalKey.currentContext;
+
+    //react accordingly
+    if (context == null) {
+      return false;
+    } else {
+      //unfocus in case this came up before the calibration set
+      FocusScope.of(context).unfocus();
+
+      //explain why we are asking first (restricted doesn't matter yet)
+      if (await explainNotificationPermission(context)) {
+        //they would accept
+        if (await reactToWouldAcceptNotificationPermission(
+          context,
+          automaticallyOpened: automaticallyOpened,
+        )) {
+          return true;
+        } else {
+          //they said they would grant us permission and they didn't
+          return await reactToNotificationPermissionRejected(
+            context,
+            automaticallyOpened: automaticallyOpened,
+          );
+        }
       } else {
-        //they said they would grant us permission and they didn't
+        //after explaining why they still didn't want to
         return await reactToNotificationPermissionRejected(
           context,
           automaticallyOpened: automaticallyOpened,
         );
       }
-    } else {
-      //after explaining why they still didn't want to
-      return await reactToNotificationPermissionRejected(
-        context,
-        automaticallyOpened: automaticallyOpened,
-      );
     }
   }
 }
 
-//TODO: platform specific permission request
+//if restricted is a special case
 Future<bool> reactToWouldAcceptNotificationPermission(
   BuildContext context, {
   required bool automaticallyOpened,
 }) async {
-  //is restricted, show them the appropiate pop up
-  if (await Permission.notification.status.isRestricted) {
+  print("react to would accept");
+
+  PermissionStatus status = await Permission.notification.status;
+  if (status.isGranted || status.isLimited) {
     return true;
   } else {
-    //TODO: handle is denied or is permanently denied
-
-    //ask on each platform
-    if (Platform.isAndroid) {
+    print("ask");
+    //permission might be... denied or permanently denied... we'll find out which promptly
+    if (Platform.isAndroid || Platform.isIOS) {
       // Android-specific code
-      //TODO: android specific request
-      //PermissionStatus status = await Permission.notification.request();
-    } else if (Platform.isIOS) {
+      NextAction nextAction = await tryToGetPermission(Permission.notification);
+      print("next action: " + nextAction.toString());
+      //react to result
+      if (nextAction == NextAction.Continue) {
+        return true;
+      } else if (nextAction == NextAction.TryAgainLater) {
+        return false;
+      } else {
+        if (nextAction == NextAction.ExplainRestriction) {
+          print("restrict");
+
+          //show them whats up
+          await showRestrictedPopUp(context);
+
+          //show them where to ask again in the future
+          return reactToNotificationPermissionRejected(
+            context,
+            automaticallyOpened: automaticallyOpened,
+          );
+        } else if (nextAction == NextAction.EditManually) {
+          print("manual");
+
+          //show them whats up
+          await requestThatYouGoToAppSettings(context);
+
+          //show them where to ask again in the future
+          return reactToNotificationPermissionRejected(
+            context,
+            automaticallyOpened: automaticallyOpened,
+          );
+        } else {
+          //nextAction == NextAction.Error
+          return false;
+        }
+      }
+    } else {
+      return false;
+    }
+  }
+}
+
+/*
+else if (Platform.isIOS) {
       // request iOS-specific permission
       bool? permissionGranted = await flutterLocalNotificationsPlugin
           .resolvePlatformSpecificImplementation<
@@ -107,38 +159,40 @@ Future<bool> reactToWouldAcceptNotificationPermission(
             badge: true,
             sound: true,
           );
-    }
-
-    return false;
-  }
-}
+    } 
+*/
 
 //show them where they can enable the permission later if it makes sense
 Future<bool> reactToNotificationPermissionRejected(
   BuildContext context, {
   required bool automaticallyOpened,
 }) async {
-  //they know where to open it from
-  if (automaticallyOpened == false) {
-    //so assume their rejection is final
-    return false;
+  PermissionStatus status = await Permission.notification.status;
+  if (status.isGranted || status.isLimited) {
+    return true;
   } else {
-    //they might not know where to open it from
-    if (await showEnableNotificationsButtonLocation(context)) {
-      //they changed their minds
-      return await reactToWouldAcceptNotificationPermission(
-        context,
-        //false since they alreayd saw where the button location is this from time around
-        automaticallyOpened: false,
-      );
-    } else {
-      //they didn't change their minds
+    //they know where to open it from
+    if (automaticallyOpened == false) {
+      //so assume their rejection is final
       return false;
+    } else {
+      //they might not know where to open it from
+      if (await showEnableNotificationsButtonLocation(context)) {
+        //they changed their minds
+        return await reactToWouldAcceptNotificationPermission(
+          context,
+          //false since they alreayd saw where the button location is this from time around
+          automaticallyOpened: false,
+        );
+      } else {
+        //they didn't change their minds
+        return false;
+      }
     }
   }
 }
 
-//explain initial -> explainNotificationPermission
-//explain restriction -> showRestrictedPopUp
-//explain manual -> requestThatYouGoToAppSettings
-//where to find if deny from automatic -> showEnableNotificationsButtonLocation
+//requestThatYouGoToAppSettings(context); //dynamic
+//showRestrictedPopUp(context); //dynamic
+//showEnableNotificationsButtonLocation(context); //bool
+//explainNotificationPermission(context); //bool

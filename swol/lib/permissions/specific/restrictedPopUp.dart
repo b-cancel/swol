@@ -13,7 +13,7 @@ showRestrictedPopUp(
   BuildContext context,
 ) async {
   //pop up
-  return showBasicHeaderIconPopUp(
+  return await showBasicHeaderIconPopUp(
     context,
     [
       Text(
@@ -80,14 +80,16 @@ showRestrictedPopUp(
     //for them to make a choice
     dismissOnTouchOutside: false,
     //animationType: null,
+    /*
     clearBtn: TextButton(
       child: new Text("I'll do it later"),
       onPressed: () {
         Navigator.of(context).pop(false);
       },
     ),
+    */
     colorBtn: ElevatedButton(
-      child: Text("Try Again"),
+      child: Text("Try Again Later"),
       onPressed: () async {
         Navigator.of(context).pop(true);
       },

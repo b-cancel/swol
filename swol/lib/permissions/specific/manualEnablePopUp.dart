@@ -5,9 +5,9 @@ import 'package:swol/shared/widgets/simple/ourHeaderIconPopUp.dart';
 
 //false -> naw
 //true -> try again
-Future requestThatYouGoToAppSettings(BuildContext context) {
+Future requestThatYouGoToAppSettings(BuildContext context) async {
   double textScaleFactor = MediaQuery.of(context).textScaleFactor;
-  return showCustomHeaderIconPopUp(
+  return await showCustomHeaderIconPopUp(
     context,
     [
       Text(
@@ -89,17 +89,19 @@ Future requestThatYouGoToAppSettings(BuildContext context) {
     ),
     headerBackground: MyTheme.dark.cardColor,
     dismissOnTouchOutside: false,
+    /*
     clearBtn: TextButton(
       child: Text("Nevermind"),
       onPressed: () {
         Navigator.of(context).pop(false);
       },
     ),
+    */
     colorBtn: ElevatedButton(
       onPressed: () {
         Navigator.of(context).pop(true);
       },
-      child: Text("Try Again"),
+      child: Text("Try Again Later"),
     ),
   );
 }
