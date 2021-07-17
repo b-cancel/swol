@@ -72,9 +72,8 @@ class CardWithHeader extends StatelessWidget {
                     ),
                   ),
                 ),
-                Expanded(
-                  child: Container(),
-                )
+                Spacer(),
+                CloseKeyBoardButon(),
               ],
             ),
           ),
@@ -88,6 +87,60 @@ class CardWithHeader extends StatelessWidget {
             child: child,
           ),
         ],
+      ),
+    );
+  }
+}
+
+class CloseKeyBoardButon extends StatefulWidget {
+  const CloseKeyBoardButon({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  _CloseKeyBoardButonState createState() => _CloseKeyBoardButonState();
+}
+
+class _CloseKeyBoardButonState extends State<CloseKeyBoardButon> {
+  ValueNotifier<bool> keyboardShown = ValueNotifier<bool>(false);
+
+  focusChanged() {
+    keyboardShown.value = FocusScope.of(context).hasFocus;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
+      focusChanged();
+      FocusScope.of(context).addListener(focusChanged);
+    });
+  }
+
+  @override
+  void dispose() {
+    FocusScope.of(context).removeListener(focusChanged);
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Visibility(
+      visible: keyboardShown.value,
+      child: ElevatedButton(
+        onPressed: () {
+          FocusScope.of(context).unfocus();
+        },
+        style: ElevatedButton.styleFrom(
+          primary: Colors.black,
+        ),
+        child: Text(
+          "Done",
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
       ),
     );
   }

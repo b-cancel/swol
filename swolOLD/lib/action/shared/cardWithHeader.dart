@@ -73,7 +73,10 @@ class CardWithHeader extends StatelessWidget {
                   ),
                 ),
                 Expanded(
-                  child: Container(),
+                  child: Align(
+                    alignment: Alignment.bottomRight,
+                    child: CloseSetRecordButton(),
+                  ),
                 )
               ],
             ),
@@ -88,6 +91,33 @@ class CardWithHeader extends StatelessWidget {
             child: child,
           ),
         ],
+      ),
+    );
+  }
+}
+
+class CloseSetRecordButton extends StatelessWidget {
+  const CloseSetRecordButton({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      style: ButtonStyle(
+        backgroundColor: MaterialStateProperty.all<Color>(
+          Colors.black,
+        ),
+      ),
+      onPressed: () {
+        print("done");
+      },
+      child: Text(
+        "Done",
+        style: TextStyle(
+          color: Colors.white,
+          fontWeight: FontWeight.bold,
+        ),
       ),
     );
   }

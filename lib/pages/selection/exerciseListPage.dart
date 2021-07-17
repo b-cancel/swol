@@ -67,7 +67,6 @@ class _ExerciseSelectState extends State<ExerciseSelect> {
       }
     };
 
-    /*
     //ask for permission after the frame loads
     WidgetsBinding.instance?.addPostFrameCallback((_) {
       //pop up that comes up asking for permission
@@ -85,7 +84,6 @@ class _ExerciseSelectState extends State<ExerciseSelect> {
         maybeShowInitialControls();
       }
     });
-    */
 
     //show or hide the to top button
     autoScrollController.addListener(updateOnTopValue);

@@ -79,68 +79,95 @@ class UelaBody extends StatelessWidget {
       borderRadius: new BorderRadius.all(
         Radius.circular(12.0),
       ),
-      child: Flexible(
-        child: ScrollViewWithShadow(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Stack(
-                children: <Widget>[
-                  TopPicture(),
-                  Positioned.fill(
-                    child: Center(
-                      child: AnimatedBuilder(
-                        animation: holding,
-                        //no reusable child
-                        builder: (context, child) {
-                          return Visibility(
-                            visible: holding.value,
-                            child: TheCountDown(
-                              afterConfirm: afterConfirm,
-                            ),
-                          );
-                        },
-                      ),
+      child: ScrollViewWithShadow(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Stack(
+              children: <Widget>[
+                TopPicture(),
+                Positioned.fill(
+                  child: Center(
+                    child: AnimatedBuilder(
+                      animation: holding,
+                      //no reusable child
+                      builder: (context, child) {
+                        return Visibility(
+                          visible: holding.value,
+                          child: TheCountDown(
+                            afterConfirm: afterConfirm,
+                          ),
+                        );
+                      },
                     ),
-                  ),
-                ],
-              ),
-              Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.vertical(
-                    bottom: Radius.circular(8),
                   ),
                 ),
-                child: Column(
-                  children: [
-                    TitleThatContainsTRBL(
-                      hasTopIcon: true,
-                      child: Column(
-                        children: <Widget>[
-                          Text(
-                            "End User License",
-                            style: TextStyle(
-                              fontSize: 28,
-                            ),
+              ],
+            ),
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.vertical(
+                  bottom: Radius.circular(8),
+                ),
+              ),
+              child: Column(
+                children: [
+                  TitleThatContainsTRBL(
+                    hasTopIcon: true,
+                    child: Column(
+                      children: <Widget>[
+                        Text(
+                          "End User License",
+                          style: TextStyle(
+                            fontSize: 28,
                           ),
-                          Text(
-                            "Agreement",
-                            style: TextStyle(
-                              fontSize: 28,
-                            ),
+                        ),
+                        Text(
+                          "Agreement",
+                          style: TextStyle(
+                            fontSize: 28,
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-                    Container(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 16,
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          RichText(
+                  ),
+                  Container(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 16,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        RichText(
+                          textScaleFactor: MediaQuery.of(
+                            context,
+                          ).textScaleFactor,
+                          text: TextSpan(
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: Colors.black,
+                            ),
+                            children: [
+                              TextSpan(
+                                text: tab +
+                                    "In order to help you, we offer many suggestions throughout the app.",
+                              ),
+                              TextSpan(
+                                text:
+                                    " But it's your responsibility to stay safe.",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w900,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(
+                            top: 12.0,
+                          ),
+                          child: RichText(
                             textScaleFactor: MediaQuery.of(
                               context,
                             ).textScaleFactor,
@@ -152,11 +179,11 @@ class UelaBody extends StatelessWidget {
                               children: [
                                 TextSpan(
                                   text: tab +
-                                      "In order to help you, we offer many suggestions throughout the app.",
+                                      "We are not liable for any harm that you may cause yourself or others by following our suggestions.",
                                 ),
                                 TextSpan(
                                   text:
-                                      " But it's your responsibility to stay safe.",
+                                      " Follow our suggestions at your own risk.",
                                   style: TextStyle(
                                     fontWeight: FontWeight.w900,
                                   ),
@@ -164,120 +191,91 @@ class UelaBody extends StatelessWidget {
                               ],
                             ),
                           ),
-                          Padding(
-                            padding: EdgeInsets.only(
-                              top: 12.0,
-                            ),
-                            child: RichText(
-                              textScaleFactor: MediaQuery.of(
-                                context,
-                              ).textScaleFactor,
-                              text: TextSpan(
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.black,
-                                ),
-                                children: [
-                                  TextSpan(
-                                    text: tab +
-                                        "We are not liable for any harm that you may cause yourself or others by following our suggestions.",
-                                  ),
-                                  TextSpan(
-                                    text:
-                                        " Follow our suggestions at your own risk.",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w900,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(
+                            top: 12.0,
                           ),
-                          Padding(
-                            padding: EdgeInsets.only(
-                              top: 12.0,
-                            ),
-                            child: RichText(
-                              textScaleFactor: MediaQuery.of(
-                                context,
-                              ).textScaleFactor,
-                              text: TextSpan(
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.black,
-                                ),
-                                children: [
-                                  TextSpan(
-                                    text: tab + "Read our ",
-                                  ),
-                                  TextSpan(
-                                    text: " Privacy Policy Here",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w900,
-                                      color: Colors.blue,
-                                    ),
-                                    recognizer: TapGestureRecognizer()
-                                      ..onTap = () {
-                                        showDialog(
-                                          context: context,
-                                          builder: (context) {
-                                            return PolicyDialog(
-                                              mdFileName: 'privacyPolicy.md',
-                                            );
-                                          },
-                                        );
-                                      },
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    BottomButtonsThatResizeTRBL(
-                      hasTopIcon: false,
-                      secondary: TextButton(
-                        onPressed: () {
-                          //close the app, don't restart, encourage good behavior of sending and exiting right after done
-                          SystemChannels.platform
-                              .invokeMethod('SystemNavigator.pop');
-
-                          //this work on ios but isn't allowed, and seems like a crash on android
-                          //exit(0);
-                        },
-                        child: Text("Close App"),
-                      ),
-                      primary: GestureDetector(
-                        behavior: HitTestBehavior.opaque,
-                        onTapDown: (tapDownDetails) {
-                          holding.value = true;
-                        },
-                        onTapUp: (tapUpDetails) {
-                          holding.value = false;
-                        },
-                        child: IgnorePointer(
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              primary: Theme.of(context).accentColor,
-                            ),
-                            onPressed: () {},
-                            child: Text(
-                              "Hold To Agree",
+                          child: RichText(
+                            textScaleFactor: MediaQuery.of(
+                              context,
+                            ).textScaleFactor,
+                            text: TextSpan(
                               style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
+                                fontSize: 16,
+                                color: Colors.black,
                               ),
+                              children: [
+                                TextSpan(
+                                  text: tab + "Read our ",
+                                ),
+                                TextSpan(
+                                  text: " Privacy Policy Here",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w900,
+                                    color: Colors.blue,
+                                  ),
+                                  recognizer: TapGestureRecognizer()
+                                    ..onTap = () {
+                                      showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return PolicyDialog(
+                                            mdFileName: 'privacyPolicy.md',
+                                          );
+                                        },
+                                      );
+                                    },
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  BottomButtonsThatResizeTRBL(
+                    hasTopIcon: false,
+                    secondary: TextButton(
+                      onPressed: () {
+                        //close the app, don't restart, encourage good behavior of sending and exiting right after done
+                        SystemChannels.platform
+                            .invokeMethod('SystemNavigator.pop');
+
+                        //this work on ios but isn't allowed, and seems like a crash on android
+                        //exit(0);
+                      },
+                      child: Text("Close App"),
+                    ),
+                    primary: GestureDetector(
+                      behavior: HitTestBehavior.opaque,
+                      onTapDown: (tapDownDetails) {
+                        holding.value = true;
+                      },
+                      onTapUp: (tapUpDetails) {
+                        holding.value = false;
+                      },
+                      child: IgnorePointer(
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            primary: Theme.of(context).accentColor,
+                          ),
+                          onPressed: () {},
+                          child: Text(
+                            "Hold To Agree",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
                             ),
                           ),
                         ),
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
