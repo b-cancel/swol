@@ -214,7 +214,10 @@ class SetRecordInner extends StatelessWidget {
     }
 
     //add extra back just for looks (ClipRRect)
-    return fullPage;
+    return Container(
+      height: spaceToRedistribute,
+      child: fullPage,
+    );
   }
 }
 

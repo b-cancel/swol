@@ -981,18 +981,19 @@ class _ExerciseListState extends State<ExerciseList> {
           child: Stack(
             children: <Widget>[
               CustomScrollView(
-                  physics: BouncingScrollPhysics(),
-                  controller: widget.autoScrollController,
-                  slivers: [
-                    HeaderForOneHandedUse(
-                      listOfGroupOfExercises: [],
-                      inprogressWorkoutSection: false,
-                      newWorkoutSection: false,
-                      hiddenWorkoutSection: false,
-                      openHeight: openHeaderHeight!,
-                    ),
-                    AddExerciseFiller()
-                  ]),
+                physics: BouncingScrollPhysics(),
+                controller: widget.autoScrollController,
+                slivers: [
+                  HeaderForOneHandedUse(
+                    listOfGroupOfExercises: [],
+                    inprogressWorkoutSection: false,
+                    newWorkoutSection: false,
+                    hiddenWorkoutSection: false,
+                    openHeight: openHeaderHeight!,
+                  ),
+                  AddExerciseFiller()
+                ],
+              ),
               SearchExerciseButton(),
               AddExerciseButton(
                 //extra 150 makes it long

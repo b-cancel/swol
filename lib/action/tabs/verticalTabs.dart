@@ -103,13 +103,16 @@ class _VerticalTabsState extends State<VerticalTabs>
               heroUp: goalSetUp,
               heroAnimTravel: totalTravel,
             ),
-            SetRecord(
-              exercise: widget.exercise,
-              statusBarHeight: widget.statusBarHeight,
-              heroUp: goalSetUp,
-              heroAnimTravel: totalTravel,
-              weightFocusNode: weightFocusNode,
-              repsFocusNode: repsFocusNode,
+            SingleChildScrollView(
+              physics: BouncingScrollPhysics(),
+              child: SetRecord(
+                exercise: widget.exercise,
+                statusBarHeight: widget.statusBarHeight,
+                heroUp: goalSetUp,
+                heroAnimTravel: totalTravel,
+                weightFocusNode: weightFocusNode,
+                repsFocusNode: repsFocusNode,
+              ),
             ),
             Recovery(
               exercise: widget.exercise,
