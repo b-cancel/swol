@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:swol/shared/functions/goldenRatio.dart';
 
 //widget
-class CardWithHeader extends StatelessWidget {
+class CardWithHeader extends StatefulWidget {
   CardWithHeader({
     required this.header,
     required this.child,
@@ -18,6 +18,11 @@ class CardWithHeader extends StatelessWidget {
   final bool aLittleSmaller;
   final bool topRound;
 
+  @override
+  _CardWithHeaderState createState() => _CardWithHeaderState();
+}
+
+class _CardWithHeaderState extends State<CardWithHeader> {
   @override
   Widget build(BuildContext context) {
     //defautl variables
@@ -38,8 +43,8 @@ class CardWithHeader extends StatelessWidget {
       decoration: BoxDecoration(
         color: Theme.of(context).accentColor,
         borderRadius: BorderRadius.only(
-          topLeft: topRound ? cardRadius : Radius.zero,
-          topRight: topRound ? cardRadius : Radius.zero,
+          topLeft: widget.topRound ? cardRadius : Radius.zero,
+          topRight: widget.topRound ? cardRadius : Radius.zero,
           //guarantee bottom never show
           bottomLeft: hideRadius,
           bottomRight: hideRadius,
@@ -55,7 +60,8 @@ class CardWithHeader extends StatelessWidget {
               mainAxisSize: MainAxisSize.max,
               children: <Widget>[
                 Container(
-                  width: goldenBS[0] - (aLittleSmaller ? golden2BS[1] : 0),
+                  width:
+                      goldenBS[0] - (widget.aLittleSmaller ? golden2BS[1] : 0),
                   padding: EdgeInsets.symmetric(
                     vertical: 4,
                   ),
@@ -64,16 +70,19 @@ class CardWithHeader extends StatelessWidget {
                     child: DefaultTextStyle(
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        color: topRound
+                        color: widget.topRound
                             ? Colors.white
                             : Theme.of(context).primaryColorDark,
                       ),
-                      child: Text(header),
+                      child: Text(widget.header),
                     ),
                   ),
                 ),
                 Spacer(),
-                CloseKeyBoardButon(),
+                CloseKeyBoardButon(
+                  key: ValueKey("closekeyboard"),
+                  passedContext: context,
+                ),
               ],
             ),
           ),
@@ -84,7 +93,7 @@ class CardWithHeader extends StatelessWidget {
             ),
             width: MediaQuery.of(context).size.width,
             padding: EdgeInsets.all(16),
-            child: child,
+            child: widget.child,
           ),
         ],
       ),
@@ -95,7 +104,10 @@ class CardWithHeader extends StatelessWidget {
 class CloseKeyBoardButon extends StatefulWidget {
   const CloseKeyBoardButon({
     Key? key,
+    required this.passedContext,
   }) : super(key: key);
+
+  final BuildContext passedContext;
 
   @override
   _CloseKeyBoardButonState createState() => _CloseKeyBoardButonState();
@@ -105,7 +117,9 @@ class _CloseKeyBoardButonState extends State<CloseKeyBoardButon> {
   ValueNotifier<bool> keyboardShown = ValueNotifier<bool>(false);
 
   focusChanged() {
-    keyboardShown.value = FocusScope.of(context).hasFocus;
+    if (mounted) {
+      keyboardShown.value = FocusScope.of(widget.passedContext).hasFocus;
+    }
   }
 
   @override
@@ -113,14 +127,19 @@ class _CloseKeyBoardButonState extends State<CloseKeyBoardButon> {
     super.initState();
     WidgetsBinding.instance?.addPostFrameCallback((_) {
       focusChanged();
-      FocusScope.of(context).addListener(focusChanged);
+      FocusScope.of(widget.passedContext).removeListener(focusChanged);
+      FocusScope.of(widget.passedContext).addListener(focusChanged);
     });
   }
 
   @override
   void dispose() {
-    FocusScope.of(context).removeListener(focusChanged);
     super.dispose();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
   }
 
   @override

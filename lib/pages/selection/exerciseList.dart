@@ -116,6 +116,7 @@ class _ExerciseListState extends State<ExerciseList> {
   toPage2({bool popUpIfThere: true}) {
     if (ExercisePage.pageNumber.value == 2) {
       if (popUpIfThere) {
+        /*
         //the user is probably confused...
         //they are already there so remind them
         //and also be usedful and remind them where the button is for some reason
@@ -179,6 +180,7 @@ class _ExerciseListState extends State<ExerciseList> {
           crossPage: false,
           onlyOne: true,
         );
+        */
       }
       //ELSE we are comming from the NOTES page
     } else {
@@ -571,6 +573,7 @@ class _ExerciseListState extends State<ExerciseList> {
 
   //prevents unecessary calculation when navigating
   List<Widget>? slivers;
+  double? openHeaderHeight;
   beforeManualBuild() {
     //list to separate stuff into
     List<AnExercise> inProgressOnes = [];
@@ -588,7 +591,7 @@ class _ExerciseListState extends State<ExerciseList> {
     List<double> goldenBS = measurementToGoldenRatioBS(
       MediaQuery.of(context).size.height,
     );
-    double openHeaderHeight = goldenBS[1] - widget.statusBarHeight;
+    openHeaderHeight = goldenBS[1] - widget.statusBarHeight;
 
     //try to see if we have workouts to add
     List<int>? exerciseOrder = ExerciseData.exercisesOrder?.value;
@@ -957,7 +960,7 @@ class _ExerciseListState extends State<ExerciseList> {
         inprogressWorkoutSection: (inProgressOnes.length > 0),
         newWorkoutSection: (newOnes.length > 0),
         hiddenWorkoutSection: (hiddenOnes.length > 0),
-        openHeight: openHeaderHeight,
+        openHeight: openHeaderHeight!,
       ),
     );
 
@@ -971,33 +974,62 @@ class _ExerciseListState extends State<ExerciseList> {
     if (slivers == null) {
       return SplashScreen();
     } else {
-      slivers!.add(
-        SliverFillRemaining(
-          hasScrollBody: false,
-          fillOverscroll: true,
-          child: Container(
-            height: 16 + 48.0 + 16,
-            color: Theme.of(context).primaryColor,
+      List<int>? exerciseOrder = ExerciseData.exercisesOrder?.value;
+      if (exerciseOrder == null || exerciseOrder.length == 0) {
+        return Container(
+          color: Colors.blue,
+          child: Stack(
+            children: <Widget>[
+              CustomScrollView(
+                  physics: BouncingScrollPhysics(),
+                  controller: widget.autoScrollController,
+                  slivers: [
+                    HeaderForOneHandedUse(
+                      listOfGroupOfExercises: [],
+                      inprogressWorkoutSection: false,
+                      newWorkoutSection: false,
+                      hiddenWorkoutSection: false,
+                      openHeight: openHeaderHeight!,
+                    ),
+                    AddExerciseFiller()
+                  ]),
+              SearchExerciseButton(),
+              AddExerciseButton(
+                //extra 150 makes it long
+                longTransitionDuration: Duration(milliseconds: 300 + 150),
+              ),
+            ],
           ),
-        ),
-      );
-      return Container(
-        color: Colors.blue,
-        child: Stack(
-          children: <Widget>[
-            CustomScrollView(
-              physics: BouncingScrollPhysics(),
-              controller: widget.autoScrollController,
-              slivers: slivers!,
+        );
+      } else {
+        slivers!.add(
+          SliverFillRemaining(
+            hasScrollBody: false,
+            fillOverscroll: true,
+            child: Container(
+              height: 16 + 48.0 + 16,
+              color: Theme.of(context).primaryColor,
             ),
-            SearchExerciseButton(),
-            AddExerciseButton(
-              //extra 150 makes it long
-              longTransitionDuration: Duration(milliseconds: 300 + 150),
-            ),
-          ],
-        ),
-      );
+          ),
+        );
+        return Container(
+          color: Colors.blue,
+          child: Stack(
+            children: <Widget>[
+              CustomScrollView(
+                physics: BouncingScrollPhysics(),
+                controller: widget.autoScrollController,
+                slivers: slivers!,
+              ),
+              SearchExerciseButton(),
+              AddExerciseButton(
+                //extra 150 makes it long
+                longTransitionDuration: Duration(milliseconds: 300 + 150),
+              ),
+            ],
+          ),
+        );
+      }
     }
   }
 }

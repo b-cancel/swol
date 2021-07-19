@@ -30,6 +30,16 @@ final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
 final ValueNotifier<int> exerciseToTravelTo = new ValueNotifier<int>(-1);
 
+/*
+for iOS
+open ios/Runner.xcworkspace   
+change version
+flutter build ipa --no-sound-null-safety
+open build/ios/archive/Runner.xcarc
+validate
+distribute
+*/
+
 //start the program
 main() {
   runApp(App());

@@ -174,6 +174,7 @@ class AddExerciseFiller extends StatelessWidget {
   Widget build(BuildContext context) {
     return SliverFillRemaining(
       hasScrollBody: false,
+      fillOverscroll: true,
       child: Container(
         color: Theme.of(context).primaryColor,
         child: Center(

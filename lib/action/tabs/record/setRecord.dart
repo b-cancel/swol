@@ -153,85 +153,68 @@ class SetRecordInner extends StatelessWidget {
       ),
     );
 
-    Widget scrollingPage;
+    Widget fullPage;
     if (calibrationRequired) {
       //clipping so "hero" doesn't show up in the other page
-      scrollingPage = ListView(
-        physics: BouncingScrollPhysics(),
+      fullPage = Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisSize: MainAxisSize.max,
         children: <Widget>[
           Container(
-            height: spaceToRedistribute,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              mainAxisSize: MainAxisSize.max,
-              children: <Widget>[
-                Container(
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).cardColor,
-                    borderRadius: BorderRadius.vertical(
-                      bottom: Radius.circular(24),
-                    ),
-                  ),
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 16,
-                  ),
-                  child: CalibrationBody(),
-                ),
-                Expanded(
-                  child: Shimmer.fromColors(
-                    direction: ShimmerDirection.ltr,
-                    baseColor: Theme.of(context).primaryColor,
-                    highlightColor: Theme.of(context).cardColor,
-                    child: Icon(
-                      MaterialCommunityIcons.chevron_double_up,
-                      size: 36,
-                      color: Theme.of(context).primaryColor,
-                    ),
-                  ),
-                ),
-                recordSetFields,
-                Padding(
-                  //padding for curve button
-                  padding: EdgeInsets.only(
-                    top: 24,
-                  ),
-                  child: buttonsOnBottom,
-                ),
-              ],
+            decoration: BoxDecoration(
+              color: Theme.of(context).cardColor,
+              borderRadius: BorderRadius.vertical(
+                bottom: Radius.circular(24),
+              ),
             ),
+            padding: EdgeInsets.symmetric(
+              horizontal: 16,
+              vertical: 16,
+            ),
+            child: CalibrationBody(),
+          ),
+          Expanded(
+            child: Shimmer.fromColors(
+              direction: ShimmerDirection.ltr,
+              baseColor: Theme.of(context).primaryColor,
+              highlightColor: Theme.of(context).cardColor,
+              child: Icon(
+                MaterialCommunityIcons.chevron_double_up,
+                size: 36,
+                color: Theme.of(context).primaryColor,
+              ),
+            ),
+          ),
+          recordSetFields,
+          Padding(
+            //padding for curve button
+            padding: EdgeInsets.only(
+              top: 24,
+            ),
+            child: buttonsOnBottom,
           ),
         ],
       );
     } else {
       //clipping so "hero" doesn't show up in the other page
-      scrollingPage = ListView(
-        physics: BouncingScrollPhysics(),
+      fullPage = Column(
         children: <Widget>[
-          Container(
-            height: spaceToRedistribute,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                Expanded(
-                  child: MakeFunctionAdjustment(
-                    topColor: buttonsColor,
-                    heroUp: heroUp,
-                    heroAnimTravel: heroAnimTravel,
-                    exercise: exercise,
-                  ),
-                ),
-                recordSetFields,
-                buttonsOnBottom,
-              ],
+          Expanded(
+            child: MakeFunctionAdjustment(
+              topColor: buttonsColor,
+              heroUp: heroUp,
+              heroAnimTravel: heroAnimTravel,
+              exercise: exercise,
             ),
           ),
+          recordSetFields,
+          buttonsOnBottom,
         ],
       );
     }
 
     //add extra back just for looks (ClipRRect)
-    return scrollingPage;
+    return fullPage;
   }
 }
 
@@ -256,11 +239,12 @@ class SetRecordButtonsWithWhiteContext extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //a couple of things for set break glance
-    double topPadding = 24.0 + 40 + 24;
+    //double topPadding = 24.0 + 40 + 24;
 
     //build
     return Stack(
       children: <Widget>[
+        /*
         Container(
           height: 0,
           child: OverflowBox(
@@ -325,6 +309,7 @@ class SetRecordButtonsWithWhiteContext extends StatelessWidget {
             ),
           ),
         ),
+        */
         BottomButtons(
           color: buttonsColor,
           exerciseID: exercise.id,

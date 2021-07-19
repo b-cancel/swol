@@ -12,6 +12,8 @@ import 'package:swol/shared/widgets/simple/notify.dart';
 import 'package:swol/shared/structs/anExercise.dart';
 import 'package:swol/shared/methods/theme.dart';
 
+import '../../main.dart';
+
 //NOTE: we have a couple of timestamp types
 //inprogress (on top), new, normal, hidden
 
@@ -303,6 +305,12 @@ class _FloatingDoneButtonState extends State<FloatingDoneButton> {
     bool tempToLast: false,
   }) {
     Function onFinished = () {
+      //may have to unfocus
+      FocusScope.of(context).unfocus();
+
+      //animate the header
+      App.navSpread.value = false;
+
       //cancel the notification that may be running
       safeCancelNotification(widget.exercise.id);
 
@@ -360,8 +368,9 @@ class _FloatingDoneButtonState extends State<FloatingDoneButton> {
         widget.cardColor,
         setsPassed,
       );
-    } else
+    } else {
       onFinished();
+    }
   }
 }
 

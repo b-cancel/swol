@@ -13,11 +13,6 @@ import 'package:swol/other/functions/helper.dart';
 import 'package:swol/shared/widgets/simple/curvedCorner.dart';
 import 'package:swol/shared/structs/anExercise.dart';
 
-//internal: other
-import 'package:swol/other/functions/1RM&R=W.dart';
-import 'package:swol/other/functions/1RM&W=R.dart';
-import 'package:swol/other/functions/W&R=1RM.dart';
-
 //widget
 class MakeFunctionAdjustment extends StatefulWidget {
   const MakeFunctionAdjustment({
