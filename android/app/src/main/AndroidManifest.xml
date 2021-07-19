@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.swol">
    <application
-        android:label="swol"
+        android:label="Swol"
         android:icon="@mipmap/launcher_icon">
         <activity
             android:name=".MainActivity"

@@ -31,13 +31,19 @@ final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
 final ValueNotifier<int> exerciseToTravelTo = new ValueNotifier<int>(-1);
 
 /*
-for iOS
+---for iOS---
 open ios/Runner.xcworkspace   
 change version
 flutter build ipa --no-sound-null-safety
-open build/ios/archive/Runner.xcarc
+open build/ios/archive/Runner.xcarchive
 validate
 distribute
+
+---for Android---
+change version in pubspec.yaml
+https://stackoverflow.com/questions/64677404/sign-your-flutter-app-with-upload-key-app-signing-by-google-play
+create keystore
+flutter build appbundle --no-sound-null-safety
 */
 
 //start the program
