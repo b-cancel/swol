@@ -71,6 +71,7 @@ class App extends StatelessWidget {
     //main app build
     return FeatureDiscovery(
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'SWOL',
         builder: BotToastInit(), //1. call BotToastInit
         navigatorObservers: [

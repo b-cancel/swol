@@ -1003,18 +1003,24 @@ class _ExerciseListState extends State<ExerciseList> {
           ),
         );
       } else {
+        //!Adding a sliver fill remaining here bugs sometimes, nothing I can do except just not use it
+
         slivers!.add(
-          SliverFillRemaining(
-            hasScrollBody: false,
-            fillOverscroll: true,
+          SliverToBoxAdapter(
             child: Container(
               height: 16 + 48.0 + 16,
-              color: Theme.of(context).primaryColor,
+              decoration: BoxDecoration(
+                color: Theme.of(context).primaryColor,
+                borderRadius: BorderRadius.vertical(
+                  bottom: Radius.circular(12),
+                ),
+              ),
             ),
           ),
         );
+
         return Container(
-          color: Colors.blue,
+          color: Theme.of(context).primaryColor,
           child: Stack(
             children: <Widget>[
               CustomScrollView(

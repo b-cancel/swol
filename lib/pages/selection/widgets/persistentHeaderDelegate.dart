@@ -48,7 +48,8 @@ class HeaderForOneHandedUse extends StatelessWidget {
     //the in progress group if it exists is allways on top
     if (maybeInProgressGroup.length > 0) {
       //most recent is on the bottom for this group
-      AnExercise mostRecent = maybeInProgressGroup[0];
+      AnExercise mostRecent =
+          maybeInProgressGroup.last; //!the last one is the last one we did
       //use the last time stamp ONLY for determining the type
       TimeStampType mostRecentTimeStampType =
           LastTimeStamp.returnTimeStampType(mostRecent.lastTimeStamp);

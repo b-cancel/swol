@@ -129,58 +129,63 @@ class SectionBody extends StatelessWidget {
   Widget build(BuildContext context) {
     return new SliverList(
       delegate: new SliverChildListDelegate([
-        Stack(
-          children: <Widget>[
-            Positioned.fill(
-              child: Column(
-                mainAxisSize: MainAxisSize.max,
-                children: <Widget>[
-                  Expanded(
-                    child: Container(
-                      color: topColor,
-                      child: Container(),
+        ClipRRect(
+          borderRadius: BorderRadius.vertical(
+            top: Radius.circular(24),
+          ),
+          child: Stack(
+            children: <Widget>[
+              Positioned.fill(
+                child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  children: <Widget>[
+                    Expanded(
+                      child: Container(
+                        color: topColor,
+                        child: Container(),
+                      ),
                     ),
-                  ),
-                  Expanded(
-                    child: Container(
-                      color: bottomColor,
-                      child: Container(),
+                    Expanded(
+                      child: Container(
+                        color: bottomColor,
+                        child: Container(),
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            ),
-            Card(
-              margin: EdgeInsets.all(0),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(24.0),
-              ),
-              clipBehavior: Clip.antiAlias,
-              child: Column(
-                children: List.generate(
-                  thisGroup.length,
-                  (int rawIndex) {
-                    int index = (sectionType == TimeStampType.New)
-                        ? ((thisGroup.length - 1) - rawIndex)
-                        : rawIndex;
-                    AnExercise exercise = thisGroup[index];
-                    return Column(
-                      children: [
-                        ExerciseTile(
-                          key: ValueKey(exercise.id),
-                          exercise: exercise,
-                        ),
-                        Visibility(
-                          visible: rawIndex != (thisGroup.length - 1),
-                          child: ListTileDivider(),
-                        ),
-                      ],
-                    );
-                  },
+                  ],
                 ),
               ),
-            ),
-          ],
+              Card(
+                margin: EdgeInsets.all(0),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(24.0),
+                ),
+                clipBehavior: Clip.antiAlias,
+                child: Column(
+                  children: List.generate(
+                    thisGroup.length,
+                    (int rawIndex) {
+                      int index = (sectionType == TimeStampType.New)
+                          ? ((thisGroup.length - 1) - rawIndex)
+                          : rawIndex;
+                      AnExercise exercise = thisGroup[index];
+                      return Column(
+                        children: [
+                          ExerciseTile(
+                            key: ValueKey(exercise.id),
+                            exercise: exercise,
+                          ),
+                          Visibility(
+                            visible: rawIndex != (thisGroup.length - 1),
+                            child: ListTileDivider(),
+                          ),
+                        ],
+                      );
+                    },
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ]),
     );
