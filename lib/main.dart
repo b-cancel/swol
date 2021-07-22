@@ -46,6 +46,25 @@ create keystore
 flutter build appbundle --no-sound-null-safety
 */
 
+/*
+I didn't do this for Android
+Release build configuration
+
+Before creating the release build of your app (which is the default setting when building an APK or app bundle) 
+you will need to customise your ProGuard configuration file as per this link. 
+Rules specific to the GSON dependency being used by the plugin will need to be added. 
+These rules can be found here. The example app has a consolidated Proguard rules 
+(proguard-rules.pro) file that combines these together for reference here.
+
+⚠️ Ensure that you have configured the resources that should be kept so that resources 
+like your notification icons aren't discarded by the R8 compiler by following the instructions here. 
+If you fail to do this, notifications might be broken. In the worst case they will never show, 
+instead silently failing when the system looks for a resource that has been removed. 
+If they do still show, you might not see the icon you specified. 
+The configuration used by the example app can be found here where it is specifying that all drawable resources should be kept, 
+as well as the file used to play a custom notification sound (sound file is located here).
+*/
+
 //start the program
 main() {
   runApp(App());
